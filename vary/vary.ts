@@ -36,7 +36,7 @@ namespace $ {
 		}
 		
 		if( vary instanceof Uint8Array ) return { tip: 'bin', bin: vary }
-		if( vary instanceof Node ) return { tip: 'xml', bin: $mol_charset_encode( $mol_dom_serialize( vary ) ) }
+		if( vary instanceof $mol_dom_context.Node ) return { tip: 'xml', bin: $mol_charset_encode( $mol_dom_serialize( vary ) ) }
 		if( vary instanceof $hyoo_crowds_node_ref ) return { tip: 'ref', bin: vary.toArray() }
 		if( vary instanceof $mol_time_moment ) return { tip: 'time', bin: $mol_charset_encode( vary.toString() ) }
 		if( vary instanceof $mol_tree2 ) return { tip: 'tree', bin: $mol_charset_encode( $$.$mol_tree2_to_string( vary ) ) }
