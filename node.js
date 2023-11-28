@@ -11726,7 +11726,7 @@ var $;
                     },
                     drop: (prev, lead) => this.area().post(lead?.self() ?? 0, prev.head(), prev.self(), null),
                     insert: (next, lead) => {
-                        const gist = this.area().post(lead?.self() ?? 0, this.head(), 0, next, 'list');
+                        const gist = this.area().post(lead?.self() ?? 0, this.head(), 0, 'p', 'list');
                         area.Node($hyoo_crowds_text).Item(gist.self()).str(next);
                         return gist;
                     },
