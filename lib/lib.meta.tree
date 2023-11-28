@@ -1,0 +1,7 @@
+include \/hyoo/crowds/realm
+include \/hyoo/crowds/area
+include \/hyoo/crowds/reg
+include \/hyoo/crowds/list
+include \/hyoo/crowds/dict
+include \/hyoo/crowds/text
+include \/hyoo/crowds/cast

@@ -1,0 +1,19 @@
+$hyoo_crowds_node_dump $mol_expander
+	node $hyoo_crowds_node
+		head => head
+	prefix /
+	label /
+		^ prefix
+		<= Head $mol_paragraph sub / <= title \
+		- <= Value $mol_dump_value value <= value null
+		- <= Items $mol_dump_value value <= items /
+	content <= nodes /
+		<= Inner*0 $mol_view sub /
+			<= Node_inner* $hyoo_crowds_node_dump
+				prefix /
+					<= Unit_tip* $mol_view sub / <= unit_tip* \
+					<= Unit_tag* $mol_view sub / <= unit_tag* \
+					<= Unit_time* $mol_view sub / <= unit_time* \
+					<= Unit_value* $mol_dump_value
+						value <= unit_value* null
+				node <= node_inner* $hyoo_crowds_node

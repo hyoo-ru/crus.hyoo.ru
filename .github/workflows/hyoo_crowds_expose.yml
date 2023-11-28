@@ -1,0 +1,25 @@
+name: $hyoo_crowds_expose
+
+on:
+  workflow_dispatch:
+  push:
+  pull_request:
+  schedule:
+  - cron: "0 7 * * *"
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    
+    steps:
+    
+    - uses: hyoo-ru/mam_build@master2
+      with:
+        package: 'hyoo/crowds'
+        modules: 'expose'
+    
+    - uses: hyoo-ru/gh-deploy@v4.4.1
+      if: github.ref == 'refs/heads/master'
+      with:
+        folder: 'hyoo/crowds/expose/-'

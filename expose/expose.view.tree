@@ -1,0 +1,8 @@
+$hyoo_crowds_expose $mol_book2_catalog
+	menu_title \CROWDS Expose
+	param \section
+	realm $hyoo_crowds_realm
+	spreads *
+		realm <= Realm $hyoo_crowds_realm_book
+			realm <= realm
+	Placeholder null

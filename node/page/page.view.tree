@@ -1,0 +1,8 @@
+$hyoo_crowds_node_page $mol_page
+	node $hyoo_crowds_node
+	title \Node
+	body /
+		<= Text $mol_textarea
+			value? <=> text? \
+		<= Dump $hyoo_crowds_node_dump
+			node <= node
