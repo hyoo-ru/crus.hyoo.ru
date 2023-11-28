@@ -1,0 +1,609 @@
+$mol_scroll $mol_view
+	scroll_top? 0
+	scroll_left? 0
+	field *
+		^
+		tabIndex <= tabindex -1
+	event *
+		^
+		scroll?event <=> event_scroll?event null
+
+$mol_book2 $mol_scroll
+	menu_title \
+	sub <= pages /$mol_view
+	minimal_width 0
+	Placeholder $mol_view
+	Gap* $mol_view title \
+
+$mol_link $mol_view
+	uri \
+	dom_name \a
+	uri_off \
+	uri_native null
+	external false
+	attr *
+		^
+		href <= uri_toggle \
+		title <= hint_safe <= hint \
+		target <= target \_self
+		download <= file_name \
+		mol_link_current <= current false
+	sub /$mol_view_content
+		<= title
+	arg *
+	event *
+		^
+		click?event <=> click?event <=> event_click?event null
+
+$mol_pop $mol_view
+	showed? false
+	align_vert \
+	align_hor \
+	prefer \vert
+	sub /
+		<= Anchor null
+	sub_visible /
+		<= Anchor
+		<= Bubble $mol_pop_bubble
+			align <= align \bottom_center
+			content <= bubble_content /$mol_view_content
+			height_max <= height_max 9999
+
+$mol_pop_bubble $mol_view
+	sub <= content /$mol_view_content
+	style *
+		^
+		maxHeight <= height_max 9999
+	attr *
+		^
+		mol_pop_align <= align \
+		tabindex 0
+
+$mol_speck $mol_view
+	attr *
+		^
+		mol_theme <= theme \$mol_theme_accent
+	style *
+		^
+		minHeight \1em
+	sub /
+		<= value null
+
+$mol_button $mol_view
+	enabled true
+	click?event null
+	event_click?event null
+	event *
+		^
+		click?event <=> event_activate?event null
+		dblclick?event <=> clicks?event null
+		keydown?event <=> event_key_press?event null 
+	attr *
+		^
+		disabled <= disabled false
+		role \button
+		tabindex <= tab_index 0
+		title <= hint_safe <= hint \
+	sub /$mol_view_content
+		<= title
+	Speck $mol_speck
+		value <= error \
+
+$mol_button_typed $mol_button
+	minimal_height 40
+	minimal_width 40
+
+$mol_button_minor $mol_button_typed
+
+$mol_hotkey $mol_plugin
+	event *
+		^
+		keydown?event <=> keydown?event null
+	key *
+	mod_ctrl false
+	mod_alt false
+	mod_shift false
+
+$mol_nav $mol_plugin
+	cycle? false
+	-
+	mod_ctrl false
+	mod_shift false
+	mod_alt false
+	-
+	keys_x? /
+	keys_y? /
+	-
+	current_x? null
+	current_y? null
+	-
+	event_up?event null
+	event_down?event null
+	event_left?event null
+	event_right?event null
+	event *
+		^
+		keydown?event <=> event_key?event null
+
+$mol_string $mol_view
+	dom_name \input
+	enabled true
+	minimal_height 40
+	autocomplete false
+	selection? /number
+		0
+		0
+	auto /
+		<= selection_watcher null
+		<= error_report null
+	field *
+		^
+		disabled <= disabled false
+		value <= value_changed? <=> value? \
+		placeholder <= hint_visible <= hint \
+		spellcheck <= spellcheck true
+		autocomplete <= autocomplete_native \
+		selectionEnd <= selection_end 0
+		selectionStart <= selection_start 0
+		inputMode <= keyboard \text
+		enterkeyhint <= enter \go
+	attr *
+		^
+		maxlength <= length_max +Infinity
+		type <= type? \text
+	event *
+		^
+		input?event <=> event_change?event null
+	plugins /
+		<= Submit $mol_hotkey
+			mod_ctrl <= submit_with_ctrl false
+			key * enter?event <=> submit?event null
+
+$mol_svg $mol_view
+	dom_name \svg
+	dom_name_space \http://www.w3.org/2000/svg
+	font_size 16
+	font_family \
+	style_size *
+
+$mol_svg_root $mol_svg
+	dom_name \svg
+	attr *
+		^
+		viewBox <= view_box \0 0 100 100
+		preserveAspectRatio <= aspect \xMidYMid
+
+$mol_svg_path $mol_svg
+	dom_name \path
+	attr *
+		^
+		d <= geometry \
+
+
+$mol_icon $mol_svg_root
+	view_box \0 0 24 24
+	minimal_width 16
+	minimal_height 16
+	sub /
+		<= Path $mol_svg_path
+			geometry <= path \
+
+$mol_icon_cross $mol_icon path \M19 6.41L17.59 5L12 10.59L6.41 5L5 6.41L10.59 12L5 17.59L6.41 19L12 13.41L17.59 19L19 17.59L13.41 12L19 6.41Z
+
+$mol_list $mol_view
+	render_visible_only true
+	render_over 0
+	sub <= rows /$mol_view
+	Empty $mol_view
+	Gap_before $mol_view style * paddingTop <= gap_before 0
+	Gap_after $mol_view style * paddingTop <= gap_after 0
+	view_window /
+		0
+		0
+
+$mol_paragraph $mol_view
+	line_height 24
+	letter_width 7
+	width_limit +Infinity
+	row_width 0
+	sub / <= title
+
+$mol_dimmer $mol_paragraph
+	haystack \
+	needle \
+	sub <= parts /$mol_view_content
+	Low* $mol_paragraph
+		sub /
+			<= string* \
+	High* $mol_paragraph
+		sub /
+			<= string* \
+
+$mol_search $mol_pop
+	query? \
+	suggests /string
+	plugins /$mol_plugin
+		^
+		<= Hotkey $mol_hotkey
+			key * escape? <=> clear? null
+		<= Nav $mol_nav
+			keys_y <= nav_components /$mol_view
+			current_y?component <=> nav_focused?component null
+	showed? <=> suggests_showed? false
+	align_hor \right
+	Anchor $mol_view
+		sub <= anchor_content /
+			<= Query $mol_string
+				value? <=> query? \
+				hint <= hint @ \Search...
+				submit?event <=> submit?event null
+				enabled <= enabled true
+				keyboard <= keyboard \search
+				enter <= enter \search
+				bring => bring
+			<= Clear $mol_button_minor
+				hint @ \Clear
+				click?event <=> clear?event null
+				sub /
+					<= Clear_icon $mol_icon_cross
+	bubble_content /$mol_view_content
+		<= Menu $mol_list
+			rows <= menu_items /$mol_view
+	Suggest* $mol_button_minor
+		click?event <=> suggest_select*?event null
+		sub <= suggest_content* /$mol_view_content
+			<= Suggest_label* $mol_dimmer
+				haystack <= suggest_label* \
+				needle <= query? \
+
+$mol_page $mol_view
+	dom_name \article
+	field *
+		^
+		tabIndex <= tabindex -1
+	sub /
+		<= Head $mol_view
+			minimal_height 64
+			dom_name \header
+			sub <= head /
+				<= Title $mol_view
+					dom_name \h1
+					sub <= title_content /
+						<= Logo null
+						<= title
+				<= Tools $mol_view
+					sub <= tools /$mol_view_content
+		<= Body $mol_scroll
+			scroll_top? => body_scroll_top?
+			sub <= body_content /
+				<= Body_content $mol_list
+					rows <= body /$mol_view
+		<= Foot $mol_view
+			dom_name \footer
+			sub <= foot /$mol_view
+
+$mol_book2_catalog $mol_book2
+	param \
+	spread? \
+	spreads *
+	Spread* $mol_view
+	Spread_default null
+	spread_ids /string
+	menu_filter_enabled false
+	spread_ids_filtered /string
+	pages /
+		<= Menu $mol_page
+			Title => Menu_title
+			title <= menu_title \
+			Tools => Menu_tools
+			tools <= menu_tools /
+			head <= menu_head /
+				<= Menu_title
+				<= Menu_tools
+			body <= menu_body /
+				<= Menu_filter $mol_search
+					query? <=> menu_filter? \
+				<= Menu_links $mol_list
+					rows <= menu_links /
+						<= Menu_link*0 $mol_link
+							arg <= arg* *
+							sub <= menu_link_content* /
+								<= Menu_link_title* $mol_dimmer
+									needle <= menu_filter
+									haystack <= spread_title* \
+			foot <= menu_foot /
+	Spread_close $mol_link
+		arg <= spread_close_arg *
+		sub /
+			<= Spread_close_icon $mol_icon_cross
+
+$mol_stack $mol_view
+
+$mol_text_code_token $mol_dimmer
+	attr *
+		^
+		mol_text_code_token_type <= type \
+
+$mol_text_code_token_link $mol_text_code_token
+	dom_name \a
+	type \code-link
+	attr *
+		^
+		href <= uri \
+		target \_blank
+
+$mol_text_code_row $mol_paragraph
+	text \
+	minimal_height 24
+	numb_showed true
+	syntax null
+	uri_resolve* \
+	Numb $mol_view
+		sub /
+			<= numb 0
+	Token* $mol_text_code_token
+		type <= token_type* \
+		haystack <= token_text* \
+		needle <= highlight \
+	Token_link* $mol_text_code_token_link
+		haystack <= token_text* \
+		needle <= highlight \
+		uri <= token_uri* \
+	find_pos* null
+
+$mol_icon_clipboard $mol_icon path \M19,3H14.82C14.4,1.84 13.3,1 12,1C10.7,1 9.6,1.84 9.18,3H5C3.9,3 3,3.9 3,5V19C3,20.1 3.9,21 5,21H19C20.1,21 21,20.1 21,19V5C21,3.9 20.1,3 19,3M12,3C12.55,3 13,3.45 13,4C13,4.55 12.55,5 12,5C11.45,5 11,4.55 11,4C11,3.45 11.45,3 12,3
+
+$mol_icon_clipboard_outline $mol_icon path \M19,3H14.82C14.4,1.84 13.3,1 12,1C10.7,1 9.6,1.84 9.18,3H5C3.9,3 3,3.9 3,5V19C3,20.1 3.9,21 5,21H19C20.1,21 21,20.1 21,19V5C21,3.9 20.1,3 19,3M12,3C12.55,3 13,3.45 13,4C13,4.55 12.55,5 12,5C11.45,5 11,4.55 11,4C11,3.45 11.45,3 12,3M7,7H17V5H19V19H5V5H7V7Z
+
+$mol_button_copy $mol_button_minor
+	blobs /$mol_blob
+		<= text_blob? $mol_blob /
+			/BlobPart <= text <= title
+			* type \text/plain
+		<= html_blob? $mol_blob /
+			/BlobPart <= html \
+			* type \text/html
+	data *
+	sub /
+		<= Icon $mol_icon_clipboard_outline
+		<= title \
+
+
+$mol_text_code $mol_stack
+	attr *
+		^
+		mol_text_code_sidebar_showed <= sidebar_showed false
+	text \
+	text_lines /string
+	find_pos* null
+	uri_base \
+	sub /
+		<= Rows $mol_list
+			render_visible_only <= render_visible_only false
+			rows <= rows /
+				<= Row*0 $mol_text_code_row
+					numb_showed <= sidebar_showed
+					numb <= row_numb* 0
+					text <= row_text* \
+					syntax <= syntax null
+					uri_resolve* <= uri_resolve* \
+					highlight <= highlight \
+		<= Copy $mol_button_copy
+			hint @ \Copy whole code
+			text <= text_export \
+
+$mol_textarea $mol_stack
+	attr *
+		^
+		mol_textarea_clickable <= clickable? false
+		mol_textarea_sidebar_showed <= sidebar_showed false
+	event *
+		keydown?event <=> press?event null
+		pointermove?event <=> hover?event null
+	sub /
+		<= Edit $mol_textarea_edit
+			value? <=> value? \
+			hint <= hint \ 
+			enabled <= enabled true
+			spellcheck <= spellcheck true
+			length_max <= length_max +Infinity
+			selection? <=> selection? /number
+			bring => bring
+			submit? <=> submit? null
+			submit_with_ctrl <= submit_with_ctrl true
+		<= View $mol_text_code
+			text <= value
+			render_visible_only false
+			row_numb* <= row_numb* 0
+			sidebar_showed <= sidebar_showed
+			highlight <= highlight \
+	symbols_alt *
+		comma \<
+		period \>
+		dash \−
+		equals \≈
+		graveAccent \́
+		forwardSlash \÷
+		E \€
+		V \✔
+		X \×
+		C \©
+		P \§
+		H \₽
+		key0 \°
+		key8 \•
+		key2 \@
+		key3 \#
+		key4 \$
+		key6 \^
+		key7 \&
+		bracketOpen \[
+		bracketClose \]
+		slashBack \|
+	symbols_alt_ctrl *
+		space \ 
+	symbols_alt_shift *
+		V \✅
+		X \❌
+		O \⭕
+		key1 \❗
+		key4 \💲
+		key7 \❓
+		comma \«
+		period \»
+		semicolon \“
+		quoteSingle \”
+		dash \—
+		equals \≠
+		graveAccent \̱
+		bracketOpen \{
+		bracketClose \}
+
+$mol_textarea_edit $mol_string
+	dom_name \textarea
+	enter \enter
+	field *
+		^
+		scrollTop 0
+
+$mol_check $mol_button_minor
+	attr *
+		^
+		mol_check_checked <= checked? false
+		aria-checked <= aria_checked \false
+		role <= aria_role \checkbox
+	sub /$mol_view_content
+		<= Icon null
+		<= label /
+			<= Title $mol_view
+				sub /
+					<= title \
+
+$mol_icon_chevron $mol_icon path \M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z
+
+$mol_check_expand $mol_check
+	Icon $mol_icon_chevron
+	level 0
+	style *
+		^
+		paddingLeft <= level_style \0px
+	checked? <=> expanded? false
+	enabled <= expandable false
+
+$mol_expander $mol_list
+	rows /
+		<= Label $mol_view
+			sub /
+				<= Trigger $mol_check_expand
+					checked? <=> expanded? false
+					expandable <= expandable true
+					label <= label /
+						<= title
+				<= Tools null
+		<= Content $mol_list
+			rows <= content /
+
+$mol_dump_list $mol_view
+	values /
+	sub /
+		<= Dump*0 $mol_dump_value
+			value <= dump_value* null
+			expanded? <=> dump_expanded*? false
+			prototypes <= prototypes false
+			preview_show <= preview_show true
+
+$mol_dump_value $mol_view
+	value? null
+	preview_show? true
+	sub /
+		<= Simple $mol_text_code
+			text <= simple \
+		<= Expand $mol_expander
+			expanded? <=> expanded? false
+			Trigger <= Expand_head $mol_check_expand
+				minimal_height 24
+				minimal_width 24
+				expanded? <=> expanded? false
+				expandable <= expandable true
+				clicks? <=> expand_all? null
+				label /
+					<= Expand_title $mol_text_code
+						text <= expand_title \
+			content <= expand_content /
+				<= Preview $mol_view sub /
+					<= Preview_dom $mol_view
+						dom_node <= preview_dom null
+						render <= preview null
+				<= Row*0 $mol_dump_list
+					values <= row_values* /
+					prototypes <= prototypes false
+					preview_show <= preview_show
+
+$hyoo_crowds_node_dump $mol_expander
+	node $hyoo_crowds_node
+		head => head
+	prefix /
+	label /
+		^ prefix
+		<= Head $mol_paragraph sub / <= title \
+		- <= Value $mol_dump_value value <= value null
+		- <= Items $mol_dump_value value <= items /
+	content <= nodes /
+		<= Inner*0 $mol_view sub /
+			<= Node_inner* $hyoo_crowds_node_dump
+				prefix /
+					<= Unit_tip* $mol_view sub / <= unit_tip* \
+					<= Unit_tag* $mol_view sub / <= unit_tag* \
+					<= Unit_time* $mol_view sub / <= unit_time* \
+					<= Unit_value* $mol_dump_value
+						value <= unit_value* null
+				node <= node_inner* $hyoo_crowds_node
+
+$hyoo_crowds_node_page $mol_page
+	node $hyoo_crowds_node
+	title \Node
+	body /
+		<= Text $mol_textarea
+			value? <=> text? \
+		<= Dump $hyoo_crowds_node_dump
+			node <= node
+
+$hyoo_crowds_area_book $mol_book2_catalog
+	menu_title \Heads
+	param \node
+	area $hyoo_crowds_area
+	Spread* <= Node* $hyoo_crowds_node_page
+		node <= node* $hyoo_crowds_node
+
+$mol_icon_plus $mol_icon path \M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z
+
+$hyoo_crowds_land_book $mol_book2_catalog
+	menu_title \Areas
+	param \area
+	land $hyoo_crowds_land
+	Spread* <= Area* $hyoo_crowds_area_book
+		area <= area* $hyoo_crowds_area
+	menu_tools /
+		<= Area_new $mol_button_minor
+			sub / <= Area_new_icon $mol_icon_plus
+			click? <=> area_new? null
+
+$hyoo_crowds_realm_book $mol_book2_catalog
+	menu_title \Lands
+	param \land
+	realm $hyoo_crowds_realm
+	Spread* <= Land* $hyoo_crowds_land_book
+		land <= land* $hyoo_crowds_land
+	- menu_tools /
+		<= Land_new $mol_button_minor
+			sub / <= land_new_icon $mol_icon_plus
+			click? <=> land_new? null
+
+$hyoo_crowds_expose $mol_book2_catalog
+	menu_title \CROWDS Expose
+	param \section
+	realm $hyoo_crowds_realm
+	spreads *
+		realm <= Realm $hyoo_crowds_realm_book
+			realm <= realm
+	Placeholder null
