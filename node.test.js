@@ -9349,6 +9349,7 @@ var $;
             return this.items();
         }
         splice(next, from = this.units().length, to = from, tag = 'term') {
+            const area = this.area();
             $mol_reconcile({
                 prev: this.units(),
                 from,
@@ -9356,7 +9357,7 @@ var $;
                 next,
                 equal: (next, prev) => $mol_compare_deep(this.area().gist_decode(prev), next),
                 drop: (prev, lead) => this.area().post(lead?.self() ?? 0, prev.head(), prev.self(), null),
-                insert: (next, lead) => this.area().post(lead?.self() ?? 0, this.head(), 0, next, tag),
+                insert: (next, lead) => this.area().post(lead?.self() ?? 0, this.head(), area.self_make(), next, tag),
                 update: (next, prev, lead) => this.area().post(lead?.self() ?? 0, prev.head(), prev.self(), next, prev.tag()),
             });
         }
@@ -9379,7 +9380,7 @@ var $;
         add(vary, tag = 'term') {
             if (this.has(vary))
                 return;
-            this.splice([vary], undefined, undefined, tag);
+            this.area().post(0, this.head(), 0, vary, tag);
         }
         cut(vary) {
             const units = [...this.units()];
@@ -11718,7 +11719,7 @@ var $;
                     },
                     drop: (prev, lead) => this.area().post(lead?.self() ?? 0, prev.head(), prev.self(), null),
                     insert: (next, lead) => {
-                        const gist = this.area().post(lead?.self() ?? 0, this.head(), 0, 'p', 'list');
+                        const gist = this.area().post(lead?.self() ?? 0, this.head(), area.self_make(), 'p', 'list');
                         area.Node($hyoo_crowds_text).Item(gist.self()).str(next);
                         return gist;
                     },
@@ -17061,12 +17062,12 @@ var $;
             const area = $hyoo_crowds_area.make({ $ });
             const list = area.Node($hyoo_crowds_list).Item(0);
             $mol_assert_like(list.items(), []);
-            list.items([1, 2]);
-            $mol_assert_like(list.items(), [1, 2]);
-            $mol_assert_not(list.has(3));
-            list.add(3);
+            list.items([2, 3]);
+            $mol_assert_like(list.items(), [2, 3]);
+            $mol_assert_not(list.has(1));
+            list.add(1);
             $mol_assert_like(list.items(), [1, 2, 3]);
-            $mol_assert_ok(list.has(3));
+            $mol_assert_ok(list.has(1));
             list.add(3);
             $mol_assert_like(list.items(), [1, 2, 3]);
             list.splice([2]);
@@ -17126,11 +17127,11 @@ var $;
             const area2 = $hyoo_crowds_area.make({ $ });
             const list1 = area1.Node($hyoo_crowds_list).Item(0);
             const list2 = area2.Node($hyoo_crowds_list).Item(0);
-            list1.items(['foo', 123, 'xxx', 'bar']);
+            list1.items(['foo', 'xxx']);
             area2.face.tick(area2.auth().peer());
-            list2.items(['foo', 123, 'yyy', 'bar']);
+            list2.items(['foo', 'yyy']);
             area1.apply_unit(area2.delta_unit());
-            $mol_assert_like(list1.items(), ['foo', 123, 'yyy', 'bar', 'xxx', 'bar']);
+            $mol_assert_like(list1.items(), ['foo', 'yyy', 'foo', 'xxx']);
         },
         async 'Insert before removed before changed'($) {
             const area = $hyoo_crowds_area.make({ $ });
@@ -17586,7 +17587,7 @@ var $;
                 $mol_assert_like(dict.keys(), []);
                 dict.dive(123, $hyoo_crowds_reg);
                 dict.dive('xxx', $hyoo_crowds_reg);
-                $mol_assert_like(dict.keys(), [123, 'xxx']);
+                $mol_assert_like(dict.keys(), ['xxx', 123]);
                 $mol_assert_ok(dict.has(123));
                 $mol_assert_ok(dict.has('xxx'));
                 $mol_assert_not(dict.has('yyy'));
@@ -17631,7 +17632,7 @@ var $;
             const profile2 = chief.Profile('my_bar');
             $mol_assert_unique(chief.land().home().area(), profile1, profile2);
             $mol_assert_equal(chief.land(), profile1.land(), profile2.land());
-            $mol_assert_like(chief.profiles(), ['my_foo', 'my_bar']);
+            $mol_assert_like(chief.profiles(), ['my_bar', 'my_foo']);
         },
     });
 })($ || ($ = {}));
@@ -17797,21 +17798,23 @@ var $;
             area2.apply_unit(delta1);
             $mol_assert_like(text1.str(), text2.str(), 'xxx yyy.foo bar.');
         },
-        async 'Merge different insertions to same place of same sequence'($) {
+        async 'Merge same insertions with different changes to same place'($) {
             const base = $hyoo_crowds_area.make({ $ });
-            base.Root($hyoo_crowds_text).str('foo bar');
+            base.Root($hyoo_crowds_text).str('( )');
             const left = $hyoo_crowds_area.make({ $ });
             left.apply_unit(base.delta_unit());
-            left.Root($hyoo_crowds_text).str('foo [ xxx ] bar');
+            left.Root($hyoo_crowds_text).str('( [ f ] )');
+            left.Root($hyoo_crowds_text).str('( [ foo ] )');
             const right = $hyoo_crowds_area.make({ $ });
             right.apply_unit(base.delta_unit());
             right.face.tick(right.auth().peer());
-            right.Root($hyoo_crowds_text).str('foo [ yyy ] bar');
+            right.Root($hyoo_crowds_text).str('( [ f ] )');
+            right.Root($hyoo_crowds_text).str('( [ fu ] )');
             const left_delta = left.delta_unit(base.face);
             const right_delta = right.delta_unit(base.face);
             left.apply_unit(right_delta);
             right.apply_unit(left_delta);
-            $mol_assert_like(left.Root($hyoo_crowds_text).str(), right.Root($hyoo_crowds_text).str(), 'foo [ yyy ] xxx ] bar');
+            $mol_assert_like(left.Root($hyoo_crowds_text).str(), right.Root($hyoo_crowds_text).str(), '( [ fu ] [ foo ] )');
         },
     });
 })($ || ($ = {}));

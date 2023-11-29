@@ -9357,6 +9357,7 @@ var $;
             return this.items();
         }
         splice(next, from = this.units().length, to = from, tag = 'term') {
+            const area = this.area();
             $mol_reconcile({
                 prev: this.units(),
                 from,
@@ -9364,7 +9365,7 @@ var $;
                 next,
                 equal: (next, prev) => $mol_compare_deep(this.area().gist_decode(prev), next),
                 drop: (prev, lead) => this.area().post(lead?.self() ?? 0, prev.head(), prev.self(), null),
-                insert: (next, lead) => this.area().post(lead?.self() ?? 0, this.head(), 0, next, tag),
+                insert: (next, lead) => this.area().post(lead?.self() ?? 0, this.head(), area.self_make(), next, tag),
                 update: (next, prev, lead) => this.area().post(lead?.self() ?? 0, prev.head(), prev.self(), next, prev.tag()),
             });
         }
@@ -9387,7 +9388,7 @@ var $;
         add(vary, tag = 'term') {
             if (this.has(vary))
                 return;
-            this.splice([vary], undefined, undefined, tag);
+            this.area().post(0, this.head(), 0, vary, tag);
         }
         cut(vary) {
             const units = [...this.units()];
@@ -11726,7 +11727,7 @@ var $;
                     },
                     drop: (prev, lead) => this.area().post(lead?.self() ?? 0, prev.head(), prev.self(), null),
                     insert: (next, lead) => {
-                        const gist = this.area().post(lead?.self() ?? 0, this.head(), 0, 'p', 'list');
+                        const gist = this.area().post(lead?.self() ?? 0, this.head(), area.self_make(), 'p', 'list');
                         area.Node($hyoo_crowds_text).Item(gist.self()).str(next);
                         return gist;
                     },
