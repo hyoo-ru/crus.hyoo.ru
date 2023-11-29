@@ -2319,6 +2319,7 @@ declare namespace $ {
         units(): $hyoo_crowds_gist[];
         move(from: number, to: number): void;
         wipe(seat: number): void;
+        can_change(): boolean;
     }
 }
 
@@ -3096,22 +3097,105 @@ declare namespace $ {
 }
 
 declare namespace $ {
+    class $mol_pick extends $mol_pop {
+        event(): Record<string, any>;
+        Anchor(): $$.$mol_check;
+        keydown(event?: any): any;
+        trigger_enabled(): boolean;
+        trigger_content(): readonly $mol_view_content[];
+        hint(): string;
+        Trigger(): $$.$mol_check;
+    }
+}
+
+declare namespace $.$$ {
+    class $mol_pick extends $.$mol_pick {
+        keydown(event: KeyboardEvent): void;
+    }
+}
+
+declare namespace $ {
+}
+
+declare namespace $ {
+    class $mol_icon_dots_vertical extends $mol_icon {
+        path(): string;
+    }
+}
+
+declare namespace $ {
+    class $mol_select extends $mol_pick {
+        dictionary(next?: any): Record<string, any>;
+        options(): readonly string[];
+        value(next?: any): string;
+        option_label_default(): string;
+        Option_row(id: any): $mol_button_minor;
+        No_options(): $mol_view;
+        plugins(): readonly any[];
+        hint(): string;
+        bubble_content(): readonly any[];
+        Filter(): $$.$mol_search;
+        Trigger_icon(): $mol_icon_dots_vertical;
+        event_select(id: any, event?: any): any;
+        option_label(id: any): string;
+        filter_pattern(next?: any): string;
+        Option_label(id: any): $$.$mol_dimmer;
+        option_content(id: any): readonly any[];
+        no_options_message(): string;
+        nav_components(): readonly $mol_view[];
+        option_focused(component?: any): any;
+        nav_cycle(next?: any): boolean;
+        Nav(): $$.$mol_nav;
+        menu_content(): readonly $mol_view[];
+        Menu(): $$.$mol_list;
+        Bubble_pane(): $$.$mol_scroll;
+        filter_hint(): string;
+        submit(event?: any): any;
+        enabled(): boolean;
+    }
+}
+
+declare namespace $.$$ {
+    class $mol_select extends $.$mol_select {
+        filter_pattern(next?: string): string;
+        open(): void;
+        options(): readonly string[];
+        options_filtered(): readonly string[];
+        option_label(id: string): any;
+        option_rows(): $mol_button_minor[];
+        option_focused(component?: $mol_view): $mol_view | $mol_search | $mol_button_minor | null;
+        event_select(id: string, event?: MouseEvent): void;
+        nav_components(): ($mol_search | $mol_button_minor)[];
+        trigger_content(): readonly $mol_view_content[];
+        menu_content(): ($mol_view | $mol_button_minor)[];
+    }
+}
+
+declare namespace $ {
+}
+
+declare namespace $ {
     class $hyoo_crowds_node_dump extends $mol_expander {
         head(): number;
+        can_change(): boolean;
         node(): $hyoo_crowds_node;
-        prefix(): readonly any[];
         label(): readonly any[];
         content(): readonly any[];
         title(): string;
         Head(): $$.$mol_paragraph;
-        unit_tip(id: any): string;
-        Unit_tip(id: any): $mol_view;
-        unit_tag(id: any): string;
-        Unit_tag(id: any): $mol_view;
-        unit_time(id: any): string;
-        Unit_time(id: any): $mol_view;
+        Value(): any;
         unit_value(id: any): any;
         Unit_value(id: any): $$.$mol_dump_value;
+        unit_tip(id: any): string;
+        Unit_tip(id: any): $mol_view;
+        unit_tag(id: any, next?: any): string;
+        Unit_tag(id: any): $$.$mol_select;
+        unit_time(id: any): string;
+        Unit_time(id: any): $mol_view;
+        Unit_wipe_icon(id: any): $mol_icon_cross;
+        unit_wipe(id: any, next?: any): any;
+        Unit_wipe(id: any): $mol_button_minor;
+        Unit_tools(id: any): $mol_view;
         node_inner(id: any): $hyoo_crowds_node;
         Node_inner(id: any): $$.$hyoo_crowds_node_dump;
         Inner(id: any): $mol_view;
@@ -3125,10 +3209,11 @@ declare namespace $.$$ {
         value(): $hyoo_crowds_vary_type;
         items(): readonly $hyoo_crowds_vary_type[];
         nodes(): $mol_view[];
-        unit_tag(index: number): "term" | "head" | "list" | "dict";
+        unit_tag(index: number, next?: keyof typeof $hyoo_crowds_gist_tag): "term" | "head" | "list" | "dict";
         unit_tip(index: number): "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "xml" | "tree";
         unit_time(index: number): string;
         unit_value(index: number): $hyoo_crowds_vary_type;
+        unit_wipe(index: number, event?: Event): void;
         node_inner(index: number): $hyoo_crowds_node;
     }
 }

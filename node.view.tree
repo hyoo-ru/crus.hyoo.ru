@@ -539,24 +539,82 @@ $mol_dump_value $mol_view
 					prototypes <= prototypes false
 					preview_show <= preview_show
 
+$mol_pick $mol_pop
+	event *
+		^
+		keydown?event <=> keydown?event null
+	Anchor <= Trigger $mol_check
+		minimal_width 40
+		minimal_height 40
+		enabled <= trigger_enabled true
+		checked? <=> showed?
+		sub <= trigger_content /$mol_view_content
+			<= title
+		hint <= hint \
+
+$mol_icon_dots_vertical $mol_icon path \M12,16C13.1,16 14,16.9 14,18C14,19.1 13.1,20 12,20C10.9,20 10,19.1 10,18C10,16.9 10.9,16 12,16M12,10C13.1,10 14,10.9 14,12C14,13.1 13.1,14 12,14C10.9,14 10,13.1 10,12C10,10.9 10.9,10 12,10M12,4C13.1,4 14,4.9 14,6C14,7.1 13.1,8 12,8C10.9,8 10,7.1 10,6C10,4.9 10.9,4 12,4Z
+
+$mol_select $mol_pick
+	dictionary? *
+	options /string
+	value? \
+	option_label_default \
+	Option_row* $mol_button_minor
+		event_click?event <=> event_select*?event null
+		sub <= option_content* /
+			<= Option_label* $mol_dimmer
+				haystack <= option_label* \
+				needle <= filter_pattern? \
+	No_options $mol_view
+		sub /
+			<= no_options_message @ \No options
+	plugins /
+		^
+		<= Nav $mol_nav
+			keys_y <= nav_components /$mol_view
+			current_y?component <=> option_focused?component null
+			cycle? <=> nav_cycle? true
+	hint @ \Pick..
+	bubble_content /
+		<= Filter
+		<= Bubble_pane $mol_scroll
+			sub /
+				<= Menu $mol_list
+					rows <= menu_content /$mol_view
+	Filter $mol_search
+		query? <=> filter_pattern? \
+		hint <= filter_hint @ \Filter..
+		submit?event <=> submit?event null
+		enabled <= enabled true
+	Trigger_icon $mol_icon_dots_vertical
+
 $hyoo_crowds_node_dump $mol_expander
 	node $hyoo_crowds_node
 		head => head
-	prefix /
+		can_change => can_change
 	label /
-		^ prefix
 		<= Head $mol_paragraph sub / <= title \
-		- <= Value $mol_dump_value value <= value null
-		- <= Items $mol_dump_value value <= items /
+		<= Value null
 	content <= nodes /
 		<= Inner*0 $mol_view sub /
 			<= Node_inner* $hyoo_crowds_node_dump
-				prefix /
+				Value <= Unit_value* $mol_dump_value
+					value <= unit_value* null
+				Tools <= Unit_tools* $mol_view sub /
 					<= Unit_tip* $mol_view sub / <= unit_tip* \
-					<= Unit_tag* $mol_view sub / <= unit_tag* \
+					<= Unit_tag* $mol_select
+						value? <=> unit_tag*? \term
+						enabled <= can_change
+						options /
+							\term
+							\head
+							\list
+							\dict
 					<= Unit_time* $mol_view sub / <= unit_time* \
-					<= Unit_value* $mol_dump_value
-						value <= unit_value* null
+					<= Unit_wipe* $mol_button_minor
+						sub / <= Unit_wipe_icon* $mol_icon_cross
+						enabled <= can_change
+						click? <=> unit_wipe*? null
 				node <= node_inner* $hyoo_crowds_node
 
 $hyoo_crowds_node_page $mol_page

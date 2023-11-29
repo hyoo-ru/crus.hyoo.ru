@@ -1,5 +1,8 @@
 {
 	"$mol_search_Clear_hint": "Clear",
 	"$mol_search_hint": "Search...",
+	"$mol_select_filter_hint": "Filter..",
+	"$mol_select_hint": "Pick..",
+	"$mol_select_no_options_message": "No options",
 	"$mol_text_code_Copy_hint": "Copy whole code"
 }
