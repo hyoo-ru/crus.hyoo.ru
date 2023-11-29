@@ -8779,7 +8779,7 @@ var $;
         gists_ordered(head) {
             const queue = [...this.gist.get(head)?.values() ?? []];
             if (queue.length < 2)
-                return queue;
+                return queue.filter(unit => !unit.nil());
             queue.sort($hyoo_crowds_gist.compare);
             const res = [];
             const locate = (self) => {
@@ -11581,7 +11581,7 @@ var $;
                 const area = this.area();
                 for (const unit of this.units()) {
                     if (unit.tag() === 'term')
-                        str += area.gist_decode(unit);
+                        str += String(area.gist_decode(unit) ?? '');
                     else
                         str += area.Node($hyoo_crowds_text).Item(unit.self()).str();
                 }
@@ -11598,7 +11598,7 @@ var $;
             let from = str_from < 0 ? list.length : 0;
             let word = '';
             while (from < list.length) {
-                word = String(area.gist_decode(list[from]));
+                word = String(area.gist_decode(list[from]) ?? '');
                 if (str_from <= word.length) {
                     next = word.slice(0, str_from) + next;
                     break;
@@ -11610,7 +11610,7 @@ var $;
             }
             let to = str_to < 0 ? list.length : from;
             while (to < list.length) {
-                word = String(area.gist_decode(list[to]));
+                word = String(area.gist_decode(list[to]) ?? '');
                 to++;
                 if (str_to < word.length) {
                     next = next + word.slice(str_to);
@@ -11620,7 +11620,7 @@ var $;
             }
             if (from && from === list.length) {
                 --from;
-                next = String(area.gist_decode(list[from])) + next;
+                next = String(area.gist_decode(list[from]) ?? '') + next;
             }
             const words = next.match($hyoo_crowd_tokenizer) ?? [];
             this.cast($hyoo_crowds_list).splice(words, from, to);
@@ -11631,7 +11631,7 @@ var $;
             let off = offset;
             for (const unit of this.units()) {
                 if (unit.tag() === 'term') {
-                    const len = String(area.gist_decode(unit)).length;
+                    const len = String(area.gist_decode(unit) ?? '').length;
                     if (off <= len)
                         return [unit.self(), off];
                     else
@@ -11652,7 +11652,7 @@ var $;
                 if (unit.self() === self)
                     return [self, offset];
                 if (unit.tag() === 'term') {
-                    offset += String(area.gist_decode(unit)).length;
+                    offset += String(area.gist_decode(unit) ?? '').length;
                 }
                 else {
                     const found = area.Node($hyoo_crowds_text).Item(unit.self()).offset_by_point([self, offset]);
