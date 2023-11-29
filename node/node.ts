@@ -156,6 +156,10 @@ namespace $ {
 
 		}
 		
+		can_change() {
+			return this.area().lord_rang( this.area().auth().lord() ) >= $hyoo_crowds_rang.add
+		}
+		
 		;[ $mol_dev_format_head ]() {
 			return $mol_dev_format_span( {} ,
 				$mol_dev_format_native( this ) ,

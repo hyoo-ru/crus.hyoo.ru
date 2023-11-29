@@ -6,7 +6,23 @@ namespace $.$$ {
 			family: 'monospace',
 		},
 		
+		align: {
+			items: 'flex-start',
+		},
+		
+		Label: {
+			justify: {
+				content: `space-between`,
+			},
+		},
+		
 		Node_inner: {
+			flex: {
+				grow: 1,
+			},
+			align: {
+				items: 'stretch',
+			},
 			Trigger: {
 				align: {
 					items: 'flex-start',
@@ -15,15 +31,17 @@ namespace $.$$ {
 		},
 		
 		Head: {
-			color: $mol_theme.control,
+			// color: $mol_theme.special,
 		},
 		
 		Unit_time: {
-			color: $mol_theme.special,
+			color: $mol_theme.shade,
+			padding: $mol_gap.text,
 		},
 		
 		Unit_tip: {
 			color: $mol_theme.shade,
+			padding: $mol_gap.text,
 		},
 		
 		Unit_tag: {

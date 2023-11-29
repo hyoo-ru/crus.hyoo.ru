@@ -17,7 +17,18 @@ namespace $.$$ {
 			return this.node().units().map( (_,i)=> this.Inner(i) )
 		}
 		
-		unit_tag( index: number ) {
+		unit_tag( index: number, next?: keyof typeof $hyoo_crowds_gist_tag ) {
+			if( next ) {
+				const units = this.node().units()
+				const unit = units[ index ]
+				this.node().area().post(
+					index ? units[ index - 1 ].self() : 0,
+					unit.head(),
+					unit.self(),
+					this.node().area().gist_decode( unit ),
+					next,
+				)
+			}
 			return this.node().units()[ index ].tag()
 		}
 		
@@ -31,6 +42,10 @@ namespace $.$$ {
 		
 		unit_value( index: number ) {
 			return this.node().cast( $hyoo_crowds_list ).items()[ index ]
+		}
+		
+		unit_wipe( index: number, event?: Event ) {
+			this.node().wipe( index )
 		}
 		
 		node_inner( index: number ) {
