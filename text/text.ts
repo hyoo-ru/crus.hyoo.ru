@@ -49,7 +49,7 @@ namespace $ {
 				const area = this.area()
 				
 				for( const unit of this.units() ) {
-					if( unit.tag() === 'term' ) str += area.gist_decode( unit )
+					if( unit.tag() === 'term' ) str += String( area.gist_decode( unit ) ?? '' )
 					else str += area.Node( $hyoo_crowds_text ).Item( unit.self() ).str()
 				}
 				
@@ -78,7 +78,7 @@ namespace $ {
 			
 			while( from < list.length ) {
 				
-				word = String( area.gist_decode( list[ from ] ) )
+				word = String( area.gist_decode( list[ from ] ) ?? '' )
 				
 				if( str_from <= word.length ) {
 					next = word.slice( 0, str_from ) + next
@@ -96,7 +96,7 @@ namespace $ {
 			
 			while( to < list.length ) {
 				
-				word = String( area.gist_decode( list[ to ] ) )
+				word = String( area.gist_decode( list[ to ] ) ?? '' )
 				to ++
 				
 				if( str_to < word.length ) {
@@ -110,7 +110,7 @@ namespace $ {
 			
 			if( from && from === list.length ) {
 				-- from
-				next = String( area.gist_decode( list[ from ] ) ) + next
+				next = String( area.gist_decode( list[ from ] ) ?? '' ) + next
 			}
 			
 			const words = next.match( $hyoo_crowd_tokenizer ) ?? []
@@ -128,7 +128,7 @@ namespace $ {
 				
 				if( unit.tag() === 'term' ) {
 					
-					const len = String( area.gist_decode( unit ) ).length
+					const len = String( area.gist_decode( unit ) ?? '' ).length
 					
 					if( off <= len ) return [ unit.self(), off ]
 					else off -= len
@@ -157,7 +157,7 @@ namespace $ {
 				
 				if( unit.tag() === 'term' ) {
 					
-					offset += String( area.gist_decode( unit ) ).length
+					offset += String( area.gist_decode( unit ) ?? '' ).length
 					
 				} else {
 					

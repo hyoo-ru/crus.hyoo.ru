@@ -226,7 +226,7 @@ namespace $ {
 		gists_ordered( head: number ) {
 			
 			const queue = [ ... this.gist.get( head )?.values() ?? [] ]
-			if( queue.length < 2 ) return queue
+			if( queue.length < 2 ) return queue.filter( unit => !unit.nil() )
 			
 			queue.sort( $hyoo_crowds_gist.compare )
 			
