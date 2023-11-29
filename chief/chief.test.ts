@@ -10,7 +10,7 @@ namespace $ {
 			
 			$mol_assert_unique( chief.land()!.home().area(), profile1, profile2 )
 			$mol_assert_equal( chief.land(), profile1.land(), profile2.land() )
-			$mol_assert_like( chief.profiles(), [ 'my_foo', 'my_bar' ] )
+			$mol_assert_like( chief.profiles(), [ 'my_bar', 'my_foo' ] )
 			
 		},
 

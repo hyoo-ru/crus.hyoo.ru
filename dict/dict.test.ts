@@ -12,7 +12,7 @@ namespace $.$$ {
 			
 			dict.dive( 123, $hyoo_crowds_reg )
 			dict.dive( 'xxx', $hyoo_crowds_reg )
-			$mol_assert_like( dict.keys(), [ 123, 'xxx' ] )
+			$mol_assert_like( dict.keys(), [ 'xxx', 123 ] )
 			$mol_assert_ok( dict.has( 123 ) )
 			$mol_assert_ok( dict.has( 'xxx' ) )
 			$mol_assert_not( dict.has( 'yyy' ) )

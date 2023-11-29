@@ -24,6 +24,7 @@ namespace $ {
 			to = from,
 			tag = 'term' as keyof typeof $hyoo_crowds_gist_tag,
 		) {
+			const area = this.area()
 			$mol_reconcile({
 				prev: this.units(),
 				from,
@@ -31,7 +32,7 @@ namespace $ {
 				next,
 				equal: ( next, prev )=> $mol_compare_deep( this.area().gist_decode( prev ), next ),
 				drop: ( prev, lead )=> this.area().post( lead?.self() ?? 0, prev.head(), prev.self(), null ),
-				insert: ( next, lead )=> this.area().post( lead?.self() ?? 0, this.head(), 0, next, tag ),
+				insert: ( next, lead )=> this.area().post( lead?.self() ?? 0, this.head(), area.self_make(), next, tag ),
 				update: ( next, prev, lead )=> this.area().post( lead?.self() ?? 0, prev.head(), prev.self(), next, prev.tag() ),
 			})
 		}
@@ -59,7 +60,7 @@ namespace $ {
 			tag = 'term' as keyof typeof $hyoo_crowds_gist_tag,
 		) {
 			if( this.has( vary ) ) return
-			this.splice( [ vary ], undefined, undefined, tag )
+			this.area().post( 0, this.head(), 0, vary, tag )
 		}
 		
 		cut( vary: $hyoo_crowds_vary_type ) {

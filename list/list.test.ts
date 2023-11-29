@@ -8,13 +8,13 @@ namespace $ {
 			const list = area.Node( $hyoo_crowds_list ).Item(0)
 			$mol_assert_like( list.items(), [] )
 			
-			list.items([ 1, 2 ])
-			$mol_assert_like( list.items(), [ 1, 2 ] )
-			$mol_assert_not( list.has( 3 ) )
+			list.items([ 2, 3 ])
+			$mol_assert_like( list.items(), [ 2, 3 ] )
+			$mol_assert_not( list.has( 1 ) )
 			
-			list.add( 3 )
+			list.add( 1 )
 			$mol_assert_like( list.items(), [ 1, 2, 3 ] )
-			$mol_assert_ok( list.has( 3 ) )
+			$mol_assert_ok( list.has( 1 ) )
 			
 			list.add( 3 )
 			$mol_assert_like( list.items(), [ 1, 2, 3 ] )
@@ -92,11 +92,11 @@ namespace $ {
 			const list1 = area1.Node( $hyoo_crowds_list ).Item(0)
 			const list2 = area2.Node( $hyoo_crowds_list ).Item(0)
 
-			list1.items([ 'foo', 123, 'xxx', 'bar' ])
+			list1.items([ 'foo', 'xxx' ])
 			area2.face.tick( area2.auth().peer() )
-			list2.items([ 'foo', 123, 'yyy', 'bar' ])
+			list2.items([ 'foo', 'yyy' ])
 			area1.apply_unit( area2.delta_unit() )
-			$mol_assert_like( list1.items(), [ 'foo', 123, 'yyy', 'bar', 'xxx', 'bar' ] )
+			$mol_assert_like( list1.items(), [ 'foo', 'yyy', 'foo', 'xxx' ] )
 
 		},
 		

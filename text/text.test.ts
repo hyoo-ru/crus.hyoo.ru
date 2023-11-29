@@ -92,19 +92,21 @@ namespace $ {
 			
 		},
 		
-		async 'Merge different insertions to same place of same sequence'( $ ) {
+		async 'Merge same insertions with different changes to same place'( $ ) {
 			
 			const base = $hyoo_crowds_area.make({ $ })
-			base.Root( $hyoo_crowds_text ).str( 'foo bar' )
+			base.Root( $hyoo_crowds_text ).str( '( )' )
 			
 			const left = $hyoo_crowds_area.make({ $ })
 			left.apply_unit( base.delta_unit() )
-			left.Root( $hyoo_crowds_text ).str( 'foo [ xxx ] bar' )
+			left.Root( $hyoo_crowds_text ).str( '( [ f ] )' )
+			left.Root( $hyoo_crowds_text ).str( '( [ foo ] )' )
 			
 			const right = $hyoo_crowds_area.make({ $ })
 			right.apply_unit( base.delta_unit() )
 			right.face.tick( right.auth().peer() )
-			right.Root( $hyoo_crowds_text ).str( 'foo [ yyy ] bar' )
+			right.Root( $hyoo_crowds_text ).str( '( [ f ] )' )
+			right.Root( $hyoo_crowds_text ).str( '( [ fu ] )' )
 			
 			const left_delta = left.delta_unit( base.face )
 			const right_delta = right.delta_unit( base.face )
@@ -115,7 +117,7 @@ namespace $ {
 			$mol_assert_like(
 				left.Root( $hyoo_crowds_text ).str(),
 				right.Root( $hyoo_crowds_text ).str(),
-				'foo [ yyy ] xxx ] bar',
+				'( [ fu ] [ foo ] )',
 			)
 			
 		},
