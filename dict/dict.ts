@@ -1,7 +1,7 @@
 namespace $ {
 	export class $hyoo_crowds_dict extends $hyoo_crowds_node {
 		
-		static tag = 'dict' as keyof typeof $hyoo_crowds_gist_tag
+		static tag = $hyoo_crowds_gist_tag[ $hyoo_crowds_gist_tag.keys ] as keyof typeof $hyoo_crowds_gist_tag
 		
 		@ $mol_mem
 		keys(): readonly $hyoo_crowds_vary_type[] {
@@ -26,7 +26,7 @@ namespace $ {
 			return $mol_dev_format_span( {} ,
 				$mol_dev_format_native( this ) ,
 				' ',
-				this.guid(),
+				this.slug(),
 				' ',
 				$mol_dev_format_auto( this.keys().map( ( key, index )=> new Pair( key, nodes[ index ] ) ) ),
 			)

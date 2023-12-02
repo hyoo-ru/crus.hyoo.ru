@@ -1,5 +1,5 @@
 $hyoo_crowds_realm_book $mol_book2_catalog
-	menu_title \Lands
+	menu_title \Realm
 	param \land
 	realm $hyoo_crowds_realm
 	Spread* <= Land* $hyoo_crowds_land_book

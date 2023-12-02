@@ -1,60 +1,9 @@
 namespace $ {
 	
-	export class $hyoo_crowds_node_ref {
-		
-		static size = 8 + 4 + 6
-		
-		constructor(
-			readonly lord: bigint /*8B*/,
-			readonly numb: number /*4B*/,
-			readonly head: number /*6B*/,
-		) {}
-		
-		static from( bin: ArrayBufferView ) {
-			const buff = new $mol_buffer( bin.buffer, bin.byteOffset, bin.byteLength )
-			return new this(
-				buff.uint64( 0 ),
-				buff.uint32( 8 ),
-				buff.uint48( 12 ),
-			)
-		}
-		
-		toArray() {
-			const bin = new Uint8Array( $hyoo_crowds_node_ref.size )
-			const buff = new $mol_buffer( bin.buffer )
-			buff.uint64( 0, this.lord )
-			buff.uint32( 8, this.numb )
-			buff.uint48( 12, this.head )
-			return bin
-		}
-		
-		toString() {
-			// return $mol_base64_ae_encode( this.toArray() ).replace( /A+$/, '' )
-			return `${ this.lord.toString(36) }_${ this.numb.toString(36) }_${ this.head.toString(36) }`
-		}
-		
-		// toJSON() {
-		// 	return this.toString()
-		// }
-		
-		[Symbol.toPrimitive]() {
-			return this.toString()
-		}
-		
-		;[ $mol_dev_format_head ]() {
-			return $mol_dev_format_span( {} ,
-				$mol_dev_format_native( this ) ,
-				' ',
-				this.toString(),
-			)
-		}
-		
-	}
-	
 	/** Adapter to CROWDS tree. */
 	export class $hyoo_crowds_node extends $mol_object {
 		
-		static tag = 'list' as keyof typeof $hyoo_crowds_gist_tag
+		static tag = $hyoo_crowds_gist_tag[ $hyoo_crowds_gist_tag.vals ] as keyof typeof $hyoo_crowds_gist_tag
 		
 		@ $mol_mem
 		area() {
@@ -78,11 +27,11 @@ namespace $ {
 		}
 		
 		ref() {
-			return new $hyoo_crowds_node_ref( this.lord(), this.area().numb(), this.head() )
+			return $hyoo_crowds_ref.make( this.lord(), this.area().numb(), this.head() )
 		}
 		
-		guid() {
-			return this.ref().toString()
+		slug() {
+			return this.ref().toString().slice( 16 ) || 'Root'
 		}
 		
 		/** Returns another representation of this node. */
@@ -98,8 +47,8 @@ namespace $ {
 			const map = {
 				term: area.Node( Node || $hyoo_crowds_reg ),
 				head: area.Node( Node || $hyoo_crowds_reg ),
-				list: area.Node( Node || $hyoo_crowds_list ),
-				dict: area.Node( Node || $hyoo_crowds_dict ),
+				vals: area.Node( Node || $hyoo_crowds_list ),
+				keys: area.Node( Node || $hyoo_crowds_dict ),
 			}
 			return this.units().map( unit => map[ unit.tag() ].Item( unit.self() ) ) as any
 		}
@@ -164,7 +113,7 @@ namespace $ {
 			return $mol_dev_format_span( {} ,
 				$mol_dev_format_native( this ) ,
 				' ',
-				this.guid(),
+				this.slug(),
 			)
 		}
 		

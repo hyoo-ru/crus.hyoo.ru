@@ -22,12 +22,15 @@ namespace $ {
 			return this.$.$hyoo_crowds_auth.current()
 		}
 		
+		@ $mol_mem
 		ref() {
-			return new $hyoo_crowds_node_ref( this.lord(), this.numb(), 0 )
+			return $hyoo_crowds_ref.make( this.lord(), this.numb(), 0 )
 		}
 		
-		guid() {
-			return this.ref().toString()
+		slug() {
+			const slug = this.ref().toString().slice( 10 )
+			return slug.length < 2 ? 'Base' : slug
+			return this.ref().toString().replace( /^[^_]*_?/, '' ) || 'Base'
 		}
 		
 		pass = new $mol_wire_dict< number /*peer*/, $hyoo_crowds_pass >()
@@ -428,7 +431,7 @@ namespace $ {
 			return $mol_dev_format_span( {} ,
 				$mol_dev_format_native( this ) ,
 				' ',
-				this.guid(),
+				this.slug(),
 			)
 		}
 		

@@ -1,6 +1,8 @@
 namespace $ {
 	export class $hyoo_crowds_text extends $hyoo_crowds_node {
 		
+		static tag = $hyoo_crowds_gist_tag[ $hyoo_crowds_gist_tag.vals ] as keyof typeof $hyoo_crowds_gist_tag
+				
 		/** Text representation. Based on list of strings. */
 		text( next?: string ): string {
 			
@@ -25,7 +27,7 @@ namespace $ {
 					},
 					drop: ( prev, lead )=> this.area().post( lead?.self() ?? 0, prev.head(), prev.self(), null ),
 					insert: ( next, lead )=> {
-						const gist = this.area().post( lead?.self() ?? 0, this.head(), area.self_make(), 'p', 'list' )
+						const gist = this.area().post( lead?.self() ?? 0, this.head(), area.self_make(), 'p', 'vals' )
 						area.Node( $hyoo_crowds_text ).Item( gist.self() ).str( next )
 						return gist
 					},
@@ -175,7 +177,7 @@ namespace $ {
 		
 		selection( lord: bigint, next?: readonly[ number /*begin*/, number /*end*/ ] ) {
 			
-			const home = this.realm()!.Land( lord ).home()
+			const home = this.realm()!.Land( lord ).base()
 			
 			if( next ) {
 				

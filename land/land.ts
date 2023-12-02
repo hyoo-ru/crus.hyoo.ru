@@ -13,8 +13,20 @@ namespace $ {
 		
 		area = new $mol_wire_dict< number /*numb*/, $hyoo_crowds_area >()
 		
-		home() {
+		base() {
 			return this.Area( 0 ).Root( $hyoo_crowds_chief )
+		}
+		
+		ref() {
+			return this.base().ref()
+		}
+		
+		toString() {
+			return this.ref().toString()
+		}
+		
+		slug() {
+			return this.ref().toString()
 		}
 		
 		@ $mol_mem_key

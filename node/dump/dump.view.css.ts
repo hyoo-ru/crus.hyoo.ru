@@ -6,6 +6,8 @@ namespace $.$$ {
 			family: 'monospace',
 		},
 		
+		whiteSpace: 'pre-wrap',
+		
 		align: {
 			items: 'flex-start',
 		},

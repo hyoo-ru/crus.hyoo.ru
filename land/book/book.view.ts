@@ -1,21 +1,25 @@
 namespace $.$$ {
 	export class $hyoo_crowds_land_book extends $.$hyoo_crowds_land_book {
 		
-		@ $mol_mem
-		override spread_ids() {
-			return [ ... this.land().area.keys() ].map( String )
+		override menu_title() {
+			return 'Land ' + this.land().ref() 
 		}
 		
-		override spread_title( numb: number ) {
-			return Number( numb ).toString(36)
+		@ $mol_mem
+		override spread_ids() {
+			return [ ... this.land().area.values() ].map( area => area.ref().toString() )
+		}
+		
+		override spread_title( id: string ) {
+			return this.area( id ).slug()
 		}
 		
 		override area( id: string ) {
-			return this.land().Area( Number( id ) )
+			return this.land().Area( $hyoo_crowds_ref.from( id ).numb() )
 		}
 		
 		override area_new() {
-			this.spread( this.land().Area_new( 0 ).numb().toString() )
+			this.spread( this.land().Area_new( 0 ).ref().toString() )
 		}
 		
 	}

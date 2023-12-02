@@ -4,7 +4,7 @@ namespace $ {
 		
 		land = new $mol_wire_dict< bigint /*lord*/, $hyoo_crowds_land >()
 		
-		land_auth() {
+		home() {
 			return this.Land( this.$.$hyoo_crowds_auth.current().lord() )
 		}
 		

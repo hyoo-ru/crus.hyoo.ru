@@ -189,7 +189,7 @@ namespace $.$$ {
 			$mol_assert_like( reg.value_int(), land.lord() )
 			$mol_assert_like( reg.value_real(), Number.NaN )
 			$mol_assert_like( reg.value_bin(), null )
-			$mol_assert_like( reg.value_str(), reg.guid() )
+			$mol_assert_like( reg.value_str(), reg.ref().toString() )
 			$mol_assert_like( reg.value_ref(), reg.ref() )
 			
 			reg.value_ref( null )
@@ -223,7 +223,7 @@ namespace $.$$ {
 		"Hyper link to another land"( $ ) {
 			
 			const realm = $hyoo_crowds_realm.make({ $ })
-			const area = realm.land_auth().home().area()
+			const area = realm.home().base().area()
 			
 			const reg = area.Node( $hyoo_crowds_reg ).Item(1)
 			const remote = reg.yoke( null )!.Root( $hyoo_crowds_reg )

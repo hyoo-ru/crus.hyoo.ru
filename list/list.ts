@@ -1,7 +1,7 @@
 namespace $ {
 	export class $hyoo_crowds_list extends $hyoo_crowds_node {
 		
-		static tag = 'list' as keyof typeof $hyoo_crowds_gist_tag
+		static tag = $hyoo_crowds_gist_tag[ $hyoo_crowds_gist_tag.vals ] as keyof typeof $hyoo_crowds_gist_tag
 		
 		/** Data list representation. */
 		@ $mol_mem
@@ -97,7 +97,7 @@ namespace $ {
 			return $mol_dev_format_span( {} ,
 				$mol_dev_format_native( this ) ,
 				' ',
-				this.guid(),
+				this.slug(),
 				' ',
 				$mol_dev_format_auto( this.items() ),
 			)

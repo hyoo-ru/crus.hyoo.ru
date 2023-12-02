@@ -3,15 +3,15 @@ namespace $.$$ {
 		
 		@ $mol_mem
 		override spread_ids() {
-			return [ ... this.realm().land.keys() ].map( String )
+			return [ ... this.realm().land.values() ].map( land => land.ref().toString() )
 		}
 		
 		override land( id: string ) {
-			return this.realm().Land( BigInt( id ) )
+			return this.realm().Land( $hyoo_crowds_ref.from( id ).lord() )
 		}
 		
-		override spread_title( id: bigint ) {
-			return BigInt(id).toString(36)
+		override spread_title( id: string ) {
+			return this.land( id ).slug()
 		}
 		
 		// override land_new() {

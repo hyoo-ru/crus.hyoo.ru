@@ -2,7 +2,7 @@ namespace $.$$ {
 	export class $hyoo_crowds_node_dump extends $.$hyoo_crowds_node_dump {
 		
 		title() {
-			return this.head().toString(36)
+			return this.node().slug().padEnd( 8, ' ' )
 		}
 		
 		value() {

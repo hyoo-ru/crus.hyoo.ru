@@ -1,6 +1,5 @@
 $hyoo_crowds_node_dump $mol_expander
 	node $hyoo_crowds_node
-		head => head
 		can_change => can_change
 	label /
 		<= Head $mol_paragraph sub / <= title \
@@ -18,8 +17,8 @@ $hyoo_crowds_node_dump $mol_expander
 						options /
 							\term
 							\head
-							\list
-							\dict
+							\vals
+							\keys
 					<= Unit_time* $mol_view sub / <= unit_time* \
 					<= Unit_wipe* $mol_button_minor
 						sub / <= Unit_wipe_icon* $mol_icon_cross

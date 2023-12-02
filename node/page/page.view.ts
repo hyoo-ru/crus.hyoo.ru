@@ -2,7 +2,7 @@ namespace $.$$ {
 	export class $hyoo_crowds_node_page extends $.$hyoo_crowds_node_page {
 		
 		override title() {
-			return this.node().guid()
+			return 'Node ' + this.node().ref()
 		}
 		
 		override text( next?: string ) {

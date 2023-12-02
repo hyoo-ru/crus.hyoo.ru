@@ -5,10 +5,10 @@ namespace $ {
 		term = 0b00,
 		/** Value in first sub node */
 		head = 0b01,
-		/** List of values of sub nodes */
-		list = 0b10,
-		/** List of sub nodes as keys */
-		dict = 0b11,
+		/** List of values */
+		vals = 0b10,
+		/** List of keys */
+		keys = 0b11,
 	}
 	
 	export class $hyoo_crowds_gist extends $hyoo_crowds_unit {

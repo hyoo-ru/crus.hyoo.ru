@@ -3,8 +3,8 @@ namespace $.$$ {
 	
 	function check( vary: $hyoo_crowds_vary_type ) {
 		$mol_assert_like(
-			$hyoo_crowds_vary_decode( $hyoo_crowds_vary_encode( vary ) ),
 			vary,
+			$hyoo_crowds_vary_decode( $hyoo_crowds_vary_encode( vary ) ),
 		)
 	}	
 	
@@ -38,8 +38,8 @@ namespace $.$$ {
 		},
 		
 		"Ref"( $ ) {
-			check( new $hyoo_crowds_node_ref( 0n, 0, 0 ) )
-			check( new $hyoo_crowds_node_ref( 4611686018427387904n, 2, 3 ) )
+			check( $hyoo_crowds_ref.make() )
+			check( $hyoo_crowds_ref.make( 4611686018427387904n, 2, 3 ) )
 		},
 		
 		"Str"( $ ) {

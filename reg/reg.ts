@@ -1,7 +1,7 @@
 namespace $ {
 	export class $hyoo_crowds_reg extends $hyoo_crowds_node {
 		
-		static tag = 'head' as keyof typeof $hyoo_crowds_gist_tag
+		static tag = $hyoo_crowds_gist_tag[ $hyoo_crowds_gist_tag.head ] as keyof typeof $hyoo_crowds_gist_tag
 		
 		pick_unit() {
 			return this.units().at(0)
@@ -48,7 +48,7 @@ namespace $ {
 					}
 			}
 			
-			if( val instanceof $hyoo_crowds_node_ref ) return val.lord
+			if( val instanceof $hyoo_crowds_ref ) return val.lord()
 			if( val instanceof Uint8Array ) return 0n
 			
 			return 0n
@@ -73,9 +73,9 @@ namespace $ {
 		}
 		
 		@ $mol_mem
-		value_ref( next?: $hyoo_crowds_node_ref | null ): $hyoo_crowds_node_ref | null {
+		value_ref( next?: $hyoo_crowds_ref | null ): $hyoo_crowds_ref | null {
 			const bin = this.value( next )
-			return bin instanceof $hyoo_crowds_node_ref ? bin : null
+			return bin instanceof $hyoo_crowds_ref ? bin : null
 		}
 		
 		@ $mol_mem_key
@@ -105,7 +105,7 @@ namespace $ {
 			const realm = this.realm()
 			
 			const ref = this.value_ref()
-			if( ref ) return realm!.Land( ref.lord ).Area( ref.numb )
+			if( ref ) return realm!.Land( ref.lord() ).Area( ref.numb() )
 			
 			const hash = $mol_crypto_hash( $hyoo_crowds_vary_encode( vary ).bin )
 			const idea = new $mol_buffer( hash.buffer ).uint32(0) + this.area().numb()
@@ -120,7 +120,7 @@ namespace $ {
 			return $mol_dev_format_span( {} ,
 				$mol_dev_format_native( this ) ,
 				' ',
-				this.guid(),
+				this.slug(),
 				' ',
 				$mol_dev_format_auto( this.value() ),
 			)
