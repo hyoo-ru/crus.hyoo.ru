@@ -5,4 +5,13 @@ $hyoo_crowds_expose $mol_book2_catalog
 	spreads *
 		realm <= Realm $hyoo_crowds_realm_book
 			realm <= realm
+		casting <= Casting $hyoo_calc
+			title \Casting
+			editable false
+			sheet_id \jfls98_bf0zru
+			Fork null
+			New null
+			Lights null
+			Source null
+			Current null
 	Placeholder null
