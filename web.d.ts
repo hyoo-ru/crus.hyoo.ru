@@ -52,6 +52,11 @@ declare namespace $ {
 }
 
 declare namespace $ {
+    function $mol_func_name(this: $, func: Function): string;
+    function $mol_func_name_from<Target extends Function>(target: Target, source: Function): Target;
+}
+
+declare namespace $ {
     class $mol_object2 {
         static $: typeof $$;
         [Symbol.toStringTag]: string;
@@ -63,6 +68,7 @@ declare namespace $ {
         static toString(): string;
         destructor(): void;
         toString(): string;
+        static toJSON(): string;
         toJSON(): any;
     }
 }
@@ -219,11 +225,6 @@ declare namespace $ {
         async(): Promise<Result>;
         step(): Promise<null>;
     }
-}
-
-declare namespace $ {
-    function $mol_func_name(this: $, func: Function): string;
-    function $mol_func_name_from<Target extends Function>(target: Target, source: Function): Target;
 }
 
 declare namespace $ {
@@ -467,6 +468,7 @@ declare namespace $ {
     type $mol_style_unit_angle = 'deg' | 'rad' | 'grad' | 'turn';
     type $mol_style_unit_time = 's' | 'ms';
     type $mol_style_unit_any = $mol_style_unit_length | $mol_style_unit_angle | $mol_style_unit_time;
+    type $mol_style_unit_str<Quanity extends $mol_style_unit_any> = `${number}${Quanity}`;
     class $mol_style_unit<Literal extends $mol_style_unit_any> extends $mol_decor<number> {
         readonly literal: Literal;
         constructor(value: number, literal: Literal);
@@ -514,22 +516,22 @@ declare namespace $ {
         static vary<Name extends string, Value extends string>(name: Name, defaultValue?: Value): $mol_style_func<"var", Name | (Name | Value)[]>;
         static url<Href extends string>(href: Href): $mol_style_func<"url", string>;
         static hsla(hue: number, saturation: number, lightness: number, alpha: number): $mol_style_func<"hsla", (number | `${number}%`)[]>;
-        static clamp(min: $mol_style_unit<any>, mid: $mol_style_unit<any>, max: $mol_style_unit<any>): $mol_style_func<"clamp", $mol_style_unit<any>[]>;
+        static clamp(min: $mol_style_unit_str<any>, mid: $mol_style_unit_str<any>, max: $mol_style_unit_str<any>): $mol_style_func<"clamp", `${number}${any}`[]>;
         static rgba(red: number, green: number, blue: number, alpha: number): $mol_style_func<"rgba", number[]>;
         static scale(zoom: number): $mol_style_func<"scale", number[]>;
-        static linear(...breakpoints: Array<number | [number, number | $mol_style_unit<'%'>]>): $mol_style_func<"linear", string[]>;
+        static linear(...breakpoints: Array<number | [number, number | $mol_style_unit_str<'%'>]>): $mol_style_func<"linear", string[]>;
         static cubic_bezier(x1: number, y1: number, x2: number, y2: number): $mol_style_func<"cubic-bezier", number[]>;
         static steps(value: number, step_position: 'jump-start' | 'jump-end' | 'jump-none' | 'jump-both' | 'start' | 'end'): $mol_style_func<"steps", (number | "end" | "start" | "jump-start" | "jump-end" | "jump-none" | "jump-both")[]>;
-        static blur(value?: $mol_style_unit<$mol_style_unit_length>): $mol_style_func<"blur", string | $mol_style_unit<$mol_style_unit_length>>;
-        static brightness(value?: number | $mol_style_unit<'%'>): $mol_style_func<"brightness", string | number | $mol_style_unit<"%">>;
-        static contrast(value?: number | $mol_style_unit<'%'>): $mol_style_func<"contrast", string | number | $mol_style_unit<"%">>;
-        static drop_shadow(color: $mol_style_properties_color, x_offset: $mol_style_unit<$mol_style_unit_length>, y_offset: $mol_style_unit<$mol_style_unit_length>, blur_radius?: $mol_style_unit<$mol_style_unit_length>): $mol_style_func<"drop-shadow", ($mol_style_unit<$mol_style_unit_length> | $mol_style_properties_color)[]>;
-        static grayscale(value?: number | $mol_style_unit<'%'>): $mol_style_func<"grayscale", string | number | $mol_style_unit<"%">>;
-        static hue_rotate(value?: 0 | $mol_style_unit<$mol_style_unit_angle>): $mol_style_func<"hue-rotate", string | 0 | $mol_style_unit<$mol_style_unit_angle>>;
-        static invert(value?: number | $mol_style_unit<'%'>): $mol_style_func<"invert", string | number | $mol_style_unit<"%">>;
-        static opacity(value?: number | $mol_style_unit<'%'>): $mol_style_func<"opacity", string | number | $mol_style_unit<"%">>;
-        static sepia(value?: number | $mol_style_unit<'%'>): $mol_style_func<"sepia", string | number | $mol_style_unit<"%">>;
-        static saturate(value?: number | $mol_style_unit<'%'>): $mol_style_func<"saturate", string | number | $mol_style_unit<"%">>;
+        static blur(value?: $mol_style_unit_str<$mol_style_unit_length>): $mol_style_func<"blur", string>;
+        static brightness(value?: number | $mol_style_unit_str<'%'>): $mol_style_func<"brightness", string | number>;
+        static contrast(value?: number | $mol_style_unit_str<'%'>): $mol_style_func<"contrast", string | number>;
+        static drop_shadow(color: $mol_style_properties_color, x_offset: $mol_style_unit_str<$mol_style_unit_length>, y_offset: $mol_style_unit_str<$mol_style_unit_length>, blur_radius?: $mol_style_unit_str<$mol_style_unit_length>): $mol_style_func<"drop-shadow", (`${number}%` | `${number}px` | `${number}mm` | `${number}cm` | `${number}Q` | `${number}in` | `${number}pc` | `${number}pt` | `${number}cap` | `${number}ch` | `${number}em` | `${number}rem` | `${number}ex` | `${number}ic` | `${number}lh` | `${number}rlh` | `${number}vh` | `${number}vw` | `${number}vi` | `${number}vb` | `${number}vmin` | `${number}vmax` | $mol_style_properties_color)[]>;
+        static grayscale(value?: number | $mol_style_unit_str<'%'>): $mol_style_func<"grayscale", string | number>;
+        static hue_rotate(value?: 0 | $mol_style_unit_str<$mol_style_unit_angle>): $mol_style_func<"hue-rotate", string | 0>;
+        static invert(value?: number | $mol_style_unit_str<'%'>): $mol_style_func<"invert", string | number>;
+        static opacity(value?: number | $mol_style_unit_str<'%'>): $mol_style_func<"opacity", string | number>;
+        static sepia(value?: number | $mol_style_unit_str<'%'>): $mol_style_func<"sepia", string | number>;
+        static saturate(value?: number | $mol_style_unit_str<'%'>): $mol_style_func<"saturate", string | number>;
     }
 }
 
@@ -2027,7 +2029,29 @@ declare namespace $ {
 }
 
 declare namespace $ {
+    function $mol_base64_encode(src: string | Uint8Array): string;
+}
+
+declare namespace $ {
+    function $mol_base64_encode_web(str: string | Uint8Array): string;
+}
+
+declare namespace $ {
+    function $mol_base64_decode(base64: string): Uint8Array;
+}
+
+declare namespace $ {
+    function $mol_base64_decode_web(base64Str: string): Uint8Array;
+}
+
+declare namespace $ {
+    function $mol_base64_ae_encode(buffer: Uint8Array): string;
+    function $mol_base64_ae_decode(str: string): Uint8Array;
+}
+
+declare namespace $ {
     class $mol_buffer extends DataView {
+        static from<This extends typeof $mol_buffer>(this: This, array: string | Uint8Array): InstanceType<This>;
         static toString(): string;
         getUint48(offset: number, LE?: boolean): number;
         setUint48(offset: number, value: number, LE?: boolean): void;
@@ -2043,23 +2067,8 @@ declare namespace $ {
         float32(offset: number, next?: number): number;
         float64(offset: number, next?: number): number;
         asArray(): Uint8Array;
+        toString(): string;
     }
-}
-
-declare namespace $ {
-    function $mol_base64_encode(src: string | Uint8Array): string;
-}
-
-declare namespace $ {
-    function $mol_base64_encode_web(str: string | Uint8Array): string;
-}
-
-declare namespace $ {
-    function $mol_base64_decode(base64: string): Uint8Array;
-}
-
-declare namespace $ {
-    function $mol_base64_decode_web(base64Str: string): Uint8Array;
 }
 
 declare namespace $ {
@@ -2166,63 +2175,56 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    function $mol_crypto_hash(data: Uint8Array): Uint8Array;
+    type $mol_type_partial_deep<Val> = Val extends object ? Val extends Function ? Val : {
+        [field in keyof Val]?: $mol_type_partial_deep<Val[field]> | undefined;
+    } : Val;
 }
 
 declare namespace $ {
-    enum $hyoo_crowds_gist_tag {
-        term = 0,
-        head = 1,
-        list = 2,
-        dict = 3
-    }
-    class $hyoo_crowds_gist extends $hyoo_crowds_unit {
-        hint(tip?: "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "xml" | "tree", tag?: "term" | "head" | "list" | "dict"): void;
-        tip(): "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "xml" | "tree";
-        pic(): boolean;
-        utf(): boolean;
-        tag(): "term" | "head" | "list" | "dict";
-        nil(): boolean;
-        size(next?: number): number;
-        time(next?: number): number;
-        self(next?: number): number;
-        head(next?: number): number;
-        lead(next?: number): number;
-        hash(next?: bigint, tip?: "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "xml" | "tree", tag?: "term" | "head" | "list" | "dict"): bigint;
-        meta(): Uint8Array;
-        data(next?: Uint8Array, tip?: "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "xml" | "tree", tag?: "term" | "head" | "list" | "dict"): Uint8Array;
-        idea(): number;
-        static compare(left: $hyoo_crowds_gist, right: $hyoo_crowds_gist): number;
+    let $mol_jsx_prefix: string;
+    let $mol_jsx_crumbs: string;
+    let $mol_jsx_booked: Set<string> | null;
+    let $mol_jsx_document: $mol_jsx.JSX.ElementClass['ownerDocument'];
+    const $mol_jsx_frag = "";
+    function $mol_jsx<Props extends $mol_jsx.JSX.IntrinsicAttributes, Children extends Array<Node | string>>(Elem: string | ((props: Props, ...children: Children) => Element), props: Props, ...childNodes: Children): Element | DocumentFragment;
+    namespace $mol_jsx.JSX {
+        interface Element extends HTMLElement {
+            class?: string;
+        }
+        interface ElementClass {
+            attributes: {};
+            ownerDocument: Pick<Document, 'getElementById' | 'createElementNS' | 'createDocumentFragment'>;
+            childNodes: Array<Node | string>;
+            valueOf(): Element;
+        }
+        type OrString<Dict> = {
+            [key in keyof Dict]: Dict[key] | string;
+        };
+        type IntrinsicElements = {
+            [key in keyof ElementTagNameMap]?: $.$mol_type_partial_deep<OrString<Element & IntrinsicAttributes & ElementTagNameMap[key]>>;
+        };
+        interface IntrinsicAttributes {
+            id?: string;
+            xmlns?: string;
+        }
+        interface ElementAttributesProperty {
+            attributes: {};
+        }
+        interface ElementChildrenAttribute {
+        }
     }
 }
 
 declare namespace $ {
-    class $hyoo_crowds_node_ref {
-        readonly lord: bigint;
-        readonly numb: number;
-        readonly head: number;
+    class $hyoo_crowds_ref extends $mol_buffer {
         static size: number;
-        constructor(lord: bigint, numb: number, head: number);
-        static from(bin: ArrayBufferView): $hyoo_crowds_node_ref;
-        toArray(): Uint8Array;
+        static make<This extends typeof $hyoo_crowds_ref>(this: This, lord?: bigint, numb?: number, head?: number): InstanceType<This>;
+        lord(next?: bigint): bigint;
+        numb(next?: number): number;
+        head(next?: number): number;
         toString(): string;
+        toJSON(): string;
         [Symbol.toPrimitive](): string;
-    }
-    class $hyoo_crowds_node extends $mol_object {
-        static tag: "term" | "head" | "list" | "dict";
-        area(): $hyoo_crowds_area;
-        head(): number;
-        land(): $hyoo_crowds_land | null;
-        realm(): $hyoo_crowds_realm | null;
-        lord(): bigint;
-        ref(): $hyoo_crowds_node_ref;
-        guid(): string;
-        cast<Node extends typeof $hyoo_crowds_node>(Node: Node): InstanceType<Node>;
-        nodes<Node extends typeof $hyoo_crowds_node>(Node: Node | null): readonly InstanceType<Node>[];
-        units(): $hyoo_crowds_gist[];
-        move(from: number, to: number): void;
-        wipe(seat: number): void;
-        can_change(): boolean;
     }
 }
 
@@ -2422,7 +2424,90 @@ declare namespace $ {
 }
 
 declare namespace $ {
+    type $mol_type_result<Func> = Func extends (...params: any) => infer Result ? Result : Func extends new (...params: any) => infer Result ? Result : never;
+}
+
+declare namespace $ {
     function $mol_dom_serialize(node: Node): string;
+}
+
+declare namespace $ {
+    type json = null | boolean | number | string | {
+        [key in string]: json;
+    } | readonly json[];
+    export type $hyoo_crowds_vary_type = null | Uint8Array | bigint | $hyoo_crowds_ref | $mol_time_moment | $mol_tree2 | json | Node;
+    export type $hyoo_crowds_vary_pack = {
+        tip: keyof typeof $hyoo_crowds_vary_tip;
+        bin: Uint8Array;
+    };
+    export enum $hyoo_crowds_vary_tip {
+        bin = 0,
+        bool = 1,
+        int = 2,
+        real = 3,
+        ref = 4,
+        str = 16,
+        time = 17,
+        json = 18,
+        xml = 19,
+        tree = 20
+    }
+    export function $hyoo_crowds_vary_switch<Ways extends {
+        bin: (vary: null | Uint8Array) => any;
+        bool: (vary: boolean) => any;
+        int: (vary: bigint) => any;
+        real: (vary: number) => any;
+        ref: (vary: $hyoo_crowds_ref) => any;
+        str: (vary: string) => any;
+        time: (vary: $mol_time_moment) => any;
+        json: (vary: {} | any[]) => any;
+        xml: (vary: Element) => any;
+        tree: (vary: $mol_tree2) => any;
+    }>(vary: $hyoo_crowds_vary_type, ways: Ways): $mol_type_result<Ways[keyof Ways]>;
+    export function $hyoo_crowds_vary_encode(vary: $hyoo_crowds_vary_type): $hyoo_crowds_vary_pack;
+    export function $hyoo_crowds_vary_decode({ tip, bin }: $hyoo_crowds_vary_pack): $hyoo_crowds_vary_type;
+    export {};
+}
+
+declare namespace $ {
+    function $mol_crypto_hash(data: Uint8Array): Uint8Array;
+}
+
+declare namespace $ {
+    enum $hyoo_crowds_gist_tag {
+        term = 0,
+        head = 1,
+        vals = 2,
+        keys = 3
+    }
+    class $hyoo_crowds_gist extends $hyoo_crowds_unit {
+        hint(tip?: "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "xml" | "tree", tag?: "keys" | "term" | "head" | "vals"): void;
+        tip(): "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "xml" | "tree";
+        pic(): boolean;
+        utf(): boolean;
+        tag(): "keys" | "term" | "head" | "vals";
+        nil(): boolean;
+        size(next?: number): number;
+        time(next?: number): number;
+        self(next?: number): number;
+        head(next?: number): number;
+        lead(next?: number): number;
+        hash(next?: bigint, tip?: "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "xml" | "tree", tag?: "keys" | "term" | "head" | "vals"): bigint;
+        meta(): Uint8Array;
+        data(next?: Uint8Array, tip?: "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "xml" | "tree", tag?: "keys" | "term" | "head" | "vals"): Uint8Array;
+        idea(): number;
+        static compare(left: $hyoo_crowds_gist, right: $hyoo_crowds_gist): number;
+    }
+}
+
+declare namespace $ {
+    class $hyoo_crowds_auth extends $mol_crypto_key_private {
+        static current(): $hyoo_crowds_auth;
+        static generate(): Promise<$hyoo_crowds_auth>;
+        lord(): bigint;
+        peer(): number;
+        secret_mutual(pub: string): $mol_crypto_secret;
+    }
 }
 
 declare namespace $ {
@@ -2434,6 +2519,25 @@ declare namespace $ {
         see_time(time: number): void;
         see_peer(peer: number, time: number): void;
         tick(peer: number): number;
+    }
+}
+
+declare namespace $ {
+    class $hyoo_crowds_node extends $mol_object {
+        static tag: "keys" | "term" | "head" | "vals";
+        area(): $hyoo_crowds_area;
+        head(): number;
+        land(): $hyoo_crowds_land | null;
+        realm(): $hyoo_crowds_realm | null;
+        lord(): bigint;
+        ref(): $hyoo_crowds_ref;
+        slug(): string;
+        cast<Node extends typeof $hyoo_crowds_node>(Node: Node): InstanceType<Node>;
+        nodes<Node extends typeof $hyoo_crowds_node>(Node: Node | null): readonly InstanceType<Node>[];
+        units(): $hyoo_crowds_gist[];
+        move(from: number, to: number): void;
+        wipe(seat: number): void;
+        can_change(): boolean;
     }
 }
 
@@ -2454,76 +2558,12 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    class $hyoo_crowds_area extends $mol_object {
-        land(): $hyoo_crowds_land | null;
-        numb(): number;
-        lord(): bigint;
-        realm(): $hyoo_crowds_realm | null;
-        auth(): $hyoo_crowds_auth;
-        ref(): $hyoo_crowds_node_ref;
-        guid(): string;
-        pass: $mol_wire_dict<number, $hyoo_crowds_pass>;
-        gift: $mol_wire_dict<bigint, $hyoo_crowds_gift>;
-        gist: $mol_wire_dict<number, $mol_wire_dict<number, $hyoo_crowds_gist>>;
-        self_all: Set<number>;
-        face: $hyoo_crowds_face;
-        self_make(idea?: number): number;
-        Root<Node extends typeof $hyoo_crowds_node>(Node: Node): InstanceType<Node>;
-        Node<Node extends typeof $hyoo_crowds_node>(Node: Node): $hyoo_crowds_fund<number, InstanceType<Node>>;
-        total(): number;
-        joined_list(): bigint[];
-        lord_rang(lord: bigint): $hyoo_crowds_rang;
-        peer_rang(peer: number): $hyoo_crowds_rang;
-        delta_unit(face?: $hyoo_crowds_face): $hyoo_crowds_unit[];
-        delta_buffer(face?: $hyoo_crowds_face): Uint8Array;
-        apply_unit(delta: readonly $hyoo_crowds_unit[]): ("" | "Need add rang to join" | "Need law rang to change rang" | "Need add rang to post self data" | "Need mod rang to post any data" | "Already joined" | "Unit too old")[];
-        recheck(): void;
-        check_unit(unit: $hyoo_crowds_unit): "" | "Need add rang to join" | "Need law rang to change rang" | "Need add rang to post self data" | "Need mod rang to post any data";
-        gists_ordered(head: number): $hyoo_crowds_gist[];
-        join(): $hyoo_crowds_pass;
-        give(dest: bigint, rang: $hyoo_crowds_rang): $hyoo_crowds_gift;
-        post(lead: number, head: number, self: number, data: $hyoo_crowds_vary_type, tag?: "term" | "head" | "list" | "dict"): $hyoo_crowds_gist;
-        gist_decode(gist: $hyoo_crowds_gist): $hyoo_crowds_vary_type;
-        key_public(peer: number): $mol_crypto_key_public | null;
-        secret_mutual(peer: number): $mol_crypto_secret | null;
-        encrypt(): void;
-        secret(): $mol_crypto_secret | null;
-    }
-}
-
-declare namespace $ {
-    type json = null | boolean | number | string | {
-        [key in string]: json;
-    } | readonly json[];
-    export type $hyoo_crowds_vary_type = null | Uint8Array | bigint | $hyoo_crowds_node_ref | $mol_time_moment | $mol_tree2 | json | Node;
-    export type $hyoo_crowds_vary_pack = {
-        tip: keyof typeof $hyoo_crowds_vary_tip;
-        bin: Uint8Array;
-    };
-    export enum $hyoo_crowds_vary_tip {
-        bin = 0,
-        bool = 1,
-        int = 2,
-        real = 3,
-        ref = 4,
-        str = 16,
-        time = 17,
-        json = 18,
-        xml = 19,
-        tree = 20
-    }
-    export function $hyoo_crowds_vary_encode(vary: $hyoo_crowds_vary_type): $hyoo_crowds_vary_pack;
-    export function $hyoo_crowds_vary_decode({ tip, bin }: $hyoo_crowds_vary_pack): $hyoo_crowds_vary_type;
-    export {};
-}
-
-declare namespace $ {
     type $mol_data_value<Input = any, Output = any> = (val: Input) => Output;
 }
 
 declare namespace $ {
     class $hyoo_crowds_reg extends $hyoo_crowds_node {
-        static tag: "term" | "head" | "list" | "dict";
+        static tag: "keys" | "term" | "head" | "vals";
         pick_unit(): $hyoo_crowds_gist | undefined;
         value(next?: $hyoo_crowds_vary_type): $hyoo_crowds_vary_type;
         value_bool(next?: boolean): boolean;
@@ -2531,7 +2571,7 @@ declare namespace $ {
         value_real(next?: number): number;
         value_str(next?: string): string;
         value_bin(next?: Uint8Array | null): Uint8Array | null;
-        value_ref(next?: $hyoo_crowds_node_ref | null): $hyoo_crowds_node_ref | null;
+        value_ref(next?: $hyoo_crowds_ref | null): $hyoo_crowds_ref | null;
         value_as<Decode extends $mol_data_value>(decode: Decode, next?: ReturnType<Decode>): any;
         yoke(vary: $hyoo_crowds_vary_type): $hyoo_crowds_area;
     }
@@ -2552,20 +2592,20 @@ declare namespace $ {
 
 declare namespace $ {
     class $hyoo_crowds_list extends $hyoo_crowds_node {
-        static tag: "term" | "head" | "list" | "dict";
-        items(next?: readonly $hyoo_crowds_vary_type[], tag?: "term" | "head" | "list" | "dict"): readonly $hyoo_crowds_vary_type[];
-        splice(next: readonly $hyoo_crowds_vary_type[], from?: number, to?: number, tag?: "term" | "head" | "list" | "dict"): void;
+        static tag: "keys" | "term" | "head" | "vals";
+        items(next?: readonly $hyoo_crowds_vary_type[], tag?: "keys" | "term" | "head" | "vals"): readonly $hyoo_crowds_vary_type[];
+        splice(next: readonly $hyoo_crowds_vary_type[], from?: number, to?: number, tag?: "keys" | "term" | "head" | "vals"): void;
         find(vary: $hyoo_crowds_vary_type): $hyoo_crowds_gist | null;
-        has(vary: $hyoo_crowds_vary_type, next?: boolean, tag?: "term" | "head" | "list" | "dict"): boolean;
-        add(vary: $hyoo_crowds_vary_type, tag?: "term" | "head" | "list" | "dict"): void;
+        has(vary: $hyoo_crowds_vary_type, next?: boolean, tag?: "keys" | "term" | "head" | "vals"): boolean;
+        add(vary: $hyoo_crowds_vary_type, tag?: "keys" | "term" | "head" | "vals"): void;
         cut(vary: $hyoo_crowds_vary_type): void;
-        node_make<Node extends typeof $hyoo_crowds_node>(Node: Node, vary: $hyoo_crowds_vary_type, tag?: "term" | "head" | "list" | "dict"): InstanceType<Node>;
+        node_make<Node extends typeof $hyoo_crowds_node>(Node: Node, vary: $hyoo_crowds_vary_type, tag?: "keys" | "term" | "head" | "vals"): InstanceType<Node>;
     }
 }
 
 declare namespace $ {
     class $hyoo_crowds_dict extends $hyoo_crowds_node {
-        static tag: "term" | "head" | "list" | "dict";
+        static tag: "keys" | "term" | "head" | "vals";
         keys(): readonly $hyoo_crowds_vary_type[];
         has(key: $hyoo_crowds_vary_type, next?: false): boolean;
         dive<Node extends typeof $hyoo_crowds_node>(key: $hyoo_crowds_vary_type, Node: Node): InstanceType<Node>;
@@ -2573,12 +2613,40 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    class $hyoo_crowds_auth extends $mol_crypto_key_private {
-        static current(): $hyoo_crowds_auth;
-        static generate(): Promise<$hyoo_crowds_auth>;
+    class $hyoo_crowds_area extends $mol_object {
+        land(): $hyoo_crowds_land | null;
+        numb(): number;
         lord(): bigint;
-        peer(): number;
-        secret_mutual(pub: string): $mol_crypto_secret;
+        realm(): $hyoo_crowds_realm | null;
+        auth(): $hyoo_crowds_auth;
+        ref(): $hyoo_crowds_ref;
+        slug(): string;
+        pass: $mol_wire_dict<number, $hyoo_crowds_pass>;
+        gift: $mol_wire_dict<bigint, $hyoo_crowds_gift>;
+        gist: $mol_wire_dict<number, $mol_wire_dict<number, $hyoo_crowds_gist>>;
+        self_all: Set<number>;
+        face: $hyoo_crowds_face;
+        self_make(idea?: number): number;
+        Root<Node extends typeof $hyoo_crowds_node>(Node: Node): InstanceType<Node>;
+        Node<Node extends typeof $hyoo_crowds_node>(Node: Node): $hyoo_crowds_fund<number, InstanceType<Node>>;
+        total(): number;
+        joined_list(): bigint[];
+        lord_rang(lord: bigint): $hyoo_crowds_rang;
+        peer_rang(peer: number): $hyoo_crowds_rang;
+        delta_unit(face?: $hyoo_crowds_face): $hyoo_crowds_unit[];
+        delta_buffer(face?: $hyoo_crowds_face): Uint8Array;
+        apply_unit(delta: readonly $hyoo_crowds_unit[]): ("" | "Need add rang to join" | "Need law rang to change rang" | "Need add rang to post self data" | "Need mod rang to post any data" | "Already joined" | "Unit too old")[];
+        recheck(): void;
+        check_unit(unit: $hyoo_crowds_unit): "" | "Need add rang to join" | "Need law rang to change rang" | "Need add rang to post self data" | "Need mod rang to post any data";
+        gists_ordered(head: number): $hyoo_crowds_gist[];
+        join(): $hyoo_crowds_pass;
+        give(dest: bigint, rang: $hyoo_crowds_rang): $hyoo_crowds_gift;
+        post(lead: number, head: number, self: number, data: $hyoo_crowds_vary_type, tag?: "keys" | "term" | "head" | "vals"): $hyoo_crowds_gist;
+        gist_decode(gist: $hyoo_crowds_gist): $hyoo_crowds_vary_type;
+        key_public(peer: number): $mol_crypto_key_public | null;
+        secret_mutual(peer: number): $mol_crypto_secret | null;
+        encrypt(): void;
+        secret(): $mol_crypto_secret | null;
     }
 }
 
@@ -2596,7 +2664,10 @@ declare namespace $ {
         realm(): $hyoo_crowds_realm | null;
         lord(): bigint;
         area: $mol_wire_dict<number, $hyoo_crowds_area>;
-        home(): $hyoo_crowds_chief;
+        base(): $hyoo_crowds_chief;
+        ref(): $hyoo_crowds_ref;
+        toString(): string;
+        slug(): string;
         Area(numb: number): $hyoo_crowds_area;
         Area_new(idea: number): $hyoo_crowds_area;
         numb_make(idea?: number): number;
@@ -2606,7 +2677,7 @@ declare namespace $ {
 declare namespace $ {
     class $hyoo_crowds_realm extends $mol_object {
         land: $mol_wire_dict<bigint, $hyoo_crowds_land>;
-        land_auth(): $hyoo_crowds_land;
+        home(): $hyoo_crowds_land;
         Land(lord: bigint): $hyoo_crowds_land;
     }
 }
@@ -3152,7 +3223,6 @@ declare namespace $ {
 
 declare namespace $ {
     class $hyoo_crowds_node_dump extends $mol_expander {
-        head(): number;
         can_change(): boolean;
         node(): $hyoo_crowds_node;
         label(): readonly any[];
@@ -3185,7 +3255,7 @@ declare namespace $.$$ {
         value(): $hyoo_crowds_vary_type;
         items(): readonly $hyoo_crowds_vary_type[];
         nodes(): $mol_view[];
-        unit_tag(index: number, next?: keyof typeof $hyoo_crowds_gist_tag): "term" | "head" | "list" | "dict";
+        unit_tag(index: number, next?: keyof typeof $hyoo_crowds_gist_tag): "keys" | "term" | "head" | "vals";
         unit_tip(index: number): "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "xml" | "tree";
         unit_time(index: number): string;
         unit_value(index: number): $hyoo_crowds_vary_type;
@@ -3214,6 +3284,7 @@ declare namespace $ {
 
 declare namespace $ {
     class $hyoo_crowds_text extends $hyoo_crowds_node {
+        static tag: "keys" | "term" | "head" | "vals";
         text(next?: string): string;
         str(next?: string): string;
         write(next: string, str_from?: number, str_to?: number): this;
@@ -3246,8 +3317,9 @@ declare namespace $ {
 
 declare namespace $.$$ {
     class $hyoo_crowds_area_book extends $.$hyoo_crowds_area_book {
+        menu_title(): string;
         spread_ids(): string[];
-        spread_title(head: number): string;
+        spread_title(head: string): string;
         node(id: string): $hyoo_crowds_node;
     }
 }
@@ -3275,8 +3347,9 @@ declare namespace $ {
 
 declare namespace $.$$ {
     class $hyoo_crowds_land_book extends $.$hyoo_crowds_land_book {
+        menu_title(): string;
         spread_ids(): string[];
-        spread_title(numb: number): string;
+        spread_title(id: string): string;
         area(id: string): $hyoo_crowds_area;
         area_new(): void;
     }
@@ -3297,7 +3370,7 @@ declare namespace $.$$ {
     class $hyoo_crowds_realm_book extends $.$hyoo_crowds_realm_book {
         spread_ids(): string[];
         land(id: string): $hyoo_crowds_land;
-        spread_title(id: bigint): string;
+        spread_title(id: string): string;
     }
 }
 
@@ -3456,47 +3529,6 @@ declare namespace $ {
         unit(): $hyoo_crowd_unit;
     }
     function $hyoo_crowd_unit_compare(left: $hyoo_crowd_unit, right: $hyoo_crowd_unit): number;
-}
-
-declare namespace $ {
-    type $mol_type_partial_deep<Val> = Val extends object ? Val extends Function ? Val : {
-        [field in keyof Val]?: $mol_type_partial_deep<Val[field]> | undefined;
-    } : Val;
-}
-
-declare namespace $ {
-    let $mol_jsx_prefix: string;
-    let $mol_jsx_crumbs: string;
-    let $mol_jsx_booked: Set<string> | null;
-    let $mol_jsx_document: $mol_jsx.JSX.ElementClass['ownerDocument'];
-    const $mol_jsx_frag = "";
-    function $mol_jsx<Props extends $mol_jsx.JSX.IntrinsicAttributes, Children extends Array<Node | string>>(Elem: string | ((props: Props, ...children: Children) => Element), props: Props, ...childNodes: Children): Element | DocumentFragment;
-    namespace $mol_jsx.JSX {
-        interface Element extends HTMLElement {
-            class?: string;
-        }
-        interface ElementClass {
-            attributes: {};
-            ownerDocument: Pick<Document, 'getElementById' | 'createElementNS' | 'createDocumentFragment'>;
-            childNodes: Array<Node | string>;
-            valueOf(): Element;
-        }
-        type OrString<Dict> = {
-            [key in keyof Dict]: Dict[key] | string;
-        };
-        type IntrinsicElements = {
-            [key in keyof ElementTagNameMap]?: $.$mol_type_partial_deep<OrString<Element & IntrinsicAttributes & ElementTagNameMap[key]>>;
-        };
-        interface IntrinsicAttributes {
-            id?: string;
-            xmlns?: string;
-        }
-        interface ElementAttributesProperty {
-            attributes: {};
-        }
-        interface ElementChildrenAttribute {
-        }
-    }
 }
 
 declare namespace $ {

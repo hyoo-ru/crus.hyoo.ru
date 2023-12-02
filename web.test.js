@@ -4164,26 +4164,6 @@ var $;
 var $;
 (function ($) {
     $mol_test({
-        'empty hash'() {
-            $mol_assert_like($mol_crypto_hash(new Uint8Array([])), new Uint8Array([218, 57, 163, 238, 94, 107, 75, 13, 50, 85, 191, 239, 149, 96, 24, 144, 175, 216, 7, 9]));
-        },
-        'three bytes hash'() {
-            $mol_assert_like($mol_crypto_hash(new Uint8Array([255, 254, 253])), new Uint8Array([240, 150, 38, 243, 255, 128, 96, 0, 72, 215, 207, 228, 19, 149, 113, 52, 2, 125, 27, 77]));
-        },
-        'six bytes hash'() {
-            $mol_assert_like($mol_crypto_hash(new Uint8Array([0, 255, 10, 250, 32, 128])), new Uint8Array([23, 25, 155, 181, 46, 200, 221, 83, 254, 0, 166, 68, 91, 255, 67, 140, 114, 88, 218, 155]));
-        },
-        'seven bytes hash'() {
-            $mol_assert_like($mol_crypto_hash(new Uint8Array([1, 2, 3, 4, 5, 6, 7])), new Uint8Array([140, 31, 40, 252, 47, 72, 194, 113, 214, 196, 152, 240, 242, 73, 205, 222, 54, 92, 84, 197]));
-        },
-    });
-})($ || ($ = {}));
-//mol/crypto/hash/hash.test.ts
-;
-"use strict";
-var $;
-(function ($) {
-    $mol_test({
         'parse and serial'() {
             $mol_assert_equal(new $mol_time_duration('P42.1Y').toString(), 'P42.1YT');
             $mol_assert_equal(new $mol_time_duration('P42.1M').toString(), 'P42.1MT');
@@ -4430,12 +4410,15 @@ var $;
 //mol/tree2/tree2.test.ts
 ;
 "use strict";
+//mol/type/result/result.test.ts
+;
+"use strict";
 var $;
 (function ($_1) {
     var $$;
     (function ($$) {
         function check(vary) {
-            $mol_assert_like($hyoo_crowds_vary_decode($hyoo_crowds_vary_encode(vary)), vary);
+            $mol_assert_like(vary, $hyoo_crowds_vary_decode($hyoo_crowds_vary_encode(vary)));
         }
         $mol_test({
             "Bin"($) {
@@ -4462,8 +4445,8 @@ var $;
                 check(Number.MIN_VALUE);
             },
             "Ref"($) {
-                check(new $hyoo_crowds_node_ref(0n, 0, 0));
-                check(new $hyoo_crowds_node_ref(4611686018427387904n, 2, 3));
+                check($hyoo_crowds_ref.make());
+                check($hyoo_crowds_ref.make(4611686018427387904n, 2, 3));
             },
             "Str"($) {
                 check('');
@@ -4494,6 +4477,26 @@ var $;
     })($$ = $_1.$$ || ($_1.$$ = {}));
 })($ || ($ = {}));
 //hyoo/crowds/vary/vary.test.tsx
+;
+"use strict";
+var $;
+(function ($) {
+    $mol_test({
+        'empty hash'() {
+            $mol_assert_like($mol_crypto_hash(new Uint8Array([])), new Uint8Array([218, 57, 163, 238, 94, 107, 75, 13, 50, 85, 191, 239, 149, 96, 24, 144, 175, 216, 7, 9]));
+        },
+        'three bytes hash'() {
+            $mol_assert_like($mol_crypto_hash(new Uint8Array([255, 254, 253])), new Uint8Array([240, 150, 38, 243, 255, 128, 96, 0, 72, 215, 207, 228, 19, 149, 113, 52, 2, 125, 27, 77]));
+        },
+        'six bytes hash'() {
+            $mol_assert_like($mol_crypto_hash(new Uint8Array([0, 255, 10, 250, 32, 128])), new Uint8Array([23, 25, 155, 181, 46, 200, 221, 83, 254, 0, 166, 68, 91, 255, 67, 140, 114, 88, 218, 155]));
+        },
+        'seven bytes hash'() {
+            $mol_assert_like($mol_crypto_hash(new Uint8Array([1, 2, 3, 4, 5, 6, 7])), new Uint8Array([140, 31, 40, 252, 47, 72, 194, 113, 214, 196, 152, 240, 242, 73, 205, 222, 54, 92, 84, 197]));
+        },
+    });
+})($ || ($ = {}));
+//mol/crypto/hash/hash.test.ts
 ;
 "use strict";
 var $;
@@ -5180,7 +5183,7 @@ var $;
                 $mol_assert_like(reg.value_int(), land.lord());
                 $mol_assert_like(reg.value_real(), Number.NaN);
                 $mol_assert_like(reg.value_bin(), null);
-                $mol_assert_like(reg.value_str(), reg.guid());
+                $mol_assert_like(reg.value_str(), reg.ref().toString());
                 $mol_assert_like(reg.value_ref(), reg.ref());
                 reg.value_ref(null);
                 $mol_assert_like(reg.value_bool(), false);
@@ -5203,7 +5206,7 @@ var $;
             },
             "Hyper link to another land"($) {
                 const realm = $hyoo_crowds_realm.make({ $ });
-                const area = realm.land_auth().home().area();
+                const area = realm.home().base().area();
                 const reg = area.Node($hyoo_crowds_reg).Item(1);
                 const remote = reg.yoke(null).Root($hyoo_crowds_reg);
                 $mol_assert_unique(reg.area(), remote.area());
@@ -5268,10 +5271,10 @@ var $;
     $mol_test({
         'Per app profiles'($) {
             const realm = $hyoo_crowds_realm.make({ $ });
-            const chief = realm.land_auth().home();
+            const chief = realm.home().base();
             const profile1 = chief.Profile('my_foo');
             const profile2 = chief.Profile('my_bar');
-            $mol_assert_unique(chief.land().home().area(), profile1, profile2);
+            $mol_assert_unique(chief.land().base().area(), profile1, profile2);
             $mol_assert_equal(chief.land(), profile1.land(), profile2.land());
             $mol_assert_like(chief.profiles(), ['my_bar', 'my_foo']);
         },

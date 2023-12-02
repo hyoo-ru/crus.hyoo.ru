@@ -590,7 +590,6 @@ $mol_select $mol_pick
 
 $hyoo_crowds_node_dump $mol_expander
 	node $hyoo_crowds_node
-		head => head
 		can_change => can_change
 	label /
 		<= Head $mol_paragraph sub / <= title \
@@ -608,8 +607,8 @@ $hyoo_crowds_node_dump $mol_expander
 						options /
 							\term
 							\head
-							\list
-							\dict
+							\vals
+							\keys
 					<= Unit_time* $mol_view sub / <= unit_time* \
 					<= Unit_wipe* $mol_button_minor
 						sub / <= Unit_wipe_icon* $mol_icon_cross
@@ -647,7 +646,7 @@ $hyoo_crowds_land_book $mol_book2_catalog
 			click? <=> area_new? null
 
 $hyoo_crowds_realm_book $mol_book2_catalog
-	menu_title \Lands
+	menu_title \Realm
 	param \land
 	realm $hyoo_crowds_realm
 	Spread* <= Land* $hyoo_crowds_land_book
