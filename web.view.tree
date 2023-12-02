@@ -657,6 +657,467 @@ $hyoo_crowds_realm_book $mol_book2_catalog
 			sub / <= land_new_icon $mol_icon_plus
 			click? <=> land_new? null
 
+$mol_float $mol_view
+	style *
+		^
+		minHeight \auto
+
+$mol_string_button $mol_string
+
+$mol_icon_download $mol_icon path \M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z
+
+$mol_button_download $mol_button_minor
+	blob null
+	uri \
+	file_name \blob.bin
+	sub /
+		<= Icon $mol_icon_download
+		<= title \
+
+$mol_icon_directions $mol_icon path \M14,14.5V12H10V15H8V11C8,10.45 8.45,10 9,10H14V7.5L17.5,11M21.71,11.29L12.71,2.29H12.7C12.31,1.9 11.68,1.9 11.29,2.29L2.29,11.29C1.9,11.68 1.9,12.32 2.29,12.71L11.29,21.71C11.68,22.09 12.31,22.1 12.71,21.71L21.71,12.71C22.1,12.32 22.1,11.68 21.71,11.29Z
+
+$mol_icon_directions_fork $mol_icon path \M3,4V12.5L6,9.5L9,13C10,14 10,15 10,15V21H14V14C14,14 14,13 13.47,12C12.94,11 12,10 12,10L9,6.58L11.5,4M18,4L13.54,8.47L14,9C14,9 14.93,10 15.47,11C15.68,11.4 15.8,11.79 15.87,12.13L21,7
+
+$mol_icon_plus_box $mol_icon path \M17,13H13V17H11V13H7V11H11V7H13V11H17M19,3H5C3.89,3 3,3.89 3,5V19C3,20.1 3.9,21 5,21H19C20.1,21 21,20.1 21,19V5C21,3.89 20.1,3 19,3Z
+
+$mol_check_icon $mol_check
+
+$mol_icon_brightness_6 $mol_icon path \M12,18V6C15.31,6 18,8.69 18,12C18,15.31 15.31,18 12,18M20,15.31L23.31,12L20,8.69V4H15.31L12,0.69L8.69,4H4V8.69L0.69,12L4,15.31V20H8.69L12,23.31L15.31,20H20V15.31Z
+
+$mol_lights_toggle $mol_check_icon
+	Icon <= Lights_icon $mol_icon_brightness_6
+	hint @ \Toggle lights
+	checked? <=> lights? false
+
+$mol_icon_github_circle $mol_icon path \M12,2C6.48,2 2,6.48 2,12C2,16.42 4.87,20.17 8.84,21.5C9.34,21.58 9.5,21.27 9.5,21C9.5,20.77 9.5,20.14 9.5,19.31C6.73,19.91 6.14,17.97 6.14,17.97C5.68,16.81 5.03,16.5 5.03,16.5C4.12,15.88 5.1,15.9 5.1,15.9C6.1,15.97 6.63,16.93 6.63,16.93C7.5,18.45 8.97,18 9.54,17.76C9.63,17.11 9.89,16.67 10.17,16.42C7.95,16.17 5.62,15.31 5.62,11.5C5.62,10.39 6,9.5 6.65,8.79C6.55,8.54 6.2,7.5 6.75,6.15C6.75,6.15 7.59,5.88 9.5,7.17C10.29,6.95 11.15,6.84 12,6.84C12.85,6.84 13.71,6.95 14.5,7.17C16.41,5.88 17.25,6.15 17.25,6.15C17.8,7.5 17.45,8.54 17.35,8.79C18,9.5 18.38,10.39 18.38,11.5C18.38,15.32 16.04,16.16 13.81,16.41C14.17,16.72 14.5,17.33 14.5,18.26C14.5,19.6 14.5,20.68 14.5,21C14.5,21.27 14.66,21.59 15.17,21.5C19.14,20.16 22,16.42 22,12C22,6.48 17.52,2 12,2Z
+
+$mol_link_source $mol_link
+	hint @ \Source code
+	sub /
+		<= Icon $mol_icon_github_circle
+
+$mol_avatar $mol_icon
+	view_box \0 0 24 24
+	id \
+	path \M 12 12 l 0 0 M 0 0 l 0 0 M 24 24 l 0 0 M 0 24 l 0 0 M 24 0 l 0 0
+
+$mol_icon_sync $mol_icon path \M12,18C8.69,18 6,15.31 6,12C6,11 6.25,10.03 6.7,9.2L5.24,7.74C4.46,8.97 4,10.43 4,12C4,16.42 7.58,20 12,20V23L16,19L12,15M12,4V1L8,5L12,9V6C15.31,6 18,8.69 18,12C18,13 17.75,13.97 17.3,14.8L18.76,16.26C19.54,15.03 20,13.57 20,12C20,7.58 16.42,4 12,4Z
+
+$mol_icon_sync_off $mol_icon path \M20,4H14V10L16.24,7.76C17.32,8.85 18,10.34 18,12C18,13 17.75,13.94 17.32,14.77L18.78,16.23C19.55,15 20,13.56 20,12C20,9.79 19.09,7.8 17.64,6.36L20,4M2.86,5.41L5.22,7.77C4.45,9 4,10.44 4,12C4,14.21 4.91,16.2 6.36,17.64L4,20H10V14L7.76,16.24C6.68,15.15 6,13.66 6,12C6,11 6.25,10.06 6.68,9.23L14.76,17.31C14.5,17.44 14.26,17.56 14,17.65V19.74C14.79,19.53 15.54,19.2 16.22,18.78L18.58,21.14L19.85,19.87L4.14,4.14L2.86,5.41M10,6.35V4.26C9.2,4.47 8.45,4.8 7.77,5.22L9.23,6.68C9.5,6.56 9.73,6.44 10,6.35Z
+
+$hyoo_sync_online $mol_select
+	minimal_width 40
+	minimal_height 40
+	yard $hyoo_sync_yard
+		master_list => dictionary
+		master_cursor? => master_cursor?
+	Filter null
+	option_content* /
+		<= Option_logo* $mol_avatar
+			id <= master_id* \
+		<= option_label*
+	trigger_content /
+		<= Link $mol_link
+			uri <= master_link \
+			sub <= link_content /
+				<= Well $mol_avatar
+					id <= master_link \
+				<= Fail $mol_icon_sync_off
+			hint <= message <= hint \$hyoo_sync
+
+$mol_icon_hint $mol_icon path \M10,19H13V22H10V19M12,2C17.35,2.22 19.68,7.62 16.5,11.67C15.67,12.67 14.33,13.33 13.67,14.17C13,15 13,16 13,17H10C10,15.33 10,13.92 10.67,12.92C11.33,11.92 12.67,11.33 13.5,10.67C15.92,8.43 15.32,5.26 12,5A3,3 0 0,0 9,8H6A6,6 0 0,1 12,2Z
+
+$mol_bar $mol_view
+
+$mol_grid $mol_view
+	row_height 32
+	row_ids /string[]
+	row_id* null
+	col_ids /
+	records *
+	record* null
+	hierarchy null
+	hierarchy_col \
+	minimal_width 0
+	-
+	sub /
+		<= Head
+		<= Table $mol_grid_table
+			sub <= rows /$mol_view
+	Head $mol_grid_row
+		cells <= head_cells /$mol_view
+	Row* $mol_grid_row
+		minimal_height <= row_height
+		minimal_width <= minimal_width
+		cells <= cells* /$mol_view
+	-
+	Cell* $mol_view
+	cell* null
+	Cell_text* $mol_grid_cell
+		sub <= cell_content_text* <= cell_content* /$mol_view_content
+	Cell_number* $mol_grid_number
+		sub <= cell_content_number* <= cell_content* /$mol_view_content
+	Col_head* $mol_float
+		dom_name \th
+		sub <= col_head_content* /$mol_view_content
+	Cell_branch* $mol_check_expand
+		level <= cell_level* 0
+		label <= cell_content* /$mol_view_content
+		expanded? <=> cell_expanded*? false
+	Cell_content* /
+		<= Cell_dimmer* $mol_dimmer
+			needle <= needle \
+			haystack <= cell_value* \
+
+$mol_grid_table $mol_list
+	- dom_name \table
+
+$mol_grid_row $mol_view
+	- dom_name \tr
+	sub <= cells /$mol_view
+
+$mol_grid_cell $mol_view
+	- dom_name \td
+	minimal_height 40
+
+$mol_grid_number $mol_grid_cell
+
+$mol_image $mol_view
+	dom_name \img
+	field *
+		^
+		src <= uri \
+		alt <= title
+		loading <= loading \eager
+		decoding <= decoding \async
+		crossOrigin <= cors null
+	attr *
+		^
+		width <= natural_width? 0
+		height <= natural_height? 0
+	event *
+		load? <=> load? null
+	minimal_width 16
+	minimal_height 16
+
+$mol_link_iconed $mol_link
+	sub /
+		<= Icon $mol_image
+			uri <= icon \
+			title \
+	content /
+		<= title <= uri
+	host \
+
+$mol_embed_native $mol_scroll
+	uri? \
+	dom_name \object
+	window null
+	attr *
+		^
+		data <= uri
+		type <= mime \
+	sub /
+		<= Fallback $mol_link
+			uri <= uri
+			sub /
+				<= title \
+	message *
+		hashchange? <=> uri_change? null
+
+$mol_icon_youtube $mol_icon path \M10,15L15.19,12L10,9V15M21.56,7.17C21.69,7.64 21.78,8.27 21.84,9.07C21.91,9.87 21.94,10.56 21.94,11.16L22,12C22,14.19 21.84,15.8 21.56,16.83C21.31,17.73 20.73,18.31 19.83,18.56C19.36,18.69 18.5,18.78 17.18,18.84C15.88,18.91 14.69,18.94 13.59,18.94L12,19C7.81,19 5.2,18.84 4.17,18.56C3.27,18.31 2.69,17.73 2.44,16.83C2.31,16.36 2.22,15.73 2.16,14.93C2.09,14.13 2.06,13.44 2.06,12.84L2,12C2,9.81 2.16,8.2 2.44,7.17C2.69,6.27 3.27,5.69 4.17,5.44C4.64,5.31 5.5,5.22 6.82,5.16C8.12,5.09 9.31,5.06 10.41,5.06L12,5C16.19,5 18.8,5.16 19.83,5.44C20.73,5.69 21.31,6.27 21.56,7.17Z
+
+$mol_frame $mol_embed_native
+	dom_name \iframe
+	attr *
+		^
+		data null
+		type null
+		src <= uri? \about:config
+		srcdoc <= html null
+		allow <= allow \
+		- allowfullscreen <=
+	fullscreen true
+	accelerometer true
+	autoplay true
+	encription true
+	gyroscope true
+	pip true
+	clipboard_read true
+	clipboard_write true
+
+$mol_embed_youtube $mol_check
+	uri \
+	video_preview \
+	video_id \
+	checked? <=> active? false
+	sub /
+		<= Image $mol_image
+			title <= title \
+			uri <= video_preview \
+		<= Hint $mol_icon_youtube
+		<= Frame $mol_frame
+			title <= title \
+			uri <= video_embed \
+
+
+$mol_embed_any $mol_view
+	Image $mol_image
+		title <= title \
+		uri <= uri \
+	Object $mol_embed_native
+		title <= title \
+		uri <= uri \
+	Youtube $mol_embed_youtube
+		title <= title \
+		uri <= uri \
+
+$mol_text $mol_list
+	uri_base \
+	text \
+	param \
+	flow_tokens /
+	auto /
+		<= auto_scroll null
+	- \Blocks
+	Paragraph* $mol_paragraph
+		sub <= block_content* /
+	Quote* $mol_text
+		uri_resolve* <= uri_resolve* \
+		text <= quote_text* \
+		highlight <= highlight \
+		auto_scroll null
+	List* $mol_text_list
+		uri_resolve* <= uri_resolve* \
+		type <= list_type* \-
+		text <= list_text* \
+		highlight <= highlight \
+	item_index* 0
+	Header* $mol_text_header
+		minimal_height 40
+		level <= header_level* 1
+		content <= block_content* /
+		arg <= header_arg* *
+	Pre* $mol_text_code
+		text <= pre_text* \
+		highlight <= highlight \
+		uri_resolve* <= uri_resolve* \
+		sidebar_showed <= pre_sidebar_showed <= code_sidebar_showed true
+	Cut* $mol_view dom_name \hr
+	- \Table
+	Table* $mol_grid
+		head_cells <= table_head_cells* /
+		rows <= table_rows* /
+	Table_row* $mol_grid_row
+		cells <= table_cells* /
+	Table_cell* $mol_text
+		auto_scroll null
+		highlight <= highlight \
+		uri_resolve* <= uri_resolve* \
+		text <= table_cell_text* \
+	- \Grid
+	Grid* $mol_grid
+		rows <= grid_rows* /
+	Grid_row* $mol_grid_row
+		cells <= grid_cells* /
+	Grid_cell* $mol_text
+		auto_scroll null
+		highlight <= highlight \
+		uri_resolve* <= uri_resolve* \
+		text <= grid_cell_text* \
+	- \Lines
+	String* $mol_dimmer
+		dom_name \span
+		needle <= highlight \
+		haystack <= line_text* \
+	Span* $mol_text_span
+		dom_name \span
+		type <= line_type* \
+		sub <= line_content* /
+	Code_line* $mol_text_code_row
+		numb_showed false
+		highlight <= highlight \
+		text <= line_text* \
+		uri_resolve* <= uri_resolve* \
+		syntax <= code_syntax null
+	Link* $mol_link_iconed
+		uri <= link_uri* \
+		content <= line_content* /
+	Link_http* $mol_link_iconed
+		uri <= link_uri* \
+		content / <= link_host* \
+	Embed* $mol_embed_any
+		uri <= link_uri* \
+		title <= line_text* \
+
+$mol_text_header $mol_paragraph
+	level 1
+	sub /
+		<= Link $mol_link
+			arg <= arg *
+			hint @ \Permalink to this section
+			sub <= content /
+
+$mol_text_span $mol_paragraph
+	dom_name \span
+	attr *
+		^
+		mol_text_type <= type \
+
+$mol_icon_chevron_down $mol_icon path \M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z
+
+$mol_icon_chevron_right $mol_icon path \M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z
+
+$mol_theme_auto $mol_plugin
+	attr * mol_theme <= theme \
+
+$mol_text_list $mol_text
+	auto_scroll null
+	attr *
+		^
+		mol_text_list_type <= type \
+	Paragraph* $mol_text_list_item
+		index <= item_index*
+		sub <= block_content*
+
+$mol_text_list_item $mol_paragraph
+	attr *
+		^
+		mol_text_list_item_index <= index 0
+
+$hyoo_calc $mol_page
+	yard $hyoo_sync_client
+	editable true
+	sheet_id \
+	formulas_default *
+	formula!id?val \
+	head /
+		<= Title_edit $mol_string_button
+			value?val <=> title?val \
+			enabled <= editable
+			hint <= title_default @ \Spreedsheet
+		<= Tools
+	tools /
+		<= Download $mol_button_download
+			hint @ \Download CSV
+			file_name <= download_file \
+			uri <= download_uri?val \
+		<= Fork $mol_button_minor
+			hint @ \Fork spreadsheet
+			click? <=> sheet_fork? null
+			sub /
+				<= Fork_icon $mol_icon_directions_fork
+		<= New $mol_button_minor
+			hint @ \New spreadsheet
+			click? <=> sheet_new? null
+			sub /
+				<= New_icon $mol_icon_plus_box
+		<= Lights $mol_lights_toggle
+		<= Source $mol_link_source
+			uri \https://github.com/hyoo-ru/calc.hyoo.ru
+		<= Online $hyoo_sync_online
+			yard <= yard
+	sub /
+		<= Head
+		<= Current $mol_bar
+			sub /
+				<= Pos $mol_button_minor
+					enabled false
+					title <= pos?val \A1
+				<= Edit_current $mol_textarea
+				<= Hint_trigger $mol_check_icon
+					checked?val <=> hint_showed?val false
+					Icon <= Hint_trigger_icon $mol_icon_hint
+		<= Hint $mol_text
+			text <= hint @ \
+				\`$.A1` - result of A1, `$$.A1` - formula of A1, `a=` - define variable, `_.a` - value of variable, `__.a` - cell id of variable, `A1:C3` - range of cells, use [**JavaScript**](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference) for other.
+				\**Available funcs**: {funcs}.
+				\Use Alt + Arrows to switch between cells.
+		<= Body
+	body /
+		<= Cells $mol_grid
+			col_ids <= col_ids /
+			row_ids <= row_ids /
+			head_cells <= head_cells /
+			cells!row <= cells!row /
+	Edit!id $mol_textarea
+		hint \=
+		value?val <=> formula!id?val \
+		enabled <= editable
+	Col_head* $mol_float
+		dom_name \th
+		sub <= col_head_content* /
+			<= Col_title* $mol_view
+				sub /
+					<= col_title* \
+			<= Col_tools* $mol_bar sub <= col_tools* /
+				- <= Col_left* $mol_button_minor
+					hint @ \Move Left
+					click? <=> col_left*? null
+					sub /
+						<= Col_left_icon* $mol_icon_chevron_left
+				<= Col_ins* $mol_button_minor
+					hint @ \Insert Column
+					enabled <= editable
+					click? <=> col_ins*? null
+					sub /
+						<= col_title* \
+						<= Col_ins_icon* $mol_icon_chevron_down
+				<= Col_right* $mol_button_minor
+					hint @ \Move Right
+					click? <=> col_right*? null
+					enabled <= editable
+					sub /
+						<= Col_right_icon* $mol_icon_chevron_right
+	Row_head* $mol_float
+		dom_name \th
+		sub <= row_head_content* /
+			<= Row_title* $mol_view
+				sub /
+					<= row_title* \
+			<= Row_tools* $mol_view sub <= row_tools* /
+				- <= Row_up* $mol_button_minor
+					hint @ \Mode Up 
+					click? <=> row_up*? null
+					sub /
+						<= Row_up_icon* $mol_icon_chevron_up
+				<= Row_ins* $mol_button_minor
+					hint @ \Insert Row
+					click? <=> row_ins*? null
+					enabled <= editable
+					sub /
+						<= row_title* \
+						<= Row_ins_icon* $mol_icon_chevron_right
+				<= Row_down* $mol_button_minor
+					hint @ \Move Down
+					click? <=> row_down*? null
+					enabled <= editable
+					sub /
+						<= Row_down_icon* $mol_icon_chevron_down
+	Cell!id $hyoo_calc_cell
+		text <= cell_content!id \
+		selected?val <=> selected!id?val false
+	plugins /
+		<= Theme $mol_theme_auto
+		<= Nav $mol_nav
+			mod_alt true
+			keys_x <= col_ids /
+			keys_y <= row_ids /
+			current_x?val <=> current_col?val 1
+			current_y?val <=> current_row?val 1
+	event *
+		paste?event <=> paste?event null
+
+$hyoo_calc_cell $mol_text
+	dom_name \td
+	event *
+		^
+		click?event <=> click?event null
+	attr *
+		^
+		hyoo_calc_cell_selected <= selected?val false
+		hyoo_calc_cell_type <= type?val \
+
 $hyoo_crowds_expose $mol_book2_catalog
 	menu_title \CROWDS Expose
 	param \section
@@ -664,4 +1125,13 @@ $hyoo_crowds_expose $mol_book2_catalog
 	spreads *
 		realm <= Realm $hyoo_crowds_realm_book
 			realm <= realm
+		casting <= Casting $hyoo_calc
+			title \Casting
+			editable false
+			sheet_id \jfls98_bf0zru
+			Fork null
+			New null
+			Lights null
+			Source null
+			Current null
 	Placeholder null

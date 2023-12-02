@@ -1613,7 +1613,7 @@ declare namespace $ {
     class $mol_fetch_response extends $mol_object2 {
         readonly native: Response;
         constructor(native: Response);
-        status(): "unknown" | "success" | "inform" | "redirect" | "wrong" | "failed";
+        status(): "success" | "unknown" | "inform" | "redirect" | "wrong" | "failed";
         code(): number;
         message(): string;
         headers(): Headers;
@@ -3325,6 +3325,1441 @@ declare namespace $.$$ {
     }
 }
 
+declare let $hyoo_sync_revision: string;
+
+declare namespace $ {
+    type $mol_int62_string = `${string}_${string}`;
+    function $mol_int62_string_ensure(str: unknown): `${string}_${string}` | null;
+    type $mol_int62_pair = {
+        readonly lo: number;
+        readonly hi: number;
+    };
+    const $mol_int62_max: number;
+    const $mol_int62_min: number;
+    const $mol_int62_range: number;
+    function $mol_int62_to_string({ lo, hi }: $mol_int62_pair): `${string}_${string}`;
+    function $mol_int62_from_string(str: string): null | $mol_int62_pair;
+    function $mol_int62_compare(left_lo: number, left_hi: number, right_lo: number, right_hi: number): number;
+    function $mol_int62_inc(lo: number, hi: number, max?: number): $mol_int62_pair;
+    function $mol_int62_random(): $mol_int62_pair;
+    function $mol_int62_hash_string(str: string): `${string}_${string}`;
+    function $mol_int62_hash_buffer(buf: Uint8Array, seed?: {
+        lo: number;
+        hi: number;
+    }): $mol_int62_pair;
+}
+
+declare namespace $ {
+    function $mol_data_setup<Value extends $mol_data_value, Config = never>(value: Value, config: Config): Value & {
+        config: Config;
+        Value: ReturnType<Value>;
+    };
+}
+
+declare namespace $ {
+    function $mol_diff_path<Item>(...paths: Item[][]): {
+        prefix: Item[];
+        suffix: Item[][];
+    };
+}
+
+declare namespace $ {
+    class $mol_error_mix extends Error {
+        errors: Error[];
+        constructor(message: string, ...errors: Error[]);
+        toJSON(): string;
+    }
+}
+
+declare namespace $ {
+    class $mol_data_error extends $mol_error_mix {
+    }
+}
+
+declare namespace $ {
+    function $mol_data_enum<Dict extends Record<number | string, number | string>>(name: string, dict: Dict): ((value: Dict[keyof Dict]) => Dict[keyof Dict]) & {
+        config: {
+            name: string;
+            dict: Dict;
+        };
+        Value: Dict[keyof Dict];
+    };
+}
+
+declare namespace $ {
+    function $mol_crypto_auditor_pair(this: $): Promise<{
+        public: $mol_crypto_auditor_public;
+        private: $mol_crypto_auditor_private;
+    }>;
+    class $mol_crypto_auditor_public extends Object {
+        readonly native: CryptoKey & {
+            type: 'public';
+        };
+        static size_str: number;
+        static size_bin: number;
+        constructor(native: CryptoKey & {
+            type: 'public';
+        });
+        static from(serial: string | Uint8Array): Promise<$mol_crypto_auditor_public>;
+        serial(): Promise<string>;
+        toArray(): Promise<Uint8Array>;
+        verify(data: BufferSource, sign: BufferSource): Promise<boolean>;
+    }
+    class $mol_crypto_auditor_private extends Object {
+        readonly native: CryptoKey & {
+            type: 'private';
+        };
+        static size_str: number;
+        static size_bin: number;
+        constructor(native: CryptoKey & {
+            type: 'private';
+        });
+        static from(serial: string | Uint8Array): Promise<$mol_crypto_auditor_private>;
+        serial(): Promise<string>;
+        toArray(): Promise<Uint8Array>;
+        sign(data: BufferSource): Promise<ArrayBuffer>;
+        public(): Promise<$mol_crypto_auditor_public>;
+    }
+    const $mol_crypto_auditor_sign_size = 64;
+    function $mol_crypto_auditor_private_to_public(serial: string): string;
+}
+
+declare namespace $ {
+    enum $hyoo_crowd_peer_level {
+        get = 0,
+        add = 1,
+        mod = 2,
+        law = 3
+    }
+    class $hyoo_crowd_peer extends Object {
+        readonly key_public: $mol_crypto_auditor_public;
+        readonly key_public_serial: string;
+        readonly key_private: $mol_crypto_auditor_private;
+        readonly key_private_serial: string;
+        id: $mol_int62_string;
+        constructor(key_public: $mol_crypto_auditor_public, key_public_serial: string, key_private: $mol_crypto_auditor_private, key_private_serial: string);
+        static generate(): Promise<$hyoo_crowd_peer>;
+        static restore(serial: string): Promise<$hyoo_crowd_peer>;
+    }
+}
+
+declare namespace $ {
+    type $hyoo_crowd_unit_id = `${$mol_int62_string}!${$mol_int62_string}`;
+    enum $hyoo_crowd_unit_kind {
+        grab = 0,
+        join = 1,
+        give = 2,
+        data = 3
+    }
+    enum $hyoo_crowd_unit_group {
+        auth = 0,
+        data = 1
+    }
+    class $hyoo_crowd_unit extends Object {
+        readonly land: $mol_int62_string;
+        readonly auth: $mol_int62_string;
+        readonly head: $mol_int62_string;
+        readonly self: $mol_int62_string;
+        readonly next: $mol_int62_string;
+        readonly prev: $mol_int62_string;
+        readonly time: number;
+        readonly data: unknown;
+        bin: $hyoo_crowd_unit_bin | null;
+        constructor(land: $mol_int62_string, auth: $mol_int62_string, head: $mol_int62_string, self: $mol_int62_string, next: $mol_int62_string, prev: $mol_int62_string, time: number, data: unknown, bin: $hyoo_crowd_unit_bin | null);
+        kind(): $hyoo_crowd_unit_kind;
+        group(): $hyoo_crowd_unit_group;
+        level(): $hyoo_crowd_peer_level;
+        [Symbol.toPrimitive](): string;
+    }
+    class $hyoo_crowd_unit_bin extends DataView {
+        static from_buffer(buffer: Int16Array): $hyoo_crowd_unit_bin;
+        static from_unit(unit: $hyoo_crowd_unit): $hyoo_crowd_unit_bin;
+        sign(next?: Uint8Array): Uint8Array;
+        size(): number;
+        sens(): Uint8Array;
+        unit(): $hyoo_crowd_unit;
+    }
+    function $hyoo_crowd_unit_compare(left: $hyoo_crowd_unit, right: $hyoo_crowd_unit): number;
+}
+
+declare namespace $ {
+    function $hyoo_sync_peer(path: string, next?: string): Promise<$hyoo_crowd_peer>;
+}
+
+declare namespace $ {
+    function $hyoo_crowd_time_now(): number;
+    function $hyoo_crowd_time_stamp(time: number): number;
+}
+
+declare namespace $ {
+    class $hyoo_crowd_clock extends Map<$mol_int62_string, number> {
+        static begin: number;
+        last_time: number;
+        constructor(entries?: Iterable<readonly [$mol_int62_string, number]>);
+        sync(right: $hyoo_crowd_clock): void;
+        see_time(time: number): void;
+        see_peer(peer: $mol_int62_string, time: number): void;
+        see_bin(bin: $hyoo_crowd_clock_bin, group: $hyoo_crowd_unit_group): void;
+        fresh(peer: $mol_int62_string, time: number): boolean;
+        ahead(clock: $hyoo_crowd_clock): boolean;
+        time(peer: $mol_int62_string): number;
+        now(): number;
+        last_stamp(): number;
+        tick(peer: $mol_int62_string): number;
+    }
+    class $hyoo_crowd_clock_bin extends DataView {
+        static from(land_id: $mol_int62_string, clocks: readonly [$hyoo_crowd_clock, $hyoo_crowd_clock], count: number): $hyoo_crowd_clock_bin;
+        land(): `${string}_${string}`;
+        count(): number;
+    }
+}
+
+declare namespace $ {
+    class $hyoo_crowd_node extends $mol_object2 {
+        readonly land: $hyoo_crowd_land;
+        readonly head: $mol_int62_string;
+        constructor(land?: $hyoo_crowd_land, head?: $mol_int62_string);
+        static for<Node extends typeof $hyoo_crowd_node>(this: Node, land: $hyoo_crowd_land, head: $mol_int62_string): InstanceType<Node>;
+        static toJSON(): string;
+        id(): `${string}_${string}`;
+        world(): $hyoo_crowd_world | null;
+        as<Node extends typeof $hyoo_crowd_node>(Node: Node): InstanceType<Node>;
+        units(): readonly $hyoo_crowd_unit[];
+        nodes<Node extends typeof $hyoo_crowd_node>(Node: Node): InstanceType<Node>[];
+        virgin(): boolean;
+        [Symbol.toPrimitive](): string;
+        toJSON(): `${string}_${string}`;
+    }
+}
+
+declare namespace $ {
+    class $hyoo_crowd_reg extends $hyoo_crowd_node {
+        value(next?: unknown): {} | null;
+        str(next?: string): string;
+        numb(next?: number): number;
+        bool(next?: boolean): boolean;
+        yoke(law?: readonly ("" | `${string}_${string}`)[], mod?: readonly ("" | `${string}_${string}`)[], add?: readonly ("" | `${string}_${string}`)[]): $hyoo_crowd_land | null;
+    }
+}
+
+declare namespace $ {
+    class $hyoo_crowd_struct extends $hyoo_crowd_node {
+        sub<Node extends typeof $hyoo_crowd_node>(key: string, Node: Node): InstanceType<Node>;
+        yoke<Node extends typeof $hyoo_crowd_node>(key: string, Node: Node, law?: readonly ("" | `${string}_${string}`)[], mod?: readonly ("" | `${string}_${string}`)[], add?: readonly ("" | `${string}_${string}`)[]): InstanceType<Node> | null;
+    }
+}
+
+declare namespace $ {
+    class $hyoo_crowd_land extends $mol_object {
+        id(): `${string}_${string}`;
+        toJSON(): `${string}_${string}`;
+        peer(): $hyoo_crowd_peer;
+        peer_id(): `${string}_${string}`;
+        world(): $hyoo_crowd_world | null;
+        get clock_auth(): $hyoo_crowd_clock;
+        get clock_data(): $hyoo_crowd_clock;
+        get clocks(): readonly [$hyoo_crowd_clock, $hyoo_crowd_clock];
+        get clocks_bin(): Uint8Array;
+        readonly pub: $mol_wire_pub;
+        readonly _clocks: readonly [$hyoo_crowd_clock, $hyoo_crowd_clock];
+        _unit_all: Map<`${string}_${string}!${string}_${string}`, $hyoo_crowd_unit>;
+        unit(head: $mol_int62_string, self: $mol_int62_string): $hyoo_crowd_unit | undefined;
+        _unit_lists: Map<`${string}_${string}`, ($hyoo_crowd_unit[] & {
+            dirty: boolean;
+        }) | undefined>;
+        _unit_alives: Map<`${string}_${string}`, $hyoo_crowd_unit[] | undefined>;
+        size(): number;
+        unit_list(head: $mol_int62_string): $hyoo_crowd_unit[] & {
+            dirty: boolean;
+        };
+        unit_alives(head: $mol_int62_string): readonly $hyoo_crowd_unit[];
+        node<Node extends typeof $hyoo_crowd_node>(head: $mol_int62_string, Node: Node): InstanceType<Node>;
+        chief: $hyoo_crowd_struct;
+        id_new(): $mol_int62_string;
+        fork(auth: $hyoo_crowd_peer): $hyoo_crowd_land;
+        delta(clocks?: readonly [$hyoo_crowd_clock, $hyoo_crowd_clock]): readonly $hyoo_crowd_unit[];
+        resort(head: $mol_int62_string): $hyoo_crowd_unit[] & {
+            dirty: boolean;
+        };
+        apply(delta: readonly $hyoo_crowd_unit[]): this;
+        _joined: boolean;
+        join(): true | undefined;
+        leave(): false | undefined;
+        allowed_add(peer?: `${string}_${string}`): boolean;
+        allowed_mod(peer?: `${string}_${string}`): boolean;
+        allowed_law(peer?: `${string}_${string}`): boolean;
+        level_base(next?: $hyoo_crowd_peer_level): void;
+        level(peer: $mol_int62_string | '', next?: $hyoo_crowd_peer_level): $hyoo_crowd_peer_level;
+        grabbed(): boolean;
+        peers(): readonly `${string}_${string}`[];
+        residents(): readonly `${string}_${string}`[];
+        authors(): Set<`${string}_${string}`>;
+        steal_rights(donor: $hyoo_crowd_land): void;
+        first_stamp(): number | null;
+        last_stamp(): number;
+        selection(peer: $mol_int62_string): $hyoo_crowd_reg;
+        put(head: $mol_int62_string, self: $mol_int62_string, prev: $mol_int62_string, data: unknown): $hyoo_crowd_unit;
+        wipe(unit: $hyoo_crowd_unit): $hyoo_crowd_unit;
+        move(unit: $hyoo_crowd_unit, head: $mol_int62_string, prev: $mol_int62_string): void;
+        insert(unit: $hyoo_crowd_unit, head: $mol_int62_string, seat: number): void;
+    }
+}
+
+declare namespace $ {
+    class $hyoo_crowd_fund<Node extends typeof $hyoo_crowd_node> extends $mol_object {
+        world: $hyoo_crowd_world;
+        node_class: Node;
+        constructor(world: $hyoo_crowd_world, node_class: Node);
+        Item(id: $mol_int62_string | `${$mol_int62_string}!${$mol_int62_string}`): InstanceType<Node>;
+        make(law?: readonly ("" | `${string}_${string}`)[], mod?: readonly ("" | `${string}_${string}`)[], add?: readonly ("" | `${string}_${string}`)[]): InstanceType<Node>;
+    }
+}
+
+declare namespace $ {
+    let $mol_dict_key: typeof $mol_key;
+    class $mol_dict<Key, Value> extends Map<Key, Value> {
+        get(key: Key): Value | undefined;
+        has(key: Key): boolean;
+        set(key: Key, value: Value): this;
+        delete(key: Key): boolean;
+        forEach(back: (value: Value, key: Key, dict: Map<Key, Value>) => void, context?: any): void;
+        keys(): {
+            [Symbol.iterator](): any;
+            next(): IteratorReturnResult<any> | IteratorYieldResult<Key>;
+        };
+        entries(): {
+            [Symbol.iterator](): any;
+            next(): IteratorReturnResult<any> | IteratorYieldResult<[Key, Value]>;
+        };
+        [Symbol.iterator](): {
+            [Symbol.iterator](): any;
+            next(): IteratorReturnResult<any> | IteratorYieldResult<[Key, Value]>;
+        };
+    }
+}
+
+declare namespace $ {
+    class $hyoo_crowd_world extends $mol_object {
+        readonly peer?: $hyoo_crowd_peer | undefined;
+        constructor(peer?: $hyoo_crowd_peer | undefined);
+        readonly lands_pub: $mol_wire_pub;
+        _lands: Map<`${string}_${string}`, $hyoo_crowd_land>;
+        get lands(): Map<`${string}_${string}`, $hyoo_crowd_land>;
+        land_init(id: $hyoo_crowd_land): void;
+        land(id: $mol_int62_string): $hyoo_crowd_land;
+        land_sync(id: $mol_int62_string): $hyoo_crowd_land;
+        Fund<Item extends typeof $hyoo_crowd_node>(Item: Item): $hyoo_crowd_fund<Item>;
+        home(): $hyoo_crowd_land;
+        _knights: $mol_dict<`${string}_${string}`, $hyoo_crowd_peer>;
+        _signs: WeakMap<$hyoo_crowd_unit, Uint8Array>;
+        grab(law?: readonly ("" | `${string}_${string}`)[], mod?: readonly ("" | `${string}_${string}`)[], add?: readonly ("" | `${string}_${string}`)[]): Promise<$hyoo_crowd_land>;
+        sign_units(units: readonly $hyoo_crowd_unit[]): Promise<$hyoo_crowd_unit[]>;
+        delta_land(land: $hyoo_crowd_land, clocks?: readonly [$hyoo_crowd_clock, $hyoo_crowd_clock]): Promise<$hyoo_crowd_unit[]>;
+        delta_batch(land: $hyoo_crowd_land, clocks?: readonly [$hyoo_crowd_clock, $hyoo_crowd_clock]): Promise<Uint8Array>;
+        delta(clocks?: Map<`${string}_${string}`, readonly [$hyoo_crowd_clock, $hyoo_crowd_clock]>): AsyncGenerator<Uint8Array, void, unknown>;
+        merge(donor: $hyoo_crowd_world): Promise<void>;
+        apply(delta: Uint8Array): Promise<{
+            allow: $hyoo_crowd_unit[];
+            forbid: Map<$hyoo_crowd_unit, string>;
+        }>;
+        audit_delta(land: $hyoo_crowd_land, delta: $hyoo_crowd_unit[]): Promise<{
+            allow: $hyoo_crowd_unit[];
+            forbid: Map<$hyoo_crowd_unit, string>;
+        }>;
+    }
+}
+
+declare namespace $ {
+    function $mol_promise<Result = void>(): Promise<Result> & {
+        done: (res: Result | PromiseLike<Result>) => void;
+        fail: (error?: any) => void;
+    };
+}
+
+declare namespace $ {
+    function $mol_wait_timeout_async(this: $, timeout: number): Promise<void> & {
+        done: (res: void | PromiseLike<void>) => void;
+        fail: (error?: any) => void;
+    } & {
+        destructor: () => void;
+    };
+    function $mol_wait_timeout(this: $, timeout: number): void;
+}
+
+declare namespace $ {
+    function $mol_wire_race<Tasks extends ((...args: any) => any)[]>(...tasks: Tasks): {
+        [index in keyof Tasks]: ReturnType<Tasks[index]>;
+    };
+}
+
+declare namespace $ {
+    let $hyoo_sync_masters: string[];
+}
+
+declare namespace $ {
+    class $hyoo_sync_yard<Line> extends $mol_object2 {
+        db_unit_persisted: WeakSet<$hyoo_crowd_unit>;
+        log_pack(data: any): any;
+        peer(next?: string): $hyoo_crowd_peer;
+        world(): $hyoo_crowd_world;
+        land_init(land: $hyoo_crowd_land): void;
+        land(id: $mol_int62_string): $hyoo_crowd_land;
+        land_grab(law?: readonly ("" | `${string}_${string}`)[], mod?: readonly ("" | `${string}_${string}`)[], add?: readonly ("" | `${string}_${string}`)[]): $hyoo_crowd_land;
+        home(): $hyoo_crowd_land;
+        land_search(query: string): `${string}_${string}`[];
+        sync(): void;
+        land_sync(land: $hyoo_crowd_land): void;
+        db_land_clocks(land: $mol_int62_string, next?: readonly [$hyoo_crowd_clock, $hyoo_crowd_clock]): readonly [$hyoo_crowd_clock, $hyoo_crowd_clock] | undefined;
+        db_land_sync(land: $hyoo_crowd_land): void;
+        db_land_init(land: $hyoo_crowd_land): void;
+        db_land_load(land: $hyoo_crowd_land): Promise<$hyoo_crowd_unit[]>;
+        db_land_search(from: string | number, to?: string | number): Promise<Set<`${string}_${string}`>>;
+        db_land_save(land: $hyoo_crowd_land, units: readonly $hyoo_crowd_unit[]): Promise<void>;
+        master_cursor(next?: number): number;
+        master_list(): string[];
+        master_link(): string;
+        master(): any;
+        server(): any;
+        slaves(next?: readonly Line[]): readonly Line[];
+        line_lands(line: Line, next?: $hyoo_crowd_land[]): $hyoo_crowd_land[];
+        line_land_clocks({ line, land }: {
+            line: Line;
+            land: $hyoo_crowd_land;
+        }, next?: readonly [$hyoo_crowd_clock, $hyoo_crowd_clock]): readonly [$hyoo_crowd_clock, $hyoo_crowd_clock] | undefined;
+        line_sync(line: Line): void;
+        line_land_sync({ line, land }: {
+            line: Line;
+            land: $hyoo_crowd_land;
+        }): void;
+        line_land_init({ line, land }: {
+            line: Line;
+            land: $hyoo_crowd_land;
+        }): void;
+        line_land_neck({ line, land }: {
+            line: Line;
+            land: $mol_int62_string;
+        }, next?: Promise<any>[]): Promise<any>[];
+        line_receive(line: Line, message: Uint8Array): Promise<void>;
+        line_send_clocks(line: Line, land: $hyoo_crowd_land): void;
+        line_send_units(line: Line, units: readonly $hyoo_crowd_unit[]): Promise<void>;
+    }
+}
+
+declare namespace $ {
+    function $mol_db_response<Result>(request: IDBRequest<Result>): Promise<Result>;
+}
+
+declare namespace $ {
+    function $mol_db<Schema extends $mol_db_schema>(this: $, name: string, ...migrations: ((transaction: $mol_db_transaction<$mol_db_schema>) => void)[]): Promise<$mol_db_database<Schema>>;
+}
+
+declare namespace $ {
+    class $mol_db_store<Schema extends $mol_db_store_schema> {
+        readonly native: IDBObjectStore;
+        constructor(native: IDBObjectStore);
+        get name(): string;
+        get path(): string | string[];
+        get incremental(): boolean;
+        get indexes(): { [Name in keyof Schema["Indexes"]]: $mol_db_index<{
+            Key: Schema["Indexes"][Name];
+            Doc: Schema['Doc'];
+        }>; };
+        index_make(name: string, path?: string[], unique?: boolean, multiEntry?: boolean): IDBIndex;
+        index_drop(name: string): this;
+        get transaction(): $mol_db_transaction<$mol_db_schema>;
+        get db(): $mol_db_database<$mol_db_schema>;
+        clear(): Promise<undefined>;
+        count(keys?: Schema['Key'] | IDBKeyRange): Promise<number>;
+        put(doc: Schema['Doc'], key?: Schema['Key']): Promise<IDBValidKey>;
+        get(key: Schema['Key']): Promise<Schema["Doc"] | undefined>;
+        select(key?: Schema['Key'] | IDBKeyRange | null, count?: number): Promise<Schema["Doc"][]>;
+        drop(keys: Schema['Key'] | IDBKeyRange): Promise<undefined>;
+    }
+}
+
+declare namespace $ {
+    type $mol_db_store_schema = {
+        Key: IDBValidKey;
+        Doc: unknown;
+        Indexes: Record<string, IDBValidKey[]>;
+    };
+}
+
+declare namespace $ {
+    class $mol_db_index<Schema extends $mol_db_index_schema> {
+        readonly native: IDBIndex;
+        constructor(native: IDBIndex);
+        get name(): string;
+        get paths(): string[];
+        get unique(): boolean;
+        get multiple(): boolean;
+        get store(): $mol_db_store<$mol_db_store_schema>;
+        get transaction(): $mol_db_transaction<$mol_db_schema>;
+        get db(): $mol_db_database<$mol_db_schema>;
+        count(keys?: Schema['Key'] | IDBKeyRange): Promise<number>;
+        get(key: Schema['Key']): Promise<Schema["Doc"] | undefined>;
+        select(key?: Schema['Key'] | IDBKeyRange | null, count?: number): Promise<Schema["Doc"][]>;
+    }
+}
+
+declare namespace $ {
+    type $mol_db_index_schema = {
+        Key: IDBValidKey[];
+        Doc: unknown;
+    };
+}
+
+declare namespace $ {
+}
+
+declare namespace $ {
+    type $mol_db_schema = Record<string, $mol_db_store_schema>;
+}
+
+declare namespace $ {
+    class $mol_db_database<Schema extends $mol_db_schema> {
+        readonly native: IDBDatabase;
+        constructor(native: IDBDatabase);
+        get name(): string;
+        get version(): number;
+        get stores(): (keyof Schema)[];
+        read<Names extends Exclude<keyof Schema, symbol | number>>(...names: Names[]): Pick<Schema, Names> extends infer T extends $mol_db_schema ? { [Name in keyof T]: $mol_db_store<Pick<Schema, Names>[Name]>; } : never;
+        change<Names extends Exclude<keyof Schema, symbol | number>>(...names: Names[]): $mol_db_transaction<Pick<Schema, Names>>;
+        kill(): Promise<IDBDatabase>;
+        destructor(): void;
+    }
+}
+
+interface IDBTransaction {
+    commit(): void;
+}
+declare namespace $ {
+    class $mol_db_transaction<Schema extends $mol_db_schema> {
+        readonly native: IDBTransaction;
+        constructor(native: IDBTransaction);
+        get stores(): { [Name in keyof Schema]: $mol_db_store<Schema[Name]>; };
+        store_make(name: string): IDBObjectStore;
+        store_drop(name: string): this;
+        abort(): void;
+        commit(): Promise<void>;
+        get db(): $mol_db_database<$mol_db_schema>;
+    }
+}
+
+declare namespace $ {
+    class $hyoo_sync_client extends $hyoo_sync_yard<WebSocket | Window> {
+        db(): Promise<$mol_db_database<{
+            Unit: {
+                Key: [$mol_int62_string, $mol_int62_string, $mol_int62_string];
+                Doc: $hyoo_crowd_unit;
+                Indexes: {
+                    Land: [$mol_int62_string];
+                    Data: [$mol_int62_string];
+                };
+            };
+        }>>;
+        db_land_load(land: $hyoo_crowd_land): Promise<$hyoo_crowd_unit[]>;
+        db_land_search(from: string, to?: string): Promise<Set<`${string}_${string}`>>;
+        db_land_save(land: $hyoo_crowd_land, units: readonly $hyoo_crowd_unit[]): Promise<void>;
+        reconnects(reset?: null): number;
+        master(): WebSocket;
+        line_send_clocks(line: WebSocket | Window, land: $hyoo_crowd_land): void;
+        line_send_units(line: WebSocket | Window, units: readonly $hyoo_crowd_unit[]): Promise<void>;
+    }
+}
+
+declare namespace $ {
+    class $mol_float extends $mol_view {
+        style(): Record<string, any>;
+    }
+}
+
+declare namespace $ {
+}
+
+declare namespace $ {
+    class $mol_string_button extends $mol_string {
+    }
+}
+
+declare namespace $ {
+}
+
+declare namespace $ {
+    type $mol_type_partial_deep<Val> = Val extends object ? Val extends Function ? Val : {
+        [field in keyof Val]?: $mol_type_partial_deep<Val[field]> | undefined;
+    } : Val;
+}
+
+declare namespace $ {
+    let $mol_jsx_prefix: string;
+    let $mol_jsx_crumbs: string;
+    let $mol_jsx_booked: Set<string> | null;
+    let $mol_jsx_document: $mol_jsx.JSX.ElementClass['ownerDocument'];
+    const $mol_jsx_frag = "";
+    function $mol_jsx<Props extends $mol_jsx.JSX.IntrinsicAttributes, Children extends Array<Node | string>>(Elem: string | ((props: Props, ...children: Children) => Element), props: Props, ...childNodes: Children): Element | DocumentFragment;
+    namespace $mol_jsx.JSX {
+        interface Element extends HTMLElement {
+            class?: string;
+        }
+        interface ElementClass {
+            attributes: {};
+            ownerDocument: Pick<Document, 'getElementById' | 'createElementNS' | 'createDocumentFragment'>;
+            childNodes: Array<Node | string>;
+            valueOf(): Element;
+        }
+        type OrString<Dict> = {
+            [key in keyof Dict]: Dict[key] | string;
+        };
+        type IntrinsicElements = {
+            [key in keyof ElementTagNameMap]?: $.$mol_type_partial_deep<OrString<Element & IntrinsicAttributes & ElementTagNameMap[key]>>;
+        };
+        interface IntrinsicAttributes {
+            id?: string;
+            xmlns?: string;
+        }
+        interface ElementAttributesProperty {
+            attributes: {};
+        }
+        interface ElementChildrenAttribute {
+        }
+    }
+}
+
+declare namespace $ {
+    class $mol_icon_download extends $mol_icon {
+        path(): string;
+    }
+}
+
+declare namespace $ {
+    class $mol_button_download extends $mol_button_minor {
+        blob(): any;
+        uri(): string;
+        file_name(): string;
+        sub(): readonly any[];
+        Icon(): $mol_icon_download;
+        title(): string;
+    }
+}
+
+declare namespace $.$$ {
+    class $mol_button_download extends $.$mol_button_download {
+        uri(): string;
+        click(): void;
+    }
+}
+
+declare namespace $ {
+    class $mol_icon_directions extends $mol_icon {
+        path(): string;
+    }
+}
+
+declare namespace $ {
+    class $mol_icon_directions_fork extends $mol_icon {
+        path(): string;
+    }
+}
+
+declare namespace $ {
+    class $mol_icon_plus_box extends $mol_icon {
+        path(): string;
+    }
+}
+
+declare namespace $ {
+    function $mol_lights(this: $, next?: boolean): boolean;
+}
+
+declare namespace $ {
+    class $mol_check_icon extends $mol_check {
+    }
+}
+
+declare namespace $ {
+}
+
+declare namespace $ {
+    class $mol_icon_brightness_6 extends $mol_icon {
+        path(): string;
+    }
+}
+
+declare namespace $ {
+    class $mol_lights_toggle extends $mol_check_icon {
+        Icon(): $mol_icon_brightness_6;
+        hint(): string;
+        checked(next?: any): boolean;
+        Lights_icon(): $mol_icon_brightness_6;
+        lights(next?: any): boolean;
+    }
+}
+
+declare namespace $.$$ {
+    class $mol_lights_toggle extends $.$mol_lights_toggle {
+        lights(next?: boolean): boolean;
+    }
+}
+
+declare namespace $ {
+    class $mol_icon_github_circle extends $mol_icon {
+        path(): string;
+    }
+}
+
+declare namespace $ {
+    class $mol_link_source extends $mol_link {
+        hint(): string;
+        sub(): readonly any[];
+        Icon(): $mol_icon_github_circle;
+    }
+}
+
+declare namespace $ {
+    class $mol_avatar extends $mol_icon {
+        view_box(): string;
+        id(): string;
+        path(): string;
+    }
+}
+
+declare namespace $ {
+    function $mol_hash_string(str: string, seed?: number): number;
+}
+
+declare namespace $.$$ {
+    class $mol_avatar extends $.$mol_avatar {
+        path(): string;
+    }
+}
+
+declare namespace $ {
+}
+
+declare namespace $ {
+    class $mol_icon_sync extends $mol_icon {
+        path(): string;
+    }
+}
+
+declare namespace $ {
+    class $mol_icon_sync_off extends $mol_icon {
+        path(): string;
+    }
+}
+
+declare namespace $ {
+    class $hyoo_sync_online extends $mol_select {
+        minimal_width(): number;
+        minimal_height(): number;
+        dictionary(): string[];
+        master_cursor(next?: any): number;
+        yard(): $hyoo_sync_yard<unknown>;
+        Filter(): any;
+        option_content(id: any): readonly any[];
+        trigger_content(): readonly any[];
+        master_id(id: any): string;
+        Option_logo(id: any): $$.$mol_avatar;
+        master_link(): string;
+        Well(): $$.$mol_avatar;
+        Fail(): $mol_icon_sync_off;
+        link_content(): readonly any[];
+        hint(): string;
+        message(): string;
+        Link(): $$.$mol_link;
+    }
+}
+
+declare namespace $.$$ {
+    class $hyoo_sync_online extends $.$hyoo_sync_online {
+        message(): string;
+        link_content(): $mol_icon_sync_off[];
+        hint(): string;
+        master_link(): string;
+        master_id(index: number): string;
+        option_label(index: number): string;
+        value(next?: string): string;
+    }
+}
+
+declare namespace $ {
+}
+
+declare namespace $ {
+    class $mol_icon_hint extends $mol_icon {
+        path(): string;
+    }
+}
+
+declare namespace $ {
+    class $mol_bar extends $mol_view {
+    }
+}
+
+declare namespace $ {
+}
+
+declare namespace $ {
+    class $mol_grid extends $mol_view {
+        row_height(): number;
+        row_ids(): readonly string[][];
+        row_id(id: any): any;
+        col_ids(): readonly any[];
+        records(): Record<string, any>;
+        record(id: any): any;
+        hierarchy(): any;
+        hierarchy_col(): string;
+        minimal_width(): number;
+        sub(): readonly any[];
+        Head(): $mol_grid_row;
+        Row(id: any): $mol_grid_row;
+        Cell(id: any): $mol_view;
+        cell(id: any): any;
+        Cell_text(id: any): $mol_grid_cell;
+        Cell_number(id: any): $mol_grid_number;
+        Col_head(id: any): $mol_float;
+        Cell_branch(id: any): $$.$mol_check_expand;
+        Cell_content(id: any): readonly any[];
+        rows(): readonly $mol_view[];
+        Table(): $mol_grid_table;
+        head_cells(): readonly $mol_view[];
+        cells(id: any): readonly $mol_view[];
+        cell_content(id: any): readonly $mol_view_content[];
+        cell_content_text(id: any): readonly $mol_view_content[];
+        cell_content_number(id: any): readonly $mol_view_content[];
+        col_head_content(id: any): readonly $mol_view_content[];
+        cell_level(id: any): number;
+        cell_expanded(id: any, next?: any): boolean;
+        needle(): string;
+        cell_value(id: any): string;
+        Cell_dimmer(id: any): $$.$mol_dimmer;
+    }
+    class $mol_grid_table extends $mol_list {
+    }
+    class $mol_grid_row extends $mol_view {
+        sub(): readonly $mol_view[];
+        cells(): readonly $mol_view[];
+    }
+    class $mol_grid_cell extends $mol_view {
+        minimal_height(): number;
+    }
+    class $mol_grid_number extends $mol_grid_cell {
+    }
+}
+
+declare namespace $ {
+    class $mol_state_session<Value> extends $mol_object {
+        static 'native()': Pick<Storage, 'getItem' | 'setItem' | 'removeItem'>;
+        static native(): Storage | {
+            getItem(key: string): any;
+            setItem(key: string, value: string): void;
+            removeItem(key: string): void;
+        };
+        static value<Value>(key: string, next?: Value): Value;
+        prefix(): string;
+        value(key: string, next?: Value): Value;
+    }
+}
+
+declare namespace $.$$ {
+    interface $mol_grid_node {
+        id: string;
+        parent: $mol_grid_node;
+        sub: $mol_grid_node[];
+    }
+    class $mol_grid extends $.$mol_grid {
+        head_cells(): readonly $mol_view[];
+        col_head_content(colId: string): readonly string[];
+        rows(): readonly $mol_view[];
+        cells(row_id: string[]): readonly $mol_view[];
+        col_type(col_id: string): "text" | "number" | "branch";
+        Cell(id: {
+            row: string[];
+            col: string;
+        }): $mol_view;
+        cell_content(id: {
+            row: string[];
+            col: string;
+        }): any[];
+        cell_content_text(id: {
+            row: string[];
+            col: string;
+        }): any[];
+        records(): any;
+        record(id: string): any;
+        record_ids(): string[];
+        row_id(index: number): string;
+        col_ids(): readonly string[];
+        hierarchy(): {
+            [id: string]: $mol_grid_node;
+        };
+        row_sub_ids(row: string[]): string[][];
+        row_root_id(): string[];
+        cell_level(id: {
+            row: string[];
+        }): number;
+        row_ids(): readonly string[][];
+        row_expanded(row_id: string[], next?: boolean): boolean | null;
+        row_expanded_default(row_id: string[]): boolean;
+        cell_expanded(id: {
+            row: string[];
+        }, next?: boolean): boolean;
+    }
+}
+
+declare namespace $ {
+}
+
+declare namespace $ {
+    class $mol_image extends $mol_view {
+        dom_name(): string;
+        field(): Record<string, any>;
+        attr(): Record<string, any>;
+        event(): Record<string, any>;
+        minimal_width(): number;
+        minimal_height(): number;
+        uri(): string;
+        loading(): string;
+        decoding(): string;
+        cors(): any;
+        natural_width(next?: any): number;
+        natural_height(next?: any): number;
+        load(next?: any): any;
+    }
+}
+
+declare namespace $.$$ {
+    class $mol_image extends $.$mol_image {
+        natural_width(next?: null): number;
+        natural_height(next?: null): number;
+        load(): void;
+    }
+}
+
+declare namespace $ {
+}
+
+declare namespace $ {
+    class $mol_link_iconed extends $mol_link {
+        sub(): readonly any[];
+        content(): readonly any[];
+        host(): string;
+        icon(): string;
+        Icon(): $$.$mol_image;
+        title(): string;
+    }
+}
+
+declare namespace $.$$ {
+    class $mol_link_iconed extends $.$mol_link_iconed {
+        icon(): string;
+        host(): string;
+        title(): string;
+        sub(): readonly any[];
+    }
+}
+
+declare namespace $ {
+}
+
+declare namespace $ {
+    class $mol_embed_native extends $mol_scroll {
+        uri(next?: any): string;
+        dom_name(): string;
+        window(): any;
+        attr(): Record<string, any>;
+        sub(): readonly any[];
+        message(): Record<string, any>;
+        mime(): string;
+        title(): string;
+        Fallback(): $$.$mol_link;
+        uri_change(next?: any): any;
+    }
+}
+
+declare namespace $.$$ {
+    class $mol_embed_native extends $.$mol_embed_native {
+        window(): Window;
+        load(frame: HTMLIFrameElement): Promise<Window>;
+        uri_resource(): string;
+        message_listener(): $mol_dom_listener;
+        message_receive(event?: MessageEvent<[string, string]>): void;
+        uri_change(event: MessageEvent<[string, string]>): void;
+        auto(): (Window | $mol_dom_listener)[];
+    }
+}
+
+declare namespace $ {
+}
+
+declare namespace $ {
+    class $mol_icon_youtube extends $mol_icon {
+        path(): string;
+    }
+}
+
+declare namespace $ {
+    class $mol_frame extends $mol_embed_native {
+        dom_name(): string;
+        attr(): Record<string, any>;
+        fullscreen(): boolean;
+        accelerometer(): boolean;
+        autoplay(): boolean;
+        encription(): boolean;
+        gyroscope(): boolean;
+        pip(): boolean;
+        clipboard_read(): boolean;
+        clipboard_write(): boolean;
+        uri(next?: any): string;
+        html(): any;
+        allow(): string;
+    }
+}
+
+declare namespace $.$$ {
+    class $mol_frame extends $.$mol_frame {
+        window(): any;
+        allow(): string;
+    }
+}
+
+declare namespace $ {
+}
+
+declare namespace $ {
+    class $mol_embed_youtube extends $mol_check {
+        uri(): string;
+        video_preview(): string;
+        video_id(): string;
+        checked(next?: any): boolean;
+        sub(): readonly any[];
+        active(next?: any): boolean;
+        title(): string;
+        Image(): $$.$mol_image;
+        Hint(): $mol_icon_youtube;
+        video_embed(): string;
+        Frame(): $$.$mol_frame;
+    }
+}
+
+declare namespace $.$$ {
+    class $mol_embed_youtube extends $.$mol_embed_youtube {
+        video_embed(): string;
+        video_id(): string;
+        video_preview(): string;
+        sub(): $mol_frame[] | ($mol_image | $mol_icon_youtube)[];
+    }
+}
+
+declare namespace $ {
+}
+
+declare namespace $ {
+    class $mol_embed_any extends $mol_view {
+        Image(): $$.$mol_image;
+        Object(): $$.$mol_embed_native;
+        Youtube(): $$.$mol_embed_youtube;
+        title(): string;
+        uri(): string;
+    }
+}
+
+declare namespace $.$$ {
+    class $mol_embed_any extends $.$mol_embed_any {
+        type(): "object" | "image" | "youtube";
+        sub(): $mol_image[] | $mol_embed_youtube[] | $mol_embed_native[];
+    }
+}
+
+declare namespace $ {
+    class $mol_text extends $mol_list {
+        uri_base(): string;
+        text(): string;
+        param(): string;
+        flow_tokens(): readonly any[];
+        auto(): readonly any[];
+        Paragraph(id: any): $$.$mol_paragraph;
+        Quote(id: any): $$.$mol_text;
+        List(id: any): $mol_text_list;
+        item_index(id: any): number;
+        Header(id: any): $$.$mol_text_header;
+        Pre(id: any): $$.$mol_text_code;
+        Cut(id: any): $mol_view;
+        Table(id: any): $$.$mol_grid;
+        Table_row(id: any): $mol_grid_row;
+        Table_cell(id: any): $$.$mol_text;
+        Grid(id: any): $$.$mol_grid;
+        Grid_row(id: any): $mol_grid_row;
+        Grid_cell(id: any): $$.$mol_text;
+        String(id: any): $$.$mol_dimmer;
+        Span(id: any): $mol_text_span;
+        Code_line(id: any): $$.$mol_text_code_row;
+        Link(id: any): $$.$mol_link_iconed;
+        Link_http(id: any): $$.$mol_link_iconed;
+        Embed(id: any): $$.$mol_embed_any;
+        auto_scroll(): any;
+        block_content(id: any): readonly any[];
+        uri_resolve(id: any): string;
+        quote_text(id: any): string;
+        highlight(): string;
+        list_type(id: any): string;
+        list_text(id: any): string;
+        header_level(id: any): number;
+        header_arg(id: any): Record<string, any>;
+        pre_text(id: any): string;
+        code_sidebar_showed(): boolean;
+        pre_sidebar_showed(): boolean;
+        table_head_cells(id: any): readonly any[];
+        table_rows(id: any): readonly any[];
+        table_cells(id: any): readonly any[];
+        table_cell_text(id: any): string;
+        grid_rows(id: any): readonly any[];
+        grid_cells(id: any): readonly any[];
+        grid_cell_text(id: any): string;
+        line_text(id: any): string;
+        line_type(id: any): string;
+        line_content(id: any): readonly any[];
+        code_syntax(): any;
+        link_uri(id: any): string;
+        link_host(id: any): string;
+    }
+    class $mol_text_header extends $mol_paragraph {
+        level(): number;
+        sub(): readonly any[];
+        arg(): Record<string, any>;
+        content(): readonly any[];
+        Link(): $$.$mol_link;
+    }
+    class $mol_text_span extends $mol_paragraph {
+        dom_name(): string;
+        attr(): Record<string, any>;
+        type(): string;
+    }
+}
+
+declare namespace $.$$ {
+    class $mol_text extends $.$mol_text {
+        flow_tokens(): readonly {
+            name: string;
+            found: string;
+            chunks: string[];
+        }[];
+        block_type(index: number): string;
+        rows(): ($mol_view | $mol_paragraph | $mol_text_code | $mol_grid | $mol_text_header)[];
+        param(): string;
+        header_level(index: number): number;
+        header_arg(index: number): {
+            [x: string]: string;
+        };
+        list_type(index: number): string;
+        item_index(index: number): number;
+        pre_text(index: number): string;
+        quote_text(index: number): string;
+        list_text(index: number): string;
+        cell_content(indexBlock: number): string[][];
+        table_rows(blockId: number): $mol_grid_row[];
+        table_head_cells(blockId: number): $mol_text[];
+        table_cells(id: {
+            block: number;
+            row: number;
+        }): $mol_text[];
+        table_cell_text(id: {
+            block: number;
+            row: number;
+            cell: number;
+        }): string;
+        grid_content(indexBlock: number): string[][];
+        grid_rows(blockId: number): $mol_grid_row[];
+        grid_cells(id: {
+            block: number;
+            row: number;
+        }): $mol_text[];
+        grid_cell_text(id: {
+            block: number;
+            row: number;
+            cell: number;
+        }): string;
+        uri_base(): string;
+        uri_resolve(uri: string): string;
+        code_syntax(): $mol_syntax2<{
+            'code-indent': RegExp;
+            'code-docs': RegExp;
+            'code-comment-block': RegExp;
+            'code-link': RegExp;
+            'code-comment-inline': RegExp;
+            'code-string': RegExp;
+            'code-number': RegExp;
+            'code-call': RegExp;
+            'code-sexpr': RegExp;
+            'code-field': RegExp;
+            'code-keyword': RegExp;
+            'code-global': RegExp;
+            'code-word': RegExp;
+            'code-decorator': RegExp;
+            'code-tag': RegExp;
+            'code-punctuation': RegExp;
+        }>;
+        block_text(index: number): string;
+        block_content(index: number): ($mol_dimmer | $mol_text_code_row | $mol_link_iconed | $mol_embed_any | $mol_text_span)[];
+        line_tokens(path: readonly number[]): readonly {
+            name: string;
+            found: string;
+            chunks: string[];
+        }[];
+        line_token(path: readonly number[]): {
+            name: string;
+            found: string;
+            chunks: string[];
+        };
+        line_type(path: readonly number[]): string;
+        line_text(path: readonly number[]): string;
+        line_content(path: readonly number[]): ($mol_dimmer | $mol_text_code_row | $mol_link_iconed | $mol_embed_any | $mol_text_span)[];
+        link_uri(path: readonly number[]): string;
+        link_host(path: readonly number[]): string;
+        auto_scroll(): void;
+    }
+    class $mol_text_header extends $.$mol_text_header {
+        dom_name(): string;
+    }
+}
+
+declare namespace $ {
+}
+
+declare namespace $ {
+    class $mol_icon_chevron_down extends $mol_icon {
+        path(): string;
+    }
+}
+
+declare namespace $ {
+    class $mol_icon_chevron_right extends $mol_icon {
+        path(): string;
+    }
+}
+
+declare namespace $ {
+    class $mol_theme_auto extends $mol_plugin {
+        attr(): Record<string, any>;
+        theme(): string;
+    }
+}
+
+declare namespace $.$$ {
+    class $mol_theme_auto extends $.$mol_theme_auto {
+        theme(): "$mol_theme_light" | "$mol_theme_dark";
+    }
+}
+
+declare namespace $ {
+    class $mol_text_list extends $mol_text {
+        auto_scroll(): any;
+        attr(): Record<string, any>;
+        Paragraph(id: any): $mol_text_list_item;
+        type(): string;
+    }
+    class $mol_text_list_item extends $mol_paragraph {
+        attr(): Record<string, any>;
+        index(): number;
+    }
+}
+
+declare namespace $ {
+}
+
+declare namespace $ {
+    class $hyoo_calc extends $mol_page {
+        yard(): $hyoo_sync_client;
+        editable(): boolean;
+        sheet_id(): string;
+        formulas_default(): Record<string, any>;
+        formula(id: any, val?: any): string;
+        head(): readonly any[];
+        tools(): readonly any[];
+        sub(): readonly any[];
+        body(): readonly any[];
+        Edit(id: any): $$.$mol_textarea;
+        Col_head(id: any): $mol_float;
+        Row_head(id: any): $mol_float;
+        Cell(id: any): $$.$hyoo_calc_cell;
+        plugins(): readonly any[];
+        event(): Record<string, any>;
+        title(val?: any): string;
+        title_default(): string;
+        Title_edit(): $mol_string_button;
+        download_file(): string;
+        download_uri(val?: any): string;
+        Download(): $$.$mol_button_download;
+        sheet_fork(next?: any): any;
+        Fork_icon(): $mol_icon_directions_fork;
+        Fork(): $mol_button_minor;
+        sheet_new(next?: any): any;
+        New_icon(): $mol_icon_plus_box;
+        New(): $mol_button_minor;
+        Lights(): $$.$mol_lights_toggle;
+        Source(): $mol_link_source;
+        Online(): $$.$hyoo_sync_online;
+        pos(val?: any): string;
+        Pos(): $mol_button_minor;
+        Edit_current(): $$.$mol_textarea;
+        hint_showed(val?: any): boolean;
+        Hint_trigger_icon(): $mol_icon_hint;
+        Hint_trigger(): $mol_check_icon;
+        Current(): $mol_bar;
+        hint(): string;
+        Hint(): $$.$mol_text;
+        col_ids(): readonly any[];
+        row_ids(): readonly any[];
+        head_cells(): readonly any[];
+        cells(id: any): readonly any[];
+        Cells(): $$.$mol_grid;
+        col_title(id: any): string;
+        Col_title(id: any): $mol_view;
+        col_ins(id: any, next?: any): any;
+        Col_ins_icon(id: any): $mol_icon_chevron_down;
+        Col_ins(id: any): $mol_button_minor;
+        col_right(id: any, next?: any): any;
+        Col_right_icon(id: any): $mol_icon_chevron_right;
+        Col_right(id: any): $mol_button_minor;
+        col_tools(id: any): readonly any[];
+        Col_tools(id: any): $mol_bar;
+        col_head_content(id: any): readonly any[];
+        row_title(id: any): string;
+        Row_title(id: any): $mol_view;
+        row_ins(id: any, next?: any): any;
+        Row_ins_icon(id: any): $mol_icon_chevron_right;
+        Row_ins(id: any): $mol_button_minor;
+        row_down(id: any, next?: any): any;
+        Row_down_icon(id: any): $mol_icon_chevron_down;
+        Row_down(id: any): $mol_button_minor;
+        row_tools(id: any): readonly any[];
+        Row_tools(id: any): $mol_view;
+        row_head_content(id: any): readonly any[];
+        cell_content(id: any): string;
+        selected(id: any, val?: any): boolean;
+        Theme(): $$.$mol_theme_auto;
+        current_col(val?: any): number;
+        current_row(val?: any): number;
+        Nav(): $$.$mol_nav;
+        paste(event?: any): any;
+    }
+    class $hyoo_calc_cell extends $mol_text {
+        dom_name(): string;
+        event(): Record<string, any>;
+        attr(): Record<string, any>;
+        click(event?: any): any;
+        selected(val?: any): boolean;
+        type(val?: any): string;
+    }
+}
+
+declare namespace $ {
+    class $hyoo_crowd_dict extends $hyoo_crowd_node {
+        keys(next?: string[]): string[];
+        sub<Node extends typeof $hyoo_crowd_node>(key: string, Node: Node): InstanceType<Node>;
+        has(key: string): boolean;
+        add(key: string): void;
+        drop(key: string): void;
+    }
+}
+
+declare namespace $ {
+    class $hyoo_calc_sheet extends $hyoo_crowd_struct {
+        changable(): boolean;
+        title(next?: string): string;
+        formula_node(): $hyoo_crowd_dict;
+        formula(cell: string, next?: string): string;
+        cells(): string[];
+        steal(donor: $hyoo_calc_sheet): void;
+    }
+}
+
+declare namespace $ {
+    class $mol_func_sandbox {
+        static blacklist: Set<Function>;
+        static whitelist: WeakSet<WeakKey>;
+        static _make: (contexts: Object[]) => (code: string) => () => any;
+        static get make(): ((contexts: Object[]) => (code: string) => () => any) | ((...args: Record<string, any>[]) => (code: string) => () => any);
+        constructor(...contexts: Object[]);
+        contexts: Object[];
+        _eval: ((code: string) => () => any) | undefined;
+        get eval(): (code: string) => () => any;
+    }
+}
+
+declare namespace $ {
+    function $mol_offline(): void;
+}
+
+declare namespace $ {
+}
+
+declare namespace $.$$ {
+    class $hyoo_calc extends $.$hyoo_calc {
+        sheet_fund(): $hyoo_crowd_fund<typeof $hyoo_calc_sheet>;
+        sheet_id(): string;
+        sheet(): $hyoo_calc_sheet | null;
+        sheet_new(): $hyoo_calc_sheet;
+        sheet_fork(): $hyoo_calc_sheet;
+        sheet_changable(): $hyoo_calc_sheet;
+        formulas_default(): Readonly<{
+            [key: string]: string;
+        }>;
+        formulas(): {
+            [key: string]: string;
+        };
+        formula_name(id: string): string | null;
+        refs(): Record<string, string>;
+        id2coord(id: string): [number, number] | null;
+        coord2id(coord: [number, number]): string;
+        dimensions(): {
+            rows: number;
+            cols: number;
+        };
+        col_ids(): number[];
+        row_ids(): number[];
+        number2string(numb: number): string;
+        string2number(str: string): number;
+        title(next?: string): string;
+        col_title(id: number): string;
+        col_head_content(id: number): $mol_view[];
+        row_title(id: number): string;
+        row_head_content(id: number): $mol_view[];
+        head_cells(): $mol_float[];
+        cells(row_id: number): ($mol_float | $hyoo_calc_cell)[];
+        selected(id: string, next?: boolean): boolean;
+        pos(next?: string): string;
+        coord(next?: [number, number]): [number, number];
+        Edit_current(): $mol_textarea;
+        current_row(next?: number): number;
+        current_col(next?: number): number;
+        formula(id: string, next?: string): string;
+        formula_current(next?: string): string;
+        sandbox(): $mol_func_sandbox;
+        results(range: [string, string]): unknown[];
+        sub(): ($mol_view | $mol_scroll)[];
+        hint(): string;
+        cell_content(id: string): string;
+        func(id: string): () => any;
+        result(id: string): string | number;
+        paste(event: ClipboardEvent): void;
+        download_file(): string;
+        download_uri(): string;
+        col_ins(col: number): void;
+        row_ins(row: number): void;
+        col_right(col: number): void;
+        row_down(row: number): void;
+    }
+    class $hyoo_calc_cell extends $.$hyoo_calc_cell {
+        click(event?: Event): void;
+        type(): "string" | "number";
+    }
+}
+
+declare namespace $ {
+}
+
 declare namespace $ {
     class $hyoo_crowds_expose extends $mol_book2_catalog {
         menu_title(): string;
@@ -3333,6 +4768,7 @@ declare namespace $ {
         spreads(): Record<string, any>;
         Placeholder(): any;
         Realm(): $$.$hyoo_crowds_realm_book;
+        Casting(): $$.$hyoo_calc;
     }
 }
 
@@ -3340,6 +4776,9 @@ declare namespace $.$$ {
     class $hyoo_crowds_expose extends $.$hyoo_crowds_expose {
         realm(): $hyoo_crowds_realm;
     }
+}
+
+declare namespace $.$$ {
 }
 
 export = $;

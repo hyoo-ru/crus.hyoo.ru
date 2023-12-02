@@ -70,3 +70,10 @@
 	pack icon git \https://github.com/nin-jin/mol_icon.git
 \/mol/view
 	include \/mol/view/tree/test
+\/hyoo/sync
+	- build $hyoo_sync_revision \git rev-parse --short HEAD
+	build $hyoo_sync_revision \echo echo
+\/hyoo/calc
+	include \/mol/offline/install
+	deploy \/hyoo/calc/demo/input.json
+	deploy \/hyoo/calc/calc_logo.svg
