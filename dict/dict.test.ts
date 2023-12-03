@@ -52,7 +52,7 @@ namespace $.$$ {
 
 		},
 		
-		"Narrowed Dictiona with linked Dictionaries"( $ ) {
+		"Narrowed Dictionary with linked Dictionaries and others"( $ ) {
 			
 			const realm = $hyoo_crowds_realm.make({ $ })
 			const area = realm.home().base().area()
@@ -87,6 +87,7 @@ namespace $.$$ {
 			const articles = [ user.Articles().remote_make(), user.Articles().remote_make() ]
 			$mol_assert_like( user.Articles().remotes(), articles )
 			
+			$mol_assert_unique( user.area(), account.area(), ... articles.map( article => article.area() ) )
 		},
 		
 	})
