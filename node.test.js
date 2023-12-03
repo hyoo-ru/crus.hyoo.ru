@@ -24225,7 +24225,7 @@ var $;
                 area1.apply_unit(area2.delta_unit());
                 $mol_assert_like(dict1.dive('xxx', $hyoo_crowds_list).items(), ['bar', 'foo']);
             },
-            "Narrowed Dictiona with linked Dictionaries"($) {
+            "Narrowed Dictionary with linked Dictionaries and others"($) {
                 const realm = $hyoo_crowds_realm.make({ $ });
                 const area = realm.home().base().area();
                 class User extends $hyoo_crowds_dict.of({
@@ -24254,6 +24254,7 @@ var $;
                 $mol_assert_like(account.User().value(), user);
                 const articles = [user.Articles().remote_make(), user.Articles().remote_make()];
                 $mol_assert_like(user.Articles().remotes(), articles);
+                $mol_assert_unique(user.area(), account.area(), ...articles.map(article => article.area()));
             },
         });
     })($$ = $_1.$$ || ($_1.$$ = {}));
