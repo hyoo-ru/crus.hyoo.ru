@@ -87,7 +87,7 @@ var $;
         try {
             if (!having)
                 return false;
-            if (typeof having !== 'object')
+            if (typeof having !== 'object' && typeof having !== 'function')
                 return false;
             if (having instanceof $mol_delegate)
                 return false;
@@ -223,11 +223,12 @@ var $;
             return this.name;
         }
         destructor() { }
+        static destructor() { }
         toString() {
             return this[Symbol.toStringTag] || this.constructor.name + '()';
         }
         static toJSON() {
-            return this.$.$mol_func_name(this);
+            return this[Symbol.toStringTag] || this.$.$mol_func_name(this);
         }
         toJSON() {
             return this.toString();
@@ -7862,130 +7863,6 @@ var $;
 //hyoo/crowds/gift/gift.ts
 ;
 "use strict";
-//mol/type/partial/deep/deep.ts
-;
-"use strict";
-var $;
-(function ($) {
-    $.$mol_jsx_prefix = '';
-    $.$mol_jsx_crumbs = '';
-    $.$mol_jsx_booked = null;
-    $.$mol_jsx_document = {
-        getElementById: () => null,
-        createElementNS: (space, name) => $mol_dom_context.document.createElementNS(space, name),
-        createDocumentFragment: () => $mol_dom_context.document.createDocumentFragment(),
-    };
-    $.$mol_jsx_frag = '';
-    function $mol_jsx(Elem, props, ...childNodes) {
-        const id = props && props.id || '';
-        const guid = id ? $.$mol_jsx_prefix ? $.$mol_jsx_prefix + '/' + id : id : $.$mol_jsx_prefix;
-        const crumbs_self = id ? $.$mol_jsx_crumbs.replace(/(\S+)/g, `$1_${id.replace(/\/.*/i, '')}`) : $.$mol_jsx_crumbs;
-        if (Elem && $.$mol_jsx_booked) {
-            if ($.$mol_jsx_booked.has(id)) {
-                $mol_fail(new Error(`JSX already has tag with id ${JSON.stringify(guid)}`));
-            }
-            else {
-                $.$mol_jsx_booked.add(id);
-            }
-        }
-        let node = guid ? $.$mol_jsx_document.getElementById(guid) : null;
-        if ($.$mol_jsx_prefix) {
-            const prefix_ext = $.$mol_jsx_prefix;
-            const booked_ext = $.$mol_jsx_booked;
-            const crumbs_ext = $.$mol_jsx_crumbs;
-            for (const field in props) {
-                const func = props[field];
-                if (typeof func !== 'function')
-                    continue;
-                const wrapper = function (...args) {
-                    const prefix = $.$mol_jsx_prefix;
-                    const booked = $.$mol_jsx_booked;
-                    const crumbs = $.$mol_jsx_crumbs;
-                    try {
-                        $.$mol_jsx_prefix = prefix_ext;
-                        $.$mol_jsx_booked = booked_ext;
-                        $.$mol_jsx_crumbs = crumbs_ext;
-                        return func.call(this, ...args);
-                    }
-                    finally {
-                        $.$mol_jsx_prefix = prefix;
-                        $.$mol_jsx_booked = booked;
-                        $.$mol_jsx_crumbs = crumbs;
-                    }
-                };
-                $mol_func_name_from(wrapper, func);
-                props[field] = wrapper;
-            }
-        }
-        if (typeof Elem !== 'string') {
-            if ('prototype' in Elem) {
-                const view = node && node[String(Elem)] || new Elem;
-                Object.assign(view, props);
-                view[Symbol.toStringTag] = guid;
-                view.childNodes = childNodes;
-                if (!view.ownerDocument)
-                    view.ownerDocument = $.$mol_jsx_document;
-                view.className = (crumbs_self ? crumbs_self + ' ' : '') + (Elem['name'] || Elem);
-                node = view.valueOf();
-                node[String(Elem)] = view;
-                return node;
-            }
-            else {
-                const prefix = $.$mol_jsx_prefix;
-                const booked = $.$mol_jsx_booked;
-                const crumbs = $.$mol_jsx_crumbs;
-                try {
-                    $.$mol_jsx_prefix = guid;
-                    $.$mol_jsx_booked = new Set;
-                    $.$mol_jsx_crumbs = (crumbs_self ? crumbs_self + ' ' : '') + (Elem['name'] || Elem);
-                    return Elem(props, ...childNodes);
-                }
-                finally {
-                    $.$mol_jsx_prefix = prefix;
-                    $.$mol_jsx_booked = booked;
-                    $.$mol_jsx_crumbs = crumbs;
-                }
-            }
-        }
-        if (!node) {
-            node = Elem
-                ? $.$mol_jsx_document.createElementNS(props?.xmlns ?? 'http://www.w3.org/1999/xhtml', Elem)
-                : $.$mol_jsx_document.createDocumentFragment();
-        }
-        $mol_dom_render_children(node, [].concat(...childNodes));
-        if (!Elem)
-            return node;
-        if (guid)
-            node.id = guid;
-        for (const key in props) {
-            if (key === 'id')
-                continue;
-            if (typeof props[key] === 'string') {
-                if (typeof node[key] === 'string')
-                    node[key] = props[key];
-                node.setAttribute(key, props[key]);
-            }
-            else if (props[key] &&
-                typeof props[key] === 'object' &&
-                Reflect.getPrototypeOf(props[key]) === Reflect.getPrototypeOf({})) {
-                if (typeof node[key] === 'object') {
-                    Object.assign(node[key], props[key]);
-                    continue;
-                }
-            }
-            else {
-                node[key] = props[key];
-            }
-        }
-        if ($.$mol_jsx_crumbs)
-            node.className = (props?.['class'] ? props['class'] + ' ' : '') + crumbs_self;
-        return node;
-    }
-    $.$mol_jsx = $mol_jsx;
-})($ || ($ = {}));
-//mol/jsx/jsx.ts
-;
-"use strict";
 var $;
 (function ($) {
     class $hyoo_crowds_ref extends $mol_buffer {
@@ -8589,6 +8466,18 @@ var $;
 "use strict";
 var $;
 (function ($) {
+    $.$hyoo_crowds_vary_mapping = {
+        bin: Uint8Array,
+        bool: Boolean,
+        int: BigInt,
+        real: Number,
+        ref: $hyoo_crowds_ref,
+        str: String,
+        time: $mol_time_moment,
+        json: Object,
+        xml: $mol_dom_context.Element,
+        tree: $mol_tree2,
+    };
     let $hyoo_crowds_vary_tip;
     (function ($hyoo_crowds_vary_tip) {
         $hyoo_crowds_vary_tip[$hyoo_crowds_vary_tip["bin"] = 0] = "bin";
@@ -8659,7 +8548,7 @@ var $;
     }
     $.$hyoo_crowds_vary_decode = $hyoo_crowds_vary_decode;
 })($ || ($ = {}));
-//hyoo/crowds/vary/vary.tsx
+//hyoo/crowds/vary/vary.ts
 ;
 "use strict";
 var $;
@@ -9043,6 +8932,387 @@ var $;
 //hyoo/crowds/mine/mine.ts
 ;
 "use strict";
+//mol/type/partial/deep/deep.ts
+;
+"use strict";
+var $;
+(function ($) {
+    $.$mol_jsx_prefix = '';
+    $.$mol_jsx_crumbs = '';
+    $.$mol_jsx_booked = null;
+    $.$mol_jsx_document = {
+        getElementById: () => null,
+        createElementNS: (space, name) => $mol_dom_context.document.createElementNS(space, name),
+        createDocumentFragment: () => $mol_dom_context.document.createDocumentFragment(),
+    };
+    $.$mol_jsx_frag = '';
+    function $mol_jsx(Elem, props, ...childNodes) {
+        const id = props && props.id || '';
+        const guid = id ? $.$mol_jsx_prefix ? $.$mol_jsx_prefix + '/' + id : id : $.$mol_jsx_prefix;
+        const crumbs_self = id ? $.$mol_jsx_crumbs.replace(/(\S+)/g, `$1_${id.replace(/\/.*/i, '')}`) : $.$mol_jsx_crumbs;
+        if (Elem && $.$mol_jsx_booked) {
+            if ($.$mol_jsx_booked.has(id)) {
+                $mol_fail(new Error(`JSX already has tag with id ${JSON.stringify(guid)}`));
+            }
+            else {
+                $.$mol_jsx_booked.add(id);
+            }
+        }
+        let node = guid ? $.$mol_jsx_document.getElementById(guid) : null;
+        if ($.$mol_jsx_prefix) {
+            const prefix_ext = $.$mol_jsx_prefix;
+            const booked_ext = $.$mol_jsx_booked;
+            const crumbs_ext = $.$mol_jsx_crumbs;
+            for (const field in props) {
+                const func = props[field];
+                if (typeof func !== 'function')
+                    continue;
+                const wrapper = function (...args) {
+                    const prefix = $.$mol_jsx_prefix;
+                    const booked = $.$mol_jsx_booked;
+                    const crumbs = $.$mol_jsx_crumbs;
+                    try {
+                        $.$mol_jsx_prefix = prefix_ext;
+                        $.$mol_jsx_booked = booked_ext;
+                        $.$mol_jsx_crumbs = crumbs_ext;
+                        return func.call(this, ...args);
+                    }
+                    finally {
+                        $.$mol_jsx_prefix = prefix;
+                        $.$mol_jsx_booked = booked;
+                        $.$mol_jsx_crumbs = crumbs;
+                    }
+                };
+                $mol_func_name_from(wrapper, func);
+                props[field] = wrapper;
+            }
+        }
+        if (typeof Elem !== 'string') {
+            if ('prototype' in Elem) {
+                const view = node && node[String(Elem)] || new Elem;
+                Object.assign(view, props);
+                view[Symbol.toStringTag] = guid;
+                view.childNodes = childNodes;
+                if (!view.ownerDocument)
+                    view.ownerDocument = $.$mol_jsx_document;
+                view.className = (crumbs_self ? crumbs_self + ' ' : '') + (Elem['name'] || Elem);
+                node = view.valueOf();
+                node[String(Elem)] = view;
+                return node;
+            }
+            else {
+                const prefix = $.$mol_jsx_prefix;
+                const booked = $.$mol_jsx_booked;
+                const crumbs = $.$mol_jsx_crumbs;
+                try {
+                    $.$mol_jsx_prefix = guid;
+                    $.$mol_jsx_booked = new Set;
+                    $.$mol_jsx_crumbs = (crumbs_self ? crumbs_self + ' ' : '') + (Elem['name'] || Elem);
+                    return Elem(props, ...childNodes);
+                }
+                finally {
+                    $.$mol_jsx_prefix = prefix;
+                    $.$mol_jsx_booked = booked;
+                    $.$mol_jsx_crumbs = crumbs;
+                }
+            }
+        }
+        if (!node) {
+            node = Elem
+                ? $.$mol_jsx_document.createElementNS(props?.xmlns ?? 'http://www.w3.org/1999/xhtml', Elem)
+                : $.$mol_jsx_document.createDocumentFragment();
+        }
+        $mol_dom_render_children(node, [].concat(...childNodes));
+        if (!Elem)
+            return node;
+        if (guid)
+            node.id = guid;
+        for (const key in props) {
+            if (key === 'id')
+                continue;
+            if (typeof props[key] === 'string') {
+                if (typeof node[key] === 'string')
+                    node[key] = props[key];
+                node.setAttribute(key, props[key]);
+            }
+            else if (props[key] &&
+                typeof props[key] === 'object' &&
+                Reflect.getPrototypeOf(props[key]) === Reflect.getPrototypeOf({})) {
+                if (typeof node[key] === 'object') {
+                    Object.assign(node[key], props[key]);
+                    continue;
+                }
+            }
+            else {
+                node[key] = props[key];
+            }
+        }
+        if ($.$mol_jsx_crumbs)
+            node.className = (props?.['class'] ? props['class'] + ' ' : '') + crumbs_self;
+        return node;
+    }
+    $.$mol_jsx = $mol_jsx;
+})($ || ($ = {}));
+//mol/jsx/jsx.ts
+;
+"use strict";
+var $;
+(function ($) {
+    function $mol_tree2_bin_to_bytes(tree) {
+        return Uint8Array.from(tree.kids, kid => parseInt(kid.value, 16));
+    }
+    $.$mol_tree2_bin_to_bytes = $mol_tree2_bin_to_bytes;
+    function $mol_tree2_bin_from_bytes(bytes, span = $mol_span.unknown) {
+        return $mol_tree2.list(Array.from(bytes, code => {
+            return $mol_tree2.data(code.toString(16).padStart(2, '0'), [], span);
+        }), span);
+    }
+    $.$mol_tree2_bin_from_bytes = $mol_tree2_bin_from_bytes;
+    function $mol_tree2_bin_from_string(str, span = $mol_span.unknown) {
+        return $mol_tree2_bin_from_bytes([...new TextEncoder().encode(str)], span);
+    }
+    $.$mol_tree2_bin_from_string = $mol_tree2_bin_from_string;
+})($ || ($ = {}));
+//mol/tree2/bin/bin.ts
+;
+"use strict";
+var $;
+(function ($) {
+    function $mol_tree2_xml_from_dom(dom) {
+        switch (dom.nodeType) {
+            case dom.DOCUMENT_NODE: {
+                let kids = [];
+                for (const kid of dom.childNodes) {
+                    kids.push($mol_tree2_xml_from_dom(kid));
+                }
+                return $mol_tree2.list(kids);
+            }
+            case dom.PROCESSING_INSTRUCTION_NODE: {
+                return $mol_tree2.struct('?', [
+                    $mol_tree2.struct(dom.nodeName, dom.nodeValue.split(' ').map(chunk => {
+                        const [, name, value] = /^(.*?)(?:="(.*?)")?$/.exec(chunk);
+                        const kids = value ? [$mol_tree2.data(value)] : [];
+                        return $mol_tree2.struct(name, kids);
+                    }))
+                ]);
+            }
+            case dom.DOCUMENT_TYPE_NODE: {
+                const dom2 = dom;
+                return $mol_tree2.struct('!', [
+                    $mol_tree2.struct('DOCTYPE', [
+                        $mol_tree2.struct(dom2.name)
+                    ])
+                ]);
+            }
+            case dom.ELEMENT_NODE: {
+                let kids = [];
+                for (const attr of dom.attributes) {
+                    kids.push($mol_tree2.struct('@', [
+                        $mol_tree2.struct(attr.nodeName, [
+                            $mol_tree2.data(attr.nodeValue)
+                        ])
+                    ]));
+                }
+                for (const kid of dom.childNodes) {
+                    const k = $mol_tree2_xml_from_dom(kid);
+                    if (k.type || k.value)
+                        kids.push(k);
+                }
+                return $mol_tree2.struct(dom.nodeName, kids);
+            }
+            case dom.COMMENT_NODE: {
+                return $mol_tree2.struct('--', [
+                    $mol_tree2.data(dom.nodeValue)
+                ]);
+            }
+            case dom.TEXT_NODE: {
+                if (!dom.nodeValue.trim())
+                    return $mol_tree2.list([]);
+                return $mol_tree2.data(dom.nodeValue.replace(/\s+/g, ' '));
+            }
+        }
+        return $mol_fail(new Error(`Unsupported node ${dom.nodeName}`));
+    }
+    $.$mol_tree2_xml_from_dom = $mol_tree2_xml_from_dom;
+})($ || ($ = {}));
+//mol/tree2/xml/from/dom/dom.ts
+;
+"use strict";
+var $;
+(function ($) {
+    function $hyoo_crowds_vary_cast_bin(vary) {
+        return vary === null || vary === '' ? null : $hyoo_crowds_vary_encode(vary).bin;
+    }
+    $.$hyoo_crowds_vary_cast_bin = $hyoo_crowds_vary_cast_bin;
+    function $hyoo_crowds_vary_cast_bool(vary) {
+        return $hyoo_crowds_vary_switch(vary, {
+            bin: vary => Boolean(vary?.length),
+            bool: vary => vary,
+            int: vary => Boolean(vary),
+            real: vary => Boolean(vary),
+            ref: vary => Boolean(vary.lord || vary.numb || vary.numb),
+            str: vary => Boolean(vary),
+            time: vary => Boolean(vary.valueOf()),
+            json: vary => Boolean(vary instanceof Array ? vary.length : Reflect.ownKeys(vary).length),
+            xml: vary => Boolean(vary.attributes.length + vary.childNodes.length),
+            tree: vary => Boolean(vary.value || vary.kids.length),
+        });
+    }
+    $.$hyoo_crowds_vary_cast_bool = $hyoo_crowds_vary_cast_bool;
+    function $hyoo_crowds_vary_cast_int(vary) {
+        return $hyoo_crowds_vary_switch(vary, {
+            bin: vary => vary ? BigInt(vary.length) : 0n,
+            bool: vary => BigInt(vary),
+            int: vary => vary,
+            real: vary => Number.isFinite(vary) ? BigInt(Math.trunc(vary)) : 0n,
+            ref: vary => vary.lord() + (BigInt(vary.numb()) << 64n) + (BigInt(vary.head()) << 96n),
+            str: vary => {
+                try {
+                    return BigInt(vary);
+                }
+                catch {
+                    return 0n;
+                }
+            },
+            time: vary => BigInt(vary.valueOf()),
+            json: vary => BigInt(vary instanceof Array ? vary.length : Reflect.ownKeys(vary).length),
+            xml: vary => BigInt(vary.attributes.length + vary.childNodes.length),
+            tree: vary => {
+                try {
+                    return BigInt(vary.value);
+                }
+                catch {
+                    return BigInt(vary.kids.length);
+                }
+            },
+        });
+    }
+    $.$hyoo_crowds_vary_cast_int = $hyoo_crowds_vary_cast_int;
+    function $hyoo_crowds_vary_cast_real(vary) {
+        return $hyoo_crowds_vary_switch(vary, {
+            bin: vary => vary?.length ?? Number.NaN,
+            bool: vary => Number(vary),
+            int: vary => Number(vary),
+            real: vary => vary,
+            ref: vary => Number.NaN,
+            str: vary => vary ? Number(vary) : Number.NaN,
+            time: vary => vary.valueOf(),
+            json: vary => vary instanceof Array ? vary.length : Reflect.ownKeys(vary).length,
+            xml: vary => Number(vary.attributes.length + vary.childNodes.length),
+            tree: vary => Number(vary.value || vary.kids.length),
+        });
+    }
+    $.$hyoo_crowds_vary_cast_real = $hyoo_crowds_vary_cast_real;
+    function $hyoo_crowds_vary_cast_ref(vary) {
+        return $hyoo_crowds_vary_switch(vary, {
+            bin: vary => vary ? $hyoo_crowds_ref.from(vary) : $hyoo_crowds_ref.make(),
+            bool: vary => $hyoo_crowds_ref.make(),
+            int: vary => $hyoo_crowds_ref.make(vary & 0xffffffffffffffffn, Number((vary >> 64n) & 0xffffffffn), Number((vary >> 96n) & 0xffffffffffffn)),
+            real: vary => $hyoo_crowds_ref.make(),
+            ref: vary => vary,
+            str: vary => $hyoo_crowds_ref.from(vary),
+            time: vary => $hyoo_crowds_ref.make(),
+            json: vary => $hyoo_crowds_ref.make(),
+            xml: vary => $hyoo_crowds_ref.make(),
+            tree: vary => $hyoo_crowds_ref.make(),
+        });
+    }
+    $.$hyoo_crowds_vary_cast_ref = $hyoo_crowds_vary_cast_ref;
+    function $hyoo_crowds_vary_cast_str(vary) {
+        return $hyoo_crowds_vary_switch(vary, {
+            bin: vary => vary ? [...vary].map(n => n.toString(16).padStart(2, '0')).join('') : '',
+            bool: vary => String(vary),
+            int: vary => String(vary),
+            real: vary => String(vary),
+            ref: vary => String(vary),
+            str: vary => vary,
+            time: vary => String(vary),
+            json: vary => JSON.stringify(vary),
+            xml: vary => $mol_dom_serialize(vary),
+            tree: vary => String(vary),
+        });
+    }
+    $.$hyoo_crowds_vary_cast_str = $hyoo_crowds_vary_cast_str;
+    function $hyoo_crowds_vary_cast_time(vary) {
+        return $hyoo_crowds_vary_switch(vary, {
+            bin: vary => new $mol_time_moment(vary ? $mol_charset_decode(vary) : 0),
+            bool: vary => new $mol_time_moment(0),
+            int: vary => new $mol_time_moment(Number(vary & 0xffffffffffffn)),
+            real: vary => new $mol_time_moment(vary),
+            ref: vary => new $mol_time_moment(0),
+            str: vary => new $mol_time_moment(vary),
+            time: vary => vary,
+            json: vary => new $mol_time_moment(vary),
+            xml: vary => new $mol_time_moment(0),
+            tree: vary => new $mol_time_moment(0),
+        });
+    }
+    $.$hyoo_crowds_vary_cast_time = $hyoo_crowds_vary_cast_time;
+    function $hyoo_crowds_vary_cast_json(vary) {
+        return $hyoo_crowds_vary_switch(vary, {
+            bin: vary => vary && [...vary],
+            bool: vary => [vary],
+            int: vary => [vary.toString()],
+            real: vary => [vary],
+            ref: vary => ({ lord: vary.lord().toString(), numb: vary.numb(), head: vary.head() }),
+            str: vary => JSON.parse(vary),
+            time: vary => [vary.toJSON()],
+            json: vary => vary,
+            xml: vary => [$mol_dom_serialize(vary)],
+            tree: vary => [vary.toString()],
+        });
+    }
+    $.$hyoo_crowds_vary_cast_json = $hyoo_crowds_vary_cast_json;
+    function $hyoo_crowds_vary_cast_xml(vary) {
+        return $hyoo_crowds_vary_switch(vary, {
+            bin: vary => $mol_jsx("body", null, vary && $mol_base64_ae_encode(vary)),
+            bool: vary => $mol_jsx("body", null, vary),
+            int: vary => $mol_jsx("body", null, vary),
+            real: vary => $mol_jsx("body", null, vary),
+            ref: vary => $mol_jsx("body", null, vary),
+            str: vary => $mol_dom_parse(vary, 'application/xhtml+xml').documentElement,
+            time: vary => $mol_jsx("body", null, vary),
+            json: vary => $mol_jsx("body", null, JSON.stringify(vary)),
+            xml: vary => vary,
+            tree: vary => $mol_jsx("body", null, vary),
+        });
+    }
+    $.$hyoo_crowds_vary_cast_xml = $hyoo_crowds_vary_cast_xml;
+    function $hyoo_crowds_vary_cast_tree(vary) {
+        return $hyoo_crowds_vary_switch(vary, {
+            bin: vary => vary ? $mol_tree2_bin_from_bytes(vary) : $mol_tree2.list([]),
+            bool: vary => $mol_tree2.struct(vary.toString()),
+            int: vary => $mol_tree2.struct(vary.toString()),
+            real: vary => $mol_tree2.struct(vary.toString()),
+            ref: vary => $mol_tree2.struct(vary.toString()),
+            str: vary => $$.$mol_tree2_from_string(vary),
+            time: vary => $mol_tree2.struct(vary.toString()),
+            json: vary => $$.$mol_tree2_from_json(vary),
+            xml: vary => $$.$mol_tree2_xml_from_dom(vary),
+            tree: vary => vary,
+        });
+    }
+    $.$hyoo_crowds_vary_cast_tree = $hyoo_crowds_vary_cast_tree;
+    $.$hyoo_crowds_vary_cast_funcs = {
+        bin: $hyoo_crowds_vary_cast_bin,
+        bool: $hyoo_crowds_vary_cast_bool,
+        int: $hyoo_crowds_vary_cast_int,
+        real: $hyoo_crowds_vary_cast_real,
+        ref: $hyoo_crowds_vary_cast_ref,
+        str: $hyoo_crowds_vary_cast_str,
+        time: $hyoo_crowds_vary_cast_time,
+        json: $hyoo_crowds_vary_cast_json,
+        xml: $hyoo_crowds_vary_cast_xml,
+        tree: $hyoo_crowds_vary_cast_tree,
+    };
+    function $hyoo_crowds_vary_cast(tip, vary) {
+        return $.$hyoo_crowds_vary_cast_funcs[tip](vary);
+    }
+    $.$hyoo_crowds_vary_cast = $hyoo_crowds_vary_cast;
+})($ || ($ = {}));
+//hyoo/crowds/vary/cast/cast.tsx
+;
+"use strict";
 //mol/data/value/value.ts
 ;
 "use strict";
@@ -9050,10 +9320,48 @@ var $;
 (function ($) {
     class $hyoo_crowds_reg extends $hyoo_crowds_node {
         static tag = $hyoo_crowds_gist_tag[$hyoo_crowds_gist_tag.head];
+        static of(tip) {
+            class Narrow extends $hyoo_crowds_reg {
+                static tip = tip;
+                value(next) {
+                    return $hyoo_crowds_vary_cast_funcs[tip](this.value_vary(next));
+                }
+            }
+            __decorate([
+                $mol_mem
+            ], Narrow.prototype, "value", null);
+            return Narrow;
+        }
+        static ref(Value) {
+            class Narrow extends $hyoo_crowds_reg {
+                static Value = Value;
+                static toJSON() {
+                    return '$hyoo_crowds_reg.ref(()=>' + Value() + ')';
+                }
+                value(next) {
+                    const realm = this.realm();
+                    const ref = this.value_ref(next?.ref());
+                    if (!ref)
+                        return null;
+                    return realm.Land(ref.lord()).Area(ref.numb()).Node(Value()).Item(ref.head());
+                }
+                ensure() {
+                    this.yoke(this.ref());
+                    return this.value();
+                }
+            }
+            __decorate([
+                $mol_mem
+            ], Narrow.prototype, "value", null);
+            __decorate([
+                $mol_action
+            ], Narrow.prototype, "ensure", null);
+            return Narrow;
+        }
         pick_unit() {
             return this.units().at(0);
         }
-        value(next) {
+        value_vary(next) {
             let unit_prev = this.pick_unit();
             let prev = unit_prev ? this.area().gist_decode(unit_prev) : null;
             if (next === undefined)
@@ -9061,46 +9369,25 @@ var $;
             if ($mol_compare_deep(prev, next))
                 return next;
             this.area().post(0, unit_prev?.head() ?? this.head(), unit_prev?.self() ?? 0, next);
-            return this.value();
+            return this.value_vary();
         }
         value_bool(next) {
-            return Boolean(this.value(next));
+            return $hyoo_crowds_vary_cast_bool(this.value_vary(next));
         }
         value_int(next) {
-            let val = this.value(next);
-            switch (typeof val) {
-                case 'boolean': return BigInt(val);
-                case 'bigint': return val;
-                case 'number': return BigInt(Number.isFinite(val) ? Math.trunc(val) : 0n);
-                case 'string':
-                    try {
-                        return BigInt(val ?? 0n);
-                    }
-                    catch {
-                        return 0n;
-                    }
-            }
-            if (val instanceof $hyoo_crowds_ref)
-                return val.lord();
-            if (val instanceof Uint8Array)
-                return 0n;
-            return 0n;
+            return $hyoo_crowds_vary_cast_int(this.value_vary(next));
         }
         value_real(next) {
-            const val = this.value(next);
-            if (typeof val === 'string')
-                return Number(val || Number.NaN);
-            return Number(val ?? Number.NaN);
+            return $hyoo_crowds_vary_cast_real(this.value_vary(next));
         }
         value_str(next) {
-            return String(this.value(next) ?? '');
+            return $hyoo_crowds_vary_cast_str(this.value_vary(next));
         }
         value_bin(next) {
-            const bin = this.value(next);
-            return bin instanceof Uint8Array ? bin : null;
+            return $hyoo_crowds_vary_cast_bin(this.value_vary(next));
         }
         value_ref(next) {
-            const bin = this.value(next);
+            const bin = this.value_vary(next);
             return bin instanceof $hyoo_crowds_ref ? bin : null;
         }
         value_as(decode, next) {
@@ -9116,7 +9403,7 @@ var $;
             else {
                 const str = `${next}`;
                 const res = decode(str);
-                this.value(str);
+                this.value_vary(str);
                 return res;
             }
         }
@@ -9133,12 +9420,12 @@ var $;
         }
         ;
         [$mol_dev_format_head]() {
-            return $mol_dev_format_span({}, $mol_dev_format_native(this), ' ', this.slug(), ' ', $mol_dev_format_auto(this.value()));
+            return $mol_dev_format_span({}, $mol_dev_format_native(this), ' ', this.slug(), ' ', $mol_dev_format_auto(this.value_vary()));
         }
     }
     __decorate([
         $mol_mem
-    ], $hyoo_crowds_reg.prototype, "value", null);
+    ], $hyoo_crowds_reg.prototype, "value_vary", null);
     __decorate([
         $mol_mem
     ], $hyoo_crowds_reg.prototype, "value_bool", null);
@@ -9163,6 +9450,9 @@ var $;
     __decorate([
         $mol_mem_key
     ], $hyoo_crowds_reg.prototype, "yoke", null);
+    __decorate([
+        $mol_mem_key
+    ], $hyoo_crowds_reg, "of", null);
     $.$hyoo_crowds_reg = $hyoo_crowds_reg;
 })($ || ($ = {}));
 //hyoo/crowds/reg/reg.ts
@@ -9210,6 +9500,33 @@ var $;
 (function ($) {
     class $hyoo_crowds_list extends $hyoo_crowds_node {
         static tag = $hyoo_crowds_gist_tag[$hyoo_crowds_gist_tag.vals];
+        static ref(Value) {
+            class Narrow extends $hyoo_crowds_list {
+                static Value = Value;
+                static toJSON() {
+                    return '$hyoo_crowds_list.ref(()=>' + Value() + ')';
+                }
+                remotes(next) {
+                    const realm = this.realm();
+                    const Node = Value();
+                    return this.items(next?.map(item => item.ref()))
+                        .map($hyoo_crowds_vary_cast_ref)
+                        .map(ref => realm.Node(Node, ref));
+                }
+                remote_make() {
+                    const area = this.realm().home().Area_new(0);
+                    this.splice([area.ref()]);
+                    return area.Node(Value()).Item(0);
+                }
+            }
+            __decorate([
+                $mol_mem
+            ], Narrow.prototype, "remotes", null);
+            __decorate([
+                $mol_action
+            ], Narrow.prototype, "remote_make", null);
+            return Narrow;
+        }
         items(next, tag = 'term') {
             const units = this.units();
             if (next === undefined)
@@ -9282,6 +9599,17 @@ var $;
 (function ($) {
     class $hyoo_crowds_dict extends $hyoo_crowds_node {
         static tag = $hyoo_crowds_gist_tag[$hyoo_crowds_gist_tag.keys];
+        static of(schema) {
+            const Entity = class Entity extends $hyoo_crowds_dict {
+            };
+            for (const field in schema) {
+                Object.assign(Entity.prototype, { [field]: function () {
+                        return this.dive(field, schema[field]);
+                    } });
+                $mol_mem(Entity.prototype, field);
+            }
+            return Entity;
+        }
         keys() {
             return this.cast($hyoo_crowds_list).items();
         }
@@ -9680,12 +10008,12 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    class $hyoo_crowds_chief extends $hyoo_crowds_dict {
+    class $hyoo_crowds_base extends $hyoo_crowds_dict {
         title(next) {
             return this.dive('title', $hyoo_crowds_reg).value_str(next);
         }
         selection(next) {
-            return (this.dive('selection', $hyoo_crowds_reg).value(next) ?? [[0, 0], [0, 0]]);
+            return (this.dive('selection', $hyoo_crowds_reg).value_vary(next) ?? [[0, 0], [0, 0]]);
         }
         profiles() {
             return this.dive('profiles', $hyoo_crowds_dict).keys();
@@ -9694,9 +10022,9 @@ var $;
             return this.dive('profiles', $hyoo_crowds_dict).dive(app, $hyoo_crowds_reg).yoke(app);
         }
     }
-    $.$hyoo_crowds_chief = $hyoo_crowds_chief;
+    $.$hyoo_crowds_base = $hyoo_crowds_base;
 })($ || ($ = {}));
-//hyoo/crowds/chief/chief.ts
+//hyoo/crowds/base/base.ts
 ;
 "use strict";
 var $;
@@ -9710,7 +10038,7 @@ var $;
         }
         area = new $mol_wire_dict();
         base() {
-            return this.Area(0).Root($hyoo_crowds_chief);
+            return this.Area(0).Root($hyoo_crowds_base);
         }
         ref() {
             return this.base().ref();
@@ -9781,6 +10109,9 @@ var $;
             });
             this.land.set(lord, land);
             return land;
+        }
+        Node(Node, ref) {
+            return this.Land(ref.lord()).Area(ref.numb()).Node(Node).Item(ref.head());
         }
     }
     __decorate([
@@ -12108,7 +12439,7 @@ var $;
                 return this.node().slug().padEnd(8, ' ');
             }
             value() {
-                return this.node().cast($hyoo_crowds_reg).value();
+                return this.node().cast($hyoo_crowds_reg).value_vary();
             }
             items() {
                 return this.node().cast($hyoo_crowds_list).items();
@@ -12455,13 +12786,13 @@ var $;
             return [0, offset];
         }
         selection(lord, next) {
-            const home = this.realm().Land(lord).base();
+            const base = this.realm().Land(lord).base();
             if (next) {
-                home.selection(next.map(offset => this.point_by_offset(offset)));
+                base.selection(next.map(offset => this.point_by_offset(offset)));
                 return next;
             }
             else {
-                return home.selection().map(point => this.offset_by_point(point)[1]);
+                return base.selection().map(point => this.offset_by_point(point)[1]);
             }
         }
     }

@@ -4635,6 +4635,22 @@ var $;
 var $;
 (function ($) {
     $mol_test({
+        'fromJSON'() {
+            $mol_assert_equal($mol_tree2_from_json([]).toString(), '/\n');
+            $mol_assert_equal($mol_tree2_from_json([false, true]).toString(), '/\n\tfalse\n\ttrue\n');
+            $mol_assert_equal($mol_tree2_from_json([0, 1, 2.3]).toString(), '/\n\t0\n\t1\n\t2.3\n');
+            $mol_assert_equal($mol_tree2_from_json(new Uint16Array([1, 10, 256])).toString(), '\\\x01\x00\n\\\x00\x00\x01\n');
+            $mol_assert_equal($mol_tree2_from_json(['', 'foo', 'bar\nbaz']).toString(), '/\n\t\\\n\t\\foo\n\t\\\n\t\t\\bar\n\t\t\\baz\n');
+            $mol_assert_equal($mol_tree2_from_json({ 'foo': false, 'bar\nbaz': 'lol' }).toString(), '*\n\tfoo false\n\t\\\n\t\t\\bar\n\t\t\\baz\n\t\t\\lol\n');
+        },
+    });
+})($ || ($ = {}));
+//mol/tree2/from/json/json.test.ts
+;
+"use strict";
+var $;
+(function ($) {
+    $mol_test({
         'same list'() {
             const list = $mol_jsx("body", null,
                 $mol_jsx("p", { "data-rev": "old" }, "a"),
@@ -5050,14 +5066,14 @@ var $;
                 $mol_assert_like(reg.value_bool(), true);
                 $mol_assert_like(reg.value_int(), 1n);
                 $mol_assert_like(reg.value_real(), 1);
-                $mol_assert_like(reg.value_bin(), null);
+                $mol_assert_like(reg.value_bin(), new Uint8Array([1]));
                 $mol_assert_like(reg.value_str(), 'true');
                 $mol_assert_like(reg.value_ref(), null);
                 reg.value_bool(false);
                 $mol_assert_like(reg.value_bool(), false);
                 $mol_assert_like(reg.value_int(), 0n);
                 $mol_assert_like(reg.value_real(), 0);
-                $mol_assert_like(reg.value_bin(), null);
+                $mol_assert_like(reg.value_bin(), new Uint8Array([0]));
                 $mol_assert_like(reg.value_str(), 'false');
                 $mol_assert_like(reg.value_ref(), null);
             },
@@ -5068,14 +5084,14 @@ var $;
                 $mol_assert_like(reg.value_bool(), true);
                 $mol_assert_like(reg.value_int(), 4611686018427387904n);
                 $mol_assert_like(reg.value_real(), 4611686018427388000);
-                $mol_assert_like(reg.value_bin(), null);
+                $mol_assert_like(reg.value_bin(), new Uint8Array([0, 0, 0, 0, 0, 0, 0, 0x40]));
                 $mol_assert_like(reg.value_str(), '4611686018427387904');
                 $mol_assert_like(reg.value_ref(), null);
                 reg.value_int(0n);
                 $mol_assert_like(reg.value_bool(), false);
                 $mol_assert_like(reg.value_int(), 0n);
                 $mol_assert_like(reg.value_real(), 0);
-                $mol_assert_like(reg.value_bin(), null);
+                $mol_assert_like(reg.value_bin(), new Uint8Array([0, 0, 0, 0, 0, 0, 0, 0]));
                 $mol_assert_like(reg.value_str(), '0');
                 $mol_assert_like(reg.value_ref(), null);
             },
@@ -5086,42 +5102,42 @@ var $;
                 $mol_assert_like(reg.value_bool(), true);
                 $mol_assert_like(reg.value_int(), 3n);
                 $mol_assert_like(reg.value_real(), Math.PI);
-                $mol_assert_like(reg.value_bin(), null);
+                $mol_assert_like(reg.value_bin(), new Uint8Array([24, 45, 68, 84, 251, 33, 9, 64]));
                 $mol_assert_like(reg.value_str(), '3.141592653589793');
                 $mol_assert_like(reg.value_ref(), null);
                 reg.value_real(0);
                 $mol_assert_like(reg.value_bool(), false);
                 $mol_assert_like(reg.value_int(), 0n);
                 $mol_assert_like(reg.value_real(), 0);
-                $mol_assert_like(reg.value_bin(), null);
+                $mol_assert_like(reg.value_bin(), new Uint8Array([0, 0, 0, 0, 0, 0, 0, 0]));
                 $mol_assert_like(reg.value_str(), '0');
                 $mol_assert_like(reg.value_ref(), null);
                 reg.value_real(-Math.PI);
                 $mol_assert_like(reg.value_bool(), true);
                 $mol_assert_like(reg.value_int(), -3n);
                 $mol_assert_like(reg.value_real(), -Math.PI);
-                $mol_assert_like(reg.value_bin(), null);
+                $mol_assert_like(reg.value_bin(), new Uint8Array([24, 45, 68, 84, 251, 33, 9, 192]));
                 $mol_assert_like(reg.value_str(), '-3.141592653589793');
                 $mol_assert_like(reg.value_ref(), null);
                 reg.value_real(Number.NaN);
                 $mol_assert_like(reg.value_bool(), false);
                 $mol_assert_like(reg.value_int(), 0n);
                 $mol_assert_like(reg.value_real(), Number.NaN);
-                $mol_assert_like(reg.value_bin(), null);
+                $mol_assert_like(reg.value_bin(), new Uint8Array([0, 0, 0, 0, 0, 0, 248, 127]));
                 $mol_assert_like(reg.value_str(), 'NaN');
                 $mol_assert_like(reg.value_ref(), null);
                 reg.value_real(Number.POSITIVE_INFINITY);
                 $mol_assert_like(reg.value_bool(), true);
                 $mol_assert_like(reg.value_int(), 0n);
                 $mol_assert_like(reg.value_real(), Number.POSITIVE_INFINITY);
-                $mol_assert_like(reg.value_bin(), null);
+                $mol_assert_like(reg.value_bin(), new Uint8Array([0, 0, 0, 0, 0, 0, 240, 127]));
                 $mol_assert_like(reg.value_str(), 'Infinity');
                 $mol_assert_like(reg.value_ref(), null);
                 reg.value_real(Number.NEGATIVE_INFINITY);
                 $mol_assert_like(reg.value_bool(), true);
                 $mol_assert_like(reg.value_int(), 0n);
                 $mol_assert_like(reg.value_real(), Number.NEGATIVE_INFINITY);
-                $mol_assert_like(reg.value_bin(), null);
+                $mol_assert_like(reg.value_bin(), new Uint8Array([0, 0, 0, 0, 0, 0, 240, 255]));
                 $mol_assert_like(reg.value_str(), '-Infinity');
                 $mol_assert_like(reg.value_ref(), null);
             },
@@ -5130,17 +5146,17 @@ var $;
                 const reg = land.Node($hyoo_crowds_reg).Item(0);
                 reg.value_bin(new Uint8Array([1, 2, 3]));
                 $mol_assert_like(reg.value_bool(), true);
-                $mol_assert_like(reg.value_int(), 0n);
-                $mol_assert_like(reg.value_real(), Number.NaN);
+                $mol_assert_like(reg.value_int(), 3n);
+                $mol_assert_like(reg.value_real(), 3);
                 $mol_assert_like(reg.value_bin(), new Uint8Array([1, 2, 3]));
-                $mol_assert_like(reg.value_str(), '1,2,3');
+                $mol_assert_like(reg.value_str(), '010203');
                 $mol_assert_like(reg.value_ref(), null);
                 reg.value_bin(new Uint8Array([1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0]));
                 $mol_assert_like(reg.value_bool(), true);
-                $mol_assert_like(reg.value_int(), 0n);
-                $mol_assert_like(reg.value_real(), Number.NaN);
+                $mol_assert_like(reg.value_int(), 40n);
+                $mol_assert_like(reg.value_real(), 40);
                 $mol_assert_like(reg.value_bin(), new Uint8Array([1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0]));
-                $mol_assert_like(reg.value_str(), '1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0');
+                $mol_assert_like(reg.value_str(), '01020304050607080900010203040506070809000102030405060708090001020304050607080900');
                 $mol_assert_like(reg.value_ref(), null);
                 reg.value_bin(null);
                 $mol_assert_like(reg.value_bool(), false);
@@ -5157,14 +5173,19 @@ var $;
                 $mol_assert_like(reg.value_bool(), true);
                 $mol_assert_like(reg.value_int(), 0n);
                 $mol_assert_like(reg.value_real(), Number.NaN);
-                $mol_assert_like(reg.value_bin(), null);
+                $mol_assert_like(reg.value_bin(), new Uint8Array([102, 111, 111]));
                 $mol_assert_like(reg.value_str(), 'foo');
                 $mol_assert_like(reg.value_ref(), null);
                 reg.value_str('1234567890123456789012345678901234567890');
                 $mol_assert_like(reg.value_bool(), true);
                 $mol_assert_like(reg.value_int(), 1234567890123456789012345678901234567890n);
                 $mol_assert_like(reg.value_real(), 1.2345678901234568e+39);
-                $mol_assert_like(reg.value_bin(), null);
+                $mol_assert_like(reg.value_bin(), new Uint8Array([
+                    49, 50, 51, 52, 53, 54, 55, 56, 57, 48,
+                    49, 50, 51, 52, 53, 54, 55, 56, 57, 48,
+                    49, 50, 51, 52, 53, 54, 55, 56, 57, 48,
+                    49, 50, 51, 52, 53, 54, 55, 56, 57, 48,
+                ]));
                 $mol_assert_like(reg.value_str(), '1234567890123456789012345678901234567890');
                 $mol_assert_like(reg.value_ref(), null);
                 reg.value_str('');
@@ -5177,12 +5198,12 @@ var $;
             },
             "Reference representation"($) {
                 const land = $hyoo_crowds_area.make({ $ });
-                const reg = land.Node($hyoo_crowds_reg).Item(0);
+                const reg = land.Node($hyoo_crowds_reg).Item(123);
                 reg.value_ref(reg.ref());
                 $mol_assert_like(reg.value_bool(), true);
-                $mol_assert_like(reg.value_int(), land.lord());
+                $mol_assert_like(reg.value_int(), land.lord() + (123n << 96n));
                 $mol_assert_like(reg.value_real(), Number.NaN);
-                $mol_assert_like(reg.value_bin(), null);
+                $mol_assert_like(reg.value_bin(), new Uint8Array([174, 214, 197, 34, 45, 170, 191, 40, 0, 0, 0, 0, 123, 0, 0, 0, 0, 0]));
                 $mol_assert_like(reg.value_str(), reg.ref().toString());
                 $mol_assert_like(reg.value_ref(), reg.ref());
                 reg.value_ref(null);
@@ -5213,6 +5234,26 @@ var $;
                 $mol_assert_like(reg.value_ref(), remote.ref());
                 $mol_assert_like(reg.yoke(null).Root($hyoo_crowds_reg), remote);
             },
+            "Narrow registers"($) {
+                const realm = $hyoo_crowds_realm.make({ $ });
+                const area = realm.home().base().area();
+                const bin = area.Node($hyoo_crowds_reg.of('bin')).Item(1);
+                $mol_assert_like(bin.value(), null);
+                bin.value(new Uint8Array([1, 2, 3]));
+                $mol_assert_like(bin.value(), new Uint8Array([1, 2, 3]));
+                const str = area.Node($hyoo_crowds_reg.of('str')).Item(2);
+                $mol_assert_like(str.value(), '');
+                str.value('foo');
+                $mol_assert_like(str.value(), 'foo');
+            },
+            "Register with linked nodes"($) {
+                const realm = $hyoo_crowds_realm.make({ $ });
+                const area = realm.home().base().area();
+                const reg = area.Node($hyoo_crowds_reg.ref(() => $hyoo_crowds_reg)).Item(1);
+                $mol_assert_like(reg.value(), null);
+                reg.value(reg);
+                $mol_assert_like(reg.value_ref(), reg.value().value_ref(), reg.ref());
+            },
         });
     })($$ = $_1.$$ || ($_1.$$ = {}));
 })($ || ($ = {}));
@@ -5235,10 +5276,10 @@ var $;
                 $mol_assert_ok(dict.has(123));
                 $mol_assert_ok(dict.has('xxx'));
                 $mol_assert_not(dict.has('yyy'));
-                $mol_assert_like(dict.dive(123, $hyoo_crowds_reg).value(), null);
-                $mol_assert_like(dict.dive('xxx', $hyoo_crowds_reg).value(), null);
-                dict.dive(123, $hyoo_crowds_reg).value(777);
-                $mol_assert_like(dict.dive(123, $hyoo_crowds_reg).value(), 777);
+                $mol_assert_like(dict.dive(123, $hyoo_crowds_reg).value_vary(), null);
+                $mol_assert_like(dict.dive('xxx', $hyoo_crowds_reg).value_vary(), null);
+                dict.dive(123, $hyoo_crowds_reg).value_vary(777);
+                $mol_assert_like(dict.dive(123, $hyoo_crowds_reg).value_vary(), 777);
                 dict.dive('xxx', $hyoo_crowds_list).items(['foo', 'bar']);
                 $mol_assert_like(dict.dive('xxx', $hyoo_crowds_list).items(), ['foo', 'bar']);
                 dict.has(123, false);
@@ -5249,16 +5290,46 @@ var $;
                 const area2 = $hyoo_crowds_area.make({ $ });
                 const dict1 = area1.Node($hyoo_crowds_dict).Item(0);
                 const dict2 = area2.Node($hyoo_crowds_dict).Item(0);
-                dict1.dive(123, $hyoo_crowds_reg).value(666);
+                dict1.dive(123, $hyoo_crowds_reg).value_vary(666);
                 area2.face.tick(area2.auth().peer());
-                dict2.dive(123, $hyoo_crowds_reg).value(777);
+                dict2.dive(123, $hyoo_crowds_reg).value_vary(777);
                 area1.apply_unit(area2.delta_unit());
-                $mol_assert_like(dict1.dive(123, $hyoo_crowds_reg).value(), 777);
+                $mol_assert_like(dict1.dive(123, $hyoo_crowds_reg).value_vary(), 777);
                 dict1.dive('xxx', $hyoo_crowds_list).items(['foo']);
                 area2.face.tick(area2.auth().peer());
                 dict2.dive('xxx', $hyoo_crowds_list).items(['bar']);
                 area1.apply_unit(area2.delta_unit());
                 $mol_assert_like(dict1.dive('xxx', $hyoo_crowds_list).items(), ['bar', 'foo']);
+            },
+            "Narrowed Dictiona with linked Dictionaries"($) {
+                const realm = $hyoo_crowds_realm.make({ $ });
+                const area = realm.home().base().area();
+                class User extends $hyoo_crowds_dict.of({
+                    Title: $hyoo_crowds_reg.of('str'),
+                    Account: $hyoo_crowds_reg.ref(() => Account),
+                    Articles: $hyoo_crowds_list.ref(() => Article),
+                }) {
+                }
+                class Account extends $hyoo_crowds_dict.of({
+                    Title: $hyoo_crowds_reg.of('str'),
+                    User: $hyoo_crowds_reg.ref(() => User),
+                }) {
+                }
+                class Article extends $hyoo_crowds_dict.of({
+                    Title: $hyoo_crowds_reg.of('str'),
+                    Author: $hyoo_crowds_reg.ref(() => User),
+                }) {
+                }
+                const user = area.Node(User).Item(1);
+                $mol_assert_like(user.Account().value(), null);
+                $mol_assert_like(user.Articles().remotes(), []);
+                const account = user.Account().ensure();
+                $mol_assert_like(user.Account().value(), account);
+                $mol_assert_like(account.User().value(), null);
+                account.User().value(user);
+                $mol_assert_like(account.User().value(), user);
+                const articles = [user.Articles().remote_make(), user.Articles().remote_make()];
+                $mol_assert_like(user.Articles().remotes(), articles);
             },
         });
     })($$ = $_1.$$ || ($_1.$$ = {}));
@@ -5271,16 +5342,16 @@ var $;
     $mol_test({
         'Per app profiles'($) {
             const realm = $hyoo_crowds_realm.make({ $ });
-            const chief = realm.home().base();
-            const profile1 = chief.Profile('my_foo');
-            const profile2 = chief.Profile('my_bar');
-            $mol_assert_unique(chief.land().base().area(), profile1, profile2);
-            $mol_assert_equal(chief.land(), profile1.land(), profile2.land());
-            $mol_assert_like(chief.profiles(), ['my_bar', 'my_foo']);
+            const base = realm.home().base();
+            const profile1 = base.Profile('my_foo');
+            const profile2 = base.Profile('my_bar');
+            $mol_assert_unique(base.land().base().area(), profile1, profile2);
+            $mol_assert_equal(base.land(), profile1.land(), profile2.land());
+            $mol_assert_like(base.profiles(), ['my_bar', 'my_foo']);
         },
     });
 })($ || ($ = {}));
-//hyoo/crowds/chief/chief.test.ts
+//hyoo/crowds/base/base.test.ts
 ;
 "use strict";
 var $;
@@ -5373,17 +5444,30 @@ var $;
         'Change sequences'($) {
             const area = $hyoo_crowds_area.make({ $ });
             const text = area.Root($hyoo_crowds_text);
+            const list = area.Root($hyoo_crowds_list);
             $mol_assert_like(text.str(), '');
+            $mol_assert_like(list.items(), []);
             text.str('foo');
             $mol_assert_like(text.str(), 'foo');
+            $mol_assert_like(list.items(), ['foo']);
             text.str('foo bar');
             $mol_assert_like(text.str(), 'foo bar');
+            $mol_assert_like(list.items(), ['foo', ' bar']);
             text.str('foo lol bar');
             $mol_assert_like(text.str(), 'foo lol bar');
+            $mol_assert_like(list.items(), ['foo', ' lol', ' bar']);
             text.str('lol bar');
             $mol_assert_like(text.str(), 'lol bar');
+            $mol_assert_like(list.items(), ['lol', ' bar']);
             text.str('foo bar');
             $mol_assert_like(text.str(), 'foo bar');
+            $mol_assert_like(list.items(), ['foo', ' bar']);
+            text.str('foo  bar');
+            $mol_assert_like(text.str(), 'foo  bar');
+            $mol_assert_like(list.items(), ['foo', ' ', ' bar']);
+            text.str('foo  BarBar');
+            $mol_assert_like(text.str(), 'foo  BarBar');
+            $mol_assert_like(list.items(), ['foo', ' ', ' Bar', 'Bar']);
         },
         async 'str: Offset <=> Point'($) {
             const area = $hyoo_crowds_area.make({ $ });
