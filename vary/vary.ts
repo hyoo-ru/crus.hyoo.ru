@@ -1,8 +1,22 @@
-/** @jsx $mol_jsx */
 namespace $ {
 	
 	type json = null | boolean | number | string | { [ key in string ]: json } | readonly json[]
 	export type $hyoo_crowds_vary_type = null | Uint8Array | bigint | $hyoo_crowds_ref | $mol_time_moment | $mol_tree2 | json | Node
+	
+	export let $hyoo_crowds_vary_mapping = {
+		bin: Uint8Array,
+		bool: Boolean,
+		int: BigInt,
+		real: Number,
+		ref: $hyoo_crowds_ref,
+		str: String,
+		time: $mol_time_moment,
+		json: Object,
+		xml: $mol_dom_context.Element,
+		tree: $mol_tree2,
+	}
+	
+	export type $hyoo_crowds_vary_classes = typeof $hyoo_crowds_vary_mapping[ keyof typeof $hyoo_crowds_vary_mapping ]
 	
 	export type $hyoo_crowds_vary_pack = {
 		tip: keyof typeof $hyoo_crowds_vary_tip,

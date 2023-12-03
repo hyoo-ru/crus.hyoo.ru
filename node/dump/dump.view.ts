@@ -6,7 +6,7 @@ namespace $.$$ {
 		}
 		
 		value() {
-			return this.node().cast( $hyoo_crowds_reg ).value()
+			return this.node().cast( $hyoo_crowds_reg ).value_vary()
 		}
 		
 		items() {

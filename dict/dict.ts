@@ -3,6 +3,27 @@ namespace $ {
 		
 		static tag = $hyoo_crowds_gist_tag[ $hyoo_crowds_gist_tag.keys ] as keyof typeof $hyoo_crowds_gist_tag
 		
+		static of<
+			Schema extends Record< string, typeof $hyoo_crowds_node >
+		>( schema: Schema ) {
+			
+			const Entity = class Entity extends $hyoo_crowds_dict {}
+		
+			for( const field in schema ) {
+				Object.assign( Entity.prototype, { [ field ]: function( this: $hyoo_crowds_dict ) {
+					return this.dive( field, schema[ field ] )
+				} } )
+				$mol_mem( Entity.prototype, field )
+			}
+			
+			return Entity as Pick< typeof $hyoo_crowds_dict, keyof typeof $hyoo_crowds_dict > & {
+				new(): $hyoo_crowds_dict & {
+					[ Key in keyof Schema ]: ()=> InstanceType< Schema[ Key ] >
+				}
+			}
+			
+		}
+		
 		@ $mol_mem
 		keys(): readonly $hyoo_crowds_vary_type[] {
 			return this.cast( $hyoo_crowds_list ).items()

@@ -24,6 +24,10 @@ namespace $ {
 			
 		}
 		
+		Node< Node extends typeof $hyoo_crowds_node > ( Node: Node, ref: $hyoo_crowds_ref ) {
+			return this.Land( ref.lord() ).Area( ref.numb() ).Node( Node ).Item( ref.head() )
+		}
+		
 		// @ $mol_mem_key
 		// key_public( lord: bigint ) {
 		// 	const key = this.Land( lord ).Area( 0 ).pass.get( Number( lord >> 16n ) )?.auth()

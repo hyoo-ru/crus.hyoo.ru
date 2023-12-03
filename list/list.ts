@@ -3,6 +3,39 @@ namespace $ {
 		
 		static tag = $hyoo_crowds_gist_tag[ $hyoo_crowds_gist_tag.vals ] as keyof typeof $hyoo_crowds_gist_tag
 		
+		static ref< Value extends any >( Value: Value ) {
+			
+			type Vals = $mol_type_result< $mol_type_result< Value > >[]
+			
+			class Narrow extends $hyoo_crowds_list {
+				
+				static Value = Value
+				
+				static toJSON() {
+					return '$hyoo_crowds_list.ref(()=>' + ( Value as any )() + ')'
+				}
+				
+				@ $mol_mem
+				remotes( next?: Vals ): Vals {
+					const realm = this.realm()
+					const Node = ( Value as any )()
+					return this.items( next?.map( item => ( item as $hyoo_crowds_node ).ref() ) )
+						.map( $hyoo_crowds_vary_cast_ref )
+						.map( ref => realm!.Node( Node, ref ) )
+				}
+				
+				@ $mol_action
+				remote_make() {
+					const area = this.realm()!.home().Area_new( 0 )
+					this.splice([ area.ref() ])
+					return area.Node( ( Value as any )() ).Item(0)
+				}
+				
+			}
+			
+			return Narrow
+		}
+		
 		/** Data list representation. */
 		@ $mol_mem
 		items(

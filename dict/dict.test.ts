@@ -16,11 +16,11 @@ namespace $.$$ {
 			$mol_assert_ok( dict.has( 123 ) )
 			$mol_assert_ok( dict.has( 'xxx' ) )
 			$mol_assert_not( dict.has( 'yyy' ) )
-			$mol_assert_like( dict.dive( 123, $hyoo_crowds_reg ).value(), null )
-			$mol_assert_like( dict.dive( 'xxx', $hyoo_crowds_reg ).value(), null )
+			$mol_assert_like( dict.dive( 123, $hyoo_crowds_reg ).value_vary(), null )
+			$mol_assert_like( dict.dive( 'xxx', $hyoo_crowds_reg ).value_vary(), null )
 			
-			dict.dive( 123, $hyoo_crowds_reg ).value( 777 )
-			$mol_assert_like( dict.dive( 123, $hyoo_crowds_reg ).value(), 777 )
+			dict.dive( 123, $hyoo_crowds_reg ).value_vary( 777 )
+			$mol_assert_like( dict.dive( 123, $hyoo_crowds_reg ).value_vary(), 777 )
 
 			dict.dive( 'xxx', $hyoo_crowds_list ).items([ 'foo', 'bar' ])
 			$mol_assert_like( dict.dive( 'xxx', $hyoo_crowds_list ).items(), [ 'foo', 'bar' ] )
@@ -38,11 +38,11 @@ namespace $.$$ {
 			const dict1 = area1.Node( $hyoo_crowds_dict ).Item(0)
 			const dict2 = area2.Node( $hyoo_crowds_dict ).Item(0)
 
-			dict1.dive( 123, $hyoo_crowds_reg ).value( 666 )
+			dict1.dive( 123, $hyoo_crowds_reg ).value_vary( 666 )
 			area2.face.tick( area2.auth().peer() )
-			dict2.dive( 123, $hyoo_crowds_reg ).value( 777 )
+			dict2.dive( 123, $hyoo_crowds_reg ).value_vary( 777 )
 			area1.apply_unit( area2.delta_unit() )
-			$mol_assert_like( dict1.dive( 123, $hyoo_crowds_reg ).value(), 777 )
+			$mol_assert_like( dict1.dive( 123, $hyoo_crowds_reg ).value_vary(), 777 )
 			
 			dict1.dive( 'xxx', $hyoo_crowds_list ).items([ 'foo' ])
 			area2.face.tick( area2.auth().peer() )
@@ -50,6 +50,43 @@ namespace $.$$ {
 			area1.apply_unit( area2.delta_unit() )
 			$mol_assert_like( dict1.dive( 'xxx', $hyoo_crowds_list ).items(), [ 'bar', 'foo' ] )
 
+		},
+		
+		"Narrowed Dictiona with linked Dictionaries"( $ ) {
+			
+			const realm = $hyoo_crowds_realm.make({ $ })
+			const area = realm.home().base().area()
+			
+			class User extends $hyoo_crowds_dict.of({
+				Title: $hyoo_crowds_reg.of( 'str' ),
+				Account: $hyoo_crowds_reg.ref( ()=> Account ),
+				Articles: $hyoo_crowds_list.ref( ()=> Article ),
+			}) {}
+			
+			class Account extends $hyoo_crowds_dict.of({
+				Title: $hyoo_crowds_reg.of( 'str' ),
+				User: $hyoo_crowds_reg.ref( ()=> User ),
+			}) {}
+			
+			class Article extends $hyoo_crowds_dict.of({
+				Title: $hyoo_crowds_reg.of( 'str' ),
+				Author: $hyoo_crowds_reg.ref( ()=> User ),
+			}) {}
+			
+			const user = area.Node( User ).Item(1)
+			$mol_assert_like( user.Account().value(), null )
+			$mol_assert_like( user.Articles().remotes(), [] )
+			
+			const account = user.Account().ensure()
+			$mol_assert_like( user.Account().value(), account )
+			$mol_assert_like( account.User().value(), null )
+			
+			account.User().value( user )
+			$mol_assert_like( account.User().value(), user )
+			
+			const articles = [ user.Articles().remote_make(), user.Articles().remote_make() ]
+			$mol_assert_like( user.Articles().remotes(), articles )
+			
 		},
 		
 	})

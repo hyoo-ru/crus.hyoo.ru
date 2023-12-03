@@ -177,17 +177,17 @@ namespace $ {
 		
 		selection( lord: bigint, next?: readonly[ number /*begin*/, number /*end*/ ] ) {
 			
-			const home = this.realm()!.Land( lord ).base()
+			const base = this.realm()!.Land( lord ).base()
 			
 			if( next ) {
 				
-				home.selection( next.map( offset => this.point_by_offset( offset ) ) )
+				base.selection( next.map( offset => this.point_by_offset( offset ) ) )
 				return next
 				
 			} else {
 				
 				// this.units() // track text to recalc selection on its change
-				return home.selection().map( point => this.offset_by_point( point )[1] )
+				return base.selection().map( point => this.offset_by_point( point )[1] )
 					
 			}
 			

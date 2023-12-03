@@ -5,22 +5,37 @@ namespace $ {
 			
 			const area = $hyoo_crowds_area.make({ $ })
 			const text = area.Root( $hyoo_crowds_text )
+			const list = area.Root( $hyoo_crowds_list )
 			$mol_assert_like( text.str(), '' )
+			$mol_assert_like( list.items(), [] )
 			
 			text.str( 'foo' )
 			$mol_assert_like( text.str(), 'foo' )
+			$mol_assert_like( list.items(), [ 'foo' ] )
 			
 			text.str( 'foo bar' )
 			$mol_assert_like( text.str(), 'foo bar' )
+			$mol_assert_like( list.items(), [ 'foo', ' bar' ] )
 			
 			text.str( 'foo lol bar' )
 			$mol_assert_like( text.str(), 'foo lol bar' )
+			$mol_assert_like( list.items(), [ 'foo', ' lol', ' bar' ] )
 			
 			text.str( 'lol bar' )
 			$mol_assert_like( text.str(), 'lol bar' )
+			$mol_assert_like( list.items(), [ 'lol', ' bar' ] )
 			
 			text.str( 'foo bar' )
 			$mol_assert_like( text.str(), 'foo bar' )
+			$mol_assert_like( list.items(), [ 'foo', ' bar' ] )
+			
+			text.str( 'foo  bar' )
+			$mol_assert_like( text.str(), 'foo  bar' )
+			$mol_assert_like( list.items(), [ 'foo', ' ', ' bar' ] )
+			
+			text.str( 'foo  BarBar' )
+			$mol_assert_like( text.str(), 'foo  BarBar' )
+			$mol_assert_like( list.items(), [ 'foo', ' ', ' Bar', 'Bar' ] )
 			
 		},
 		

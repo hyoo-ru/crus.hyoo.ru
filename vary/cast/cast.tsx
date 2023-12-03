@@ -1,20 +1,8 @@
+/** @jsx $mol_jsx */
 namespace $ {
 	
-	export let $hyoo_crowds_vary_cast_map = {
-		bin: Uint8Array,
-		bool: Boolean,
-		int: BigInt,
-		real: Number,
-		ref: $hyoo_crowds_ref,
-		str: String,
-		time: $mol_time_moment,
-		json: Object,
-		xml: $mol_dom_context.Element,
-		tree: $mol_tree2,
-	}
-	
 	export function $hyoo_crowds_vary_cast_bin( vary: $hyoo_crowds_vary_type ) {
-		return $hyoo_crowds_vary_encode( vary ).bin
+		return vary === null || vary === '' ? null : $hyoo_crowds_vary_encode( vary ).bin
 	}
 	
 	export function $hyoo_crowds_vary_cast_bool( vary: $hyoo_crowds_vary_type ) {
@@ -71,17 +59,17 @@ namespace $ {
 	export function $hyoo_crowds_vary_cast_real( vary: $hyoo_crowds_vary_type ) {
 		return $hyoo_crowds_vary_switch( vary, {
 			
-			bin: vary => vary?.length ?? 0,
-			bool: vary => Boolean( vary ),
+			bin: vary => vary?.length ?? Number.NaN,
+			bool: vary => Number( vary ),
 			int: vary => Number( vary ),
 			real: vary => vary,
 			ref: vary => Number.NaN,
 			
-			str: vary => Number( vary ),
+			str: vary => vary ? Number( vary ) : Number.NaN,
 			time: vary => vary.valueOf(),
 			json: vary => vary instanceof Array ? vary.length : Reflect.ownKeys( vary ).length,
 			xml: vary => Number( vary.attributes.length + vary.childNodes.length ),
-			tree: vary => BigInt( vary.value || vary.kids.length ),
+			tree: vary => Number( vary.value || vary.kids.length ),
 			
 		})
 	}
@@ -111,7 +99,7 @@ namespace $ {
 	export function $hyoo_crowds_vary_cast_str( vary: $hyoo_crowds_vary_type ) {
 		return $hyoo_crowds_vary_switch( vary, {
 			
-			bin: vary => vary ? [ ... vary ].map( n => n.toString(16) ).join( '' ) : '',
+			bin: vary => vary ? [ ... vary ].map( n => n.toString(16).padStart( 2, '0' ) ).join( '' ) : '',
 			bool: vary => String( vary ),
 			int: vary => String( vary ),
 			real: vary => String( vary ),
@@ -153,8 +141,8 @@ namespace $ {
 			real: vary => [ vary ],
 			ref: vary => ({ lord: vary.lord().toString(), numb: vary.numb(), head: vary.head() }),
 			
-			str: vary => JSON.parse( vary ),
-			time: vary => ({ ... vary }),
+			str: vary => JSON.parse( vary ) as {} | any[],
+			time: vary => [ vary.toJSON() ],
 			json: vary => vary,
 			xml: vary => [ $mol_dom_serialize( vary ) ],
 			tree: vary => [ vary.toString() ],
@@ -198,25 +186,29 @@ namespace $ {
 		})
 	}
 
-	export function $hyoo_crowds_vary_cast(
-		tip: keyof typeof $hyoo_crowds_vary_tip,
+	export const $hyoo_crowds_vary_cast_funcs = {
+			
+		bin: $hyoo_crowds_vary_cast_bin,
+		bool: $hyoo_crowds_vary_cast_bool,
+		int: $hyoo_crowds_vary_cast_int,
+		real: $hyoo_crowds_vary_cast_real,
+		ref: $hyoo_crowds_vary_cast_ref,
+		
+		str: $hyoo_crowds_vary_cast_str,
+		time: $hyoo_crowds_vary_cast_time,
+		json: $hyoo_crowds_vary_cast_json,
+		xml: $hyoo_crowds_vary_cast_xml,
+		tree: $hyoo_crowds_vary_cast_tree,
+		
+	} as const
+	
+	export function $hyoo_crowds_vary_cast<
+		Tip extends keyof typeof $hyoo_crowds_vary_tip
+	>(
+		tip: Tip,
 		vary: $hyoo_crowds_vary_type,
 	) {
-		switch( tip ) {
-			
-			case 'bin': return $hyoo_crowds_vary_cast_bin( vary )
-			case 'bool': return $hyoo_crowds_vary_cast_bool( vary )
-			case 'int': return $hyoo_crowds_vary_cast_int( vary )
-			case 'real': return $hyoo_crowds_vary_cast_real( vary )
-			case 'ref': return $hyoo_crowds_vary_cast_ref( vary )
-			
-			case 'str': return $hyoo_crowds_vary_cast_str( vary )
-			case 'time': return $hyoo_crowds_vary_cast_time( vary )
-			case 'json': return $hyoo_crowds_vary_cast_json( vary )
-			case 'xml': return $hyoo_crowds_vary_cast_xml( vary )
-			case 'tree': return $hyoo_crowds_vary_cast_tree( vary )
-			
-		}
+		return $hyoo_crowds_vary_cast_funcs[ tip ]( vary )
 	}
 	
 }
