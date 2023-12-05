@@ -150,59 +150,6 @@ namespace $ {
 			
 		},
 		
-		// async 'Insert before changed'() {
-			
-		// 	const base = new $hyoo_crowds_land( 1n, 1 )
-		// 	base.chief.as( $hyoo_crowd_text ).str( 'XxxYyyZzz' )
-			
-		// 	const left = base.fork( await $hyoo_crowd_peer.generate() )
-		// 	left.chief.as( $hyoo_crowd_text ).str( 'XxxFooYyyZzz' )
-			
-		// 	const right = base.fork( await $hyoo_crowd_peer.generate() )
-		// 	right.clock_data.tick( right.peer().id )
-		// 	right.chief.as( $hyoo_crowd_text ).str( 'XxxBarZzz' )
-			
-		// 	const left_delta = left.delta( base.clocks )
-		// 	const right_delta = right.delta( base.clocks )
-			
-		// 	left.apply( right_delta )
-		// 	right.apply( left_delta )
-	
-		// 	$mol_assert_like(
-		// 		left.chief.as( $hyoo_crowd_text ).str(),
-		// 		right.chief.as( $hyoo_crowd_text ).str(),
-		// 		'XxxBarFooZzz',
-		// 	)
-			
-		// },
-		
-		// async 'Insert between moved'() {
-			
-		// 	const base = new $hyoo_crowds_land( 1n, 1 )
-		// 	base.chief.as( $hyoo_crowd_list ).list([ 111, 222, 333, 444, 555, 666 ])
-			
-		// 	const left = base.fork( await $hyoo_crowd_peer.generate() )
-		// 	left.chief.as( $hyoo_crowd_list ).list([ 111, 222, 777, 333, 444, 555, 666 ])
-			
-		// 	const right = base.fork( await $hyoo_crowd_peer.generate() )
-		// 	right.clock_data.tick( right.peer().id )
-		// 	right.insert( right.chief.units()[1], '0_0', 5 )
-		// 	right.insert( right.chief.units()[1], '0_0', 5 )
-			
-		// 	const left_delta = left.delta( base.clocks )
-		// 	const right_delta = right.delta( base.clocks )
-			
-		// 	left.apply( right_delta )
-		// 	right.apply( left_delta )
-	
-		// 	$mol_assert_like(
-		// 		left.chief.as( $hyoo_crowd_list ).list(),
-		// 		right.chief.as( $hyoo_crowd_list ).list(),
-		// 		[ 111, 444, 555, 222, 333, 777, 666 ],
-		// 	)
-			
-		// },
-		
 		// async 'Merge text changes'() {
 			
 		// 	const base = new $hyoo_crowds_land( 1n, 1 )
