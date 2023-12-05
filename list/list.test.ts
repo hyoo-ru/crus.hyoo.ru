@@ -419,7 +419,7 @@ namespace $ {
 			
 		},
 		
-		'Changed after inserted'( $ ) {
+		'Change after inserted'( $ ) {
 			
 			const base = $hyoo_crowds_area.make({ $ })
 			base.Root( $hyoo_crowds_list ).items([ 1, 2, 3, 4 ])
@@ -446,28 +446,6 @@ namespace $ {
 			base.Root( $hyoo_crowds_list ).items([ 1, 2, 3, 4, 5, 6 ])
 			
 			const left = fork( base )
-			left.Root( $hyoo_crowds_list ).items([ 1, 2, 7, 3, 4, 5, 6 ])
-			
-			const right = fork( base )
-			right.face.sync( left.face )
-			right.Root( $hyoo_crowds_list ).move( 1, 5 )
-			right.Root( $hyoo_crowds_list ).move( 1, 5 )
-			
-			sync( left, right )
-			$mol_assert_like(
-				left.Root( $hyoo_crowds_list ).items(),
-				right.Root( $hyoo_crowds_list ).items(),
-				[ 1, 4, 5, 2, 3, 7, 6 ],
-			)
-			
-		},
-		
-		'Move near inserted'( $ ) {
-			
-			const base = $hyoo_crowds_area.make({ $ })
-			base.Root( $hyoo_crowds_list ).items([ 1, 2, 3, 4, 5, 6 ])
-			
-			const left = fork( base )
 			left.Root( $hyoo_crowds_list ).move( 1, 5 )
 			left.Root( $hyoo_crowds_list ).move( 1, 5 )
 			
@@ -480,6 +458,28 @@ namespace $ {
 				left.Root( $hyoo_crowds_list ).items(),
 				right.Root( $hyoo_crowds_list ).items(),
 				[ 1, 4, 5, 2, 7, 3, 6 ],
+			)
+			
+		},
+		
+		'Move near inserted'( $ ) {
+			
+			const base = $hyoo_crowds_area.make({ $ })
+			base.Root( $hyoo_crowds_list ).items([ 1, 2, 3, 4, 5, 6 ])
+			
+			const left = fork( base )
+			left.Root( $hyoo_crowds_list ).items([ 1, 2, 7, 3, 4, 5, 6 ])
+			
+			const right = fork( base )
+			right.face.sync( left.face )
+			right.Root( $hyoo_crowds_list ).move( 1, 5 )
+			right.Root( $hyoo_crowds_list ).move( 1, 5 )
+			
+			sync( left, right )
+			$mol_assert_like(
+				left.Root( $hyoo_crowds_list ).items(),
+				right.Root( $hyoo_crowds_list ).items(),
+				[ 1, 4, 5, 2, 3, 7, 6 ],
 			)
 			
 		},
