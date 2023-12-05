@@ -193,6 +193,10 @@ namespace $ {
 			})
 		}
 		
+		apply_area( area: $hyoo_crowds_area ) {
+			return this.apply_unit( area.delta_unit() )
+		}
+		
 		recheck() {
 			
 			for( const [ peer, pass ] of this.pass ) {

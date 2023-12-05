@@ -1,5 +1,16 @@
 namespace $ {
 	
+	function fork( base: $hyoo_crowds_area ) {
+		const area = $hyoo_crowds_area.make({ $: base.$ })
+		area.apply_area( base )
+		return area
+	}
+	
+	function sync( left: $hyoo_crowds_area, right: $hyoo_crowds_area ) {
+		left.apply_area( right )
+		right.apply_area( left )
+	}
+	
 	$mol_test({
 		
 		'Basic list ops'( $ ) {
@@ -144,6 +155,194 @@ namespace $ {
 			list.move( 2, 1 )
 			
 			$mol_assert_like( list.items(), [ 1, 3, 2, 4, 6, 5 ] )
+			
+		},
+		
+		async 'Insert after moved right'( $ ) {
+			
+			const base = $hyoo_crowds_area.make({ $ })
+			base.Root( $hyoo_crowds_list ).items([ 1, 2, 3, 4 ])
+			
+			const left = fork( base )
+			left.Root( $hyoo_crowds_list ).items([ 1, 7, 2, 3, 4 ])
+			
+			const right = fork( base )
+			right.Root( $hyoo_crowds_list ).move( 0, 2 )
+			
+			sync( left, right )
+			$mol_assert_like(
+				left.Root( $hyoo_crowds_list ).items(),
+				right.Root( $hyoo_crowds_list ).items(),
+				[ 2, 1, 7, 3, 4 ],
+			)
+			
+		},
+		
+		async 'Insert before moved left'( $ ) {
+			
+			const base = $hyoo_crowds_area.make({ $ })
+			base.Root( $hyoo_crowds_list ).items([ 1, 2, 3, 4 ])
+			
+			const left = fork( base )
+			left.Root( $hyoo_crowds_list ).move( 1, 0 )
+			
+			const right = fork( base )
+			right.face.sync( left.face )
+			right.Root( $hyoo_crowds_list ).items([ 1, 7, 2, 3, 4 ])
+			
+			sync( left, right )
+			$mol_assert_like(
+				left.Root( $hyoo_crowds_list ).items(),
+				right.Root( $hyoo_crowds_list ).items(),
+				[ 2, 1, 7, 3, 4 ],
+			)
+			
+		},
+		
+		async 'Move left after inserted'( $ ) {
+			
+			const base = $hyoo_crowds_area.make({ $ })
+			base.Root( $hyoo_crowds_list ).items([ 1, 2, 3, 4 ])
+			
+			const left = fork( base )
+			left.Root( $hyoo_crowds_list ).items([ 1, 7, 2, 3, 4 ])
+			
+			const right = fork( base )
+			right.face.sync( left.face )
+			right.Root( $hyoo_crowds_list ).move( 1, 0 )
+			
+			sync( left, right )
+			$mol_assert_like(
+				left.Root( $hyoo_crowds_list ).items(),
+				right.Root( $hyoo_crowds_list ).items(),
+				[ 2, 1, 3, 7, 4 ], // extra change (3) => unexpected result (7 after 3)
+			)
+			
+		},
+		
+		async 'Insert before moved right'( $ ) {
+			
+			const base = $hyoo_crowds_area.make({ $ })
+			base.Root( $hyoo_crowds_list ).items([ 1, 2, 3, 4 ])
+			
+			const left = fork( base )
+			left.Root( $hyoo_crowds_list ).move( 1, 4 )
+			
+			const right = fork( base )
+			right.face.sync( left.face )
+			right.Root( $hyoo_crowds_list ).items([ 1, 7, 2, 3, 4 ])
+			
+			sync( left, right )
+			$mol_assert_like(
+				left.Root( $hyoo_crowds_list ).items(),
+				right.Root( $hyoo_crowds_list ).items(),
+				[ 1, 7, 3, 4, 2 ],
+			)
+			
+		},
+		
+		async 'Move right after inserted'( $ ) {
+			
+			const base = $hyoo_crowds_area.make({ $ })
+			base.Root( $hyoo_crowds_list ).items([ 1, 2, 3, 4 ])
+			
+			const left = fork( base )
+			left.Root( $hyoo_crowds_list ).items([ 1, 7, 2, 3, 4 ])
+			
+			const right = fork( base )
+			right.face.sync( left.face )
+			right.Root( $hyoo_crowds_list ).move( 1, 4 )
+			
+			sync( left, right )
+			$mol_assert_like(
+				left.Root( $hyoo_crowds_list ).items(),
+				right.Root( $hyoo_crowds_list ).items(),
+				[ 1, 3, 7, 4, 2 ], // extra change (3) => unexpected result (7 after 3)
+			)
+			
+		},
+		
+		async 'Insert after wiped'( $ ) {
+			
+			const base = $hyoo_crowds_area.make({ $ })
+			base.Root( $hyoo_crowds_list ).items([ 1, 2, 3, 4 ])
+			
+			const left = fork( base )
+			left.Root( $hyoo_crowds_list ).items([ 1, 3, 4 ])
+			
+			const right = fork( base )
+			right.face.sync( left.face )
+			right.Root( $hyoo_crowds_list ).items([ 1, 2, 7, 3, 4 ])
+			
+			sync( left, right )
+			$mol_assert_like(
+				left.Root( $hyoo_crowds_list ).items(),
+				right.Root( $hyoo_crowds_list ).items(),
+				[ 1, 7, 3, 4 ],
+			)
+			
+		},
+		
+		async 'Wiped before inserted'( $ ) {
+			
+			const base = $hyoo_crowds_area.make({ $ })
+			base.Root( $hyoo_crowds_list ).items([ 1, 2, 3, 4 ])
+			
+			const left = fork( base )
+			left.Root( $hyoo_crowds_list ).items([ 1, 2, 7, 3, 4 ])
+			
+			const right = fork( base )
+			right.face.sync( left.face )
+			right.Root( $hyoo_crowds_list ).items([ 1, 3, 4 ])
+			
+			sync( left, right )
+			$mol_assert_like(
+				left.Root( $hyoo_crowds_list ).items(),
+				right.Root( $hyoo_crowds_list ).items(),
+				[ 1, 7, 3, 4 ],
+			)
+			
+		},
+		
+		async 'Insert before wiped'( $ ) {
+			
+			const base = $hyoo_crowds_area.make({ $ })
+			base.Root( $hyoo_crowds_list ).items([ 1, 2, 3, 4 ])
+			
+			const left = fork( base )
+			left.Root( $hyoo_crowds_list ).wipe( 2 )
+			
+			const right = fork( base )
+			right.face.sync( left.face )
+			right.Root( $hyoo_crowds_list ).splice( [ 7 ], 2 )
+			
+			sync( left, right )
+			$mol_assert_like(
+				left.Root( $hyoo_crowds_list ).items(),
+				right.Root( $hyoo_crowds_list ).items(),
+				[ 1, 2, 7, 4 ],
+			)
+			
+		},
+		
+		async 'Wiped after inserted'( $ ) {
+			
+			const base = $hyoo_crowds_area.make({ $ })
+			base.Root( $hyoo_crowds_list ).items([ 1, 2, 3, 4 ])
+			
+			const left = fork( base )
+			left.Root( $hyoo_crowds_list ).splice( [ 7 ], 2 )
+			
+			const right = fork( base )
+			right.face.sync( left.face )
+			right.Root( $hyoo_crowds_list ).wipe( 2 )
+			
+			sync( left, right )
+			$mol_assert_like(
+				left.Root( $hyoo_crowds_list ).items(),
+				right.Root( $hyoo_crowds_list ).items(),
+				[ 1, 2, 7, 4 ],
+			)
 			
 		},
 		
