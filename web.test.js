@@ -5037,7 +5037,7 @@ var $;
             sync(left, right);
             $mol_assert_like(left.Root($hyoo_crowds_list).items(), right.Root($hyoo_crowds_list).items(), [1, 2, 13, 7, 4]);
         },
-        'Changed after inserted'($) {
+        'Change after inserted'($) {
             const base = $hyoo_crowds_area.make({ $ });
             base.Root($hyoo_crowds_list).items([1, 2, 3, 4]);
             const left = fork(base);
@@ -5052,18 +5052,6 @@ var $;
             const base = $hyoo_crowds_area.make({ $ });
             base.Root($hyoo_crowds_list).items([1, 2, 3, 4, 5, 6]);
             const left = fork(base);
-            left.Root($hyoo_crowds_list).items([1, 2, 7, 3, 4, 5, 6]);
-            const right = fork(base);
-            right.face.sync(left.face);
-            right.Root($hyoo_crowds_list).move(1, 5);
-            right.Root($hyoo_crowds_list).move(1, 5);
-            sync(left, right);
-            $mol_assert_like(left.Root($hyoo_crowds_list).items(), right.Root($hyoo_crowds_list).items(), [1, 4, 5, 2, 3, 7, 6]);
-        },
-        'Move near inserted'($) {
-            const base = $hyoo_crowds_area.make({ $ });
-            base.Root($hyoo_crowds_list).items([1, 2, 3, 4, 5, 6]);
-            const left = fork(base);
             left.Root($hyoo_crowds_list).move(1, 5);
             left.Root($hyoo_crowds_list).move(1, 5);
             const right = fork(base);
@@ -5071,6 +5059,18 @@ var $;
             right.Root($hyoo_crowds_list).items([1, 2, 7, 3, 4, 5, 6]);
             sync(left, right);
             $mol_assert_like(left.Root($hyoo_crowds_list).items(), right.Root($hyoo_crowds_list).items(), [1, 4, 5, 2, 7, 3, 6]);
+        },
+        'Move near inserted'($) {
+            const base = $hyoo_crowds_area.make({ $ });
+            base.Root($hyoo_crowds_list).items([1, 2, 3, 4, 5, 6]);
+            const left = fork(base);
+            left.Root($hyoo_crowds_list).items([1, 2, 7, 3, 4, 5, 6]);
+            const right = fork(base);
+            right.face.sync(left.face);
+            right.Root($hyoo_crowds_list).move(1, 5);
+            right.Root($hyoo_crowds_list).move(1, 5);
+            sync(left, right);
+            $mol_assert_like(left.Root($hyoo_crowds_list).items(), right.Root($hyoo_crowds_list).items(), [1, 4, 5, 2, 3, 7, 6]);
         },
     });
 })($ || ($ = {}));
