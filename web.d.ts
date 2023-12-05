@@ -2964,6 +2964,7 @@ declare namespace $ {
         delta_unit(face?: $hyoo_crowds_face): $hyoo_crowds_unit[];
         delta_buffer(face?: $hyoo_crowds_face): Uint8Array;
         apply_unit(delta: readonly $hyoo_crowds_unit[]): ("" | "Need add rang to join" | "Need law rang to change rang" | "Need add rang to post self data" | "Need mod rang to post any data" | "Already joined" | "Unit too old")[];
+        apply_area(area: $hyoo_crowds_area): ("" | "Need add rang to join" | "Need law rang to change rang" | "Need add rang to post self data" | "Need mod rang to post any data" | "Already joined" | "Unit too old")[];
         recheck(): void;
         check_unit(unit: $hyoo_crowds_unit): "" | "Need add rang to join" | "Need law rang to change rang" | "Need add rang to post self data" | "Need mod rang to post any data";
         gists_ordered(head: number): $hyoo_crowds_gist[];

@@ -9818,6 +9818,9 @@ var $;
                 return res ?? '';
             });
         }
+        apply_area(area) {
+            return this.apply_unit(area.delta_unit());
+        }
         recheck() {
             for (const [peer, pass] of this.pass) {
                 if (this.check_unit(pass))
