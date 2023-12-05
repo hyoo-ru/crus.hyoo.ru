@@ -8688,28 +8688,8 @@ var $;
         units() {
             return this.area().gists_ordered(this.head());
         }
-        move(from, to) {
-            if (to === from)
-                return;
-            if (to === from + 1)
-                return;
-            const units = this.units();
-            const lead = to ? units[to - 1].self() : 0;
-            const self = units[from];
-            const prev = units[from - 1]?.self() ?? 0;
-            const next = units[from + 1];
-            if (next)
-                this.area().post(prev, self.head(), next.self(), this.area().gist_decode(next), next.tag());
-            this.area().post(lead, self.head(), self.self(), this.area().gist_decode(self), self.tag());
-        }
-        wipe(seat) {
-            const units = this.units();
-            if (seat >= units.length)
-                return;
-            this.area().post(units[seat - 1]?.self() ?? 0, units[seat].head(), units[seat].self(), null);
-        }
-        can_change() {
-            return this.area().lord_rang(this.area().auth().lord()) >= $hyoo_crowds_rang.add;
+        can_change(lord = this.area().auth().lord()) {
+            return this.area().lord_rang(lord) >= $hyoo_crowds_rang.add;
         }
         ;
         [$mol_dev_format_head]() {
@@ -9465,6 +9445,12 @@ var $;
                 --i;
             }
         }
+        move(from, to) {
+            this.area().gist_move(this.units()[from], this.head(), to);
+        }
+        wipe(seat) {
+            this.area().gist_wipe(this.units()[seat]);
+        }
         node_make(Node, vary, tag = 'term') {
             this.splice([vary], undefined, undefined, tag);
             return this.area().Node(Node).Item(this.units().at(-1).self());
@@ -9558,7 +9544,6 @@ var $;
         slug() {
             const slug = this.ref().toString().slice(10);
             return slug.length < 2 ? 'Base' : slug;
-            return this.ref().toString().replace(/^[^_]*_?/, '') || 'Base';
         }
         pass = new $mol_wire_dict();
         gift = new $mol_wire_dict();
@@ -9798,6 +9783,34 @@ var $;
             if (error)
                 $mol_fail(new Error(error));
             return unit;
+        }
+        gist_move(gist, head, seat) {
+            if (gist.nil())
+                $mol_fail(new RangeError(`Can't move wiped gist`));
+            const units = this.gists_ordered(head);
+            if (seat > units.length)
+                $mol_fail(new RangeError(`Seat (${seat}) out of units length (${units.length})`));
+            const lead = seat && units[seat - 1].self();
+            if (gist.head() === head) {
+                const seat_prev = units.indexOf(gist);
+                if (seat === seat_prev)
+                    return;
+                if (seat === seat_prev + 1)
+                    return;
+                const prev = seat_prev && units[seat_prev - 1].self();
+                const next = units[seat_prev + 1];
+                if (next)
+                    this.post(prev, head, next.self(), this.gist_decode(next), next.tag());
+            }
+            else {
+                this.gist_wipe(gist);
+            }
+            this.post(lead, head, gist.self(), this.gist_decode(gist), gist.tag());
+        }
+        gist_wipe(gist) {
+            const units = this.gists_ordered(gist.head());
+            const seat = units.indexOf(gist);
+            this.post(seat && units[seat - 1].self(), gist.head(), gist.self(), null, 'term');
         }
         gist_decode(gist) {
             let bin = gist.size() > 32 ? this.$.$hyoo_crowds_mine.load(gist.hash()) : gist.data();
@@ -12357,7 +12370,7 @@ var $;
                 return this.node().cast($hyoo_crowds_list).items()[index];
             }
             unit_wipe(index, event) {
-                this.node().wipe(index);
+                this.node().cast($hyoo_crowds_list).wipe(index);
             }
             node_inner(index) {
                 return this.node().nodes(null)[index];

@@ -2535,9 +2535,7 @@ declare namespace $ {
         cast<Node extends typeof $hyoo_crowds_node>(Node: Node): InstanceType<Node>;
         nodes<Node extends typeof $hyoo_crowds_node>(Node: Node | null): readonly InstanceType<Node>[];
         units(): $hyoo_crowds_gist[];
-        move(from: number, to: number): void;
-        wipe(seat: number): void;
-        can_change(): boolean;
+        can_change(lord?: bigint): boolean;
     }
 }
 
@@ -2690,9 +2688,7 @@ declare namespace $ {
                 cast<Node_1 extends typeof $hyoo_crowds_node>(Node: Node_1): InstanceType<Node_1>;
                 nodes<Node_2 extends typeof $hyoo_crowds_node>(Node: Node_2 | null): readonly InstanceType<Node_2>[];
                 units(): $hyoo_crowds_gist[];
-                move(from: number, to: number): void;
-                wipe(seat: number): void;
-                can_change(): boolean;
+                can_change(lord?: bigint): boolean;
                 $: typeof $$;
                 destructor(): void;
                 toString(): string;
@@ -2727,9 +2723,7 @@ declare namespace $ {
                     cast<Node_3 extends typeof $hyoo_crowds_node>(Node: Node_3): InstanceType<Node_3>;
                     nodes<Node_4 extends typeof $hyoo_crowds_node>(Node: Node_4 | null): readonly InstanceType<Node_4>[];
                     units(): $hyoo_crowds_gist[];
-                    move(from: number, to: number): void;
-                    wipe(seat: number): void;
-                    can_change(): boolean;
+                    can_change(lord?: bigint): boolean;
                     $: typeof $$;
                     destructor(): void;
                     toString(): string;
@@ -2781,9 +2775,7 @@ declare namespace $ {
                 cast<Node_1 extends typeof $hyoo_crowds_node>(Node: Node_1): InstanceType<Node_1>;
                 nodes<Node_2 extends typeof $hyoo_crowds_node>(Node: Node_2 | null): readonly InstanceType<Node_2>[];
                 units(): $hyoo_crowds_gist[];
-                move(from: number, to: number): void;
-                wipe(seat: number): void;
-                can_change(): boolean;
+                can_change(lord?: bigint): boolean;
                 $: typeof $$;
                 destructor(): void;
                 toString(): string;
@@ -2839,9 +2831,7 @@ declare namespace $ {
                     cast<Node_3 extends typeof $hyoo_crowds_node>(Node: Node_3): InstanceType<Node_3>;
                     nodes<Node_4 extends typeof $hyoo_crowds_node>(Node: Node_4 | null): readonly InstanceType<Node_4>[];
                     units(): $hyoo_crowds_gist[];
-                    move(from: number, to: number): void;
-                    wipe(seat: number): void;
-                    can_change(): boolean;
+                    can_change(lord?: bigint): boolean;
                     $: typeof $$;
                     destructor(): void;
                     toString(): string;
@@ -2908,6 +2898,8 @@ declare namespace $ {
                 has(vary: $hyoo_crowds_vary_type, next?: boolean | undefined, tag?: "keys" | "term" | "head" | "vals"): boolean;
                 add(vary: $hyoo_crowds_vary_type, tag?: "keys" | "term" | "head" | "vals"): void;
                 cut(vary: $hyoo_crowds_vary_type): void;
+                move(from: number, to: number): void;
+                wipe(seat: number): void;
                 node_make<Node_1 extends typeof $hyoo_crowds_node>(Node: Node_1, vary: $hyoo_crowds_vary_type, tag?: "keys" | "term" | "head" | "vals"): InstanceType<Node_1>;
                 area(): $hyoo_crowds_area;
                 head(): number;
@@ -2919,9 +2911,7 @@ declare namespace $ {
                 cast<Node_2 extends typeof $hyoo_crowds_node>(Node: Node_2): InstanceType<Node_2>;
                 nodes<Node_3 extends typeof $hyoo_crowds_node>(Node: Node_3 | null): readonly InstanceType<Node_3>[];
                 units(): $hyoo_crowds_gist[];
-                move(from: number, to: number): void;
-                wipe(seat: number): void;
-                can_change(): boolean;
+                can_change(lord?: bigint): boolean;
                 $: typeof $$;
                 destructor(): void;
                 toString(): string;
@@ -2946,6 +2936,8 @@ declare namespace $ {
         has(vary: $hyoo_crowds_vary_type, next?: boolean, tag?: "keys" | "term" | "head" | "vals"): boolean;
         add(vary: $hyoo_crowds_vary_type, tag?: "keys" | "term" | "head" | "vals"): void;
         cut(vary: $hyoo_crowds_vary_type): void;
+        move(from: number, to: number): void;
+        wipe(seat: number): void;
         node_make<Node extends typeof $hyoo_crowds_node>(Node: Node, vary: $hyoo_crowds_vary_type, tag?: "keys" | "term" | "head" | "vals"): InstanceType<Node>;
     }
 }
@@ -2991,6 +2983,8 @@ declare namespace $ {
         join(): $hyoo_crowds_pass;
         give(dest: bigint, rang: $hyoo_crowds_rang): $hyoo_crowds_gift;
         post(lead: number, head: number, self: number, data: $hyoo_crowds_vary_type, tag?: "keys" | "term" | "head" | "vals"): $hyoo_crowds_gist;
+        gist_move(gist: $hyoo_crowds_gist, head: number, seat: number): void;
+        gist_wipe(gist: $hyoo_crowds_gist): void;
         gist_decode(gist: $hyoo_crowds_gist): $hyoo_crowds_vary_type;
         key_public(peer: number): $mol_crypto_key_public | null;
         secret_mutual(peer: number): $mol_crypto_secret | null;
