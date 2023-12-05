@@ -45,7 +45,7 @@ namespace $.$$ {
 		}
 		
 		unit_wipe( index: number, event?: Event ) {
-			this.node().wipe( index )
+			this.node().cast( $hyoo_crowds_list ).wipe( index )
 		}
 		
 		node_inner( index: number ) {

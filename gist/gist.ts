@@ -105,6 +105,7 @@ namespace $ {
 			return buf.uint48(0)
 		}
 		
+		/** Compare gists on timeline ( right - left ) */
 		static compare(
 			left: $hyoo_crowds_gist,
 			right: $hyoo_crowds_gist,

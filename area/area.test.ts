@@ -150,38 +150,6 @@ namespace $ {
 			
 		},
 		
-		// async 'Insert after removed out'() {
-			
-		// 	const base = new $hyoo_crowds_land( 1n, 1 )
-		// 	base.node( '1_1', $hyoo_crowd_text ).str( 'FooBarZak' )
-			
-		// 	const left = base.fork( await $hyoo_crowd_peer.generate() )
-		// 	left.node( '1_1', $hyoo_crowd_text ).str( 'FooBarXxxZak' )
-			
-		// 	const right = base.fork( await $hyoo_crowd_peer.generate() )
-		// 	right.clock_data.tick( right.peer().id )
-		// 	right.insert( right.node( '1_1', $hyoo_crowd_node ).units()[1], '2_2', 0 )
-			
-		// 	const left_delta = left.delta( base.clocks )
-		// 	const right_delta = right.delta( base.clocks )
-			
-		// 	left.apply( right_delta )
-		// 	right.apply( left_delta )
-	
-		// 	$mol_assert_like(
-		// 		left.node( '1_1', $hyoo_crowd_text ).str(),
-		// 		right.node( '1_1', $hyoo_crowd_text ).str(),
-		// 		'FooZakXxx',
-		// 	)
-			
-		// 	$mol_assert_like(
-		// 		left.node( '2_2', $hyoo_crowd_text ).str(),
-		// 		left.node( '2_2', $hyoo_crowd_text ).str(),
-		// 		'Bar',
-		// 	)
-			
-		// },
-		
 		// async 'Insert before changed'() {
 			
 		// 	const base = new $hyoo_crowds_land( 1n, 1 )

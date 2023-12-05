@@ -117,6 +117,14 @@ namespace $ {
 			
 		}
 		
+		move( from: number, to: number ) {
+			this.area().gist_move( this.units()[ from ], this.head(), to )
+		}
+		
+		wipe( seat: number ) {
+			this.area().gist_wipe( this.units()[ seat ] )
+		}
+		
 		node_make< Node extends typeof $hyoo_crowds_node >(
 			Node: Node,
 			vary: $hyoo_crowds_vary_type,

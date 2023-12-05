@@ -30,7 +30,7 @@ namespace $ {
 		slug() {
 			const slug = this.ref().toString().slice( 10 )
 			return slug.length < 2 ? 'Base' : slug
-			return this.ref().toString().replace( /^[^_]*_?/, '' ) || 'Base'
+			// return this.ref().toString().replace( /^[^_]*_?/, '' ) || 'Base'
 		}
 		
 		pass = new $mol_wire_dict< number /*peer*/, $hyoo_crowds_pass >()
@@ -358,6 +358,68 @@ namespace $ {
 			if( error ) $mol_fail( new Error( error ) )
 			
 			return unit
+		}
+		
+		gist_move(
+			gist: $hyoo_crowds_gist,
+			head: number,
+			seat: number,
+		) {
+			
+			if( gist.nil() ) $mol_fail( new RangeError( `Can't move wiped gist` ) )
+			
+			const units = this.gists_ordered( head )
+			if( seat > units.length ) $mol_fail( new RangeError( `Seat (${seat}) out of units length (${units.length})` ) )
+			
+			const lead = seat && units[ seat - 1 ].self()
+			
+			if( gist.head() === head ) {
+				
+				const seat_prev = units.indexOf( gist )
+				
+				if( seat === seat_prev ) return
+				if( seat === seat_prev + 1 ) return
+				
+				const prev = seat_prev && units[ seat_prev - 1 ].self()
+				const next = units[ seat_prev + 1 ]
+				
+				if( next ) this.post(
+					prev,
+					head,
+					next.self(),
+					this.gist_decode( next ),
+					next.tag(),
+				)
+				
+			} else {
+				
+				this.gist_wipe( gist )
+				
+			}
+			
+			this.post(
+				lead,
+				head,
+				gist.self(),
+				this.gist_decode( gist ),
+				gist.tag(),
+			)
+			
+		}
+		
+		gist_wipe( gist: $hyoo_crowds_gist ) {
+			
+			const units = this.gists_ordered( gist.head() )
+			const seat = units.indexOf( gist )
+			
+			this.post(
+				seat && units[ seat - 1 ].self(),
+				gist.head(),
+				gist.self(),
+				null,
+				'term',
+			)
+			
 		}
 		
 		gist_decode( gist: $hyoo_crowds_gist ) {

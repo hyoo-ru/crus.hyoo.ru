@@ -95,7 +95,7 @@ namespace $ {
 			
 		},
 		
-		async 'List merge'( $ ) {
+		'List merge'( $ ) {
 			
 			const area1 = $hyoo_crowds_area.make({ $ })
 			const area2 = $hyoo_crowds_area.make({ $ })
@@ -111,7 +111,7 @@ namespace $ {
 
 		},
 		
-		async 'Insert before removed before changed'( $ ) {
+		'Insert before removed before changed'( $ ) {
 			
 			const area = $hyoo_crowds_area.make({ $ })
 			const list = area.Node( $hyoo_crowds_list ).Item(0)
@@ -124,7 +124,7 @@ namespace $ {
 			
 		},
 		
-		async 'Many moves'( $ ) {
+		'Many moves'( $ ) {
 			
 			const area = $hyoo_crowds_area.make({ $ })
 			const list = area.Node( $hyoo_crowds_list ).Item(0)
@@ -139,7 +139,7 @@ namespace $ {
 			
 		},
 		
-		async 'Reorder separated sublists'( $ ) {
+		'Reorder separated sublists'( $ ) {
 			
 			const area = $hyoo_crowds_area.make({ $ })
 			const list = area.Node( $hyoo_crowds_list ).Item(0)
@@ -158,7 +158,7 @@ namespace $ {
 			
 		},
 		
-		async 'Insert after moved right'( $ ) {
+		'Insert after moved right'( $ ) {
 			
 			const base = $hyoo_crowds_area.make({ $ })
 			base.Root( $hyoo_crowds_list ).items([ 1, 2, 3, 4 ])
@@ -178,7 +178,7 @@ namespace $ {
 			
 		},
 		
-		async 'Insert before moved left'( $ ) {
+		'Insert before moved left'( $ ) {
 			
 			const base = $hyoo_crowds_area.make({ $ })
 			base.Root( $hyoo_crowds_list ).items([ 1, 2, 3, 4 ])
@@ -199,7 +199,7 @@ namespace $ {
 			
 		},
 		
-		async 'Move left after inserted'( $ ) {
+		'Move left after inserted'( $ ) {
 			
 			const base = $hyoo_crowds_area.make({ $ })
 			base.Root( $hyoo_crowds_list ).items([ 1, 2, 3, 4 ])
@@ -220,7 +220,7 @@ namespace $ {
 			
 		},
 		
-		async 'Insert before moved right'( $ ) {
+		'Insert before moved right'( $ ) {
 			
 			const base = $hyoo_crowds_area.make({ $ })
 			base.Root( $hyoo_crowds_list ).items([ 1, 2, 3, 4 ])
@@ -241,7 +241,7 @@ namespace $ {
 			
 		},
 		
-		async 'Move right after inserted'( $ ) {
+		'Move right after inserted'( $ ) {
 			
 			const base = $hyoo_crowds_area.make({ $ })
 			base.Root( $hyoo_crowds_list ).items([ 1, 2, 3, 4 ])
@@ -262,7 +262,7 @@ namespace $ {
 			
 		},
 		
-		async 'Insert after wiped'( $ ) {
+		'Insert after wiped'( $ ) {
 			
 			const base = $hyoo_crowds_area.make({ $ })
 			base.Root( $hyoo_crowds_list ).items([ 1, 2, 3, 4 ])
@@ -283,7 +283,7 @@ namespace $ {
 			
 		},
 		
-		async 'Wiped before inserted'( $ ) {
+		'Wiped before inserted'( $ ) {
 			
 			const base = $hyoo_crowds_area.make({ $ })
 			base.Root( $hyoo_crowds_list ).items([ 1, 2, 3, 4 ])
@@ -304,7 +304,7 @@ namespace $ {
 			
 		},
 		
-		async 'Insert before wiped'( $ ) {
+		'Insert before wiped'( $ ) {
 			
 			const base = $hyoo_crowds_area.make({ $ })
 			base.Root( $hyoo_crowds_list ).items([ 1, 2, 3, 4 ])
@@ -314,7 +314,7 @@ namespace $ {
 			
 			const right = fork( base )
 			right.face.sync( left.face )
-			right.Root( $hyoo_crowds_list ).splice( [ 7 ], 2 )
+			right.Root( $hyoo_crowds_list ).items([ 1, 2, 7, 3, 4 ])
 			
 			sync( left, right )
 			$mol_assert_like(
@@ -325,13 +325,13 @@ namespace $ {
 			
 		},
 		
-		async 'Wiped after inserted'( $ ) {
+		'Wiped after inserted'( $ ) {
 			
 			const base = $hyoo_crowds_area.make({ $ })
 			base.Root( $hyoo_crowds_list ).items([ 1, 2, 3, 4 ])
 			
 			const left = fork( base )
-			left.Root( $hyoo_crowds_list ).splice( [ 7 ], 2 )
+			left.Root( $hyoo_crowds_list ).items([ 1, 2, 7, 3, 4 ])
 			
 			const right = fork( base )
 			right.face.sync( left.face )
@@ -342,6 +342,100 @@ namespace $ {
 				left.Root( $hyoo_crowds_list ).items(),
 				right.Root( $hyoo_crowds_list ).items(),
 				[ 1, 2, 7, 4 ],
+			)
+			
+		},
+		
+		'Insert after moved out'( $ ) {
+			
+			const base = $hyoo_crowds_area.make({ $ })
+			base.Root( $hyoo_crowds_list ).items([ 1, 2, 3, 4 ])
+			
+			const left = fork( base )
+			left.gist_move( left.Root( $hyoo_crowds_list ).units()[1], 1, 0 )
+			
+			const right = fork( base )
+			right.face.sync( left.face )
+			right.Root( $hyoo_crowds_list ).items([ 1, 2, 7, 3, 4 ])
+			
+			sync( left, right )
+			$mol_assert_like(
+				left.Root( $hyoo_crowds_list ).items(),
+				right.Root( $hyoo_crowds_list ).items(),
+				[ 1, 7, 3, 4 ],
+			)
+			$mol_assert_like(
+				left.Node( $hyoo_crowds_list ).Item(1).items(),
+				right.Node( $hyoo_crowds_list ).Item(1).items(),
+				[ 2 ],
+			)
+			
+		},
+		
+		'Move out before inserted'( $ ) {
+			
+			const base = $hyoo_crowds_area.make({ $ })
+			base.Root( $hyoo_crowds_list ).items([ 1, 2, 3, 4 ])
+			
+			const left = fork( base )
+			left.Root( $hyoo_crowds_list ).items([ 1, 2, 7, 3, 4 ])
+			
+			const right = fork( base )
+			right.face.sync( left.face )
+			right.gist_move( right.Root( $hyoo_crowds_list ).units()[1], 1, 0 )
+			
+			sync( left, right )
+			$mol_assert_like(
+				left.Root( $hyoo_crowds_list ).items(),
+				right.Root( $hyoo_crowds_list ).items(),
+				[ 1, 7, 3, 4 ],
+			)
+			$mol_assert_like(
+				left.Node( $hyoo_crowds_list ).Item(1).items(),
+				right.Node( $hyoo_crowds_list ).Item(1).items(),
+				[ 2 ],
+			)
+			
+		},
+		
+		'Insert before changed'( $ ) {
+			
+			const base = $hyoo_crowds_area.make({ $ })
+			base.Root( $hyoo_crowds_list ).items([ 1, 2, 3, 4 ])
+			
+			const left = fork( base )
+			left.Root( $hyoo_crowds_list ).items([ 1, 2, 7, 4 ])
+			
+			const right = fork( base )
+			right.face.sync( left.face )
+			right.Root( $hyoo_crowds_list ).items([ 1, 2, 13, 3, 4 ])
+			
+			sync( left, right )
+			$mol_assert_like(
+				left.Root( $hyoo_crowds_list ).items(),
+				right.Root( $hyoo_crowds_list ).items(),
+				[ 1, 2, 13, 7, 4 ],
+			)
+			
+		},
+		
+		'Changed after inserted'( $ ) {
+			
+			const base = $hyoo_crowds_area.make({ $ })
+			base.Root( $hyoo_crowds_list ).items([ 1, 2, 3, 4 ])
+			
+			const left = fork( base )
+			left.Root( $hyoo_crowds_list ).items([ 1, 2, 13, 3, 4 ])
+			
+			const right = fork( base )
+			right.face.sync( left.face )
+			right.Root( $hyoo_crowds_list ).items([ 1, 2, 7, 4 ])
+			
+			sync( left, right )
+			$mol_assert_like(
+				left.Root( $hyoo_crowds_list ).items(),
+				right.Root( $hyoo_crowds_list ).items(),
+				[ 1, 2, 7, 13, 4 ],
 			)
 			
 		},

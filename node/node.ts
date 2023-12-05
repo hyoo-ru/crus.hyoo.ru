@@ -58,55 +58,8 @@ namespace $ {
 			return this.area().gists_ordered( this.head() )
 		}
 		
-		move(
-			from: number,
-			to: number,
-		) {
-			
-			if( to === from ) return
-			if( to === from + 1 ) return
-			
-			const units = this.units()
-			const lead = to ? units[ to - 1 ].self() : 0
-			const self = units[ from ]
-			
-			const prev = units[ from - 1 ]?.self() ?? 0
-			const next = units[ from + 1 ]
-			
-			if( next ) this.area().post(
-				prev,
-				self.head(),
-				next.self(),
-				this.area().gist_decode( next ),
-				next.tag(),
-			)
-			
-			this.area().post(
-				lead,
-				self.head(),
-				self.self(),
-				this.area().gist_decode( self ),
-				self.tag(),
-			)
-			
-		}
-		
-		wipe( seat: number ) {
-			
-			const units = this.units()
-			if( seat >= units.length ) return
-			
-			this.area().post(
-				units[ seat - 1 ]?.self() ?? 0,
-				units[ seat ].head(),
-				units[ seat ].self(),
-				null,
-			)
-
-		}
-		
-		can_change() {
-			return this.area().lord_rang( this.area().auth().lord() ) >= $hyoo_crowds_rang.add
+		can_change( lord = this.area().auth().lord() ) {
+			return this.area().lord_rang( lord ) >= $hyoo_crowds_rang.add
 		}
 		
 		;[ $mol_dev_format_head ]() {
