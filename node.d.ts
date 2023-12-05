@@ -2945,7 +2945,7 @@ declare namespace $ {
 declare namespace $ {
     class $hyoo_crowds_dict extends $hyoo_crowds_node {
         static tag: "keys" | "term" | "head" | "vals";
-        static of<Schema extends Record<string, typeof $hyoo_crowds_node>>(schema: Schema): Pick<typeof $hyoo_crowds_dict, typeof Symbol.toPrimitive | "toString" | "$" | "destructor" | "toJSON" | "prototype" | "create" | "make" | "tag" | "of"> & (new () => $hyoo_crowds_dict & { [Key in keyof Schema]: () => InstanceType<Schema[Key]>; });
+        static of<Schema extends Record<string, typeof $hyoo_crowds_node>>(schema: Schema): Pick<typeof $hyoo_crowds_dict, typeof Symbol.toPrimitive | "toString" | "destructor" | "$" | "toJSON" | "prototype" | "create" | "make" | "tag" | "of"> & (new () => $hyoo_crowds_dict & { [Key in keyof Schema]: () => InstanceType<Schema[Key]>; });
         keys(): readonly $hyoo_crowds_vary_type[];
         has(key: $hyoo_crowds_vary_type, next?: false): boolean;
         dive<Node extends typeof $hyoo_crowds_node>(key: $hyoo_crowds_vary_type, Node: Node): InstanceType<Node>;
@@ -3024,6 +3024,97 @@ declare namespace $ {
         Land(lord: bigint): $hyoo_crowds_land;
         Node<Node extends typeof $hyoo_crowds_node>(Node: Node, ref: $hyoo_crowds_ref): InstanceType<Node>;
     }
+}
+
+declare namespace $ {
+    class $mol_check extends $mol_button_minor {
+        attr(): Record<string, any>;
+        sub(): readonly $mol_view_content[];
+        checked(next?: any): boolean;
+        aria_checked(): string;
+        aria_role(): string;
+        Icon(): any;
+        title(): string;
+        Title(): $mol_view;
+        label(): readonly any[];
+    }
+}
+
+declare namespace $ {
+    function $mol_maybe<Value>(value: Value | null | undefined): Value[];
+}
+
+declare namespace $ {
+}
+
+declare namespace $.$$ {
+    class $mol_check extends $.$mol_check {
+        click(next?: Event): void;
+        sub(): readonly $mol_view_content[];
+        label(): readonly any[];
+        aria_checked(): string;
+    }
+}
+
+declare namespace $ {
+    class $mol_icon_chevron extends $mol_icon {
+        path(): string;
+    }
+}
+
+declare namespace $ {
+    class $mol_check_expand extends $mol_check {
+        Icon(): $mol_icon_chevron;
+        level(): number;
+        style(): Record<string, any>;
+        checked(next?: any): boolean;
+        enabled(): boolean;
+        level_style(): string;
+        expanded(next?: any): boolean;
+        expandable(): boolean;
+    }
+}
+
+declare namespace $.$$ {
+    class $mol_check_expand extends $.$mol_check_expand {
+        level_style(): string;
+        expandable(): boolean;
+    }
+}
+
+declare namespace $ {
+}
+
+declare namespace $ {
+    class $mol_expander extends $mol_list {
+        rows(): readonly any[];
+        expanded(next?: any): boolean;
+        expandable(): boolean;
+        label(): readonly any[];
+        Trigger(): $$.$mol_check_expand;
+        Tools(): any;
+        Label(): $mol_view;
+        content(): readonly any[];
+        Content(): $$.$mol_list;
+    }
+}
+
+declare namespace $.$$ {
+    class $mol_expander extends $.$mol_expander {
+        rows(): $mol_view[];
+        expandable(): boolean;
+    }
+}
+
+declare namespace $ {
+}
+
+declare namespace $ {
+    class $mol_string_button extends $mol_string {
+    }
+}
+
+declare namespace $ {
 }
 
 declare namespace $ {
@@ -3292,137 +3383,6 @@ declare namespace $.$$ {
 }
 
 declare namespace $ {
-    class $mol_textarea extends $mol_stack {
-        attr(): Record<string, any>;
-        event(): Record<string, any>;
-        sub(): readonly any[];
-        symbols_alt(): Record<string, any>;
-        symbols_alt_ctrl(): Record<string, any>;
-        symbols_alt_shift(): Record<string, any>;
-        clickable(next?: any): boolean;
-        sidebar_showed(): boolean;
-        press(event?: any): any;
-        hover(event?: any): any;
-        value(next?: any): string;
-        hint(): string;
-        enabled(): boolean;
-        spellcheck(): boolean;
-        length_max(): number;
-        selection(next?: any): readonly number[];
-        submit(next?: any): any;
-        submit_with_ctrl(): boolean;
-        bring(): void;
-        Edit(): $mol_textarea_edit;
-        row_numb(id: any): number;
-        highlight(): string;
-        View(): $$.$mol_text_code;
-    }
-    class $mol_textarea_edit extends $mol_string {
-        dom_name(): string;
-        enter(): string;
-        field(): Record<string, any>;
-    }
-}
-
-declare namespace $.$$ {
-    class $mol_textarea extends $.$mol_textarea {
-        indent_inc(): void;
-        indent_dec(): void;
-        symbol_insert(event: KeyboardEvent): void;
-        clickable(next?: boolean): boolean;
-        hover(event: PointerEvent): void;
-        press(event: KeyboardEvent): void;
-        row_numb(index: number): number;
-    }
-}
-
-declare namespace $ {
-}
-
-declare namespace $ {
-    class $mol_check extends $mol_button_minor {
-        attr(): Record<string, any>;
-        sub(): readonly $mol_view_content[];
-        checked(next?: any): boolean;
-        aria_checked(): string;
-        aria_role(): string;
-        Icon(): any;
-        title(): string;
-        Title(): $mol_view;
-        label(): readonly any[];
-    }
-}
-
-declare namespace $ {
-    function $mol_maybe<Value>(value: Value | null | undefined): Value[];
-}
-
-declare namespace $ {
-}
-
-declare namespace $.$$ {
-    class $mol_check extends $.$mol_check {
-        click(next?: Event): void;
-        sub(): readonly $mol_view_content[];
-        label(): readonly any[];
-        aria_checked(): string;
-    }
-}
-
-declare namespace $ {
-    class $mol_icon_chevron extends $mol_icon {
-        path(): string;
-    }
-}
-
-declare namespace $ {
-    class $mol_check_expand extends $mol_check {
-        Icon(): $mol_icon_chevron;
-        level(): number;
-        style(): Record<string, any>;
-        checked(next?: any): boolean;
-        enabled(): boolean;
-        level_style(): string;
-        expanded(next?: any): boolean;
-        expandable(): boolean;
-    }
-}
-
-declare namespace $.$$ {
-    class $mol_check_expand extends $.$mol_check_expand {
-        level_style(): string;
-        expandable(): boolean;
-    }
-}
-
-declare namespace $ {
-}
-
-declare namespace $ {
-    class $mol_expander extends $mol_list {
-        rows(): readonly any[];
-        expanded(next?: any): boolean;
-        expandable(): boolean;
-        label(): readonly any[];
-        Trigger(): $$.$mol_check_expand;
-        Tools(): any;
-        Label(): $mol_view;
-        content(): readonly any[];
-        Content(): $$.$mol_list;
-    }
-}
-
-declare namespace $.$$ {
-    class $mol_expander extends $.$mol_expander {
-        rows(): $mol_view[];
-        expandable(): boolean;
-    }
-}
-
-declare namespace $ {
-}
-
-declare namespace $ {
     class $mol_dump_list extends $mol_view {
         values(): readonly any[];
         sub(): readonly any[];
@@ -3574,10 +3534,15 @@ declare namespace $ {
         can_change(): boolean;
         node(): $hyoo_crowds_node;
         label(): readonly any[];
+        addons(): readonly any[];
+        Tools(): $mol_view;
         content(): readonly any[];
         title(): string;
         Head(): $$.$mol_paragraph;
         Value(): any;
+        key_new(next?: any): string;
+        add_key(next?: any): any;
+        Add_key(): $mol_string_button;
         unit_value(id: any): any;
         Unit_value(id: any): $$.$mol_dump_value;
         unit_tip(id: any): string;
@@ -3589,7 +3554,6 @@ declare namespace $ {
         Unit_wipe_icon(id: any): $mol_icon_cross;
         unit_wipe(id: any, next?: any): any;
         Unit_wipe(id: any): $mol_button_minor;
-        Unit_tools(id: any): $mol_view;
         node_inner(id: any): $hyoo_crowds_node;
         Node_inner(id: any): $$.$hyoo_crowds_node_dump;
         Inner(id: any): $mol_view;
@@ -3609,6 +3573,7 @@ declare namespace $.$$ {
         unit_value(index: number): $hyoo_crowds_vary_type;
         unit_wipe(index: number, event?: Event): void;
         node_inner(index: number): $hyoo_crowds_node;
+        add_key(event: Event): void;
     }
 }
 
@@ -3616,13 +3581,61 @@ declare namespace $.$$ {
 }
 
 declare namespace $ {
+    class $mol_textarea extends $mol_stack {
+        attr(): Record<string, any>;
+        event(): Record<string, any>;
+        sub(): readonly any[];
+        symbols_alt(): Record<string, any>;
+        symbols_alt_ctrl(): Record<string, any>;
+        symbols_alt_shift(): Record<string, any>;
+        clickable(next?: any): boolean;
+        sidebar_showed(): boolean;
+        press(event?: any): any;
+        hover(event?: any): any;
+        value(next?: any): string;
+        hint(): string;
+        enabled(): boolean;
+        spellcheck(): boolean;
+        length_max(): number;
+        selection(next?: any): readonly number[];
+        submit(next?: any): any;
+        submit_with_ctrl(): boolean;
+        bring(): void;
+        Edit(): $mol_textarea_edit;
+        row_numb(id: any): number;
+        highlight(): string;
+        View(): $$.$mol_text_code;
+    }
+    class $mol_textarea_edit extends $mol_string {
+        dom_name(): string;
+        enter(): string;
+        field(): Record<string, any>;
+    }
+}
+
+declare namespace $.$$ {
+    class $mol_textarea extends $.$mol_textarea {
+        indent_inc(): void;
+        indent_dec(): void;
+        symbol_insert(event: KeyboardEvent): void;
+        clickable(next?: boolean): boolean;
+        hover(event: PointerEvent): void;
+        press(event: KeyboardEvent): void;
+        row_numb(index: number): number;
+    }
+}
+
+declare namespace $ {
+}
+
+declare namespace $ {
     class $hyoo_crowds_node_page extends $mol_page {
         node(): $hyoo_crowds_node;
         title(): string;
         body(): readonly any[];
+        Dump(): $$.$hyoo_crowds_node_dump;
         text(next?: any): string;
         Text(): $$.$mol_textarea;
-        Dump(): $$.$hyoo_crowds_node_dump;
     }
 }
 
@@ -4268,14 +4281,6 @@ declare namespace $ {
 declare namespace $ {
     class $mol_float extends $mol_view {
         style(): Record<string, any>;
-    }
-}
-
-declare namespace $ {
-}
-
-declare namespace $ {
-    class $mol_string_button extends $mol_string {
     }
 }
 

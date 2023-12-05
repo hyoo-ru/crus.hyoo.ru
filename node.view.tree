@@ -317,6 +317,45 @@ $mol_book2_catalog $mol_book2
 		sub /
 			<= Spread_close_icon $mol_icon_cross
 
+$mol_check $mol_button_minor
+	attr *
+		^
+		mol_check_checked <= checked? false
+		aria-checked <= aria_checked \false
+		role <= aria_role \checkbox
+	sub /$mol_view_content
+		<= Icon null
+		<= label /
+			<= Title $mol_view
+				sub /
+					<= title \
+
+$mol_icon_chevron $mol_icon path \M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z
+
+$mol_check_expand $mol_check
+	Icon $mol_icon_chevron
+	level 0
+	style *
+		^
+		paddingLeft <= level_style \0px
+	checked? <=> expanded? false
+	enabled <= expandable false
+
+$mol_expander $mol_list
+	rows /
+		<= Label $mol_view
+			sub /
+				<= Trigger $mol_check_expand
+					checked? <=> expanded? false
+					expandable <= expandable true
+					label <= label /
+						<= title
+				<= Tools null
+		<= Content $mol_list
+			rows <= content /
+
+$mol_string_button $mol_string
+
 $mol_stack $mol_view
 
 $mol_text_code_token $mol_dimmer
@@ -391,117 +430,6 @@ $mol_text_code $mol_stack
 		<= Copy $mol_button_copy
 			hint @ \Copy whole code
 			text <= text_export \
-
-$mol_textarea $mol_stack
-	attr *
-		^
-		mol_textarea_clickable <= clickable? false
-		mol_textarea_sidebar_showed <= sidebar_showed false
-	event *
-		keydown?event <=> press?event null
-		pointermove?event <=> hover?event null
-	sub /
-		<= Edit $mol_textarea_edit
-			value? <=> value? \
-			hint <= hint \ 
-			enabled <= enabled true
-			spellcheck <= spellcheck true
-			length_max <= length_max +Infinity
-			selection? <=> selection? /number
-			bring => bring
-			submit? <=> submit? null
-			submit_with_ctrl <= submit_with_ctrl true
-		<= View $mol_text_code
-			text <= value
-			render_visible_only false
-			row_numb* <= row_numb* 0
-			sidebar_showed <= sidebar_showed
-			highlight <= highlight \
-	symbols_alt *
-		comma \<
-		period \>
-		dash \−
-		equals \≈
-		graveAccent \́
-		forwardSlash \÷
-		E \€
-		V \✔
-		X \×
-		C \©
-		P \§
-		H \₽
-		key0 \°
-		key8 \•
-		key2 \@
-		key3 \#
-		key4 \$
-		key6 \^
-		key7 \&
-		bracketOpen \[
-		bracketClose \]
-		slashBack \|
-	symbols_alt_ctrl *
-		space \ 
-	symbols_alt_shift *
-		V \✅
-		X \❌
-		O \⭕
-		key1 \❗
-		key4 \💲
-		key7 \❓
-		comma \«
-		period \»
-		semicolon \“
-		quoteSingle \”
-		dash \—
-		equals \≠
-		graveAccent \̱
-		bracketOpen \{
-		bracketClose \}
-
-$mol_textarea_edit $mol_string
-	dom_name \textarea
-	enter \enter
-	field *
-		^
-		scrollTop 0
-
-$mol_check $mol_button_minor
-	attr *
-		^
-		mol_check_checked <= checked? false
-		aria-checked <= aria_checked \false
-		role <= aria_role \checkbox
-	sub /$mol_view_content
-		<= Icon null
-		<= label /
-			<= Title $mol_view
-				sub /
-					<= title \
-
-$mol_icon_chevron $mol_icon path \M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z
-
-$mol_check_expand $mol_check
-	Icon $mol_icon_chevron
-	level 0
-	style *
-		^
-		paddingLeft <= level_style \0px
-	checked? <=> expanded? false
-	enabled <= expandable false
-
-$mol_expander $mol_list
-	rows /
-		<= Label $mol_view
-			sub /
-				<= Trigger $mol_check_expand
-					checked? <=> expanded? false
-					expandable <= expandable true
-					label <= label /
-						<= title
-				<= Tools null
-		<= Content $mol_list
-			rows <= content /
 
 $mol_dump_list $mol_view
 	values /
@@ -594,12 +522,20 @@ $hyoo_crowds_node_dump $mol_expander
 	label /
 		<= Head $mol_paragraph sub / <= title \
 		<= Value null
+	addons /
+	Tools $mol_view sub /
+		^ addons
+		<= Add_key $mol_string_button
+			enabled <= can_change
+			hint \Add key...
+			value? <=> key_new? \
+			submit? <=> add_key? null
 	content <= nodes /
 		<= Inner*0 $mol_view sub /
 			<= Node_inner* $hyoo_crowds_node_dump
 				Value <= Unit_value* $mol_dump_value
 					value <= unit_value* null
-				Tools <= Unit_tools* $mol_view sub /
+				addons /
 					<= Unit_tip* $mol_view sub / <= unit_tip* \
 					<= Unit_tag* $mol_select
 						value? <=> unit_tag*? \term
@@ -616,14 +552,88 @@ $hyoo_crowds_node_dump $mol_expander
 						click? <=> unit_wipe*? null
 				node <= node_inner* $hyoo_crowds_node
 
+$mol_textarea $mol_stack
+	attr *
+		^
+		mol_textarea_clickable <= clickable? false
+		mol_textarea_sidebar_showed <= sidebar_showed false
+	event *
+		keydown?event <=> press?event null
+		pointermove?event <=> hover?event null
+	sub /
+		<= Edit $mol_textarea_edit
+			value? <=> value? \
+			hint <= hint \ 
+			enabled <= enabled true
+			spellcheck <= spellcheck true
+			length_max <= length_max +Infinity
+			selection? <=> selection? /number
+			bring => bring
+			submit? <=> submit? null
+			submit_with_ctrl <= submit_with_ctrl true
+		<= View $mol_text_code
+			text <= value
+			render_visible_only false
+			row_numb* <= row_numb* 0
+			sidebar_showed <= sidebar_showed
+			highlight <= highlight \
+	symbols_alt *
+		comma \<
+		period \>
+		dash \−
+		equals \≈
+		graveAccent \́
+		forwardSlash \÷
+		E \€
+		V \✔
+		X \×
+		C \©
+		P \§
+		H \₽
+		key0 \°
+		key8 \•
+		key2 \@
+		key3 \#
+		key4 \$
+		key6 \^
+		key7 \&
+		bracketOpen \[
+		bracketClose \]
+		slashBack \|
+	symbols_alt_ctrl *
+		space \ 
+	symbols_alt_shift *
+		V \✅
+		X \❌
+		O \⭕
+		key1 \❗
+		key4 \💲
+		key7 \❓
+		comma \«
+		period \»
+		semicolon \“
+		quoteSingle \”
+		dash \—
+		equals \≠
+		graveAccent \̱
+		bracketOpen \{
+		bracketClose \}
+
+$mol_textarea_edit $mol_string
+	dom_name \textarea
+	enter \enter
+	field *
+		^
+		scrollTop 0
+
 $hyoo_crowds_node_page $mol_page
 	node $hyoo_crowds_node
 	title \Node
 	body /
-		<= Text $mol_textarea
-			value? <=> text? \
 		<= Dump $hyoo_crowds_node_dump
 			node <= node
+		<= Text $mol_textarea
+			value? <=> text? \
 
 $hyoo_crowds_area_book $mol_book2_catalog
 	menu_title \Heads
@@ -660,8 +670,6 @@ $mol_float $mol_view
 	style *
 		^
 		minHeight \auto
-
-$mol_string_button $mol_string
 
 $mol_icon_download $mol_icon path \M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z
 
