@@ -52,5 +52,10 @@ namespace $.$$ {
 			return this.node().nodes(null)[ index ]
 		}
 		
+		add_key( event: Event ) {
+			this.node().cast( $hyoo_crowds_list ).has( this.key_new(), true, 'head' )
+			this.key_new( '' )
+		}
+		
 	}
 }

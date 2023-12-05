@@ -4,12 +4,20 @@ $hyoo_crowds_node_dump $mol_expander
 	label /
 		<= Head $mol_paragraph sub / <= title \
 		<= Value null
+	addons /
+	Tools $mol_view sub /
+		^ addons
+		<= Add_key $mol_string_button
+			enabled <= can_change
+			hint \Add key...
+			value? <=> key_new? \
+			submit? <=> add_key? null
 	content <= nodes /
 		<= Inner*0 $mol_view sub /
 			<= Node_inner* $hyoo_crowds_node_dump
 				Value <= Unit_value* $mol_dump_value
 					value <= unit_value* null
-				Tools <= Unit_tools* $mol_view sub /
+				addons /
 					<= Unit_tip* $mol_view sub / <= unit_tip* \
 					<= Unit_tag* $mol_select
 						value? <=> unit_tag*? \term
