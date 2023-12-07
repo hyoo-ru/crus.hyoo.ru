@@ -150,6 +150,42 @@ namespace $ {
 			
 		},
 		
+		'Area fork & merge'( $ ) {
+			
+			const realm = $hyoo_crowds_realm.make({ $ })
+			const base = realm.home().base().area()
+			const left = base.fork()
+			
+			base.Root( $hyoo_crowds_list ).items([ 'foo', 'xxx' ])
+			$mol_assert_like( base.Root( $hyoo_crowds_list ).items(), [ 'foo', 'xxx' ] )
+			$mol_assert_like( left.Root( $hyoo_crowds_list ).items(), [ 'foo', 'xxx' ] )
+			
+			left.face.sync( base.face )
+			left.Root( $hyoo_crowds_list ).items([ 'foo', 'yyy' ])
+			$mol_assert_like( left.Root( $hyoo_crowds_list ).items(), [ 'foo', 'yyy' ] )
+			
+			const right = base.fork()
+			right.face.sync( left.face )
+			right.Root( $hyoo_crowds_list ).items([ 'foo', 'zzz' ])
+			$mol_assert_like( right.Root( $hyoo_crowds_list ).items(), [ 'foo', 'zzz' ] )
+			
+			const both = base.fork()
+			$mol_assert_like( both.Root( $hyoo_crowds_list ).items(), [ 'foo', 'xxx' ] )
+			
+			both.cloves()!.items([ right.ref() ])
+			$mol_assert_like( both.Root( $hyoo_crowds_list ).items(), [ 'foo', 'zzz' ] )
+			
+			both.cloves()!.items([ left.ref() ])
+			$mol_assert_like( both.Root( $hyoo_crowds_list ).items(), [ 'foo', 'yyy' ] )
+			
+			both.cloves()!.items([ right.ref(), left.ref() ])
+			$mol_assert_like( both.Root( $hyoo_crowds_list ).items(), [ 'foo', 'yyy' ] )
+			
+			both.cloves()!.items([ left.ref(), right.ref() ])
+			$mol_assert_like( both.Root( $hyoo_crowds_list ).items(), [ 'foo', 'zzz' ] )
+			
+		},
+		
 		// async 'Merge text changes'() {
 			
 		// 	const base = new $hyoo_crowds_land( 1n, 1 )

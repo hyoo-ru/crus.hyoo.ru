@@ -42,10 +42,12 @@ namespace $ {
 
 		@ $mol_action
 		self_make( idea = Math.floor( Math.random() * 2**48 ) ) {
+			const numb = this.numb()
 			for( let i = 0; i < 4096; ++i ) {
 				
 				idea = ( idea + 1  ) % 2**48
 				if( !idea ) continue
+				if( idea === numb ) continue
 				if( this.self_all.has( idea ) ) continue
 				
 				this.self_all.add( idea )
@@ -229,10 +231,46 @@ namespace $ {
 			})
 		}
 		
+		@ $mol_action
+		fork() {
+			const area = this.realm()!.home().Area_new(0)
+			area.cloves()!.items([ this.ref() ])
+			return area
+		}
+		
+		cloves() {
+			if( !this.numb() ) return null
+			return this.Node( $hyoo_crowds_list ).Item( this.numb() )
+		}
+		
 		@ $mol_mem_key
 		gists_ordered( head: number ) {
 			
 			const queue = [ ... this.gist.get( head )?.values() ?? [] ]
+			
+			merge: if( this.numb() && ( head !== this.numb() ) ) {
+				
+				const cloves = this.cloves()!.items().toReversed() as $hyoo_crowds_ref[]
+				if( !cloves.length ) break merge
+				
+				const exists = new Set([ ... this.gist.get( head )?.keys() ?? [] ])
+				
+				const realm  = this.realm()!
+				for( const ref of cloves ) {
+					
+					const clove = realm.Land( ref.lord() ).Area( ref.numb() )
+					for( const gist of clove.gists_ordered( head ) ) {
+						
+						if( exists.has( gist.self() ) ) continue
+						queue.push( gist )
+						exists.add( gist.self() )
+						
+					}
+					
+				}
+				
+			}
+			
 			if( queue.length < 2 ) return queue.filter( unit => !unit.nil() )
 			
 			queue.sort( $hyoo_crowds_gist.compare )
