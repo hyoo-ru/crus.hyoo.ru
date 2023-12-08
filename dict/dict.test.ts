@@ -6,8 +6,8 @@ namespace $.$$ {
 		
 		async 'Dictionary invariants'( $ ) {
 			
-			const area = $hyoo_crowds_area.make({ $ })
-			const dict = area.Node( $hyoo_crowds_dict ).Item(0)
+			const land = $hyoo_crowds_land.make({ $ })
+			const dict = land.Node( $hyoo_crowds_dict ).Item(0)
 			$mol_assert_like( dict.keys(), [] )
 			
 			dict.dive( 123, $hyoo_crowds_reg )
@@ -32,22 +32,22 @@ namespace $.$$ {
 		
 		async 'Dictionary merge'( $ ) {
 			
-			const area1 = $hyoo_crowds_area.make({ $ })
-			const area2 = $hyoo_crowds_area.make({ $ })
+			const land1 = $hyoo_crowds_land.make({ $ })
+			const land2 = $hyoo_crowds_land.make({ $ })
 			
-			const dict1 = area1.Node( $hyoo_crowds_dict ).Item(0)
-			const dict2 = area2.Node( $hyoo_crowds_dict ).Item(0)
+			const dict1 = land1.Node( $hyoo_crowds_dict ).Item(0)
+			const dict2 = land2.Node( $hyoo_crowds_dict ).Item(0)
 
 			dict1.dive( 123, $hyoo_crowds_reg ).value_vary( 666 )
-			area2.face.tick( area2.auth().peer() )
+			land2.face.tick( land2.auth().peer() )
 			dict2.dive( 123, $hyoo_crowds_reg ).value_vary( 777 )
-			area1.apply_unit( area2.delta_unit() )
+			land1.apply_unit( land2.delta_unit() )
 			$mol_assert_like( dict1.dive( 123, $hyoo_crowds_reg ).value_vary(), 777 )
 			
 			dict1.dive( 'xxx', $hyoo_crowds_list ).items([ 'foo' ])
-			area2.face.tick( area2.auth().peer() )
+			land2.face.tick( land2.auth().peer() )
 			dict2.dive( 'xxx', $hyoo_crowds_list ).items([ 'bar' ])
-			area1.apply_unit( area2.delta_unit() )
+			land1.apply_unit( land2.delta_unit() )
 			$mol_assert_like( dict1.dive( 'xxx', $hyoo_crowds_list ).items(), [ 'bar', 'foo' ] )
 
 		},
@@ -55,7 +55,7 @@ namespace $.$$ {
 		"Narrowed Dictionary with linked Dictionaries and others"( $ ) {
 			
 			const realm = $hyoo_crowds_realm.make({ $ })
-			const area = realm.home().base().area()
+			const land = realm.home().base().land()
 			
 			class User extends $hyoo_crowds_dict.of({
 				Title: $hyoo_crowds_reg.of( 'str' ),
@@ -73,7 +73,7 @@ namespace $.$$ {
 				Author: $hyoo_crowds_reg.ref( ()=> User ),
 			}) {}
 			
-			const user = area.Node( User ).Item(1)
+			const user = land.Node( User ).Item(1)
 			$mol_assert_like( user.Account().value(), null )
 			$mol_assert_like( user.Articles().remotes(), [] )
 			
@@ -87,7 +87,7 @@ namespace $.$$ {
 			const articles = [ user.Articles().remote_make(), user.Articles().remote_make() ]
 			$mol_assert_like( user.Articles().remotes(), articles )
 			
-			$mol_assert_unique( user.area(), account.area(), ... articles.map( article => article.area() ) )
+			$mol_assert_unique( user.land(), account.land(), ... articles.map( article => article.land() ) )
 		},
 		
 	})

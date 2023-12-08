@@ -2,30 +2,30 @@ namespace $ {
 	
 	export class $hyoo_crowds_realm extends $mol_object {
 		
-		land = new $mol_wire_dict< bigint /*lord*/, $hyoo_crowds_land >()
+		lords = new $mol_wire_dict< bigint, $hyoo_crowds_lord >()
 		
 		home() {
-			return this.Land( this.$.$hyoo_crowds_auth.current().lord() )
+			return this.Lord( this.$.$hyoo_crowds_auth.current().lord() )
 		}
 		
 		@ $mol_mem_key
-		Land( lord: bigint ) {
+		Lord( numb: bigint ) {
 			
-			let land = this.land.get( lord )
-			if( land ) return land
+			let lord = this.lords.get( numb )
+			if( lord ) return lord
 			
-			land = $hyoo_crowds_land.make({
+			lord = $hyoo_crowds_lord.make({
 				realm: $mol_const( this ),
-				lord: $mol_const( lord ),
+				numb: $mol_const( numb ),
 			})
 			
-			this.land.set( lord, land )
-			return land
+			this.lords.set( numb, lord )
+			return lord
 			
 		}
 		
 		Node< Node extends typeof $hyoo_crowds_node > ( Node: Node, ref: $hyoo_crowds_ref ) {
-			return this.Land( ref.lord() ).Area( ref.numb() ).Node( Node ).Item( ref.head() )
+			return this.Lord( ref.lord() ).Land( ref.numb() ).Node( Node ).Item( ref.head() )
 		}
 		
 		// @ $mol_mem_key

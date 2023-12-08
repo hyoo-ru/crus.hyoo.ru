@@ -1,5 +1,6 @@
 include \/hyoo/crowds/realm
-include \/hyoo/crowds/area
+include \/hyoo/crowds/lord
+include \/hyoo/crowds/land
 include \/hyoo/crowds/reg
 include \/hyoo/crowds/list
 include \/hyoo/crowds/dict

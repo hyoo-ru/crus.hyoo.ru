@@ -6,28 +6,28 @@ namespace $ {
 		static tag = $hyoo_crowds_gist_tag[ $hyoo_crowds_gist_tag.vals ] as keyof typeof $hyoo_crowds_gist_tag
 		
 		@ $mol_mem
-		area() {
-			return null as any as $hyoo_crowds_area
+		land() {
+			return null as any as $hyoo_crowds_land
 		}
 		
 		head() {
 			return 0
 		}
 		
-		land() {
-			return this.area().land()
+		lord() {
+			return this.land().lord()
 		}
 		
 		realm() {
-			return this.land()?.realm() ?? null
+			return this.lord()?.realm() ?? null
 		}
 		
-		lord() {
-			return this.land()?.lord() ?? this.$.$hyoo_crowds_auth.current().lord()
+		lord_numb() {
+			return this.lord()?.numb() ?? this.$.$hyoo_crowds_auth.current().lord()
 		}
 		
 		ref() {
-			return $hyoo_crowds_ref.make( this.lord(), this.area().numb(), this.head() )
+			return $hyoo_crowds_ref.make( this.lord_numb(), this.land().numb(), this.head() )
 		}
 		
 		slug() {
@@ -37,29 +37,29 @@ namespace $ {
 		/** Returns another representation of this node. */
 		@ $mol_mem_key
 		cast< Node extends typeof $hyoo_crowds_node >( Node: Node ): InstanceType< Node > {
-			return this.area().Node( Node ).Item( this.head() )
+			return this.land().Node( Node ).Item( this.head() )
 		}
 		
 		/** Ordered inner alive Node. */
 		@ $mol_mem_key
 		nodes< Node extends typeof $hyoo_crowds_node >( Node: Node | null ): readonly InstanceType< Node >[] {
-			const area = this.area()
+			const land = this.land()
 			const map = {
-				term: area.Node( Node || $hyoo_crowds_reg ),
-				head: area.Node( Node || $hyoo_crowds_reg ),
-				vals: area.Node( Node || $hyoo_crowds_list ),
-				keys: area.Node( Node || $hyoo_crowds_dict ),
+				term: land.Node( Node || $hyoo_crowds_reg ),
+				head: land.Node( Node || $hyoo_crowds_reg ),
+				vals: land.Node( Node || $hyoo_crowds_list ),
+				keys: land.Node( Node || $hyoo_crowds_dict ),
 			}
 			return this.units().map( unit => map[ unit.tag() ].Item( unit.self() ) ) as any
 		}
 		
 		@ $mol_mem
 		units() {
-			return this.area().gists_ordered( this.head() )
+			return this.land().gists_ordered( this.head() )
 		}
 		
-		can_change( lord = this.area().auth().lord() ) {
-			return this.area().lord_rang( lord ) >= $hyoo_crowds_rang.add
+		can_change( lord = this.land().auth().lord() ) {
+			return this.land().lord_rang( lord ) >= $hyoo_crowds_rang.add
 		}
 		
 		;[ $mol_dev_format_head ]() {

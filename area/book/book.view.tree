@@ -1,6 +1,0 @@
-$hyoo_crowds_area_book $mol_book2_catalog
-	menu_title \Heads
-	param \node
-	area $hyoo_crowds_area
-	Spread* <= Node* $hyoo_crowds_node_page
-		node <= node* $hyoo_crowds_node

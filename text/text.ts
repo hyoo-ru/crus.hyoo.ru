@@ -12,7 +12,7 @@ namespace $ {
 			
 			} else {
 				
-				const area = this.area()
+				const land = this.land()
 				const prev = this.units()
 				const lines = next.match( /.*\n|.+$/g ) ?? []
 				
@@ -23,16 +23,16 @@ namespace $ {
 					next: lines,
 					equal: ( next, prev )=> {
 						//if( typeof prev.data === 'string' ) return false // ???
-						return area.Node( $hyoo_crowds_text ).Item( prev.self() ).str() === next
+						return land.Node( $hyoo_crowds_text ).Item( prev.self() ).str() === next
 					},
-					drop: ( prev, lead )=> this.area().post( lead?.self() ?? 0, prev.head(), prev.self(), null ),
+					drop: ( prev, lead )=> this.land().post( lead?.self() ?? 0, prev.head(), prev.self(), null ),
 					insert: ( next, lead )=> {
-						const gist = this.area().post( lead?.self() ?? 0, this.head(), area.self_make(), 'p', 'vals' )
-						area.Node( $hyoo_crowds_text ).Item( gist.self() ).str( next )
+						const gist = this.land().post( lead?.self() ?? 0, this.head(), land.self_make(), 'p', 'vals' )
+						land.Node( $hyoo_crowds_text ).Item( gist.self() ).str( next )
 						return gist
 					},
 					update: ( next, prev, lead )=> {
-						area.Node( $hyoo_crowds_text ).Item( prev.self() ).str( next )
+						land.Node( $hyoo_crowds_text ).Item( prev.self() ).str( next )
 						return prev
 					},
 				})
@@ -48,11 +48,11 @@ namespace $ {
 			if( next === undefined ) {
 				
 				let str = ''
-				const area = this.area()
+				const land = this.land()
 				
 				for( const unit of this.units() ) {
-					if( unit.tag() === 'term' ) str += String( area.gist_decode( unit ) ?? '' )
-					else str += area.Node( $hyoo_crowds_text ).Item( unit.self() ).str()
+					if( unit.tag() === 'term' ) str += String( land.gist_decode( unit ) ?? '' )
+					else str += land.Node( $hyoo_crowds_text ).Item( unit.self() ).str()
 				}
 				
 				return str
@@ -72,7 +72,7 @@ namespace $ {
 			str_to = str_from,
 		) {
 			
-			const area = this.area()
+			const land = this.land()
 			const list = this.units()
 			
 			let from = str_from < 0 ? list.length : 0
@@ -80,7 +80,7 @@ namespace $ {
 			
 			while( from < list.length ) {
 				
-				word = String( area.gist_decode( list[ from ] ) ?? '' )
+				word = String( land.gist_decode( list[ from ] ) ?? '' )
 				
 				if( str_from <= word.length ) {
 					next = word.slice( 0, str_from ) + next
@@ -98,7 +98,7 @@ namespace $ {
 			
 			while( to < list.length ) {
 				
-				word = String( area.gist_decode( list[ to ] ) ?? '' )
+				word = String( land.gist_decode( list[ to ] ) ?? '' )
 				to ++
 				
 				if( str_to < word.length ) {
@@ -112,7 +112,7 @@ namespace $ {
 			
 			if( from && from === list.length ) {
 				-- from
-				next = String( area.gist_decode( list[ from ] ) ?? '' ) + next
+				next = String( land.gist_decode( list[ from ] ) ?? '' ) + next
 			}
 			
 			const words = next.match( $hyoo_crowd_tokenizer ) ?? []
@@ -123,21 +123,21 @@ namespace $ {
 
 		point_by_offset( offset: number ): readonly[ number /*self*/, number /*pos*/ ] {
 			
-			const area = this.area()
+			const land = this.land()
 			let off = offset
 			
 			for( const unit of this.units() ) {
 				
 				if( unit.tag() === 'term' ) {
 					
-					const len = String( area.gist_decode( unit ) ?? '' ).length
+					const len = String( land.gist_decode( unit ) ?? '' ).length
 					
 					if( off <= len ) return [ unit.self(), off ]
 					else off -= len
 					
 				} else {
 					
-					const found = area.Node( $hyoo_crowds_text ).Item( unit.self() ).point_by_offset( off )
+					const found = land.Node( $hyoo_crowds_text ).Item( unit.self() ).point_by_offset( off )
 					if( found[0] ) return found
 					
 					off = found[1]
@@ -151,7 +151,7 @@ namespace $ {
 		
 		offset_by_point( [ self, offset ]: readonly[ number /*self*/, number /*pos*/ ] ): readonly[ number /*self*/, number /*pos*/ ]  {
 			
-			const area = this.area()
+			const land = this.land()
 			
 			for( const unit of this.units() ) {
 				
@@ -159,11 +159,11 @@ namespace $ {
 				
 				if( unit.tag() === 'term' ) {
 					
-					offset += String( area.gist_decode( unit ) ?? '' ).length
+					offset += String( land.gist_decode( unit ) ?? '' ).length
 					
 				} else {
 					
-					const found = area.Node( $hyoo_crowds_text ).Item( unit.self() ).offset_by_point([ self, offset ])
+					const found = land.Node( $hyoo_crowds_text ).Item( unit.self() ).offset_by_point([ self, offset ])
 					if( found[0] ) return [ self, found[1] ]
 					
 					offset = found[1]
@@ -177,7 +177,7 @@ namespace $ {
 		
 		selection( lord: bigint, next?: readonly[ number /*begin*/, number /*end*/ ] ) {
 			
-			const base = this.realm()!.Land( lord ).base()
+			const base = this.realm()!.Lord( lord ).base()
 			
 			if( next ) {
 				

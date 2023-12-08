@@ -7,144 +7,144 @@ namespace $ {
 		
 		'Join'( $ ) {
 			
-			const area = $hyoo_crowds_area.make({ $ })
-			$mol_assert_like( area.joined_list(), [] )
-			$mol_assert_like( area.lord_rang( area.lord() ), $hyoo_crowds_rang.law )
+			const land = $hyoo_crowds_land.make({ $ })
+			$mol_assert_like( land.joined_list(), [] )
+			$mol_assert_like( land.lord_rang( land.lord_numb() ), $hyoo_crowds_rang.law )
 			
-			area.join()
-			$mol_assert_like( area.joined_list(), [ area.lord() ] )
+			land.join()
+			$mol_assert_like( land.joined_list(), [ land.lord_numb() ] )
 			
 		},
 		
 		'Give rights'( $ ) {
 			
-			const area = $hyoo_crowds_area.make({ $ })
-			const area1 = $hyoo_crowds_area.make({ $, lord: ()=> area.lord(), auth: ()=> auth1 })
+			const land1 = $hyoo_crowds_land.make({ $ })
+			const land2 = $hyoo_crowds_land.make({ $, lord_numb: ()=> land1.lord_numb(), auth: ()=> auth1 })
 			
-			$mol_assert_like( area.lord_rang( area.lord() ), $hyoo_crowds_rang.law )
-			$mol_assert_like( area.lord_rang( auth1.lord() ), $hyoo_crowds_rang.get )
+			$mol_assert_like( land1.lord_rang( land1.lord_numb() ), $hyoo_crowds_rang.law )
+			$mol_assert_like( land1.lord_rang( auth1.lord() ), $hyoo_crowds_rang.get )
 			
-			$mol_assert_fail( ()=> area1.give( auth2.lord(), $hyoo_crowds_rang.add ), 'Need add rang to join' )
-			$mol_assert_like( area.lord_rang( auth1.lord() ), $hyoo_crowds_rang.get )
+			$mol_assert_fail( ()=> land2.give( auth2.lord(), $hyoo_crowds_rang.add ), 'Need add rang to join' )
+			$mol_assert_like( land1.lord_rang( auth1.lord() ), $hyoo_crowds_rang.get )
 			
-			area.give( auth1.lord(), $hyoo_crowds_rang.get )
-			$mol_assert_like( area.lord_rang( auth1.lord() ), $hyoo_crowds_rang.get )
+			land1.give( auth1.lord(), $hyoo_crowds_rang.get )
+			$mol_assert_like( land1.lord_rang( auth1.lord() ), $hyoo_crowds_rang.get )
 			
-			area.give( auth1.lord(), $hyoo_crowds_rang.add )
-			$mol_assert_like( area.lord_rang( auth1.lord() ), $hyoo_crowds_rang.add )
+			land1.give( auth1.lord(), $hyoo_crowds_rang.add )
+			$mol_assert_like( land1.lord_rang( auth1.lord() ), $hyoo_crowds_rang.add )
 			
-			area.give( auth1.lord(), $hyoo_crowds_rang.get )
-			$mol_assert_like( area.lord_rang( auth1.lord() ), $hyoo_crowds_rang.get )
+			land1.give( auth1.lord(), $hyoo_crowds_rang.get )
+			$mol_assert_like( land1.lord_rang( auth1.lord() ), $hyoo_crowds_rang.get )
 			
-			area.give( auth1.lord(), $hyoo_crowds_rang.mod )
-			$mol_assert_like( area.lord_rang( auth1.lord() ), $hyoo_crowds_rang.mod )
+			land1.give( auth1.lord(), $hyoo_crowds_rang.mod )
+			$mol_assert_like( land1.lord_rang( auth1.lord() ), $hyoo_crowds_rang.mod )
 			
-			area.give( auth1.lord(), $hyoo_crowds_rang.add )
-			$mol_assert_like( area.lord_rang( auth1.lord() ), $hyoo_crowds_rang.add )
+			land1.give( auth1.lord(), $hyoo_crowds_rang.add )
+			$mol_assert_like( land1.lord_rang( auth1.lord() ), $hyoo_crowds_rang.add )
 			
-			area.give( auth1.lord(), $hyoo_crowds_rang.law )
-			$mol_assert_like( area.lord_rang( auth1.lord() ), $hyoo_crowds_rang.law )
+			land1.give( auth1.lord(), $hyoo_crowds_rang.law )
+			$mol_assert_like( land1.lord_rang( auth1.lord() ), $hyoo_crowds_rang.law )
 			
-			area.give( auth1.lord(), $hyoo_crowds_rang.mod )
-			$mol_assert_like( area.lord_rang( auth1.lord() ), $hyoo_crowds_rang.mod )
+			land1.give( auth1.lord(), $hyoo_crowds_rang.mod )
+			$mol_assert_like( land1.lord_rang( auth1.lord() ), $hyoo_crowds_rang.mod )
 			
-			area1.apply_unit( area.delta_unit() )
-			$mol_assert_fail( ()=> area1.give( auth2.lord(), $hyoo_crowds_rang.add ), 'Need law rang to change rang' )
+			land2.apply_unit( land1.delta_unit() )
+			$mol_assert_fail( ()=> land2.give( auth2.lord(), $hyoo_crowds_rang.add ), 'Need law rang to change rang' )
 			
 		},
 		
 		'Post Data and pick Delta'( $ ) {
 			
-			const area = $hyoo_crowds_area.make({ $ })
-			const area1 = $hyoo_crowds_area.make({ $, lord: ()=> area.lord(), auth: ()=> auth1 })
+			const land1 = $hyoo_crowds_land.make({ $ })
+			const land2 = $hyoo_crowds_land.make({ $, lord_numb: ()=> land1.lord_numb(), auth: ()=> auth1 })
 			
-			$mol_assert_like( area.delta_unit(), [] )
+			$mol_assert_like( land1.delta_unit(), [] )
 			
-			area.post( 0, 0, 1, new Uint8Array([ 1 ]) )
-			$mol_assert_like( area.delta_unit().length, 2 )
+			land1.post( 0, 0, 1, new Uint8Array([ 1 ]) )
+			$mol_assert_like( land1.delta_unit().length, 2 )
 			
-			const face = new $hyoo_crowds_face( area.face )
+			const face = new $hyoo_crowds_face( land1.face )
 			
-			area.post( 1, 0, 2, new Uint8Array([ 2 ]) )
-			$mol_assert_like( area.delta_unit().length, 3 )
-			$mol_assert_like( area.delta_unit( face ).length, 1 )
+			land1.post( 1, 0, 2, new Uint8Array([ 2 ]) )
+			$mol_assert_like( land1.delta_unit().length, 3 )
+			$mol_assert_like( land1.delta_unit( face ).length, 1 )
 			
-			area1.apply_unit( area.delta_unit() )
+			land2.apply_unit( land1.delta_unit() )
 			
-			$mol_assert_fail( ()=> area1.post( 2, 0, 3, new Uint8Array([ 3 ]) ), 'Need add rang to join' )
-			$mol_assert_like( area1.delta_unit().length, 3 )
-			$mol_assert_like( area1.delta_unit( face ).length, 1 )
+			$mol_assert_fail( ()=> land2.post( 2, 0, 3, new Uint8Array([ 3 ]) ), 'Need add rang to join' )
+			$mol_assert_like( land2.delta_unit().length, 3 )
+			$mol_assert_like( land2.delta_unit( face ).length, 1 )
 			
-			area.give( auth1.lord(), $hyoo_crowds_rang.add )
-			area1.apply_unit( area.delta_unit() )
-			$mol_assert_fail( ()=> area1.post( 2, 0, 3, new Uint8Array([ 3 ]) ), 'Need mod rang to post any data' )
-			$mol_assert_like( area1.delta_unit().length, 5 )
-			$mol_assert_like( area1.delta_unit( face ).length, 3 )
+			land1.give( auth1.lord(), $hyoo_crowds_rang.add )
+			land2.apply_unit( land1.delta_unit() )
+			$mol_assert_fail( ()=> land2.post( 2, 0, 3, new Uint8Array([ 3 ]) ), 'Need mod rang to post any data' )
+			$mol_assert_like( land2.delta_unit().length, 5 )
+			$mol_assert_like( land2.delta_unit( face ).length, 3 )
 			
-			area1.post( 2, 0, auth1.peer(), new Uint8Array([ 4 ]) )
-			$mol_assert_like( area1.delta_unit().length, 6 )
-			$mol_assert_like( area1.delta_unit( face ).length, 4 )
+			land2.post( 2, 0, auth1.peer(), new Uint8Array([ 4 ]) )
+			$mol_assert_like( land2.delta_unit().length, 6 )
+			$mol_assert_like( land2.delta_unit( face ).length, 4 )
 			
-			area.give( auth1.lord(), $hyoo_crowds_rang.mod )
-			area1.apply_unit( area.delta_unit() )
-			area1.post( 2, 0, 3, new Uint8Array([ 3 ]) )
-			$mol_assert_like( area1.delta_unit().length, 7 )
-			$mol_assert_like( area1.delta_unit( face ).length, 5 )
+			land1.give( auth1.lord(), $hyoo_crowds_rang.mod )
+			land2.apply_unit( land1.delta_unit() )
+			land2.post( 2, 0, 3, new Uint8Array([ 3 ]) )
+			$mol_assert_like( land2.delta_unit().length, 7 )
+			$mol_assert_like( land2.delta_unit( face ).length, 5 )
 			
-			area.give( auth1.lord(), $hyoo_crowds_rang.add )
-			area1.apply_unit( area.delta_unit() )
-			$mol_assert_like( area1.delta_unit().length, 6 )
+			land1.give( auth1.lord(), $hyoo_crowds_rang.add )
+			land2.apply_unit( land1.delta_unit() )
+			$mol_assert_like( land2.delta_unit().length, 6 )
 			
-			area.give( auth1.lord(), $hyoo_crowds_rang.get )
-			area1.apply_unit( area.delta_unit() )
-			$mol_assert_like( area1.delta_unit().length, 4 )
+			land1.give( auth1.lord(), $hyoo_crowds_rang.get )
+			land2.apply_unit( land1.delta_unit() )
+			$mol_assert_like( land2.delta_unit().length, 4 )
 			
 		},
 		
 		'Self restriction for Add Rang'( $ ) {
 			
-			const area1 = $hyoo_crowds_area.make({ $ })
-			const area2 = $hyoo_crowds_area.make({ $, lord: ()=> area1.lord(), auth: ()=> auth2 })
+			const land1 = $hyoo_crowds_land.make({ $ })
+			const land2 = $hyoo_crowds_land.make({ $, lord_numb: ()=> land1.lord_numb(), auth: ()=> auth2 })
 			
-			$mol_assert_like( area1.delta_unit(), [] )
+			$mol_assert_like( land1.delta_unit(), [] )
 			
-			area1.give( auth2.lord(), $hyoo_crowds_rang.add )
-			area2.apply_unit( area1.delta_unit() )
-			$mol_assert_like( area2.delta_unit().length, 2 )
+			land1.give( auth2.lord(), $hyoo_crowds_rang.add )
+			land2.apply_unit( land1.delta_unit() )
+			$mol_assert_like( land2.delta_unit().length, 2 )
 			
-			const gist1 = area2.post( 0, 0, 0, 'foo' )
+			const gist1 = land2.post( 0, 0, 0, 'foo' )
 			$mol_assert_like( gist1.self(), auth2.peer() )
-			$mol_assert_like( area2.delta_unit().length, 4 )
+			$mol_assert_like( land2.delta_unit().length, 4 )
 			
-			const gist2 = area2.post( 0, 0, 0, 'bar' )
+			const gist2 = land2.post( 0, 0, 0, 'bar' )
 			$mol_assert_like( gist2.self(), auth2.peer() )
-			$mol_assert_like( area2.delta_unit().length, 4 )
+			$mol_assert_like( land2.delta_unit().length, 4 )
 			
 		},
 		
 		'Home Area no encryption'( $ ) {
 			
-			const area = $hyoo_crowds_area.make({ $ })
-			$mol_assert_not( area.secret() )
+			const land = $hyoo_crowds_land.make({ $ })
+			$mol_assert_not( land.secret() )
 			
-			$mol_assert_fail( ()=> area.encrypt(), 'Home Area never encrypted' )
-			$mol_assert_not( area.secret() )
+			$mol_assert_fail( ()=> land.encrypt(), 'Home Area never encrypted' )
+			$mol_assert_not( land.secret() )
 			
 		},
 		
 		async 'Area encryption'( $ ) {
 			
-			const area = $mol_wire_async( $hyoo_crowds_area.make({ $, numb: ()=> 1 }) )
-			$mol_assert_not( await area.secret() )
+			const land = $mol_wire_async( $hyoo_crowds_land.make({ $, numb: ()=> 1 }) )
+			$mol_assert_not( await land.secret() )
 			
-			await area.encrypt()
-			$mol_assert_ok( await area.secret() )
+			await land.encrypt()
+			$mol_assert_ok( await land.secret() )
 			
-			const gist = await area.post( 0, 0, 0, new Uint8Array([ 1, 2, 3 ]) )
+			const gist = await land.post( 0, 0, 0, new Uint8Array([ 1, 2, 3 ]) )
 			
 			$mol_assert_equal( gist.data().length, 7 )
 			$mol_assert_like(
-				await area.gist_decode( gist ),
+				await land.gist_decode( gist ),
 				new Uint8Array([ 1, 2, 3 ]),
 			)
 			
@@ -153,7 +153,7 @@ namespace $ {
 		'Area fork & merge'( $ ) {
 			
 			const realm = $hyoo_crowds_realm.make({ $ })
-			const base = realm.home().base().area()
+			const base = realm.home().base().land()
 			const left = base.fork()
 			
 			base.Root( $hyoo_crowds_list ).items([ 'foo', 'xxx' ])

@@ -3,18 +3,18 @@ namespace $.$$ {
 		
 		@ $mol_mem
 		override spread_ids() {
-			return [ ... this.realm().land.values() ].map( land => land.ref().toString() )
+			return [ ... this.realm().lords.values() ].map( lord => lord.ref().toString() )
 		}
 		
-		override land( id: string ) {
-			return this.realm().Land( $hyoo_crowds_ref.from( id ).lord() )
+		override lord( id: string ) {
+			return this.realm().Lord( $hyoo_crowds_ref.from( id ).lord() )
 		}
 		
 		override spread_title( id: string ) {
-			return this.land( id ).slug()
+			return this.lord( id ).slug()
 		}
 		
-		// override land_new() {
+		// override lord_new() {
 		// 	const lord = BigInt( Math.random() * 2**64 )
 		// 	this.realm().Land( lord )
 		// 	this.spread( lord.toString() )

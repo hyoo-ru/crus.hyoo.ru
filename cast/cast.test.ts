@@ -4,9 +4,9 @@ namespace $ {
 		
 		'Reg <=> List'( $ ) {
 			
-			const area = $hyoo_crowds_area.make({ $ })
-			const reg = area.Node( $hyoo_crowds_reg ).Item(0)
-			const list = area.Node( $hyoo_crowds_list ).Item(0)
+			const land = $hyoo_crowds_land.make({ $ })
+			const reg = land.Node( $hyoo_crowds_reg ).Item(0)
+			const list = land.Node( $hyoo_crowds_list ).Item(0)
 			
 			reg.value_vary( 1 )
 			$mol_assert_like( list.items(), [1] )
@@ -27,9 +27,9 @@ namespace $ {
 		
 		'Reg <=> Dict'( $ ) {
 			
-			const area = $hyoo_crowds_area.make({ $ })
-			const reg = area.Node( $hyoo_crowds_reg ).Item(0)
-			const dict = area.Node( $hyoo_crowds_dict ).Item(0)
+			const land = $hyoo_crowds_land.make({ $ })
+			const reg = land.Node( $hyoo_crowds_reg ).Item(0)
+			const dict = land.Node( $hyoo_crowds_dict ).Item(0)
 			
 			reg.value_vary( 1 )
 			$mol_assert_like( dict.keys(), [1] )

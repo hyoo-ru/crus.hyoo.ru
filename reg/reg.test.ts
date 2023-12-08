@@ -4,7 +4,7 @@ namespace $.$$ {
 		
 		"Empty representation"( $ ) {
 			
-			const land = $hyoo_crowds_area.make({ $ })
+			const land = $hyoo_crowds_land.make({ $ })
 			const reg = land.Node( $hyoo_crowds_reg ).Item(0)
 			
 			$mol_assert_like( reg.value_bool(), false )
@@ -18,7 +18,7 @@ namespace $.$$ {
 		
 		"Bool representation"( $ ) {
 			
-			const land = $hyoo_crowds_area.make({ $ })
+			const land = $hyoo_crowds_land.make({ $ })
 			const reg = land.Node( $hyoo_crowds_reg ).Item(0)
 			
 			reg.value_bool( true )
@@ -41,7 +41,7 @@ namespace $.$$ {
 		
 		"Int representation"( $ ) {
 			
-			const land = $hyoo_crowds_area.make({ $ })
+			const land = $hyoo_crowds_land.make({ $ })
 			const reg = land.Node( $hyoo_crowds_reg ).Item(0)
 			
 			reg.value_int( 4611686018427387904n )
@@ -64,7 +64,7 @@ namespace $.$$ {
 		
 		"Real representation"( $ ) {
 			
-			const land = $hyoo_crowds_area.make({ $ })
+			const land = $hyoo_crowds_land.make({ $ })
 			const reg = land.Node( $hyoo_crowds_reg ).Item(0)
 			
 			reg.value_real( Math.PI )
@@ -119,7 +119,7 @@ namespace $.$$ {
 		
 		"Bin representation"( $ ) {
 			
-			const land = $hyoo_crowds_area.make({ $ })
+			const land = $hyoo_crowds_land.make({ $ })
 			const reg = land.Node( $hyoo_crowds_reg ).Item(0)
 			
 			reg.value_bin( new Uint8Array([ 1, 2, 3 ]) )
@@ -150,7 +150,7 @@ namespace $.$$ {
 		
 		"String representation"( $ ) {
 			
-			const land = $hyoo_crowds_area.make({ $ })
+			const land = $hyoo_crowds_land.make({ $ })
 			const reg = land.Node( $hyoo_crowds_reg ).Item(0)
 			
 			reg.value_str( 'foo' )
@@ -186,12 +186,12 @@ namespace $.$$ {
 		
 		"Reference representation"( $ ) {
 			
-			const land = $hyoo_crowds_area.make({ $ })
+			const land = $hyoo_crowds_land.make({ $ })
 			const reg = land.Node( $hyoo_crowds_reg ).Item(123)
 			
 			reg.value_ref( reg.ref() )
 			$mol_assert_like( reg.value_bool(), true )
-			$mol_assert_like( reg.value_int(), land.lord() + ( 123n << 96n ) )
+			$mol_assert_like( reg.value_int(), land.lord_numb() + ( 123n << 96n ) )
 			$mol_assert_like( reg.value_real(), Number.NaN )
 			$mol_assert_like( reg.value_bin(), new Uint8Array([ 174, 214, 197, 34, 45, 170, 191, 40, 0, 0, 0, 0, 123, 0, 0, 0, 0, 0 ]) )
 			$mol_assert_like( reg.value_str(), reg.ref().toString() )
@@ -209,7 +209,7 @@ namespace $.$$ {
 		
 		"Store custom types"( $ ) {
 			
-			const land = $hyoo_crowds_area.make({ $ })
+			const land = $hyoo_crowds_land.make({ $ })
 			const reg = land.Node( $hyoo_crowds_reg ).Item(0)
 			
 			$mol_assert_like( reg.value_as( $mol_data_email ), null )
@@ -228,12 +228,12 @@ namespace $.$$ {
 		"Hyper link to another land"( $ ) {
 			
 			const realm = $hyoo_crowds_realm.make({ $ })
-			const area = realm.home().base().area()
+			const land = realm.home().base().land()
 			
-			const reg = area.Node( $hyoo_crowds_reg ).Item(1)
+			const reg = land.Node( $hyoo_crowds_reg ).Item(1)
 			const remote = reg.yoke( null )!.Root( $hyoo_crowds_reg )
 			
-			$mol_assert_unique( reg.area(), remote.area() )
+			$mol_assert_unique( reg.land(), remote.land() )
 			$mol_assert_like( reg.value_ref(), remote.ref() )
 			$mol_assert_like( reg.yoke( null )!.Root( $hyoo_crowds_reg ), remote )
 			
@@ -242,14 +242,14 @@ namespace $.$$ {
 		"Narrow registers"( $ ) {
 			
 			const realm = $hyoo_crowds_realm.make({ $ })
-			const area = realm.home().base().area()
+			const land = realm.home().base().land()
 			
-			const bin = area.Node( $hyoo_crowds_reg.of( 'bin' ) ).Item(1)
+			const bin = land.Node( $hyoo_crowds_reg.of( 'bin' ) ).Item(1)
 			$mol_assert_like( bin.value(), null )
 			bin.value( new Uint8Array([ 1, 2, 3 ]) )
 			$mol_assert_like( bin.value(), new Uint8Array([ 1, 2, 3 ]) )
 			
-			const str = area.Node( $hyoo_crowds_reg.of( 'str' ) ).Item(2)
+			const str = land.Node( $hyoo_crowds_reg.of( 'str' ) ).Item(2)
 			$mol_assert_like( str.value(), '' )
 			str.value( 'foo' )
 			$mol_assert_like( str.value(), 'foo' )
@@ -259,9 +259,9 @@ namespace $.$$ {
 		"Register with linked nodes"( $ ) {
 			
 			const realm = $hyoo_crowds_realm.make({ $ })
-			const area = realm.home().base().area()
+			const land = realm.home().base().land()
 			
-			const reg = area.Node( $hyoo_crowds_reg.ref( ()=> $hyoo_crowds_reg ) ).Item(1)
+			const reg = land.Node( $hyoo_crowds_reg.ref( ()=> $hyoo_crowds_reg ) ).Item(1)
 			$mol_assert_like( reg.value(), null )
 			
 			reg.value( reg )

@@ -1,10 +1,10 @@
 $hyoo_crowds_realm_book $mol_book2_catalog
 	menu_title \Realm
-	param \land
+	param \lord
 	realm $hyoo_crowds_realm
-	Spread* <= Land* $hyoo_crowds_land_book
-		land <= land* $hyoo_crowds_land
+	Spread* <= Lord* $hyoo_crowds_lord_book
+		lord <= lord* $hyoo_crowds_lord
 	- menu_tools /
 		<= Land_new $mol_button_minor
-			sub / <= land_new_icon $mol_icon_plus
-			click? <=> land_new? null
+			sub / <= lord_new_icon $mol_icon_plus
+			click? <=> lord_new? null

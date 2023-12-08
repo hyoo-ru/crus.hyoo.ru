@@ -1,10 +1,6 @@
 $hyoo_crowds_land_book $mol_book2_catalog
-	menu_title \Areas
-	param \area
+	menu_title \Heads
+	param \head
 	land $hyoo_crowds_land
-	Spread* <= Area* $hyoo_crowds_area_book
-		area <= area* $hyoo_crowds_area
-	menu_tools /
-		<= Area_new $mol_button_minor
-			sub / <= Area_new_icon $mol_icon_plus
-			click? <=> area_new? null
+	Spread* <= Node* $hyoo_crowds_node_page
+		node <= node* $hyoo_crowds_node

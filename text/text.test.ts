@@ -3,9 +3,9 @@ namespace $ {
 		
 		'Change sequences'( $ ) {
 			
-			const area = $hyoo_crowds_area.make({ $ })
-			const text = area.Root( $hyoo_crowds_text )
-			const list = area.Root( $hyoo_crowds_list )
+			const land = $hyoo_crowds_land.make({ $ })
+			const text = land.Root( $hyoo_crowds_text )
+			const list = land.Root( $hyoo_crowds_list )
 			$mol_assert_like( text.str(), '' )
 			$mol_assert_like( list.items(), [] )
 			
@@ -41,8 +41,8 @@ namespace $ {
 		
 		async 'str: Offset <=> Point'( $ ) {
 			
-			const area = $hyoo_crowds_area.make({ $ })
-			const text = area.Root( $hyoo_crowds_text )
+			const land = $hyoo_crowds_land.make({ $ })
+			const text = land.Root( $hyoo_crowds_text )
 			
 			text.str( 'fooBar' )
 			const [ first, second ] = text.units()
@@ -67,8 +67,8 @@ namespace $ {
 
 		async 'text: Offset <=> Point'( $ ) {
 			
-			const area = $hyoo_crowds_area.make({ $ })
-			const text = area.Root( $hyoo_crowds_text )
+			const land = $hyoo_crowds_land.make({ $ })
+			const text = land.Root( $hyoo_crowds_text )
 			
 			text.text( 'foo bar\n666 777' )
 			const [ first, second ] = text.nodes( $hyoo_crowds_text )
@@ -83,21 +83,21 @@ namespace $ {
 
 		async 'Merge different sequences'( $ ) {
 			
-			const area1 = $hyoo_crowds_area.make({ $ })
-			const area2 = $hyoo_crowds_area.make({ $ })
+			const land1 = $hyoo_crowds_land.make({ $ })
+			const land2 = $hyoo_crowds_land.make({ $ })
 			
-			const text1 = area1.Node( $hyoo_crowds_text ).Item(0)
-			const text2 = area2.Node( $hyoo_crowds_text ).Item(0)
+			const text1 = land1.Node( $hyoo_crowds_text ).Item(0)
+			const text2 = land2.Node( $hyoo_crowds_text ).Item(0)
 			
 			text1.str( 'foo bar.' )
-			area2.face.tick( area2.auth().peer() )
+			land2.face.tick( land2.auth().peer() )
 			text2.str( 'xxx yyy.' )
 			
-			const delta1 = area1.delta_unit()
-			const delta2 = area2.delta_unit()
+			const delta1 = land1.delta_unit()
+			const delta2 = land2.delta_unit()
 			
-			area1.apply_unit( delta2 )
-			area2.apply_unit( delta1 )
+			land1.apply_unit( delta2 )
+			land2.apply_unit( delta1 )
 	
 			$mol_assert_like(
 				text1.str(),
@@ -109,15 +109,15 @@ namespace $ {
 		
 		async 'Merge same insertions with different changes to same place'( $ ) {
 			
-			const base = $hyoo_crowds_area.make({ $ })
+			const base = $hyoo_crowds_land.make({ $ })
 			base.Root( $hyoo_crowds_text ).str( '( )' )
 			
-			const left = $hyoo_crowds_area.make({ $ })
+			const left = $hyoo_crowds_land.make({ $ })
 			left.apply_unit( base.delta_unit() )
 			left.Root( $hyoo_crowds_text ).str( '( [ f ] )' )
 			left.Root( $hyoo_crowds_text ).str( '( [ foo ] )' )
 			
-			const right = $hyoo_crowds_area.make({ $ })
+			const right = $hyoo_crowds_land.make({ $ })
 			right.apply_unit( base.delta_unit() )
 			right.face.tick( right.auth().peer() )
 			right.Root( $hyoo_crowds_text ).str( '( [ f ] )' )

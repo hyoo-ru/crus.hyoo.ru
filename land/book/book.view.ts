@@ -7,19 +7,16 @@ namespace $.$$ {
 		
 		@ $mol_mem
 		override spread_ids() {
-			return [ ... this.land().area.values() ].map( area => area.ref().toString() )
+			const land = this.land()
+			return [ 0, ... land.gist.keys() ].map( head => land.Node( $hyoo_crowds_node ).Item( head ).ref().toString() )
 		}
 		
-		override spread_title( id: string ) {
-			return this.area( id ).slug()
+		override spread_title( head: string ) {
+			return this.node( head ).slug()
 		}
 		
-		override area( id: string ) {
-			return this.land().Area( $hyoo_crowds_ref.from( id ).numb() )
-		}
-		
-		override area_new() {
-			this.spread( this.land().Area_new( 0 ).ref().toString() )
+		override node( id: string ) {
+			return this.land().Node( $hyoo_crowds_node ).Item( $hyoo_crowds_ref.from( id ).head() )
 		}
 		
 	}

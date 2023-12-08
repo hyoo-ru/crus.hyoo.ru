@@ -21,11 +21,11 @@ namespace $.$$ {
 			if( next ) {
 				const units = this.node().units()
 				const unit = units[ index ]
-				this.node().area().post(
+				this.node().land().post(
 					index ? units[ index - 1 ].self() : 0,
 					unit.head(),
 					unit.self(),
-					this.node().area().gist_decode( unit ),
+					this.node().land().gist_decode( unit ),
 					next,
 				)
 			}

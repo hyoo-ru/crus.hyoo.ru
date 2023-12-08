@@ -44,7 +44,7 @@ namespace $ {
 					const realm = this.realm()
 					const ref = this.value_ref( ( next as $hyoo_crowds_node )?.ref() )
 					if( !ref ) return null
-					return realm!.Land( ref.lord() ).Area( ref.numb() ).Node( ( Value as any )() ).Item( ref.head() )
+					return realm!.Lord( ref.lord() ).Land( ref.numb() ).Node( ( Value as any )() ).Item( ref.head() )
 				}
 				
 				@ $mol_action
@@ -66,12 +66,12 @@ namespace $ {
 		value_vary( next?: $hyoo_crowds_vary_type ): $hyoo_crowds_vary_type {
 			
 			let unit_prev = this.pick_unit()
-			let prev = unit_prev ? this.area().gist_decode( unit_prev ) : null
+			let prev = unit_prev ? this.land().gist_decode( unit_prev ) : null
 			
 			if( next === undefined ) return prev
 			if( $mol_compare_deep( prev , next ) ) return next
 			
-			this.area().post(
+			this.land().post(
 				0, 
 				unit_prev?.head() ?? this.head(),
 				unit_prev?.self() ?? 0,
@@ -140,15 +140,15 @@ namespace $ {
 			const realm = this.realm()
 			
 			const ref = this.value_ref()
-			if( ref ) return realm!.Land( ref.lord() ).Area( ref.numb() )
+			if( ref ) return realm!.Lord( ref.lord() ).Land( ref.numb() )
 			
 			const hash = $mol_crypto_hash( $hyoo_crowds_vary_encode( vary ).bin )
-			const idea = new $mol_buffer( hash.buffer ).uint32(0) + this.area().numb()
+			const idea = new $mol_buffer( hash.buffer ).uint32(0) + this.land().numb()
 
-			const area = realm!.Land( this.area().auth().lord() ).Area_new( idea )
-			this.value_ref( area.ref() )
+			const land = realm!.Lord( this.land().auth().lord() ).Land_new( idea )
+			this.value_ref( land.ref() )
 			
-			return area
+			return land
 		}
 		
 		;[ $mol_dev_format_head ]() {
