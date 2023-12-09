@@ -1,4 +1,4 @@
-$hyoo_cras_expose $mol_book2_catalog
+$hyoo_cras_app $mol_book2_catalog
 	menu_title \🎭CROWDS
 	param \section
 	realm $hyoo_cras_realm
