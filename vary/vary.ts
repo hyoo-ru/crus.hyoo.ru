@@ -29,7 +29,7 @@ namespace $ {
 		bool = 0b00001, // 1b * 32 * 8
 		int  = 0b00010, // 8B * 4
 		real = 0b00011, // 8B * 4
-		ref  = 0b00100, // 8B + 4B + 6B = 18B
+		ref  = 0b00100, // 12B + 6B + 6B = 24B
 		
 		str  = 0b10000,
 		time = 0b10001, // iso8601

@@ -193,7 +193,7 @@ namespace $.$$ {
 			$mol_assert_like( reg.value_bool(), true )
 			$mol_assert_like( reg.value_int(), land.lord_numb() + ( 123n << 96n ) )
 			$mol_assert_like( reg.value_real(), Number.NaN )
-			$mol_assert_like( reg.value_bin(), new Uint8Array([ 174, 214, 197, 34, 45, 170, 191, 40, 0, 0, 0, 0, 123, 0, 0, 0, 0, 0 ]) )
+			$mol_assert_like( reg.value_bin(), new Uint8Array([ 213, 212, 219, 170, 109, 71, 174, 214, 197, 34, 45, 170, 0, 0, 0, 0, 0, 0, 123, 0, 0, 0, 0, 0 ]) )
 			$mol_assert_like( reg.value_str(), reg.ref().toString() )
 			$mol_assert_like( reg.value_ref(), reg.ref() )
 			

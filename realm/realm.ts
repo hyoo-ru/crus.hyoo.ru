@@ -11,6 +11,8 @@ namespace $ {
 		@ $mol_mem_key
 		Lord( numb: bigint ) {
 			
+//			this.$.$mol_wait_timeout(1000)
+			
 			let lord = this.lords.get( numb )
 			if( lord ) return lord
 			
@@ -25,7 +27,7 @@ namespace $ {
 		}
 		
 		Node< Node extends typeof $hyoo_crowds_node > ( Node: Node, ref: $hyoo_crowds_ref ) {
-			return this.Lord( ref.lord() ).Land( ref.numb() ).Node( Node ).Item( ref.head() )
+			return this.Lord( ref.lord() ).Land( ref.land() ).Node( Node ).Item( ref.head() )
 		}
 		
 		// @ $mol_mem_key

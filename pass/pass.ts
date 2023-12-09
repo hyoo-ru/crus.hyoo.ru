@@ -7,7 +7,11 @@ namespace $ {
 		}
 		
 		lord( next?: bigint ) {
-			return this.uint64( 8, next )
+			if( next !== undefined ) {
+				this.uint48( 2, Number( next & 0xFFFFFFFFFFFFn ) )
+				this.uint48( 8, Number( next >> 48n ) )
+			}
+			return BigInt( this.uint48( 2 ) ) + ( BigInt( this.uint48( 8 ) ) << 48n )
 		}
 		
 		auth( next?: ArrayLike< number > ) {

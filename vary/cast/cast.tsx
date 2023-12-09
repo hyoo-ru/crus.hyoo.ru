@@ -12,7 +12,7 @@ namespace $ {
 			bool: vary => vary,
 			int: vary => Boolean( vary ),
 			real: vary => Boolean( vary ),
-			ref: vary => Boolean( vary.lord || vary.numb || vary.numb ),
+			ref: vary => Boolean( vary.lord || vary.land || vary.land ),
 			
 			str: vary => Boolean( vary ),
 			time: vary => Boolean( vary.valueOf() ),
@@ -30,7 +30,7 @@ namespace $ {
 			bool: vary => BigInt( vary ),
 			int: vary => vary,
 			real: vary => Number.isFinite( vary ) ? BigInt( Math.trunc( vary ) ) : 0n,
-			ref: vary => vary.lord() + ( BigInt( vary.numb() ) << 64n ) + ( BigInt( vary.head() ) << 96n ),
+			ref: vary => vary.lord() + ( BigInt( vary.land() ) << 64n ) + ( BigInt( vary.head() ) << 96n ),
 			
 			str: vary => {
 				try {
@@ -139,7 +139,7 @@ namespace $ {
 			bool: vary => [ vary ],
 			int: vary => [ vary.toString() ],
 			real: vary => [ vary ],
-			ref: vary => ({ lord: vary.lord().toString(), numb: vary.numb(), head: vary.head() }),
+			ref: vary => ({ lord: vary.lord().toString(), numb: vary.land(), head: vary.head() }),
 			
 			str: vary => JSON.parse( vary ) as {} | any[],
 			time: vary => [ vary.toJSON() ],

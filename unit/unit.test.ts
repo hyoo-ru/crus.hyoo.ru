@@ -9,11 +9,11 @@ namespace $ {
 		'auth unit type'() {
 			
 			const auth = new $hyoo_crowds_pass
-			auth.auth([ 0xFF, 0, 0, 0, 0, 0, 0, 0, 0xF8, 0xF7, 0xF6, 0xF5, 0xF4, 0xF3, 0xF2, 0xF1 ])
+			auth.auth([ 0xFF, 0, 0xFC, 0xFB, 0xFA, 0xF9, 0xF8, 0xF7, 0xF6, 0xF5, 0xF4, 0xF3, 0xF2, 0xF1 ])
 			
 			$mol_assert_like( auth.kind(), 'pass' )
-			$mol_assert_like( auth.lord(), 0xF1F2F3F4F5F6F7F8n )
-			$mol_assert_like( auth.peer(), 0xF3F4F5F6F7F8 )
+			$mol_assert_like( auth.lord(), 0xF1F2F3F4F5F6F7F8F9FAFbFCn )
+			$mol_assert_like( auth.peer(), 0xF7F8F9FAFBFC )
 			
 		},
 		
@@ -38,15 +38,15 @@ namespace $ {
 			
 		},
 		
-		'big data unit type'() {
+		// 'big data unit type'() {
 			
-			const unit = new $hyoo_crowds_gist
-			unit.hash( 0xa1a2a3a4a5a6a7a8b1b2b3b4b5b6b7b8n )
+		// 	const unit = new $hyoo_crowds_gist
+		// 	unit.hash( 0xa1a2a3a4a5a6a7a8b1b2b3b4b5b6b7b8n )
 			
-			// $mol_assert_like( unit.size(), 255 )
-			$mol_assert_like( unit.hash(), 0xa1a2a3a4a5a6a7a8b1b2b3b4b5b6b7b8n )
+		// 	// $mol_assert_like( unit.size(), 255 )
+		// 	$mol_assert_like( unit.hash(), 0xa1a2a3a4a5a6a7a8b1b2b3b4b5b6b7b8n )
 			
-		},
+		// },
 		
 		'unit peer'() {
 			

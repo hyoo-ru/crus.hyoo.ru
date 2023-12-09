@@ -3,15 +3,55 @@ namespace $ {
 		
 		static store = new Map< bigint, Uint8Array >()
 		
-		static save( blob: Uint8Array ) {
-			const hash = new BigUint64Array( $mol_crypto_hash( blob ).buffer, 0, 2 )
-			const id = hash[0] | ( hash[1] << 64n )
-			this.store.set( id, blob )
-			return id
+		@ $mol_mem_key
+		static hash( blob: Uint8Array ) {
+			return $mol_crypto_hash( blob )
 		}
 		
-		static load( hash: bigint ) {
-			return this.store.get( hash ) ?? null
+		@ $mol_mem_key
+		static rock( hash: Uint8Array, next?: Uint8Array ) {
+			$mol_wire_solid()
+			if( !next ) return $mol_wire_sync( this.read() ).get([ hash ])
+			
+			this.change().then( Rock => Rock.put( next, [ hash ] ) )
+			
+			return next
+			
+		}
+		
+		@ $mol_action
+		static save( blob: Uint8Array ) {
+			const hash = this.hash( blob )
+			this.rock( hash, blob )
+			return hash
+		}
+		
+		@ $mol_action
+		static read() {
+			const db = $mol_wire_sync( this ).db()
+			return $mol_wire_sync( db ).read( 'Rock' ).Rock
+		}
+		
+		static async change() {
+			const db = await this.db()
+			return db.change( 'Rock' ).stores.Rock
+		}
+		
+		@ $mol_memo.method
+		static async db() {
+			
+			type Scheme = {
+				Rock: {
+					Key: [ Uint8Array ]
+					Doc: Uint8Array
+					Indexes: {}
+				}
+			}
+			
+			return await this.$.$mol_db< Scheme >( '$hyoo_crowds_mine',
+				mig => mig.store_make( 'Rock' ),
+			)
+			
 		}
 		
 	}

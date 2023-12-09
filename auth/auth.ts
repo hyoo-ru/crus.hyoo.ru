@@ -22,11 +22,11 @@ namespace $ {
 		}
 		
 		lord() {
-			return this.uint64( 8 )
+			return BigInt( this.peer() ) + ( BigInt( this.uint48( 8 ) ) << 48n )
 		}
 		
 		peer() {
-			return this.uint48( 8 )
+			return this.uint48( 2 )
 		}
 		
 		@ $mol_mem_key

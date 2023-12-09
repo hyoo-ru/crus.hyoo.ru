@@ -3,24 +3,30 @@ namespace $ {
 	/** Reference to node that identified by Lord+Numb+Head. */
 	export class $hyoo_crowds_ref extends $mol_buffer {
 		
-		static size = 8 + 4 + 6
+		static size = 12 + 6 + 6
 		
 		static make< This extends typeof $hyoo_crowds_ref >(
 			this: This,
-			lord = 0n /*8B*/,
-			numb = 0 /*4B*/,
+			lord = 0n /*12B*/,
+			land = 0 /*6B*/,
 			head = 0 /*6B*/,
 		) {
 			const ref = this.from( new Uint8Array( this.size ) )
 			ref.lord( lord )
-			ref.numb( numb )
+			ref.land( land )
 			ref.head( head )
 			return ref
 		}
 		
-		lord( next?: bigint ) { return this.uint64( 0, next ) }
-		numb( next?: number ) { return this.byteLength >= 12 ? this.uint32( 8, next ) : 0 }
-		head( next?: number ) { return this.byteLength >= 18 ? this.uint48( 12, next ) : 0 }
+		lord( next?: bigint ) {
+			if( next !== undefined ) {
+				this.uint64( 0, next & 0xFFFFFFFFFFFFFFFFn )
+				this.uint32( 8, Number( next >> 64n ) )
+			}
+			return this.uint64( 0 ) + ( BigInt( this.uint32( 8 ) ) << 64n )
+		}
+		land( next?: number ) { return this.byteLength >= 18 ? this.uint48( 12, next ) : 0 }
+		head( next?: number ) { return this.byteLength >= 24 ? this.uint48( 18, next ) : 0 }
 		
 		toString() {
 			// return (
@@ -28,7 +34,7 @@ namespace $ {
 			// 	+ '_' + $mol_base64_ae_encode( new Uint8Array( this.buffer, 8, 4 ) ).replace( /A+$/, '' )
 			// 	+ '_' + $mol_base64_ae_encode( new Uint8Array( this.buffer, 12, 6 ) ).replace( /A+$/, '' )
 			// ).replace( /_+$/, '' )
-			return $mol_base64_ae_encode( this.asArray() ).replace( /A+$/, '' )
+			return $mol_base64_ae_encode( this.asArray() ).replace( /(AAAAAAAA)+$/, '' )
 			// return `${ this.lord().toString(36) }_${ this.numb().toString(36) }_${ this.head().toString(36) }`
 		}
 		

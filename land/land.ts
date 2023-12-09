@@ -28,8 +28,7 @@ namespace $ {
 		}
 		
 		slug() {
-			const slug = this.ref().toString().slice( 10 )
-			return slug.length < 2 ? 'Base' : slug
+			return this.ref().toString().slice( 16, 24 )
 			// return this.ref().toString().replace( /^[^_]*_?/, '' ) || 'Base'
 		}
 		
@@ -258,7 +257,7 @@ namespace $ {
 				const realm  = this.realm()!
 				for( const ref of cloves ) {
 					
-					const clove = realm.Lord( ref.lord() ).Land( ref.numb() )
+					const clove = realm.Lord( ref.lord() ).Land( ref.land() )
 					for( const gist of clove.gists_ordered( head ) ) {
 						
 						if( exists.has( gist.self() ) ) continue
@@ -460,8 +459,9 @@ namespace $ {
 			
 		}
 		
+		@ $mol_action
 		gist_decode( gist: $hyoo_crowds_gist ) {
-			let bin = gist.size() > 32 ? this.$.$hyoo_crowds_mine.load( gist.hash() ) : gist.data()
+			let bin = gist.size() > 32 ? this.$.$hyoo_crowds_mine.rock( gist.hash() ) : gist.data()
 			if( bin && this.secret() ) bin = new Uint8Array( $mol_wire_sync( this.secret()! ).decrypt( bin, gist.salt() ) )
 			const vary = bin ? $hyoo_crowds_vary_decode({ tip: gist.tip(), bin }) : null
 			return vary

@@ -40,7 +40,7 @@ namespace $ {
 		}
 		
 		peer( next?: number ) {
-			return this.uint48( 8, next )
+			return this.uint48( 2, next )
 		}
 		
 		salt() {

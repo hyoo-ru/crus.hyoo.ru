@@ -4,13 +4,10 @@ namespace $ {
 		static tag = $hyoo_crowds_gist_tag[ $hyoo_crowds_gist_tag.vals ] as keyof typeof $hyoo_crowds_gist_tag
 				
 		/** Text representation. Based on list of strings. */
+		@ $mol_mem
 		text( next?: string ): string {
 			
-			if( next === undefined ) {
-				
-				return this.str()
-			
-			} else {
+			if( next !== undefined ) {
 				
 				const land = this.land()
 				const prev = this.units()
@@ -37,13 +34,14 @@ namespace $ {
 					},
 				})
 				
-				return next
 			}
 			
+			return this.str()
 		}
 		
 		/** Text representation. Based on list of strings. */
-		str( next?: string ) {
+		@ $mol_mem
+		str( next?: string ): string {
 			
 			if( next === undefined ) {
 				
@@ -61,11 +59,12 @@ namespace $ {
 				
 				this.write( next, 0, -1 )
 				
-				return next
+				return this.str()
 			}
 			
 		}
 		
+		@ $mol_action
 		write(
 			next: string,
 			str_from = -1,

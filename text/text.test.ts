@@ -90,7 +90,7 @@ namespace $ {
 			const text2 = land2.Node( $hyoo_crowds_text ).Item(0)
 			
 			text1.str( 'foo bar.' )
-			land2.face.tick( land2.auth().peer() )
+			land2.face.sync( land1.face )
 			text2.str( 'xxx yyy.' )
 			
 			const delta1 = land1.delta_unit()
@@ -119,7 +119,7 @@ namespace $ {
 			
 			const right = $hyoo_crowds_land.make({ $ })
 			right.apply_unit( base.delta_unit() )
-			right.face.tick( right.auth().peer() )
+			right.face.sync( left.face )
 			right.Root( $hyoo_crowds_text ).str( '( [ f ] )' )
 			right.Root( $hyoo_crowds_text ).str( '( [ fu ] )' )
 			

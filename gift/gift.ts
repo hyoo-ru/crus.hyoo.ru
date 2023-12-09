@@ -15,7 +15,7 @@ namespace $ {
 		}
 		
 		time( next?: number ) {
-			return this.uint48( 2, next )
+			return this.uint48( 8, next )
 		}
 		
 		free() {
@@ -23,15 +23,19 @@ namespace $ {
 		}
 		
 		dest( next?: bigint ) {
-			return this.uint64( 32, next )
+			if( next !== undefined ) {
+				this.uint32( 52, Number( next & 0xFFFFFFFFn ) )
+				this.uint64( 56, next >> 32n )
+			}
+			return BigInt( this.uint32( 52 ) ) + ( this.uint64( 56 ) << 32n )
 		}
 		
 		bill() {
-			return new Uint8Array( this.buffer, this.byteOffset + 40, 20 )
+			return new Uint8Array( this.buffer, this.byteOffset + 32, 20 )
 		}
 		
 		tail() {
-			return new Uint8Array( this.buffer, this.byteOffset + 60, 4 )
+			return new Uint8Array( this.buffer, this.byteOffset + 42, 4 )
 		}
 		
 		static compare(

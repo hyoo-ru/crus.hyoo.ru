@@ -45,7 +45,7 @@ namespace $ {
 		}
 		
 		time( next?: number ) {
-			return this.uint48( 2, next )
+			return this.uint48( 8, next )
 		}
 		
 		self( next?: number ) {
@@ -61,17 +61,17 @@ namespace $ {
 		}
 		
 		hash(
-			next?: bigint,
+			next?: Uint8Array,
 			tip = 'null' as keyof typeof $hyoo_crowds_vary_tip,
 			tag = 'term' as keyof typeof $hyoo_crowds_gist_tag,
 		) {
+			const bin = new Uint8Array( this.buffer, this.byteOffset + 32, 20 )
 			if( next !== undefined ) {
 				this.hint( tip, tag )
 				this.size( 255 )
-				this.uint64( 32, next & 0xffffffffffffffffn )
-				this.uint64( 40, next >> 64n )
+				bin.set( next )
 			}
-			if( this.size() > 32 ) return this.uint64( 32 ) | ( this.uint64( 40 ) << 64n )
+			if( this.size() > 32 ) return bin
 			$mol_fail( new Error( 'No stored hash' ) )
 		}
 		

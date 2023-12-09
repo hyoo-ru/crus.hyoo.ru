@@ -44,7 +44,7 @@ namespace $ {
 					const realm = this.realm()
 					const ref = this.value_ref( ( next as $hyoo_crowds_node )?.ref() )
 					if( !ref ) return null
-					return realm!.Lord( ref.lord() ).Land( ref.numb() ).Node( ( Value as any )() ).Item( ref.head() )
+					return realm!.Lord( ref.lord() ).Land( ref.land() ).Node( ( Value as any )() ).Item( ref.head() )
 				}
 				
 				@ $mol_action
@@ -140,7 +140,7 @@ namespace $ {
 			const realm = this.realm()
 			
 			const ref = this.value_ref()
-			if( ref ) return realm!.Lord( ref.lord() ).Land( ref.numb() )
+			if( ref ) return realm!.Lord( ref.lord() ).Land( ref.land() )
 			
 			const hash = $mol_crypto_hash( $hyoo_crowds_vary_encode( vary ).bin )
 			const idea = new $mol_buffer( hash.buffer ).uint32(0) + this.land().numb()

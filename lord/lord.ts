@@ -26,7 +26,7 @@ namespace $ {
 		}
 		
 		slug() {
-			return this.ref().toString()
+			return this.ref().toString().slice( 0, 16 )
 		}
 		
 		@ $mol_mem_key
@@ -51,9 +51,9 @@ namespace $ {
 		}
 		
 		@ $mol_action
-		numb_make( idea = Math.floor( Math.random() * 2**32 ) ) {
+		numb_make( idea = Math.floor( Math.random() * 2**48 ) ) {
 			for( let i = 0; i < 4096; ++i ) {
-				idea = ( idea + 1  ) % 2**32
+				idea = ( idea + 1  ) % 2**48
 				if( !idea ) continue
 				if( this.lands.has( idea ) ) continue
 				return idea

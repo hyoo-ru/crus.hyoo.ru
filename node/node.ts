@@ -31,7 +31,7 @@ namespace $ {
 		}
 		
 		slug() {
-			return this.ref().toString().slice( 16 ) || 'Root'
+			return this.ref().toString().slice( 24 )
 		}
 		
 		/** Returns another representation of this node. */
