@@ -1,5 +1,5 @@
 {
-  "name": "hyoo_cras_expose",
+  "name": "hyoo_cras_app",
   "version": "0.0.1",
   "exports": {
     "node": {
@@ -15,7 +15,7 @@
   "browser": "./web.js",
   "types": "./web.d.ts",
   "keywords": [
-    "$hyoo_cras_expose",
+    "$hyoo_cras_app",
     "$hyoo_cras",
     "$hyoo",
     "$mol_book2_catalog",

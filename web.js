@@ -19208,7 +19208,7 @@ var $node = $node || {} ; $node[ "/hyoo/calc/calc_logo.svg" ] = "data:image/svg+
 "use strict";
 var $;
 (function ($) {
-    class $hyoo_cras_expose extends $mol_book2_catalog {
+    class $hyoo_cras_app extends $mol_book2_catalog {
         menu_title() {
             return "🎭CROWDS";
         }
@@ -19248,23 +19248,23 @@ var $;
     }
     __decorate([
         $mol_mem
-    ], $hyoo_cras_expose.prototype, "realm", null);
+    ], $hyoo_cras_app.prototype, "realm", null);
     __decorate([
         $mol_mem
-    ], $hyoo_cras_expose.prototype, "Realm", null);
+    ], $hyoo_cras_app.prototype, "Realm", null);
     __decorate([
         $mol_mem
-    ], $hyoo_cras_expose.prototype, "Casting", null);
-    $.$hyoo_cras_expose = $hyoo_cras_expose;
+    ], $hyoo_cras_app.prototype, "Casting", null);
+    $.$hyoo_cras_app = $hyoo_cras_app;
 })($ || ($ = {}));
-//hyoo/cras/expose/-view.tree/expose.view.tree.ts
+//hyoo/cras/app/-view.tree/app.view.tree.ts
 ;
 "use strict";
 var $;
 (function ($) {
     var $$;
     (function ($$) {
-        class $hyoo_cras_expose extends $.$hyoo_cras_expose {
+        class $hyoo_cras_app extends $.$hyoo_cras_app {
             realm() {
                 const realm = super.realm();
                 realm.home().base();
@@ -19273,18 +19273,18 @@ var $;
         }
         __decorate([
             $mol_mem
-        ], $hyoo_cras_expose.prototype, "realm", null);
-        $$.$hyoo_cras_expose = $hyoo_cras_expose;
+        ], $hyoo_cras_app.prototype, "realm", null);
+        $$.$hyoo_cras_app = $hyoo_cras_app;
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));
-//hyoo/cras/expose/expose.view.ts
+//hyoo/cras/app/app.view.ts
 ;
 "use strict";
 var $;
 (function ($) {
     var $$;
     (function ($$) {
-        $mol_style_define($hyoo_cras_expose, {
+        $mol_style_define($hyoo_cras_app, {
             Casting: {
                 flex: {
                     grow: 1,
@@ -19293,6 +19293,6 @@ var $;
         });
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));
-//hyoo/cras/expose/expose.view.css.ts
+//hyoo/cras/app/app.view.css.ts
 
 //# sourceMappingURL=web.js.map

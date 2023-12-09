@@ -5168,7 +5168,7 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    class $hyoo_cras_expose extends $mol_book2_catalog {
+    class $hyoo_cras_app extends $mol_book2_catalog {
         menu_title(): string;
         param(): string;
         realm(): $hyoo_cras_realm;
@@ -5180,7 +5180,7 @@ declare namespace $ {
 }
 
 declare namespace $.$$ {
-    class $hyoo_cras_expose extends $.$hyoo_cras_expose {
+    class $hyoo_cras_app extends $.$hyoo_cras_app {
         realm(): $hyoo_cras_realm;
     }
 }
