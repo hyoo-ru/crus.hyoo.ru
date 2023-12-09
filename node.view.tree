@@ -635,36 +635,36 @@ $hyoo_crowds_node_page $mol_page
 		<= Text $mol_textarea
 			value? <=> text? \
 
-$hyoo_crowds_area_book $mol_book2_catalog
+$hyoo_crowds_land_book $mol_book2_catalog
 	menu_title \Heads
 	param \node
-	area $hyoo_crowds_area
+	land $hyoo_crowds_land
 	Spread* <= Node* $hyoo_crowds_node_page
 		node <= node* $hyoo_crowds_node
 
 $mol_icon_plus $mol_icon path \M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z
 
-$hyoo_crowds_land_book $mol_book2_catalog
+$hyoo_crowds_lord_book $mol_book2_catalog
 	menu_title \Areas
-	param \area
-	land $hyoo_crowds_land
-	Spread* <= Area* $hyoo_crowds_area_book
-		area <= area* $hyoo_crowds_area
+	param \land
+	lord $hyoo_crowds_lord
+	Spread* <= Land* $hyoo_crowds_land_book
+		land <= land* $hyoo_crowds_land
 	menu_tools /
 		<= Area_new $mol_button_minor
 			sub / <= Area_new_icon $mol_icon_plus
-			click? <=> area_new? null
+			click? <=> land_new? null
 
 $hyoo_crowds_realm_book $mol_book2_catalog
-	menu_title \Realm
-	param \land
+	menu_title \🌌Realm
+	param \lord
 	realm $hyoo_crowds_realm
-	Spread* <= Land* $hyoo_crowds_land_book
-		land <= land* $hyoo_crowds_land
+	Spread* <= Lord* $hyoo_crowds_lord_book
+		lord <= lord* $hyoo_crowds_lord
 	- menu_tools /
 		<= Land_new $mol_button_minor
-			sub / <= land_new_icon $mol_icon_plus
-			click? <=> land_new? null
+			sub / <= lord_new_icon $mol_icon_plus
+			click? <=> lord_new? null
 
 $mol_float $mol_view
 	style *
@@ -1126,14 +1126,14 @@ $hyoo_calc_cell $mol_text
 		hyoo_calc_cell_type <= type?val \
 
 $hyoo_crowds_expose $mol_book2_catalog
-	menu_title \CROWDS Expose
+	menu_title \🎭CROWDS
 	param \section
 	realm $hyoo_crowds_realm
 	spreads *
 		realm <= Realm $hyoo_crowds_realm_book
 			realm <= realm
 		casting <= Casting $hyoo_calc
-			title \Casting
+			title \🔀Casting
 			editable false
 			sheet_id \jfls98_bf0zru
 			Fork null

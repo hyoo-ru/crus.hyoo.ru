@@ -2113,7 +2113,7 @@ declare namespace $ {
     class $hyoo_crowds_unit extends $mol_buffer {
         static size: number;
         constructor(buffer?: ArrayBuffer, byteOffset?: number, byteLength?: number);
-        kind(): "pass" | "gift" | "gist";
+        kind(): "gist" | "pass" | "gift";
         choose<Res>(ways: {
             pass: (unit: $hyoo_crowds_pass) => Res;
             gift: (unit: $hyoo_crowds_gift) => Res;
@@ -2178,9 +2178,9 @@ declare namespace $ {
 declare namespace $ {
     class $hyoo_crowds_ref extends $mol_buffer {
         static size: number;
-        static make<This extends typeof $hyoo_crowds_ref>(this: This, lord?: bigint, numb?: number, head?: number): InstanceType<This>;
+        static make<This extends typeof $hyoo_crowds_ref>(this: This, lord?: bigint, land?: number, head?: number): InstanceType<This>;
         lord(next?: bigint): bigint;
-        numb(next?: number): number;
+        land(next?: number): number;
         head(next?: number): number;
         toString(): string;
         toJSON(): string;
@@ -2468,7 +2468,7 @@ declare namespace $ {
         self(next?: number): number;
         head(next?: number): number;
         lead(next?: number): number;
-        hash(next?: bigint, tip?: "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "xml" | "tree", tag?: "keys" | "term" | "head" | "vals"): bigint;
+        hash(next?: Uint8Array, tip?: "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "xml" | "tree", tag?: "keys" | "term" | "head" | "vals"): Uint8Array;
         meta(): Uint8Array;
         data(next?: Uint8Array, tip?: "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "xml" | "tree", tag?: "keys" | "term" | "head" | "vals"): Uint8Array;
         idea(): number;
@@ -2487,6 +2487,23 @@ declare namespace $ {
 }
 
 declare namespace $ {
+    class $mol_wire_set<Value> extends Set<Value> {
+        pub: $mol_wire_pub;
+        has(value: Value): boolean;
+        entries(): IterableIterator<[Value, Value]>;
+        keys(): IterableIterator<Value>;
+        values(): IterableIterator<Value>;
+        forEach(task: (value: Value, value2: Value, set: Set<Value>) => void, self?: any): void;
+        [Symbol.iterator](): IterableIterator<Value>;
+        get size(): number;
+        add(value: Value): this;
+        delete(value: Value): boolean;
+        clear(): void;
+        item(val: Value, next?: boolean): boolean;
+    }
+}
+
+declare namespace $ {
     type $hyoo_crowds_face_data = Iterable<readonly [number, number]>;
     class $hyoo_crowds_face extends Map<number, number> {
         last: number;
@@ -2501,11 +2518,11 @@ declare namespace $ {
 declare namespace $ {
     class $hyoo_crowds_node extends $mol_object {
         static tag: "keys" | "term" | "head" | "vals";
-        area(): $hyoo_crowds_area;
+        land(): $hyoo_crowds_land;
         head(): number;
-        land(): $hyoo_crowds_land | null;
+        lord(): $hyoo_crowds_lord | null;
         realm(): $hyoo_crowds_realm | null;
-        lord(): bigint;
+        lord_numb(): bigint;
         ref(): $hyoo_crowds_ref;
         slug(): string;
         cast<Node extends typeof $hyoo_crowds_node>(Node: Node): InstanceType<Node>;
@@ -2520,14 +2537,6 @@ declare namespace $ {
         readonly item_make: (head: Key) => Node;
         constructor(item_make: (head: Key) => Node);
         Item(head: Key): Node;
-    }
-}
-
-declare namespace $ {
-    class $hyoo_crowds_mine extends $mol_object {
-        static store: Map<bigint, Uint8Array>;
-        static save(blob: Uint8Array): bigint;
-        static load(hash: bigint): Uint8Array | null;
     }
 }
 
@@ -2617,6 +2626,200 @@ declare namespace $ {
 }
 
 declare namespace $ {
+    function $mol_reconcile<Prev, Next>({ prev, from, to, next, equal, drop, insert, update, }: {
+        prev: readonly Prev[];
+        from: number;
+        to: number;
+        next: ArrayLike<Next>;
+        equal: (next: Next, prev: Prev) => boolean;
+        drop: (prev: Prev, lead: Prev | null) => Prev | null;
+        insert: (next: Next, lead: Prev | null) => Prev;
+        update?: (next: Next, prev: Prev, lead: Prev | null) => Prev;
+    }): void;
+}
+
+declare namespace $ {
+    class $hyoo_crowds_list extends $hyoo_crowds_node {
+        static tag: "keys" | "term" | "head" | "vals";
+        static ref<Value extends any>(Value: Value): {
+            new (): {
+                remotes(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
+                remote_make(): any;
+                items(next?: readonly $hyoo_crowds_vary_type[] | undefined, tag?: "keys" | "term" | "head" | "vals"): readonly $hyoo_crowds_vary_type[];
+                splice(next: readonly $hyoo_crowds_vary_type[], from?: number, to?: number, tag?: "keys" | "term" | "head" | "vals"): void;
+                find(vary: $hyoo_crowds_vary_type): $hyoo_crowds_gist | null;
+                has(vary: $hyoo_crowds_vary_type, next?: boolean | undefined, tag?: "keys" | "term" | "head" | "vals"): boolean;
+                add(vary: $hyoo_crowds_vary_type, tag?: "keys" | "term" | "head" | "vals"): void;
+                cut(vary: $hyoo_crowds_vary_type): void;
+                move(from: number, to: number): void;
+                wipe(seat: number): void;
+                node_make<Node_1 extends typeof $hyoo_crowds_node>(Node: Node_1, vary: $hyoo_crowds_vary_type, tag?: "keys" | "term" | "head" | "vals"): InstanceType<Node_1>;
+                land(): $hyoo_crowds_land;
+                head(): number;
+                lord(): $hyoo_crowds_lord | null;
+                realm(): $hyoo_crowds_realm | null;
+                lord_numb(): bigint;
+                ref(): $hyoo_crowds_ref;
+                slug(): string;
+                cast<Node_2 extends typeof $hyoo_crowds_node>(Node: Node_2): InstanceType<Node_2>;
+                nodes<Node_3 extends typeof $hyoo_crowds_node>(Node: Node_3 | null): readonly InstanceType<Node_3>[];
+                units(): $hyoo_crowds_gist[];
+                can_change(lord?: bigint): boolean;
+                $: typeof $$;
+                destructor(): void;
+                toString(): string;
+                toJSON(): any;
+                [Symbol.toStringTag]: string;
+                [$mol_ambient_ref]: typeof $$;
+            };
+            Value: Value;
+            toJSON(): string;
+            tag: "keys" | "term" | "head" | "vals";
+            ref<Value extends unknown>(Value: Value): any;
+            make<Instance>(this: new () => Instance, config: Partial<Instance>): Instance;
+            $: typeof $$;
+            create<Instance_1>(this: new (init?: ((instance: any) => void) | undefined) => Instance_1, init?: ((instance: $mol_type_writable<Instance_1>) => void) | undefined): Instance_1;
+            toString(): string;
+            destructor(): void;
+            [Symbol.toPrimitive](): string;
+        };
+        items(next?: readonly $hyoo_crowds_vary_type[], tag?: "keys" | "term" | "head" | "vals"): readonly $hyoo_crowds_vary_type[];
+        splice(next: readonly $hyoo_crowds_vary_type[], from?: number, to?: number, tag?: "keys" | "term" | "head" | "vals"): void;
+        find(vary: $hyoo_crowds_vary_type): $hyoo_crowds_gist | null;
+        has(vary: $hyoo_crowds_vary_type, next?: boolean, tag?: "keys" | "term" | "head" | "vals"): boolean;
+        add(vary: $hyoo_crowds_vary_type, tag?: "keys" | "term" | "head" | "vals"): void;
+        cut(vary: $hyoo_crowds_vary_type): void;
+        move(from: number, to: number): void;
+        wipe(seat: number): void;
+        node_make<Node extends typeof $hyoo_crowds_node>(Node: Node, vary: $hyoo_crowds_vary_type, tag?: "keys" | "term" | "head" | "vals"): InstanceType<Node>;
+    }
+}
+
+declare namespace $ {
+    function $mol_db_response<Result>(request: IDBRequest<Result>): Promise<Result>;
+}
+
+declare namespace $ {
+    class $mol_db_store<Schema extends $mol_db_store_schema> {
+        readonly native: IDBObjectStore;
+        constructor(native: IDBObjectStore);
+        get name(): string;
+        get path(): string | string[];
+        get incremental(): boolean;
+        get indexes(): { [Name in keyof Schema["Indexes"]]: $mol_db_index<{
+            Key: Schema["Indexes"][Name];
+            Doc: Schema['Doc'];
+        }>; };
+        index_make(name: string, path?: string[], unique?: boolean, multiEntry?: boolean): IDBIndex;
+        index_drop(name: string): this;
+        get transaction(): $mol_db_transaction<$mol_db_schema>;
+        get db(): $mol_db_database<$mol_db_schema>;
+        clear(): Promise<undefined>;
+        count(keys?: Schema['Key'] | IDBKeyRange): Promise<number>;
+        put(doc: Schema['Doc'], key?: Schema['Key']): Promise<IDBValidKey>;
+        get(key: Schema['Key']): Promise<Schema["Doc"] | undefined>;
+        select(key?: Schema['Key'] | IDBKeyRange | null, count?: number): Promise<Schema["Doc"][]>;
+        drop(keys: Schema['Key'] | IDBKeyRange): Promise<undefined>;
+    }
+}
+
+declare namespace $ {
+    type $mol_db_store_schema = {
+        Key: IDBValidKey;
+        Doc: unknown;
+        Indexes: Record<string, IDBValidKey[]>;
+    };
+}
+
+declare namespace $ {
+    class $mol_db_index<Schema extends $mol_db_index_schema> {
+        readonly native: IDBIndex;
+        constructor(native: IDBIndex);
+        get name(): string;
+        get paths(): string[];
+        get unique(): boolean;
+        get multiple(): boolean;
+        get store(): $mol_db_store<$mol_db_store_schema>;
+        get transaction(): $mol_db_transaction<$mol_db_schema>;
+        get db(): $mol_db_database<$mol_db_schema>;
+        count(keys?: Schema['Key'] | IDBKeyRange): Promise<number>;
+        get(key: Schema['Key']): Promise<Schema["Doc"] | undefined>;
+        select(key?: Schema['Key'] | IDBKeyRange | null, count?: number): Promise<Schema["Doc"][]>;
+    }
+}
+
+declare namespace $ {
+    type $mol_db_index_schema = {
+        Key: IDBValidKey[];
+        Doc: unknown;
+    };
+}
+
+declare namespace $ {
+    function $mol_db<Schema extends $mol_db_schema>(this: $, name: string, ...migrations: ((transaction: $mol_db_transaction<$mol_db_schema>) => void)[]): Promise<$mol_db_database<Schema>>;
+}
+
+declare namespace $ {
+    type $mol_db_schema = Record<string, $mol_db_store_schema>;
+}
+
+declare namespace $ {
+    class $mol_db_database<Schema extends $mol_db_schema> {
+        readonly native: IDBDatabase;
+        constructor(native: IDBDatabase);
+        get name(): string;
+        get version(): number;
+        get stores(): (keyof Schema)[];
+        read<Names extends Exclude<keyof Schema, symbol | number>>(...names: Names[]): Pick<Schema, Names> extends infer T extends $mol_db_schema ? { [Name in keyof T]: $mol_db_store<Pick<Schema, Names>[Name]>; } : never;
+        change<Names extends Exclude<keyof Schema, symbol | number>>(...names: Names[]): $mol_db_transaction<Pick<Schema, Names>>;
+        kill(): Promise<IDBDatabase>;
+        destructor(): void;
+    }
+}
+
+interface IDBTransaction {
+    commit(): void;
+}
+declare namespace $ {
+    class $mol_db_transaction<Schema extends $mol_db_schema> {
+        readonly native: IDBTransaction;
+        constructor(native: IDBTransaction);
+        get stores(): { [Name in keyof Schema]: $mol_db_store<Schema[Name]>; };
+        store_make(name: string): IDBObjectStore;
+        store_drop(name: string): this;
+        abort(): void;
+        commit(): Promise<void>;
+        get db(): $mol_db_database<$mol_db_schema>;
+    }
+}
+
+declare namespace $ {
+    class $hyoo_crowds_mine extends $mol_object {
+        static store: Map<bigint, Uint8Array>;
+        static hash(blob: Uint8Array): Uint8Array;
+        static rock(hash: Uint8Array, next?: Uint8Array): Uint8Array | undefined;
+        static save(blob: Uint8Array): Uint8Array;
+        static read(): $mol_db_store<{
+            Key: [Uint8Array];
+            Doc: Uint8Array;
+            Indexes: {};
+        }>;
+        static change(): Promise<$mol_db_store<{
+            Key: [Uint8Array];
+            Doc: Uint8Array;
+            Indexes: {};
+        }>>;
+        static db(): Promise<$mol_db_database<{
+            Rock: {
+                Key: [Uint8Array];
+                Doc: Uint8Array;
+                Indexes: {};
+            };
+        }>>;
+    }
+}
+
+declare namespace $ {
     type $mol_data_value<Input = any, Output = any> = (val: Input) => Output;
 }
 
@@ -2657,12 +2860,12 @@ declare namespace $ {
                 value_bin(next?: Uint8Array | null | undefined): Uint8Array | null;
                 value_ref(next?: $hyoo_crowds_ref | null | undefined): $hyoo_crowds_ref | null;
                 value_as<Decode extends $mol_data_value<any, any>>(decode: Decode, next?: ReturnType<Decode> | undefined): any;
-                yoke(vary: $hyoo_crowds_vary_type): $hyoo_crowds_area;
-                area(): $hyoo_crowds_area;
+                yoke(vary: $hyoo_crowds_vary_type): $hyoo_crowds_land;
+                land(): $hyoo_crowds_land;
                 head(): number;
-                land(): $hyoo_crowds_land | null;
+                lord(): $hyoo_crowds_lord | null;
                 realm(): $hyoo_crowds_realm | null;
-                lord(): bigint;
+                lord_numb(): bigint;
                 ref(): $hyoo_crowds_ref;
                 slug(): string;
                 cast<Node_1 extends typeof $hyoo_crowds_node>(Node: Node_1): InstanceType<Node_1>;
@@ -2692,12 +2895,12 @@ declare namespace $ {
                     value_bin(next?: Uint8Array | null | undefined): Uint8Array | null;
                     value_ref(next?: $hyoo_crowds_ref | null | undefined): $hyoo_crowds_ref | null;
                     value_as<Decode_1 extends $mol_data_value<any, any>>(decode: Decode_1, next?: ReturnType<Decode_1> | undefined): any;
-                    yoke(vary: $hyoo_crowds_vary_type): $hyoo_crowds_area;
-                    area(): $hyoo_crowds_area;
+                    yoke(vary: $hyoo_crowds_vary_type): $hyoo_crowds_land;
+                    land(): $hyoo_crowds_land;
                     head(): number;
-                    land(): $hyoo_crowds_land | null;
+                    lord(): $hyoo_crowds_lord | null;
                     realm(): $hyoo_crowds_realm | null;
-                    lord(): bigint;
+                    lord_numb(): bigint;
                     ref(): $hyoo_crowds_ref;
                     slug(): string;
                     cast<Node_3 extends typeof $hyoo_crowds_node>(Node: Node_3): InstanceType<Node_3>;
@@ -2744,12 +2947,12 @@ declare namespace $ {
                 value_bin(next?: Uint8Array | null | undefined): Uint8Array | null;
                 value_ref(next?: $hyoo_crowds_ref | null | undefined): $hyoo_crowds_ref | null;
                 value_as<Decode extends $mol_data_value<any, any>>(decode: Decode, next?: ReturnType<Decode> | undefined): any;
-                yoke(vary: $hyoo_crowds_vary_type): $hyoo_crowds_area;
-                area(): $hyoo_crowds_area;
+                yoke(vary: $hyoo_crowds_vary_type): $hyoo_crowds_land;
+                land(): $hyoo_crowds_land;
                 head(): number;
-                land(): $hyoo_crowds_land | null;
+                lord(): $hyoo_crowds_lord | null;
                 realm(): $hyoo_crowds_realm | null;
-                lord(): bigint;
+                lord_numb(): bigint;
                 ref(): $hyoo_crowds_ref;
                 slug(): string;
                 cast<Node_1 extends typeof $hyoo_crowds_node>(Node: Node_1): InstanceType<Node_1>;
@@ -2800,12 +3003,12 @@ declare namespace $ {
                     value_bin(next?: Uint8Array | null | undefined): Uint8Array | null;
                     value_ref(next?: $hyoo_crowds_ref | null | undefined): $hyoo_crowds_ref | null;
                     value_as<Decode_1 extends $mol_data_value<any, any>>(decode: Decode_1, next?: ReturnType<Decode_1> | undefined): any;
-                    yoke(vary: $hyoo_crowds_vary_type): $hyoo_crowds_area;
-                    area(): $hyoo_crowds_area;
+                    yoke(vary: $hyoo_crowds_vary_type): $hyoo_crowds_land;
+                    land(): $hyoo_crowds_land;
                     head(): number;
-                    land(): $hyoo_crowds_land | null;
+                    lord(): $hyoo_crowds_lord | null;
                     realm(): $hyoo_crowds_realm | null;
-                    lord(): bigint;
+                    lord_numb(): bigint;
                     ref(): $hyoo_crowds_ref;
                     slug(): string;
                     cast<Node_3 extends typeof $hyoo_crowds_node>(Node: Node_3): InstanceType<Node_3>;
@@ -2848,77 +3051,7 @@ declare namespace $ {
         value_bin(next?: Uint8Array | null): Uint8Array | null;
         value_ref(next?: $hyoo_crowds_ref | null): $hyoo_crowds_ref | null;
         value_as<Decode extends $mol_data_value>(decode: Decode, next?: ReturnType<Decode>): any;
-        yoke(vary: $hyoo_crowds_vary_type): $hyoo_crowds_area;
-    }
-}
-
-declare namespace $ {
-    function $mol_reconcile<Prev, Next>({ prev, from, to, next, equal, drop, insert, update, }: {
-        prev: readonly Prev[];
-        from: number;
-        to: number;
-        next: ArrayLike<Next>;
-        equal: (next: Next, prev: Prev) => boolean;
-        drop: (prev: Prev, lead: Prev | null) => Prev | null;
-        insert: (next: Next, lead: Prev | null) => Prev;
-        update?: (next: Next, prev: Prev, lead: Prev | null) => Prev;
-    }): void;
-}
-
-declare namespace $ {
-    class $hyoo_crowds_list extends $hyoo_crowds_node {
-        static tag: "keys" | "term" | "head" | "vals";
-        static ref<Value extends any>(Value: Value): {
-            new (): {
-                remotes(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
-                remote_make(): any;
-                items(next?: readonly $hyoo_crowds_vary_type[] | undefined, tag?: "keys" | "term" | "head" | "vals"): readonly $hyoo_crowds_vary_type[];
-                splice(next: readonly $hyoo_crowds_vary_type[], from?: number, to?: number, tag?: "keys" | "term" | "head" | "vals"): void;
-                find(vary: $hyoo_crowds_vary_type): $hyoo_crowds_gist | null;
-                has(vary: $hyoo_crowds_vary_type, next?: boolean | undefined, tag?: "keys" | "term" | "head" | "vals"): boolean;
-                add(vary: $hyoo_crowds_vary_type, tag?: "keys" | "term" | "head" | "vals"): void;
-                cut(vary: $hyoo_crowds_vary_type): void;
-                move(from: number, to: number): void;
-                wipe(seat: number): void;
-                node_make<Node_1 extends typeof $hyoo_crowds_node>(Node: Node_1, vary: $hyoo_crowds_vary_type, tag?: "keys" | "term" | "head" | "vals"): InstanceType<Node_1>;
-                area(): $hyoo_crowds_area;
-                head(): number;
-                land(): $hyoo_crowds_land | null;
-                realm(): $hyoo_crowds_realm | null;
-                lord(): bigint;
-                ref(): $hyoo_crowds_ref;
-                slug(): string;
-                cast<Node_2 extends typeof $hyoo_crowds_node>(Node: Node_2): InstanceType<Node_2>;
-                nodes<Node_3 extends typeof $hyoo_crowds_node>(Node: Node_3 | null): readonly InstanceType<Node_3>[];
-                units(): $hyoo_crowds_gist[];
-                can_change(lord?: bigint): boolean;
-                $: typeof $$;
-                destructor(): void;
-                toString(): string;
-                toJSON(): any;
-                [Symbol.toStringTag]: string;
-                [$mol_ambient_ref]: typeof $$;
-            };
-            Value: Value;
-            toJSON(): string;
-            tag: "keys" | "term" | "head" | "vals";
-            ref<Value extends unknown>(Value: Value): any;
-            make<Instance>(this: new () => Instance, config: Partial<Instance>): Instance;
-            $: typeof $$;
-            create<Instance_1>(this: new (init?: ((instance: any) => void) | undefined) => Instance_1, init?: ((instance: $mol_type_writable<Instance_1>) => void) | undefined): Instance_1;
-            toString(): string;
-            destructor(): void;
-            [Symbol.toPrimitive](): string;
-        };
-        items(next?: readonly $hyoo_crowds_vary_type[], tag?: "keys" | "term" | "head" | "vals"): readonly $hyoo_crowds_vary_type[];
-        splice(next: readonly $hyoo_crowds_vary_type[], from?: number, to?: number, tag?: "keys" | "term" | "head" | "vals"): void;
-        find(vary: $hyoo_crowds_vary_type): $hyoo_crowds_gist | null;
-        has(vary: $hyoo_crowds_vary_type, next?: boolean, tag?: "keys" | "term" | "head" | "vals"): boolean;
-        add(vary: $hyoo_crowds_vary_type, tag?: "keys" | "term" | "head" | "vals"): void;
-        cut(vary: $hyoo_crowds_vary_type): void;
-        move(from: number, to: number): void;
-        wipe(seat: number): void;
-        node_make<Node extends typeof $hyoo_crowds_node>(Node: Node, vary: $hyoo_crowds_vary_type, tag?: "keys" | "term" | "head" | "vals"): InstanceType<Node>;
+        yoke(vary: $hyoo_crowds_vary_type): $hyoo_crowds_land;
     }
 }
 
@@ -2933,18 +3066,18 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    class $hyoo_crowds_area extends $mol_object {
-        land(): $hyoo_crowds_land | null;
+    class $hyoo_crowds_land extends $mol_object {
+        lord(): $hyoo_crowds_lord | null;
         numb(): number;
-        lord(): bigint;
+        lord_numb(): bigint;
         realm(): $hyoo_crowds_realm | null;
         auth(): $hyoo_crowds_auth;
         ref(): $hyoo_crowds_ref;
         slug(): string;
-        pass: $mol_wire_dict<number, $hyoo_crowds_pass>;
-        gift: $mol_wire_dict<bigint, $hyoo_crowds_gift>;
-        gist: $mol_wire_dict<number, $mol_wire_dict<number, $hyoo_crowds_gist>>;
-        self_all: Set<number>;
+        passes: $mol_wire_dict<number, $hyoo_crowds_pass>;
+        gifts: $mol_wire_dict<bigint, $hyoo_crowds_gift>;
+        gists: $mol_wire_dict<number, $mol_wire_dict<number, $hyoo_crowds_gist>>;
+        self_all: $mol_wire_set<number>;
         face: $hyoo_crowds_face;
         self_make(idea?: number): number;
         Root<Node extends typeof $hyoo_crowds_node>(Node: Node): InstanceType<Node>;
@@ -2956,9 +3089,11 @@ declare namespace $ {
         delta_unit(face?: $hyoo_crowds_face): $hyoo_crowds_unit[];
         delta_buffer(face?: $hyoo_crowds_face): Uint8Array;
         apply_unit(delta: readonly $hyoo_crowds_unit[]): ("" | "Need add rang to join" | "Need law rang to change rang" | "Need add rang to post self data" | "Need mod rang to post any data" | "Already joined" | "Unit too old")[];
-        apply_area(area: $hyoo_crowds_area): ("" | "Need add rang to join" | "Need law rang to change rang" | "Need add rang to post self data" | "Need mod rang to post any data" | "Already joined" | "Unit too old")[];
+        apply_land(land: $hyoo_crowds_land): ("" | "Need add rang to join" | "Need law rang to change rang" | "Need add rang to post self data" | "Need mod rang to post any data" | "Already joined" | "Unit too old")[];
         recheck(): void;
         check_unit(unit: $hyoo_crowds_unit): "" | "Need add rang to join" | "Need law rang to change rang" | "Need add rang to post self data" | "Need mod rang to post any data";
+        fork(): $hyoo_crowds_land;
+        cloves(): $hyoo_crowds_list | null;
         gists_ordered(head: number): $hyoo_crowds_gist[];
         join(): $hyoo_crowds_pass;
         give(dest: bigint, rang: $hyoo_crowds_rang): $hyoo_crowds_gift;
@@ -2978,30 +3113,30 @@ declare namespace $ {
         title(next?: string): string;
         selection(next?: readonly (readonly [number, number])[]): readonly (readonly [number, number])[];
         profiles(): readonly $hyoo_crowds_vary_type[];
-        Profile(app: string): $hyoo_crowds_area;
+        Profile(app: string): $hyoo_crowds_land;
     }
 }
 
 declare namespace $ {
-    class $hyoo_crowds_land extends $mol_object {
+    class $hyoo_crowds_lord extends $mol_object {
         realm(): $hyoo_crowds_realm | null;
-        lord(): bigint;
-        area: $mol_wire_dict<number, $hyoo_crowds_area>;
+        numb(): bigint;
+        lands: $mol_wire_dict<number, $hyoo_crowds_land>;
         base(): $hyoo_crowds_base;
         ref(): $hyoo_crowds_ref;
         toString(): string;
         slug(): string;
-        Area(numb: number): $hyoo_crowds_area;
-        Area_new(idea: number): $hyoo_crowds_area;
+        Land(numb: number): $hyoo_crowds_land;
+        Land_new(idea: number): $hyoo_crowds_land;
         numb_make(idea?: number): number;
     }
 }
 
 declare namespace $ {
     class $hyoo_crowds_realm extends $mol_object {
-        land: $mol_wire_dict<bigint, $hyoo_crowds_land>;
-        home(): $hyoo_crowds_land;
-        Land(lord: bigint): $hyoo_crowds_land;
+        lords: $mol_wire_dict<bigint, $hyoo_crowds_lord>;
+        home(): $hyoo_crowds_lord;
+        Lord(numb: bigint): $hyoo_crowds_lord;
         Node<Node extends typeof $hyoo_crowds_node>(Node: Node, ref: $hyoo_crowds_ref): InstanceType<Node>;
     }
 }
@@ -3642,10 +3777,10 @@ declare namespace $.$$ {
 }
 
 declare namespace $ {
-    class $hyoo_crowds_area_book extends $mol_book2_catalog {
+    class $hyoo_crowds_land_book extends $mol_book2_catalog {
         menu_title(): string;
         param(): string;
-        area(): $hyoo_crowds_area;
+        land(): $hyoo_crowds_land;
         Spread(id: any): $$.$hyoo_crowds_node_page;
         node(id: any): $hyoo_crowds_node;
         Node(id: any): $$.$hyoo_crowds_node_page;
@@ -3653,12 +3788,15 @@ declare namespace $ {
 }
 
 declare namespace $.$$ {
-    class $hyoo_crowds_area_book extends $.$hyoo_crowds_area_book {
+    class $hyoo_crowds_land_book extends $.$hyoo_crowds_land_book {
         menu_title(): string;
         spread_ids(): string[];
         spread_title(head: string): string;
         node(id: string): $hyoo_crowds_node;
     }
+}
+
+declare namespace $.$$ {
 }
 
 declare namespace $ {
@@ -3668,28 +3806,31 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    class $hyoo_crowds_land_book extends $mol_book2_catalog {
+    class $hyoo_crowds_lord_book extends $mol_book2_catalog {
         menu_title(): string;
         param(): string;
-        land(): $hyoo_crowds_land;
-        Spread(id: any): $$.$hyoo_crowds_area_book;
+        lord(): $hyoo_crowds_lord;
+        Spread(id: any): $$.$hyoo_crowds_land_book;
         menu_tools(): readonly any[];
-        area(id: any): $hyoo_crowds_area;
-        Area(id: any): $$.$hyoo_crowds_area_book;
+        land(id: any): $hyoo_crowds_land;
+        Land(id: any): $$.$hyoo_crowds_land_book;
         Area_new_icon(): $mol_icon_plus;
-        area_new(next?: any): any;
+        land_new(next?: any): any;
         Area_new(): $mol_button_minor;
     }
 }
 
 declare namespace $.$$ {
-    class $hyoo_crowds_land_book extends $.$hyoo_crowds_land_book {
+    class $hyoo_crowds_lord_book extends $.$hyoo_crowds_lord_book {
         menu_title(): string;
         spread_ids(): string[];
         spread_title(id: string): string;
-        area(id: string): $hyoo_crowds_area;
-        area_new(): void;
+        land(id: string): $hyoo_crowds_land;
+        land_new(): void;
     }
+}
+
+declare namespace $.$$ {
 }
 
 declare namespace $ {
@@ -3697,18 +3838,21 @@ declare namespace $ {
         menu_title(): string;
         param(): string;
         realm(): $hyoo_crowds_realm;
-        Spread(id: any): $$.$hyoo_crowds_land_book;
-        land(id: any): $hyoo_crowds_land;
-        Land(id: any): $$.$hyoo_crowds_land_book;
+        Spread(id: any): $$.$hyoo_crowds_lord_book;
+        lord(id: any): $hyoo_crowds_lord;
+        Lord(id: any): $$.$hyoo_crowds_lord_book;
     }
 }
 
 declare namespace $.$$ {
     class $hyoo_crowds_realm_book extends $.$hyoo_crowds_realm_book {
         spread_ids(): string[];
-        land(id: string): $hyoo_crowds_land;
+        lord(id: string): $hyoo_crowds_lord;
         spread_title(id: string): string;
     }
+}
+
+declare namespace $.$$ {
 }
 
 declare let $hyoo_sync_revision: string;
@@ -4128,104 +4272,6 @@ declare namespace $ {
         line_receive(line: Line, message: Uint8Array): Promise<void>;
         line_send_clocks(line: Line, land: $hyoo_crowd_land): void;
         line_send_units(line: Line, units: readonly $hyoo_crowd_unit[]): Promise<void>;
-    }
-}
-
-declare namespace $ {
-    function $mol_db_response<Result>(request: IDBRequest<Result>): Promise<Result>;
-}
-
-declare namespace $ {
-    class $mol_db_store<Schema extends $mol_db_store_schema> {
-        readonly native: IDBObjectStore;
-        constructor(native: IDBObjectStore);
-        get name(): string;
-        get path(): string | string[];
-        get incremental(): boolean;
-        get indexes(): { [Name in keyof Schema["Indexes"]]: $mol_db_index<{
-            Key: Schema["Indexes"][Name];
-            Doc: Schema['Doc'];
-        }>; };
-        index_make(name: string, path?: string[], unique?: boolean, multiEntry?: boolean): IDBIndex;
-        index_drop(name: string): this;
-        get transaction(): $mol_db_transaction<$mol_db_schema>;
-        get db(): $mol_db_database<$mol_db_schema>;
-        clear(): Promise<undefined>;
-        count(keys?: Schema['Key'] | IDBKeyRange): Promise<number>;
-        put(doc: Schema['Doc'], key?: Schema['Key']): Promise<IDBValidKey>;
-        get(key: Schema['Key']): Promise<Schema["Doc"] | undefined>;
-        select(key?: Schema['Key'] | IDBKeyRange | null, count?: number): Promise<Schema["Doc"][]>;
-        drop(keys: Schema['Key'] | IDBKeyRange): Promise<undefined>;
-    }
-}
-
-declare namespace $ {
-    type $mol_db_store_schema = {
-        Key: IDBValidKey;
-        Doc: unknown;
-        Indexes: Record<string, IDBValidKey[]>;
-    };
-}
-
-declare namespace $ {
-    class $mol_db_index<Schema extends $mol_db_index_schema> {
-        readonly native: IDBIndex;
-        constructor(native: IDBIndex);
-        get name(): string;
-        get paths(): string[];
-        get unique(): boolean;
-        get multiple(): boolean;
-        get store(): $mol_db_store<$mol_db_store_schema>;
-        get transaction(): $mol_db_transaction<$mol_db_schema>;
-        get db(): $mol_db_database<$mol_db_schema>;
-        count(keys?: Schema['Key'] | IDBKeyRange): Promise<number>;
-        get(key: Schema['Key']): Promise<Schema["Doc"] | undefined>;
-        select(key?: Schema['Key'] | IDBKeyRange | null, count?: number): Promise<Schema["Doc"][]>;
-    }
-}
-
-declare namespace $ {
-    type $mol_db_index_schema = {
-        Key: IDBValidKey[];
-        Doc: unknown;
-    };
-}
-
-declare namespace $ {
-    function $mol_db<Schema extends $mol_db_schema>(this: $, name: string, ...migrations: ((transaction: $mol_db_transaction<$mol_db_schema>) => void)[]): Promise<$mol_db_database<Schema>>;
-}
-
-declare namespace $ {
-    type $mol_db_schema = Record<string, $mol_db_store_schema>;
-}
-
-declare namespace $ {
-    class $mol_db_database<Schema extends $mol_db_schema> {
-        readonly native: IDBDatabase;
-        constructor(native: IDBDatabase);
-        get name(): string;
-        get version(): number;
-        get stores(): (keyof Schema)[];
-        read<Names extends Exclude<keyof Schema, symbol | number>>(...names: Names[]): Pick<Schema, Names> extends infer T extends $mol_db_schema ? { [Name in keyof T]: $mol_db_store<Pick<Schema, Names>[Name]>; } : never;
-        change<Names extends Exclude<keyof Schema, symbol | number>>(...names: Names[]): $mol_db_transaction<Pick<Schema, Names>>;
-        kill(): Promise<IDBDatabase>;
-        destructor(): void;
-    }
-}
-
-interface IDBTransaction {
-    commit(): void;
-}
-declare namespace $ {
-    class $mol_db_transaction<Schema extends $mol_db_schema> {
-        readonly native: IDBTransaction;
-        constructor(native: IDBTransaction);
-        get stores(): { [Name in keyof Schema]: $mol_db_store<Schema[Name]>; };
-        store_make(name: string): IDBObjectStore;
-        store_drop(name: string): this;
-        abort(): void;
-        commit(): Promise<void>;
-        get db(): $mol_db_database<$mol_db_schema>;
     }
 }
 
