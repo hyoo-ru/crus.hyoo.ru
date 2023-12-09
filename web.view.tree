@@ -516,8 +516,8 @@ $mol_select $mol_pick
 		enabled <= enabled true
 	Trigger_icon $mol_icon_dots_vertical
 
-$hyoo_crowds_node_dump $mol_expander
-	node $hyoo_crowds_node
+$hyoo_cras_node_dump $mol_expander
+	node $hyoo_cras_node
 		can_change => can_change
 	label /
 		<= Head $mol_paragraph sub / <= title \
@@ -532,7 +532,7 @@ $hyoo_crowds_node_dump $mol_expander
 			submit? <=> add_key? null
 	content <= nodes /
 		<= Inner*0 $mol_view sub /
-			<= Node_inner* $hyoo_crowds_node_dump
+			<= Node_inner* $hyoo_cras_node_dump
 				Value <= Unit_value* $mol_dump_value
 					value <= unit_value* null
 				addons /
@@ -550,7 +550,7 @@ $hyoo_crowds_node_dump $mol_expander
 						sub / <= Unit_wipe_icon* $mol_icon_cross
 						enabled <= can_change
 						click? <=> unit_wipe*? null
-				node <= node_inner* $hyoo_crowds_node
+				node <= node_inner* $hyoo_cras_node
 
 $mol_textarea $mol_stack
 	attr *
@@ -626,41 +626,41 @@ $mol_textarea_edit $mol_string
 		^
 		scrollTop 0
 
-$hyoo_crowds_node_page $mol_page
-	node $hyoo_crowds_node
+$hyoo_cras_node_page $mol_page
+	node $hyoo_cras_node
 	title \Node
 	body /
-		<= Dump $hyoo_crowds_node_dump
+		<= Dump $hyoo_cras_node_dump
 			node <= node
 		<= Text $mol_textarea
 			value? <=> text? \
 
-$hyoo_crowds_land_book $mol_book2_catalog
+$hyoo_cras_land_book $mol_book2_catalog
 	menu_title \Heads
 	param \node
-	land $hyoo_crowds_land
-	Spread* <= Node* $hyoo_crowds_node_page
-		node <= node* $hyoo_crowds_node
+	land $hyoo_cras_land
+	Spread* <= Node* $hyoo_cras_node_page
+		node <= node* $hyoo_cras_node
 
 $mol_icon_plus $mol_icon path \M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z
 
-$hyoo_crowds_lord_book $mol_book2_catalog
+$hyoo_cras_lord_book $mol_book2_catalog
 	menu_title \Areas
 	param \land
-	lord $hyoo_crowds_lord
-	Spread* <= Land* $hyoo_crowds_land_book
-		land <= land* $hyoo_crowds_land
+	lord $hyoo_cras_lord
+	Spread* <= Land* $hyoo_cras_land_book
+		land <= land* $hyoo_cras_land
 	menu_tools /
 		<= Area_new $mol_button_minor
 			sub / <= Area_new_icon $mol_icon_plus
 			click? <=> land_new? null
 
-$hyoo_crowds_realm_book $mol_book2_catalog
+$hyoo_cras_realm_book $mol_book2_catalog
 	menu_title \🌌Realm
 	param \lord
-	realm $hyoo_crowds_realm
-	Spread* <= Lord* $hyoo_crowds_lord_book
-		lord <= lord* $hyoo_crowds_lord
+	realm $hyoo_cras_realm
+	Spread* <= Lord* $hyoo_cras_lord_book
+		lord <= lord* $hyoo_cras_lord
 	- menu_tools /
 		<= Land_new $mol_button_minor
 			sub / <= lord_new_icon $mol_icon_plus
@@ -1125,12 +1125,12 @@ $hyoo_calc_cell $mol_text
 		hyoo_calc_cell_selected <= selected?val false
 		hyoo_calc_cell_type <= type?val \
 
-$hyoo_crowds_expose $mol_book2_catalog
+$hyoo_cras_expose $mol_book2_catalog
 	menu_title \🎭CROWDS
 	param \section
-	realm $hyoo_crowds_realm
+	realm $hyoo_cras_realm
 	spreads *
-		realm <= Realm $hyoo_crowds_realm_book
+		realm <= Realm $hyoo_cras_realm_book
 			realm <= realm
 		casting <= Casting $hyoo_calc
 			title \🔀Casting

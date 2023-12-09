@@ -2105,19 +2105,19 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    enum $hyoo_crowds_unit_kind {
+    enum $hyoo_cras_unit_kind {
         gist = 0,
         pass = 255,
         gift = 253
     }
-    class $hyoo_crowds_unit extends $mol_buffer {
+    class $hyoo_cras_unit extends $mol_buffer {
         static size: number;
         constructor(buffer?: ArrayBuffer, byteOffset?: number, byteLength?: number);
         kind(): "gist" | "pass" | "gift";
         choose<Res>(ways: {
-            pass: (unit: $hyoo_crowds_pass) => Res;
-            gift: (unit: $hyoo_crowds_gift) => Res;
-            gist: (unit: $hyoo_crowds_gist) => Res;
+            pass: (unit: $hyoo_cras_pass) => Res;
+            gift: (unit: $hyoo_cras_gift) => Res;
+            gist: (unit: $hyoo_cras_gist) => Res;
         }): Res;
         peer(next?: number): number;
         salt(): Uint8Array;
@@ -2146,7 +2146,7 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    class $hyoo_crowds_pass extends $hyoo_crowds_unit {
+    class $hyoo_cras_pass extends $hyoo_cras_unit {
         work(): number;
         lord(next?: bigint): bigint;
         auth(next?: ArrayLike<number>): Uint8Array;
@@ -2154,7 +2154,7 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    enum $hyoo_crowds_rang {
+    enum $hyoo_cras_rang {
         nil = 0,
         get = 1,
         add = 3,
@@ -2164,21 +2164,21 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    class $hyoo_crowds_gift extends $hyoo_crowds_unit {
-        rang(next?: $hyoo_crowds_rang): $hyoo_crowds_rang;
+    class $hyoo_cras_gift extends $hyoo_cras_unit {
+        rang(next?: $hyoo_cras_rang): $hyoo_cras_rang;
         time(next?: number): number;
         free(): Uint8Array;
         dest(next?: bigint): bigint;
         bill(): Uint8Array;
         tail(): Uint8Array;
-        static compare(left: $hyoo_crowds_gift, right: $hyoo_crowds_gift): number;
+        static compare(left: $hyoo_cras_gift, right: $hyoo_cras_gift): number;
     }
 }
 
 declare namespace $ {
-    class $hyoo_crowds_ref extends $mol_buffer {
+    class $hyoo_cras_ref extends $mol_buffer {
         static size: number;
-        static make<This extends typeof $hyoo_crowds_ref>(this: This, lord?: bigint, land?: number, head?: number): InstanceType<This>;
+        static make<This extends typeof $hyoo_cras_ref>(this: This, lord?: bigint, land?: number, head?: number): InstanceType<This>;
         lord(next?: bigint): bigint;
         land(next?: number): number;
         head(next?: number): number;
@@ -2395,13 +2395,13 @@ declare namespace $ {
     type json = null | boolean | number | string | {
         [key in string]: json;
     } | readonly json[];
-    export type $hyoo_crowds_vary_type = null | Uint8Array | bigint | $hyoo_crowds_ref | $mol_time_moment | $mol_tree2 | json | Node;
-    export let $hyoo_crowds_vary_mapping: {
+    export type $hyoo_cras_vary_type = null | Uint8Array | bigint | $hyoo_cras_ref | $mol_time_moment | $mol_tree2 | json | Node;
+    export let $hyoo_cras_vary_mapping: {
         bin: Uint8ArrayConstructor;
         bool: BooleanConstructor;
         int: BigIntConstructor;
         real: NumberConstructor;
-        ref: typeof $hyoo_crowds_ref;
+        ref: typeof $hyoo_cras_ref;
         str: StringConstructor;
         time: typeof $mol_time_moment;
         json: ObjectConstructor;
@@ -2411,12 +2411,12 @@ declare namespace $ {
         };
         tree: typeof $mol_tree2;
     };
-    export type $hyoo_crowds_vary_classes = typeof $hyoo_crowds_vary_mapping[keyof typeof $hyoo_crowds_vary_mapping];
-    export type $hyoo_crowds_vary_pack = {
-        tip: keyof typeof $hyoo_crowds_vary_tip;
+    export type $hyoo_cras_vary_classes = typeof $hyoo_cras_vary_mapping[keyof typeof $hyoo_cras_vary_mapping];
+    export type $hyoo_cras_vary_pack = {
+        tip: keyof typeof $hyoo_cras_vary_tip;
         bin: Uint8Array;
     };
-    export enum $hyoo_crowds_vary_tip {
+    export enum $hyoo_cras_vary_tip {
         bin = 0,
         bool = 1,
         int = 2,
@@ -2428,20 +2428,20 @@ declare namespace $ {
         xml = 19,
         tree = 20
     }
-    export function $hyoo_crowds_vary_switch<Ways extends {
+    export function $hyoo_cras_vary_switch<Ways extends {
         bin: (vary: null | Uint8Array) => any;
         bool: (vary: boolean) => any;
         int: (vary: bigint) => any;
         real: (vary: number) => any;
-        ref: (vary: $hyoo_crowds_ref) => any;
+        ref: (vary: $hyoo_cras_ref) => any;
         str: (vary: string) => any;
         time: (vary: $mol_time_moment) => any;
         json: (vary: {} | any[]) => any;
         xml: (vary: Element) => any;
         tree: (vary: $mol_tree2) => any;
-    }>(vary: $hyoo_crowds_vary_type, ways: Ways): $mol_type_result<Ways[keyof Ways]>;
-    export function $hyoo_crowds_vary_encode(vary: $hyoo_crowds_vary_type): $hyoo_crowds_vary_pack;
-    export function $hyoo_crowds_vary_decode({ tip, bin }: $hyoo_crowds_vary_pack): $hyoo_crowds_vary_type;
+    }>(vary: $hyoo_cras_vary_type, ways: Ways): $mol_type_result<Ways[keyof Ways]>;
+    export function $hyoo_cras_vary_encode(vary: $hyoo_cras_vary_type): $hyoo_cras_vary_pack;
+    export function $hyoo_cras_vary_decode({ tip, bin }: $hyoo_cras_vary_pack): $hyoo_cras_vary_type;
     export {};
 }
 
@@ -2450,13 +2450,13 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    enum $hyoo_crowds_gist_tag {
+    enum $hyoo_cras_gist_tag {
         term = 0,
         head = 1,
         vals = 2,
         keys = 3
     }
-    class $hyoo_crowds_gist extends $hyoo_crowds_unit {
+    class $hyoo_cras_gist extends $hyoo_cras_unit {
         hint(tip?: "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "xml" | "tree", tag?: "keys" | "term" | "head" | "vals"): void;
         tip(): "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "xml" | "tree";
         pic(): boolean;
@@ -2472,14 +2472,14 @@ declare namespace $ {
         meta(): Uint8Array;
         data(next?: Uint8Array, tip?: "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "xml" | "tree", tag?: "keys" | "term" | "head" | "vals"): Uint8Array;
         idea(): number;
-        static compare(left: $hyoo_crowds_gist, right: $hyoo_crowds_gist): number;
+        static compare(left: $hyoo_cras_gist, right: $hyoo_cras_gist): number;
     }
 }
 
 declare namespace $ {
-    class $hyoo_crowds_auth extends $mol_crypto_key_private {
-        static current(): $hyoo_crowds_auth;
-        static generate(): Promise<$hyoo_crowds_auth>;
+    class $hyoo_cras_auth extends $mol_crypto_key_private {
+        static current(): $hyoo_cras_auth;
+        static generate(): Promise<$hyoo_cras_auth>;
         lord(): bigint;
         peer(): number;
         secret_mutual(pub: string): $mol_crypto_secret;
@@ -2504,11 +2504,11 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    type $hyoo_crowds_face_data = Iterable<readonly [number, number]>;
-    class $hyoo_crowds_face extends Map<number, number> {
+    type $hyoo_cras_face_data = Iterable<readonly [number, number]>;
+    class $hyoo_cras_face extends Map<number, number> {
         last: number;
-        constructor(entries?: $hyoo_crowds_face_data);
-        sync(right: $hyoo_crowds_face_data): void;
+        constructor(entries?: $hyoo_cras_face_data);
+        sync(right: $hyoo_cras_face_data): void;
         see_time(time: number): void;
         see_peer(peer: number, time: number): void;
         tick(peer: number): number;
@@ -2516,24 +2516,24 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    class $hyoo_crowds_node extends $mol_object {
+    class $hyoo_cras_node extends $mol_object {
         static tag: "keys" | "term" | "head" | "vals";
-        land(): $hyoo_crowds_land;
+        land(): $hyoo_cras_land;
         head(): number;
-        lord(): $hyoo_crowds_lord | null;
-        realm(): $hyoo_crowds_realm | null;
+        lord(): $hyoo_cras_lord | null;
+        realm(): $hyoo_cras_realm | null;
         lord_numb(): bigint;
-        ref(): $hyoo_crowds_ref;
+        ref(): $hyoo_cras_ref;
         slug(): string;
-        cast<Node extends typeof $hyoo_crowds_node>(Node: Node): InstanceType<Node>;
-        nodes<Node extends typeof $hyoo_crowds_node>(Node: Node | null): readonly InstanceType<Node>[];
-        units(): $hyoo_crowds_gist[];
+        cast<Node extends typeof $hyoo_cras_node>(Node: Node): InstanceType<Node>;
+        nodes<Node extends typeof $hyoo_cras_node>(Node: Node | null): readonly InstanceType<Node>[];
+        units(): $hyoo_cras_gist[];
         can_change(lord?: bigint): boolean;
     }
 }
 
 declare namespace $ {
-    class $hyoo_crowds_fund<Key, Node> extends $mol_object {
+    class $hyoo_cras_fund<Key, Node> extends $mol_object {
         readonly item_make: (head: Key) => Node;
         constructor(item_make: (head: Key) => Node);
         Item(head: Key): Node;
@@ -2596,33 +2596,33 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    function $hyoo_crowds_vary_cast_bin(vary: $hyoo_crowds_vary_type): Uint8Array | null;
-    function $hyoo_crowds_vary_cast_bool(vary: $hyoo_crowds_vary_type): boolean;
-    function $hyoo_crowds_vary_cast_int(vary: $hyoo_crowds_vary_type): bigint;
-    function $hyoo_crowds_vary_cast_real(vary: $hyoo_crowds_vary_type): number;
-    function $hyoo_crowds_vary_cast_ref(vary: $hyoo_crowds_vary_type): $hyoo_crowds_ref;
-    function $hyoo_crowds_vary_cast_str(vary: $hyoo_crowds_vary_type): string;
-    function $hyoo_crowds_vary_cast_time(vary: $hyoo_crowds_vary_type): $mol_time_moment;
-    function $hyoo_crowds_vary_cast_json(vary: $hyoo_crowds_vary_type): {} | any[] | string[] | number[] | boolean[] | {
+    function $hyoo_cras_vary_cast_bin(vary: $hyoo_cras_vary_type): Uint8Array | null;
+    function $hyoo_cras_vary_cast_bool(vary: $hyoo_cras_vary_type): boolean;
+    function $hyoo_cras_vary_cast_int(vary: $hyoo_cras_vary_type): bigint;
+    function $hyoo_cras_vary_cast_real(vary: $hyoo_cras_vary_type): number;
+    function $hyoo_cras_vary_cast_ref(vary: $hyoo_cras_vary_type): $hyoo_cras_ref;
+    function $hyoo_cras_vary_cast_str(vary: $hyoo_cras_vary_type): string;
+    function $hyoo_cras_vary_cast_time(vary: $hyoo_cras_vary_type): $mol_time_moment;
+    function $hyoo_cras_vary_cast_json(vary: $hyoo_cras_vary_type): {} | any[] | string[] | number[] | boolean[] | {
         lord: string;
         numb: number;
         head: number;
     } | null;
-    function $hyoo_crowds_vary_cast_xml(vary: $hyoo_crowds_vary_type): Element | HTMLElement | $mol_jsx.JSX.Element;
-    function $hyoo_crowds_vary_cast_tree(vary: $hyoo_crowds_vary_type): $mol_tree2;
-    const $hyoo_crowds_vary_cast_funcs: {
-        readonly bin: typeof $hyoo_crowds_vary_cast_bin;
-        readonly bool: typeof $hyoo_crowds_vary_cast_bool;
-        readonly int: typeof $hyoo_crowds_vary_cast_int;
-        readonly real: typeof $hyoo_crowds_vary_cast_real;
-        readonly ref: typeof $hyoo_crowds_vary_cast_ref;
-        readonly str: typeof $hyoo_crowds_vary_cast_str;
-        readonly time: typeof $hyoo_crowds_vary_cast_time;
-        readonly json: typeof $hyoo_crowds_vary_cast_json;
-        readonly xml: typeof $hyoo_crowds_vary_cast_xml;
-        readonly tree: typeof $hyoo_crowds_vary_cast_tree;
+    function $hyoo_cras_vary_cast_xml(vary: $hyoo_cras_vary_type): Element | HTMLElement | $mol_jsx.JSX.Element;
+    function $hyoo_cras_vary_cast_tree(vary: $hyoo_cras_vary_type): $mol_tree2;
+    const $hyoo_cras_vary_cast_funcs: {
+        readonly bin: typeof $hyoo_cras_vary_cast_bin;
+        readonly bool: typeof $hyoo_cras_vary_cast_bool;
+        readonly int: typeof $hyoo_cras_vary_cast_int;
+        readonly real: typeof $hyoo_cras_vary_cast_real;
+        readonly ref: typeof $hyoo_cras_vary_cast_ref;
+        readonly str: typeof $hyoo_cras_vary_cast_str;
+        readonly time: typeof $hyoo_cras_vary_cast_time;
+        readonly json: typeof $hyoo_cras_vary_cast_json;
+        readonly xml: typeof $hyoo_cras_vary_cast_xml;
+        readonly tree: typeof $hyoo_cras_vary_cast_tree;
     };
-    function $hyoo_crowds_vary_cast<Tip extends keyof typeof $hyoo_crowds_vary_tip>(tip: Tip, vary: $hyoo_crowds_vary_type): {} | null;
+    function $hyoo_cras_vary_cast<Tip extends keyof typeof $hyoo_cras_vary_tip>(tip: Tip, vary: $hyoo_cras_vary_type): {} | null;
 }
 
 declare namespace $ {
@@ -2639,31 +2639,31 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    class $hyoo_crowds_list extends $hyoo_crowds_node {
+    class $hyoo_cras_list extends $hyoo_cras_node {
         static tag: "keys" | "term" | "head" | "vals";
         static ref<Value extends any>(Value: Value): {
             new (): {
                 remotes(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
                 remote_make(): any;
-                items(next?: readonly $hyoo_crowds_vary_type[] | undefined, tag?: "keys" | "term" | "head" | "vals"): readonly $hyoo_crowds_vary_type[];
-                splice(next: readonly $hyoo_crowds_vary_type[], from?: number, to?: number, tag?: "keys" | "term" | "head" | "vals"): void;
-                find(vary: $hyoo_crowds_vary_type): $hyoo_crowds_gist | null;
-                has(vary: $hyoo_crowds_vary_type, next?: boolean | undefined, tag?: "keys" | "term" | "head" | "vals"): boolean;
-                add(vary: $hyoo_crowds_vary_type, tag?: "keys" | "term" | "head" | "vals"): void;
-                cut(vary: $hyoo_crowds_vary_type): void;
+                items(next?: readonly $hyoo_cras_vary_type[] | undefined, tag?: "keys" | "term" | "head" | "vals"): readonly $hyoo_cras_vary_type[];
+                splice(next: readonly $hyoo_cras_vary_type[], from?: number, to?: number, tag?: "keys" | "term" | "head" | "vals"): void;
+                find(vary: $hyoo_cras_vary_type): $hyoo_cras_gist | null;
+                has(vary: $hyoo_cras_vary_type, next?: boolean | undefined, tag?: "keys" | "term" | "head" | "vals"): boolean;
+                add(vary: $hyoo_cras_vary_type, tag?: "keys" | "term" | "head" | "vals"): void;
+                cut(vary: $hyoo_cras_vary_type): void;
                 move(from: number, to: number): void;
                 wipe(seat: number): void;
-                node_make<Node_1 extends typeof $hyoo_crowds_node>(Node: Node_1, vary: $hyoo_crowds_vary_type, tag?: "keys" | "term" | "head" | "vals"): InstanceType<Node_1>;
-                land(): $hyoo_crowds_land;
+                node_make<Node_1 extends typeof $hyoo_cras_node>(Node: Node_1, vary: $hyoo_cras_vary_type, tag?: "keys" | "term" | "head" | "vals"): InstanceType<Node_1>;
+                land(): $hyoo_cras_land;
                 head(): number;
-                lord(): $hyoo_crowds_lord | null;
-                realm(): $hyoo_crowds_realm | null;
+                lord(): $hyoo_cras_lord | null;
+                realm(): $hyoo_cras_realm | null;
                 lord_numb(): bigint;
-                ref(): $hyoo_crowds_ref;
+                ref(): $hyoo_cras_ref;
                 slug(): string;
-                cast<Node_2 extends typeof $hyoo_crowds_node>(Node: Node_2): InstanceType<Node_2>;
-                nodes<Node_3 extends typeof $hyoo_crowds_node>(Node: Node_3 | null): readonly InstanceType<Node_3>[];
-                units(): $hyoo_crowds_gist[];
+                cast<Node_2 extends typeof $hyoo_cras_node>(Node: Node_2): InstanceType<Node_2>;
+                nodes<Node_3 extends typeof $hyoo_cras_node>(Node: Node_3 | null): readonly InstanceType<Node_3>[];
+                units(): $hyoo_cras_gist[];
                 can_change(lord?: bigint): boolean;
                 $: typeof $$;
                 destructor(): void;
@@ -2683,15 +2683,15 @@ declare namespace $ {
             destructor(): void;
             [Symbol.toPrimitive](): string;
         };
-        items(next?: readonly $hyoo_crowds_vary_type[], tag?: "keys" | "term" | "head" | "vals"): readonly $hyoo_crowds_vary_type[];
-        splice(next: readonly $hyoo_crowds_vary_type[], from?: number, to?: number, tag?: "keys" | "term" | "head" | "vals"): void;
-        find(vary: $hyoo_crowds_vary_type): $hyoo_crowds_gist | null;
-        has(vary: $hyoo_crowds_vary_type, next?: boolean, tag?: "keys" | "term" | "head" | "vals"): boolean;
-        add(vary: $hyoo_crowds_vary_type, tag?: "keys" | "term" | "head" | "vals"): void;
-        cut(vary: $hyoo_crowds_vary_type): void;
+        items(next?: readonly $hyoo_cras_vary_type[], tag?: "keys" | "term" | "head" | "vals"): readonly $hyoo_cras_vary_type[];
+        splice(next: readonly $hyoo_cras_vary_type[], from?: number, to?: number, tag?: "keys" | "term" | "head" | "vals"): void;
+        find(vary: $hyoo_cras_vary_type): $hyoo_cras_gist | null;
+        has(vary: $hyoo_cras_vary_type, next?: boolean, tag?: "keys" | "term" | "head" | "vals"): boolean;
+        add(vary: $hyoo_cras_vary_type, tag?: "keys" | "term" | "head" | "vals"): void;
+        cut(vary: $hyoo_cras_vary_type): void;
         move(from: number, to: number): void;
         wipe(seat: number): void;
-        node_make<Node extends typeof $hyoo_crowds_node>(Node: Node, vary: $hyoo_crowds_vary_type, tag?: "keys" | "term" | "head" | "vals"): InstanceType<Node>;
+        node_make<Node extends typeof $hyoo_cras_node>(Node: Node, vary: $hyoo_cras_vary_type, tag?: "keys" | "term" | "head" | "vals"): InstanceType<Node>;
     }
 }
 
@@ -2794,7 +2794,7 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    class $hyoo_crowds_mine extends $mol_object {
+    class $hyoo_cras_mine extends $mol_object {
         static store: Map<bigint, Uint8Array>;
         static hash(blob: Uint8Array): Uint8Array;
         static rock(hash: Uint8Array, next?: Uint8Array): Uint8Array | undefined;
@@ -2824,53 +2824,53 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    class $hyoo_crowds_reg extends $hyoo_crowds_node {
+    class $hyoo_cras_reg extends $hyoo_cras_node {
         static tag: "keys" | "term" | "head" | "vals";
-        static of<Tip extends keyof typeof $hyoo_crowds_vary_tip>(tip: Tip): {
+        static of<Tip extends keyof typeof $hyoo_cras_vary_tip>(tip: Tip): {
             new (): {
                 value(next?: ReturnType<{
-                    readonly bin: typeof $hyoo_crowds_vary_cast_bin;
-                    readonly bool: typeof $hyoo_crowds_vary_cast_bool;
-                    readonly int: typeof $hyoo_crowds_vary_cast_int;
-                    readonly real: typeof $hyoo_crowds_vary_cast_real;
-                    readonly ref: typeof $hyoo_crowds_vary_cast_ref;
-                    readonly str: typeof $hyoo_crowds_vary_cast_str;
-                    readonly time: typeof $hyoo_crowds_vary_cast_time;
-                    readonly json: typeof $hyoo_crowds_vary_cast_json;
-                    readonly xml: typeof $hyoo_crowds_vary_cast_xml;
-                    readonly tree: typeof $hyoo_crowds_vary_cast_tree;
+                    readonly bin: typeof $hyoo_cras_vary_cast_bin;
+                    readonly bool: typeof $hyoo_cras_vary_cast_bool;
+                    readonly int: typeof $hyoo_cras_vary_cast_int;
+                    readonly real: typeof $hyoo_cras_vary_cast_real;
+                    readonly ref: typeof $hyoo_cras_vary_cast_ref;
+                    readonly str: typeof $hyoo_cras_vary_cast_str;
+                    readonly time: typeof $hyoo_cras_vary_cast_time;
+                    readonly json: typeof $hyoo_cras_vary_cast_json;
+                    readonly xml: typeof $hyoo_cras_vary_cast_xml;
+                    readonly tree: typeof $hyoo_cras_vary_cast_tree;
                 }[Tip]> | undefined): ReturnType<{
-                    readonly bin: typeof $hyoo_crowds_vary_cast_bin;
-                    readonly bool: typeof $hyoo_crowds_vary_cast_bool;
-                    readonly int: typeof $hyoo_crowds_vary_cast_int;
-                    readonly real: typeof $hyoo_crowds_vary_cast_real;
-                    readonly ref: typeof $hyoo_crowds_vary_cast_ref;
-                    readonly str: typeof $hyoo_crowds_vary_cast_str;
-                    readonly time: typeof $hyoo_crowds_vary_cast_time;
-                    readonly json: typeof $hyoo_crowds_vary_cast_json;
-                    readonly xml: typeof $hyoo_crowds_vary_cast_xml;
-                    readonly tree: typeof $hyoo_crowds_vary_cast_tree;
+                    readonly bin: typeof $hyoo_cras_vary_cast_bin;
+                    readonly bool: typeof $hyoo_cras_vary_cast_bool;
+                    readonly int: typeof $hyoo_cras_vary_cast_int;
+                    readonly real: typeof $hyoo_cras_vary_cast_real;
+                    readonly ref: typeof $hyoo_cras_vary_cast_ref;
+                    readonly str: typeof $hyoo_cras_vary_cast_str;
+                    readonly time: typeof $hyoo_cras_vary_cast_time;
+                    readonly json: typeof $hyoo_cras_vary_cast_json;
+                    readonly xml: typeof $hyoo_cras_vary_cast_xml;
+                    readonly tree: typeof $hyoo_cras_vary_cast_tree;
                 }[Tip]>;
-                pick_unit(): $hyoo_crowds_gist | undefined;
-                value_vary(next?: $hyoo_crowds_vary_type | undefined): $hyoo_crowds_vary_type;
+                pick_unit(): $hyoo_cras_gist | undefined;
+                value_vary(next?: $hyoo_cras_vary_type | undefined): $hyoo_cras_vary_type;
                 value_bool(next?: boolean | undefined): boolean;
                 value_int(next?: bigint | undefined): bigint;
                 value_real(next?: number | undefined): number;
                 value_str(next?: string | undefined): string;
                 value_bin(next?: Uint8Array | null | undefined): Uint8Array | null;
-                value_ref(next?: $hyoo_crowds_ref | null | undefined): $hyoo_crowds_ref | null;
+                value_ref(next?: $hyoo_cras_ref | null | undefined): $hyoo_cras_ref | null;
                 value_as<Decode extends $mol_data_value<any, any>>(decode: Decode, next?: ReturnType<Decode> | undefined): any;
-                yoke(vary: $hyoo_crowds_vary_type): $hyoo_crowds_land;
-                land(): $hyoo_crowds_land;
+                yoke(vary: $hyoo_cras_vary_type): $hyoo_cras_land;
+                land(): $hyoo_cras_land;
                 head(): number;
-                lord(): $hyoo_crowds_lord | null;
-                realm(): $hyoo_crowds_realm | null;
+                lord(): $hyoo_cras_lord | null;
+                realm(): $hyoo_cras_realm | null;
                 lord_numb(): bigint;
-                ref(): $hyoo_crowds_ref;
+                ref(): $hyoo_cras_ref;
                 slug(): string;
-                cast<Node_1 extends typeof $hyoo_crowds_node>(Node: Node_1): InstanceType<Node_1>;
-                nodes<Node_2 extends typeof $hyoo_crowds_node>(Node: Node_2 | null): readonly InstanceType<Node_2>[];
-                units(): $hyoo_crowds_gist[];
+                cast<Node_1 extends typeof $hyoo_cras_node>(Node: Node_1): InstanceType<Node_1>;
+                nodes<Node_2 extends typeof $hyoo_cras_node>(Node: Node_2 | null): readonly InstanceType<Node_2>[];
+                units(): $hyoo_cras_gist[];
                 can_change(lord?: bigint): boolean;
                 $: typeof $$;
                 destructor(): void;
@@ -2886,26 +2886,26 @@ declare namespace $ {
                 new (): {
                     value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                     ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
-                    pick_unit(): $hyoo_crowds_gist | undefined;
-                    value_vary(next?: $hyoo_crowds_vary_type | undefined): $hyoo_crowds_vary_type;
+                    pick_unit(): $hyoo_cras_gist | undefined;
+                    value_vary(next?: $hyoo_cras_vary_type | undefined): $hyoo_cras_vary_type;
                     value_bool(next?: boolean | undefined): boolean;
                     value_int(next?: bigint | undefined): bigint;
                     value_real(next?: number | undefined): number;
                     value_str(next?: string | undefined): string;
                     value_bin(next?: Uint8Array | null | undefined): Uint8Array | null;
-                    value_ref(next?: $hyoo_crowds_ref | null | undefined): $hyoo_crowds_ref | null;
+                    value_ref(next?: $hyoo_cras_ref | null | undefined): $hyoo_cras_ref | null;
                     value_as<Decode_1 extends $mol_data_value<any, any>>(decode: Decode_1, next?: ReturnType<Decode_1> | undefined): any;
-                    yoke(vary: $hyoo_crowds_vary_type): $hyoo_crowds_land;
-                    land(): $hyoo_crowds_land;
+                    yoke(vary: $hyoo_cras_vary_type): $hyoo_cras_land;
+                    land(): $hyoo_cras_land;
                     head(): number;
-                    lord(): $hyoo_crowds_lord | null;
-                    realm(): $hyoo_crowds_realm | null;
+                    lord(): $hyoo_cras_lord | null;
+                    realm(): $hyoo_cras_realm | null;
                     lord_numb(): bigint;
-                    ref(): $hyoo_crowds_ref;
+                    ref(): $hyoo_cras_ref;
                     slug(): string;
-                    cast<Node_3 extends typeof $hyoo_crowds_node>(Node: Node_3): InstanceType<Node_3>;
-                    nodes<Node_4 extends typeof $hyoo_crowds_node>(Node: Node_4 | null): readonly InstanceType<Node_4>[];
-                    units(): $hyoo_crowds_gist[];
+                    cast<Node_3 extends typeof $hyoo_cras_node>(Node: Node_3): InstanceType<Node_3>;
+                    nodes<Node_4 extends typeof $hyoo_cras_node>(Node: Node_4 | null): readonly InstanceType<Node_4>[];
+                    units(): $hyoo_cras_gist[];
                     can_change(lord?: bigint): boolean;
                     $: typeof $$;
                     destructor(): void;
@@ -2938,26 +2938,26 @@ declare namespace $ {
             new (): {
                 value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                 ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
-                pick_unit(): $hyoo_crowds_gist | undefined;
-                value_vary(next?: $hyoo_crowds_vary_type | undefined): $hyoo_crowds_vary_type;
+                pick_unit(): $hyoo_cras_gist | undefined;
+                value_vary(next?: $hyoo_cras_vary_type | undefined): $hyoo_cras_vary_type;
                 value_bool(next?: boolean | undefined): boolean;
                 value_int(next?: bigint | undefined): bigint;
                 value_real(next?: number | undefined): number;
                 value_str(next?: string | undefined): string;
                 value_bin(next?: Uint8Array | null | undefined): Uint8Array | null;
-                value_ref(next?: $hyoo_crowds_ref | null | undefined): $hyoo_crowds_ref | null;
+                value_ref(next?: $hyoo_cras_ref | null | undefined): $hyoo_cras_ref | null;
                 value_as<Decode extends $mol_data_value<any, any>>(decode: Decode, next?: ReturnType<Decode> | undefined): any;
-                yoke(vary: $hyoo_crowds_vary_type): $hyoo_crowds_land;
-                land(): $hyoo_crowds_land;
+                yoke(vary: $hyoo_cras_vary_type): $hyoo_cras_land;
+                land(): $hyoo_cras_land;
                 head(): number;
-                lord(): $hyoo_crowds_lord | null;
-                realm(): $hyoo_crowds_realm | null;
+                lord(): $hyoo_cras_lord | null;
+                realm(): $hyoo_cras_realm | null;
                 lord_numb(): bigint;
-                ref(): $hyoo_crowds_ref;
+                ref(): $hyoo_cras_ref;
                 slug(): string;
-                cast<Node_1 extends typeof $hyoo_crowds_node>(Node: Node_1): InstanceType<Node_1>;
-                nodes<Node_2 extends typeof $hyoo_crowds_node>(Node: Node_2 | null): readonly InstanceType<Node_2>[];
-                units(): $hyoo_crowds_gist[];
+                cast<Node_1 extends typeof $hyoo_cras_node>(Node: Node_1): InstanceType<Node_1>;
+                nodes<Node_2 extends typeof $hyoo_cras_node>(Node: Node_2 | null): readonly InstanceType<Node_2>[];
+                units(): $hyoo_cras_gist[];
                 can_change(lord?: bigint): boolean;
                 $: typeof $$;
                 destructor(): void;
@@ -2972,48 +2972,48 @@ declare namespace $ {
             of<Tip extends "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "xml" | "tree">(tip: Tip): {
                 new (): {
                     value(next?: ReturnType<{
-                        readonly bin: typeof $hyoo_crowds_vary_cast_bin;
-                        readonly bool: typeof $hyoo_crowds_vary_cast_bool;
-                        readonly int: typeof $hyoo_crowds_vary_cast_int;
-                        readonly real: typeof $hyoo_crowds_vary_cast_real;
-                        readonly ref: typeof $hyoo_crowds_vary_cast_ref;
-                        readonly str: typeof $hyoo_crowds_vary_cast_str;
-                        readonly time: typeof $hyoo_crowds_vary_cast_time;
-                        readonly json: typeof $hyoo_crowds_vary_cast_json;
-                        readonly xml: typeof $hyoo_crowds_vary_cast_xml;
-                        readonly tree: typeof $hyoo_crowds_vary_cast_tree;
+                        readonly bin: typeof $hyoo_cras_vary_cast_bin;
+                        readonly bool: typeof $hyoo_cras_vary_cast_bool;
+                        readonly int: typeof $hyoo_cras_vary_cast_int;
+                        readonly real: typeof $hyoo_cras_vary_cast_real;
+                        readonly ref: typeof $hyoo_cras_vary_cast_ref;
+                        readonly str: typeof $hyoo_cras_vary_cast_str;
+                        readonly time: typeof $hyoo_cras_vary_cast_time;
+                        readonly json: typeof $hyoo_cras_vary_cast_json;
+                        readonly xml: typeof $hyoo_cras_vary_cast_xml;
+                        readonly tree: typeof $hyoo_cras_vary_cast_tree;
                     }[Tip]> | undefined): ReturnType<{
-                        readonly bin: typeof $hyoo_crowds_vary_cast_bin;
-                        readonly bool: typeof $hyoo_crowds_vary_cast_bool;
-                        readonly int: typeof $hyoo_crowds_vary_cast_int;
-                        readonly real: typeof $hyoo_crowds_vary_cast_real;
-                        readonly ref: typeof $hyoo_crowds_vary_cast_ref;
-                        readonly str: typeof $hyoo_crowds_vary_cast_str;
-                        readonly time: typeof $hyoo_crowds_vary_cast_time;
-                        readonly json: typeof $hyoo_crowds_vary_cast_json;
-                        readonly xml: typeof $hyoo_crowds_vary_cast_xml;
-                        readonly tree: typeof $hyoo_crowds_vary_cast_tree;
+                        readonly bin: typeof $hyoo_cras_vary_cast_bin;
+                        readonly bool: typeof $hyoo_cras_vary_cast_bool;
+                        readonly int: typeof $hyoo_cras_vary_cast_int;
+                        readonly real: typeof $hyoo_cras_vary_cast_real;
+                        readonly ref: typeof $hyoo_cras_vary_cast_ref;
+                        readonly str: typeof $hyoo_cras_vary_cast_str;
+                        readonly time: typeof $hyoo_cras_vary_cast_time;
+                        readonly json: typeof $hyoo_cras_vary_cast_json;
+                        readonly xml: typeof $hyoo_cras_vary_cast_xml;
+                        readonly tree: typeof $hyoo_cras_vary_cast_tree;
                     }[Tip]>;
-                    pick_unit(): $hyoo_crowds_gist | undefined;
-                    value_vary(next?: $hyoo_crowds_vary_type | undefined): $hyoo_crowds_vary_type;
+                    pick_unit(): $hyoo_cras_gist | undefined;
+                    value_vary(next?: $hyoo_cras_vary_type | undefined): $hyoo_cras_vary_type;
                     value_bool(next?: boolean | undefined): boolean;
                     value_int(next?: bigint | undefined): bigint;
                     value_real(next?: number | undefined): number;
                     value_str(next?: string | undefined): string;
                     value_bin(next?: Uint8Array | null | undefined): Uint8Array | null;
-                    value_ref(next?: $hyoo_crowds_ref | null | undefined): $hyoo_crowds_ref | null;
+                    value_ref(next?: $hyoo_cras_ref | null | undefined): $hyoo_cras_ref | null;
                     value_as<Decode_1 extends $mol_data_value<any, any>>(decode: Decode_1, next?: ReturnType<Decode_1> | undefined): any;
-                    yoke(vary: $hyoo_crowds_vary_type): $hyoo_crowds_land;
-                    land(): $hyoo_crowds_land;
+                    yoke(vary: $hyoo_cras_vary_type): $hyoo_cras_land;
+                    land(): $hyoo_cras_land;
                     head(): number;
-                    lord(): $hyoo_crowds_lord | null;
-                    realm(): $hyoo_crowds_realm | null;
+                    lord(): $hyoo_cras_lord | null;
+                    realm(): $hyoo_cras_realm | null;
                     lord_numb(): bigint;
-                    ref(): $hyoo_crowds_ref;
+                    ref(): $hyoo_cras_ref;
                     slug(): string;
-                    cast<Node_3 extends typeof $hyoo_crowds_node>(Node: Node_3): InstanceType<Node_3>;
-                    nodes<Node_4 extends typeof $hyoo_crowds_node>(Node: Node_4 | null): readonly InstanceType<Node_4>[];
-                    units(): $hyoo_crowds_gist[];
+                    cast<Node_3 extends typeof $hyoo_cras_node>(Node: Node_3): InstanceType<Node_3>;
+                    nodes<Node_4 extends typeof $hyoo_cras_node>(Node: Node_4 | null): readonly InstanceType<Node_4>[];
+                    units(): $hyoo_cras_gist[];
                     can_change(lord?: bigint): boolean;
                     $: typeof $$;
                     destructor(): void;
@@ -3042,65 +3042,65 @@ declare namespace $ {
             destructor(): void;
             [Symbol.toPrimitive](): string;
         };
-        pick_unit(): $hyoo_crowds_gist | undefined;
-        value_vary(next?: $hyoo_crowds_vary_type): $hyoo_crowds_vary_type;
+        pick_unit(): $hyoo_cras_gist | undefined;
+        value_vary(next?: $hyoo_cras_vary_type): $hyoo_cras_vary_type;
         value_bool(next?: boolean): boolean;
         value_int(next?: bigint): bigint;
         value_real(next?: number): number;
         value_str(next?: string): string;
         value_bin(next?: Uint8Array | null): Uint8Array | null;
-        value_ref(next?: $hyoo_crowds_ref | null): $hyoo_crowds_ref | null;
+        value_ref(next?: $hyoo_cras_ref | null): $hyoo_cras_ref | null;
         value_as<Decode extends $mol_data_value>(decode: Decode, next?: ReturnType<Decode>): any;
-        yoke(vary: $hyoo_crowds_vary_type): $hyoo_crowds_land;
+        yoke(vary: $hyoo_cras_vary_type): $hyoo_cras_land;
     }
 }
 
 declare namespace $ {
-    class $hyoo_crowds_dict extends $hyoo_crowds_node {
+    class $hyoo_cras_dict extends $hyoo_cras_node {
         static tag: "keys" | "term" | "head" | "vals";
-        static of<Schema extends Record<string, typeof $hyoo_crowds_node>>(schema: Schema): Pick<typeof $hyoo_crowds_dict, typeof Symbol.toPrimitive | "toString" | "destructor" | "$" | "toJSON" | "prototype" | "create" | "make" | "tag" | "of"> & (new () => $hyoo_crowds_dict & { [Key in keyof Schema]: () => InstanceType<Schema[Key]>; });
-        keys(): readonly $hyoo_crowds_vary_type[];
-        has(key: $hyoo_crowds_vary_type, next?: false): boolean;
-        dive<Node extends typeof $hyoo_crowds_node>(key: $hyoo_crowds_vary_type, Node: Node): InstanceType<Node>;
+        static of<Schema extends Record<string, typeof $hyoo_cras_node>>(schema: Schema): Pick<typeof $hyoo_cras_dict, typeof Symbol.toPrimitive | "toString" | "destructor" | "$" | "toJSON" | "prototype" | "create" | "make" | "tag" | "of"> & (new () => $hyoo_cras_dict & { [Key in keyof Schema]: () => InstanceType<Schema[Key]>; });
+        keys(): readonly $hyoo_cras_vary_type[];
+        has(key: $hyoo_cras_vary_type, next?: false): boolean;
+        dive<Node extends typeof $hyoo_cras_node>(key: $hyoo_cras_vary_type, Node: Node): InstanceType<Node>;
     }
 }
 
 declare namespace $ {
-    class $hyoo_crowds_land extends $mol_object {
-        lord(): $hyoo_crowds_lord | null;
+    class $hyoo_cras_land extends $mol_object {
+        lord(): $hyoo_cras_lord | null;
         numb(): number;
         lord_numb(): bigint;
-        realm(): $hyoo_crowds_realm | null;
-        auth(): $hyoo_crowds_auth;
-        ref(): $hyoo_crowds_ref;
+        realm(): $hyoo_cras_realm | null;
+        auth(): $hyoo_cras_auth;
+        ref(): $hyoo_cras_ref;
         slug(): string;
-        passes: $mol_wire_dict<number, $hyoo_crowds_pass>;
-        gifts: $mol_wire_dict<bigint, $hyoo_crowds_gift>;
-        gists: $mol_wire_dict<number, $mol_wire_dict<number, $hyoo_crowds_gist>>;
+        passes: $mol_wire_dict<number, $hyoo_cras_pass>;
+        gifts: $mol_wire_dict<bigint, $hyoo_cras_gift>;
+        gists: $mol_wire_dict<number, $mol_wire_dict<number, $hyoo_cras_gist>>;
         self_all: $mol_wire_set<number>;
-        face: $hyoo_crowds_face;
+        face: $hyoo_cras_face;
         self_make(idea?: number): number;
-        Root<Node extends typeof $hyoo_crowds_node>(Node: Node): InstanceType<Node>;
-        Node<Node extends typeof $hyoo_crowds_node>(Node: Node): $hyoo_crowds_fund<number, InstanceType<Node>>;
+        Root<Node extends typeof $hyoo_cras_node>(Node: Node): InstanceType<Node>;
+        Node<Node extends typeof $hyoo_cras_node>(Node: Node): $hyoo_cras_fund<number, InstanceType<Node>>;
         total(): number;
         joined_list(): bigint[];
-        lord_rang(lord: bigint): $hyoo_crowds_rang;
-        peer_rang(peer: number): $hyoo_crowds_rang;
-        delta_unit(face?: $hyoo_crowds_face): $hyoo_crowds_unit[];
-        delta_buffer(face?: $hyoo_crowds_face): Uint8Array;
-        apply_unit(delta: readonly $hyoo_crowds_unit[]): ("" | "Need add rang to join" | "Need law rang to change rang" | "Need add rang to post self data" | "Need mod rang to post any data" | "Already joined" | "Unit too old")[];
-        apply_land(land: $hyoo_crowds_land): ("" | "Need add rang to join" | "Need law rang to change rang" | "Need add rang to post self data" | "Need mod rang to post any data" | "Already joined" | "Unit too old")[];
+        lord_rang(lord: bigint): $hyoo_cras_rang;
+        peer_rang(peer: number): $hyoo_cras_rang;
+        delta_unit(face?: $hyoo_cras_face): $hyoo_cras_unit[];
+        delta_buffer(face?: $hyoo_cras_face): Uint8Array;
+        apply_unit(delta: readonly $hyoo_cras_unit[]): ("" | "Need add rang to join" | "Need law rang to change rang" | "Need add rang to post self data" | "Need mod rang to post any data" | "Already joined" | "Unit too old")[];
+        apply_land(land: $hyoo_cras_land): ("" | "Need add rang to join" | "Need law rang to change rang" | "Need add rang to post self data" | "Need mod rang to post any data" | "Already joined" | "Unit too old")[];
         recheck(): void;
-        check_unit(unit: $hyoo_crowds_unit): "" | "Need add rang to join" | "Need law rang to change rang" | "Need add rang to post self data" | "Need mod rang to post any data";
-        fork(): $hyoo_crowds_land;
-        cloves(): $hyoo_crowds_list | null;
-        gists_ordered(head: number): $hyoo_crowds_gist[];
-        join(): $hyoo_crowds_pass;
-        give(dest: bigint, rang: $hyoo_crowds_rang): $hyoo_crowds_gift;
-        post(lead: number, head: number, self: number, data: $hyoo_crowds_vary_type, tag?: "keys" | "term" | "head" | "vals"): $hyoo_crowds_gist;
-        gist_move(gist: $hyoo_crowds_gist, head: number, seat: number): void;
-        gist_wipe(gist: $hyoo_crowds_gist): void;
-        gist_decode(gist: $hyoo_crowds_gist): $hyoo_crowds_vary_type;
+        check_unit(unit: $hyoo_cras_unit): "" | "Need add rang to join" | "Need law rang to change rang" | "Need add rang to post self data" | "Need mod rang to post any data";
+        fork(): $hyoo_cras_land;
+        cloves(): $hyoo_cras_list | null;
+        gists_ordered(head: number): $hyoo_cras_gist[];
+        join(): $hyoo_cras_pass;
+        give(dest: bigint, rang: $hyoo_cras_rang): $hyoo_cras_gift;
+        post(lead: number, head: number, self: number, data: $hyoo_cras_vary_type, tag?: "keys" | "term" | "head" | "vals"): $hyoo_cras_gist;
+        gist_move(gist: $hyoo_cras_gist, head: number, seat: number): void;
+        gist_wipe(gist: $hyoo_cras_gist): void;
+        gist_decode(gist: $hyoo_cras_gist): $hyoo_cras_vary_type;
         key_public(peer: number): $mol_crypto_key_public | null;
         secret_mutual(peer: number): $mol_crypto_secret | null;
         encrypt(): void;
@@ -3109,35 +3109,35 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    class $hyoo_crowds_base extends $hyoo_crowds_dict {
+    class $hyoo_cras_base extends $hyoo_cras_dict {
         title(next?: string): string;
         selection(next?: readonly (readonly [number, number])[]): readonly (readonly [number, number])[];
-        profiles(): readonly $hyoo_crowds_vary_type[];
-        Profile(app: string): $hyoo_crowds_land;
+        profiles(): readonly $hyoo_cras_vary_type[];
+        Profile(app: string): $hyoo_cras_land;
     }
 }
 
 declare namespace $ {
-    class $hyoo_crowds_lord extends $mol_object {
-        realm(): $hyoo_crowds_realm | null;
+    class $hyoo_cras_lord extends $mol_object {
+        realm(): $hyoo_cras_realm | null;
         numb(): bigint;
-        lands: $mol_wire_dict<number, $hyoo_crowds_land>;
-        base(): $hyoo_crowds_base;
-        ref(): $hyoo_crowds_ref;
+        lands: $mol_wire_dict<number, $hyoo_cras_land>;
+        base(): $hyoo_cras_base;
+        ref(): $hyoo_cras_ref;
         toString(): string;
         slug(): string;
-        Land(numb: number): $hyoo_crowds_land;
-        Land_new(idea: number): $hyoo_crowds_land;
+        Land(numb: number): $hyoo_cras_land;
+        Land_new(idea: number): $hyoo_cras_land;
         numb_make(idea?: number): number;
     }
 }
 
 declare namespace $ {
-    class $hyoo_crowds_realm extends $mol_object {
-        lords: $mol_wire_dict<bigint, $hyoo_crowds_lord>;
-        home(): $hyoo_crowds_lord;
-        Lord(numb: bigint): $hyoo_crowds_lord;
-        Node<Node extends typeof $hyoo_crowds_node>(Node: Node, ref: $hyoo_crowds_ref): InstanceType<Node>;
+    class $hyoo_cras_realm extends $mol_object {
+        lords: $mol_wire_dict<bigint, $hyoo_cras_lord>;
+        home(): $hyoo_cras_lord;
+        Lord(numb: bigint): $hyoo_cras_lord;
+        Node<Node extends typeof $hyoo_cras_node>(Node: Node, ref: $hyoo_cras_ref): InstanceType<Node>;
     }
 }
 
@@ -3641,9 +3641,9 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    class $hyoo_crowds_node_dump extends $mol_expander {
+    class $hyoo_cras_node_dump extends $mol_expander {
         can_change(): boolean;
-        node(): $hyoo_crowds_node;
+        node(): $hyoo_cras_node;
         label(): readonly any[];
         addons(): readonly any[];
         Tools(): $mol_view;
@@ -3665,25 +3665,25 @@ declare namespace $ {
         Unit_wipe_icon(id: any): $mol_icon_cross;
         unit_wipe(id: any, next?: any): any;
         Unit_wipe(id: any): $mol_button_minor;
-        node_inner(id: any): $hyoo_crowds_node;
-        Node_inner(id: any): $$.$hyoo_crowds_node_dump;
+        node_inner(id: any): $hyoo_cras_node;
+        Node_inner(id: any): $$.$hyoo_cras_node_dump;
         Inner(id: any): $mol_view;
         nodes(): readonly any[];
     }
 }
 
 declare namespace $.$$ {
-    class $hyoo_crowds_node_dump extends $.$hyoo_crowds_node_dump {
+    class $hyoo_cras_node_dump extends $.$hyoo_cras_node_dump {
         title(): string;
-        value(): $hyoo_crowds_vary_type;
-        items(): readonly $hyoo_crowds_vary_type[];
+        value(): $hyoo_cras_vary_type;
+        items(): readonly $hyoo_cras_vary_type[];
         nodes(): $mol_view[];
-        unit_tag(index: number, next?: keyof typeof $hyoo_crowds_gist_tag): "keys" | "term" | "head" | "vals";
+        unit_tag(index: number, next?: keyof typeof $hyoo_cras_gist_tag): "keys" | "term" | "head" | "vals";
         unit_tip(index: number): "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "xml" | "tree";
         unit_time(index: number): string;
-        unit_value(index: number): $hyoo_crowds_vary_type;
+        unit_value(index: number): $hyoo_cras_vary_type;
         unit_wipe(index: number, event?: Event): void;
-        node_inner(index: number): $hyoo_crowds_node;
+        node_inner(index: number): $hyoo_cras_node;
         add_key(event: Event): void;
     }
 }
@@ -3740,11 +3740,11 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    class $hyoo_crowds_node_page extends $mol_page {
-        node(): $hyoo_crowds_node;
+    class $hyoo_cras_node_page extends $mol_page {
+        node(): $hyoo_cras_node;
         title(): string;
         body(): readonly any[];
-        Dump(): $$.$hyoo_crowds_node_dump;
+        Dump(): $$.$hyoo_cras_node_dump;
         text(next?: any): string;
         Text(): $$.$mol_textarea;
     }
@@ -3755,7 +3755,7 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    class $hyoo_crowds_text extends $hyoo_crowds_node {
+    class $hyoo_cras_text extends $hyoo_cras_node {
         static tag: "keys" | "term" | "head" | "vals";
         text(next?: string): string;
         str(next?: string): string;
@@ -3767,7 +3767,7 @@ declare namespace $ {
 }
 
 declare namespace $.$$ {
-    class $hyoo_crowds_node_page extends $.$hyoo_crowds_node_page {
+    class $hyoo_cras_node_page extends $.$hyoo_cras_node_page {
         title(): string;
         text(next?: string): string;
     }
@@ -3777,22 +3777,22 @@ declare namespace $.$$ {
 }
 
 declare namespace $ {
-    class $hyoo_crowds_land_book extends $mol_book2_catalog {
+    class $hyoo_cras_land_book extends $mol_book2_catalog {
         menu_title(): string;
         param(): string;
-        land(): $hyoo_crowds_land;
-        Spread(id: any): $$.$hyoo_crowds_node_page;
-        node(id: any): $hyoo_crowds_node;
-        Node(id: any): $$.$hyoo_crowds_node_page;
+        land(): $hyoo_cras_land;
+        Spread(id: any): $$.$hyoo_cras_node_page;
+        node(id: any): $hyoo_cras_node;
+        Node(id: any): $$.$hyoo_cras_node_page;
     }
 }
 
 declare namespace $.$$ {
-    class $hyoo_crowds_land_book extends $.$hyoo_crowds_land_book {
+    class $hyoo_cras_land_book extends $.$hyoo_cras_land_book {
         menu_title(): string;
         spread_ids(): string[];
         spread_title(head: string): string;
-        node(id: string): $hyoo_crowds_node;
+        node(id: string): $hyoo_cras_node;
     }
 }
 
@@ -3806,14 +3806,14 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    class $hyoo_crowds_lord_book extends $mol_book2_catalog {
+    class $hyoo_cras_lord_book extends $mol_book2_catalog {
         menu_title(): string;
         param(): string;
-        lord(): $hyoo_crowds_lord;
-        Spread(id: any): $$.$hyoo_crowds_land_book;
+        lord(): $hyoo_cras_lord;
+        Spread(id: any): $$.$hyoo_cras_land_book;
         menu_tools(): readonly any[];
-        land(id: any): $hyoo_crowds_land;
-        Land(id: any): $$.$hyoo_crowds_land_book;
+        land(id: any): $hyoo_cras_land;
+        Land(id: any): $$.$hyoo_cras_land_book;
         Area_new_icon(): $mol_icon_plus;
         land_new(next?: any): any;
         Area_new(): $mol_button_minor;
@@ -3821,11 +3821,11 @@ declare namespace $ {
 }
 
 declare namespace $.$$ {
-    class $hyoo_crowds_lord_book extends $.$hyoo_crowds_lord_book {
+    class $hyoo_cras_lord_book extends $.$hyoo_cras_lord_book {
         menu_title(): string;
         spread_ids(): string[];
         spread_title(id: string): string;
-        land(id: string): $hyoo_crowds_land;
+        land(id: string): $hyoo_cras_land;
         land_new(): void;
     }
 }
@@ -3834,20 +3834,20 @@ declare namespace $.$$ {
 }
 
 declare namespace $ {
-    class $hyoo_crowds_realm_book extends $mol_book2_catalog {
+    class $hyoo_cras_realm_book extends $mol_book2_catalog {
         menu_title(): string;
         param(): string;
-        realm(): $hyoo_crowds_realm;
-        Spread(id: any): $$.$hyoo_crowds_lord_book;
-        lord(id: any): $hyoo_crowds_lord;
-        Lord(id: any): $$.$hyoo_crowds_lord_book;
+        realm(): $hyoo_cras_realm;
+        Spread(id: any): $$.$hyoo_cras_lord_book;
+        lord(id: any): $hyoo_cras_lord;
+        Lord(id: any): $$.$hyoo_cras_lord_book;
     }
 }
 
 declare namespace $.$$ {
-    class $hyoo_crowds_realm_book extends $.$hyoo_crowds_realm_book {
+    class $hyoo_cras_realm_book extends $.$hyoo_cras_realm_book {
         spread_ids(): string[];
-        lord(id: string): $hyoo_crowds_lord;
+        lord(id: string): $hyoo_cras_lord;
         spread_title(id: string): string;
     }
 }
@@ -5141,20 +5141,20 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    class $hyoo_crowds_expose extends $mol_book2_catalog {
+    class $hyoo_cras_expose extends $mol_book2_catalog {
         menu_title(): string;
         param(): string;
-        realm(): $hyoo_crowds_realm;
+        realm(): $hyoo_cras_realm;
         spreads(): Record<string, any>;
         Placeholder(): any;
-        Realm(): $$.$hyoo_crowds_realm_book;
+        Realm(): $$.$hyoo_cras_realm_book;
         Casting(): $$.$hyoo_calc;
     }
 }
 
 declare namespace $.$$ {
-    class $hyoo_crowds_expose extends $.$hyoo_crowds_expose {
-        realm(): $hyoo_crowds_realm;
+    class $hyoo_cras_expose extends $.$hyoo_cras_expose {
+        realm(): $hyoo_cras_realm;
     }
 }
 
