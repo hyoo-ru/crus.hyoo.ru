@@ -1,5 +1,5 @@
 $hyoo_crowds_expose $mol_book2_catalog
-	menu_title \CROWDS Expose
+	menu_title \🎭CROWDS
 	param \section
 	realm $hyoo_crowds_realm
 	spreads *

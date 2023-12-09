@@ -32,10 +32,10 @@ namespace $ {
 			// return this.ref().toString().replace( /^[^_]*_?/, '' ) || 'Base'
 		}
 		
-		pass = new $mol_wire_dict< number /*peer*/, $hyoo_crowds_pass >()
-		gift = new $mol_wire_dict< bigint /*lord*/, $hyoo_crowds_gift >()
-		gist = new $mol_wire_dict< number /*head*/, $mol_wire_dict< number /*self*/, $hyoo_crowds_gist > >()
-		self_all = new Set< number >()
+		passes = new $mol_wire_dict< number /*peer*/, $hyoo_crowds_pass >()
+		gifts = new $mol_wire_dict< bigint /*lord*/, $hyoo_crowds_gift >()
+		gists = new $mol_wire_dict< number /*head*/, $mol_wire_dict< number /*self*/, $hyoo_crowds_gist > >()
+		self_all = new $mol_wire_set< number >()
 		
 		face = new $hyoo_crowds_face
 
@@ -71,24 +71,24 @@ namespace $ {
 		
 		@ $mol_mem
 		total() {
-			let total = this.pass.size + this.gift.size
-			for( const units of this.gist.values() ) total += units.size
+			let total = this.passes.size + this.gifts.size
+			for( const units of this.gists.values() ) total += units.size
 			return total
 		}
 		
 		@ $mol_mem
 		joined_list() {
-			return [ ... this.pass.values() ].map( unit => unit.lord() )
+			return [ ... this.passes.values() ].map( unit => unit.lord() )
 		}
 		
 		@ $mol_mem_key
 		lord_rang( lord: bigint ) {
 			if( lord === this.lord_numb() ) return $hyoo_crowds_rang.law
-			return this.gift.get( lord )?.rang() ?? $hyoo_crowds_rang.get
+			return this.gifts.get( lord )?.rang() ?? $hyoo_crowds_rang.get
 		}
 		
 		peer_rang( peer: number ) {
-			const auth = this.pass.get( peer )!
+			const auth = this.passes.get( peer )!
 			if( !auth ) return $hyoo_crowds_rang.get
 			return this.lord_rang( auth.lord() )
 		}
@@ -98,17 +98,17 @@ namespace $ {
 			
 			const delta = [] as $hyoo_crowds_unit[]
 			
-			for( const unit of this.pass.values() ) {
+			for( const unit of this.passes.values() ) {
 				if( face.get( unit.peer() ) ) continue
 				delta.push( unit )
 			}
 			
-			for( const [ lord, unit ] of this.gift ) {
+			for( const [ lord, unit ] of this.gifts ) {
 				const time = face.get( Number( lord >> 16n ) )
 				if( !time || time < unit.time() ) delta.push( unit )
 			}
 			
-			for( const kids of this.gist.values() ) {
+			for( const kids of this.gists.values() ) {
 				for( const unit of kids.values() ) {
 					const time = face.get( unit.peer() )
 					if( !time || time < unit.time() ) delta.push( unit )
@@ -147,10 +147,10 @@ namespace $ {
 						
 						const peer = next.peer()
 						
-						const exists = this.pass.get( peer )
+						const exists = this.passes.get( peer )
 						if( exists ) return 'Already joined'
 						
-						this.pass.set( peer, next )
+						this.passes.set( peer, next )
 						this.face.see_peer( next.peer(), 0 )
 						
 					},
@@ -159,10 +159,10 @@ namespace $ {
 						
 						const dest = next.dest()
 						
-						const prev = this.gift.get( dest )
+						const prev = this.gifts.get( dest )
 						if( prev && $hyoo_crowds_gift.compare( prev, next ) <= 0 ) return 'Unit too old'
 						
-						this.gift.set( dest, next )
+						this.gifts.set( dest, next )
 						this.face.see_peer( Number( dest >> 16n ), next.time() )
 						
 						if( ( prev?.rang() ?? $hyoo_crowds_rang.get ) > next.rang() ) need_recheck = true
@@ -174,8 +174,8 @@ namespace $ {
 						const head = next.head()
 						const self = next.self()
 						
-						let units = this.gist.get( head )
-						if( !units ) this.gist.set( head, units = new $mol_wire_dict )
+						let units = this.gists.get( head )
+						if( !units ) this.gists.set( head, units = new $mol_wire_dict )
 							
 						const prev = units.get( self )
 						if( prev && $hyoo_crowds_gist.compare( prev, next ) <= 0 ) return 'Unit too old'
@@ -200,15 +200,15 @@ namespace $ {
 		
 		recheck() {
 			
-			for( const [ peer, pass ] of this.pass ) {
-				if( this.check_unit( pass ) ) this.pass.delete( peer )
+			for( const [ peer, pass ] of this.passes ) {
+				if( this.check_unit( pass ) ) this.passes.delete( peer )
 			}
 			
-			for( const [ lord, gift ] of this.gift ) {
-				if( this.check_unit( gift ) ) this.gift.delete( lord )
+			for( const [ lord, gift ] of this.gifts ) {
+				if( this.check_unit( gift ) ) this.gifts.delete( lord )
 			}
 			
-			for( const [ head, units ] of this.gist ) {
+			for( const [ head, units ] of this.gists ) {
 				for( const [ self, gist ] of units ) {
 					if( this.check_unit( gist ) ) units.delete( self )
 				}
@@ -245,14 +245,14 @@ namespace $ {
 		@ $mol_mem_key
 		gists_ordered( head: number ) {
 			
-			const queue = [ ... this.gist.get( head )?.values() ?? [] ]
+			const queue = [ ... this.gists.get( head )?.values() ?? [] ]
 			
 			merge: if( this.numb() && ( head !== this.numb() ) ) {
 				
 				const cloves = this.cloves()!.items().toReversed() as $hyoo_crowds_ref[]
 				if( !cloves.length ) break merge
 				
-				const exists = new Set([ ... this.gist.get( head )?.keys() ?? [] ])
+				const exists = new Set([ ... this.gists.get( head )?.keys() ?? [] ])
 				
 				const realm  = this.realm()!
 				for( const ref of cloves ) {
@@ -329,7 +329,7 @@ namespace $ {
 			
 			const auth = this.auth()
 			
-			const prev = this.pass.get( auth.peer() )
+			const prev = this.passes.get( auth.peer() )
 			if( prev ) return prev
 			
 			const next = new $hyoo_crowds_pass
@@ -469,7 +469,7 @@ namespace $ {
 		
 		@ $mol_mem_key
 		key_public( peer: number ) {
-			const key = this.pass.get( peer )?.auth()
+			const key = this.passes.get( peer )?.auth()
 			return key ? $mol_crypto_key_public.from( key ) : null
 		}
 		
@@ -520,7 +520,7 @@ namespace $ {
 			if( !this.numb() ) return null // home land never encrypted
 			
 			const auth = this.auth()
-			const gift = this.gift.get( auth.lord() )
+			const gift = this.gifts.get( auth.lord() )
 			if( !gift ) return null
 			
 			const secret_mutual = auth.secret_mutual( this.key_public( gift.peer() )!.toString() )
