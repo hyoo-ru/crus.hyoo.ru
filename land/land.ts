@@ -249,7 +249,7 @@ namespace $ {
 			
 			merge: if( this.numb() && ( head !== this.numb() ) ) {
 				
-				const cloves = this.cloves()!.items().toReversed() as $hyoo_crowds_ref[]
+				const cloves = this.cloves()!.items().slice().reverse() as $hyoo_crowds_ref[]
 				if( !cloves.length ) break merge
 				
 				const exists = new Set([ ... this.gists.get( head )?.keys() ?? [] ])
