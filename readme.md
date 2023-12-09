@@ -1,6 +1,13 @@
-# CROWDS
+# CRAS
 
-Decentralized high-available database with conflict-free real-time synchronization.
+Tomorrow-dyas database with unique abilities:
+
+- **C**onflict-free: CvRDT, partial-order, oracle-free, interleaving-free, weak-typed
+- **R**eal-time: delta-replication, web-sockets, web-rtc
+- **A**vailable: local-first, long-offline, partition-tolerance
+- **S**ecure: local-authorization, signed-changes, encrypted-merge, leakage-proof, corruption-proof
+
+## Units
 
 ![](https://i.imgur.com/jBnmgeS.png)
 
