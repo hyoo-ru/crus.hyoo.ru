@@ -134,7 +134,7 @@ namespace $ {
 				),
 				' ',
 				this.size() > 32
-					? $mol_dev_format_shade( this.hash().toString(16).padStart( 32, '0' ) )
+					? $mol_dev_format_shade( this.hash() )
 					: $mol_dev_format_native( $hyoo_crowds_vary_decode({ tip: this.tip(), bin: this.data() }) ),
 			)
 		}
