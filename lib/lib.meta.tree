@@ -1,8 +1,8 @@
-include \/hyoo/crowds/realm
-include \/hyoo/crowds/lord
-include \/hyoo/crowds/land
-include \/hyoo/crowds/reg
-include \/hyoo/crowds/list
-include \/hyoo/crowds/dict
-include \/hyoo/crowds/text
-include \/hyoo/crowds/cast
+include \/hyoo/cras/realm
+include \/hyoo/cras/lord
+include \/hyoo/cras/land
+include \/hyoo/cras/reg
+include \/hyoo/cras/list
+include \/hyoo/cras/dict
+include \/hyoo/cras/text
+include \/hyoo/cras/cast

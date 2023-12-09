@@ -1,26 +1,26 @@
 namespace $ {
-	export class $hyoo_crowds_list extends $hyoo_crowds_node {
+	export class $hyoo_cras_list extends $hyoo_cras_node {
 		
-		static tag = $hyoo_crowds_gist_tag[ $hyoo_crowds_gist_tag.vals ] as keyof typeof $hyoo_crowds_gist_tag
+		static tag = $hyoo_cras_gist_tag[ $hyoo_cras_gist_tag.vals ] as keyof typeof $hyoo_cras_gist_tag
 		
 		static ref< Value extends any >( Value: Value ) {
 			
 			type Vals = $mol_type_result< $mol_type_result< Value > >[]
 			
-			class Narrow extends $hyoo_crowds_list {
+			class Narrow extends $hyoo_cras_list {
 				
 				static Value = Value
 				
 				static toJSON() {
-					return '$hyoo_crowds_list.ref(()=>' + ( Value as any )() + ')'
+					return '$hyoo_cras_list.ref(()=>' + ( Value as any )() + ')'
 				}
 				
 				@ $mol_mem
 				remotes( next?: Vals ): Vals {
 					const realm = this.realm()
 					const Node = ( Value as any )()
-					return this.items( next?.map( item => ( item as $hyoo_crowds_node ).ref() ) )
-						.map( $hyoo_crowds_vary_cast_ref )
+					return this.items( next?.map( item => ( item as $hyoo_cras_node ).ref() ) )
+						.map( $hyoo_cras_vary_cast_ref )
 						.map( ref => realm!.Node( Node, ref ) )
 				}
 				
@@ -39,9 +39,9 @@ namespace $ {
 		/** Data list representation. */
 		@ $mol_mem
 		items(
-			next?: readonly $hyoo_crowds_vary_type[],
-			tag = 'term' as keyof typeof $hyoo_crowds_gist_tag,
-		): readonly $hyoo_crowds_vary_type[] {
+			next?: readonly $hyoo_cras_vary_type[],
+			tag = 'term' as keyof typeof $hyoo_cras_gist_tag,
+		): readonly $hyoo_cras_vary_type[] {
 			
 			const units = this.units()
 			if( next === undefined ) return units.map( unit => this.land().gist_decode( unit ) )
@@ -52,10 +52,10 @@ namespace $ {
 		}
 		
 		splice(
-			next: readonly $hyoo_crowds_vary_type[],
+			next: readonly $hyoo_cras_vary_type[],
 			from = this.units().length,
 			to = from,
-			tag = 'term' as keyof typeof $hyoo_crowds_gist_tag,
+			tag = 'term' as keyof typeof $hyoo_cras_gist_tag,
 		) {
 			const land = this.land()
 			$mol_reconcile({
@@ -70,7 +70,7 @@ namespace $ {
 			})
 		}
 		
-		find( vary: $hyoo_crowds_vary_type ) {
+		find( vary: $hyoo_cras_vary_type ) {
 			for( const unit of this.units() ) {
 				if( $mol_compare_deep( this.land().gist_decode( unit ), vary ) ) return unit
 			}
@@ -78,9 +78,9 @@ namespace $ {
 		}
 		
 		has(
-			vary: $hyoo_crowds_vary_type,
+			vary: $hyoo_cras_vary_type,
 			next?: boolean,
-			tag = 'term' as keyof typeof $hyoo_crowds_gist_tag,
+			tag = 'term' as keyof typeof $hyoo_cras_gist_tag,
 		) {
 			if( next === undefined ) return Boolean( this.find( vary ) )
 			if( next ) this.add( vary, tag )
@@ -89,14 +89,14 @@ namespace $ {
 		}
 		
 		add(
-			vary: $hyoo_crowds_vary_type,
-			tag = 'term' as keyof typeof $hyoo_crowds_gist_tag,
+			vary: $hyoo_cras_vary_type,
+			tag = 'term' as keyof typeof $hyoo_cras_gist_tag,
 		) {
 			if( this.has( vary ) ) return
 			this.land().post( 0, this.head(), 0, vary, tag )
 		}
 		
-		cut( vary: $hyoo_crowds_vary_type ) {
+		cut( vary: $hyoo_cras_vary_type ) {
 			
 			const units = [ ... this.units() ]
 			for( let i = 0; i < units.length; ++ i ) {
@@ -125,10 +125,10 @@ namespace $ {
 			this.land().gist_wipe( this.units()[ seat ] )
 		}
 		
-		node_make< Node extends typeof $hyoo_crowds_node >(
+		node_make< Node extends typeof $hyoo_cras_node >(
 			Node: Node,
-			vary: $hyoo_crowds_vary_type,
-			tag = 'term' as keyof typeof $hyoo_crowds_gist_tag,
+			vary: $hyoo_cras_vary_type,
+			tag = 'term' as keyof typeof $hyoo_cras_gist_tag,
 		) {
 			this.splice( [ vary ], undefined, undefined, tag )
 			return this.land().Node( Node ).Item( this.units().at(-1)!.self() )

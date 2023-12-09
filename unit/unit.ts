@@ -1,6 +1,6 @@
 namespace $ {
 	
-	export enum $hyoo_crowds_unit_kind {
+	export enum $hyoo_cras_unit_kind {
 		/** Changable data. Last writes wins. */
 		gist = 0b0000_0000,
 		/** Public key. First writes wins. */
@@ -9,12 +9,12 @@ namespace $ {
 		gift = 0b1111_1101,
 	}
 	
-	export class $hyoo_crowds_unit extends $mol_buffer {
+	export class $hyoo_cras_unit extends $mol_buffer {
 		
 		static size = 128
 				
 		constructor(
-			buffer = new ArrayBuffer( $hyoo_crowds_unit.size ),
+			buffer = new ArrayBuffer( $hyoo_cras_unit.size ),
 			byteOffset = 0,
 			byteLength = buffer.byteLength,
 		) {
@@ -22,19 +22,19 @@ namespace $ {
 		}
 		
 		kind() {
-			return ( $hyoo_crowds_unit_kind[ this.uint8( 0 ) ] ?? 'gist' ) as keyof typeof $hyoo_crowds_unit_kind
+			return ( $hyoo_cras_unit_kind[ this.uint8( 0 ) ] ?? 'gist' ) as keyof typeof $hyoo_cras_unit_kind
 		}
 		
 		choose< Res >( ways: {
-			pass: ( unit: $hyoo_crowds_pass )=> Res,
-			gift: ( unit: $hyoo_crowds_gift )=> Res,
-			gist: ( unit: $hyoo_crowds_gist )=> Res,
+			pass: ( unit: $hyoo_cras_pass )=> Res,
+			gift: ( unit: $hyoo_cras_gift )=> Res,
+			gist: ( unit: $hyoo_cras_gist )=> Res,
 		} ) {
 			const way = this.kind()
 			const Unit = {
-				gist: $hyoo_crowds_gist,
-				pass: $hyoo_crowds_pass,
-				gift: $hyoo_crowds_gift,
+				gist: $hyoo_cras_gist,
+				pass: $hyoo_cras_pass,
+				gift: $hyoo_cras_gift,
 			}[ way ]
 			return ways[ way ]( new Unit( this.buffer, this.byteOffset, this.byteLength ) as any )
 		}

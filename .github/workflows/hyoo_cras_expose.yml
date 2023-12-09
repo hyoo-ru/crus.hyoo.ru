@@ -1,4 +1,4 @@
-name: $hyoo_crowds_expose
+name: $hyoo_cras_expose
 
 on:
   workflow_dispatch:
@@ -16,10 +16,10 @@ jobs:
     
     - uses: hyoo-ru/mam_build@master2
       with:
-        package: 'hyoo/crowds'
+        package: 'hyoo/cras'
         modules: 'expose'
     
     - uses: hyoo-ru/gh-deploy@v4.4.1
       if: github.ref == 'refs/heads/master'
       with:
-        folder: 'hyoo/crowds/expose/-'
+        folder: 'hyoo/cras/expose/-'

@@ -3,7 +3,7 @@ namespace $ {
 		
 		'Per app profiles'( $ ) {
 			
-			const realm = $hyoo_crowds_realm.make({ $ })
+			const realm = $hyoo_cras_realm.make({ $ })
 			const base = realm.home().base()
 			const profile1 = base.Profile( 'my_foo' )
 			const profile2 = base.Profile( 'my_bar' )

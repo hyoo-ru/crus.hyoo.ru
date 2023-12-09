@@ -1,7 +1,7 @@
 namespace $ {
-	export class $hyoo_crowds_text extends $hyoo_crowds_node {
+	export class $hyoo_cras_text extends $hyoo_cras_node {
 		
-		static tag = $hyoo_crowds_gist_tag[ $hyoo_crowds_gist_tag.vals ] as keyof typeof $hyoo_crowds_gist_tag
+		static tag = $hyoo_cras_gist_tag[ $hyoo_cras_gist_tag.vals ] as keyof typeof $hyoo_cras_gist_tag
 				
 		/** Text representation. Based on list of strings. */
 		@ $mol_mem
@@ -20,16 +20,16 @@ namespace $ {
 					next: lines,
 					equal: ( next, prev )=> {
 						//if( typeof prev.data === 'string' ) return false // ???
-						return land.Node( $hyoo_crowds_text ).Item( prev.self() ).str() === next
+						return land.Node( $hyoo_cras_text ).Item( prev.self() ).str() === next
 					},
 					drop: ( prev, lead )=> this.land().post( lead?.self() ?? 0, prev.head(), prev.self(), null ),
 					insert: ( next, lead )=> {
 						const gist = this.land().post( lead?.self() ?? 0, this.head(), land.self_make(), 'p', 'vals' )
-						land.Node( $hyoo_crowds_text ).Item( gist.self() ).str( next )
+						land.Node( $hyoo_cras_text ).Item( gist.self() ).str( next )
 						return gist
 					},
 					update: ( next, prev, lead )=> {
-						land.Node( $hyoo_crowds_text ).Item( prev.self() ).str( next )
+						land.Node( $hyoo_cras_text ).Item( prev.self() ).str( next )
 						return prev
 					},
 				})
@@ -50,7 +50,7 @@ namespace $ {
 				
 				for( const unit of this.units() ) {
 					if( unit.tag() === 'term' ) str += String( land.gist_decode( unit ) ?? '' )
-					else str += land.Node( $hyoo_crowds_text ).Item( unit.self() ).str()
+					else str += land.Node( $hyoo_cras_text ).Item( unit.self() ).str()
 				}
 				
 				return str
@@ -115,7 +115,7 @@ namespace $ {
 			}
 			
 			const words = next.match( $hyoo_crowd_tokenizer ) ?? []
-			this.cast( $hyoo_crowds_list ).splice( words, from, to )
+			this.cast( $hyoo_cras_list ).splice( words, from, to )
 			
 			return this
 		}
@@ -136,7 +136,7 @@ namespace $ {
 					
 				} else {
 					
-					const found = land.Node( $hyoo_crowds_text ).Item( unit.self() ).point_by_offset( off )
+					const found = land.Node( $hyoo_cras_text ).Item( unit.self() ).point_by_offset( off )
 					if( found[0] ) return found
 					
 					off = found[1]
@@ -162,7 +162,7 @@ namespace $ {
 					
 				} else {
 					
-					const found = land.Node( $hyoo_crowds_text ).Item( unit.self() ).offset_by_point([ self, offset ])
+					const found = land.Node( $hyoo_cras_text ).Item( unit.self() ).offset_by_point([ self, offset ])
 					if( found[0] ) return [ self, found[1] ]
 					
 					offset = found[1]

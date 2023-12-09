@@ -1,5 +1,5 @@
 namespace $.$$ {
-	export class $hyoo_crowds_expose extends $.$hyoo_crowds_expose {
+	export class $hyoo_cras_expose extends $.$hyoo_cras_expose {
 		
 		@ $mol_mem
 		realm() {

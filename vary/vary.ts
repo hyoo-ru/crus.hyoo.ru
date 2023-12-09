@@ -1,14 +1,14 @@
 namespace $ {
 	
 	type json = null | boolean | number | string | { [ key in string ]: json } | readonly json[]
-	export type $hyoo_crowds_vary_type = null | Uint8Array | bigint | $hyoo_crowds_ref | $mol_time_moment | $mol_tree2 | json | Node
+	export type $hyoo_cras_vary_type = null | Uint8Array | bigint | $hyoo_cras_ref | $mol_time_moment | $mol_tree2 | json | Node
 	
-	export let $hyoo_crowds_vary_mapping = {
+	export let $hyoo_cras_vary_mapping = {
 		bin: Uint8Array,
 		bool: Boolean,
 		int: BigInt,
 		real: Number,
-		ref: $hyoo_crowds_ref,
+		ref: $hyoo_cras_ref,
 		str: String,
 		time: $mol_time_moment,
 		json: Object,
@@ -16,14 +16,14 @@ namespace $ {
 		tree: $mol_tree2,
 	}
 	
-	export type $hyoo_crowds_vary_classes = typeof $hyoo_crowds_vary_mapping[ keyof typeof $hyoo_crowds_vary_mapping ]
+	export type $hyoo_cras_vary_classes = typeof $hyoo_cras_vary_mapping[ keyof typeof $hyoo_cras_vary_mapping ]
 	
-	export type $hyoo_crowds_vary_pack = {
-		tip: keyof typeof $hyoo_crowds_vary_tip,
+	export type $hyoo_cras_vary_pack = {
+		tip: keyof typeof $hyoo_cras_vary_tip,
 		bin: Uint8Array,
 	}
 	
-	export enum $hyoo_crowds_vary_tip {
+	export enum $hyoo_cras_vary_tip {
 		
 		bin  = 0b00000, // 0
 		bool = 0b00001, // 1b * 32 * 8
@@ -39,13 +39,13 @@ namespace $ {
 		
 	}
 	
-	export function $hyoo_crowds_vary_switch< Ways extends {
+	export function $hyoo_cras_vary_switch< Ways extends {
 			
 		bin: ( vary: null | Uint8Array )=> any,
 		bool: ( vary: boolean )=> any,
 		int: ( vary: bigint )=> any,
 		real: ( vary: number )=> any,
-		ref: ( vary: $hyoo_crowds_ref )=> any,
+		ref: ( vary: $hyoo_cras_ref )=> any,
 		
 		str: ( vary: string )=> any,
 		time: ( vary: $mol_time_moment )=> any,
@@ -54,7 +54,7 @@ namespace $ {
 		tree: ( vary: $mol_tree2 )=> any,
 		
 	} >(
-		vary: $hyoo_crowds_vary_type,
+		vary: $hyoo_cras_vary_type,
 		ways: Ways,
 	): $mol_type_result< Ways[ keyof Ways ] > {
 		
@@ -69,7 +69,7 @@ namespace $ {
 		
 		if( vary instanceof Uint8Array ) return ways.bin( vary )
 		if( vary instanceof $mol_dom_context.Element ) return ways.xml( vary )
-		if( vary instanceof $hyoo_crowds_ref ) return ways.ref( vary )
+		if( vary instanceof $hyoo_cras_ref ) return ways.ref( vary )
 		if( vary instanceof $mol_time_moment ) return ways.time( vary )
 		if( vary instanceof $mol_tree2 ) return ways.tree( vary )
 		
@@ -81,14 +81,14 @@ namespace $ {
 		return $mol_fail( new TypeError( `Unsupported vary type` ) )
 	}
 	
-	export function $hyoo_crowds_vary_encode( vary: $hyoo_crowds_vary_type ): $hyoo_crowds_vary_pack {
-		return $hyoo_crowds_vary_switch( vary, {
+	export function $hyoo_cras_vary_encode( vary: $hyoo_cras_vary_type ): $hyoo_cras_vary_pack {
+		return $hyoo_cras_vary_switch( vary, {
 			
 			bin: vary => ({ tip: 'bin' as const, bin: vary as Uint8Array ?? new Uint8Array([]) }),
 			bool: vary => ({ tip: 'bool' as const, bin: new Uint8Array([ Number( vary ) ]) }),
 			int: vary => ({ tip: 'int' as const, bin: new Uint8Array( new BigInt64Array([ vary as bigint ]).buffer ) }),
 			real: vary => ({ tip: 'real' as const, bin: new Uint8Array( new Float64Array([ vary as number ]).buffer ) }),
-			ref: vary => ({ tip: 'ref' as const, bin: ( vary as $hyoo_crowds_ref ).asArray() }),
+			ref: vary => ({ tip: 'ref' as const, bin: ( vary as $hyoo_cras_ref ).asArray() }),
 			
 			str: vary => ({ tip: 'str' as const, bin: $mol_charset_encode( vary as string ) }),
 			time: vary => ({ tip: 'time' as const, bin: $mol_charset_encode( String( vary ) ) }),
@@ -99,13 +99,13 @@ namespace $ {
 		} )
 	}
 	
-	export function $hyoo_crowds_vary_decode( { tip, bin }: $hyoo_crowds_vary_pack ): $hyoo_crowds_vary_type {
+	export function $hyoo_cras_vary_decode( { tip, bin }: $hyoo_cras_vary_pack ): $hyoo_cras_vary_type {
 		switch( tip ) {
 			case 'bin': return bin.byteLength ? bin : null
 			case 'bool': return Boolean( bin[0] )
 			case 'int': return new BigInt64Array( bin.buffer, bin.byteOffset, bin.byteLength / 8 )[0]
 			case 'real': return new Float64Array( bin.buffer, bin.byteOffset, bin.byteLength / 8 )[0]
-			case 'ref': return $hyoo_crowds_ref.from( bin )
+			case 'ref': return $hyoo_cras_ref.from( bin )
 			case 'str': return $mol_charset_decode( bin )
 			case 'time': return new $mol_time_moment( $mol_charset_decode( bin ) )
 			case 'json': return JSON.parse( $mol_charset_decode( bin ) )

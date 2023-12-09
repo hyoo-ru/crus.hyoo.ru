@@ -1,13 +1,13 @@
 namespace $ {
 	
-	export class $hyoo_crowds_gift extends $hyoo_crowds_unit {
+	export class $hyoo_cras_gift extends $hyoo_cras_unit {
 		
-		rang( next?: $hyoo_crowds_rang ) {
+		rang( next?: $hyoo_cras_rang ) {
 			
-			if( next !== undefined ) this.uint8( 0, $hyoo_crowds_unit_kind.gift )
+			if( next !== undefined ) this.uint8( 0, $hyoo_cras_unit_kind.gift )
 			next = this.uint8( 1, next )
 			
-			if( next < $hyoo_crowds_rang.get || next > $hyoo_crowds_rang.law ) {
+			if( next < $hyoo_cras_rang.get || next > $hyoo_cras_rang.law ) {
 				$mol_fail( new RangeError( `Wrong rang ${ next }` ) )
 			}
 			
@@ -39,8 +39,8 @@ namespace $ {
 		}
 		
 		static compare(
-			left: $hyoo_crowds_gift,
-			right: $hyoo_crowds_gift,
+			left: $hyoo_cras_gift,
+			right: $hyoo_cras_gift,
 		) {
 			return ( right.time() - left.time() ) || ( right.peer() - left.peer() )
 		}
@@ -51,7 +51,7 @@ namespace $ {
 				' ',
 				this.peer().toString(16) ,
 				' 🏅 ',
-				$mol_dev_format_accent( $hyoo_crowds_rang[ this.rang() ] ) ,
+				$mol_dev_format_accent( $hyoo_cras_rang[ this.rang() ] ) ,
 				' ',
 				this.dest().toString(16),
 				' ',

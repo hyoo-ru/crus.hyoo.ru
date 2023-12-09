@@ -1,11 +1,11 @@
 namespace $ {
 	
-	export class $hyoo_crowds_realm extends $mol_object {
+	export class $hyoo_cras_realm extends $mol_object {
 		
-		lords = new $mol_wire_dict< bigint, $hyoo_crowds_lord >()
+		lords = new $mol_wire_dict< bigint, $hyoo_cras_lord >()
 		
 		home() {
-			return this.Lord( this.$.$hyoo_crowds_auth.current().lord() )
+			return this.Lord( this.$.$hyoo_cras_auth.current().lord() )
 		}
 		
 		@ $mol_mem_key
@@ -16,7 +16,7 @@ namespace $ {
 			let lord = this.lords.get( numb )
 			if( lord ) return lord
 			
-			lord = $hyoo_crowds_lord.make({
+			lord = $hyoo_cras_lord.make({
 				realm: $mol_const( this ),
 				numb: $mol_const( numb ),
 			})
@@ -26,7 +26,7 @@ namespace $ {
 			
 		}
 		
-		Node< Node extends typeof $hyoo_crowds_node > ( Node: Node, ref: $hyoo_crowds_ref ) {
+		Node< Node extends typeof $hyoo_cras_node > ( Node: Node, ref: $hyoo_cras_ref ) {
 			return this.Lord( ref.lord() ).Land( ref.land() ).Node( Node ).Item( ref.head() )
 		}
 		
@@ -43,7 +43,7 @@ namespace $ {
 		// 	if( !key ) return null
 			
 		// 	return $mol_wire_sync( $mol_crypto_secret ).derive(
-		// 		this.$.$hyoo_crowds_auth.current().toString(),
+		// 		this.$.$hyoo_cras_auth.current().toString(),
 		// 		key.toString(),
 		// 	)
 			

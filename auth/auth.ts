@@ -1,21 +1,21 @@
 namespace $ {
 	
-	export class $hyoo_crowds_auth extends $mol_crypto_key_private {
+	export class $hyoo_cras_auth extends $mol_crypto_key_private {
 		
 		@ $mol_mem
 		static current() {
 			$mol_wire_solid()
-			let key = String( $mol_state_local.value( '$hyoo_crowds_auth' ) ?? '' )
-			if( key ) return $hyoo_crowds_auth.from( key )
-			const auth = $mol_wire_sync( this as typeof $hyoo_crowds_auth ).generate()
-			$mol_state_local.value( '$hyoo_crowds_auth', auth.toString() )
+			let key = String( $mol_state_local.value( '$hyoo_cras_auth' ) ?? '' )
+			if( key ) return $hyoo_cras_auth.from( key )
+			const auth = $mol_wire_sync( this as typeof $hyoo_cras_auth ).generate()
+			$mol_state_local.value( '$hyoo_cras_auth', auth.toString() )
 			return auth
 		}
 		
 		static async generate() {
 			for( let i = 0; i < 4096; ++i ) {
 				const auth = await super.generate()
-				if( auth.uint8(0) !== $hyoo_crowds_unit_kind.pass ) continue
+				if( auth.uint8(0) !== $hyoo_cras_unit_kind.pass ) continue
 				return this.from( auth )
 			}
 			$mol_fail( new Error( `Too long key generation` ) )

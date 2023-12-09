@@ -3,9 +3,9 @@ namespace $ {
 		
 		'Change sequences'( $ ) {
 			
-			const land = $hyoo_crowds_land.make({ $ })
-			const text = land.Root( $hyoo_crowds_text )
-			const list = land.Root( $hyoo_crowds_list )
+			const land = $hyoo_cras_land.make({ $ })
+			const text = land.Root( $hyoo_cras_text )
+			const list = land.Root( $hyoo_cras_list )
 			$mol_assert_like( text.str(), '' )
 			$mol_assert_like( list.items(), [] )
 			
@@ -41,8 +41,8 @@ namespace $ {
 		
 		async 'str: Offset <=> Point'( $ ) {
 			
-			const land = $hyoo_crowds_land.make({ $ })
-			const text = land.Root( $hyoo_crowds_text )
+			const land = $hyoo_cras_land.make({ $ })
+			const text = land.Root( $hyoo_cras_text )
 			
 			text.str( 'fooBar' )
 			const [ first, second ] = text.units()
@@ -67,11 +67,11 @@ namespace $ {
 
 		async 'text: Offset <=> Point'( $ ) {
 			
-			const land = $hyoo_crowds_land.make({ $ })
-			const text = land.Root( $hyoo_crowds_text )
+			const land = $hyoo_cras_land.make({ $ })
+			const text = land.Root( $hyoo_cras_text )
 			
 			text.text( 'foo bar\n666 777' )
-			const [ first, second ] = text.nodes( $hyoo_crowds_text )
+			const [ first, second ] = text.nodes( $hyoo_cras_text )
 			
 			$mol_assert_like( text.point_by_offset( 0 ), [ first.units()[0].self(), 0 ] )
 			$mol_assert_like( text.offset_by_point([ first.units()[0].self(), 0 ]), [ first.units()[0].self(), 0 ] )
@@ -83,11 +83,11 @@ namespace $ {
 
 		async 'Merge different sequences'( $ ) {
 			
-			const land1 = $hyoo_crowds_land.make({ $ })
-			const land2 = $hyoo_crowds_land.make({ $ })
+			const land1 = $hyoo_cras_land.make({ $ })
+			const land2 = $hyoo_cras_land.make({ $ })
 			
-			const text1 = land1.Node( $hyoo_crowds_text ).Item(0)
-			const text2 = land2.Node( $hyoo_crowds_text ).Item(0)
+			const text1 = land1.Node( $hyoo_cras_text ).Item(0)
+			const text2 = land2.Node( $hyoo_cras_text ).Item(0)
 			
 			text1.str( 'foo bar.' )
 			land2.face.sync( land1.face )
@@ -109,19 +109,19 @@ namespace $ {
 		
 		async 'Merge same insertions with different changes to same place'( $ ) {
 			
-			const base = $hyoo_crowds_land.make({ $ })
-			base.Root( $hyoo_crowds_text ).str( '( )' )
+			const base = $hyoo_cras_land.make({ $ })
+			base.Root( $hyoo_cras_text ).str( '( )' )
 			
-			const left = $hyoo_crowds_land.make({ $ })
+			const left = $hyoo_cras_land.make({ $ })
 			left.apply_unit( base.delta_unit() )
-			left.Root( $hyoo_crowds_text ).str( '( [ f ] )' )
-			left.Root( $hyoo_crowds_text ).str( '( [ foo ] )' )
+			left.Root( $hyoo_cras_text ).str( '( [ f ] )' )
+			left.Root( $hyoo_cras_text ).str( '( [ foo ] )' )
 			
-			const right = $hyoo_crowds_land.make({ $ })
+			const right = $hyoo_cras_land.make({ $ })
 			right.apply_unit( base.delta_unit() )
 			right.face.sync( left.face )
-			right.Root( $hyoo_crowds_text ).str( '( [ f ] )' )
-			right.Root( $hyoo_crowds_text ).str( '( [ fu ] )' )
+			right.Root( $hyoo_cras_text ).str( '( [ f ] )' )
+			right.Root( $hyoo_cras_text ).str( '( [ fu ] )' )
 			
 			const left_delta = left.delta_unit( base.face )
 			const right_delta = right.delta_unit( base.face )
@@ -130,8 +130,8 @@ namespace $ {
 			right.apply_unit( left_delta )
 	
 			$mol_assert_like(
-				left.Root( $hyoo_crowds_text ).str(),
-				right.Root( $hyoo_crowds_text ).str(),
+				left.Root( $hyoo_cras_text ).str(),
+				right.Root( $hyoo_cras_text ).str(),
 				'( [ fu ] [ foo ] )',
 			)
 			

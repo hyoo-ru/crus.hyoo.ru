@@ -1,17 +1,17 @@
 namespace $ {
 	
-	export type $hyoo_crowds_face_data = Iterable< readonly [ number /*peer*/, number /* timestamp */ ] >
+	export type $hyoo_cras_face_data = Iterable< readonly [ number /*peer*/, number /* timestamp */ ] >
 	
-	// export class $hyoo_crowds_face_lord {
+	// export class $hyoo_cras_face_lord {
 		
 	// 	constructor(
-	// 		readonly rang: $hyoo_crowds_rang,
+	// 		readonly rang: $hyoo_cras_rang,
 	// 		readonly time: number,
 	// 	) {}
 		
 	// 	/* Merge peer faces using max values. */
-	// 	static max( left: $hyoo_crowds_face_lord, right: $hyoo_crowds_face_lord ) {
-	// 		return new $hyoo_crowds_face_lord(
+	// 	static max( left: $hyoo_cras_face_lord, right: $hyoo_cras_face_lord ) {
+	// 		return new $hyoo_cras_face_lord(
 	// 			Math.max( left.rang, right.rang ),
 	// 			Math.max( left.time, right.time ),
 	// 		)
@@ -20,20 +20,20 @@ namespace $ {
 	// 	[ $mol_dev_format_head ]() {
 	// 		return $mol_dev_format_span( {} ,
 	// 			$mol_dev_format_native( this ) ,
-	// 			$mol_dev_format_accent( ' ' + $hyoo_crowds_rang[ this.rang ] + ' ' ) ,
+	// 			$mol_dev_format_accent( ' ' + $hyoo_cras_rang[ this.rang ] + ' ' ) ,
 	// 			... this.time ? [ new Date( this.time ) ] : [] ,
 	// 		)
 	// 	}
 		
 	// }
 	
-	export class $hyoo_crowds_face extends Map< number /*peer*/, number /* timestamp */ > {
+	export class $hyoo_cras_face extends Map< number /*peer*/, number /* timestamp */ > {
 		
 		/** Maximum time for all peers. */
 		last = 0
 		
 		constructor(
-			entries?: $hyoo_crowds_face_data
+			entries?: $hyoo_cras_face_data
 		) {
 			
 			super( entries )
@@ -46,7 +46,7 @@ namespace $ {
 		}
 		
 		/** Synchronize this clock with another. */
-		sync( right: $hyoo_crowds_face_data ) {
+		sync( right: $hyoo_cras_face_data ) {
 			for( const [ peer, time ] of right ) {
 				this.see_peer( peer, time )
 			}
@@ -72,7 +72,7 @@ namespace $ {
 			
 		}
 		
-		// see_bin( bin: $hyoo_crowds_clock_bin ) {
+		// see_bin( bin: $hyoo_cras_clock_bin ) {
 			
 		// 	for( let cursor = 16; cursor < bin.byteLength; cursor += 12 ) {
 				
@@ -94,7 +94,7 @@ namespace $ {
 		// }
 		
 		// /** Checks if this clock from future of another. */
-		// ahead( clock: $hyoo_crowds_face ) {
+		// ahead( clock: $hyoo_cras_face ) {
 			
 		// 	for( const [ peer, time ] of this ) {
 		// 		if( clock.fresh( peer, time ) ) return true
@@ -124,12 +124,12 @@ namespace $ {
 		
 	}
 	
-	// export class $hyoo_crowds_clock_bin extends $mol_buffer {
+	// export class $hyoo_cras_clock_bin extends $mol_buffer {
 		
 	// 	static from(
 	// 		land_id: $mol_int62_string,
 	// 		clock: $hyoo_crowd_clock,
-	// 		rangs: Map< string /*peer*/, $hyoo_crowds_unit_gift >,
+	// 		rangs: Map< string /*peer*/, $hyoo_cras_unit_gift >,
 	// 		count: number,
 	// 	) {
 			

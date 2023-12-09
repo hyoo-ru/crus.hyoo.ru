@@ -1,5 +1,5 @@
 namespace $ {
-	export class $hyoo_crowds_mine extends $mol_object {
+	export class $hyoo_cras_mine extends $mol_object {
 		
 		static store = new Map< bigint, Uint8Array >()
 		
@@ -48,7 +48,7 @@ namespace $ {
 				}
 			}
 			
-			return await this.$.$mol_db< Scheme >( '$hyoo_crowds_mine',
+			return await this.$.$mol_db< Scheme >( '$hyoo_cras_mine',
 				mig => mig.store_make( 'Rock' ),
 			)
 			

@@ -1,9 +1,9 @@
-$hyoo_crowds_lord_book $mol_book2_catalog
+$hyoo_cras_lord_book $mol_book2_catalog
 	menu_title \Areas
 	param \land
-	lord $hyoo_crowds_lord
-	Spread* <= Land* $hyoo_crowds_land_book
-		land <= land* $hyoo_crowds_land
+	lord $hyoo_cras_lord
+	Spread* <= Land* $hyoo_cras_land_book
+		land <= land* $hyoo_cras_land
 	menu_tools /
 		<= Area_new $mol_button_minor
 			sub / <= Area_new_icon $mol_icon_plus

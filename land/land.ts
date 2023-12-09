@@ -1,9 +1,9 @@
 namespace $ {
 	
-	export class $hyoo_crowds_land extends $mol_object {
+	export class $hyoo_cras_land extends $mol_object {
 		
 		lord() {
-			return null as null | $hyoo_crowds_lord
+			return null as null | $hyoo_cras_lord
 		}
 		
 		numb() {
@@ -19,12 +19,12 @@ namespace $ {
 		}
 		
 		auth() {
-			return this.$.$hyoo_crowds_auth.current()
+			return this.$.$hyoo_cras_auth.current()
 		}
 		
 		@ $mol_mem
 		ref() {
-			return $hyoo_crowds_ref.make( this.lord_numb(), this.numb(), 0 )
+			return $hyoo_cras_ref.make( this.lord_numb(), this.numb(), 0 )
 		}
 		
 		slug() {
@@ -32,12 +32,12 @@ namespace $ {
 			// return this.ref().toString().replace( /^[^_]*_?/, '' ) || 'Base'
 		}
 		
-		passes = new $mol_wire_dict< number /*peer*/, $hyoo_crowds_pass >()
-		gifts = new $mol_wire_dict< bigint /*lord*/, $hyoo_crowds_gift >()
-		gists = new $mol_wire_dict< number /*head*/, $mol_wire_dict< number /*self*/, $hyoo_crowds_gist > >()
+		passes = new $mol_wire_dict< number /*peer*/, $hyoo_cras_pass >()
+		gifts = new $mol_wire_dict< bigint /*lord*/, $hyoo_cras_gift >()
+		gists = new $mol_wire_dict< number /*head*/, $mol_wire_dict< number /*self*/, $hyoo_cras_gist > >()
 		self_all = new $mol_wire_set< number >()
 		
-		face = new $hyoo_crowds_face
+		face = new $hyoo_cras_face
 
 		@ $mol_action
 		self_make( idea = Math.floor( Math.random() * 2**48 ) ) {
@@ -57,13 +57,13 @@ namespace $ {
 		}
 		
 		@ $mol_mem_key
-		Root< Node extends typeof $hyoo_crowds_node >( Node: Node ) {
+		Root< Node extends typeof $hyoo_cras_node >( Node: Node ) {
 			return this.Node( Node ).Item( 0 )
 		} 
 		
 		@ $mol_mem_key
-		Node< Node extends typeof $hyoo_crowds_node >( Node: Node ) {
-			return new $hyoo_crowds_fund( ( head: number )=> Node.make({
+		Node< Node extends typeof $hyoo_cras_node >( Node: Node ) {
+			return new $hyoo_cras_fund( ( head: number )=> Node.make({
 				land: $mol_const( this ),
 				head: $mol_const( head ),
 			}) as InstanceType< Node > )
@@ -83,20 +83,20 @@ namespace $ {
 		
 		@ $mol_mem_key
 		lord_rang( lord: bigint ) {
-			if( lord === this.lord_numb() ) return $hyoo_crowds_rang.law
-			return this.gifts.get( lord )?.rang() ?? $hyoo_crowds_rang.get
+			if( lord === this.lord_numb() ) return $hyoo_cras_rang.law
+			return this.gifts.get( lord )?.rang() ?? $hyoo_cras_rang.get
 		}
 		
 		peer_rang( peer: number ) {
 			const auth = this.passes.get( peer )!
-			if( !auth ) return $hyoo_crowds_rang.get
+			if( !auth ) return $hyoo_cras_rang.get
 			return this.lord_rang( auth.lord() )
 		}
 		
 		/** Picks units between Face and current state. */
-		delta_unit( face = new $hyoo_crowds_face ) {
+		delta_unit( face = new $hyoo_cras_face ) {
 			
-			const delta = [] as $hyoo_crowds_unit[]
+			const delta = [] as $hyoo_cras_unit[]
 			
 			for( const unit of this.passes.values() ) {
 				if( face.get( unit.peer() ) ) continue
@@ -120,21 +120,21 @@ namespace $ {
 		}
 		
 		/** Makes binary Delta between Face and current state. */
-		delta_buffer( face = new $hyoo_crowds_face ) {
+		delta_buffer( face = new $hyoo_cras_face ) {
 			
 			const delta = this.delta_unit( face )
-			const bytes = new Uint8Array( delta.length * $hyoo_crowds_unit.size )
+			const bytes = new Uint8Array( delta.length * $hyoo_cras_unit.size )
 			
 			for( let i = 0; i < delta.length; ++ i ) {
 				const unit = delta[ i ]
-				bytes.set( unit.asArray(), i * $hyoo_crowds_unit.size )
+				bytes.set( unit.asArray(), i * $hyoo_cras_unit.size )
 			}
 			
 			return bytes
 		}
 		
 		/** Applies Delta to current state. */
-		apply_unit( delta: readonly $hyoo_crowds_unit[] ) {
+		apply_unit( delta: readonly $hyoo_cras_unit[] ) {
 			return delta.map( unit => {
 				
 				const error = this.check_unit( unit )
@@ -160,12 +160,12 @@ namespace $ {
 						const dest = next.dest()
 						
 						const prev = this.gifts.get( dest )
-						if( prev && $hyoo_crowds_gift.compare( prev, next ) <= 0 ) return 'Unit too old'
+						if( prev && $hyoo_cras_gift.compare( prev, next ) <= 0 ) return 'Unit too old'
 						
 						this.gifts.set( dest, next )
 						this.face.see_peer( Number( dest >> 16n ), next.time() )
 						
-						if( ( prev?.rang() ?? $hyoo_crowds_rang.get ) > next.rang() ) need_recheck = true
+						if( ( prev?.rang() ?? $hyoo_cras_rang.get ) > next.rang() ) need_recheck = true
 						
 					},
 					
@@ -178,7 +178,7 @@ namespace $ {
 						if( !units ) this.gists.set( head, units = new $mol_wire_dict )
 							
 						const prev = units.get( self )
-						if( prev && $hyoo_crowds_gist.compare( prev, next ) <= 0 ) return 'Unit too old'
+						if( prev && $hyoo_cras_gist.compare( prev, next ) <= 0 ) return 'Unit too old'
 						
 						units.set( self, next )
 						this.self_all.add( self )
@@ -194,7 +194,7 @@ namespace $ {
 			})
 		}
 		
-		apply_land( land: $hyoo_crowds_land ) {
+		apply_land( land: $hyoo_cras_land ) {
 			return this.apply_unit( land.delta_unit() )
 		}
 		
@@ -216,16 +216,16 @@ namespace $ {
 			
 		}
 		
-		check_unit( unit: $hyoo_crowds_unit ) {
+		check_unit( unit: $hyoo_cras_unit ) {
 			return unit.choose({
 				
-				pass: next => this.lord_rang( next.lord() ) < $hyoo_crowds_rang.add ? 'Need add rang to join' : '',
+				pass: next => this.lord_rang( next.lord() ) < $hyoo_cras_rang.add ? 'Need add rang to join' : '',
 				
-				gift: next => this.peer_rang( next.peer() ) < $hyoo_crowds_rang.law ? 'Need law rang to change rang': '',
+				gift: next => this.peer_rang( next.peer() ) < $hyoo_cras_rang.law ? 'Need law rang to change rang': '',
 				
 				gist: next => next.peer() === next.self()
-					? this.peer_rang( next.peer() ) < $hyoo_crowds_rang.add ? 'Need add rang to post self data' : ''
-					: this.peer_rang( next.peer() ) < $hyoo_crowds_rang.mod ? 'Need mod rang to post any data' : '',
+					? this.peer_rang( next.peer() ) < $hyoo_cras_rang.add ? 'Need add rang to post self data' : ''
+					: this.peer_rang( next.peer() ) < $hyoo_cras_rang.mod ? 'Need mod rang to post any data' : '',
 				
 			})
 		}
@@ -239,7 +239,7 @@ namespace $ {
 		
 		cloves() {
 			if( !this.numb() ) return null
-			return this.Node( $hyoo_crowds_list ).Item( this.numb() )
+			return this.Node( $hyoo_cras_list ).Item( this.numb() )
 		}
 		
 		@ $mol_mem_key
@@ -249,7 +249,7 @@ namespace $ {
 			
 			merge: if( this.numb() && ( head !== this.numb() ) ) {
 				
-				const cloves = this.cloves()!.items().slice().reverse() as $hyoo_crowds_ref[]
+				const cloves = this.cloves()!.items().slice().reverse() as $hyoo_cras_ref[]
 				if( !cloves.length ) break merge
 				
 				const exists = new Set([ ... this.gists.get( head )?.keys() ?? [] ])
@@ -272,9 +272,9 @@ namespace $ {
 			
 			if( queue.length < 2 ) return queue.filter( unit => !unit.nil() )
 			
-			queue.sort( $hyoo_crowds_gist.compare )
+			queue.sort( $hyoo_cras_gist.compare )
 			
-			const res = [] as $hyoo_crowds_gist[]
+			const res = [] as $hyoo_cras_gist[]
 			
 			const locate = ( self: number )=> {
 				
@@ -299,7 +299,7 @@ namespace $ {
 						if( !index ) continue
 					}
 					
-					while( res[ index ] && ( $hyoo_crowds_gist.compare( res[ index ], kid ) < 0 ) ) ++ index
+					while( res[ index ] && ( $hyoo_cras_gist.compare( res[ index ], kid ) < 0 ) ) ++ index
 					
 					const exists = locate( kid.self() )
 					if( index === exists ) {
@@ -332,7 +332,7 @@ namespace $ {
 			const prev = this.passes.get( auth.peer() )
 			if( prev ) return prev
 			
-			const next = new $hyoo_crowds_pass
+			const next = new $hyoo_cras_pass
 			next.auth( auth.public().asArray() )
 			
 			const error = this.apply_unit([ next ])[0]
@@ -344,13 +344,13 @@ namespace $ {
 		/** Places data to tree. */
 		give(
 			dest: bigint,
-			rang: $hyoo_crowds_rang,
+			rang: $hyoo_cras_rang,
 		) {
 				
 			this.join()
 			
 			const auth  = this.auth()
-			const unit = new $hyoo_crowds_gift
+			const unit = new $hyoo_cras_gift
 			
 			unit.rang( rang )
 			unit.time( this.face.tick( auth.peer() ) )
@@ -368,28 +368,28 @@ namespace $ {
 			lead: number,
 			head: number,
 			self: number,
-			data: $hyoo_crowds_vary_type,
-			tag = 'term' as keyof typeof $hyoo_crowds_gist_tag,
+			data: $hyoo_cras_vary_type,
+			tag = 'term' as keyof typeof $hyoo_cras_gist_tag,
 		) {
 			
 			this.join()
 			const secret = this.secret()
 			
 			const auth = this.auth()
-			const unit = new $hyoo_crowds_gist
+			const unit = new $hyoo_cras_gist
 			
 			unit.time( this.face.tick( auth.peer() ) )
 			unit.peer( auth.peer() )
 			unit.lead( lead )
 			unit.head( head )
 			
-			let { tip, bin } = $hyoo_crowds_vary_encode( data )
+			let { tip, bin } = $hyoo_cras_vary_encode( data )
 			if( secret ) bin = new Uint8Array( $mol_wire_sync( secret ).encrypt( bin, unit.salt() ) )
 			
-			if( bin.byteLength > 32 ) unit.hash( this.$.$hyoo_crowds_mine.save( bin ), tip, tag )
+			if( bin.byteLength > 32 ) unit.hash( this.$.$hyoo_cras_mine.save( bin ), tip, tag )
 			else unit.data( bin, tip, tag )
 		
-			unit.self( self || ( this.lord_rang( auth.lord() ) >= $hyoo_crowds_rang.mod ? this.self_make( unit.idea() ) : auth.peer() ) )
+			unit.self( self || ( this.lord_rang( auth.lord() ) >= $hyoo_cras_rang.mod ? this.self_make( unit.idea() ) : auth.peer() ) )
 			
 			const error = this.apply_unit([ unit ])[0]
 			if( error ) $mol_fail( new Error( error ) )
@@ -398,7 +398,7 @@ namespace $ {
 		}
 		
 		gist_move(
-			gist: $hyoo_crowds_gist,
+			gist: $hyoo_cras_gist,
 			head: number,
 			seat: number,
 		) {
@@ -444,7 +444,7 @@ namespace $ {
 			
 		}
 		
-		gist_wipe( gist: $hyoo_crowds_gist ) {
+		gist_wipe( gist: $hyoo_cras_gist ) {
 			
 			const units = this.gists_ordered( gist.head() )
 			const seat = units.indexOf( gist )
@@ -460,10 +460,10 @@ namespace $ {
 		}
 		
 		@ $mol_action
-		gist_decode( gist: $hyoo_crowds_gist ) {
-			let bin = gist.size() > 32 ? this.$.$hyoo_crowds_mine.rock( gist.hash() ) : gist.data()
+		gist_decode( gist: $hyoo_cras_gist ) {
+			let bin = gist.size() > 32 ? this.$.$hyoo_cras_mine.rock( gist.hash() ) : gist.data()
 			if( bin && this.secret() ) bin = new Uint8Array( $mol_wire_sync( this.secret()! ).decrypt( bin, gist.salt() ) )
-			const vary = bin ? $hyoo_crowds_vary_decode({ tip: gist.tip(), bin }) : null
+			const vary = bin ? $hyoo_cras_vary_decode({ tip: gist.tip(), bin }) : null
 			return vary
 		}
 		
@@ -499,9 +499,9 @@ namespace $ {
 			const secret_land = $mol_wire_sync( secret ).serial()
 			const secret_mutual = auth.secret_mutual( auth.public().toString() )
 			
-			const unit = new $hyoo_crowds_gift
+			const unit = new $hyoo_cras_gift
 			
-			unit.rang( $hyoo_crowds_rang.law )
+			unit.rang( $hyoo_cras_rang.law )
 			unit.time( this.face.tick( auth.peer() ) )
 			unit.peer( auth.peer() )
 			unit.dest( auth.lord() )

@@ -1,6 +1,6 @@
 namespace $ {
 	
-	export enum $hyoo_crowds_rang {
+	export enum $hyoo_cras_rang {
 		nil = 0b0000,
 		get = 0b0001,
 		add = 0b0011,

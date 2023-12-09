@@ -1,5 +1,5 @@
 namespace $.$$ {
-	export class $hyoo_crowds_lord_book extends $.$hyoo_crowds_lord_book {
+	export class $hyoo_cras_lord_book extends $.$hyoo_cras_lord_book {
 		
 		override menu_title() {
 			return '👑Lord ' + this.lord().slug() 
@@ -15,7 +15,7 @@ namespace $.$$ {
 		}
 		
 		override land( id: string ) {
-			return this.lord().Land( $hyoo_crowds_ref.from( this.lord().ref() + id ).land() )
+			return this.lord().Land( $hyoo_cras_ref.from( this.lord().ref() + id ).land() )
 		}
 		
 		override land_new() {

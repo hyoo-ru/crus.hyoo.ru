@@ -1,20 +1,20 @@
 namespace $ {
 	
-	export class $hyoo_crowds_lord extends $mol_object {
+	export class $hyoo_cras_lord extends $mol_object {
 		
 		@ $mol_mem
 		realm() {
-			return null as null | $hyoo_crowds_realm
+			return null as null | $hyoo_cras_realm
 		}
 		
 		numb() {
-			return this.$.$hyoo_crowds_auth.current().lord()
+			return this.$.$hyoo_cras_auth.current().lord()
 		}
 		
-		lands = new $mol_wire_dict< number /*numb*/, $hyoo_crowds_land >()
+		lands = new $mol_wire_dict< number /*numb*/, $hyoo_cras_land >()
 		
 		base() {
-			return this.Land( 0 ).Root( $hyoo_crowds_base )
+			return this.Land( 0 ).Root( $hyoo_cras_base )
 		}
 		
 		ref() {
@@ -35,7 +35,7 @@ namespace $ {
 			let land = this.lands.get( numb )
 			if( land ) return land
 			
-			land = $hyoo_crowds_land.make({
+			land = $hyoo_cras_land.make({
 				lord: $mol_const( this ),
 				numb: $mol_const( numb ),
 			})

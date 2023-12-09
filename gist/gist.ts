@@ -1,6 +1,6 @@
 namespace $ {
 	
-	export enum $hyoo_crowds_gist_tag {
+	export enum $hyoo_cras_gist_tag {
 		/** Itself value */
 		term = 0b00,
 		/** Value in first sub node */
@@ -11,17 +11,17 @@ namespace $ {
 		keys = 0b11,
 	}
 	
-	export class $hyoo_crowds_gist extends $hyoo_crowds_unit {
+	export class $hyoo_cras_gist extends $hyoo_cras_unit {
 		
 		hint(
-			tip = 'null' as keyof typeof $hyoo_crowds_vary_tip,
-			tag = 'term' as keyof typeof $hyoo_crowds_gist_tag,
+			tip = 'null' as keyof typeof $hyoo_cras_vary_tip,
+			tag = 'term' as keyof typeof $hyoo_cras_gist_tag,
 		) {
-			this.uint8( 0, ( $hyoo_crowds_gist_tag[ tag ] << 1 )|( $hyoo_crowds_vary_tip[ tip ] << 3 ) )
+			this.uint8( 0, ( $hyoo_cras_gist_tag[ tag ] << 1 )|( $hyoo_cras_vary_tip[ tip ] << 3 ) )
 		}
 		
 		tip() {
-			return $hyoo_crowds_vary_tip[ this.uint8( 0 ) >> 3 ] as keyof typeof $hyoo_crowds_vary_tip
+			return $hyoo_cras_vary_tip[ this.uint8( 0 ) >> 3 ] as keyof typeof $hyoo_cras_vary_tip
 		}
 		
 		pic() {
@@ -33,7 +33,7 @@ namespace $ {
 		}
 		
 		tag() {
-			return $hyoo_crowds_gist_tag[ ( ( this.uint8( 0 ) >> 1 ) & 0b11 ) ] as keyof typeof $hyoo_crowds_gist_tag
+			return $hyoo_cras_gist_tag[ ( ( this.uint8( 0 ) >> 1 ) & 0b11 ) ] as keyof typeof $hyoo_cras_gist_tag
 		}
 		
 		nil() {
@@ -62,8 +62,8 @@ namespace $ {
 		
 		hash(
 			next?: Uint8Array,
-			tip = 'null' as keyof typeof $hyoo_crowds_vary_tip,
-			tag = 'term' as keyof typeof $hyoo_crowds_gist_tag,
+			tip = 'null' as keyof typeof $hyoo_cras_vary_tip,
+			tag = 'term' as keyof typeof $hyoo_cras_gist_tag,
 		) {
 			const bin = new Uint8Array( this.buffer, this.byteOffset + 32, 20 )
 			if( next !== undefined ) {
@@ -81,8 +81,8 @@ namespace $ {
 		
 		data(
 			next?: Uint8Array,
-			tip = 'null' as keyof typeof $hyoo_crowds_vary_tip,
-			tag = 'term' as keyof typeof $hyoo_crowds_gist_tag,
+			tip = 'null' as keyof typeof $hyoo_cras_vary_tip,
+			tag = 'term' as keyof typeof $hyoo_cras_gist_tag,
 		) {
 			if( next === undefined ) {
 				const size = this.size()
@@ -107,8 +107,8 @@ namespace $ {
 		
 		/** Compare gists on timeline ( right - left ) */
 		static compare(
-			left: $hyoo_crowds_gist,
-			right: $hyoo_crowds_gist,
+			left: $hyoo_cras_gist,
+			right: $hyoo_cras_gist,
 		) {
 			return ( right.time() - left.time() ) || ( right.peer() - left.peer() )
 		}
@@ -135,7 +135,7 @@ namespace $ {
 				' ',
 				this.size() > 32
 					? $mol_dev_format_shade( this.hash() )
-					: $mol_dev_format_native( $hyoo_crowds_vary_decode({ tip: this.tip(), bin: this.data() }) ),
+					: $mol_dev_format_native( $hyoo_cras_vary_decode({ tip: this.tip(), bin: this.data() }) ),
 			)
 		}
 		

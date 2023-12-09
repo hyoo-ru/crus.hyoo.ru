@@ -1,23 +1,23 @@
 namespace $.$$ {
-	export class $hyoo_crowds_node_dump extends $.$hyoo_crowds_node_dump {
+	export class $hyoo_cras_node_dump extends $.$hyoo_cras_node_dump {
 		
 		title() {
 			return this.node().slug().padEnd( 8, ' ' )
 		}
 		
 		value() {
-			return this.node().cast( $hyoo_crowds_reg ).value_vary()
+			return this.node().cast( $hyoo_cras_reg ).value_vary()
 		}
 		
 		items() {
-			return this.node().cast( $hyoo_crowds_list ).items()
+			return this.node().cast( $hyoo_cras_list ).items()
 		}
 		
 		nodes() {
 			return this.node().units().map( (_,i)=> this.Inner(i) )
 		}
 		
-		unit_tag( index: number, next?: keyof typeof $hyoo_crowds_gist_tag ) {
+		unit_tag( index: number, next?: keyof typeof $hyoo_cras_gist_tag ) {
 			if( next ) {
 				const units = this.node().units()
 				const unit = units[ index ]
@@ -41,11 +41,11 @@ namespace $.$$ {
 		}
 		
 		unit_value( index: number ) {
-			return this.node().cast( $hyoo_crowds_list ).items()[ index ]
+			return this.node().cast( $hyoo_cras_list ).items()[ index ]
 		}
 		
 		unit_wipe( index: number, event?: Event ) {
-			this.node().cast( $hyoo_crowds_list ).wipe( index )
+			this.node().cast( $hyoo_cras_list ).wipe( index )
 		}
 		
 		node_inner( index: number ) {
@@ -53,7 +53,7 @@ namespace $.$$ {
 		}
 		
 		add_key( event: Event ) {
-			this.node().cast( $hyoo_crowds_list ).has( this.key_new(), true, 'head' )
+			this.node().cast( $hyoo_cras_list ).has( this.key_new(), true, 'head' )
 			this.key_new( '' )
 		}
 		

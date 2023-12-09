@@ -1,9 +1,9 @@
-$hyoo_crowds_expose $mol_book2_catalog
+$hyoo_cras_expose $mol_book2_catalog
 	menu_title \🎭CROWDS
 	param \section
-	realm $hyoo_crowds_realm
+	realm $hyoo_cras_realm
 	spreads *
-		realm <= Realm $hyoo_crowds_realm_book
+		realm <= Realm $hyoo_cras_realm_book
 			realm <= realm
 		casting <= Casting $hyoo_calc
 			title \🔀Casting

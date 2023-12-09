@@ -2,24 +2,24 @@ namespace $ {
 	type Resolve< Decl >
 	= Decl extends (new() => any) ? InstanceType< Decl > : Decl extends ()=> any ? InstanceType< ReturnType< Decl > > : Decl
 
-	export class $hyoo_crowds_reg extends $hyoo_crowds_node {
+	export class $hyoo_cras_reg extends $hyoo_cras_node {
 		
-		static tag = $hyoo_crowds_gist_tag[ $hyoo_crowds_gist_tag.head ] as keyof typeof $hyoo_crowds_gist_tag
+		static tag = $hyoo_cras_gist_tag[ $hyoo_cras_gist_tag.head ] as keyof typeof $hyoo_cras_gist_tag
 		
 		@ $mol_mem_key
 		static of<
-			Tip extends keyof typeof $hyoo_crowds_vary_tip
+			Tip extends keyof typeof $hyoo_cras_vary_tip
 		>( tip: Tip ) {
 			
-			type Value = ReturnType< typeof $hyoo_crowds_vary_cast_funcs[ Tip ] >
+			type Value = ReturnType< typeof $hyoo_cras_vary_cast_funcs[ Tip ] >
 			
-			class Narrow extends $hyoo_crowds_reg {
+			class Narrow extends $hyoo_cras_reg {
 				
 				static tip = tip
 				
 				@ $mol_mem
 				value( next?: Value ): Value {
-					return $hyoo_crowds_vary_cast_funcs[ tip ]( this.value_vary( next ) ) as any
+					return $hyoo_cras_vary_cast_funcs[ tip ]( this.value_vary( next ) ) as any
 				}
 				
 			}
@@ -31,18 +31,18 @@ namespace $ {
 			
 			type Val = $mol_type_result< $mol_type_result< Value > >
 			
-			class Narrow extends $hyoo_crowds_reg {
+			class Narrow extends $hyoo_cras_reg {
 				
 				static Value = Value
 				
 				static toJSON() {
-					return '$hyoo_crowds_reg.ref(()=>' + ( Value as any )() + ')'
+					return '$hyoo_cras_reg.ref(()=>' + ( Value as any )() + ')'
 				}
 				
 				@ $mol_mem
 				value( next?: null | Val ): null | Val {
 					const realm = this.realm()
-					const ref = this.value_ref( ( next as $hyoo_crowds_node )?.ref() )
+					const ref = this.value_ref( ( next as $hyoo_cras_node )?.ref() )
 					if( !ref ) return null
 					return realm!.Lord( ref.lord() ).Land( ref.land() ).Node( ( Value as any )() ).Item( ref.head() )
 				}
@@ -63,7 +63,7 @@ namespace $ {
 		}
 		
 		@ $mol_mem
-		value_vary( next?: $hyoo_crowds_vary_type ): $hyoo_crowds_vary_type {
+		value_vary( next?: $hyoo_cras_vary_type ): $hyoo_cras_vary_type {
 			
 			let unit_prev = this.pick_unit()
 			let prev = unit_prev ? this.land().gist_decode( unit_prev ) : null
@@ -83,33 +83,33 @@ namespace $ {
 		
 		@ $mol_mem
 		value_bool( next?: boolean ): boolean {
-			return $hyoo_crowds_vary_cast_bool( this.value_vary( next ) )
+			return $hyoo_cras_vary_cast_bool( this.value_vary( next ) )
 		}
 		
 		@ $mol_mem
 		value_int( next?: bigint ): bigint {
-			return $hyoo_crowds_vary_cast_int( this.value_vary( next ) )
+			return $hyoo_cras_vary_cast_int( this.value_vary( next ) )
 		}
 		
 		@ $mol_mem
 		value_real( next?: number ): number {
-			return $hyoo_crowds_vary_cast_real( this.value_vary( next ) )
+			return $hyoo_cras_vary_cast_real( this.value_vary( next ) )
 		}
 		
 		@ $mol_mem
 		value_str( next?: string ): string {
-			return $hyoo_crowds_vary_cast_str( this.value_vary( next ) )
+			return $hyoo_cras_vary_cast_str( this.value_vary( next ) )
 		}
 		
 		@ $mol_mem
 		value_bin( next?: Uint8Array | null ): Uint8Array | null {
-			return $hyoo_crowds_vary_cast_bin( this.value_vary( next ) )
+			return $hyoo_cras_vary_cast_bin( this.value_vary( next ) )
 		}
 		
 		@ $mol_mem
-		value_ref( next?: $hyoo_crowds_ref | null ): $hyoo_crowds_ref | null {
+		value_ref( next?: $hyoo_cras_ref | null ): $hyoo_cras_ref | null {
 			const bin = this.value_vary( next )
-			return bin instanceof $hyoo_crowds_ref ? bin : null
+			return bin instanceof $hyoo_cras_ref ? bin : null
 		}
 		
 		@ $mol_mem_key
@@ -135,14 +135,14 @@ namespace $ {
 		}
 		
 		@ $mol_mem_key
-		yoke( vary: $hyoo_crowds_vary_type ) {
+		yoke( vary: $hyoo_cras_vary_type ) {
 			
 			const realm = this.realm()
 			
 			const ref = this.value_ref()
 			if( ref ) return realm!.Lord( ref.lord() ).Land( ref.land() )
 			
-			const hash = $mol_crypto_hash( $hyoo_crowds_vary_encode( vary ).bin )
+			const hash = $mol_crypto_hash( $hyoo_cras_vary_encode( vary ).bin )
 			const idea = new $mol_buffer( hash.buffer ).uint32(0) + this.land().numb()
 
 			const land = realm!.Lord( this.land().auth().lord() ).Land_new( idea )

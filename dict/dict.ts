@@ -1,23 +1,23 @@
 namespace $ {
-	export class $hyoo_crowds_dict extends $hyoo_crowds_node {
+	export class $hyoo_cras_dict extends $hyoo_cras_node {
 		
-		static tag = $hyoo_crowds_gist_tag[ $hyoo_crowds_gist_tag.keys ] as keyof typeof $hyoo_crowds_gist_tag
+		static tag = $hyoo_cras_gist_tag[ $hyoo_cras_gist_tag.keys ] as keyof typeof $hyoo_cras_gist_tag
 		
 		static of<
-			Schema extends Record< string, typeof $hyoo_crowds_node >
+			Schema extends Record< string, typeof $hyoo_cras_node >
 		>( schema: Schema ) {
 			
-			const Entity = class Entity extends $hyoo_crowds_dict {}
+			const Entity = class Entity extends $hyoo_cras_dict {}
 		
 			for( const field in schema ) {
-				Object.assign( Entity.prototype, { [ field ]: function( this: $hyoo_crowds_dict ) {
+				Object.assign( Entity.prototype, { [ field ]: function( this: $hyoo_cras_dict ) {
 					return this.dive( field, schema[ field ] )
 				} } )
 				$mol_mem( Entity.prototype, field )
 			}
 			
-			return Entity as Pick< typeof $hyoo_crowds_dict, keyof typeof $hyoo_crowds_dict > & {
-				new(): $hyoo_crowds_dict & {
+			return Entity as Pick< typeof $hyoo_cras_dict, keyof typeof $hyoo_cras_dict > & {
+				new(): $hyoo_cras_dict & {
 					[ Key in keyof Schema ]: ()=> InstanceType< Schema[ Key ] >
 				}
 			}
@@ -25,20 +25,20 @@ namespace $ {
 		}
 		
 		@ $mol_mem
-		keys(): readonly $hyoo_crowds_vary_type[] {
-			return this.cast( $hyoo_crowds_list ).items()
+		keys(): readonly $hyoo_cras_vary_type[] {
+			return this.cast( $hyoo_cras_list ).items()
 		}
 		
 		has(
-			key: $hyoo_crowds_vary_type,
+			key: $hyoo_cras_vary_type,
 			next?: false,
 		) {
-			return this.cast( $hyoo_crowds_list ).has( key, next, 'head' )
+			return this.cast( $hyoo_cras_list ).has( key, next, 'head' )
 		}
 		
-		dive< Node extends typeof $hyoo_crowds_node >( key: $hyoo_crowds_vary_type, Node: Node ) {
-			this.cast( $hyoo_crowds_list ).has( key, true, Node.tag )
-			const unit = this.cast( $hyoo_crowds_list ).find( key )!
+		dive< Node extends typeof $hyoo_cras_node >( key: $hyoo_cras_vary_type, Node: Node ) {
+			this.cast( $hyoo_cras_list ).has( key, true, Node.tag )
+			const unit = this.cast( $hyoo_cras_list ).find( key )!
 			return this.land().Node( Node ).Item( unit.self() )
 		}
 		
