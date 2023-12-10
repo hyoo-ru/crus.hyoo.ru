@@ -2481,20 +2481,20 @@ declare namespace $ {
         keys = 3
     }
     class $hyoo_cras_gist extends $hyoo_cras_unit {
-        hint(tip?: "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "xml" | "tree", tag?: "keys" | "term" | "head" | "vals"): void;
+        hint(tip?: "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "xml" | "tree", tag?: "keys" | "vals" | "head" | "term"): void;
         tip(): "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "xml" | "tree";
         pic(): boolean;
         utf(): boolean;
-        tag(): "keys" | "term" | "head" | "vals";
+        tag(): "keys" | "vals" | "head" | "term";
         nil(): boolean;
         size(next?: number): number;
         time(next?: number): number;
         self(next?: number): number;
         head(next?: number): number;
         lead(next?: number): number;
-        hash(next?: Uint8Array, tip?: "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "xml" | "tree", tag?: "keys" | "term" | "head" | "vals"): Uint8Array;
+        hash(next?: Uint8Array, tip?: "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "xml" | "tree", tag?: "keys" | "vals" | "head" | "term"): Uint8Array;
         meta(): Uint8Array;
-        data(next?: Uint8Array, tip?: "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "xml" | "tree", tag?: "keys" | "term" | "head" | "vals"): Uint8Array;
+        data(next?: Uint8Array, tip?: "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "xml" | "tree", tag?: "keys" | "vals" | "head" | "term"): Uint8Array;
         idea(): number;
         static compare(left: $hyoo_cras_gist, right: $hyoo_cras_gist): number;
     }
@@ -2541,7 +2541,7 @@ declare namespace $ {
 
 declare namespace $ {
     class $hyoo_cras_node extends $mol_object {
-        static tag: "keys" | "term" | "head" | "vals";
+        static tag: "keys" | "vals" | "head" | "term";
         land(): $hyoo_cras_land;
         head(): number;
         lord(): $hyoo_cras_lord | null;
@@ -2660,20 +2660,20 @@ declare namespace $ {
 
 declare namespace $ {
     class $hyoo_cras_list extends $hyoo_cras_node {
-        static tag: "keys" | "term" | "head" | "vals";
+        static tag: "keys" | "vals" | "head" | "term";
         static ref<Value extends any>(Value: Value): {
             new (): {
                 remotes(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
                 remote_make(): any;
-                items(next?: readonly $hyoo_cras_vary_type[] | undefined, tag?: "keys" | "term" | "head" | "vals"): readonly $hyoo_cras_vary_type[];
-                splice(next: readonly $hyoo_cras_vary_type[], from?: number, to?: number, tag?: "keys" | "term" | "head" | "vals"): void;
+                items(next?: readonly $hyoo_cras_vary_type[] | undefined, tag?: "keys" | "vals" | "head" | "term"): readonly $hyoo_cras_vary_type[];
+                splice(next: readonly $hyoo_cras_vary_type[], from?: number, to?: number, tag?: "keys" | "vals" | "head" | "term"): void;
                 find(vary: $hyoo_cras_vary_type): $hyoo_cras_gist | null;
-                has(vary: $hyoo_cras_vary_type, next?: boolean | undefined, tag?: "keys" | "term" | "head" | "vals"): boolean;
-                add(vary: $hyoo_cras_vary_type, tag?: "keys" | "term" | "head" | "vals"): void;
+                has(vary: $hyoo_cras_vary_type, next?: boolean | undefined, tag?: "keys" | "vals" | "head" | "term"): boolean;
+                add(vary: $hyoo_cras_vary_type, tag?: "keys" | "vals" | "head" | "term"): void;
                 cut(vary: $hyoo_cras_vary_type): void;
                 move(from: number, to: number): void;
                 wipe(seat: number): void;
-                node_make<Node_1 extends typeof $hyoo_cras_node>(Node: Node_1, vary: $hyoo_cras_vary_type, tag?: "keys" | "term" | "head" | "vals"): InstanceType<Node_1>;
+                node_make<Node_1 extends typeof $hyoo_cras_node>(Node: Node_1, vary: $hyoo_cras_vary_type, tag?: "keys" | "vals" | "head" | "term"): InstanceType<Node_1>;
                 land(): $hyoo_cras_land;
                 head(): number;
                 lord(): $hyoo_cras_lord | null;
@@ -2694,7 +2694,7 @@ declare namespace $ {
             };
             Value: Value;
             toJSON(): string;
-            tag: "keys" | "term" | "head" | "vals";
+            tag: "keys" | "vals" | "head" | "term";
             ref<Value extends unknown>(Value: Value): any;
             make<Instance>(this: new () => Instance, config: Partial<Instance>): Instance;
             $: typeof $$;
@@ -2703,15 +2703,15 @@ declare namespace $ {
             destructor(): void;
             [Symbol.toPrimitive](): string;
         };
-        items(next?: readonly $hyoo_cras_vary_type[], tag?: "keys" | "term" | "head" | "vals"): readonly $hyoo_cras_vary_type[];
-        splice(next: readonly $hyoo_cras_vary_type[], from?: number, to?: number, tag?: "keys" | "term" | "head" | "vals"): void;
+        items(next?: readonly $hyoo_cras_vary_type[], tag?: "keys" | "vals" | "head" | "term"): readonly $hyoo_cras_vary_type[];
+        splice(next: readonly $hyoo_cras_vary_type[], from?: number, to?: number, tag?: "keys" | "vals" | "head" | "term"): void;
         find(vary: $hyoo_cras_vary_type): $hyoo_cras_gist | null;
-        has(vary: $hyoo_cras_vary_type, next?: boolean, tag?: "keys" | "term" | "head" | "vals"): boolean;
-        add(vary: $hyoo_cras_vary_type, tag?: "keys" | "term" | "head" | "vals"): void;
+        has(vary: $hyoo_cras_vary_type, next?: boolean, tag?: "keys" | "vals" | "head" | "term"): boolean;
+        add(vary: $hyoo_cras_vary_type, tag?: "keys" | "vals" | "head" | "term"): void;
         cut(vary: $hyoo_cras_vary_type): void;
         move(from: number, to: number): void;
         wipe(seat: number): void;
-        node_make<Node extends typeof $hyoo_cras_node>(Node: Node, vary: $hyoo_cras_vary_type, tag?: "keys" | "term" | "head" | "vals"): InstanceType<Node>;
+        node_make<Node extends typeof $hyoo_cras_node>(Node: Node, vary: $hyoo_cras_vary_type, tag?: "keys" | "vals" | "head" | "term"): InstanceType<Node>;
     }
 }
 
@@ -2848,7 +2848,7 @@ declare namespace $ {
 
 declare namespace $ {
     class $hyoo_cras_reg extends $hyoo_cras_node {
-        static tag: "keys" | "term" | "head" | "vals";
+        static tag: "keys" | "vals" | "head" | "term";
         static of<Tip extends keyof typeof $hyoo_cras_vary_tip>(tip: Tip): {
             new (): {
                 value(next?: ReturnType<{
@@ -2903,7 +2903,7 @@ declare namespace $ {
                 [$mol_ambient_ref]: typeof $$;
             };
             tip: Tip;
-            tag: "keys" | "term" | "head" | "vals";
+            tag: "keys" | "vals" | "head" | "term";
             of<Tip extends "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "xml" | "tree">(tip: Tip): any;
             ref<Value_1 extends unknown>(Value: Value): {
                 new (): {
@@ -2939,7 +2939,7 @@ declare namespace $ {
                 };
                 Value: Value;
                 toJSON(): string;
-                tag: "keys" | "term" | "head" | "vals";
+                tag: "keys" | "vals" | "head" | "term";
                 of<Tip extends "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "xml" | "tree">(tip: Tip): any;
                 ref<Value_1 extends unknown>(Value: Value): any;
                 make<Instance>(this: new () => Instance, config: Partial<Instance>): Instance;
@@ -2991,7 +2991,7 @@ declare namespace $ {
             };
             Value: Value;
             toJSON(): string;
-            tag: "keys" | "term" | "head" | "vals";
+            tag: "keys" | "vals" | "head" | "term";
             of<Tip extends "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "xml" | "tree">(tip: Tip): {
                 new (): {
                     value(next?: ReturnType<{
@@ -3046,7 +3046,7 @@ declare namespace $ {
                     [$mol_ambient_ref]: typeof $$;
                 };
                 tip: Tip;
-                tag: "keys" | "term" | "head" | "vals";
+                tag: "keys" | "vals" | "head" | "term";
                 of<Tip extends "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "xml" | "tree">(tip: Tip): any;
                 ref<Value extends unknown>(Value: Value): any;
                 make<Instance>(this: new () => Instance, config: Partial<Instance>): Instance;
@@ -3080,8 +3080,8 @@ declare namespace $ {
 
 declare namespace $ {
     class $hyoo_cras_dict extends $hyoo_cras_node {
-        static tag: "keys" | "term" | "head" | "vals";
-        static of<Schema extends Record<string, typeof $hyoo_cras_node>>(schema: Schema): Pick<typeof $hyoo_cras_dict, typeof Symbol.toPrimitive | "toString" | "destructor" | "$" | "toJSON" | "prototype" | "create" | "make" | "tag" | "of"> & (new () => $hyoo_cras_dict & { [Key in keyof Schema]: () => InstanceType<Schema[Key]>; });
+        static tag: "keys" | "vals" | "head" | "term";
+        static of<Schema extends Record<string, typeof $hyoo_cras_node>>(schema: Schema): Pick<typeof $hyoo_cras_dict, typeof Symbol.toPrimitive | "toString" | "$" | "destructor" | "toJSON" | "prototype" | "create" | "make" | "tag" | "of"> & (new () => $hyoo_cras_dict & { [Key in keyof Schema]: () => InstanceType<Schema[Key]>; });
         keys(): readonly $hyoo_cras_vary_type[];
         has(key: $hyoo_cras_vary_type, next?: false): boolean;
         dive<Node extends typeof $hyoo_cras_node>(key: $hyoo_cras_vary_type, Node: Node): InstanceType<Node>;
@@ -3120,7 +3120,7 @@ declare namespace $ {
         gists_ordered(head: number): $hyoo_cras_gist[];
         join(): $hyoo_cras_pass;
         give(dest: bigint, rang: $hyoo_cras_rang): $hyoo_cras_gift;
-        post(lead: number, head: number, self: number, data: $hyoo_cras_vary_type, tag?: "keys" | "term" | "head" | "vals"): $hyoo_cras_gist;
+        post(lead: number, head: number, self: number, data: $hyoo_cras_vary_type, tag?: "keys" | "vals" | "head" | "term"): $hyoo_cras_gist;
         gist_move(gist: $hyoo_cras_gist, head: number, seat: number): void;
         gist_wipe(gist: $hyoo_cras_gist): void;
         gist_decode(gist: $hyoo_cras_gist): $hyoo_cras_vary_type;
@@ -3261,14 +3261,6 @@ declare namespace $.$$ {
     class $mol_expander extends $.$mol_expander {
         rows(): $mol_view[];
         expandable(): boolean;
-    }
-}
-
-declare namespace $ {
-}
-
-declare namespace $ {
-    class $mol_string_button extends $mol_string {
     }
 }
 
@@ -3541,6 +3533,54 @@ declare namespace $.$$ {
 }
 
 declare namespace $ {
+    class $mol_textarea extends $mol_stack {
+        attr(): Record<string, any>;
+        event(): Record<string, any>;
+        sub(): readonly any[];
+        symbols_alt(): Record<string, any>;
+        symbols_alt_ctrl(): Record<string, any>;
+        symbols_alt_shift(): Record<string, any>;
+        clickable(next?: any): boolean;
+        sidebar_showed(): boolean;
+        press(event?: any): any;
+        hover(event?: any): any;
+        value(next?: any): string;
+        hint(): string;
+        enabled(): boolean;
+        spellcheck(): boolean;
+        length_max(): number;
+        selection(next?: any): readonly number[];
+        submit(next?: any): any;
+        submit_with_ctrl(): boolean;
+        bring(): void;
+        Edit(): $mol_textarea_edit;
+        row_numb(id: any): number;
+        highlight(): string;
+        View(): $$.$mol_text_code;
+    }
+    class $mol_textarea_edit extends $mol_string {
+        dom_name(): string;
+        enter(): string;
+        field(): Record<string, any>;
+    }
+}
+
+declare namespace $.$$ {
+    class $mol_textarea extends $.$mol_textarea {
+        indent_inc(): void;
+        indent_dec(): void;
+        symbol_insert(event: KeyboardEvent): void;
+        clickable(next?: boolean): boolean;
+        hover(event: PointerEvent): void;
+        press(event: KeyboardEvent): void;
+        row_numb(index: number): number;
+    }
+}
+
+declare namespace $ {
+}
+
+declare namespace $ {
     class $mol_dump_list extends $mol_view {
         values(): readonly any[];
         sub(): readonly any[];
@@ -3691,16 +3731,25 @@ declare namespace $ {
     class $hyoo_cras_node_dump extends $mol_expander {
         can_change(): boolean;
         node(): $hyoo_cras_node;
+        tag(): string;
         label(): readonly any[];
         addons(): readonly any[];
         Tools(): $mol_view;
+        editors(): readonly any[];
         content(): readonly any[];
         title(): string;
         Head(): $$.$mol_paragraph;
         Value(): any;
         key_new(next?: any): string;
         add_key(next?: any): any;
-        Add_key(): $mol_string_button;
+        Add_key(): $$.$mol_textarea;
+        value_new(next?: any): string;
+        add_value(next?: any): any;
+        Add_value(): $$.$mol_textarea;
+        text(next?: any): string;
+        Value_text(): $$.$mol_textarea;
+        value_str(next?: any): string;
+        Value_str(): $$.$mol_textarea;
         unit_value(id: any): any;
         Unit_value(id: any): $$.$mol_dump_value;
         unit_tip(id: any): string;
@@ -3719,71 +3768,43 @@ declare namespace $ {
     }
 }
 
+declare namespace $ {
+    let $hyoo_crowd_tokenizer: RegExp;
+}
+
+declare namespace $ {
+    class $hyoo_cras_text extends $hyoo_cras_node {
+        static tag: "keys" | "vals" | "head" | "term";
+        text(next?: string): string;
+        str(next?: string): string;
+        write(next: string, str_from?: number, str_to?: number): this;
+        point_by_offset(offset: number): readonly [number, number];
+        offset_by_point([self, offset]: readonly [number, number]): readonly [number, number];
+        selection(lord: bigint, next?: readonly [number, number]): number[] | readonly [number, number];
+    }
+}
+
 declare namespace $.$$ {
     class $hyoo_cras_node_dump extends $.$hyoo_cras_node_dump {
         title(): string;
         value(): $hyoo_cras_vary_type;
         items(): readonly $hyoo_cras_vary_type[];
         nodes(): $mol_view[];
-        unit_tag(index: number, next?: keyof typeof $hyoo_cras_gist_tag): "keys" | "term" | "head" | "vals";
+        unit_tag(index: number, next?: keyof typeof $hyoo_cras_gist_tag): "keys" | "vals" | "head" | "term";
         unit_tip(index: number): "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "xml" | "tree";
         unit_time(index: number): string;
         unit_value(index: number): $hyoo_cras_vary_type;
         unit_wipe(index: number, event?: Event): void;
         node_inner(index: number): $hyoo_cras_node;
         add_key(event: Event): void;
+        add_value(event: Event): void;
+        value_str(next?: string): string;
+        text(next?: string): string;
+        editors(): $mol_textarea[];
     }
 }
 
 declare namespace $.$$ {
-}
-
-declare namespace $ {
-    class $mol_textarea extends $mol_stack {
-        attr(): Record<string, any>;
-        event(): Record<string, any>;
-        sub(): readonly any[];
-        symbols_alt(): Record<string, any>;
-        symbols_alt_ctrl(): Record<string, any>;
-        symbols_alt_shift(): Record<string, any>;
-        clickable(next?: any): boolean;
-        sidebar_showed(): boolean;
-        press(event?: any): any;
-        hover(event?: any): any;
-        value(next?: any): string;
-        hint(): string;
-        enabled(): boolean;
-        spellcheck(): boolean;
-        length_max(): number;
-        selection(next?: any): readonly number[];
-        submit(next?: any): any;
-        submit_with_ctrl(): boolean;
-        bring(): void;
-        Edit(): $mol_textarea_edit;
-        row_numb(id: any): number;
-        highlight(): string;
-        View(): $$.$mol_text_code;
-    }
-    class $mol_textarea_edit extends $mol_string {
-        dom_name(): string;
-        enter(): string;
-        field(): Record<string, any>;
-    }
-}
-
-declare namespace $.$$ {
-    class $mol_textarea extends $.$mol_textarea {
-        indent_inc(): void;
-        indent_dec(): void;
-        symbol_insert(event: KeyboardEvent): void;
-        clickable(next?: boolean): boolean;
-        hover(event: PointerEvent): void;
-        press(event: KeyboardEvent): void;
-        row_numb(index: number): number;
-    }
-}
-
-declare namespace $ {
 }
 
 declare namespace $ {
@@ -3794,22 +3815,6 @@ declare namespace $ {
         Dump(): $$.$hyoo_cras_node_dump;
         text(next?: any): string;
         Text(): $$.$mol_textarea;
-    }
-}
-
-declare namespace $ {
-    let $hyoo_crowd_tokenizer: RegExp;
-}
-
-declare namespace $ {
-    class $hyoo_cras_text extends $hyoo_cras_node {
-        static tag: "keys" | "term" | "head" | "vals";
-        text(next?: string): string;
-        str(next?: string): string;
-        write(next: string, str_from?: number, str_to?: number): this;
-        point_by_offset(offset: number): readonly [number, number];
-        offset_by_point([self, offset]: readonly [number, number]): readonly [number, number];
-        selection(lord: bigint, next?: readonly [number, number]): number[] | readonly [number, number];
     }
 }
 
@@ -4347,6 +4352,14 @@ declare namespace $ {
 declare namespace $ {
     class $mol_float extends $mol_view {
         style(): Record<string, any>;
+    }
+}
+
+declare namespace $ {
+}
+
+declare namespace $ {
+    class $mol_string_button extends $mol_string {
     }
 }
 
