@@ -2,6 +2,9 @@ $hyoo_cras_app $mol_book2_catalog
 	menu_title \🎭CROWDS
 	param \section
 	realm $hyoo_cras_realm
+	menu_tools /
+		<= Source $mol_link_source
+			uri \https://github.com/hyoo-ru/cras.hyoo.ru
 	spreads *
 		realm <= Realm $hyoo_cras_realm_book
 			realm <= realm
