@@ -1,6 +1,6 @@
 # CRAS
 
-Tomorrow-dyas database with unique abilities:
+Tomorrow-days database with unique abilities:
 
 - **C**onflict-free: CvRDT, partial-order, oracle-free, interleaving-free, weak-typed
 - **R**eal-time: delta-replication, web-sockets, web-rtc
