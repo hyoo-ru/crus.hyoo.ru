@@ -19222,7 +19222,7 @@ var $;
 (function ($) {
     class $hyoo_cras_app extends $mol_book2_catalog {
         menu_title() {
-            return "🎭CRAS";
+            return "💨CRAS";
         }
         param() {
             return "section";
