@@ -3142,6 +3142,26 @@ declare namespace $ {
 }
 
 declare namespace $ {
+    class $mol_icon_script extends $mol_icon {
+        path(): string;
+    }
+}
+
+declare namespace $ {
+    class $mol_icon_script_text extends $mol_icon {
+        path(): string;
+    }
+}
+
+declare namespace $ {
+    class $mol_link_source extends $mol_link {
+        hint(): string;
+        sub(): readonly any[];
+        Icon(): $mol_icon_script_text;
+    }
+}
+
+declare namespace $ {
     class $mol_check extends $mol_button_minor {
         attr(): Record<string, any>;
         sub(): readonly $mol_view_content[];
@@ -4383,20 +4403,6 @@ declare namespace $.$$ {
 }
 
 declare namespace $ {
-    class $mol_icon_github_circle extends $mol_icon {
-        path(): string;
-    }
-}
-
-declare namespace $ {
-    class $mol_link_source extends $mol_link {
-        hint(): string;
-        sub(): readonly any[];
-        Icon(): $mol_icon_github_circle;
-    }
-}
-
-declare namespace $ {
     class $mol_avatar extends $mol_icon {
         view_box(): string;
         id(): string;
@@ -5145,8 +5151,10 @@ declare namespace $ {
         menu_title(): string;
         param(): string;
         realm(): $hyoo_cras_realm;
+        menu_tools(): readonly any[];
         spreads(): Record<string, any>;
         Placeholder(): any;
+        Source(): $mol_link_source;
         Realm(): $$.$hyoo_cras_realm_book;
         Casting(): $$.$hyoo_calc;
     }
