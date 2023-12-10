@@ -12,9 +12,33 @@ namespace $.$$ {
 			items: 'flex-start',
 		},
 		
+		Trigger: {
+			flex: {
+				grow: 0,
+			},
+		},
+		
+		Add_key: {
+			flex: {
+				grow: 0,
+			},
+		},
+		
+		Add_value: {
+			flex: {
+				grow: 0,
+			},
+		},
+		
+		Tools: {
+			flex: {
+				grow: 1,
+			},
+		},
+		
 		Label: {
 			justify: {
-				content: `space-between`,
+				// content: `space-between`,
 			},
 		},
 		

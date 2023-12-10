@@ -53,8 +53,35 @@ namespace $.$$ {
 		}
 		
 		add_key( event: Event ) {
+			if( !this.expandable() ) this.expanded( true )
 			this.node().cast( $hyoo_cras_list ).has( this.key_new(), true, 'head' )
 			this.key_new( '' )
+		}
+		
+		add_value( event: Event ) {
+			if( !this.expandable() ) this.expanded( true )
+			this.node().cast( $hyoo_cras_list ).splice([ this.value_new() ])
+			this.value_new( '' )
+		}
+		
+		value_str( next?: string ) {
+			return this.node().cast( $hyoo_cras_reg ).value_str( next )
+		}
+		
+		text( next?: string ) {
+			return this.node().cast( $hyoo_cras_text ).str( next )
+		}
+		
+		@ $mol_mem
+		editors() {
+			return [
+				... this.tag() === 'keys' ? [ this.Add_key() ] : [],
+				... this.tag() === 'vals' ? [
+					this.Add_value(),
+					this.Value_text(),
+				] : [],
+				... this.tag() === 'head' ? [ this.Value_str() ] : [],
+			]
 		}
 		
 	}
