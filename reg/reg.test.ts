@@ -262,10 +262,10 @@ namespace $.$$ {
 			const land = realm.home().base().land()
 			
 			const reg = land.Node( $hyoo_cras_reg.ref( ()=> $hyoo_cras_reg ) ).Item(1)
-			$mol_assert_like( reg.value(), null )
+			$mol_assert_like( reg.remote(), null )
 			
-			reg.value( reg )
-			$mol_assert_like( reg.value_ref(), reg.value()!.value_ref(), reg.ref() )
+			reg.remote( reg )
+			$mol_assert_like( reg.value_ref(), reg.remote()!.value_ref(), reg.ref() )
 			
 		},
 		

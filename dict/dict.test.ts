@@ -74,18 +74,18 @@ namespace $.$$ {
 			}) {}
 			
 			const user = land.Node( User ).Item(1)
-			$mol_assert_like( user.Account().value(), null )
-			$mol_assert_like( user.Articles().remotes(), [] )
+			$mol_assert_like( user.Account().remote(), null )
+			$mol_assert_like( user.Articles().remote_list(), [] )
 			
-			const account = user.Account().ensure()
-			$mol_assert_like( user.Account().value(), account )
-			$mol_assert_like( account.User().value(), null )
+			const account = user.Account().remote_ensure()
+			$mol_assert_like( user.Account().remote(), account )
+			$mol_assert_like( account.User().remote(), null )
 			
-			account.User().value( user )
-			$mol_assert_like( account.User().value(), user )
+			account.User().remote( user )
+			$mol_assert_like( account.User().remote(), user )
 			
 			const articles = [ user.Articles().remote_make(), user.Articles().remote_make() ]
-			$mol_assert_like( user.Articles().remotes(), articles )
+			$mol_assert_like( user.Articles().remote_list(), articles )
 			
 			$mol_assert_unique( user.land(), account.land(), ... articles.map( article => article.land() ) )
 		},

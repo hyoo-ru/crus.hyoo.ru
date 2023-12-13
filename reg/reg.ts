@@ -40,7 +40,7 @@ namespace $ {
 				}
 				
 				@ $mol_mem
-				value( next?: null | Val ): null | Val {
+				remote( next?: null | Val ): null | Val {
 					const realm = this.realm()
 					const ref = this.value_ref( ( next as $hyoo_cras_node )?.ref() )
 					if( !ref ) return null
@@ -48,9 +48,9 @@ namespace $ {
 				}
 				
 				@ $mol_action
-				ensure() {
+				remote_ensure() {
 					this.yoke( this.ref() )
-					return this.value()!
+					return this.remote()!
 				}
 				
 			}

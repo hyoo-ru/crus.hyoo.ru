@@ -16,7 +16,7 @@ namespace $ {
 				}
 				
 				@ $mol_mem
-				remotes( next?: Vals ): Vals {
+				remote_list( next?: Vals ): Vals {
 					const realm = this.realm()
 					const Node = ( Value as any )()
 					return this.items( next?.map( item => ( item as $hyoo_cras_node ).ref() ) )
