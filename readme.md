@@ -1,5 +1,7 @@
 # CRAS
 
+![](logo/logo.svg)
+
 Tomorrow-dyas database with unique abilities:
 
 - **C**onflict-free: CvRDT, partial-order, oracle-free, interleaving-free, weak-typed
