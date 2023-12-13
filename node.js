@@ -9432,7 +9432,7 @@ var $;
                 static toJSON() {
                     return '$hyoo_cras_list.ref(()=>' + Value() + ')';
                 }
-                remotes(next) {
+                remote_list(next) {
                     const realm = this.realm();
                     const Node = Value();
                     return this.items(next?.map(item => item.ref()))
@@ -9447,7 +9447,7 @@ var $;
             }
             __decorate([
                 $mol_mem
-            ], Narrow.prototype, "remotes", null);
+            ], Narrow.prototype, "remote_list", null);
             __decorate([
                 $mol_action
             ], Narrow.prototype, "remote_make", null);
@@ -9843,24 +9843,24 @@ var $;
                 static toJSON() {
                     return '$hyoo_cras_reg.ref(()=>' + Value() + ')';
                 }
-                value(next) {
+                remote(next) {
                     const realm = this.realm();
                     const ref = this.value_ref(next?.ref());
                     if (!ref)
                         return null;
                     return realm.Lord(ref.lord()).Land(ref.land()).Node(Value()).Item(ref.head());
                 }
-                ensure() {
+                remote_ensure() {
                     this.yoke(this.ref());
-                    return this.value();
+                    return this.remote();
                 }
             }
             __decorate([
                 $mol_mem
-            ], Narrow.prototype, "value", null);
+            ], Narrow.prototype, "remote", null);
             __decorate([
                 $mol_action
-            ], Narrow.prototype, "ensure", null);
+            ], Narrow.prototype, "remote_ensure", null);
             return Narrow;
         }
         pick_unit() {

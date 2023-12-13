@@ -2663,7 +2663,7 @@ declare namespace $ {
         static tag: "keys" | "vals" | "head" | "term";
         static ref<Value extends any>(Value: Value): {
             new (): {
-                remotes(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
+                remote_list(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
                 remote_make(): any;
                 items(next?: readonly $hyoo_cras_vary_type[] | undefined, tag?: "keys" | "vals" | "head" | "term"): readonly $hyoo_cras_vary_type[];
                 splice(next: readonly $hyoo_cras_vary_type[], from?: number, to?: number, tag?: "keys" | "vals" | "head" | "term"): void;
@@ -2907,8 +2907,8 @@ declare namespace $ {
             of<Tip extends "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "xml" | "tree">(tip: Tip): any;
             ref<Value_1 extends unknown>(Value: Value): {
                 new (): {
-                    value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
-                    ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
+                    remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
+                    remote_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
                     pick_unit(): $hyoo_cras_gist | undefined;
                     value_vary(next?: $hyoo_cras_vary_type | undefined): $hyoo_cras_vary_type;
                     value_bool(next?: boolean | undefined): boolean;
@@ -2959,8 +2959,8 @@ declare namespace $ {
         };
         static ref<Value extends any>(Value: Value): {
             new (): {
-                value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
-                ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
+                remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
+                remote_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
                 pick_unit(): $hyoo_cras_gist | undefined;
                 value_vary(next?: $hyoo_cras_vary_type | undefined): $hyoo_cras_vary_type;
                 value_bool(next?: boolean | undefined): boolean;

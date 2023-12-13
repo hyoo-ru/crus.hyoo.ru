@@ -9424,7 +9424,7 @@ var $;
                 static toJSON() {
                     return '$hyoo_cras_list.ref(()=>' + Value() + ')';
                 }
-                remotes(next) {
+                remote_list(next) {
                     const realm = this.realm();
                     const Node = Value();
                     return this.items(next?.map(item => item.ref()))
@@ -9439,7 +9439,7 @@ var $;
             }
             __decorate([
                 $mol_mem
-            ], Narrow.prototype, "remotes", null);
+            ], Narrow.prototype, "remote_list", null);
             __decorate([
                 $mol_action
             ], Narrow.prototype, "remote_make", null);
@@ -9835,24 +9835,24 @@ var $;
                 static toJSON() {
                     return '$hyoo_cras_reg.ref(()=>' + Value() + ')';
                 }
-                value(next) {
+                remote(next) {
                     const realm = this.realm();
                     const ref = this.value_ref(next?.ref());
                     if (!ref)
                         return null;
                     return realm.Lord(ref.lord()).Land(ref.land()).Node(Value()).Item(ref.head());
                 }
-                ensure() {
+                remote_ensure() {
                     this.yoke(this.ref());
-                    return this.value();
+                    return this.remote();
                 }
             }
             __decorate([
                 $mol_mem
-            ], Narrow.prototype, "value", null);
+            ], Narrow.prototype, "remote", null);
             __decorate([
                 $mol_action
-            ], Narrow.prototype, "ensure", null);
+            ], Narrow.prototype, "remote_ensure", null);
             return Narrow;
         }
         pick_unit() {
@@ -25067,9 +25067,9 @@ var $;
                 const realm = $hyoo_cras_realm.make({ $ });
                 const land = realm.home().base().land();
                 const reg = land.Node($hyoo_cras_reg.ref(() => $hyoo_cras_reg)).Item(1);
-                $mol_assert_like(reg.value(), null);
-                reg.value(reg);
-                $mol_assert_like(reg.value_ref(), reg.value().value_ref(), reg.ref());
+                $mol_assert_like(reg.remote(), null);
+                reg.remote(reg);
+                $mol_assert_like(reg.value_ref(), reg.remote().value_ref(), reg.ref());
             },
         });
     })($$ = $_1.$$ || ($_1.$$ = {}));
@@ -25138,15 +25138,15 @@ var $;
                 }) {
                 }
                 const user = land.Node(User).Item(1);
-                $mol_assert_like(user.Account().value(), null);
-                $mol_assert_like(user.Articles().remotes(), []);
-                const account = user.Account().ensure();
-                $mol_assert_like(user.Account().value(), account);
-                $mol_assert_like(account.User().value(), null);
-                account.User().value(user);
-                $mol_assert_like(account.User().value(), user);
+                $mol_assert_like(user.Account().remote(), null);
+                $mol_assert_like(user.Articles().remote_list(), []);
+                const account = user.Account().remote_ensure();
+                $mol_assert_like(user.Account().remote(), account);
+                $mol_assert_like(account.User().remote(), null);
+                account.User().remote(user);
+                $mol_assert_like(account.User().remote(), user);
                 const articles = [user.Articles().remote_make(), user.Articles().remote_make()];
-                $mol_assert_like(user.Articles().remotes(), articles);
+                $mol_assert_like(user.Articles().remote_list(), articles);
                 $mol_assert_unique(user.land(), account.land(), ...articles.map(article => article.land()));
             },
         });
