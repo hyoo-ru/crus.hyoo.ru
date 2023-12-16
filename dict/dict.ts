@@ -3,27 +3,6 @@ namespace $ {
 		
 		static tag = $hyoo_cras_gist_tag[ $hyoo_cras_gist_tag.keys ] as keyof typeof $hyoo_cras_gist_tag
 		
-		static of<
-			Schema extends Record< string, typeof $hyoo_cras_node >
-		>( schema: Schema ) {
-			
-			const Entity = class Entity extends $hyoo_cras_dict {}
-		
-			for( const field in schema ) {
-				Object.assign( Entity.prototype, { [ field ]: function( this: $hyoo_cras_dict ) {
-					return this.dive( field, schema[ field ] )
-				} } )
-				$mol_mem( Entity.prototype, field )
-			}
-			
-			return Entity as Pick< typeof $hyoo_cras_dict, keyof typeof $hyoo_cras_dict > & {
-				new(): $hyoo_cras_dict & {
-					[ Key in keyof Schema ]: ()=> InstanceType< Schema[ Key ] >
-				}
-			}
-			
-		}
-		
 		@ $mol_mem
 		keys(): readonly $hyoo_cras_vary_type[] {
 			return this.cast( $hyoo_cras_list ).items()

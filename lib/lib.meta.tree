@@ -2,7 +2,11 @@ include \/hyoo/cras/realm
 include \/hyoo/cras/lord
 include \/hyoo/cras/land
 include \/hyoo/cras/reg
+include \/hyoo/cras/reg/ref
 include \/hyoo/cras/list
+include \/hyoo/cras/list/ref
 include \/hyoo/cras/dict
 include \/hyoo/cras/text
+include \/hyoo/cras/vary/cast
 include \/hyoo/cras/cast
+include \/hyoo/cras/mine

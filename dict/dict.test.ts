@@ -57,35 +57,35 @@ namespace $.$$ {
 			const realm = $hyoo_cras_realm.make({ $ })
 			const land = realm.home().base().land()
 			
-			class User extends $hyoo_cras_dict.of({
-				Title: $hyoo_cras_reg.of( 'str' ),
-				Account: $hyoo_cras_reg.ref( ()=> Account ),
-				Articles: $hyoo_cras_list.ref( ()=> Article ),
+			class User extends $hyoo_cras_dict_obj({
+				Title: $hyoo_cras_reg_str,
+				Account: $hyoo_cras_reg_ref( ()=> Account ),
+				Articles: $hyoo_cras_list_ref( ()=> Article ),
 			}) {}
 			
-			class Account extends $hyoo_cras_dict.of({
-				Title: $hyoo_cras_reg.of( 'str' ),
-				User: $hyoo_cras_reg.ref( ()=> User ),
+			class Account extends $hyoo_cras_dict_obj({
+				Title: $hyoo_cras_reg_str,
+				User: $hyoo_cras_reg_ref( ()=> User ),
 			}) {}
 			
-			class Article extends $hyoo_cras_dict.of({
-				Title: $hyoo_cras_reg.of( 'str' ),
-				Author: $hyoo_cras_reg.ref( ()=> User ),
+			class Article extends $hyoo_cras_dict_obj({
+				Title: $hyoo_cras_reg_str,
+				Author: $hyoo_cras_reg_ref( ()=> User ),
 			}) {}
 			
 			const user = land.Node( User ).Item(1)
-			$mol_assert_like( user.Account().remote(), null )
-			$mol_assert_like( user.Articles().remote_list(), [] )
+			$mol_assert_like( user.Account.remote(), null )
+			$mol_assert_like( user.Articles.remote_list(), [] )
 			
-			const account = user.Account().remote_ensure()
-			$mol_assert_like( user.Account().remote(), account )
-			$mol_assert_like( account.User().remote(), null )
+			const account = user.Account.remote_ensure()
+			$mol_assert_like( user.Account.remote(), account )
+			$mol_assert_like( account.User.remote(), null )
 			
-			account.User().remote( user )
-			$mol_assert_like( account.User().remote(), user )
+			account.User.remote( user )
+			$mol_assert_like( account.User.remote(), user )
 			
-			const articles = [ user.Articles().remote_make(), user.Articles().remote_make() ]
-			$mol_assert_like( user.Articles().remote_list(), articles )
+			const articles = [ user.Articles.remote_make(), user.Articles.remote_make() ]
+			$mol_assert_like( user.Articles.remote_list(), articles )
 			
 			$mol_assert_unique( user.land(), account.land(), ... articles.map( article => article.land() ) )
 		},

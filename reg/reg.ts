@@ -1,63 +1,10 @@
+
 namespace $ {
-	type Resolve< Decl >
-	= Decl extends (new() => any) ? InstanceType< Decl > : Decl extends ()=> any ? InstanceType< ReturnType< Decl > > : Decl
 
 	export class $hyoo_cras_reg extends $hyoo_cras_node {
-		
-		static tag = $hyoo_cras_gist_tag[ $hyoo_cras_gist_tag.head ] as keyof typeof $hyoo_cras_gist_tag
-		
-		@ $mol_mem_key
-		static of<
-			Tip extends keyof typeof $hyoo_cras_vary_tip
-		>( tip: Tip ) {
-			
-			type Value = ReturnType< typeof $hyoo_cras_vary_cast_funcs[ Tip ] >
-			
-			class Narrow extends $hyoo_cras_reg {
-				
-				static tip = tip
-				
-				@ $mol_mem
-				value( next?: Value ): Value {
-					return $hyoo_cras_vary_cast_funcs[ tip ]( this.value_vary( next ) ) as any
-				}
-				
-			}
-			
-			return Narrow
-		}
-		
-		static ref< Value extends any >( Value: Value ) {
-			
-			type Val = $mol_type_result< $mol_type_result< Value > >
-			
-			class Narrow extends $hyoo_cras_reg {
-				
-				static Value = Value
-				
-				static toJSON() {
-					return '$hyoo_cras_reg.ref(()=>' + ( Value as any )() + ')'
-				}
-				
-				@ $mol_mem
-				remote( next?: null | Val ): null | Val {
-					const realm = this.realm()
-					const ref = this.value_ref( ( next as $hyoo_cras_node )?.ref() )
-					if( !ref ) return null
-					return realm!.Lord( ref.lord() ).Land( ref.land() ).Node( ( Value as any )() ).Item( ref.head() )
-				}
-				
-				@ $mol_action
-				remote_ensure() {
-					this.yoke( this.ref() )
-					return this.remote()!
-				}
-				
-			}
-			
-			return Narrow
-		}
-		
+
+		static tag = $hyoo_cras_gist_tag[ $hyoo_cras_gist_tag.head ] as keyof typeof $hyoo_cras_gist_tag;
+
 		pick_unit() {
 			return this.units().at(0)
 		}
@@ -162,4 +109,35 @@ namespace $ {
 		}
 		
 	}
+
+	export function $hyoo_cras_reg_narrow<
+		Tip extends keyof typeof $hyoo_cras_vary_tip
+	>( tip: Tip ) {
+
+		type Value = ReturnType<typeof $hyoo_cras_vary_cast_funcs[ Tip ]>
+
+		class Narrow extends $hyoo_cras_reg {
+
+			static tip = tip;
+
+			@$mol_mem
+			value( next?: Value ): Value {
+				return $hyoo_cras_vary_cast_funcs[ tip ]( this.value_vary( next ) ) as any
+			}
+
+		}
+
+		return Narrow
+	}
+
+	export class $hyoo_cras_reg_bin extends $hyoo_cras_reg_narrow( 'bin' ) {}
+	export class $hyoo_cras_reg_bool extends $hyoo_cras_reg_narrow( 'bool' ) {}
+	export class $hyoo_cras_reg_int extends $hyoo_cras_reg_narrow( 'int' ) {}
+	export class $hyoo_cras_reg_real extends $hyoo_cras_reg_narrow( 'real' ) {}
+	export class $hyoo_cras_reg_str extends $hyoo_cras_reg_narrow( 'str' ) {}
+	export class $hyoo_cras_reg_time extends $hyoo_cras_reg_narrow( 'time' ) {}
+	export class $hyoo_cras_reg_json extends $hyoo_cras_reg_narrow( 'json' ) {}
+	export class $hyoo_cras_reg_xml extends $hyoo_cras_reg_narrow( 'xml' ) {}
+	export class $hyoo_cras_reg_tree extends $hyoo_cras_reg_narrow( 'tree' ) {}
+
 }

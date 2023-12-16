@@ -244,12 +244,12 @@ namespace $.$$ {
 			const realm = $hyoo_cras_realm.make({ $ })
 			const land = realm.home().base().land()
 			
-			const bin = land.Node( $hyoo_cras_reg.of( 'bin' ) ).Item(1)
+			const bin = land.Node( $hyoo_cras_reg_bin ).Item(1)
 			$mol_assert_like( bin.value(), null )
 			bin.value( new Uint8Array([ 1, 2, 3 ]) )
 			$mol_assert_like( bin.value(), new Uint8Array([ 1, 2, 3 ]) )
 			
-			const str = land.Node( $hyoo_cras_reg.of( 'str' ) ).Item(2)
+			const str = land.Node( $hyoo_cras_reg_str ).Item(2)
 			$mol_assert_like( str.value(), '' )
 			str.value( 'foo' )
 			$mol_assert_like( str.value(), 'foo' )
@@ -261,7 +261,7 @@ namespace $.$$ {
 			const realm = $hyoo_cras_realm.make({ $ })
 			const land = realm.home().base().land()
 			
-			const reg = land.Node( $hyoo_cras_reg.ref( ()=> $hyoo_cras_reg ) ).Item(1)
+			const reg = land.Node( $hyoo_cras_reg_ref( ()=> $hyoo_cras_reg ) ).Item(1)
 			$mol_assert_like( reg.remote(), null )
 			
 			reg.remote( reg )
