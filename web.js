@@ -8792,8 +8792,8 @@ var $;
         }
     }
     __decorate([
-        $mol_mem
-    ], $hyoo_cras_node.prototype, "land", null);
+        $mol_memo.method
+    ], $hyoo_cras_node.prototype, "ref", null);
     __decorate([
         $mol_mem_key
     ], $hyoo_cras_node.prototype, "cast", null);
@@ -8826,6 +8826,395 @@ var $;
     $.$hyoo_cras_fund = $hyoo_cras_fund;
 })($ || ($ = {}));
 //hyoo/cras/fund/fund.ts
+;
+"use strict";
+var $;
+(function ($) {
+    function $mol_reconcile({ prev, from, to, next, equal, drop, insert, update, }) {
+        if (!update)
+            update = (next, prev, lead) => insert(next, drop(prev, lead));
+        let p = from;
+        let n = 0;
+        let lead = p ? prev[p - 1] : null;
+        if (to > prev.length)
+            $mol_fail(new RangeError(`To(${to}) greater then length(${prev.length})`));
+        if (from > to)
+            $mol_fail(new RangeError(`From(${to}) greater then to(${to})`));
+        while (p < to || n < next.length) {
+            if (p < to && n < next.length && equal(next[n], prev[p])) {
+                lead = prev[p];
+                ++p;
+                ++n;
+            }
+            else if (next.length - n > to - p) {
+                lead = insert(next[n], lead);
+                ++n;
+            }
+            else if (next.length - n < to - p) {
+                lead = drop(prev[p], lead);
+                ++p;
+            }
+            else {
+                lead = update(next[n], prev[p], lead);
+                ++p;
+                ++n;
+            }
+        }
+    }
+    $.$mol_reconcile = $mol_reconcile;
+})($ || ($ = {}));
+//mol/reconcile/reconcile.ts
+;
+"use strict";
+var $;
+(function ($) {
+    class $hyoo_cras_list extends $hyoo_cras_node {
+        static tag = $hyoo_cras_gist_tag[$hyoo_cras_gist_tag.vals];
+        items(next, tag = 'term') {
+            const units = this.units();
+            if (next === undefined)
+                return units.map(unit => this.land().gist_decode(unit));
+            this.splice(next, 0, units.length, tag);
+            return this.items();
+        }
+        splice(next, from = this.units().length, to = from, tag = 'term') {
+            const land = this.land();
+            $mol_reconcile({
+                prev: this.units(),
+                from,
+                to,
+                next,
+                equal: (next, prev) => $mol_compare_deep(this.land().gist_decode(prev), next),
+                drop: (prev, lead) => this.land().post(lead?.self() ?? 0, prev.head(), prev.self(), null),
+                insert: (next, lead) => this.land().post(lead?.self() ?? 0, this.head(), land.self_make(), next, tag),
+                update: (next, prev, lead) => this.land().post(lead?.self() ?? 0, prev.head(), prev.self(), next, prev.tag()),
+            });
+        }
+        find(vary) {
+            for (const unit of this.units()) {
+                if ($mol_compare_deep(this.land().gist_decode(unit), vary))
+                    return unit;
+            }
+            return null;
+        }
+        has(vary, next, tag = 'term') {
+            if (next === undefined)
+                return Boolean(this.find(vary));
+            if (next)
+                this.add(vary, tag);
+            else
+                this.cut(vary);
+            return next;
+        }
+        add(vary, tag = 'term') {
+            if (this.has(vary))
+                return;
+            this.land().post(0, this.head(), 0, vary, tag);
+        }
+        cut(vary) {
+            const units = [...this.units()];
+            for (let i = 0; i < units.length; ++i) {
+                if (!$mol_compare_deep(this.land().gist_decode(units[i]), vary))
+                    continue;
+                this.land().post(units[i - 1]?.self() ?? 0, units[i].head(), units[i].self(), null);
+                units.splice(i, 1);
+                --i;
+            }
+        }
+        move(from, to) {
+            this.land().gist_move(this.units()[from], this.head(), to);
+        }
+        wipe(seat) {
+            this.land().gist_wipe(this.units()[seat]);
+        }
+        node_make(Node, vary, tag = 'term') {
+            this.splice([vary], undefined, undefined, tag);
+            return this.land().Node(Node).Item(this.units().at(-1).self());
+        }
+        ;
+        [$mol_dev_format_head]() {
+            return $mol_dev_format_span({}, $mol_dev_format_native(this), ' ', this.slug(), ' ', $mol_dev_format_auto(this.items()));
+        }
+    }
+    __decorate([
+        $mol_mem
+    ], $hyoo_cras_list.prototype, "items", null);
+    $.$hyoo_cras_list = $hyoo_cras_list;
+})($ || ($ = {}));
+//hyoo/cras/list/list.ts
+;
+"use strict";
+var $;
+(function ($) {
+    function $mol_db_response(request) {
+        return new Promise((done, fail) => {
+            request.onerror = () => fail(new Error(request.error.message));
+            request.onsuccess = () => done(request.result);
+        });
+    }
+    $.$mol_db_response = $mol_db_response;
+})($ || ($ = {}));
+//mol/db/response/response.ts
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_db_store {
+        native;
+        constructor(native) {
+            this.native = native;
+        }
+        get name() {
+            return this.native.name;
+        }
+        get path() {
+            return this.native.keyPath;
+        }
+        get incremental() {
+            return this.native.autoIncrement;
+        }
+        get indexes() {
+            return new Proxy({}, {
+                ownKeys: () => [...this.native.indexNames],
+                has: (_, name) => this.native.indexNames.contains(name),
+                get: (_, name) => new $mol_db_index(this.native.index(name))
+            });
+        }
+        index_make(name, path = [], unique = false, multiEntry = false) {
+            return this.native.createIndex(name, path, { multiEntry, unique });
+        }
+        index_drop(name) {
+            this.native.deleteIndex(name);
+            return this;
+        }
+        get transaction() {
+            return new $mol_db_transaction(this.native.transaction);
+        }
+        get db() {
+            return this.transaction.db;
+        }
+        clear() {
+            return $mol_db_response(this.native.clear());
+        }
+        count(keys) {
+            return $mol_db_response(this.native.count(keys));
+        }
+        put(doc, key) {
+            return $mol_db_response(this.native.put(doc, key));
+        }
+        get(key) {
+            return $mol_db_response(this.native.get(key));
+        }
+        select(key, count) {
+            return $mol_db_response(this.native.getAll(key, count));
+        }
+        drop(keys) {
+            return $mol_db_response(this.native.delete(keys));
+        }
+    }
+    $.$mol_db_store = $mol_db_store;
+})($ || ($ = {}));
+//mol/db/store/store.ts
+;
+"use strict";
+//mol/db/store/store_schema.ts
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_db_index {
+        native;
+        constructor(native) {
+            this.native = native;
+        }
+        get name() {
+            return this.native.name;
+        }
+        get paths() {
+            return this.native.keyPath;
+        }
+        get unique() {
+            return this.native.unique;
+        }
+        get multiple() {
+            return this.native.multiEntry;
+        }
+        get store() {
+            return new $mol_db_store(this.native.objectStore);
+        }
+        get transaction() {
+            return this.store.transaction;
+        }
+        get db() {
+            return this.store.db;
+        }
+        count(keys) {
+            return $mol_db_response(this.native.count(keys));
+        }
+        get(key) {
+            return $mol_db_response(this.native.get(key));
+        }
+        select(key, count) {
+            return $mol_db_response(this.native.getAll(key, count));
+        }
+    }
+    $.$mol_db_index = $mol_db_index;
+})($ || ($ = {}));
+//mol/db/index/index.ts
+;
+"use strict";
+//mol/db/index/index_schema.ts
+;
+"use strict";
+var $;
+(function ($) {
+    async function $mol_db(name, ...migrations) {
+        const request = this.$mol_dom_context.indexedDB.open(name, migrations.length ? migrations.length + 1 : undefined);
+        request.onupgradeneeded = event => {
+            migrations.splice(0, event.oldVersion - 1);
+            const transaction = new $mol_db_transaction(request.transaction);
+            for (const migrate of migrations)
+                migrate(transaction);
+        };
+        const db = await $mol_db_response(request);
+        return new $mol_db_database(db);
+    }
+    $.$mol_db = $mol_db;
+})($ || ($ = {}));
+//mol/db/db.ts
+;
+"use strict";
+//mol/db/db_schema.ts
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_db_database {
+        native;
+        constructor(native) {
+            this.native = native;
+        }
+        get name() {
+            return this.native.name;
+        }
+        get version() {
+            return this.native.version;
+        }
+        get stores() {
+            return [...this.native.objectStoreNames];
+        }
+        read(...names) {
+            return new $mol_db_transaction(this.native.transaction(names, 'readonly')).stores;
+        }
+        change(...names) {
+            return new $mol_db_transaction(this.native.transaction(names, 'readwrite'));
+        }
+        kill() {
+            this.native.close();
+            const request = $mol_dom_context.indexedDB.deleteDatabase(this.name);
+            request.onblocked = console.warn;
+            return $mol_db_response(request);
+        }
+        destructor() {
+            this.native.close();
+        }
+    }
+    $.$mol_db_database = $mol_db_database;
+})($ || ($ = {}));
+//mol/db/database/database.ts
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_db_transaction {
+        native;
+        constructor(native) {
+            this.native = native;
+        }
+        get stores() {
+            return new Proxy({}, {
+                ownKeys: () => [...this.native.objectStoreNames],
+                has: (_, name) => this.native.objectStoreNames.contains(name),
+                get: (_, name) => new $mol_db_store(this.native.objectStore(name)),
+            });
+        }
+        store_make(name) {
+            return this.native.db.createObjectStore(name, { autoIncrement: true });
+        }
+        store_drop(name) {
+            this.native.db.deleteObjectStore(name);
+            return this;
+        }
+        abort() {
+            if (this.native.error)
+                return;
+            this.native.abort();
+        }
+        commit() {
+            this.native.commit?.();
+            return new Promise((done, fail) => {
+                this.native.onerror = () => fail(new Error(this.native.error.message));
+                this.native.oncomplete = () => done();
+            });
+        }
+        get db() {
+            return new $mol_db_database(this.native.db);
+        }
+    }
+    $.$mol_db_transaction = $mol_db_transaction;
+})($ || ($ = {}));
+//mol/db/transaction/transaction.ts
+;
+"use strict";
+var $;
+(function ($) {
+    class $hyoo_cras_mine extends $mol_object {
+        static store = new Map();
+        static hash(blob) {
+            return $mol_crypto_hash(blob);
+        }
+        static rock(hash, next) {
+            $mol_wire_solid();
+            if (!next)
+                return $mol_wire_sync(this.read()).get([hash]);
+            this.change().then(Rock => Rock.put(next, [hash]));
+            return next;
+        }
+        static save(blob) {
+            const hash = this.hash(blob);
+            this.rock(hash, blob);
+            return hash;
+        }
+        static read() {
+            const db = $mol_wire_sync(this).db();
+            return $mol_wire_sync(db).read('Rock').Rock;
+        }
+        static async change() {
+            const db = await this.db();
+            return db.change('Rock').stores.Rock;
+        }
+        static async db() {
+            return await this.$.$mol_db('$hyoo_cras_mine', mig => mig.store_make('Rock'));
+        }
+    }
+    __decorate([
+        $mol_mem_key
+    ], $hyoo_cras_mine, "hash", null);
+    __decorate([
+        $mol_mem_key
+    ], $hyoo_cras_mine, "rock", null);
+    __decorate([
+        $mol_action
+    ], $hyoo_cras_mine, "save", null);
+    __decorate([
+        $mol_action
+    ], $hyoo_cras_mine, "read", null);
+    __decorate([
+        $mol_memo.method
+    ], $hyoo_cras_mine, "db", null);
+    $.$hyoo_cras_mine = $hyoo_cras_mine;
+})($ || ($ = {}));
+//hyoo/cras/mine/mine.ts
 ;
 "use strict";
 //mol/type/partial/deep/deep.ts
@@ -9256,422 +9645,6 @@ var $;
 //hyoo/cras/vary/cast/cast.tsx
 ;
 "use strict";
-var $;
-(function ($) {
-    function $mol_reconcile({ prev, from, to, next, equal, drop, insert, update, }) {
-        if (!update)
-            update = (next, prev, lead) => insert(next, drop(prev, lead));
-        let p = from;
-        let n = 0;
-        let lead = p ? prev[p - 1] : null;
-        if (to > prev.length)
-            $mol_fail(new RangeError(`To(${to}) greater then length(${prev.length})`));
-        if (from > to)
-            $mol_fail(new RangeError(`From(${to}) greater then to(${to})`));
-        while (p < to || n < next.length) {
-            if (p < to && n < next.length && equal(next[n], prev[p])) {
-                lead = prev[p];
-                ++p;
-                ++n;
-            }
-            else if (next.length - n > to - p) {
-                lead = insert(next[n], lead);
-                ++n;
-            }
-            else if (next.length - n < to - p) {
-                lead = drop(prev[p], lead);
-                ++p;
-            }
-            else {
-                lead = update(next[n], prev[p], lead);
-                ++p;
-                ++n;
-            }
-        }
-    }
-    $.$mol_reconcile = $mol_reconcile;
-})($ || ($ = {}));
-//mol/reconcile/reconcile.ts
-;
-"use strict";
-var $;
-(function ($) {
-    class $hyoo_cras_list extends $hyoo_cras_node {
-        static tag = $hyoo_cras_gist_tag[$hyoo_cras_gist_tag.vals];
-        static ref(Value) {
-            class Narrow extends $hyoo_cras_list {
-                static Value = Value;
-                static toJSON() {
-                    return '$hyoo_cras_list.ref(()=>' + Value() + ')';
-                }
-                remote_list(next) {
-                    const realm = this.realm();
-                    const Node = Value();
-                    return this.items(next?.map(item => item.ref()))
-                        .map($hyoo_cras_vary_cast_ref)
-                        .map(ref => realm.Node(Node, ref));
-                }
-                remote_make() {
-                    const land = this.realm().home().Land_new(0);
-                    this.splice([land.ref()]);
-                    return land.Node(Value()).Item(0);
-                }
-            }
-            __decorate([
-                $mol_mem
-            ], Narrow.prototype, "remote_list", null);
-            __decorate([
-                $mol_action
-            ], Narrow.prototype, "remote_make", null);
-            return Narrow;
-        }
-        items(next, tag = 'term') {
-            const units = this.units();
-            if (next === undefined)
-                return units.map(unit => this.land().gist_decode(unit));
-            this.splice(next, 0, units.length, tag);
-            return this.items();
-        }
-        splice(next, from = this.units().length, to = from, tag = 'term') {
-            const land = this.land();
-            $mol_reconcile({
-                prev: this.units(),
-                from,
-                to,
-                next,
-                equal: (next, prev) => $mol_compare_deep(this.land().gist_decode(prev), next),
-                drop: (prev, lead) => this.land().post(lead?.self() ?? 0, prev.head(), prev.self(), null),
-                insert: (next, lead) => this.land().post(lead?.self() ?? 0, this.head(), land.self_make(), next, tag),
-                update: (next, prev, lead) => this.land().post(lead?.self() ?? 0, prev.head(), prev.self(), next, prev.tag()),
-            });
-        }
-        find(vary) {
-            for (const unit of this.units()) {
-                if ($mol_compare_deep(this.land().gist_decode(unit), vary))
-                    return unit;
-            }
-            return null;
-        }
-        has(vary, next, tag = 'term') {
-            if (next === undefined)
-                return Boolean(this.find(vary));
-            if (next)
-                this.add(vary, tag);
-            else
-                this.cut(vary);
-            return next;
-        }
-        add(vary, tag = 'term') {
-            if (this.has(vary))
-                return;
-            this.land().post(0, this.head(), 0, vary, tag);
-        }
-        cut(vary) {
-            const units = [...this.units()];
-            for (let i = 0; i < units.length; ++i) {
-                if (!$mol_compare_deep(this.land().gist_decode(units[i]), vary))
-                    continue;
-                this.land().post(units[i - 1]?.self() ?? 0, units[i].head(), units[i].self(), null);
-                units.splice(i, 1);
-                --i;
-            }
-        }
-        move(from, to) {
-            this.land().gist_move(this.units()[from], this.head(), to);
-        }
-        wipe(seat) {
-            this.land().gist_wipe(this.units()[seat]);
-        }
-        node_make(Node, vary, tag = 'term') {
-            this.splice([vary], undefined, undefined, tag);
-            return this.land().Node(Node).Item(this.units().at(-1).self());
-        }
-        ;
-        [$mol_dev_format_head]() {
-            return $mol_dev_format_span({}, $mol_dev_format_native(this), ' ', this.slug(), ' ', $mol_dev_format_auto(this.items()));
-        }
-    }
-    __decorate([
-        $mol_mem
-    ], $hyoo_cras_list.prototype, "items", null);
-    $.$hyoo_cras_list = $hyoo_cras_list;
-})($ || ($ = {}));
-//hyoo/cras/list/list.ts
-;
-"use strict";
-var $;
-(function ($) {
-    function $mol_db_response(request) {
-        return new Promise((done, fail) => {
-            request.onerror = () => fail(new Error(request.error.message));
-            request.onsuccess = () => done(request.result);
-        });
-    }
-    $.$mol_db_response = $mol_db_response;
-})($ || ($ = {}));
-//mol/db/response/response.ts
-;
-"use strict";
-var $;
-(function ($) {
-    class $mol_db_store {
-        native;
-        constructor(native) {
-            this.native = native;
-        }
-        get name() {
-            return this.native.name;
-        }
-        get path() {
-            return this.native.keyPath;
-        }
-        get incremental() {
-            return this.native.autoIncrement;
-        }
-        get indexes() {
-            return new Proxy({}, {
-                ownKeys: () => [...this.native.indexNames],
-                has: (_, name) => this.native.indexNames.contains(name),
-                get: (_, name) => new $mol_db_index(this.native.index(name))
-            });
-        }
-        index_make(name, path = [], unique = false, multiEntry = false) {
-            return this.native.createIndex(name, path, { multiEntry, unique });
-        }
-        index_drop(name) {
-            this.native.deleteIndex(name);
-            return this;
-        }
-        get transaction() {
-            return new $mol_db_transaction(this.native.transaction);
-        }
-        get db() {
-            return this.transaction.db;
-        }
-        clear() {
-            return $mol_db_response(this.native.clear());
-        }
-        count(keys) {
-            return $mol_db_response(this.native.count(keys));
-        }
-        put(doc, key) {
-            return $mol_db_response(this.native.put(doc, key));
-        }
-        get(key) {
-            return $mol_db_response(this.native.get(key));
-        }
-        select(key, count) {
-            return $mol_db_response(this.native.getAll(key, count));
-        }
-        drop(keys) {
-            return $mol_db_response(this.native.delete(keys));
-        }
-    }
-    $.$mol_db_store = $mol_db_store;
-})($ || ($ = {}));
-//mol/db/store/store.ts
-;
-"use strict";
-//mol/db/store/store_schema.ts
-;
-"use strict";
-var $;
-(function ($) {
-    class $mol_db_index {
-        native;
-        constructor(native) {
-            this.native = native;
-        }
-        get name() {
-            return this.native.name;
-        }
-        get paths() {
-            return this.native.keyPath;
-        }
-        get unique() {
-            return this.native.unique;
-        }
-        get multiple() {
-            return this.native.multiEntry;
-        }
-        get store() {
-            return new $mol_db_store(this.native.objectStore);
-        }
-        get transaction() {
-            return this.store.transaction;
-        }
-        get db() {
-            return this.store.db;
-        }
-        count(keys) {
-            return $mol_db_response(this.native.count(keys));
-        }
-        get(key) {
-            return $mol_db_response(this.native.get(key));
-        }
-        select(key, count) {
-            return $mol_db_response(this.native.getAll(key, count));
-        }
-    }
-    $.$mol_db_index = $mol_db_index;
-})($ || ($ = {}));
-//mol/db/index/index.ts
-;
-"use strict";
-//mol/db/index/index_schema.ts
-;
-"use strict";
-var $;
-(function ($) {
-    async function $mol_db(name, ...migrations) {
-        const request = this.$mol_dom_context.indexedDB.open(name, migrations.length ? migrations.length + 1 : undefined);
-        request.onupgradeneeded = event => {
-            migrations.splice(0, event.oldVersion - 1);
-            const transaction = new $mol_db_transaction(request.transaction);
-            for (const migrate of migrations)
-                migrate(transaction);
-        };
-        const db = await $mol_db_response(request);
-        return new $mol_db_database(db);
-    }
-    $.$mol_db = $mol_db;
-})($ || ($ = {}));
-//mol/db/db.ts
-;
-"use strict";
-//mol/db/db_schema.ts
-;
-"use strict";
-var $;
-(function ($) {
-    class $mol_db_database {
-        native;
-        constructor(native) {
-            this.native = native;
-        }
-        get name() {
-            return this.native.name;
-        }
-        get version() {
-            return this.native.version;
-        }
-        get stores() {
-            return [...this.native.objectStoreNames];
-        }
-        read(...names) {
-            return new $mol_db_transaction(this.native.transaction(names, 'readonly')).stores;
-        }
-        change(...names) {
-            return new $mol_db_transaction(this.native.transaction(names, 'readwrite'));
-        }
-        kill() {
-            this.native.close();
-            const request = $mol_dom_context.indexedDB.deleteDatabase(this.name);
-            request.onblocked = console.warn;
-            return $mol_db_response(request);
-        }
-        destructor() {
-            this.native.close();
-        }
-    }
-    $.$mol_db_database = $mol_db_database;
-})($ || ($ = {}));
-//mol/db/database/database.ts
-;
-"use strict";
-var $;
-(function ($) {
-    class $mol_db_transaction {
-        native;
-        constructor(native) {
-            this.native = native;
-        }
-        get stores() {
-            return new Proxy({}, {
-                ownKeys: () => [...this.native.objectStoreNames],
-                has: (_, name) => this.native.objectStoreNames.contains(name),
-                get: (_, name) => new $mol_db_store(this.native.objectStore(name)),
-            });
-        }
-        store_make(name) {
-            return this.native.db.createObjectStore(name, { autoIncrement: true });
-        }
-        store_drop(name) {
-            this.native.db.deleteObjectStore(name);
-            return this;
-        }
-        abort() {
-            if (this.native.error)
-                return;
-            this.native.abort();
-        }
-        commit() {
-            this.native.commit?.();
-            return new Promise((done, fail) => {
-                this.native.onerror = () => fail(new Error(this.native.error.message));
-                this.native.oncomplete = () => done();
-            });
-        }
-        get db() {
-            return new $mol_db_database(this.native.db);
-        }
-    }
-    $.$mol_db_transaction = $mol_db_transaction;
-})($ || ($ = {}));
-//mol/db/transaction/transaction.ts
-;
-"use strict";
-var $;
-(function ($) {
-    class $hyoo_cras_mine extends $mol_object {
-        static store = new Map();
-        static hash(blob) {
-            return $mol_crypto_hash(blob);
-        }
-        static rock(hash, next) {
-            $mol_wire_solid();
-            if (!next)
-                return $mol_wire_sync(this.read()).get([hash]);
-            this.change().then(Rock => Rock.put(next, [hash]));
-            return next;
-        }
-        static save(blob) {
-            const hash = this.hash(blob);
-            this.rock(hash, blob);
-            return hash;
-        }
-        static read() {
-            const db = $mol_wire_sync(this).db();
-            return $mol_wire_sync(db).read('Rock').Rock;
-        }
-        static async change() {
-            const db = await this.db();
-            return db.change('Rock').stores.Rock;
-        }
-        static async db() {
-            return await this.$.$mol_db('$hyoo_cras_mine', mig => mig.store_make('Rock'));
-        }
-    }
-    __decorate([
-        $mol_mem_key
-    ], $hyoo_cras_mine, "hash", null);
-    __decorate([
-        $mol_mem_key
-    ], $hyoo_cras_mine, "rock", null);
-    __decorate([
-        $mol_action
-    ], $hyoo_cras_mine, "save", null);
-    __decorate([
-        $mol_action
-    ], $hyoo_cras_mine, "read", null);
-    __decorate([
-        $mol_memo.method
-    ], $hyoo_cras_mine, "db", null);
-    $.$hyoo_cras_mine = $hyoo_cras_mine;
-})($ || ($ = {}));
-//hyoo/cras/mine/mine.ts
-;
-"use strict";
 //mol/data/value/value.ts
 ;
 "use strict";
@@ -9679,44 +9652,6 @@ var $;
 (function ($) {
     class $hyoo_cras_reg extends $hyoo_cras_node {
         static tag = $hyoo_cras_gist_tag[$hyoo_cras_gist_tag.head];
-        static of(tip) {
-            class Narrow extends $hyoo_cras_reg {
-                static tip = tip;
-                value(next) {
-                    return $hyoo_cras_vary_cast_funcs[tip](this.value_vary(next));
-                }
-            }
-            __decorate([
-                $mol_mem
-            ], Narrow.prototype, "value", null);
-            return Narrow;
-        }
-        static ref(Value) {
-            class Narrow extends $hyoo_cras_reg {
-                static Value = Value;
-                static toJSON() {
-                    return '$hyoo_cras_reg.ref(()=>' + Value() + ')';
-                }
-                remote(next) {
-                    const realm = this.realm();
-                    const ref = this.value_ref(next?.ref());
-                    if (!ref)
-                        return null;
-                    return realm.Lord(ref.lord()).Land(ref.land()).Node(Value()).Item(ref.head());
-                }
-                remote_ensure() {
-                    this.yoke(this.ref());
-                    return this.remote();
-                }
-            }
-            __decorate([
-                $mol_mem
-            ], Narrow.prototype, "remote", null);
-            __decorate([
-                $mol_action
-            ], Narrow.prototype, "remote_ensure", null);
-            return Narrow;
-        }
         pick_unit() {
             return this.units().at(0);
         }
@@ -9809,10 +9744,47 @@ var $;
     __decorate([
         $mol_mem_key
     ], $hyoo_cras_reg.prototype, "yoke", null);
-    __decorate([
-        $mol_mem_key
-    ], $hyoo_cras_reg, "of", null);
     $.$hyoo_cras_reg = $hyoo_cras_reg;
+    function $hyoo_cras_reg_narrow(tip) {
+        class Narrow extends $hyoo_cras_reg {
+            static tip = tip;
+            value(next) {
+                return $hyoo_cras_vary_cast_funcs[tip](this.value_vary(next));
+            }
+        }
+        __decorate([
+            $mol_mem
+        ], Narrow.prototype, "value", null);
+        return Narrow;
+    }
+    $.$hyoo_cras_reg_narrow = $hyoo_cras_reg_narrow;
+    class $hyoo_cras_reg_bin extends $hyoo_cras_reg_narrow('bin') {
+    }
+    $.$hyoo_cras_reg_bin = $hyoo_cras_reg_bin;
+    class $hyoo_cras_reg_bool extends $hyoo_cras_reg_narrow('bool') {
+    }
+    $.$hyoo_cras_reg_bool = $hyoo_cras_reg_bool;
+    class $hyoo_cras_reg_int extends $hyoo_cras_reg_narrow('int') {
+    }
+    $.$hyoo_cras_reg_int = $hyoo_cras_reg_int;
+    class $hyoo_cras_reg_real extends $hyoo_cras_reg_narrow('real') {
+    }
+    $.$hyoo_cras_reg_real = $hyoo_cras_reg_real;
+    class $hyoo_cras_reg_str extends $hyoo_cras_reg_narrow('str') {
+    }
+    $.$hyoo_cras_reg_str = $hyoo_cras_reg_str;
+    class $hyoo_cras_reg_time extends $hyoo_cras_reg_narrow('time') {
+    }
+    $.$hyoo_cras_reg_time = $hyoo_cras_reg_time;
+    class $hyoo_cras_reg_json extends $hyoo_cras_reg_narrow('json') {
+    }
+    $.$hyoo_cras_reg_json = $hyoo_cras_reg_json;
+    class $hyoo_cras_reg_xml extends $hyoo_cras_reg_narrow('xml') {
+    }
+    $.$hyoo_cras_reg_xml = $hyoo_cras_reg_xml;
+    class $hyoo_cras_reg_tree extends $hyoo_cras_reg_narrow('tree') {
+    }
+    $.$hyoo_cras_reg_tree = $hyoo_cras_reg_tree;
 })($ || ($ = {}));
 //hyoo/cras/reg/reg.ts
 ;
@@ -9821,17 +9793,6 @@ var $;
 (function ($) {
     class $hyoo_cras_dict extends $hyoo_cras_node {
         static tag = $hyoo_cras_gist_tag[$hyoo_cras_gist_tag.keys];
-        static of(schema) {
-            const Entity = class Entity extends $hyoo_cras_dict {
-            };
-            for (const field in schema) {
-                Object.assign(Entity.prototype, { [field]: function () {
-                        return this.dive(field, schema[field]);
-                    } });
-                $mol_mem(Entity.prototype, field);
-            }
-            return Entity;
-        }
         keys() {
             return this.cast($hyoo_cras_list).items();
         }
@@ -10246,7 +10207,7 @@ var $;
         }
     }
     __decorate([
-        $mol_mem
+        $mol_memo.method
     ], $hyoo_cras_land.prototype, "ref", null);
     __decorate([
         $mol_action
@@ -10272,6 +10233,21 @@ var $;
     __decorate([
         $mol_mem_key
     ], $hyoo_cras_land.prototype, "gists_ordered", null);
+    __decorate([
+        $mol_action
+    ], $hyoo_cras_land.prototype, "join", null);
+    __decorate([
+        $mol_action
+    ], $hyoo_cras_land.prototype, "give", null);
+    __decorate([
+        $mol_action
+    ], $hyoo_cras_land.prototype, "post", null);
+    __decorate([
+        $mol_action
+    ], $hyoo_cras_land.prototype, "gist_move", null);
+    __decorate([
+        $mol_action
+    ], $hyoo_cras_land.prototype, "gist_wipe", null);
     __decorate([
         $mol_action
     ], $hyoo_cras_land.prototype, "gist_decode", null);
@@ -10308,6 +10284,18 @@ var $;
             return this.dive('profiles', $hyoo_cras_dict).dive(app, $hyoo_cras_reg).yoke(app);
         }
     }
+    __decorate([
+        $mol_mem
+    ], $hyoo_cras_base.prototype, "title", null);
+    __decorate([
+        $mol_mem
+    ], $hyoo_cras_base.prototype, "selection", null);
+    __decorate([
+        $mol_mem
+    ], $hyoo_cras_base.prototype, "profiles", null);
+    __decorate([
+        $mol_mem_key
+    ], $hyoo_cras_base.prototype, "Profile", null);
     $.$hyoo_cras_base = $hyoo_cras_base;
 })($ || ($ = {}));
 //hyoo/cras/base/base.ts
@@ -10361,9 +10349,6 @@ var $;
             $mol_fail(new Error(`Too long numb generation`));
         }
     }
-    __decorate([
-        $mol_mem
-    ], $hyoo_cras_lord.prototype, "realm", null);
     __decorate([
         $mol_mem_key
     ], $hyoo_cras_lord.prototype, "Land", null);
@@ -12949,7 +12934,7 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    class $hyoo_cras_text extends $hyoo_cras_node {
+    class $hyoo_cras_text extends $hyoo_cras_list {
         static tag = $hyoo_cras_gist_tag[$hyoo_cras_gist_tag.vals];
         text(next) {
             if (next !== undefined) {
@@ -13026,7 +13011,7 @@ var $;
                 next = String(land.gist_decode(list[from]) ?? '') + next;
             }
             const words = next.match($hyoo_crowd_tokenizer) ?? [];
-            this.cast($hyoo_cras_list).splice(words, from, to);
+            this.splice(words, from, to);
             return this;
         }
         point_by_offset(offset) {
@@ -13086,6 +13071,15 @@ var $;
     __decorate([
         $mol_action
     ], $hyoo_cras_text.prototype, "write", null);
+    __decorate([
+        $mol_action
+    ], $hyoo_cras_text.prototype, "point_by_offset", null);
+    __decorate([
+        $mol_action
+    ], $hyoo_cras_text.prototype, "offset_by_point", null);
+    __decorate([
+        $mol_mem_key
+    ], $hyoo_cras_text.prototype, "selection", null);
     $.$hyoo_cras_text = $hyoo_cras_text;
 })($ || ($ = {}));
 //hyoo/cras/text/text.ts
@@ -13199,6 +13193,9 @@ var $;
             Tools: {
                 flex: {
                     grow: 1,
+                },
+                justify: {
+                    content: `flex-end`,
                 },
             },
             Label: {

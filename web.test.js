@@ -4925,22 +4925,6 @@ var $;
 var $;
 (function ($) {
     $mol_test({
-        'fromJSON'() {
-            $mol_assert_equal($mol_tree2_from_json([]).toString(), '/\n');
-            $mol_assert_equal($mol_tree2_from_json([false, true]).toString(), '/\n\tfalse\n\ttrue\n');
-            $mol_assert_equal($mol_tree2_from_json([0, 1, 2.3]).toString(), '/\n\t0\n\t1\n\t2.3\n');
-            $mol_assert_equal($mol_tree2_from_json(new Uint16Array([1, 10, 256])).toString(), '\\\x01\x00\n\\\x00\x00\x01\n');
-            $mol_assert_equal($mol_tree2_from_json(['', 'foo', 'bar\nbaz']).toString(), '/\n\t\\\n\t\\foo\n\t\\\n\t\t\\bar\n\t\t\\baz\n');
-            $mol_assert_equal($mol_tree2_from_json({ 'foo': false, 'bar\nbaz': 'lol' }).toString(), '*\n\tfoo false\n\t\\\n\t\t\\bar\n\t\t\\baz\n\t\t\\lol\n');
-        },
-    });
-})($ || ($ = {}));
-//mol/tree2/from/json/json.test.ts
-;
-"use strict";
-var $;
-(function ($) {
-    $mol_test({
         'same list'() {
             const list = $mol_jsx("body", null,
                 $mol_jsx("p", { "data-rev": "old" }, "a"),
@@ -5370,6 +5354,22 @@ var $;
 var $;
 (function ($) {
     $mol_test({
+        'fromJSON'() {
+            $mol_assert_equal($mol_tree2_from_json([]).toString(), '/\n');
+            $mol_assert_equal($mol_tree2_from_json([false, true]).toString(), '/\n\tfalse\n\ttrue\n');
+            $mol_assert_equal($mol_tree2_from_json([0, 1, 2.3]).toString(), '/\n\t0\n\t1\n\t2.3\n');
+            $mol_assert_equal($mol_tree2_from_json(new Uint16Array([1, 10, 256])).toString(), '\\\x01\x00\n\\\x00\x00\x01\n');
+            $mol_assert_equal($mol_tree2_from_json(['', 'foo', 'bar\nbaz']).toString(), '/\n\t\\\n\t\\foo\n\t\\\n\t\t\\bar\n\t\t\\baz\n');
+            $mol_assert_equal($mol_tree2_from_json({ 'foo': false, 'bar\nbaz': 'lol' }).toString(), '*\n\tfoo false\n\t\\\n\t\t\\bar\n\t\t\\baz\n\t\t\\lol\n');
+        },
+    });
+})($ || ($ = {}));
+//mol/tree2/from/json/json.test.ts
+;
+"use strict";
+var $;
+(function ($) {
+    $mol_test({
         'config by value'() {
             const N = $mol_data_setup((a) => a, 5);
             $mol_assert_equal(N.config, 5);
@@ -5704,11 +5704,11 @@ var $;
             "Narrow registers"($) {
                 const realm = $hyoo_cras_realm.make({ $ });
                 const land = realm.home().base().land();
-                const bin = land.Node($hyoo_cras_reg.of('bin')).Item(1);
+                const bin = land.Node($hyoo_cras_reg_bin).Item(1);
                 $mol_assert_like(bin.value(), null);
                 bin.value(new Uint8Array([1, 2, 3]));
                 $mol_assert_like(bin.value(), new Uint8Array([1, 2, 3]));
-                const str = land.Node($hyoo_cras_reg.of('str')).Item(2);
+                const str = land.Node($hyoo_cras_reg_str).Item(2);
                 $mol_assert_like(str.value(), '');
                 str.value('foo');
                 $mol_assert_like(str.value(), 'foo');
@@ -5716,7 +5716,7 @@ var $;
             "Register with linked nodes"($) {
                 const realm = $hyoo_cras_realm.make({ $ });
                 const land = realm.home().base().land();
-                const reg = land.Node($hyoo_cras_reg.ref(() => $hyoo_cras_reg)).Item(1);
+                const reg = land.Node($hyoo_cras_reg_ref(() => $hyoo_cras_reg)).Item(1);
                 $mol_assert_like(reg.remote(), null);
                 reg.remote(reg);
                 $mol_assert_like(reg.value_ref(), reg.remote().value_ref(), reg.ref());
@@ -5725,6 +5725,73 @@ var $;
     })($$ = $_1.$$ || ($_1.$$ = {}));
 })($ || ($ = {}));
 //hyoo/cras/reg/reg.test.ts
+;
+"use strict";
+var $;
+(function ($) {
+    function $hyoo_cras_reg_ref(Value) {
+        class Narrow extends $hyoo_cras_reg {
+            static Value = Value;
+            static toJSON() {
+                return '$hyoo_cras_reg_ref(()=>' + Value() + ')';
+            }
+            remote(next) {
+                const realm = this.realm();
+                const ref = this.value_ref(next?.ref());
+                if (!ref)
+                    return null;
+                return realm.Lord(ref.lord()).Land(ref.land()).Node(Value()).Item(ref.head());
+            }
+            remote_ensure() {
+                this.yoke(this.ref());
+                return this.remote();
+            }
+        }
+        __decorate([
+            $mol_mem
+        ], Narrow.prototype, "remote", null);
+        __decorate([
+            $mol_action
+        ], Narrow.prototype, "remote_ensure", null);
+        return Narrow;
+    }
+    $.$hyoo_cras_reg_ref = $hyoo_cras_reg_ref;
+})($ || ($ = {}));
+//hyoo/cras/reg/ref/ref.ts
+;
+"use strict";
+var $;
+(function ($) {
+    function $hyoo_cras_list_ref(Value) {
+        class Narrow extends $hyoo_cras_list {
+            static Value = Value;
+            static toJSON() {
+                return '$hyoo_cras_list_ref(()=>' + Value() + ')';
+            }
+            remote_list(next) {
+                const realm = this.realm();
+                const Node = Value();
+                return this.items(next?.map(item => item.ref()))
+                    .map($hyoo_cras_vary_cast_ref)
+                    .map(ref => realm.Node(Node, ref));
+            }
+            remote_make() {
+                const land = this.realm().home().Land_new(0);
+                this.splice([land.ref()]);
+                return land.Node(Value()).Item(0);
+            }
+        }
+        __decorate([
+            $mol_mem
+        ], Narrow.prototype, "remote_list", null);
+        __decorate([
+            $mol_action
+        ], Narrow.prototype, "remote_make", null);
+        return Narrow;
+    }
+    $.$hyoo_cras_list_ref = $hyoo_cras_list_ref;
+})($ || ($ = {}));
+//hyoo/cras/list/ref/ref.ts
 ;
 "use strict";
 var $;
@@ -5771,38 +5838,124 @@ var $;
             "Narrowed Dictionary with linked Dictionaries and others"($) {
                 const realm = $hyoo_cras_realm.make({ $ });
                 const land = realm.home().base().land();
-                class User extends $hyoo_cras_dict.of({
-                    Title: $hyoo_cras_reg.of('str'),
-                    Account: $hyoo_cras_reg.ref(() => Account),
-                    Articles: $hyoo_cras_list.ref(() => Article),
+                class User extends $hyoo_cras_dict_obj({
+                    Title: $hyoo_cras_reg_str,
+                    Account: $hyoo_cras_reg_ref(() => Account),
+                    Articles: $hyoo_cras_list_ref(() => Article),
                 }) {
                 }
-                class Account extends $hyoo_cras_dict.of({
-                    Title: $hyoo_cras_reg.of('str'),
-                    User: $hyoo_cras_reg.ref(() => User),
+                class Account extends $hyoo_cras_dict_obj({
+                    Title: $hyoo_cras_reg_str,
+                    User: $hyoo_cras_reg_ref(() => User),
                 }) {
                 }
-                class Article extends $hyoo_cras_dict.of({
-                    Title: $hyoo_cras_reg.of('str'),
-                    Author: $hyoo_cras_reg.ref(() => User),
+                class Article extends $hyoo_cras_dict_obj({
+                    Title: $hyoo_cras_reg_str,
+                    Author: $hyoo_cras_reg_ref(() => User),
                 }) {
                 }
                 const user = land.Node(User).Item(1);
-                $mol_assert_like(user.Account().remote(), null);
-                $mol_assert_like(user.Articles().remote_list(), []);
-                const account = user.Account().remote_ensure();
-                $mol_assert_like(user.Account().remote(), account);
-                $mol_assert_like(account.User().remote(), null);
-                account.User().remote(user);
-                $mol_assert_like(account.User().remote(), user);
-                const articles = [user.Articles().remote_make(), user.Articles().remote_make()];
-                $mol_assert_like(user.Articles().remote_list(), articles);
+                $mol_assert_like(user.Account.remote(), null);
+                $mol_assert_like(user.Articles.remote_list(), []);
+                const account = user.Account.remote_ensure();
+                $mol_assert_like(user.Account.remote(), account);
+                $mol_assert_like(account.User.remote(), null);
+                account.User.remote(user);
+                $mol_assert_like(account.User.remote(), user);
+                const articles = [user.Articles.remote_make(), user.Articles.remote_make()];
+                $mol_assert_like(user.Articles.remote_list(), articles);
                 $mol_assert_unique(user.land(), account.land(), ...articles.map(article => article.land()));
             },
         });
     })($$ = $_1.$$ || ($_1.$$ = {}));
 })($ || ($ = {}));
 //hyoo/cras/dict/dict.test.ts
+;
+"use strict";
+var $;
+(function ($) {
+    function $mol_wire_field(host, field, descr) {
+        if (!descr)
+            descr = Reflect.getOwnPropertyDescriptor(host, field);
+        const _get = descr?.get || $mol_const(descr?.value);
+        const _set = descr?.set || function (next) {
+            $mol_wire_atom.solo(this, _get).put(next);
+        };
+        const sup = Reflect.getPrototypeOf(host);
+        const sup_descr = Reflect.getOwnPropertyDescriptor(sup, field);
+        Object.defineProperty(_get, 'name', { value: sup_descr?.get?.name ?? field });
+        Object.defineProperty(_set, 'name', { value: sup_descr?.set?.name ?? field });
+        function get() {
+            return $mol_wire_atom.solo(this, _get).sync();
+        }
+        const temp = $mol_wire_task.getter(_set);
+        function set(next) {
+            temp(this, [next]).sync();
+        }
+        Object.defineProperty(get, 'name', { value: _get.name + '$' });
+        Object.defineProperty(set, 'name', { value: _set.name + '@' });
+        Object.assign(get, { orig: _get });
+        Object.assign(set, { orig: _set });
+        const { value, writable, ...descr2 } = { ...descr, get, set };
+        Reflect.defineProperty(host, field, descr2);
+        return descr2;
+    }
+    $.$mol_wire_field = $mol_wire_field;
+})($ || ($ = {}));
+//mol/wire/field/field.ts
+;
+"use strict";
+var $;
+(function ($_1) {
+    $mol_test({
+        'Cached field'($) {
+            class App extends $mol_object2 {
+                static $ = $;
+                static low = 1;
+                static get high() {
+                    return this.low + 1;
+                }
+                static set high(next) {
+                    this.low = next - 1;
+                }
+                static test() {
+                    $mol_assert_equal(App.high, 2);
+                    App.high = 3;
+                    $mol_assert_equal(App.high, 3);
+                }
+            }
+            __decorate([
+                $mol_wire_field
+            ], App, "low", void 0);
+            __decorate([
+                $mol_wire_field
+            ], App, "high", null);
+            __decorate([
+                $mol_wire_method
+            ], App, "test", null);
+            App.test();
+        },
+    });
+})($ || ($ = {}));
+//mol/wire/field/field.test.ts
+;
+"use strict";
+var $;
+(function ($) {
+    function $hyoo_cras_dict_obj(schema) {
+        const Entity = class Entity extends $hyoo_cras_dict {
+        };
+        for (const field in schema) {
+            Object.defineProperty(Entity.prototype, field, { get: function () {
+                    return this.dive(field, schema[field]);
+                } });
+            $mol_wire_field(Entity.prototype, field);
+        }
+        return Entity;
+    }
+    $.$hyoo_cras_dict_obj = $hyoo_cras_dict_obj;
+})($ || ($ = {}));
+//hyoo/cras/dict/obj/obj.ts
 ;
 "use strict";
 var $;

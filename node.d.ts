@@ -2565,87 +2565,6 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    type $mol_type_partial_deep<Val> = Val extends object ? Val extends Function ? Val : {
-        [field in keyof Val]?: $mol_type_partial_deep<Val[field]> | undefined;
-    } : Val;
-}
-
-declare namespace $ {
-    let $mol_jsx_prefix: string;
-    let $mol_jsx_crumbs: string;
-    let $mol_jsx_booked: Set<string> | null;
-    let $mol_jsx_document: $mol_jsx.JSX.ElementClass['ownerDocument'];
-    const $mol_jsx_frag = "";
-    function $mol_jsx<Props extends $mol_jsx.JSX.IntrinsicAttributes, Children extends Array<Node | string>>(Elem: string | ((props: Props, ...children: Children) => Element), props: Props, ...childNodes: Children): Element | DocumentFragment;
-    namespace $mol_jsx.JSX {
-        interface Element extends HTMLElement {
-            class?: string;
-        }
-        interface ElementClass {
-            attributes: {};
-            ownerDocument: Pick<Document, 'getElementById' | 'createElementNS' | 'createDocumentFragment'>;
-            childNodes: Array<Node | string>;
-            valueOf(): Element;
-        }
-        type OrString<Dict> = {
-            [key in keyof Dict]: Dict[key] | string;
-        };
-        type IntrinsicElements = {
-            [key in keyof ElementTagNameMap]?: $.$mol_type_partial_deep<OrString<Element & IntrinsicAttributes & ElementTagNameMap[key]>>;
-        };
-        interface IntrinsicAttributes {
-            id?: string;
-            xmlns?: string;
-        }
-        interface ElementAttributesProperty {
-            attributes: {};
-        }
-        interface ElementChildrenAttribute {
-        }
-    }
-}
-
-declare namespace $ {
-    function $mol_tree2_bin_to_bytes(tree: $mol_tree2): Uint8Array;
-    function $mol_tree2_bin_from_bytes(bytes: ArrayLike<number>, span?: $mol_span): $mol_tree2;
-    function $mol_tree2_bin_from_string(str: string, span?: $mol_span): $mol_tree2;
-}
-
-declare namespace $ {
-    function $mol_tree2_xml_from_dom(dom: Node): $mol_tree2;
-}
-
-declare namespace $ {
-    function $hyoo_cras_vary_cast_bin(vary: $hyoo_cras_vary_type): Uint8Array | null;
-    function $hyoo_cras_vary_cast_bool(vary: $hyoo_cras_vary_type): boolean;
-    function $hyoo_cras_vary_cast_int(vary: $hyoo_cras_vary_type): bigint;
-    function $hyoo_cras_vary_cast_real(vary: $hyoo_cras_vary_type): number;
-    function $hyoo_cras_vary_cast_ref(vary: $hyoo_cras_vary_type): $hyoo_cras_ref;
-    function $hyoo_cras_vary_cast_str(vary: $hyoo_cras_vary_type): string;
-    function $hyoo_cras_vary_cast_time(vary: $hyoo_cras_vary_type): $mol_time_moment;
-    function $hyoo_cras_vary_cast_json(vary: $hyoo_cras_vary_type): {} | any[] | string[] | number[] | boolean[] | {
-        lord: string;
-        numb: number;
-        head: number;
-    } | null;
-    function $hyoo_cras_vary_cast_xml(vary: $hyoo_cras_vary_type): Element | HTMLElement | $mol_jsx.JSX.Element;
-    function $hyoo_cras_vary_cast_tree(vary: $hyoo_cras_vary_type): $mol_tree2;
-    const $hyoo_cras_vary_cast_funcs: {
-        readonly bin: typeof $hyoo_cras_vary_cast_bin;
-        readonly bool: typeof $hyoo_cras_vary_cast_bool;
-        readonly int: typeof $hyoo_cras_vary_cast_int;
-        readonly real: typeof $hyoo_cras_vary_cast_real;
-        readonly ref: typeof $hyoo_cras_vary_cast_ref;
-        readonly str: typeof $hyoo_cras_vary_cast_str;
-        readonly time: typeof $hyoo_cras_vary_cast_time;
-        readonly json: typeof $hyoo_cras_vary_cast_json;
-        readonly xml: typeof $hyoo_cras_vary_cast_xml;
-        readonly tree: typeof $hyoo_cras_vary_cast_tree;
-    };
-    function $hyoo_cras_vary_cast<Tip extends keyof typeof $hyoo_cras_vary_tip>(tip: Tip, vary: $hyoo_cras_vary_type): {} | null;
-}
-
-declare namespace $ {
     function $mol_reconcile<Prev, Next>({ prev, from, to, next, equal, drop, insert, update, }: {
         prev: readonly Prev[];
         from: number;
@@ -2661,48 +2580,6 @@ declare namespace $ {
 declare namespace $ {
     class $hyoo_cras_list extends $hyoo_cras_node {
         static tag: "keys" | "vals" | "head" | "term";
-        static ref<Value extends any>(Value: Value): {
-            new (): {
-                remote_list(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
-                remote_make(): any;
-                items(next?: readonly $hyoo_cras_vary_type[] | undefined, tag?: "keys" | "vals" | "head" | "term"): readonly $hyoo_cras_vary_type[];
-                splice(next: readonly $hyoo_cras_vary_type[], from?: number, to?: number, tag?: "keys" | "vals" | "head" | "term"): void;
-                find(vary: $hyoo_cras_vary_type): $hyoo_cras_gist | null;
-                has(vary: $hyoo_cras_vary_type, next?: boolean | undefined, tag?: "keys" | "vals" | "head" | "term"): boolean;
-                add(vary: $hyoo_cras_vary_type, tag?: "keys" | "vals" | "head" | "term"): void;
-                cut(vary: $hyoo_cras_vary_type): void;
-                move(from: number, to: number): void;
-                wipe(seat: number): void;
-                node_make<Node_1 extends typeof $hyoo_cras_node>(Node: Node_1, vary: $hyoo_cras_vary_type, tag?: "keys" | "vals" | "head" | "term"): InstanceType<Node_1>;
-                land(): $hyoo_cras_land;
-                head(): number;
-                lord(): $hyoo_cras_lord | null;
-                realm(): $hyoo_cras_realm | null;
-                lord_numb(): bigint;
-                ref(): $hyoo_cras_ref;
-                slug(): string;
-                cast<Node_2 extends typeof $hyoo_cras_node>(Node: Node_2): InstanceType<Node_2>;
-                nodes<Node_3 extends typeof $hyoo_cras_node>(Node: Node_3 | null): readonly InstanceType<Node_3>[];
-                units(): $hyoo_cras_gist[];
-                can_change(lord?: bigint): boolean;
-                $: typeof $$;
-                destructor(): void;
-                toString(): string;
-                toJSON(): any;
-                [Symbol.toStringTag]: string;
-                [$mol_ambient_ref]: typeof $$;
-            };
-            Value: Value;
-            toJSON(): string;
-            tag: "keys" | "vals" | "head" | "term";
-            ref<Value extends unknown>(Value: Value): any;
-            make<Instance>(this: new () => Instance, config: Partial<Instance>): Instance;
-            $: typeof $$;
-            create<Instance_1>(this: new (init?: ((instance: any) => void) | undefined) => Instance_1, init?: ((instance: $mol_type_writable<Instance_1>) => void) | undefined): Instance_1;
-            toString(): string;
-            destructor(): void;
-            [Symbol.toPrimitive](): string;
-        };
         items(next?: readonly $hyoo_cras_vary_type[], tag?: "keys" | "vals" | "head" | "term"): readonly $hyoo_cras_vary_type[];
         splice(next: readonly $hyoo_cras_vary_type[], from?: number, to?: number, tag?: "keys" | "vals" | "head" | "term"): void;
         find(vary: $hyoo_cras_vary_type): $hyoo_cras_gist | null;
@@ -2843,228 +2720,93 @@ declare namespace $ {
 }
 
 declare namespace $ {
+    type $mol_type_partial_deep<Val> = Val extends object ? Val extends Function ? Val : {
+        [field in keyof Val]?: $mol_type_partial_deep<Val[field]> | undefined;
+    } : Val;
+}
+
+declare namespace $ {
+    let $mol_jsx_prefix: string;
+    let $mol_jsx_crumbs: string;
+    let $mol_jsx_booked: Set<string> | null;
+    let $mol_jsx_document: $mol_jsx.JSX.ElementClass['ownerDocument'];
+    const $mol_jsx_frag = "";
+    function $mol_jsx<Props extends $mol_jsx.JSX.IntrinsicAttributes, Children extends Array<Node | string>>(Elem: string | ((props: Props, ...children: Children) => Element), props: Props, ...childNodes: Children): Element | DocumentFragment;
+    namespace $mol_jsx.JSX {
+        interface Element extends HTMLElement {
+            class?: string;
+        }
+        interface ElementClass {
+            attributes: {};
+            ownerDocument: Pick<Document, 'getElementById' | 'createElementNS' | 'createDocumentFragment'>;
+            childNodes: Array<Node | string>;
+            valueOf(): Element;
+        }
+        type OrString<Dict> = {
+            [key in keyof Dict]: Dict[key] | string;
+        };
+        type IntrinsicElements = {
+            [key in keyof ElementTagNameMap]?: $.$mol_type_partial_deep<OrString<Element & IntrinsicAttributes & ElementTagNameMap[key]>>;
+        };
+        interface IntrinsicAttributes {
+            id?: string;
+            xmlns?: string;
+        }
+        interface ElementAttributesProperty {
+            attributes: {};
+        }
+        interface ElementChildrenAttribute {
+        }
+    }
+}
+
+declare namespace $ {
+    function $mol_tree2_bin_to_bytes(tree: $mol_tree2): Uint8Array;
+    function $mol_tree2_bin_from_bytes(bytes: ArrayLike<number>, span?: $mol_span): $mol_tree2;
+    function $mol_tree2_bin_from_string(str: string, span?: $mol_span): $mol_tree2;
+}
+
+declare namespace $ {
+    function $mol_tree2_xml_from_dom(dom: Node): $mol_tree2;
+}
+
+declare namespace $ {
+    function $hyoo_cras_vary_cast_bin(vary: $hyoo_cras_vary_type): Uint8Array | null;
+    function $hyoo_cras_vary_cast_bool(vary: $hyoo_cras_vary_type): boolean;
+    function $hyoo_cras_vary_cast_int(vary: $hyoo_cras_vary_type): bigint;
+    function $hyoo_cras_vary_cast_real(vary: $hyoo_cras_vary_type): number;
+    function $hyoo_cras_vary_cast_ref(vary: $hyoo_cras_vary_type): $hyoo_cras_ref;
+    function $hyoo_cras_vary_cast_str(vary: $hyoo_cras_vary_type): string;
+    function $hyoo_cras_vary_cast_time(vary: $hyoo_cras_vary_type): $mol_time_moment;
+    function $hyoo_cras_vary_cast_json(vary: $hyoo_cras_vary_type): {} | any[] | string[] | number[] | boolean[] | {
+        lord: string;
+        numb: number;
+        head: number;
+    } | null;
+    function $hyoo_cras_vary_cast_xml(vary: $hyoo_cras_vary_type): Element | HTMLElement | $mol_jsx.JSX.Element;
+    function $hyoo_cras_vary_cast_tree(vary: $hyoo_cras_vary_type): $mol_tree2;
+    const $hyoo_cras_vary_cast_funcs: {
+        readonly bin: typeof $hyoo_cras_vary_cast_bin;
+        readonly bool: typeof $hyoo_cras_vary_cast_bool;
+        readonly int: typeof $hyoo_cras_vary_cast_int;
+        readonly real: typeof $hyoo_cras_vary_cast_real;
+        readonly ref: typeof $hyoo_cras_vary_cast_ref;
+        readonly str: typeof $hyoo_cras_vary_cast_str;
+        readonly time: typeof $hyoo_cras_vary_cast_time;
+        readonly json: typeof $hyoo_cras_vary_cast_json;
+        readonly xml: typeof $hyoo_cras_vary_cast_xml;
+        readonly tree: typeof $hyoo_cras_vary_cast_tree;
+    };
+    function $hyoo_cras_vary_cast<Tip extends keyof typeof $hyoo_cras_vary_tip>(tip: Tip, vary: $hyoo_cras_vary_type): {} | null;
+}
+
+declare namespace $ {
     type $mol_data_value<Input = any, Output = any> = (val: Input) => Output;
 }
 
 declare namespace $ {
-    class $hyoo_cras_reg extends $hyoo_cras_node {
+    export class $hyoo_cras_reg extends $hyoo_cras_node {
         static tag: "keys" | "vals" | "head" | "term";
-        static of<Tip extends keyof typeof $hyoo_cras_vary_tip>(tip: Tip): {
-            new (): {
-                value(next?: ReturnType<{
-                    readonly bin: typeof $hyoo_cras_vary_cast_bin;
-                    readonly bool: typeof $hyoo_cras_vary_cast_bool;
-                    readonly int: typeof $hyoo_cras_vary_cast_int;
-                    readonly real: typeof $hyoo_cras_vary_cast_real;
-                    readonly ref: typeof $hyoo_cras_vary_cast_ref;
-                    readonly str: typeof $hyoo_cras_vary_cast_str;
-                    readonly time: typeof $hyoo_cras_vary_cast_time;
-                    readonly json: typeof $hyoo_cras_vary_cast_json;
-                    readonly xml: typeof $hyoo_cras_vary_cast_xml;
-                    readonly tree: typeof $hyoo_cras_vary_cast_tree;
-                }[Tip]> | undefined): ReturnType<{
-                    readonly bin: typeof $hyoo_cras_vary_cast_bin;
-                    readonly bool: typeof $hyoo_cras_vary_cast_bool;
-                    readonly int: typeof $hyoo_cras_vary_cast_int;
-                    readonly real: typeof $hyoo_cras_vary_cast_real;
-                    readonly ref: typeof $hyoo_cras_vary_cast_ref;
-                    readonly str: typeof $hyoo_cras_vary_cast_str;
-                    readonly time: typeof $hyoo_cras_vary_cast_time;
-                    readonly json: typeof $hyoo_cras_vary_cast_json;
-                    readonly xml: typeof $hyoo_cras_vary_cast_xml;
-                    readonly tree: typeof $hyoo_cras_vary_cast_tree;
-                }[Tip]>;
-                pick_unit(): $hyoo_cras_gist | undefined;
-                value_vary(next?: $hyoo_cras_vary_type | undefined): $hyoo_cras_vary_type;
-                value_bool(next?: boolean | undefined): boolean;
-                value_int(next?: bigint | undefined): bigint;
-                value_real(next?: number | undefined): number;
-                value_str(next?: string | undefined): string;
-                value_bin(next?: Uint8Array | null | undefined): Uint8Array | null;
-                value_ref(next?: $hyoo_cras_ref | null | undefined): $hyoo_cras_ref | null;
-                value_as<Decode extends $mol_data_value<any, any>>(decode: Decode, next?: ReturnType<Decode> | undefined): any;
-                yoke(vary: $hyoo_cras_vary_type): $hyoo_cras_land;
-                land(): $hyoo_cras_land;
-                head(): number;
-                lord(): $hyoo_cras_lord | null;
-                realm(): $hyoo_cras_realm | null;
-                lord_numb(): bigint;
-                ref(): $hyoo_cras_ref;
-                slug(): string;
-                cast<Node_1 extends typeof $hyoo_cras_node>(Node: Node_1): InstanceType<Node_1>;
-                nodes<Node_2 extends typeof $hyoo_cras_node>(Node: Node_2 | null): readonly InstanceType<Node_2>[];
-                units(): $hyoo_cras_gist[];
-                can_change(lord?: bigint): boolean;
-                $: typeof $$;
-                destructor(): void;
-                toString(): string;
-                toJSON(): any;
-                [Symbol.toStringTag]: string;
-                [$mol_ambient_ref]: typeof $$;
-            };
-            tip: Tip;
-            tag: "keys" | "vals" | "head" | "term";
-            of<Tip extends "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "xml" | "tree">(tip: Tip): any;
-            ref<Value_1 extends unknown>(Value: Value): {
-                new (): {
-                    remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
-                    remote_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
-                    pick_unit(): $hyoo_cras_gist | undefined;
-                    value_vary(next?: $hyoo_cras_vary_type | undefined): $hyoo_cras_vary_type;
-                    value_bool(next?: boolean | undefined): boolean;
-                    value_int(next?: bigint | undefined): bigint;
-                    value_real(next?: number | undefined): number;
-                    value_str(next?: string | undefined): string;
-                    value_bin(next?: Uint8Array | null | undefined): Uint8Array | null;
-                    value_ref(next?: $hyoo_cras_ref | null | undefined): $hyoo_cras_ref | null;
-                    value_as<Decode_1 extends $mol_data_value<any, any>>(decode: Decode_1, next?: ReturnType<Decode_1> | undefined): any;
-                    yoke(vary: $hyoo_cras_vary_type): $hyoo_cras_land;
-                    land(): $hyoo_cras_land;
-                    head(): number;
-                    lord(): $hyoo_cras_lord | null;
-                    realm(): $hyoo_cras_realm | null;
-                    lord_numb(): bigint;
-                    ref(): $hyoo_cras_ref;
-                    slug(): string;
-                    cast<Node_3 extends typeof $hyoo_cras_node>(Node: Node_3): InstanceType<Node_3>;
-                    nodes<Node_4 extends typeof $hyoo_cras_node>(Node: Node_4 | null): readonly InstanceType<Node_4>[];
-                    units(): $hyoo_cras_gist[];
-                    can_change(lord?: bigint): boolean;
-                    $: typeof $$;
-                    destructor(): void;
-                    toString(): string;
-                    toJSON(): any;
-                    [Symbol.toStringTag]: string;
-                    [$mol_ambient_ref]: typeof $$;
-                };
-                Value: Value;
-                toJSON(): string;
-                tag: "keys" | "vals" | "head" | "term";
-                of<Tip extends "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "xml" | "tree">(tip: Tip): any;
-                ref<Value_1 extends unknown>(Value: Value): any;
-                make<Instance>(this: new () => Instance, config: Partial<Instance>): Instance;
-                $: typeof $$;
-                create<Instance_1>(this: new (init?: ((instance: any) => void) | undefined) => Instance_1, init?: ((instance: $mol_type_writable<Instance_1>) => void) | undefined): Instance_1;
-                toString(): string;
-                destructor(): void;
-                [Symbol.toPrimitive](): string;
-            };
-            make<Instance>(this: new () => Instance, config: Partial<Instance>): Instance;
-            $: typeof $$;
-            create<Instance_1>(this: new (init?: ((instance: any) => void) | undefined) => Instance_1, init?: ((instance: $mol_type_writable<Instance_1>) => void) | undefined): Instance_1;
-            toString(): string;
-            destructor(): void;
-            toJSON(): any;
-            [Symbol.toPrimitive](): string;
-        };
-        static ref<Value extends any>(Value: Value): {
-            new (): {
-                remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
-                remote_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
-                pick_unit(): $hyoo_cras_gist | undefined;
-                value_vary(next?: $hyoo_cras_vary_type | undefined): $hyoo_cras_vary_type;
-                value_bool(next?: boolean | undefined): boolean;
-                value_int(next?: bigint | undefined): bigint;
-                value_real(next?: number | undefined): number;
-                value_str(next?: string | undefined): string;
-                value_bin(next?: Uint8Array | null | undefined): Uint8Array | null;
-                value_ref(next?: $hyoo_cras_ref | null | undefined): $hyoo_cras_ref | null;
-                value_as<Decode extends $mol_data_value<any, any>>(decode: Decode, next?: ReturnType<Decode> | undefined): any;
-                yoke(vary: $hyoo_cras_vary_type): $hyoo_cras_land;
-                land(): $hyoo_cras_land;
-                head(): number;
-                lord(): $hyoo_cras_lord | null;
-                realm(): $hyoo_cras_realm | null;
-                lord_numb(): bigint;
-                ref(): $hyoo_cras_ref;
-                slug(): string;
-                cast<Node_1 extends typeof $hyoo_cras_node>(Node: Node_1): InstanceType<Node_1>;
-                nodes<Node_2 extends typeof $hyoo_cras_node>(Node: Node_2 | null): readonly InstanceType<Node_2>[];
-                units(): $hyoo_cras_gist[];
-                can_change(lord?: bigint): boolean;
-                $: typeof $$;
-                destructor(): void;
-                toString(): string;
-                toJSON(): any;
-                [Symbol.toStringTag]: string;
-                [$mol_ambient_ref]: typeof $$;
-            };
-            Value: Value;
-            toJSON(): string;
-            tag: "keys" | "vals" | "head" | "term";
-            of<Tip extends "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "xml" | "tree">(tip: Tip): {
-                new (): {
-                    value(next?: ReturnType<{
-                        readonly bin: typeof $hyoo_cras_vary_cast_bin;
-                        readonly bool: typeof $hyoo_cras_vary_cast_bool;
-                        readonly int: typeof $hyoo_cras_vary_cast_int;
-                        readonly real: typeof $hyoo_cras_vary_cast_real;
-                        readonly ref: typeof $hyoo_cras_vary_cast_ref;
-                        readonly str: typeof $hyoo_cras_vary_cast_str;
-                        readonly time: typeof $hyoo_cras_vary_cast_time;
-                        readonly json: typeof $hyoo_cras_vary_cast_json;
-                        readonly xml: typeof $hyoo_cras_vary_cast_xml;
-                        readonly tree: typeof $hyoo_cras_vary_cast_tree;
-                    }[Tip]> | undefined): ReturnType<{
-                        readonly bin: typeof $hyoo_cras_vary_cast_bin;
-                        readonly bool: typeof $hyoo_cras_vary_cast_bool;
-                        readonly int: typeof $hyoo_cras_vary_cast_int;
-                        readonly real: typeof $hyoo_cras_vary_cast_real;
-                        readonly ref: typeof $hyoo_cras_vary_cast_ref;
-                        readonly str: typeof $hyoo_cras_vary_cast_str;
-                        readonly time: typeof $hyoo_cras_vary_cast_time;
-                        readonly json: typeof $hyoo_cras_vary_cast_json;
-                        readonly xml: typeof $hyoo_cras_vary_cast_xml;
-                        readonly tree: typeof $hyoo_cras_vary_cast_tree;
-                    }[Tip]>;
-                    pick_unit(): $hyoo_cras_gist | undefined;
-                    value_vary(next?: $hyoo_cras_vary_type | undefined): $hyoo_cras_vary_type;
-                    value_bool(next?: boolean | undefined): boolean;
-                    value_int(next?: bigint | undefined): bigint;
-                    value_real(next?: number | undefined): number;
-                    value_str(next?: string | undefined): string;
-                    value_bin(next?: Uint8Array | null | undefined): Uint8Array | null;
-                    value_ref(next?: $hyoo_cras_ref | null | undefined): $hyoo_cras_ref | null;
-                    value_as<Decode_1 extends $mol_data_value<any, any>>(decode: Decode_1, next?: ReturnType<Decode_1> | undefined): any;
-                    yoke(vary: $hyoo_cras_vary_type): $hyoo_cras_land;
-                    land(): $hyoo_cras_land;
-                    head(): number;
-                    lord(): $hyoo_cras_lord | null;
-                    realm(): $hyoo_cras_realm | null;
-                    lord_numb(): bigint;
-                    ref(): $hyoo_cras_ref;
-                    slug(): string;
-                    cast<Node_3 extends typeof $hyoo_cras_node>(Node: Node_3): InstanceType<Node_3>;
-                    nodes<Node_4 extends typeof $hyoo_cras_node>(Node: Node_4 | null): readonly InstanceType<Node_4>[];
-                    units(): $hyoo_cras_gist[];
-                    can_change(lord?: bigint): boolean;
-                    $: typeof $$;
-                    destructor(): void;
-                    toString(): string;
-                    toJSON(): any;
-                    [Symbol.toStringTag]: string;
-                    [$mol_ambient_ref]: typeof $$;
-                };
-                tip: Tip;
-                tag: "keys" | "vals" | "head" | "term";
-                of<Tip extends "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "xml" | "tree">(tip: Tip): any;
-                ref<Value extends unknown>(Value: Value): any;
-                make<Instance>(this: new () => Instance, config: Partial<Instance>): Instance;
-                $: typeof $$;
-                create<Instance_1>(this: new (init?: ((instance: any) => void) | undefined) => Instance_1, init?: ((instance: $mol_type_writable<Instance_1>) => void) | undefined): Instance_1;
-                toString(): string;
-                destructor(): void;
-                toJSON(): any;
-                [Symbol.toPrimitive](): string;
-            };
-            ref<Value extends unknown>(Value: Value): any;
-            make<Instance>(this: new () => Instance, config: Partial<Instance>): Instance;
-            $: typeof $$;
-            create<Instance_1>(this: new (init?: ((instance: any) => void) | undefined) => Instance_1, init?: ((instance: $mol_type_writable<Instance_1>) => void) | undefined): Instance_1;
-            toString(): string;
-            destructor(): void;
-            [Symbol.toPrimitive](): string;
-        };
         pick_unit(): $hyoo_cras_gist | undefined;
         value_vary(next?: $hyoo_cras_vary_type): $hyoo_cras_vary_type;
         value_bool(next?: boolean): boolean;
@@ -3076,12 +2818,470 @@ declare namespace $ {
         value_as<Decode extends $mol_data_value>(decode: Decode, next?: ReturnType<Decode>): any;
         yoke(vary: $hyoo_cras_vary_type): $hyoo_cras_land;
     }
+    export function $hyoo_cras_reg_narrow<Tip extends keyof typeof $hyoo_cras_vary_tip>(tip: Tip): {
+        new (): {
+            value(next?: ReturnType<{
+                readonly bin: typeof $hyoo_cras_vary_cast_bin;
+                readonly bool: typeof $hyoo_cras_vary_cast_bool;
+                readonly int: typeof $hyoo_cras_vary_cast_int;
+                readonly real: typeof $hyoo_cras_vary_cast_real;
+                readonly ref: typeof $hyoo_cras_vary_cast_ref;
+                readonly str: typeof $hyoo_cras_vary_cast_str;
+                readonly time: typeof $hyoo_cras_vary_cast_time;
+                readonly json: typeof $hyoo_cras_vary_cast_json;
+                readonly xml: typeof $hyoo_cras_vary_cast_xml;
+                readonly tree: typeof $hyoo_cras_vary_cast_tree;
+            }[Tip]> | undefined): ReturnType<{
+                readonly bin: typeof $hyoo_cras_vary_cast_bin;
+                readonly bool: typeof $hyoo_cras_vary_cast_bool;
+                readonly int: typeof $hyoo_cras_vary_cast_int;
+                readonly real: typeof $hyoo_cras_vary_cast_real;
+                readonly ref: typeof $hyoo_cras_vary_cast_ref;
+                readonly str: typeof $hyoo_cras_vary_cast_str;
+                readonly time: typeof $hyoo_cras_vary_cast_time;
+                readonly json: typeof $hyoo_cras_vary_cast_json;
+                readonly xml: typeof $hyoo_cras_vary_cast_xml;
+                readonly tree: typeof $hyoo_cras_vary_cast_tree;
+            }[Tip]>;
+            pick_unit(): $hyoo_cras_gist | undefined;
+            value_vary(next?: $hyoo_cras_vary_type | undefined): $hyoo_cras_vary_type;
+            value_bool(next?: boolean | undefined): boolean;
+            value_int(next?: bigint | undefined): bigint;
+            value_real(next?: number | undefined): number;
+            value_str(next?: string | undefined): string;
+            value_bin(next?: Uint8Array | null | undefined): Uint8Array | null;
+            value_ref(next?: $hyoo_cras_ref | null | undefined): $hyoo_cras_ref | null;
+            value_as<Decode extends $mol_data_value<any, any>>(decode: Decode, next?: ReturnType<Decode> | undefined): any;
+            yoke(vary: $hyoo_cras_vary_type): $hyoo_cras_land;
+            land(): $hyoo_cras_land;
+            head(): number;
+            lord(): $hyoo_cras_lord | null;
+            realm(): $hyoo_cras_realm | null;
+            lord_numb(): bigint;
+            ref(): $hyoo_cras_ref;
+            slug(): string;
+            cast<Node_1 extends typeof $hyoo_cras_node>(Node: Node_1): InstanceType<Node_1>;
+            nodes<Node_2 extends typeof $hyoo_cras_node>(Node: Node_2 | null): readonly InstanceType<Node_2>[];
+            units(): $hyoo_cras_gist[];
+            can_change(lord?: bigint): boolean;
+            $: typeof $$;
+            destructor(): void;
+            toString(): string;
+            toJSON(): any;
+            [Symbol.toStringTag]: string;
+            [$mol_ambient_ref]: typeof $$;
+        };
+        tip: Tip;
+        tag: "keys" | "vals" | "head" | "term";
+        make<Instance>(this: new () => Instance, config: Partial<Instance>): Instance;
+        $: typeof $$;
+        create<Instance_1>(this: new (init?: ((instance: any) => void) | undefined) => Instance_1, init?: ((instance: $mol_type_writable<Instance_1>) => void) | undefined): Instance_1;
+        toString(): string;
+        destructor(): void;
+        toJSON(): any;
+        [Symbol.toPrimitive](): string;
+    };
+    const $hyoo_cras_reg_bin_base: {
+        new (): {
+            value(next?: Uint8Array | null | undefined): Uint8Array | null;
+            pick_unit(): $hyoo_cras_gist | undefined;
+            value_vary(next?: $hyoo_cras_vary_type | undefined): $hyoo_cras_vary_type;
+            value_bool(next?: boolean | undefined): boolean;
+            value_int(next?: bigint | undefined): bigint;
+            value_real(next?: number | undefined): number;
+            value_str(next?: string | undefined): string;
+            value_bin(next?: Uint8Array | null | undefined): Uint8Array | null;
+            value_ref(next?: $hyoo_cras_ref | null | undefined): $hyoo_cras_ref | null;
+            value_as<Decode extends $mol_data_value<any, any>>(decode: Decode, next?: ReturnType<Decode> | undefined): any;
+            yoke(vary: $hyoo_cras_vary_type): $hyoo_cras_land;
+            land(): $hyoo_cras_land;
+            head(): number;
+            lord(): $hyoo_cras_lord | null;
+            realm(): $hyoo_cras_realm | null;
+            lord_numb(): bigint;
+            ref(): $hyoo_cras_ref;
+            slug(): string;
+            cast<Node_1 extends typeof $hyoo_cras_node>(Node: Node_1): InstanceType<Node_1>;
+            nodes<Node_2 extends typeof $hyoo_cras_node>(Node: Node_2 | null): readonly InstanceType<Node_2>[];
+            units(): $hyoo_cras_gist[];
+            can_change(lord?: bigint): boolean;
+            $: typeof $$;
+            destructor(): void;
+            toString(): string;
+            toJSON(): any;
+            [Symbol.toStringTag]: string;
+            [$mol_ambient_ref]: typeof $$;
+        };
+        tip: "bin";
+        tag: "keys" | "vals" | "head" | "term";
+        make<Instance>(this: new () => Instance, config: Partial<Instance>): Instance;
+        $: typeof $$;
+        create<Instance_1>(this: new (init?: ((instance: any) => void) | undefined) => Instance_1, init?: ((instance: $mol_type_writable<Instance_1>) => void) | undefined): Instance_1;
+        toString(): string;
+        destructor(): void;
+        toJSON(): any;
+        [Symbol.toPrimitive](): string;
+    };
+    export class $hyoo_cras_reg_bin extends $hyoo_cras_reg_bin_base {
+    }
+    const $hyoo_cras_reg_bool_base: {
+        new (): {
+            value(next?: boolean | undefined): boolean;
+            pick_unit(): $hyoo_cras_gist | undefined;
+            value_vary(next?: $hyoo_cras_vary_type | undefined): $hyoo_cras_vary_type;
+            value_bool(next?: boolean | undefined): boolean;
+            value_int(next?: bigint | undefined): bigint;
+            value_real(next?: number | undefined): number;
+            value_str(next?: string | undefined): string;
+            value_bin(next?: Uint8Array | null | undefined): Uint8Array | null;
+            value_ref(next?: $hyoo_cras_ref | null | undefined): $hyoo_cras_ref | null;
+            value_as<Decode extends $mol_data_value<any, any>>(decode: Decode, next?: ReturnType<Decode> | undefined): any;
+            yoke(vary: $hyoo_cras_vary_type): $hyoo_cras_land;
+            land(): $hyoo_cras_land;
+            head(): number;
+            lord(): $hyoo_cras_lord | null;
+            realm(): $hyoo_cras_realm | null;
+            lord_numb(): bigint;
+            ref(): $hyoo_cras_ref;
+            slug(): string;
+            cast<Node_1 extends typeof $hyoo_cras_node>(Node: Node_1): InstanceType<Node_1>;
+            nodes<Node_2 extends typeof $hyoo_cras_node>(Node: Node_2 | null): readonly InstanceType<Node_2>[];
+            units(): $hyoo_cras_gist[];
+            can_change(lord?: bigint): boolean;
+            $: typeof $$;
+            destructor(): void;
+            toString(): string;
+            toJSON(): any;
+            [Symbol.toStringTag]: string;
+            [$mol_ambient_ref]: typeof $$;
+        };
+        tip: "bool";
+        tag: "keys" | "vals" | "head" | "term";
+        make<Instance>(this: new () => Instance, config: Partial<Instance>): Instance;
+        $: typeof $$;
+        create<Instance_1>(this: new (init?: ((instance: any) => void) | undefined) => Instance_1, init?: ((instance: $mol_type_writable<Instance_1>) => void) | undefined): Instance_1;
+        toString(): string;
+        destructor(): void;
+        toJSON(): any;
+        [Symbol.toPrimitive](): string;
+    };
+    export class $hyoo_cras_reg_bool extends $hyoo_cras_reg_bool_base {
+    }
+    const $hyoo_cras_reg_int_base: {
+        new (): {
+            value(next?: bigint | undefined): bigint;
+            pick_unit(): $hyoo_cras_gist | undefined;
+            value_vary(next?: $hyoo_cras_vary_type | undefined): $hyoo_cras_vary_type;
+            value_bool(next?: boolean | undefined): boolean;
+            value_int(next?: bigint | undefined): bigint;
+            value_real(next?: number | undefined): number;
+            value_str(next?: string | undefined): string;
+            value_bin(next?: Uint8Array | null | undefined): Uint8Array | null;
+            value_ref(next?: $hyoo_cras_ref | null | undefined): $hyoo_cras_ref | null;
+            value_as<Decode extends $mol_data_value<any, any>>(decode: Decode, next?: ReturnType<Decode> | undefined): any;
+            yoke(vary: $hyoo_cras_vary_type): $hyoo_cras_land;
+            land(): $hyoo_cras_land;
+            head(): number;
+            lord(): $hyoo_cras_lord | null;
+            realm(): $hyoo_cras_realm | null;
+            lord_numb(): bigint;
+            ref(): $hyoo_cras_ref;
+            slug(): string;
+            cast<Node_1 extends typeof $hyoo_cras_node>(Node: Node_1): InstanceType<Node_1>;
+            nodes<Node_2 extends typeof $hyoo_cras_node>(Node: Node_2 | null): readonly InstanceType<Node_2>[];
+            units(): $hyoo_cras_gist[];
+            can_change(lord?: bigint): boolean;
+            $: typeof $$;
+            destructor(): void;
+            toString(): string;
+            toJSON(): any;
+            [Symbol.toStringTag]: string;
+            [$mol_ambient_ref]: typeof $$;
+        };
+        tip: "int";
+        tag: "keys" | "vals" | "head" | "term";
+        make<Instance>(this: new () => Instance, config: Partial<Instance>): Instance;
+        $: typeof $$;
+        create<Instance_1>(this: new (init?: ((instance: any) => void) | undefined) => Instance_1, init?: ((instance: $mol_type_writable<Instance_1>) => void) | undefined): Instance_1;
+        toString(): string;
+        destructor(): void;
+        toJSON(): any;
+        [Symbol.toPrimitive](): string;
+    };
+    export class $hyoo_cras_reg_int extends $hyoo_cras_reg_int_base {
+    }
+    const $hyoo_cras_reg_real_base: {
+        new (): {
+            value(next?: number | undefined): number;
+            pick_unit(): $hyoo_cras_gist | undefined;
+            value_vary(next?: $hyoo_cras_vary_type | undefined): $hyoo_cras_vary_type;
+            value_bool(next?: boolean | undefined): boolean;
+            value_int(next?: bigint | undefined): bigint;
+            value_real(next?: number | undefined): number;
+            value_str(next?: string | undefined): string;
+            value_bin(next?: Uint8Array | null | undefined): Uint8Array | null;
+            value_ref(next?: $hyoo_cras_ref | null | undefined): $hyoo_cras_ref | null;
+            value_as<Decode extends $mol_data_value<any, any>>(decode: Decode, next?: ReturnType<Decode> | undefined): any;
+            yoke(vary: $hyoo_cras_vary_type): $hyoo_cras_land;
+            land(): $hyoo_cras_land;
+            head(): number;
+            lord(): $hyoo_cras_lord | null;
+            realm(): $hyoo_cras_realm | null;
+            lord_numb(): bigint;
+            ref(): $hyoo_cras_ref;
+            slug(): string;
+            cast<Node_1 extends typeof $hyoo_cras_node>(Node: Node_1): InstanceType<Node_1>;
+            nodes<Node_2 extends typeof $hyoo_cras_node>(Node: Node_2 | null): readonly InstanceType<Node_2>[];
+            units(): $hyoo_cras_gist[];
+            can_change(lord?: bigint): boolean;
+            $: typeof $$;
+            destructor(): void;
+            toString(): string;
+            toJSON(): any;
+            [Symbol.toStringTag]: string;
+            [$mol_ambient_ref]: typeof $$;
+        };
+        tip: "real";
+        tag: "keys" | "vals" | "head" | "term";
+        make<Instance>(this: new () => Instance, config: Partial<Instance>): Instance;
+        $: typeof $$;
+        create<Instance_1>(this: new (init?: ((instance: any) => void) | undefined) => Instance_1, init?: ((instance: $mol_type_writable<Instance_1>) => void) | undefined): Instance_1;
+        toString(): string;
+        destructor(): void;
+        toJSON(): any;
+        [Symbol.toPrimitive](): string;
+    };
+    export class $hyoo_cras_reg_real extends $hyoo_cras_reg_real_base {
+    }
+    const $hyoo_cras_reg_str_base: {
+        new (): {
+            value(next?: string | undefined): string;
+            pick_unit(): $hyoo_cras_gist | undefined;
+            value_vary(next?: $hyoo_cras_vary_type | undefined): $hyoo_cras_vary_type;
+            value_bool(next?: boolean | undefined): boolean;
+            value_int(next?: bigint | undefined): bigint;
+            value_real(next?: number | undefined): number;
+            value_str(next?: string | undefined): string;
+            value_bin(next?: Uint8Array | null | undefined): Uint8Array | null;
+            value_ref(next?: $hyoo_cras_ref | null | undefined): $hyoo_cras_ref | null;
+            value_as<Decode extends $mol_data_value<any, any>>(decode: Decode, next?: ReturnType<Decode> | undefined): any;
+            yoke(vary: $hyoo_cras_vary_type): $hyoo_cras_land;
+            land(): $hyoo_cras_land;
+            head(): number;
+            lord(): $hyoo_cras_lord | null;
+            realm(): $hyoo_cras_realm | null;
+            lord_numb(): bigint;
+            ref(): $hyoo_cras_ref;
+            slug(): string;
+            cast<Node_1 extends typeof $hyoo_cras_node>(Node: Node_1): InstanceType<Node_1>;
+            nodes<Node_2 extends typeof $hyoo_cras_node>(Node: Node_2 | null): readonly InstanceType<Node_2>[];
+            units(): $hyoo_cras_gist[];
+            can_change(lord?: bigint): boolean;
+            $: typeof $$;
+            destructor(): void;
+            toString(): string;
+            toJSON(): any;
+            [Symbol.toStringTag]: string;
+            [$mol_ambient_ref]: typeof $$;
+        };
+        tip: "str";
+        tag: "keys" | "vals" | "head" | "term";
+        make<Instance>(this: new () => Instance, config: Partial<Instance>): Instance;
+        $: typeof $$;
+        create<Instance_1>(this: new (init?: ((instance: any) => void) | undefined) => Instance_1, init?: ((instance: $mol_type_writable<Instance_1>) => void) | undefined): Instance_1;
+        toString(): string;
+        destructor(): void;
+        toJSON(): any;
+        [Symbol.toPrimitive](): string;
+    };
+    export class $hyoo_cras_reg_str extends $hyoo_cras_reg_str_base {
+    }
+    const $hyoo_cras_reg_time_base: {
+        new (): {
+            value(next?: $mol_time_moment | undefined): $mol_time_moment;
+            pick_unit(): $hyoo_cras_gist | undefined;
+            value_vary(next?: $hyoo_cras_vary_type | undefined): $hyoo_cras_vary_type;
+            value_bool(next?: boolean | undefined): boolean;
+            value_int(next?: bigint | undefined): bigint;
+            value_real(next?: number | undefined): number;
+            value_str(next?: string | undefined): string;
+            value_bin(next?: Uint8Array | null | undefined): Uint8Array | null;
+            value_ref(next?: $hyoo_cras_ref | null | undefined): $hyoo_cras_ref | null;
+            value_as<Decode extends $mol_data_value<any, any>>(decode: Decode, next?: ReturnType<Decode> | undefined): any;
+            yoke(vary: $hyoo_cras_vary_type): $hyoo_cras_land;
+            land(): $hyoo_cras_land;
+            head(): number;
+            lord(): $hyoo_cras_lord | null;
+            realm(): $hyoo_cras_realm | null;
+            lord_numb(): bigint;
+            ref(): $hyoo_cras_ref;
+            slug(): string;
+            cast<Node_1 extends typeof $hyoo_cras_node>(Node: Node_1): InstanceType<Node_1>;
+            nodes<Node_2 extends typeof $hyoo_cras_node>(Node: Node_2 | null): readonly InstanceType<Node_2>[];
+            units(): $hyoo_cras_gist[];
+            can_change(lord?: bigint): boolean;
+            $: typeof $$;
+            destructor(): void;
+            toString(): string;
+            toJSON(): any;
+            [Symbol.toStringTag]: string;
+            [$mol_ambient_ref]: typeof $$;
+        };
+        tip: "time";
+        tag: "keys" | "vals" | "head" | "term";
+        make<Instance>(this: new () => Instance, config: Partial<Instance>): Instance;
+        $: typeof $$;
+        create<Instance_1>(this: new (init?: ((instance: any) => void) | undefined) => Instance_1, init?: ((instance: $mol_type_writable<Instance_1>) => void) | undefined): Instance_1;
+        toString(): string;
+        destructor(): void;
+        toJSON(): any;
+        [Symbol.toPrimitive](): string;
+    };
+    export class $hyoo_cras_reg_time extends $hyoo_cras_reg_time_base {
+    }
+    const $hyoo_cras_reg_json_base: {
+        new (): {
+            value(next?: {} | any[] | string[] | number[] | boolean[] | {
+                lord: string;
+                numb: number;
+                head: number;
+            } | null | undefined): {} | any[] | string[] | number[] | boolean[] | {
+                lord: string;
+                numb: number;
+                head: number;
+            } | null;
+            pick_unit(): $hyoo_cras_gist | undefined;
+            value_vary(next?: $hyoo_cras_vary_type | undefined): $hyoo_cras_vary_type;
+            value_bool(next?: boolean | undefined): boolean;
+            value_int(next?: bigint | undefined): bigint;
+            value_real(next?: number | undefined): number;
+            value_str(next?: string | undefined): string;
+            value_bin(next?: Uint8Array | null | undefined): Uint8Array | null;
+            value_ref(next?: $hyoo_cras_ref | null | undefined): $hyoo_cras_ref | null;
+            value_as<Decode extends $mol_data_value<any, any>>(decode: Decode, next?: ReturnType<Decode> | undefined): any;
+            yoke(vary: $hyoo_cras_vary_type): $hyoo_cras_land;
+            land(): $hyoo_cras_land;
+            head(): number;
+            lord(): $hyoo_cras_lord | null;
+            realm(): $hyoo_cras_realm | null;
+            lord_numb(): bigint;
+            ref(): $hyoo_cras_ref;
+            slug(): string;
+            cast<Node_1 extends typeof $hyoo_cras_node>(Node: Node_1): InstanceType<Node_1>;
+            nodes<Node_2 extends typeof $hyoo_cras_node>(Node: Node_2 | null): readonly InstanceType<Node_2>[];
+            units(): $hyoo_cras_gist[];
+            can_change(lord?: bigint): boolean;
+            $: typeof $$;
+            destructor(): void;
+            toString(): string;
+            toJSON(): any;
+            [Symbol.toStringTag]: string;
+            [$mol_ambient_ref]: typeof $$;
+        };
+        tip: "json";
+        tag: "keys" | "vals" | "head" | "term";
+        make<Instance>(this: new () => Instance, config: Partial<Instance>): Instance;
+        $: typeof $$;
+        create<Instance_1>(this: new (init?: ((instance: any) => void) | undefined) => Instance_1, init?: ((instance: $mol_type_writable<Instance_1>) => void) | undefined): Instance_1;
+        toString(): string;
+        destructor(): void;
+        toJSON(): any;
+        [Symbol.toPrimitive](): string;
+    };
+    export class $hyoo_cras_reg_json extends $hyoo_cras_reg_json_base {
+    }
+    const $hyoo_cras_reg_xml_base: {
+        new (): {
+            value(next?: Element | HTMLElement | $mol_jsx.JSX.Element | undefined): Element | HTMLElement | $mol_jsx.JSX.Element;
+            pick_unit(): $hyoo_cras_gist | undefined;
+            value_vary(next?: $hyoo_cras_vary_type | undefined): $hyoo_cras_vary_type;
+            value_bool(next?: boolean | undefined): boolean;
+            value_int(next?: bigint | undefined): bigint;
+            value_real(next?: number | undefined): number;
+            value_str(next?: string | undefined): string;
+            value_bin(next?: Uint8Array | null | undefined): Uint8Array | null;
+            value_ref(next?: $hyoo_cras_ref | null | undefined): $hyoo_cras_ref | null;
+            value_as<Decode extends $mol_data_value<any, any>>(decode: Decode, next?: ReturnType<Decode> | undefined): any;
+            yoke(vary: $hyoo_cras_vary_type): $hyoo_cras_land;
+            land(): $hyoo_cras_land;
+            head(): number;
+            lord(): $hyoo_cras_lord | null;
+            realm(): $hyoo_cras_realm | null;
+            lord_numb(): bigint;
+            ref(): $hyoo_cras_ref;
+            slug(): string;
+            cast<Node_1 extends typeof $hyoo_cras_node>(Node: Node_1): InstanceType<Node_1>;
+            nodes<Node_2 extends typeof $hyoo_cras_node>(Node: Node_2 | null): readonly InstanceType<Node_2>[];
+            units(): $hyoo_cras_gist[];
+            can_change(lord?: bigint): boolean;
+            $: typeof $$;
+            destructor(): void;
+            toString(): string;
+            toJSON(): any;
+            [Symbol.toStringTag]: string;
+            [$mol_ambient_ref]: typeof $$;
+        };
+        tip: "xml";
+        tag: "keys" | "vals" | "head" | "term";
+        make<Instance>(this: new () => Instance, config: Partial<Instance>): Instance;
+        $: typeof $$;
+        create<Instance_1>(this: new (init?: ((instance: any) => void) | undefined) => Instance_1, init?: ((instance: $mol_type_writable<Instance_1>) => void) | undefined): Instance_1;
+        toString(): string;
+        destructor(): void;
+        toJSON(): any;
+        [Symbol.toPrimitive](): string;
+    };
+    export class $hyoo_cras_reg_xml extends $hyoo_cras_reg_xml_base {
+    }
+    const $hyoo_cras_reg_tree_base: {
+        new (): {
+            value(next?: $mol_tree2 | undefined): $mol_tree2;
+            pick_unit(): $hyoo_cras_gist | undefined;
+            value_vary(next?: $hyoo_cras_vary_type | undefined): $hyoo_cras_vary_type;
+            value_bool(next?: boolean | undefined): boolean;
+            value_int(next?: bigint | undefined): bigint;
+            value_real(next?: number | undefined): number;
+            value_str(next?: string | undefined): string;
+            value_bin(next?: Uint8Array | null | undefined): Uint8Array | null;
+            value_ref(next?: $hyoo_cras_ref | null | undefined): $hyoo_cras_ref | null;
+            value_as<Decode extends $mol_data_value<any, any>>(decode: Decode, next?: ReturnType<Decode> | undefined): any;
+            yoke(vary: $hyoo_cras_vary_type): $hyoo_cras_land;
+            land(): $hyoo_cras_land;
+            head(): number;
+            lord(): $hyoo_cras_lord | null;
+            realm(): $hyoo_cras_realm | null;
+            lord_numb(): bigint;
+            ref(): $hyoo_cras_ref;
+            slug(): string;
+            cast<Node_1 extends typeof $hyoo_cras_node>(Node: Node_1): InstanceType<Node_1>;
+            nodes<Node_2 extends typeof $hyoo_cras_node>(Node: Node_2 | null): readonly InstanceType<Node_2>[];
+            units(): $hyoo_cras_gist[];
+            can_change(lord?: bigint): boolean;
+            $: typeof $$;
+            destructor(): void;
+            toString(): string;
+            toJSON(): any;
+            [Symbol.toStringTag]: string;
+            [$mol_ambient_ref]: typeof $$;
+        };
+        tip: "tree";
+        tag: "keys" | "vals" | "head" | "term";
+        make<Instance>(this: new () => Instance, config: Partial<Instance>): Instance;
+        $: typeof $$;
+        create<Instance_1>(this: new (init?: ((instance: any) => void) | undefined) => Instance_1, init?: ((instance: $mol_type_writable<Instance_1>) => void) | undefined): Instance_1;
+        toString(): string;
+        destructor(): void;
+        toJSON(): any;
+        [Symbol.toPrimitive](): string;
+    };
+    export class $hyoo_cras_reg_tree extends $hyoo_cras_reg_tree_base {
+    }
+    export {};
 }
 
 declare namespace $ {
     class $hyoo_cras_dict extends $hyoo_cras_node {
         static tag: "keys" | "vals" | "head" | "term";
-        static of<Schema extends Record<string, typeof $hyoo_cras_node>>(schema: Schema): Pick<typeof $hyoo_cras_dict, typeof Symbol.toPrimitive | "toString" | "$" | "destructor" | "toJSON" | "prototype" | "create" | "make" | "tag" | "of"> & (new () => $hyoo_cras_dict & { [Key in keyof Schema]: () => InstanceType<Schema[Key]>; });
         keys(): readonly $hyoo_cras_vary_type[];
         has(key: $hyoo_cras_vary_type, next?: false): boolean;
         dive<Node extends typeof $hyoo_cras_node>(key: $hyoo_cras_vary_type, Node: Node): InstanceType<Node>;
@@ -3773,7 +3973,7 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    class $hyoo_cras_text extends $hyoo_cras_node {
+    class $hyoo_cras_text extends $hyoo_cras_list {
         static tag: "keys" | "vals" | "head" | "term";
         text(next?: string): string;
         str(next?: string): string;
