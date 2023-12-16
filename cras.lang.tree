@@ -1,0 +1,19 @@
+cras kind
+	[] bin keyword
+	[] int keyword
+	[] real keyword
+	[] ref keyword
+	[] str keyword
+	[] time keyword
+	[] json keyword
+	[] xml keyword
+	[] tree keyword
+	[] list keyword
+	[] dict keyword
+	[] text keyword
+	[] blob keyword
+	[: . property
+	[] \
+		comment
+	[: \
+		class

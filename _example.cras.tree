@@ -1,0 +1,16 @@
+Meetup dict
+	\Митап
+	.Title str
+	.Speeches list ref Speech
+
+Speech dict
+	\Доклад
+	.Meetup ref Meetup
+	.Title text
+	.Descr text
+	.Speaker Speaker
+
+Speaker dict
+	\Докладчик
+	.Name ref
+	.Photo blob
