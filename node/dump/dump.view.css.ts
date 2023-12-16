@@ -34,6 +34,9 @@ namespace $.$$ {
 			flex: {
 				grow: 1,
 			},
+			justify: {
+				content: `flex-end`,
+			},
 		},
 		
 		Label: {

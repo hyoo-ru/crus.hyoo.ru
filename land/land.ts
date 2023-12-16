@@ -22,7 +22,7 @@ namespace $ {
 			return this.$.$hyoo_cras_auth.current()
 		}
 		
-		@ $mol_mem
+		@ $mol_memo.method
 		ref() {
 			return $hyoo_cras_ref.make( this.lord_numb(), this.numb(), 0 )
 		}
@@ -325,6 +325,7 @@ namespace $ {
 		}
 		
 		/** Register public key **/
+		@ $mol_action
 		join() {
 			
 			const auth = this.auth()
@@ -342,6 +343,7 @@ namespace $ {
 		}
 		
 		/** Places data to tree. */
+		@ $mol_action
 		give(
 			dest: bigint,
 			rang: $hyoo_cras_rang,
@@ -364,6 +366,7 @@ namespace $ {
 		}
 		
 		/** Places data to tree. */
+		@ $mol_action
 		post(
 			lead: number,
 			head: number,
@@ -397,6 +400,7 @@ namespace $ {
 			return unit
 		}
 		
+		@ $mol_action
 		gist_move(
 			gist: $hyoo_cras_gist,
 			head: number,
@@ -444,6 +448,7 @@ namespace $ {
 			
 		}
 		
+		@ $mol_action
 		gist_wipe( gist: $hyoo_cras_gist ) {
 			
 			const units = this.gists_ordered( gist.head() )

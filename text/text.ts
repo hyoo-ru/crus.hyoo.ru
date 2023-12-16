@@ -1,5 +1,5 @@
 namespace $ {
-	export class $hyoo_cras_text extends $hyoo_cras_node {
+	export class $hyoo_cras_text extends $hyoo_cras_list {
 		
 		static tag = $hyoo_cras_gist_tag[ $hyoo_cras_gist_tag.vals ] as keyof typeof $hyoo_cras_gist_tag
 				
@@ -115,11 +115,12 @@ namespace $ {
 			}
 			
 			const words = next.match( $hyoo_crowd_tokenizer ) ?? []
-			this.cast( $hyoo_cras_list ).splice( words, from, to )
+			this.splice( words, from, to )
 			
 			return this
 		}
 
+		@ $mol_action
 		point_by_offset( offset: number ): readonly[ number /*self*/, number /*pos*/ ] {
 			
 			const land = this.land()
@@ -148,6 +149,7 @@ namespace $ {
 			return [ 0, off ]
 		}
 		
+		@ $mol_action
 		offset_by_point( [ self, offset ]: readonly[ number /*self*/, number /*pos*/ ] ): readonly[ number /*self*/, number /*pos*/ ]  {
 			
 			const land = this.land()
@@ -174,6 +176,7 @@ namespace $ {
 			return [ 0, offset ]
 		}
 		
+		@ $mol_mem_key
 		selection( lord: bigint, next?: readonly[ number /*begin*/, number /*end*/ ] ) {
 			
 			const base = this.realm()!.Lord( lord ).base()

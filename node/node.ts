@@ -5,7 +5,6 @@ namespace $ {
 		
 		static tag = $hyoo_cras_gist_tag[ $hyoo_cras_gist_tag.vals ] as keyof typeof $hyoo_cras_gist_tag
 		
-		@ $mol_mem
 		land() {
 			return null as any as $hyoo_cras_land
 		}
@@ -26,6 +25,7 @@ namespace $ {
 			return this.lord()?.numb() ?? this.$.$hyoo_cras_auth.current().lord()
 		}
 		
+		@ $mol_memo.method
 		ref() {
 			return $hyoo_cras_ref.make( this.lord_numb(), this.land().numb(), this.head() )
 		}

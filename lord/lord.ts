@@ -2,7 +2,6 @@ namespace $ {
 	
 	export class $hyoo_cras_lord extends $mol_object {
 		
-		@ $mol_mem
 		realm() {
 			return null as null | $hyoo_cras_realm
 		}
