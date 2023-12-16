@@ -528,10 +528,13 @@ namespace $ {
 			const gift = this.gifts.get( auth.lord() )
 			if( !gift ) return null
 			
+			const bill = gift.bill()
+			if( bill.every( b => b === 0 ) ) return null
+			
 			const secret_mutual = auth.secret_mutual( this.key_public( gift.peer() )!.toString() )
 			if( !secret_mutual ) return null
 			
-			const secret_land = $mol_wire_sync( secret_mutual ).decrypt( gift.bill(), gift.salt() )
+			const secret_land = $mol_wire_sync( secret_mutual ).decrypt( bill, gift.salt() )
 			return $mol_wire_sync( $mol_crypto_secret ).from( secret_land )
 			
 		}
