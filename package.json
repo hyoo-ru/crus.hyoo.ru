@@ -145,11 +145,6 @@
     "$mol_charset_encoding",
     "$mol_charset_encode",
     "$mol_compare_array",
-    "$hyoo_lingua_translate",
-    "$hyoo_lingua",
-    "$mol_huggingface",
-    "$mol_fetch",
-    "$mol_dom_parse",
     "$mol_string",
     "$mol_icon_cross",
     "$mol_icon",
@@ -195,6 +190,7 @@
     "$mol_time_base",
     "$mol_type_result",
     "$mol_dom_serialize",
+    "$mol_dom_parse",
     "$mol_crypto_hash",
     "$mol_crypto_secret",
     "$hyoo_cras_land",
@@ -329,6 +325,7 @@
     "$mol_theme_auto",
     "$hyoo_calc_sheet",
     "$hyoo_crowd_dict",
+    "$mol_fetch",
     "$mol_func_sandbox",
     "$mol_offline_install",
     "$mol_offline"
@@ -336,7 +333,7 @@
   "dependencies": {
     "jsdom": "*",
     "chokidar": "*",
-    "undici": "*",
-    "fake-indexeddb": "*"
+    "fake-indexeddb": "*",
+    "undici": "*"
   }
 }
