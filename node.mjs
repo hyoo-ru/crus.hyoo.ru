@@ -10363,291 +10363,6 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    class $mol_check extends $mol_button_minor {
-        attr() {
-            return {
-                ...super.attr(),
-                mol_check_checked: this.checked(),
-                "aria-checked": this.aria_checked(),
-                role: this.aria_role()
-            };
-        }
-        sub() {
-            return [
-                this.Icon(),
-                this.label()
-            ];
-        }
-        checked(next) {
-            if (next !== undefined)
-                return next;
-            return false;
-        }
-        aria_checked() {
-            return "false";
-        }
-        aria_role() {
-            return "checkbox";
-        }
-        Icon() {
-            return null;
-        }
-        title() {
-            return "";
-        }
-        Title() {
-            const obj = new this.$.$mol_view();
-            obj.sub = () => [
-                this.title()
-            ];
-            return obj;
-        }
-        label() {
-            return [
-                this.Title()
-            ];
-        }
-    }
-    __decorate([
-        $mol_mem
-    ], $mol_check.prototype, "checked", null);
-    __decorate([
-        $mol_mem
-    ], $mol_check.prototype, "Title", null);
-    $.$mol_check = $mol_check;
-})($ || ($ = {}));
-//mol/check/-view.tree/check.view.tree.ts
-;
-"use strict";
-var $;
-(function ($) {
-    function $mol_maybe(value) {
-        return (value == null) ? [] : [value];
-    }
-    $.$mol_maybe = $mol_maybe;
-})($ || ($ = {}));
-//mol/maybe/maybe.ts
-;
-"use strict";
-var $;
-(function ($) {
-    $mol_style_attach("mol/check/check.css", "[mol_check] {\n\tflex: 0 0 auto;\n\tjustify-content: flex-start;\n\talign-content: center;\n\t/* align-items: flex-start; */\n\tborder: none;\n\tfont-weight: inherit;\n\tbox-shadow: none;\n\ttext-align: left;\n\tdisplay: inline-flex;\n\tflex-wrap: nowrap;\n}\n\n[mol_check_title] {\n\tflex-shrink: 1;\n}\n");
-})($ || ($ = {}));
-//mol/check/-css/check.css.ts
-;
-"use strict";
-var $;
-(function ($) {
-    var $$;
-    (function ($$) {
-        class $mol_check extends $.$mol_check {
-            click(next) {
-                if (next?.defaultPrevented)
-                    return;
-                this.checked(!this.checked());
-                if (next)
-                    next.preventDefault();
-            }
-            sub() {
-                return [
-                    ...$mol_maybe(this.Icon()),
-                    ...this.label(),
-                ];
-            }
-            label() {
-                return this.title() ? super.label() : [];
-            }
-            aria_checked() {
-                return String(this.checked());
-            }
-        }
-        $$.$mol_check = $mol_check;
-    })($$ = $.$$ || ($.$$ = {}));
-})($ || ($ = {}));
-//mol/check/check.view.ts
-;
-"use strict";
-var $;
-(function ($) {
-    class $mol_icon_chevron extends $mol_icon {
-        path() {
-            return "M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z";
-        }
-    }
-    $.$mol_icon_chevron = $mol_icon_chevron;
-})($ || ($ = {}));
-//mol/icon/chevron/-view.tree/chevron.view.tree.ts
-;
-"use strict";
-var $;
-(function ($) {
-    class $mol_check_expand extends $mol_check {
-        Icon() {
-            const obj = new this.$.$mol_icon_chevron();
-            return obj;
-        }
-        level() {
-            return 0;
-        }
-        style() {
-            return {
-                ...super.style(),
-                paddingLeft: this.level_style()
-            };
-        }
-        checked(next) {
-            return this.expanded(next);
-        }
-        enabled() {
-            return this.expandable();
-        }
-        level_style() {
-            return "0px";
-        }
-        expanded(next) {
-            if (next !== undefined)
-                return next;
-            return false;
-        }
-        expandable() {
-            return false;
-        }
-    }
-    __decorate([
-        $mol_mem
-    ], $mol_check_expand.prototype, "Icon", null);
-    __decorate([
-        $mol_mem
-    ], $mol_check_expand.prototype, "expanded", null);
-    $.$mol_check_expand = $mol_check_expand;
-})($ || ($ = {}));
-//mol/check/expand/-view.tree/expand.view.tree.ts
-;
-"use strict";
-var $;
-(function ($) {
-    var $$;
-    (function ($$) {
-        class $mol_check_expand extends $.$mol_check_expand {
-            level_style() {
-                return `${this.level() * 1 - 1}rem`;
-            }
-            expandable() {
-                return this.expanded() !== null;
-            }
-        }
-        $$.$mol_check_expand = $mol_check_expand;
-    })($$ = $.$$ || ($.$$ = {}));
-})($ || ($ = {}));
-//mol/check/expand/expand.view.ts
-;
-"use strict";
-var $;
-(function ($) {
-    $mol_style_attach("mol/check/expand/expand.view.css", "[mol_check_expand] {\n\tmin-width: 20px;\n}\n\n:where([mol_check_expand][disabled]) [mol_check_expand_icon] {\n\tvisibility: hidden;\n}\n\n[mol_check_expand_icon] {\n\tbox-shadow: none;\n}\n[mol_check_expand_icon] {\n\ttransform: rotateZ(0deg);\n}\n\n:where([mol_check_checked]) [mol_check_expand_icon] {\n\ttransform: rotateZ(90deg);\n}\n\n[mol_check_expand_icon] {\n\tvertical-align: text-top;\n}\n\n[mol_check_expand_label] {\n\tmargin-left: 0;\n}\n");
-})($ || ($ = {}));
-//mol/check/expand/-css/expand.view.css.ts
-;
-"use strict";
-var $;
-(function ($) {
-    class $mol_expander extends $mol_list {
-        rows() {
-            return [
-                this.Label(),
-                this.Content()
-            ];
-        }
-        expanded(next) {
-            if (next !== undefined)
-                return next;
-            return false;
-        }
-        expandable() {
-            return true;
-        }
-        label() {
-            return [
-                this.title()
-            ];
-        }
-        Trigger() {
-            const obj = new this.$.$mol_check_expand();
-            obj.checked = (next) => this.expanded(next);
-            obj.expandable = () => this.expandable();
-            obj.label = () => this.label();
-            return obj;
-        }
-        Tools() {
-            return null;
-        }
-        Label() {
-            const obj = new this.$.$mol_view();
-            obj.sub = () => [
-                this.Trigger(),
-                this.Tools()
-            ];
-            return obj;
-        }
-        content() {
-            return [];
-        }
-        Content() {
-            const obj = new this.$.$mol_list();
-            obj.rows = () => this.content();
-            return obj;
-        }
-    }
-    __decorate([
-        $mol_mem
-    ], $mol_expander.prototype, "expanded", null);
-    __decorate([
-        $mol_mem
-    ], $mol_expander.prototype, "Trigger", null);
-    __decorate([
-        $mol_mem
-    ], $mol_expander.prototype, "Label", null);
-    __decorate([
-        $mol_mem
-    ], $mol_expander.prototype, "Content", null);
-    $.$mol_expander = $mol_expander;
-})($ || ($ = {}));
-//mol/expander/-view.tree/expander.view.tree.ts
-;
-"use strict";
-var $;
-(function ($) {
-    var $$;
-    (function ($$) {
-        class $mol_expander extends $.$mol_expander {
-            rows() {
-                return [
-                    this.Label(),
-                    ...this.expanded() ? [this.Content()] : []
-                ];
-            }
-            expandable() {
-                return this.content().length > 0;
-            }
-        }
-        __decorate([
-            $mol_mem
-        ], $mol_expander.prototype, "rows", null);
-        $$.$mol_expander = $mol_expander;
-    })($$ = $.$$ || ($.$$ = {}));
-})($ || ($ = {}));
-//mol/expander/expander.view.ts
-;
-"use strict";
-var $;
-(function ($) {
-    $mol_style_attach("mol/expander/expander.view.css", "[mol_expander] {\n\tflex-direction: column;\n}\n\n[mol_expander_label] {\n\tdisplay: flex;\n\tflex-wrap: wrap;\n\tborder-radius: var(--mol_gap_round);\n}\n\n[mol_expander_trigger] {\n\tflex: auto;\n\tposition: relative;\n}\n");
-})($ || ($ = {}));
-//mol/expander/-css/expander.view.css.ts
-;
-"use strict";
-var $;
-(function ($) {
     class $mol_stack extends $mol_view {
     }
     $.$mol_stack = $mol_stack;
@@ -11429,6 +11144,2007 @@ var $;
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));
 //mol/text/code/code.view.css.ts
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_float extends $mol_view {
+        style() {
+            return {
+                ...super.style(),
+                minHeight: "auto"
+            };
+        }
+    }
+    $.$mol_float = $mol_float;
+})($ || ($ = {}));
+//mol/float/-view.tree/float.view.tree.ts
+;
+"use strict";
+var $;
+(function ($) {
+    $mol_style_attach("mol/float/float.view.css", "[mol_float] {\n\tposition: sticky;\n\ttop: 0;\n\tleft: 0;\n\tz-index: var(--mol_layer_float);\n\topacity: 1;\n\ttransition: opacity .25s ease-in;\n\tdisplay: block;\n\tbackground: linear-gradient( var(--mol_theme_card), var(--mol_theme_card) ), var(--mol_theme_back);\n\tbox-shadow: 0 0 .5rem hsla(0,0%,0%,.25);\n}\n\n");
+})($ || ($ = {}));
+//mol/float/-css/float.view.css.ts
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_check extends $mol_button_minor {
+        attr() {
+            return {
+                ...super.attr(),
+                mol_check_checked: this.checked(),
+                "aria-checked": this.aria_checked(),
+                role: this.aria_role()
+            };
+        }
+        sub() {
+            return [
+                this.Icon(),
+                this.label()
+            ];
+        }
+        checked(next) {
+            if (next !== undefined)
+                return next;
+            return false;
+        }
+        aria_checked() {
+            return "false";
+        }
+        aria_role() {
+            return "checkbox";
+        }
+        Icon() {
+            return null;
+        }
+        title() {
+            return "";
+        }
+        Title() {
+            const obj = new this.$.$mol_view();
+            obj.sub = () => [
+                this.title()
+            ];
+            return obj;
+        }
+        label() {
+            return [
+                this.Title()
+            ];
+        }
+    }
+    __decorate([
+        $mol_mem
+    ], $mol_check.prototype, "checked", null);
+    __decorate([
+        $mol_mem
+    ], $mol_check.prototype, "Title", null);
+    $.$mol_check = $mol_check;
+})($ || ($ = {}));
+//mol/check/-view.tree/check.view.tree.ts
+;
+"use strict";
+var $;
+(function ($) {
+    function $mol_maybe(value) {
+        return (value == null) ? [] : [value];
+    }
+    $.$mol_maybe = $mol_maybe;
+})($ || ($ = {}));
+//mol/maybe/maybe.ts
+;
+"use strict";
+var $;
+(function ($) {
+    $mol_style_attach("mol/check/check.css", "[mol_check] {\n\tflex: 0 0 auto;\n\tjustify-content: flex-start;\n\talign-content: center;\n\t/* align-items: flex-start; */\n\tborder: none;\n\tfont-weight: inherit;\n\tbox-shadow: none;\n\ttext-align: left;\n\tdisplay: inline-flex;\n\tflex-wrap: nowrap;\n}\n\n[mol_check_title] {\n\tflex-shrink: 1;\n}\n");
+})($ || ($ = {}));
+//mol/check/-css/check.css.ts
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $mol_check extends $.$mol_check {
+            click(next) {
+                if (next?.defaultPrevented)
+                    return;
+                this.checked(!this.checked());
+                if (next)
+                    next.preventDefault();
+            }
+            sub() {
+                return [
+                    ...$mol_maybe(this.Icon()),
+                    ...this.label(),
+                ];
+            }
+            label() {
+                return this.title() ? super.label() : [];
+            }
+            aria_checked() {
+                return String(this.checked());
+            }
+        }
+        $$.$mol_check = $mol_check;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+//mol/check/check.view.ts
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_icon_chevron extends $mol_icon {
+        path() {
+            return "M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z";
+        }
+    }
+    $.$mol_icon_chevron = $mol_icon_chevron;
+})($ || ($ = {}));
+//mol/icon/chevron/-view.tree/chevron.view.tree.ts
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_check_expand extends $mol_check {
+        Icon() {
+            const obj = new this.$.$mol_icon_chevron();
+            return obj;
+        }
+        level() {
+            return 0;
+        }
+        style() {
+            return {
+                ...super.style(),
+                paddingLeft: this.level_style()
+            };
+        }
+        checked(next) {
+            return this.expanded(next);
+        }
+        enabled() {
+            return this.expandable();
+        }
+        level_style() {
+            return "0px";
+        }
+        expanded(next) {
+            if (next !== undefined)
+                return next;
+            return false;
+        }
+        expandable() {
+            return false;
+        }
+    }
+    __decorate([
+        $mol_mem
+    ], $mol_check_expand.prototype, "Icon", null);
+    __decorate([
+        $mol_mem
+    ], $mol_check_expand.prototype, "expanded", null);
+    $.$mol_check_expand = $mol_check_expand;
+})($ || ($ = {}));
+//mol/check/expand/-view.tree/expand.view.tree.ts
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $mol_check_expand extends $.$mol_check_expand {
+            level_style() {
+                return `${this.level() * 1 - 1}rem`;
+            }
+            expandable() {
+                return this.expanded() !== null;
+            }
+        }
+        $$.$mol_check_expand = $mol_check_expand;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+//mol/check/expand/expand.view.ts
+;
+"use strict";
+var $;
+(function ($) {
+    $mol_style_attach("mol/check/expand/expand.view.css", "[mol_check_expand] {\n\tmin-width: 20px;\n}\n\n:where([mol_check_expand][disabled]) [mol_check_expand_icon] {\n\tvisibility: hidden;\n}\n\n[mol_check_expand_icon] {\n\tbox-shadow: none;\n}\n[mol_check_expand_icon] {\n\ttransform: rotateZ(0deg);\n}\n\n:where([mol_check_checked]) [mol_check_expand_icon] {\n\ttransform: rotateZ(90deg);\n}\n\n[mol_check_expand_icon] {\n\tvertical-align: text-top;\n}\n\n[mol_check_expand_label] {\n\tmargin-left: 0;\n}\n");
+})($ || ($ = {}));
+//mol/check/expand/-css/expand.view.css.ts
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_grid extends $mol_view {
+        row_height() {
+            return 32;
+        }
+        row_ids() {
+            return [];
+        }
+        row_id(id) {
+            return null;
+        }
+        col_ids() {
+            return [];
+        }
+        records() {
+            return {};
+        }
+        record(id) {
+            return null;
+        }
+        hierarchy() {
+            return null;
+        }
+        hierarchy_col() {
+            return "";
+        }
+        minimal_width() {
+            return 0;
+        }
+        sub() {
+            return [
+                this.Head(),
+                this.Table()
+            ];
+        }
+        Head() {
+            const obj = new this.$.$mol_grid_row();
+            obj.cells = () => this.head_cells();
+            return obj;
+        }
+        Row(id) {
+            const obj = new this.$.$mol_grid_row();
+            obj.minimal_height = () => this.row_height();
+            obj.minimal_width = () => this.minimal_width();
+            obj.cells = () => this.cells(id);
+            return obj;
+        }
+        Cell(id) {
+            const obj = new this.$.$mol_view();
+            return obj;
+        }
+        cell(id) {
+            return null;
+        }
+        Cell_text(id) {
+            const obj = new this.$.$mol_grid_cell();
+            obj.sub = () => this.cell_content_text(id);
+            return obj;
+        }
+        Cell_number(id) {
+            const obj = new this.$.$mol_grid_number();
+            obj.sub = () => this.cell_content_number(id);
+            return obj;
+        }
+        Col_head(id) {
+            const obj = new this.$.$mol_float();
+            obj.dom_name = () => "th";
+            obj.sub = () => this.col_head_content(id);
+            return obj;
+        }
+        Cell_branch(id) {
+            const obj = new this.$.$mol_check_expand();
+            obj.level = () => this.cell_level(id);
+            obj.label = () => this.cell_content(id);
+            obj.expanded = (next) => this.cell_expanded(id, next);
+            return obj;
+        }
+        Cell_content(id) {
+            return [
+                this.Cell_dimmer(id)
+            ];
+        }
+        rows() {
+            return [];
+        }
+        Table() {
+            const obj = new this.$.$mol_grid_table();
+            obj.sub = () => this.rows();
+            return obj;
+        }
+        head_cells() {
+            return [];
+        }
+        cells(id) {
+            return [];
+        }
+        cell_content(id) {
+            return [];
+        }
+        cell_content_text(id) {
+            return this.cell_content(id);
+        }
+        cell_content_number(id) {
+            return this.cell_content(id);
+        }
+        col_head_content(id) {
+            return [];
+        }
+        cell_level(id) {
+            return 0;
+        }
+        cell_expanded(id, next) {
+            if (next !== undefined)
+                return next;
+            return false;
+        }
+        needle() {
+            return "";
+        }
+        cell_value(id) {
+            return "";
+        }
+        Cell_dimmer(id) {
+            const obj = new this.$.$mol_dimmer();
+            obj.needle = () => this.needle();
+            obj.haystack = () => this.cell_value(id);
+            return obj;
+        }
+    }
+    __decorate([
+        $mol_mem
+    ], $mol_grid.prototype, "Head", null);
+    __decorate([
+        $mol_mem_key
+    ], $mol_grid.prototype, "Row", null);
+    __decorate([
+        $mol_mem_key
+    ], $mol_grid.prototype, "Cell", null);
+    __decorate([
+        $mol_mem_key
+    ], $mol_grid.prototype, "Cell_text", null);
+    __decorate([
+        $mol_mem_key
+    ], $mol_grid.prototype, "Cell_number", null);
+    __decorate([
+        $mol_mem_key
+    ], $mol_grid.prototype, "Col_head", null);
+    __decorate([
+        $mol_mem_key
+    ], $mol_grid.prototype, "Cell_branch", null);
+    __decorate([
+        $mol_mem
+    ], $mol_grid.prototype, "Table", null);
+    __decorate([
+        $mol_mem_key
+    ], $mol_grid.prototype, "cell_expanded", null);
+    __decorate([
+        $mol_mem_key
+    ], $mol_grid.prototype, "Cell_dimmer", null);
+    $.$mol_grid = $mol_grid;
+    class $mol_grid_table extends $mol_list {
+    }
+    $.$mol_grid_table = $mol_grid_table;
+    class $mol_grid_row extends $mol_view {
+        sub() {
+            return this.cells();
+        }
+        cells() {
+            return [];
+        }
+    }
+    $.$mol_grid_row = $mol_grid_row;
+    class $mol_grid_cell extends $mol_view {
+        minimal_height() {
+            return 40;
+        }
+    }
+    $.$mol_grid_cell = $mol_grid_cell;
+    class $mol_grid_number extends $mol_grid_cell {
+    }
+    $.$mol_grid_number = $mol_grid_number;
+})($ || ($ = {}));
+//mol/grid/-view.tree/grid.view.tree.ts
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_state_session extends $mol_object {
+        static 'native()';
+        static native() {
+            if (this['native()'])
+                return this['native()'];
+            check: try {
+                const native = $mol_dom_context.sessionStorage;
+                if (!native)
+                    break check;
+                native.setItem('', '');
+                native.removeItem('');
+                return this['native()'] = native;
+            }
+            catch (error) {
+                console.warn(error);
+            }
+            return this['native()'] = {
+                getItem(key) {
+                    return this[':' + key];
+                },
+                setItem(key, value) {
+                    this[':' + key] = value;
+                },
+                removeItem(key) {
+                    this[':' + key] = void 0;
+                }
+            };
+        }
+        static value(key, next) {
+            if (next === void 0)
+                return JSON.parse(this.native().getItem(key) || 'null');
+            if (next === null)
+                this.native().removeItem(key);
+            else
+                this.native().setItem(key, JSON.stringify(next));
+            return next;
+        }
+        prefix() { return ''; }
+        value(key, next) {
+            return $mol_state_session.value(this.prefix() + '.' + key, next);
+        }
+    }
+    __decorate([
+        $mol_mem_key
+    ], $mol_state_session, "value", null);
+    $.$mol_state_session = $mol_state_session;
+})($ || ($ = {}));
+//mol/state/session/session.ts
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $mol_grid extends $.$mol_grid {
+            head_cells() {
+                return this.col_ids().map(colId => this.Col_head(colId));
+            }
+            col_head_content(colId) {
+                return [colId];
+            }
+            rows() {
+                return this.row_ids().map(id => this.Row(id));
+            }
+            cells(row_id) {
+                return this.col_ids().map(col_id => this.Cell({ row: row_id, col: col_id }));
+            }
+            col_type(col_id) {
+                if (col_id === this.hierarchy_col())
+                    return 'branch';
+                const rowFirst = this.row_id(0);
+                const val = this.record(rowFirst[rowFirst.length - 1])[col_id];
+                if (typeof val === 'number')
+                    return 'number';
+                return 'text';
+            }
+            Cell(id) {
+                switch (this.col_type(id.col).valueOf()) {
+                    case 'branch': return this.Cell_branch(id);
+                    case 'number': return this.Cell_number(id);
+                }
+                return this.Cell_text(id);
+            }
+            cell_content(id) {
+                return [this.record(id.row[id.row.length - 1])[id.col]];
+            }
+            cell_content_text(id) {
+                return this.cell_content(id).map(val => typeof val === 'object' ? JSON.stringify(val) : val);
+            }
+            records() {
+                return [];
+            }
+            record(id) {
+                return this.records()[id];
+            }
+            record_ids() {
+                return Object.keys(this.records());
+            }
+            row_id(index) {
+                return this.row_ids().slice(index, index + 1).valueOf()[0];
+            }
+            col_ids() {
+                const rowFirst = this.row_id(0);
+                if (rowFirst === void 0)
+                    return [];
+                const record = this.record(rowFirst[rowFirst.length - 1]);
+                if (!record)
+                    return [];
+                return Object.keys(record);
+            }
+            hierarchy() {
+                const hierarchy = {};
+                const root = hierarchy[''] = {
+                    id: '',
+                    parent: null,
+                    sub: [],
+                };
+                this.record_ids().map(id => {
+                    root.sub.push(hierarchy[id] = {
+                        id,
+                        parent: root,
+                        sub: [],
+                    });
+                });
+                return hierarchy;
+            }
+            row_sub_ids(row) {
+                return this.hierarchy()[row[row.length - 1]].sub.map(child => row.concat(child.id));
+            }
+            row_root_id() {
+                return [''];
+            }
+            cell_level(id) {
+                return id.row.length - 1;
+            }
+            row_ids() {
+                const next = [];
+                const add = (row) => {
+                    next.push(row);
+                    if (this.row_expanded(row)) {
+                        this.row_sub_ids(row).forEach(child => add(child));
+                    }
+                };
+                this.row_sub_ids(this.row_root_id()).forEach(child => add(child));
+                return next;
+            }
+            row_expanded(row_id, next) {
+                if (!this.row_sub_ids(row_id).length)
+                    return null;
+                const key = `row_expanded(${JSON.stringify(row_id)})`;
+                const next2 = $mol_state_session.value(key, next);
+                return (next2 == null) ? this.row_expanded_default(row_id) : next2;
+            }
+            row_expanded_default(row_id) {
+                return true;
+            }
+            cell_expanded(id, next) {
+                return this.row_expanded(id.row, next);
+            }
+        }
+        __decorate([
+            $mol_mem
+        ], $mol_grid.prototype, "head_cells", null);
+        __decorate([
+            $mol_mem
+        ], $mol_grid.prototype, "rows", null);
+        __decorate([
+            $mol_mem_key
+        ], $mol_grid.prototype, "col_type", null);
+        __decorate([
+            $mol_mem
+        ], $mol_grid.prototype, "record_ids", null);
+        __decorate([
+            $mol_mem
+        ], $mol_grid.prototype, "hierarchy", null);
+        __decorate([
+            $mol_mem
+        ], $mol_grid.prototype, "row_ids", null);
+        $$.$mol_grid = $mol_grid;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+//mol/grid/grid.view.ts
+;
+"use strict";
+var $;
+(function ($) {
+    $mol_style_attach("mol/grid/grid.view.css", "[mol_grid] {\n\tdisplay: block;\n\tflex: 0 1 auto;\n\tposition: relative;\n\toverflow-x: auto;\n}\n\n[mol_grid_gap] {\n\tposition: absolute;\n\tpadding: .1px;\n\ttop: 0;\n\ttransform: translateZ(0);\n}\n\n[mol_grid_table] {\n\tborder-spacing: 0;\n\tdisplay: table-row-group;\n\tposition: relative;\n}\n\n[mol_grid_table] > * {\n\tdisplay: table-row;\n\ttransition: none;\n}\n\n[mol_grid_head] > *,\n[mol_grid_table] > * > * {\n\tdisplay: table-cell;\n\tpadding: var(--mol_gap_text);\n\twhite-space: nowrap;\n\tvertical-align: middle;\n\tbox-shadow: inset 1px 1px 0 0 var(--mol_theme_line);\n}\n\n[mol_grid_row]:where(:first-child) > * {\n\tbox-shadow: inset 1px 0 0 0 var(--mol_theme_line);\n}\n\n[mol_grid_table] > * > *:where(:first-child) {\n\tbox-shadow: inset 0px 1px 0 0 var(--mol_theme_line);\n}\n\n[mol_grid_head] > * {\n\tbox-shadow: inset 1px -1px 0 0 var(--mol_theme_line);\n}\n\n[mol_grid_head] > *:where(:first-child) {\n\tbox-shadow: inset 0px -1px 0 0 var(--mol_theme_line);\n}\n\n[mol_grid_table] > [mol_grid_row]:where(:first-child) > *:where(:first-child) {\n\tbox-shadow: none;\n}\t\n\n[mol_grid_head] {\n\tdisplay: table-row;\n\ttransform: none !important;\n}\n\n/* [mol_grid_cell_number] {\n\ttext-align: right;\n} */\n\n[mol_grid_col_head] {\n\tfont-weight: inherit;\n\ttext-align: inherit;\n\tdisplay: table-cell;\n\tcolor: var(--mol_theme_shade);\n}\n\n[mol_grid_cell_dimmer] {\n\tdisplay: inline-block;\n\tvertical-align: inherit;\n}\n");
+})($ || ($ = {}));
+//mol/grid/-css/grid.view.css.ts
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_image extends $mol_view {
+        dom_name() {
+            return "img";
+        }
+        field() {
+            return {
+                ...super.field(),
+                src: this.uri(),
+                alt: this.title(),
+                loading: this.loading(),
+                decoding: this.decoding(),
+                crossOrigin: this.cors()
+            };
+        }
+        attr() {
+            return {
+                ...super.attr(),
+                width: this.natural_width(),
+                height: this.natural_height()
+            };
+        }
+        event() {
+            return {
+                load: (next) => this.load(next)
+            };
+        }
+        minimal_width() {
+            return 16;
+        }
+        minimal_height() {
+            return 16;
+        }
+        uri() {
+            return "";
+        }
+        loading() {
+            return "eager";
+        }
+        decoding() {
+            return "async";
+        }
+        cors() {
+            return null;
+        }
+        natural_width(next) {
+            if (next !== undefined)
+                return next;
+            return 0;
+        }
+        natural_height(next) {
+            if (next !== undefined)
+                return next;
+            return 0;
+        }
+        load(next) {
+            if (next !== undefined)
+                return next;
+            return null;
+        }
+    }
+    __decorate([
+        $mol_mem
+    ], $mol_image.prototype, "natural_width", null);
+    __decorate([
+        $mol_mem
+    ], $mol_image.prototype, "natural_height", null);
+    __decorate([
+        $mol_mem
+    ], $mol_image.prototype, "load", null);
+    $.$mol_image = $mol_image;
+})($ || ($ = {}));
+//mol/image/-view.tree/image.view.tree.ts
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $mol_image extends $.$mol_image {
+            natural_width(next) {
+                const dom = this.dom_node();
+                if (dom.naturalWidth)
+                    return dom.naturalWidth;
+                const found = this.uri().match(/\bwidth=(\d+)/);
+                return found ? Number(found[1]) : null;
+            }
+            natural_height(next) {
+                const dom = this.dom_node();
+                if (dom.naturalHeight)
+                    return dom.naturalHeight;
+                const found = this.uri().match(/\bheight=(\d+)/);
+                return found ? Number(found[1]) : null;
+            }
+            load() {
+                this.natural_width(null);
+                this.natural_height(null);
+            }
+        }
+        __decorate([
+            $mol_mem
+        ], $mol_image.prototype, "natural_width", null);
+        __decorate([
+            $mol_mem
+        ], $mol_image.prototype, "natural_height", null);
+        $$.$mol_image = $mol_image;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+//mol/image/image.view.ts
+;
+"use strict";
+var $;
+(function ($) {
+    $mol_style_attach("mol/image/image.view.css", "[mol_image] {\n\tborder-radius: var(--mol_gap_round);\n\toverflow: hidden;\n\tflex: 0 1 auto;\n\tmax-width: 100%;\n\tobject-fit: cover;\n\theight: fit-content;\n}\n");
+})($ || ($ = {}));
+//mol/image/-css/image.view.css.ts
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_link_iconed extends $mol_link {
+        sub() {
+            return [
+                this.Icon()
+            ];
+        }
+        content() {
+            return [
+                this.title()
+            ];
+        }
+        host() {
+            return "";
+        }
+        icon() {
+            return "";
+        }
+        Icon() {
+            const obj = new this.$.$mol_image();
+            obj.uri = () => this.icon();
+            obj.title = () => "";
+            return obj;
+        }
+        title() {
+            return this.uri();
+        }
+    }
+    __decorate([
+        $mol_mem
+    ], $mol_link_iconed.prototype, "Icon", null);
+    $.$mol_link_iconed = $mol_link_iconed;
+})($ || ($ = {}));
+//mol/link/iconed/-view.tree/iconed.view.tree.ts
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $mol_link_iconed extends $.$mol_link_iconed {
+            icon() {
+                return `https://favicon.yandex.net/favicon/${this.host()}?color=0,0,0,0&size=32&stub=1`;
+            }
+            host() {
+                const base = this.$.$mol_state_arg.href();
+                const url = new URL(this.uri(), base);
+                return url.hostname;
+            }
+            title() {
+                const uri = this.uri();
+                const host = this.host();
+                const suffix = (host ? uri.split(this.host(), 2)[1] : uri)?.replace(/^[\/\?#!]+/, '');
+                return decodeURIComponent(suffix || host).replace(/^\//, ' ');
+            }
+            sub() {
+                return [
+                    ...this.host() ? [this.Icon()] : [],
+                    ...this.content() ? [' ', ...this.content()] : [],
+                ];
+            }
+        }
+        __decorate([
+            $mol_mem
+        ], $mol_link_iconed.prototype, "icon", null);
+        __decorate([
+            $mol_mem
+        ], $mol_link_iconed.prototype, "host", null);
+        __decorate([
+            $mol_mem
+        ], $mol_link_iconed.prototype, "title", null);
+        __decorate([
+            $mol_mem
+        ], $mol_link_iconed.prototype, "sub", null);
+        $$.$mol_link_iconed = $mol_link_iconed;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+//mol/link/iconed/iconed.view.ts
+;
+"use strict";
+var $;
+(function ($) {
+    $mol_style_attach("mol/link/iconed/iconed.view.css", "[mol_link_iconed] {\n\talign-items: baseline;\n\tdisplay: inline-flex;\n\tpadding: var(--mol_gap_text);\n}\n\n[mol_link_iconed_icon] {\n\tbox-shadow: none;\n\theight: 1.5em;\n\twidth: 1em;\n\tflex: 0 0 auto;\n\tdisplay: inline-block;\n\talign-self: normal;\n\tvertical-align: top;\n\tborder-radius: 0;\n\tobject-fit: scale-down;\n\topacity: .75;\n}\n\n[mol_theme=\"$mol_theme_dark\"] [mol_link_iconed_icon] {\n\tfilter: var(--mol_theme_image);\n}\n");
+})($ || ($ = {}));
+//mol/link/iconed/-css/iconed.view.css.ts
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_embed_native extends $mol_scroll {
+        uri(next) {
+            if (next !== undefined)
+                return next;
+            return "";
+        }
+        dom_name() {
+            return "object";
+        }
+        window() {
+            return null;
+        }
+        attr() {
+            return {
+                ...super.attr(),
+                data: this.uri(),
+                type: this.mime()
+            };
+        }
+        sub() {
+            return [
+                this.Fallback()
+            ];
+        }
+        message() {
+            return {
+                hashchange: (next) => this.uri_change(next)
+            };
+        }
+        mime() {
+            return "";
+        }
+        title() {
+            return "";
+        }
+        Fallback() {
+            const obj = new this.$.$mol_link();
+            obj.uri = () => this.uri();
+            obj.sub = () => [
+                this.title()
+            ];
+            return obj;
+        }
+        uri_change(next) {
+            if (next !== undefined)
+                return next;
+            return null;
+        }
+    }
+    __decorate([
+        $mol_mem
+    ], $mol_embed_native.prototype, "uri", null);
+    __decorate([
+        $mol_mem
+    ], $mol_embed_native.prototype, "Fallback", null);
+    __decorate([
+        $mol_mem
+    ], $mol_embed_native.prototype, "uri_change", null);
+    $.$mol_embed_native = $mol_embed_native;
+})($ || ($ = {}));
+//mol/embed/native/-view.tree/native.view.tree.ts
+;
+"use strict";
+var $;
+(function ($) {
+    function $mol_promise() {
+        let done;
+        let fail;
+        const promise = new Promise((d, f) => {
+            done = d;
+            fail = f;
+        });
+        return Object.assign(promise, {
+            done,
+            fail,
+        });
+    }
+    $.$mol_promise = $mol_promise;
+})($ || ($ = {}));
+//mol/promise/promise/promise.ts
+;
+"use strict";
+var $;
+(function ($) {
+    function $mol_wait_timeout_async(timeout) {
+        const promise = $mol_promise();
+        const task = new this.$mol_after_timeout(timeout, () => promise.done());
+        return Object.assign(promise, {
+            destructor: () => task.destructor()
+        });
+    }
+    $.$mol_wait_timeout_async = $mol_wait_timeout_async;
+    function $mol_wait_timeout(timeout) {
+        return this.$mol_wire_sync(this).$mol_wait_timeout_async(timeout);
+    }
+    $.$mol_wait_timeout = $mol_wait_timeout;
+})($ || ($ = {}));
+//mol/wait/timeout/timeout.ts
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $mol_embed_native extends $.$mol_embed_native {
+            window() {
+                $mol_wire_solid();
+                return $mol_wire_sync(this).load(this.dom_node_actual());
+            }
+            load(frame) {
+                return new Promise((done, fail) => {
+                    frame.onload = () => {
+                        try {
+                            if (frame.contentWindow.location.href === 'about:blank') {
+                                return;
+                            }
+                        }
+                        catch { }
+                        done(frame.contentWindow);
+                    };
+                    frame.onerror = (event) => {
+                        fail(typeof event === 'string' ? new Error(event) : event.error || event);
+                    };
+                });
+            }
+            uri_resource() {
+                return this.uri().replace(/#.*/, '');
+            }
+            message_listener() {
+                return new $mol_dom_listener($mol_dom_context, 'message', $mol_wire_async(this).message_receive);
+            }
+            message_receive(event) {
+                if (!event)
+                    return;
+                if (event.source !== this.window())
+                    return;
+                if (!Array.isArray(event.data))
+                    return;
+                this.message()[event.data[0]]?.(event);
+            }
+            uri_change(event) {
+                this.$.$mol_wait_timeout(1000);
+                this.uri(event.data[1]);
+            }
+            auto() {
+                return [
+                    this.message_listener(),
+                    this.window(),
+                ];
+            }
+        }
+        __decorate([
+            $mol_mem
+        ], $mol_embed_native.prototype, "window", null);
+        __decorate([
+            $mol_mem
+        ], $mol_embed_native.prototype, "uri_resource", null);
+        __decorate([
+            $mol_mem
+        ], $mol_embed_native.prototype, "message_listener", null);
+        $$.$mol_embed_native = $mol_embed_native;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+//mol/embed/native/native.view.ts
+;
+"use strict";
+var $;
+(function ($) {
+    $mol_style_attach("mol/embed/native/native.view.css", "[mol_embed_native] {\n\tmax-width: 100%;\n\tmax-height: 100vh;\n\tobject-fit: cover;\n\tdisplay: flex;\n\tflex: 1 1 auto;\n\tobject-position: top left;\n\tborder-radius: var(--mol_gap_round);\n\taspect-ratio: 4/3;\n}\n");
+})($ || ($ = {}));
+//mol/embed/native/-css/native.view.css.ts
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_icon_youtube extends $mol_icon {
+        path() {
+            return "M10,15L15.19,12L10,9V15M21.56,7.17C21.69,7.64 21.78,8.27 21.84,9.07C21.91,9.87 21.94,10.56 21.94,11.16L22,12C22,14.19 21.84,15.8 21.56,16.83C21.31,17.73 20.73,18.31 19.83,18.56C19.36,18.69 18.5,18.78 17.18,18.84C15.88,18.91 14.69,18.94 13.59,18.94L12,19C7.81,19 5.2,18.84 4.17,18.56C3.27,18.31 2.69,17.73 2.44,16.83C2.31,16.36 2.22,15.73 2.16,14.93C2.09,14.13 2.06,13.44 2.06,12.84L2,12C2,9.81 2.16,8.2 2.44,7.17C2.69,6.27 3.27,5.69 4.17,5.44C4.64,5.31 5.5,5.22 6.82,5.16C8.12,5.09 9.31,5.06 10.41,5.06L12,5C16.19,5 18.8,5.16 19.83,5.44C20.73,5.69 21.31,6.27 21.56,7.17Z";
+        }
+    }
+    $.$mol_icon_youtube = $mol_icon_youtube;
+})($ || ($ = {}));
+//mol/icon/youtube/-view.tree/youtube.view.tree.ts
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_frame extends $mol_embed_native {
+        dom_name() {
+            return "iframe";
+        }
+        attr() {
+            return {
+                ...super.attr(),
+                data: null,
+                type: null,
+                src: this.uri(),
+                srcdoc: this.html(),
+                allow: this.allow()
+            };
+        }
+        fullscreen() {
+            return true;
+        }
+        accelerometer() {
+            return true;
+        }
+        autoplay() {
+            return true;
+        }
+        encription() {
+            return true;
+        }
+        gyroscope() {
+            return true;
+        }
+        pip() {
+            return true;
+        }
+        clipboard_read() {
+            return true;
+        }
+        clipboard_write() {
+            return true;
+        }
+        uri(next) {
+            if (next !== undefined)
+                return next;
+            return "about:config";
+        }
+        html() {
+            return null;
+        }
+        allow() {
+            return "";
+        }
+    }
+    __decorate([
+        $mol_mem
+    ], $mol_frame.prototype, "uri", null);
+    $.$mol_frame = $mol_frame;
+})($ || ($ = {}));
+//mol/frame/-view.tree/frame.view.tree.ts
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $mol_frame extends $.$mol_frame {
+            window() {
+                return super.window();
+            }
+            allow() {
+                return [
+                    ...this.fullscreen() ? ['fullscreen'] : [],
+                    ...this.accelerometer() ? ['accelerometer'] : [],
+                    ...this.autoplay() ? ['autoplay'] : [],
+                    ...this.encription() ? ['encrypted-media'] : [],
+                    ...this.gyroscope() ? ['gyroscope'] : [],
+                    ...this.pip() ? ['picture-in-picture'] : [],
+                    ...this.clipboard_read() ? [`clipboard-read ${this.uri()}`] : [],
+                    ...this.clipboard_write() ? [`clipboard-write ${this.uri()}`] : [],
+                ].join('; ');
+            }
+        }
+        $$.$mol_frame = $mol_frame;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+//mol/frame/frame.view.ts
+;
+"use strict";
+var $;
+(function ($) {
+    $mol_style_define($mol_frame, {
+        border: {
+            style: 'none',
+        },
+        maxHeight: $mol_style_unit.vh(100),
+    });
+})($ || ($ = {}));
+//mol/frame/frame.view.css.ts
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_embed_youtube extends $mol_check {
+        uri() {
+            return "";
+        }
+        video_preview() {
+            return "";
+        }
+        video_id() {
+            return "";
+        }
+        checked(next) {
+            return this.active(next);
+        }
+        sub() {
+            return [
+                this.Image(),
+                this.Hint(),
+                this.Frame()
+            ];
+        }
+        active(next) {
+            if (next !== undefined)
+                return next;
+            return false;
+        }
+        title() {
+            return "";
+        }
+        Image() {
+            const obj = new this.$.$mol_image();
+            obj.title = () => this.title();
+            obj.uri = () => this.video_preview();
+            return obj;
+        }
+        Hint() {
+            const obj = new this.$.$mol_icon_youtube();
+            return obj;
+        }
+        video_embed() {
+            return "";
+        }
+        Frame() {
+            const obj = new this.$.$mol_frame();
+            obj.title = () => this.title();
+            obj.uri = () => this.video_embed();
+            return obj;
+        }
+    }
+    __decorate([
+        $mol_mem
+    ], $mol_embed_youtube.prototype, "active", null);
+    __decorate([
+        $mol_mem
+    ], $mol_embed_youtube.prototype, "Image", null);
+    __decorate([
+        $mol_mem
+    ], $mol_embed_youtube.prototype, "Hint", null);
+    __decorate([
+        $mol_mem
+    ], $mol_embed_youtube.prototype, "Frame", null);
+    $.$mol_embed_youtube = $mol_embed_youtube;
+})($ || ($ = {}));
+//mol/embed/youtube/-view.tree/youtube.view.tree.ts
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $mol_embed_youtube extends $.$mol_embed_youtube {
+            video_embed() {
+                return `https://www.youtube.com/embed/${encodeURIComponent(this.video_id())}?autoplay=1&loop=1`;
+            }
+            video_id() {
+                return this.uri().match(/^https\:\/\/www\.youtube\.com\/(?:embed\/|shorts\/|watch\?v=)([^\/&?#]+)/)?.[1]
+                    ?? this.uri().match(/^https\:\/\/youtu\.be\/([^\/&?#]+)/)?.[1]
+                    ?? 'about:blank';
+            }
+            video_preview() {
+                return `https://i.ytimg.com/vi/${this.video_id()}/sddefault.jpg`;
+            }
+            sub() {
+                return this.active()
+                    ? [this.Frame()]
+                    : [this.Image(), this.Hint()];
+            }
+        }
+        __decorate([
+            $mol_mem
+        ], $mol_embed_youtube.prototype, "video_embed", null);
+        __decorate([
+            $mol_mem
+        ], $mol_embed_youtube.prototype, "video_id", null);
+        __decorate([
+            $mol_mem
+        ], $mol_embed_youtube.prototype, "video_preview", null);
+        __decorate([
+            $mol_mem
+        ], $mol_embed_youtube.prototype, "sub", null);
+        $$.$mol_embed_youtube = $mol_embed_youtube;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+//mol/embed/youtube/youtube.view.ts
+;
+"use strict";
+var $;
+(function ($) {
+    $mol_style_attach("mol/embed/youtube/youtube.view.css", "[mol_embed_youtube] {\n\tpadding: 0;\n\tmax-width: 100%;\n}\n\n[mol_embed_youtube_image] {\n\tflex: auto 1 1;\n}\n\n[mol_embed_youtube_hint] {\n\tposition: absolute;\n    left: 50%;\n    top: 50%;\n    width: 50%;\n    height: 50%;\n    opacity: 0.3;\n    transform: translate(-50%, -50%);\n}\n\n[mol_embed_youtube]:hover [mol_embed_youtube_hint] {\n\topacity: .6;\n}\n");
+})($ || ($ = {}));
+//mol/embed/youtube/-css/youtube.view.css.ts
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_embed_any extends $mol_view {
+        Image() {
+            const obj = new this.$.$mol_image();
+            obj.title = () => this.title();
+            obj.uri = () => this.uri();
+            return obj;
+        }
+        Object() {
+            const obj = new this.$.$mol_embed_native();
+            obj.title = () => this.title();
+            obj.uri = () => this.uri();
+            return obj;
+        }
+        Youtube() {
+            const obj = new this.$.$mol_embed_youtube();
+            obj.title = () => this.title();
+            obj.uri = () => this.uri();
+            return obj;
+        }
+        title() {
+            return "";
+        }
+        uri() {
+            return "";
+        }
+    }
+    __decorate([
+        $mol_mem
+    ], $mol_embed_any.prototype, "Image", null);
+    __decorate([
+        $mol_mem
+    ], $mol_embed_any.prototype, "Object", null);
+    __decorate([
+        $mol_mem
+    ], $mol_embed_any.prototype, "Youtube", null);
+    $.$mol_embed_any = $mol_embed_any;
+})($ || ($ = {}));
+//mol/embed/any/-view.tree/any.view.tree.ts
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $mol_embed_any extends $.$mol_embed_any {
+            type() {
+                try {
+                    const uri = this.uri();
+                    if (/\b(png|gif|jpg|jpeg|jfif|webp|svg)\b/.test(uri))
+                        return 'image';
+                    if (/^https:\/\/www\.youtube\.com\//.test(uri))
+                        return 'youtube';
+                    if (/^https:\/\/youtu\.be\//.test(uri))
+                        return 'youtube';
+                }
+                catch (error) {
+                    $mol_fail_log(error);
+                    return 'image';
+                }
+                return 'object';
+            }
+            sub() {
+                switch (this.type()) {
+                    case 'image': return [this.Image()];
+                    case 'youtube': return [this.Youtube()];
+                    default: return [this.Object()];
+                }
+            }
+        }
+        __decorate([
+            $mol_mem
+        ], $mol_embed_any.prototype, "type", null);
+        __decorate([
+            $mol_mem
+        ], $mol_embed_any.prototype, "sub", null);
+        $$.$mol_embed_any = $mol_embed_any;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+//mol/embed/any/any.view.ts
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_text extends $mol_list {
+        uri_base() {
+            return "";
+        }
+        text() {
+            return "";
+        }
+        param() {
+            return "";
+        }
+        flow_tokens() {
+            return [];
+        }
+        auto() {
+            return [
+                this.auto_scroll()
+            ];
+        }
+        Paragraph(id) {
+            const obj = new this.$.$mol_paragraph();
+            obj.sub = () => this.block_content(id);
+            return obj;
+        }
+        Quote(id) {
+            const obj = new this.$.$mol_text();
+            obj.uri_resolve = (id) => this.uri_resolve(id);
+            obj.text = () => this.quote_text(id);
+            obj.highlight = () => this.highlight();
+            obj.auto_scroll = () => null;
+            return obj;
+        }
+        List(id) {
+            const obj = new this.$.$mol_text_list();
+            obj.uri_resolve = (id) => this.uri_resolve(id);
+            obj.type = () => this.list_type(id);
+            obj.text = () => this.list_text(id);
+            obj.highlight = () => this.highlight();
+            return obj;
+        }
+        item_index(id) {
+            return 0;
+        }
+        Header(id) {
+            const obj = new this.$.$mol_text_header();
+            obj.minimal_height = () => 40;
+            obj.level = () => this.header_level(id);
+            obj.content = () => this.block_content(id);
+            obj.arg = () => this.header_arg(id);
+            return obj;
+        }
+        Pre(id) {
+            const obj = new this.$.$mol_text_code();
+            obj.text = () => this.pre_text(id);
+            obj.highlight = () => this.highlight();
+            obj.uri_resolve = (id) => this.uri_resolve(id);
+            obj.sidebar_showed = () => this.pre_sidebar_showed();
+            return obj;
+        }
+        Cut(id) {
+            const obj = new this.$.$mol_view();
+            obj.dom_name = () => "hr";
+            return obj;
+        }
+        Table(id) {
+            const obj = new this.$.$mol_grid();
+            obj.head_cells = () => this.table_head_cells(id);
+            obj.rows = () => this.table_rows(id);
+            return obj;
+        }
+        Table_row(id) {
+            const obj = new this.$.$mol_grid_row();
+            obj.cells = () => this.table_cells(id);
+            return obj;
+        }
+        Table_cell(id) {
+            const obj = new this.$.$mol_text();
+            obj.auto_scroll = () => null;
+            obj.highlight = () => this.highlight();
+            obj.uri_resolve = (id) => this.uri_resolve(id);
+            obj.text = () => this.table_cell_text(id);
+            return obj;
+        }
+        Grid(id) {
+            const obj = new this.$.$mol_grid();
+            obj.rows = () => this.grid_rows(id);
+            return obj;
+        }
+        Grid_row(id) {
+            const obj = new this.$.$mol_grid_row();
+            obj.cells = () => this.grid_cells(id);
+            return obj;
+        }
+        Grid_cell(id) {
+            const obj = new this.$.$mol_text();
+            obj.auto_scroll = () => null;
+            obj.highlight = () => this.highlight();
+            obj.uri_resolve = (id) => this.uri_resolve(id);
+            obj.text = () => this.grid_cell_text(id);
+            return obj;
+        }
+        String(id) {
+            const obj = new this.$.$mol_dimmer();
+            obj.dom_name = () => "span";
+            obj.needle = () => this.highlight();
+            obj.haystack = () => this.line_text(id);
+            return obj;
+        }
+        Span(id) {
+            const obj = new this.$.$mol_text_span();
+            obj.dom_name = () => "span";
+            obj.type = () => this.line_type(id);
+            obj.sub = () => this.line_content(id);
+            return obj;
+        }
+        Code_line(id) {
+            const obj = new this.$.$mol_text_code_row();
+            obj.numb_showed = () => false;
+            obj.highlight = () => this.highlight();
+            obj.text = () => this.line_text(id);
+            obj.uri_resolve = (id) => this.uri_resolve(id);
+            obj.syntax = () => this.code_syntax();
+            return obj;
+        }
+        Link(id) {
+            const obj = new this.$.$mol_link_iconed();
+            obj.uri = () => this.link_uri(id);
+            obj.content = () => this.line_content(id);
+            return obj;
+        }
+        Link_http(id) {
+            const obj = new this.$.$mol_link_iconed();
+            obj.uri = () => this.link_uri(id);
+            obj.content = () => [
+                this.link_host(id)
+            ];
+            return obj;
+        }
+        Embed(id) {
+            const obj = new this.$.$mol_embed_any();
+            obj.uri = () => this.link_uri(id);
+            obj.title = () => this.line_text(id);
+            return obj;
+        }
+        auto_scroll() {
+            return null;
+        }
+        block_content(id) {
+            return [];
+        }
+        uri_resolve(id) {
+            return "";
+        }
+        quote_text(id) {
+            return "";
+        }
+        highlight() {
+            return "";
+        }
+        list_type(id) {
+            return "-";
+        }
+        list_text(id) {
+            return "";
+        }
+        header_level(id) {
+            return 1;
+        }
+        header_arg(id) {
+            return {};
+        }
+        pre_text(id) {
+            return "";
+        }
+        code_sidebar_showed() {
+            return true;
+        }
+        pre_sidebar_showed() {
+            return this.code_sidebar_showed();
+        }
+        table_head_cells(id) {
+            return [];
+        }
+        table_rows(id) {
+            return [];
+        }
+        table_cells(id) {
+            return [];
+        }
+        table_cell_text(id) {
+            return "";
+        }
+        grid_rows(id) {
+            return [];
+        }
+        grid_cells(id) {
+            return [];
+        }
+        grid_cell_text(id) {
+            return "";
+        }
+        line_text(id) {
+            return "";
+        }
+        line_type(id) {
+            return "";
+        }
+        line_content(id) {
+            return [];
+        }
+        code_syntax() {
+            return null;
+        }
+        link_uri(id) {
+            return "";
+        }
+        link_host(id) {
+            return "";
+        }
+    }
+    __decorate([
+        $mol_mem_key
+    ], $mol_text.prototype, "Paragraph", null);
+    __decorate([
+        $mol_mem_key
+    ], $mol_text.prototype, "Quote", null);
+    __decorate([
+        $mol_mem_key
+    ], $mol_text.prototype, "List", null);
+    __decorate([
+        $mol_mem_key
+    ], $mol_text.prototype, "Header", null);
+    __decorate([
+        $mol_mem_key
+    ], $mol_text.prototype, "Pre", null);
+    __decorate([
+        $mol_mem_key
+    ], $mol_text.prototype, "Cut", null);
+    __decorate([
+        $mol_mem_key
+    ], $mol_text.prototype, "Table", null);
+    __decorate([
+        $mol_mem_key
+    ], $mol_text.prototype, "Table_row", null);
+    __decorate([
+        $mol_mem_key
+    ], $mol_text.prototype, "Table_cell", null);
+    __decorate([
+        $mol_mem_key
+    ], $mol_text.prototype, "Grid", null);
+    __decorate([
+        $mol_mem_key
+    ], $mol_text.prototype, "Grid_row", null);
+    __decorate([
+        $mol_mem_key
+    ], $mol_text.prototype, "Grid_cell", null);
+    __decorate([
+        $mol_mem_key
+    ], $mol_text.prototype, "String", null);
+    __decorate([
+        $mol_mem_key
+    ], $mol_text.prototype, "Span", null);
+    __decorate([
+        $mol_mem_key
+    ], $mol_text.prototype, "Code_line", null);
+    __decorate([
+        $mol_mem_key
+    ], $mol_text.prototype, "Link", null);
+    __decorate([
+        $mol_mem_key
+    ], $mol_text.prototype, "Link_http", null);
+    __decorate([
+        $mol_mem_key
+    ], $mol_text.prototype, "Embed", null);
+    $.$mol_text = $mol_text;
+    class $mol_text_header extends $mol_paragraph {
+        level() {
+            return 1;
+        }
+        sub() {
+            return [
+                this.Link()
+            ];
+        }
+        arg() {
+            return {};
+        }
+        content() {
+            return [];
+        }
+        Link() {
+            const obj = new this.$.$mol_link();
+            obj.arg = () => this.arg();
+            obj.hint = () => this.$.$mol_locale.text('$mol_text_header_Link_hint');
+            obj.sub = () => this.content();
+            return obj;
+        }
+    }
+    __decorate([
+        $mol_mem
+    ], $mol_text_header.prototype, "Link", null);
+    $.$mol_text_header = $mol_text_header;
+    class $mol_text_span extends $mol_paragraph {
+        dom_name() {
+            return "span";
+        }
+        attr() {
+            return {
+                ...super.attr(),
+                mol_text_type: this.type()
+            };
+        }
+        type() {
+            return "";
+        }
+    }
+    $.$mol_text_span = $mol_text_span;
+})($ || ($ = {}));
+//mol/text/text/-view.tree/text.view.tree.ts
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $mol_text extends $.$mol_text {
+            flow_tokens() {
+                const tokens = [];
+                this.$.$mol_syntax2_md_flow.tokenize(this.text(), (name, found, chunks) => tokens.push({ name, found, chunks }));
+                return tokens;
+            }
+            block_type(index) {
+                return this.flow_tokens()[index].name;
+            }
+            rows() {
+                return this.flow_tokens().map(({ name }, index) => {
+                    switch (name) {
+                        case 'quote': return this.Quote(index);
+                        case 'header': return this.Header(index);
+                        case 'list': return this.List(index);
+                        case 'code': return this.Pre(index);
+                        case 'code-indent': return this.Pre(index);
+                        case 'table': return this.Table(index);
+                        case 'grid': return this.Grid(index);
+                        case 'cut': return this.Cut(index);
+                        default: return this.Paragraph(index);
+                    }
+                });
+            }
+            param() {
+                return this.toString().replace(/^.*?\)\./, '').replace(/[()]/g, '');
+            }
+            header_level(index) {
+                return this.flow_tokens()[index].chunks[0].length;
+            }
+            header_arg(index) {
+                return {
+                    [this.param()]: this.block_text(index)
+                };
+            }
+            list_type(index) {
+                return this.flow_tokens()[index].chunks[1] ?? '';
+            }
+            item_index(index) {
+                return this.flow_tokens().slice(0, index).filter(token => token.name === 'block').length + 1;
+            }
+            pre_text(index) {
+                const token = this.flow_tokens()[index];
+                return (token.chunks[2] ?? token.chunks[0].replace(/^(\t|  (?:\+\+|--|\*\*|  ))/gm, '')).replace(/[\n\r]*$/, '');
+            }
+            quote_text(index) {
+                return this.flow_tokens()[index].chunks[0].replace(/^[>"] /mg, '');
+            }
+            list_text(index) {
+                return this.flow_tokens()[index].chunks[0].replace(/^([-*+]|(?:\d+[\.\)])+) ?/mg, '').replace(/^  ?/mg, '');
+            }
+            cell_content(indexBlock) {
+                return this.flow_tokens()[indexBlock].chunks[0]
+                    .split(/\r?\n/g)
+                    .filter(row => row && !/\|--/.test(row))
+                    .map((row, rowId) => {
+                    return row.split(/\|/g)
+                        .filter(cell => cell)
+                        .map((cell, cellId) => cell.trim());
+                });
+            }
+            table_rows(blockId) {
+                return this.cell_content(blockId)
+                    .slice(1)
+                    .map((row, rowId) => this.Table_row({ block: blockId, row: rowId + 1 }));
+            }
+            table_head_cells(blockId) {
+                return this.cell_content(blockId)[0]
+                    .map((cell, cellId) => this.Table_cell({ block: blockId, row: 0, cell: cellId }));
+            }
+            table_cells(id) {
+                return this.cell_content(id.block)[id.row]
+                    .map((cell, cellId) => this.Table_cell({ block: id.block, row: id.row, cell: cellId }));
+            }
+            table_cell_text(id) {
+                return this.cell_content(id.block)[id.row][id.cell];
+            }
+            grid_content(indexBlock) {
+                return [...this.flow_tokens()[indexBlock].chunks[0].match(/(?:^! .*?$\r?\n?)+(?:^ +! .*?$\r?\n?)*/gm)]
+                    .map((row, rowId) => {
+                    const cells = [];
+                    for (const line of row.trim().split(/\r?\n/)) {
+                        const [_, indent, content] = /^( *)! (.*)/.exec(line);
+                        const col = Math.ceil(indent.length / 2);
+                        cells[col] = (cells[col] ? cells[col] + '\n' : '') + content;
+                    }
+                    return cells;
+                });
+            }
+            grid_rows(blockId) {
+                return this.grid_content(blockId)
+                    .map((row, rowId) => this.Grid_row({ block: blockId, row: rowId }));
+            }
+            grid_cells(id) {
+                return this.grid_content(id.block)[id.row]
+                    .map((cell, cellId) => this.Grid_cell({ block: id.block, row: id.row, cell: cellId }));
+            }
+            grid_cell_text(id) {
+                return this.grid_content(id.block)[id.row][id.cell];
+            }
+            uri_base() {
+                return $mol_dom_context.document.location.href;
+            }
+            uri_resolve(uri) {
+                if (/^(\w+script+:)+/.test(uri))
+                    return null;
+                if (/^#\!/.test(uri)) {
+                    const params = {};
+                    for (const chunk of uri.slice(2).split(this.$.$mol_state_arg.separator)) {
+                        if (!chunk)
+                            continue;
+                        const vals = chunk.split('=').map(decodeURIComponent);
+                        params[vals.shift()] = vals.join('=');
+                    }
+                    return this.$.$mol_state_arg.link(params);
+                }
+                try {
+                    const url = new URL(uri, this.uri_base());
+                    return url.toString();
+                }
+                catch (error) {
+                    $mol_fail_log(error);
+                    return null;
+                }
+            }
+            code_syntax() {
+                return this.$.$mol_syntax2_md_code;
+            }
+            block_text(index) {
+                const token = this.flow_tokens()[index];
+                switch (token.name) {
+                    case 'header': return token.chunks[2];
+                    default: return token.chunks[0];
+                }
+            }
+            block_content(index) {
+                return this.line_content([index]);
+            }
+            line_tokens(path) {
+                const tokens = [];
+                this.$.$mol_syntax2_md_line.tokenize(this.line_text(path), (name, found, chunks) => tokens.push({ name, found, chunks }));
+                return tokens;
+            }
+            line_token(path) {
+                const tokens = this.line_tokens(path.slice(0, path.length - 1));
+                return tokens[path[path.length - 1]];
+            }
+            line_type(path) {
+                return this.line_token(path).name;
+            }
+            line_text(path) {
+                if (path.length === 1)
+                    return this.block_text(path[0]);
+                const { name, found, chunks } = this.line_token(path);
+                switch (name) {
+                    case 'link': return chunks[0] || chunks[1].replace(/^.*?\/\/|\/.*$/g, '');
+                    case 'text-link': return chunks[0] || chunks[1].replace(/^.*?\/\/|\/.*$/g, '');
+                    default: return (chunks[0] || chunks[1] || chunks[2]) ?? found;
+                }
+            }
+            line_content(path) {
+                return this.line_tokens(path).map(({ name, chunks }, index) => {
+                    const path2 = [...path, index];
+                    switch (name) {
+                        case 'embed': return this.Embed(path2);
+                        case 'link': return this.Link(path2);
+                        case 'text-link-http': return this.Link_http(path2);
+                        case 'text-link': return this.Link(path2);
+                        case 'image-link': return this.Embed(path2);
+                        case 'code': return this.Code_line(path2);
+                        case '': return this.String(path2);
+                        default: return this.Span(path2);
+                    }
+                });
+            }
+            link_uri(path) {
+                const token = this.line_token(path);
+                const uri = this.uri_resolve(token.chunks[1] ?? token.found);
+                if (!uri)
+                    throw new Error('Bad link');
+                return uri;
+            }
+            link_host(path) {
+                return this.link_uri(path).replace(/^.*?\/\/|\/.*$/g, '');
+            }
+            auto_scroll() {
+                for (const [index, token] of this.flow_tokens().entries()) {
+                    if (token.name !== 'header')
+                        continue;
+                    const header = this.Header(index);
+                    if (!header.Link().current())
+                        continue;
+                    new $mol_after_tick(() => this.ensure_visible(header));
+                }
+            }
+        }
+        __decorate([
+            $mol_mem
+        ], $mol_text.prototype, "flow_tokens", null);
+        __decorate([
+            $mol_mem_key
+        ], $mol_text.prototype, "block_type", null);
+        __decorate([
+            $mol_mem
+        ], $mol_text.prototype, "rows", null);
+        __decorate([
+            $mol_mem
+        ], $mol_text.prototype, "param", null);
+        __decorate([
+            $mol_mem_key
+        ], $mol_text.prototype, "header_level", null);
+        __decorate([
+            $mol_mem_key
+        ], $mol_text.prototype, "header_arg", null);
+        __decorate([
+            $mol_mem_key
+        ], $mol_text.prototype, "pre_text", null);
+        __decorate([
+            $mol_mem_key
+        ], $mol_text.prototype, "quote_text", null);
+        __decorate([
+            $mol_mem_key
+        ], $mol_text.prototype, "list_text", null);
+        __decorate([
+            $mol_mem_key
+        ], $mol_text.prototype, "cell_content", null);
+        __decorate([
+            $mol_mem_key
+        ], $mol_text.prototype, "table_rows", null);
+        __decorate([
+            $mol_mem_key
+        ], $mol_text.prototype, "table_head_cells", null);
+        __decorate([
+            $mol_mem_key
+        ], $mol_text.prototype, "table_cells", null);
+        __decorate([
+            $mol_mem_key
+        ], $mol_text.prototype, "table_cell_text", null);
+        __decorate([
+            $mol_mem_key
+        ], $mol_text.prototype, "grid_content", null);
+        __decorate([
+            $mol_mem_key
+        ], $mol_text.prototype, "grid_rows", null);
+        __decorate([
+            $mol_mem_key
+        ], $mol_text.prototype, "grid_cells", null);
+        __decorate([
+            $mol_mem_key
+        ], $mol_text.prototype, "grid_cell_text", null);
+        __decorate([
+            $mol_mem_key
+        ], $mol_text.prototype, "uri_resolve", null);
+        __decorate([
+            $mol_mem_key
+        ], $mol_text.prototype, "block_text", null);
+        __decorate([
+            $mol_mem_key
+        ], $mol_text.prototype, "line_tokens", null);
+        __decorate([
+            $mol_mem_key
+        ], $mol_text.prototype, "line_token", null);
+        __decorate([
+            $mol_mem_key
+        ], $mol_text.prototype, "line_type", null);
+        __decorate([
+            $mol_mem_key
+        ], $mol_text.prototype, "line_text", null);
+        __decorate([
+            $mol_mem_key
+        ], $mol_text.prototype, "line_content", null);
+        __decorate([
+            $mol_mem_key
+        ], $mol_text.prototype, "link_uri", null);
+        __decorate([
+            $mol_mem_key
+        ], $mol_text.prototype, "link_host", null);
+        __decorate([
+            $mol_mem
+        ], $mol_text.prototype, "auto_scroll", null);
+        $$.$mol_text = $mol_text;
+        class $mol_text_header extends $.$mol_text_header {
+            dom_name() {
+                return 'h' + this.level();
+            }
+        }
+        $$.$mol_text_header = $mol_text_header;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+//mol/text/text/text.view.ts
+;
+"use strict";
+var $;
+(function ($) {
+    $mol_style_attach("mol/text/text/text.view.css", "[mol_text] {\n\tline-height: 1.5em;\n\tbox-sizing: border-box;\n\tborder-radius: var(--mol_gap_round);\n\twhite-space: pre-line;\n\tdisplay: flex;\n\tflex-direction: column;\n\tflex: 0 0 auto;\n\ttab-size: 4;\n}\n\n[mol_text_paragraph] {\n\tpadding: var(--mol_gap_text);\n\toverflow: auto;\n\toverflow-x: overlay;\n\tmax-width: 100%;\n\tdisplay: block;\n\tmax-width: 60rem;\n}\n\n[mol_text_span] {\n\tdisplay: inline;\n}\n\n[mol_text_string] {\n\tdisplay: inline;\n\tflex: 0 1 auto;\n\twhite-space: normal;\n}\n\n[mol_text_quote] {\n\tmargin: var(--mol_gap_block);\n\tpadding: var(--mol_gap_block);\n\tbackground: var(--mol_theme_card);\n\tbox-shadow: 0 0 0 1px var(--mol_theme_back);\n}\n\n[mol_text_header] {\n\tdisplay: block;\n\ttext-shadow: 0 0;\n\tfont-weight: normal;\n}\n\n* + [mol_text_header] {\n\tmargin-top: 0.75rem;\n}\n\nh1[mol_text_header] {\n\tfont-size: 1.5rem;\n}\n\nh2[mol_text_header] {\n\tfont-size: 1.5rem;\n\tfont-style: italic;\n}\n\nh3[mol_text_header] {\n\tfont-size: 1.25rem;\n}\n\nh4[mol_text_header] {\n\tfont-size: 1.25em;\n\tfont-style: italic;\n}\n\nh5[mol_text_header] {\n\tfont-size: 1rem;\n}\n\nh6[mol_text_header] {\n\tfont-size: 1rem;\n\tfont-style: italic;\n}\n\n[mol_text_header_link] {\n\tcolor: inherit;\n}\n\n[mol_text_table_cell] {\n\twidth: auto;\n\tdisplay: table-cell;\n\tvertical-align: baseline;\n\tpadding: 0;\n\tborder-radius: 0;\n}\n\n[mol_text_grid_cell] {\n\twidth: auto;\n\tdisplay: table-cell;\n\tvertical-align: top;\n\tpadding: 0;\n\tborder-radius: 0;\n}\n\n[mol_text_cut] {\n\tborder: none;\n\twidth: 100%;\n\tbox-shadow: 0 0 0 1px var(--mol_theme_line);\n}\n\n[mol_text_link_http],\n[mol_text_link] {\n\tpadding: 0;\n\tdisplay: inline;\n\twhite-space: nowrap;\n}\n\n[mol_text_link_icon] + [mol_text_embed] {\n\tmargin-left: -1.5rem;\n}\n\n[mol_text_embed_youtube] {\n\tdisplay: inline;\n}\n\n[mol_text_embed_youtube_image],\n[mol_text_embed_youtube_frame],\n[mol_text_embed_object] {\n\tobject-fit: contain;\n\tobject-position: center;\n\tdisplay: inline;\n\twidth: 100vw;\n\tmax-height: calc( 100vh - 6rem );\n\tvertical-align: top;\n}\n[mol_text_embed_object_fallback] {\n\tpadding: 0;\n}\n[mol_text_embed_image] {\n\tobject-fit: contain;\n\tobject-position: center;\n\tdisplay: inline;\n\t/* max-height: calc( 100vh - 6rem ); */\n\tvertical-align: top;\n}\n\n[mol_text_pre] {\n\twhite-space: pre;\n\toverflow-x: auto;\n\toverflow-x: overlay;\n\ttab-size: 2;\n}\n\n[mol_text_code_line] {\n\tdisplay: inline-block;\n\twhite-space: nowrap;\n}\n\n[mol_text_type=\"strong\"] {\n\ttext-shadow: 0 0;\n\tfilter: contrast(1.5);\n}\n\n[mol_text_type=\"emphasis\"] {\n\tfont-style: italic;\n}\n\n[mol_text_type=\"insert\"] {\n\tcolor: var(--mol_theme_special);\n}\n\n[mol_text_type=\"delete\"] {\n\tcolor: var(--mol_theme_shade);\n}\n\n[mol_text_type=\"remark\"] {\n\tcolor: var(--mol_theme_shade);\n}\n\n[mol_text_type=\"quote\"] {\n\tfont-style: italic;\n}\n");
+})($ || ($ = {}));
+//mol/text/text/-css/text.view.css.ts
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_expander extends $mol_list {
+        rows() {
+            return [
+                this.Label(),
+                this.Content()
+            ];
+        }
+        expanded(next) {
+            if (next !== undefined)
+                return next;
+            return false;
+        }
+        expandable() {
+            return true;
+        }
+        label() {
+            return [
+                this.title()
+            ];
+        }
+        Trigger() {
+            const obj = new this.$.$mol_check_expand();
+            obj.checked = (next) => this.expanded(next);
+            obj.expandable = () => this.expandable();
+            obj.label = () => this.label();
+            return obj;
+        }
+        Tools() {
+            return null;
+        }
+        Label() {
+            const obj = new this.$.$mol_view();
+            obj.sub = () => [
+                this.Trigger(),
+                this.Tools()
+            ];
+            return obj;
+        }
+        content() {
+            return [];
+        }
+        Content() {
+            const obj = new this.$.$mol_list();
+            obj.rows = () => this.content();
+            return obj;
+        }
+    }
+    __decorate([
+        $mol_mem
+    ], $mol_expander.prototype, "expanded", null);
+    __decorate([
+        $mol_mem
+    ], $mol_expander.prototype, "Trigger", null);
+    __decorate([
+        $mol_mem
+    ], $mol_expander.prototype, "Label", null);
+    __decorate([
+        $mol_mem
+    ], $mol_expander.prototype, "Content", null);
+    $.$mol_expander = $mol_expander;
+})($ || ($ = {}));
+//mol/expander/-view.tree/expander.view.tree.ts
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $mol_expander extends $.$mol_expander {
+            rows() {
+                return [
+                    this.Label(),
+                    ...this.expanded() ? [this.Content()] : []
+                ];
+            }
+            expandable() {
+                return this.content().length > 0;
+            }
+        }
+        __decorate([
+            $mol_mem
+        ], $mol_expander.prototype, "rows", null);
+        $$.$mol_expander = $mol_expander;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+//mol/expander/expander.view.ts
+;
+"use strict";
+var $;
+(function ($) {
+    $mol_style_attach("mol/expander/expander.view.css", "[mol_expander] {\n\tflex-direction: column;\n}\n\n[mol_expander_label] {\n\tdisplay: flex;\n\tflex-wrap: wrap;\n\tborder-radius: var(--mol_gap_round);\n}\n\n[mol_expander_trigger] {\n\tflex: auto;\n\tposition: relative;\n}\n");
+})($ || ($ = {}));
+//mol/expander/-css/expander.view.css.ts
 ;
 "use strict";
 var $;
@@ -14989,43 +16705,6 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    function $mol_promise() {
-        let done;
-        let fail;
-        const promise = new Promise((d, f) => {
-            done = d;
-            fail = f;
-        });
-        return Object.assign(promise, {
-            done,
-            fail,
-        });
-    }
-    $.$mol_promise = $mol_promise;
-})($ || ($ = {}));
-//mol/promise/promise/promise.ts
-;
-"use strict";
-var $;
-(function ($) {
-    function $mol_wait_timeout_async(timeout) {
-        const promise = $mol_promise();
-        const task = new this.$mol_after_timeout(timeout, () => promise.done());
-        return Object.assign(promise, {
-            destructor: () => task.destructor()
-        });
-    }
-    $.$mol_wait_timeout_async = $mol_wait_timeout_async;
-    function $mol_wait_timeout(timeout) {
-        return this.$mol_wire_sync(this).$mol_wait_timeout_async(timeout);
-    }
-    $.$mol_wait_timeout = $mol_wait_timeout;
-})($ || ($ = {}));
-//mol/wait/timeout/timeout.ts
-;
-"use strict";
-var $;
-(function ($) {
     function $mol_wire_race(...tasks) {
         const results = tasks.map(task => {
             try {
@@ -15525,28 +17204,6 @@ var $;
     $.$hyoo_sync_client = $hyoo_sync_client;
 })($ || ($ = {}));
 //hyoo/sync/client/client.ts
-;
-"use strict";
-var $;
-(function ($) {
-    class $mol_float extends $mol_view {
-        style() {
-            return {
-                ...super.style(),
-                minHeight: "auto"
-            };
-        }
-    }
-    $.$mol_float = $mol_float;
-})($ || ($ = {}));
-//mol/float/-view.tree/float.view.tree.ts
-;
-"use strict";
-var $;
-(function ($) {
-    $mol_style_attach("mol/float/float.view.css", "[mol_float] {\n\tposition: sticky;\n\ttop: 0;\n\tleft: 0;\n\tz-index: var(--mol_layer_float);\n\topacity: 1;\n\ttransition: opacity .25s ease-in;\n\tdisplay: block;\n\tbackground: linear-gradient( var(--mol_theme_card), var(--mol_theme_card) ), var(--mol_theme_back);\n\tbox-shadow: 0 0 .5rem hsla(0,0%,0%,.25);\n}\n\n");
-})($ || ($ = {}));
-//mol/float/-css/float.view.css.ts
 ;
 "use strict";
 var $;
@@ -16067,1663 +17724,6 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    class $mol_grid extends $mol_view {
-        row_height() {
-            return 32;
-        }
-        row_ids() {
-            return [];
-        }
-        row_id(id) {
-            return null;
-        }
-        col_ids() {
-            return [];
-        }
-        records() {
-            return {};
-        }
-        record(id) {
-            return null;
-        }
-        hierarchy() {
-            return null;
-        }
-        hierarchy_col() {
-            return "";
-        }
-        minimal_width() {
-            return 0;
-        }
-        sub() {
-            return [
-                this.Head(),
-                this.Table()
-            ];
-        }
-        Head() {
-            const obj = new this.$.$mol_grid_row();
-            obj.cells = () => this.head_cells();
-            return obj;
-        }
-        Row(id) {
-            const obj = new this.$.$mol_grid_row();
-            obj.minimal_height = () => this.row_height();
-            obj.minimal_width = () => this.minimal_width();
-            obj.cells = () => this.cells(id);
-            return obj;
-        }
-        Cell(id) {
-            const obj = new this.$.$mol_view();
-            return obj;
-        }
-        cell(id) {
-            return null;
-        }
-        Cell_text(id) {
-            const obj = new this.$.$mol_grid_cell();
-            obj.sub = () => this.cell_content_text(id);
-            return obj;
-        }
-        Cell_number(id) {
-            const obj = new this.$.$mol_grid_number();
-            obj.sub = () => this.cell_content_number(id);
-            return obj;
-        }
-        Col_head(id) {
-            const obj = new this.$.$mol_float();
-            obj.dom_name = () => "th";
-            obj.sub = () => this.col_head_content(id);
-            return obj;
-        }
-        Cell_branch(id) {
-            const obj = new this.$.$mol_check_expand();
-            obj.level = () => this.cell_level(id);
-            obj.label = () => this.cell_content(id);
-            obj.expanded = (next) => this.cell_expanded(id, next);
-            return obj;
-        }
-        Cell_content(id) {
-            return [
-                this.Cell_dimmer(id)
-            ];
-        }
-        rows() {
-            return [];
-        }
-        Table() {
-            const obj = new this.$.$mol_grid_table();
-            obj.sub = () => this.rows();
-            return obj;
-        }
-        head_cells() {
-            return [];
-        }
-        cells(id) {
-            return [];
-        }
-        cell_content(id) {
-            return [];
-        }
-        cell_content_text(id) {
-            return this.cell_content(id);
-        }
-        cell_content_number(id) {
-            return this.cell_content(id);
-        }
-        col_head_content(id) {
-            return [];
-        }
-        cell_level(id) {
-            return 0;
-        }
-        cell_expanded(id, next) {
-            if (next !== undefined)
-                return next;
-            return false;
-        }
-        needle() {
-            return "";
-        }
-        cell_value(id) {
-            return "";
-        }
-        Cell_dimmer(id) {
-            const obj = new this.$.$mol_dimmer();
-            obj.needle = () => this.needle();
-            obj.haystack = () => this.cell_value(id);
-            return obj;
-        }
-    }
-    __decorate([
-        $mol_mem
-    ], $mol_grid.prototype, "Head", null);
-    __decorate([
-        $mol_mem_key
-    ], $mol_grid.prototype, "Row", null);
-    __decorate([
-        $mol_mem_key
-    ], $mol_grid.prototype, "Cell", null);
-    __decorate([
-        $mol_mem_key
-    ], $mol_grid.prototype, "Cell_text", null);
-    __decorate([
-        $mol_mem_key
-    ], $mol_grid.prototype, "Cell_number", null);
-    __decorate([
-        $mol_mem_key
-    ], $mol_grid.prototype, "Col_head", null);
-    __decorate([
-        $mol_mem_key
-    ], $mol_grid.prototype, "Cell_branch", null);
-    __decorate([
-        $mol_mem
-    ], $mol_grid.prototype, "Table", null);
-    __decorate([
-        $mol_mem_key
-    ], $mol_grid.prototype, "cell_expanded", null);
-    __decorate([
-        $mol_mem_key
-    ], $mol_grid.prototype, "Cell_dimmer", null);
-    $.$mol_grid = $mol_grid;
-    class $mol_grid_table extends $mol_list {
-    }
-    $.$mol_grid_table = $mol_grid_table;
-    class $mol_grid_row extends $mol_view {
-        sub() {
-            return this.cells();
-        }
-        cells() {
-            return [];
-        }
-    }
-    $.$mol_grid_row = $mol_grid_row;
-    class $mol_grid_cell extends $mol_view {
-        minimal_height() {
-            return 40;
-        }
-    }
-    $.$mol_grid_cell = $mol_grid_cell;
-    class $mol_grid_number extends $mol_grid_cell {
-    }
-    $.$mol_grid_number = $mol_grid_number;
-})($ || ($ = {}));
-//mol/grid/-view.tree/grid.view.tree.ts
-;
-"use strict";
-var $;
-(function ($) {
-    class $mol_state_session extends $mol_object {
-        static 'native()';
-        static native() {
-            if (this['native()'])
-                return this['native()'];
-            check: try {
-                const native = $mol_dom_context.sessionStorage;
-                if (!native)
-                    break check;
-                native.setItem('', '');
-                native.removeItem('');
-                return this['native()'] = native;
-            }
-            catch (error) {
-                console.warn(error);
-            }
-            return this['native()'] = {
-                getItem(key) {
-                    return this[':' + key];
-                },
-                setItem(key, value) {
-                    this[':' + key] = value;
-                },
-                removeItem(key) {
-                    this[':' + key] = void 0;
-                }
-            };
-        }
-        static value(key, next) {
-            if (next === void 0)
-                return JSON.parse(this.native().getItem(key) || 'null');
-            if (next === null)
-                this.native().removeItem(key);
-            else
-                this.native().setItem(key, JSON.stringify(next));
-            return next;
-        }
-        prefix() { return ''; }
-        value(key, next) {
-            return $mol_state_session.value(this.prefix() + '.' + key, next);
-        }
-    }
-    __decorate([
-        $mol_mem_key
-    ], $mol_state_session, "value", null);
-    $.$mol_state_session = $mol_state_session;
-})($ || ($ = {}));
-//mol/state/session/session.ts
-;
-"use strict";
-var $;
-(function ($) {
-    var $$;
-    (function ($$) {
-        class $mol_grid extends $.$mol_grid {
-            head_cells() {
-                return this.col_ids().map(colId => this.Col_head(colId));
-            }
-            col_head_content(colId) {
-                return [colId];
-            }
-            rows() {
-                return this.row_ids().map(id => this.Row(id));
-            }
-            cells(row_id) {
-                return this.col_ids().map(col_id => this.Cell({ row: row_id, col: col_id }));
-            }
-            col_type(col_id) {
-                if (col_id === this.hierarchy_col())
-                    return 'branch';
-                const rowFirst = this.row_id(0);
-                const val = this.record(rowFirst[rowFirst.length - 1])[col_id];
-                if (typeof val === 'number')
-                    return 'number';
-                return 'text';
-            }
-            Cell(id) {
-                switch (this.col_type(id.col).valueOf()) {
-                    case 'branch': return this.Cell_branch(id);
-                    case 'number': return this.Cell_number(id);
-                }
-                return this.Cell_text(id);
-            }
-            cell_content(id) {
-                return [this.record(id.row[id.row.length - 1])[id.col]];
-            }
-            cell_content_text(id) {
-                return this.cell_content(id).map(val => typeof val === 'object' ? JSON.stringify(val) : val);
-            }
-            records() {
-                return [];
-            }
-            record(id) {
-                return this.records()[id];
-            }
-            record_ids() {
-                return Object.keys(this.records());
-            }
-            row_id(index) {
-                return this.row_ids().slice(index, index + 1).valueOf()[0];
-            }
-            col_ids() {
-                const rowFirst = this.row_id(0);
-                if (rowFirst === void 0)
-                    return [];
-                const record = this.record(rowFirst[rowFirst.length - 1]);
-                if (!record)
-                    return [];
-                return Object.keys(record);
-            }
-            hierarchy() {
-                const hierarchy = {};
-                const root = hierarchy[''] = {
-                    id: '',
-                    parent: null,
-                    sub: [],
-                };
-                this.record_ids().map(id => {
-                    root.sub.push(hierarchy[id] = {
-                        id,
-                        parent: root,
-                        sub: [],
-                    });
-                });
-                return hierarchy;
-            }
-            row_sub_ids(row) {
-                return this.hierarchy()[row[row.length - 1]].sub.map(child => row.concat(child.id));
-            }
-            row_root_id() {
-                return [''];
-            }
-            cell_level(id) {
-                return id.row.length - 1;
-            }
-            row_ids() {
-                const next = [];
-                const add = (row) => {
-                    next.push(row);
-                    if (this.row_expanded(row)) {
-                        this.row_sub_ids(row).forEach(child => add(child));
-                    }
-                };
-                this.row_sub_ids(this.row_root_id()).forEach(child => add(child));
-                return next;
-            }
-            row_expanded(row_id, next) {
-                if (!this.row_sub_ids(row_id).length)
-                    return null;
-                const key = `row_expanded(${JSON.stringify(row_id)})`;
-                const next2 = $mol_state_session.value(key, next);
-                return (next2 == null) ? this.row_expanded_default(row_id) : next2;
-            }
-            row_expanded_default(row_id) {
-                return true;
-            }
-            cell_expanded(id, next) {
-                return this.row_expanded(id.row, next);
-            }
-        }
-        __decorate([
-            $mol_mem
-        ], $mol_grid.prototype, "head_cells", null);
-        __decorate([
-            $mol_mem
-        ], $mol_grid.prototype, "rows", null);
-        __decorate([
-            $mol_mem_key
-        ], $mol_grid.prototype, "col_type", null);
-        __decorate([
-            $mol_mem
-        ], $mol_grid.prototype, "record_ids", null);
-        __decorate([
-            $mol_mem
-        ], $mol_grid.prototype, "hierarchy", null);
-        __decorate([
-            $mol_mem
-        ], $mol_grid.prototype, "row_ids", null);
-        $$.$mol_grid = $mol_grid;
-    })($$ = $.$$ || ($.$$ = {}));
-})($ || ($ = {}));
-//mol/grid/grid.view.ts
-;
-"use strict";
-var $;
-(function ($) {
-    $mol_style_attach("mol/grid/grid.view.css", "[mol_grid] {\n\tdisplay: block;\n\tflex: 0 1 auto;\n\tposition: relative;\n\toverflow-x: auto;\n}\n\n[mol_grid_gap] {\n\tposition: absolute;\n\tpadding: .1px;\n\ttop: 0;\n\ttransform: translateZ(0);\n}\n\n[mol_grid_table] {\n\tborder-spacing: 0;\n\tdisplay: table-row-group;\n\tposition: relative;\n}\n\n[mol_grid_table] > * {\n\tdisplay: table-row;\n\ttransition: none;\n}\n\n[mol_grid_head] > *,\n[mol_grid_table] > * > * {\n\tdisplay: table-cell;\n\tpadding: var(--mol_gap_text);\n\twhite-space: nowrap;\n\tvertical-align: middle;\n\tbox-shadow: inset 1px 1px 0 0 var(--mol_theme_line);\n}\n\n[mol_grid_row]:where(:first-child) > * {\n\tbox-shadow: inset 1px 0 0 0 var(--mol_theme_line);\n}\n\n[mol_grid_table] > * > *:where(:first-child) {\n\tbox-shadow: inset 0px 1px 0 0 var(--mol_theme_line);\n}\n\n[mol_grid_head] > * {\n\tbox-shadow: inset 1px -1px 0 0 var(--mol_theme_line);\n}\n\n[mol_grid_head] > *:where(:first-child) {\n\tbox-shadow: inset 0px -1px 0 0 var(--mol_theme_line);\n}\n\n[mol_grid_table] > [mol_grid_row]:where(:first-child) > *:where(:first-child) {\n\tbox-shadow: none;\n}\t\n\n[mol_grid_head] {\n\tdisplay: table-row;\n\ttransform: none !important;\n}\n\n/* [mol_grid_cell_number] {\n\ttext-align: right;\n} */\n\n[mol_grid_col_head] {\n\tfont-weight: inherit;\n\ttext-align: inherit;\n\tdisplay: table-cell;\n\tcolor: var(--mol_theme_shade);\n}\n\n[mol_grid_cell_dimmer] {\n\tdisplay: inline-block;\n\tvertical-align: inherit;\n}\n");
-})($ || ($ = {}));
-//mol/grid/-css/grid.view.css.ts
-;
-"use strict";
-var $;
-(function ($) {
-    class $mol_image extends $mol_view {
-        dom_name() {
-            return "img";
-        }
-        field() {
-            return {
-                ...super.field(),
-                src: this.uri(),
-                alt: this.title(),
-                loading: this.loading(),
-                decoding: this.decoding(),
-                crossOrigin: this.cors()
-            };
-        }
-        attr() {
-            return {
-                ...super.attr(),
-                width: this.natural_width(),
-                height: this.natural_height()
-            };
-        }
-        event() {
-            return {
-                load: (next) => this.load(next)
-            };
-        }
-        minimal_width() {
-            return 16;
-        }
-        minimal_height() {
-            return 16;
-        }
-        uri() {
-            return "";
-        }
-        loading() {
-            return "eager";
-        }
-        decoding() {
-            return "async";
-        }
-        cors() {
-            return null;
-        }
-        natural_width(next) {
-            if (next !== undefined)
-                return next;
-            return 0;
-        }
-        natural_height(next) {
-            if (next !== undefined)
-                return next;
-            return 0;
-        }
-        load(next) {
-            if (next !== undefined)
-                return next;
-            return null;
-        }
-    }
-    __decorate([
-        $mol_mem
-    ], $mol_image.prototype, "natural_width", null);
-    __decorate([
-        $mol_mem
-    ], $mol_image.prototype, "natural_height", null);
-    __decorate([
-        $mol_mem
-    ], $mol_image.prototype, "load", null);
-    $.$mol_image = $mol_image;
-})($ || ($ = {}));
-//mol/image/-view.tree/image.view.tree.ts
-;
-"use strict";
-var $;
-(function ($) {
-    var $$;
-    (function ($$) {
-        class $mol_image extends $.$mol_image {
-            natural_width(next) {
-                const dom = this.dom_node();
-                if (dom.naturalWidth)
-                    return dom.naturalWidth;
-                const found = this.uri().match(/\bwidth=(\d+)/);
-                return found ? Number(found[1]) : null;
-            }
-            natural_height(next) {
-                const dom = this.dom_node();
-                if (dom.naturalHeight)
-                    return dom.naturalHeight;
-                const found = this.uri().match(/\bheight=(\d+)/);
-                return found ? Number(found[1]) : null;
-            }
-            load() {
-                this.natural_width(null);
-                this.natural_height(null);
-            }
-        }
-        __decorate([
-            $mol_mem
-        ], $mol_image.prototype, "natural_width", null);
-        __decorate([
-            $mol_mem
-        ], $mol_image.prototype, "natural_height", null);
-        $$.$mol_image = $mol_image;
-    })($$ = $.$$ || ($.$$ = {}));
-})($ || ($ = {}));
-//mol/image/image.view.ts
-;
-"use strict";
-var $;
-(function ($) {
-    $mol_style_attach("mol/image/image.view.css", "[mol_image] {\n\tborder-radius: var(--mol_gap_round);\n\toverflow: hidden;\n\tflex: 0 1 auto;\n\tmax-width: 100%;\n\tobject-fit: cover;\n\theight: fit-content;\n}\n");
-})($ || ($ = {}));
-//mol/image/-css/image.view.css.ts
-;
-"use strict";
-var $;
-(function ($) {
-    class $mol_link_iconed extends $mol_link {
-        sub() {
-            return [
-                this.Icon()
-            ];
-        }
-        content() {
-            return [
-                this.title()
-            ];
-        }
-        host() {
-            return "";
-        }
-        icon() {
-            return "";
-        }
-        Icon() {
-            const obj = new this.$.$mol_image();
-            obj.uri = () => this.icon();
-            obj.title = () => "";
-            return obj;
-        }
-        title() {
-            return this.uri();
-        }
-    }
-    __decorate([
-        $mol_mem
-    ], $mol_link_iconed.prototype, "Icon", null);
-    $.$mol_link_iconed = $mol_link_iconed;
-})($ || ($ = {}));
-//mol/link/iconed/-view.tree/iconed.view.tree.ts
-;
-"use strict";
-var $;
-(function ($) {
-    var $$;
-    (function ($$) {
-        class $mol_link_iconed extends $.$mol_link_iconed {
-            icon() {
-                return `https://favicon.yandex.net/favicon/${this.host()}?color=0,0,0,0&size=32&stub=1`;
-            }
-            host() {
-                const base = this.$.$mol_state_arg.href();
-                const url = new URL(this.uri(), base);
-                return url.hostname;
-            }
-            title() {
-                const uri = this.uri();
-                const host = this.host();
-                const suffix = (host ? uri.split(this.host(), 2)[1] : uri)?.replace(/^[\/\?#!]+/, '');
-                return decodeURIComponent(suffix || host).replace(/^\//, ' ');
-            }
-            sub() {
-                return [
-                    ...this.host() ? [this.Icon()] : [],
-                    ...this.content() ? [' ', ...this.content()] : [],
-                ];
-            }
-        }
-        __decorate([
-            $mol_mem
-        ], $mol_link_iconed.prototype, "icon", null);
-        __decorate([
-            $mol_mem
-        ], $mol_link_iconed.prototype, "host", null);
-        __decorate([
-            $mol_mem
-        ], $mol_link_iconed.prototype, "title", null);
-        __decorate([
-            $mol_mem
-        ], $mol_link_iconed.prototype, "sub", null);
-        $$.$mol_link_iconed = $mol_link_iconed;
-    })($$ = $.$$ || ($.$$ = {}));
-})($ || ($ = {}));
-//mol/link/iconed/iconed.view.ts
-;
-"use strict";
-var $;
-(function ($) {
-    $mol_style_attach("mol/link/iconed/iconed.view.css", "[mol_link_iconed] {\n\talign-items: baseline;\n\tdisplay: inline-flex;\n\tpadding: var(--mol_gap_text);\n}\n\n[mol_link_iconed_icon] {\n\tbox-shadow: none;\n\theight: 1.5em;\n\twidth: 1em;\n\tflex: 0 0 auto;\n\tdisplay: inline-block;\n\talign-self: normal;\n\tvertical-align: top;\n\tborder-radius: 0;\n\tobject-fit: scale-down;\n\topacity: .75;\n}\n\n[mol_theme=\"$mol_theme_dark\"] [mol_link_iconed_icon] {\n\tfilter: var(--mol_theme_image);\n}\n");
-})($ || ($ = {}));
-//mol/link/iconed/-css/iconed.view.css.ts
-;
-"use strict";
-var $;
-(function ($) {
-    class $mol_embed_native extends $mol_scroll {
-        uri(next) {
-            if (next !== undefined)
-                return next;
-            return "";
-        }
-        dom_name() {
-            return "object";
-        }
-        window() {
-            return null;
-        }
-        attr() {
-            return {
-                ...super.attr(),
-                data: this.uri(),
-                type: this.mime()
-            };
-        }
-        sub() {
-            return [
-                this.Fallback()
-            ];
-        }
-        message() {
-            return {
-                hashchange: (next) => this.uri_change(next)
-            };
-        }
-        mime() {
-            return "";
-        }
-        title() {
-            return "";
-        }
-        Fallback() {
-            const obj = new this.$.$mol_link();
-            obj.uri = () => this.uri();
-            obj.sub = () => [
-                this.title()
-            ];
-            return obj;
-        }
-        uri_change(next) {
-            if (next !== undefined)
-                return next;
-            return null;
-        }
-    }
-    __decorate([
-        $mol_mem
-    ], $mol_embed_native.prototype, "uri", null);
-    __decorate([
-        $mol_mem
-    ], $mol_embed_native.prototype, "Fallback", null);
-    __decorate([
-        $mol_mem
-    ], $mol_embed_native.prototype, "uri_change", null);
-    $.$mol_embed_native = $mol_embed_native;
-})($ || ($ = {}));
-//mol/embed/native/-view.tree/native.view.tree.ts
-;
-"use strict";
-var $;
-(function ($) {
-    var $$;
-    (function ($$) {
-        class $mol_embed_native extends $.$mol_embed_native {
-            window() {
-                $mol_wire_solid();
-                return $mol_wire_sync(this).load(this.dom_node_actual());
-            }
-            load(frame) {
-                return new Promise((done, fail) => {
-                    frame.onload = () => {
-                        try {
-                            if (frame.contentWindow.location.href === 'about:blank') {
-                                return;
-                            }
-                        }
-                        catch { }
-                        done(frame.contentWindow);
-                    };
-                    frame.onerror = (event) => {
-                        fail(typeof event === 'string' ? new Error(event) : event.error || event);
-                    };
-                });
-            }
-            uri_resource() {
-                return this.uri().replace(/#.*/, '');
-            }
-            message_listener() {
-                return new $mol_dom_listener($mol_dom_context, 'message', $mol_wire_async(this).message_receive);
-            }
-            message_receive(event) {
-                if (!event)
-                    return;
-                if (event.source !== this.window())
-                    return;
-                if (!Array.isArray(event.data))
-                    return;
-                this.message()[event.data[0]]?.(event);
-            }
-            uri_change(event) {
-                this.$.$mol_wait_timeout(1000);
-                this.uri(event.data[1]);
-            }
-            auto() {
-                return [
-                    this.message_listener(),
-                    this.window(),
-                ];
-            }
-        }
-        __decorate([
-            $mol_mem
-        ], $mol_embed_native.prototype, "window", null);
-        __decorate([
-            $mol_mem
-        ], $mol_embed_native.prototype, "uri_resource", null);
-        __decorate([
-            $mol_mem
-        ], $mol_embed_native.prototype, "message_listener", null);
-        $$.$mol_embed_native = $mol_embed_native;
-    })($$ = $.$$ || ($.$$ = {}));
-})($ || ($ = {}));
-//mol/embed/native/native.view.ts
-;
-"use strict";
-var $;
-(function ($) {
-    $mol_style_attach("mol/embed/native/native.view.css", "[mol_embed_native] {\n\tmax-width: 100%;\n\tmax-height: 100vh;\n\tobject-fit: cover;\n\tdisplay: flex;\n\tflex: 1 1 auto;\n\tobject-position: top left;\n\tborder-radius: var(--mol_gap_round);\n\taspect-ratio: 4/3;\n}\n");
-})($ || ($ = {}));
-//mol/embed/native/-css/native.view.css.ts
-;
-"use strict";
-var $;
-(function ($) {
-    class $mol_icon_youtube extends $mol_icon {
-        path() {
-            return "M10,15L15.19,12L10,9V15M21.56,7.17C21.69,7.64 21.78,8.27 21.84,9.07C21.91,9.87 21.94,10.56 21.94,11.16L22,12C22,14.19 21.84,15.8 21.56,16.83C21.31,17.73 20.73,18.31 19.83,18.56C19.36,18.69 18.5,18.78 17.18,18.84C15.88,18.91 14.69,18.94 13.59,18.94L12,19C7.81,19 5.2,18.84 4.17,18.56C3.27,18.31 2.69,17.73 2.44,16.83C2.31,16.36 2.22,15.73 2.16,14.93C2.09,14.13 2.06,13.44 2.06,12.84L2,12C2,9.81 2.16,8.2 2.44,7.17C2.69,6.27 3.27,5.69 4.17,5.44C4.64,5.31 5.5,5.22 6.82,5.16C8.12,5.09 9.31,5.06 10.41,5.06L12,5C16.19,5 18.8,5.16 19.83,5.44C20.73,5.69 21.31,6.27 21.56,7.17Z";
-        }
-    }
-    $.$mol_icon_youtube = $mol_icon_youtube;
-})($ || ($ = {}));
-//mol/icon/youtube/-view.tree/youtube.view.tree.ts
-;
-"use strict";
-var $;
-(function ($) {
-    class $mol_frame extends $mol_embed_native {
-        dom_name() {
-            return "iframe";
-        }
-        attr() {
-            return {
-                ...super.attr(),
-                data: null,
-                type: null,
-                src: this.uri(),
-                srcdoc: this.html(),
-                allow: this.allow()
-            };
-        }
-        fullscreen() {
-            return true;
-        }
-        accelerometer() {
-            return true;
-        }
-        autoplay() {
-            return true;
-        }
-        encription() {
-            return true;
-        }
-        gyroscope() {
-            return true;
-        }
-        pip() {
-            return true;
-        }
-        clipboard_read() {
-            return true;
-        }
-        clipboard_write() {
-            return true;
-        }
-        uri(next) {
-            if (next !== undefined)
-                return next;
-            return "about:config";
-        }
-        html() {
-            return null;
-        }
-        allow() {
-            return "";
-        }
-    }
-    __decorate([
-        $mol_mem
-    ], $mol_frame.prototype, "uri", null);
-    $.$mol_frame = $mol_frame;
-})($ || ($ = {}));
-//mol/frame/-view.tree/frame.view.tree.ts
-;
-"use strict";
-var $;
-(function ($) {
-    var $$;
-    (function ($$) {
-        class $mol_frame extends $.$mol_frame {
-            window() {
-                return super.window();
-            }
-            allow() {
-                return [
-                    ...this.fullscreen() ? ['fullscreen'] : [],
-                    ...this.accelerometer() ? ['accelerometer'] : [],
-                    ...this.autoplay() ? ['autoplay'] : [],
-                    ...this.encription() ? ['encrypted-media'] : [],
-                    ...this.gyroscope() ? ['gyroscope'] : [],
-                    ...this.pip() ? ['picture-in-picture'] : [],
-                    ...this.clipboard_read() ? [`clipboard-read ${this.uri()}`] : [],
-                    ...this.clipboard_write() ? [`clipboard-write ${this.uri()}`] : [],
-                ].join('; ');
-            }
-        }
-        $$.$mol_frame = $mol_frame;
-    })($$ = $.$$ || ($.$$ = {}));
-})($ || ($ = {}));
-//mol/frame/frame.view.ts
-;
-"use strict";
-var $;
-(function ($) {
-    $mol_style_define($mol_frame, {
-        border: {
-            style: 'none',
-        },
-        maxHeight: $mol_style_unit.vh(100),
-    });
-})($ || ($ = {}));
-//mol/frame/frame.view.css.ts
-;
-"use strict";
-var $;
-(function ($) {
-    class $mol_embed_youtube extends $mol_check {
-        uri() {
-            return "";
-        }
-        video_preview() {
-            return "";
-        }
-        video_id() {
-            return "";
-        }
-        checked(next) {
-            return this.active(next);
-        }
-        sub() {
-            return [
-                this.Image(),
-                this.Hint(),
-                this.Frame()
-            ];
-        }
-        active(next) {
-            if (next !== undefined)
-                return next;
-            return false;
-        }
-        title() {
-            return "";
-        }
-        Image() {
-            const obj = new this.$.$mol_image();
-            obj.title = () => this.title();
-            obj.uri = () => this.video_preview();
-            return obj;
-        }
-        Hint() {
-            const obj = new this.$.$mol_icon_youtube();
-            return obj;
-        }
-        video_embed() {
-            return "";
-        }
-        Frame() {
-            const obj = new this.$.$mol_frame();
-            obj.title = () => this.title();
-            obj.uri = () => this.video_embed();
-            return obj;
-        }
-    }
-    __decorate([
-        $mol_mem
-    ], $mol_embed_youtube.prototype, "active", null);
-    __decorate([
-        $mol_mem
-    ], $mol_embed_youtube.prototype, "Image", null);
-    __decorate([
-        $mol_mem
-    ], $mol_embed_youtube.prototype, "Hint", null);
-    __decorate([
-        $mol_mem
-    ], $mol_embed_youtube.prototype, "Frame", null);
-    $.$mol_embed_youtube = $mol_embed_youtube;
-})($ || ($ = {}));
-//mol/embed/youtube/-view.tree/youtube.view.tree.ts
-;
-"use strict";
-var $;
-(function ($) {
-    var $$;
-    (function ($$) {
-        class $mol_embed_youtube extends $.$mol_embed_youtube {
-            video_embed() {
-                return `https://www.youtube.com/embed/${encodeURIComponent(this.video_id())}?autoplay=1&loop=1`;
-            }
-            video_id() {
-                return this.uri().match(/^https\:\/\/www\.youtube\.com\/(?:embed\/|shorts\/|watch\?v=)([^\/&?#]+)/)?.[1]
-                    ?? this.uri().match(/^https\:\/\/youtu\.be\/([^\/&?#]+)/)?.[1]
-                    ?? 'about:blank';
-            }
-            video_preview() {
-                return `https://i.ytimg.com/vi/${this.video_id()}/sddefault.jpg`;
-            }
-            sub() {
-                return this.active()
-                    ? [this.Frame()]
-                    : [this.Image(), this.Hint()];
-            }
-        }
-        __decorate([
-            $mol_mem
-        ], $mol_embed_youtube.prototype, "video_embed", null);
-        __decorate([
-            $mol_mem
-        ], $mol_embed_youtube.prototype, "video_id", null);
-        __decorate([
-            $mol_mem
-        ], $mol_embed_youtube.prototype, "video_preview", null);
-        __decorate([
-            $mol_mem
-        ], $mol_embed_youtube.prototype, "sub", null);
-        $$.$mol_embed_youtube = $mol_embed_youtube;
-    })($$ = $.$$ || ($.$$ = {}));
-})($ || ($ = {}));
-//mol/embed/youtube/youtube.view.ts
-;
-"use strict";
-var $;
-(function ($) {
-    $mol_style_attach("mol/embed/youtube/youtube.view.css", "[mol_embed_youtube] {\n\tpadding: 0;\n\tmax-width: 100%;\n}\n\n[mol_embed_youtube_image] {\n\tflex: auto 1 1;\n}\n\n[mol_embed_youtube_hint] {\n\tposition: absolute;\n    left: 50%;\n    top: 50%;\n    width: 50%;\n    height: 50%;\n    opacity: 0.3;\n    transform: translate(-50%, -50%);\n}\n\n[mol_embed_youtube]:hover [mol_embed_youtube_hint] {\n\topacity: .6;\n}\n");
-})($ || ($ = {}));
-//mol/embed/youtube/-css/youtube.view.css.ts
-;
-"use strict";
-var $;
-(function ($) {
-    class $mol_embed_any extends $mol_view {
-        Image() {
-            const obj = new this.$.$mol_image();
-            obj.title = () => this.title();
-            obj.uri = () => this.uri();
-            return obj;
-        }
-        Object() {
-            const obj = new this.$.$mol_embed_native();
-            obj.title = () => this.title();
-            obj.uri = () => this.uri();
-            return obj;
-        }
-        Youtube() {
-            const obj = new this.$.$mol_embed_youtube();
-            obj.title = () => this.title();
-            obj.uri = () => this.uri();
-            return obj;
-        }
-        title() {
-            return "";
-        }
-        uri() {
-            return "";
-        }
-    }
-    __decorate([
-        $mol_mem
-    ], $mol_embed_any.prototype, "Image", null);
-    __decorate([
-        $mol_mem
-    ], $mol_embed_any.prototype, "Object", null);
-    __decorate([
-        $mol_mem
-    ], $mol_embed_any.prototype, "Youtube", null);
-    $.$mol_embed_any = $mol_embed_any;
-})($ || ($ = {}));
-//mol/embed/any/-view.tree/any.view.tree.ts
-;
-"use strict";
-var $;
-(function ($) {
-    var $$;
-    (function ($$) {
-        class $mol_embed_any extends $.$mol_embed_any {
-            type() {
-                try {
-                    const uri = this.uri();
-                    if (/\b(png|gif|jpg|jpeg|jfif|webp|svg)\b/.test(uri))
-                        return 'image';
-                    if (/^https:\/\/www\.youtube\.com\//.test(uri))
-                        return 'youtube';
-                    if (/^https:\/\/youtu\.be\//.test(uri))
-                        return 'youtube';
-                }
-                catch (error) {
-                    $mol_fail_log(error);
-                    return 'image';
-                }
-                return 'object';
-            }
-            sub() {
-                switch (this.type()) {
-                    case 'image': return [this.Image()];
-                    case 'youtube': return [this.Youtube()];
-                    default: return [this.Object()];
-                }
-            }
-        }
-        __decorate([
-            $mol_mem
-        ], $mol_embed_any.prototype, "type", null);
-        __decorate([
-            $mol_mem
-        ], $mol_embed_any.prototype, "sub", null);
-        $$.$mol_embed_any = $mol_embed_any;
-    })($$ = $.$$ || ($.$$ = {}));
-})($ || ($ = {}));
-//mol/embed/any/any.view.ts
-;
-"use strict";
-var $;
-(function ($) {
-    class $mol_text extends $mol_list {
-        uri_base() {
-            return "";
-        }
-        text() {
-            return "";
-        }
-        param() {
-            return "";
-        }
-        flow_tokens() {
-            return [];
-        }
-        auto() {
-            return [
-                this.auto_scroll()
-            ];
-        }
-        Paragraph(id) {
-            const obj = new this.$.$mol_paragraph();
-            obj.sub = () => this.block_content(id);
-            return obj;
-        }
-        Quote(id) {
-            const obj = new this.$.$mol_text();
-            obj.uri_resolve = (id) => this.uri_resolve(id);
-            obj.text = () => this.quote_text(id);
-            obj.highlight = () => this.highlight();
-            obj.auto_scroll = () => null;
-            return obj;
-        }
-        List(id) {
-            const obj = new this.$.$mol_text_list();
-            obj.uri_resolve = (id) => this.uri_resolve(id);
-            obj.type = () => this.list_type(id);
-            obj.text = () => this.list_text(id);
-            obj.highlight = () => this.highlight();
-            return obj;
-        }
-        item_index(id) {
-            return 0;
-        }
-        Header(id) {
-            const obj = new this.$.$mol_text_header();
-            obj.minimal_height = () => 40;
-            obj.level = () => this.header_level(id);
-            obj.content = () => this.block_content(id);
-            obj.arg = () => this.header_arg(id);
-            return obj;
-        }
-        Pre(id) {
-            const obj = new this.$.$mol_text_code();
-            obj.text = () => this.pre_text(id);
-            obj.highlight = () => this.highlight();
-            obj.uri_resolve = (id) => this.uri_resolve(id);
-            obj.sidebar_showed = () => this.pre_sidebar_showed();
-            return obj;
-        }
-        Cut(id) {
-            const obj = new this.$.$mol_view();
-            obj.dom_name = () => "hr";
-            return obj;
-        }
-        Table(id) {
-            const obj = new this.$.$mol_grid();
-            obj.head_cells = () => this.table_head_cells(id);
-            obj.rows = () => this.table_rows(id);
-            return obj;
-        }
-        Table_row(id) {
-            const obj = new this.$.$mol_grid_row();
-            obj.cells = () => this.table_cells(id);
-            return obj;
-        }
-        Table_cell(id) {
-            const obj = new this.$.$mol_text();
-            obj.auto_scroll = () => null;
-            obj.highlight = () => this.highlight();
-            obj.uri_resolve = (id) => this.uri_resolve(id);
-            obj.text = () => this.table_cell_text(id);
-            return obj;
-        }
-        Grid(id) {
-            const obj = new this.$.$mol_grid();
-            obj.rows = () => this.grid_rows(id);
-            return obj;
-        }
-        Grid_row(id) {
-            const obj = new this.$.$mol_grid_row();
-            obj.cells = () => this.grid_cells(id);
-            return obj;
-        }
-        Grid_cell(id) {
-            const obj = new this.$.$mol_text();
-            obj.auto_scroll = () => null;
-            obj.highlight = () => this.highlight();
-            obj.uri_resolve = (id) => this.uri_resolve(id);
-            obj.text = () => this.grid_cell_text(id);
-            return obj;
-        }
-        String(id) {
-            const obj = new this.$.$mol_dimmer();
-            obj.dom_name = () => "span";
-            obj.needle = () => this.highlight();
-            obj.haystack = () => this.line_text(id);
-            return obj;
-        }
-        Span(id) {
-            const obj = new this.$.$mol_text_span();
-            obj.dom_name = () => "span";
-            obj.type = () => this.line_type(id);
-            obj.sub = () => this.line_content(id);
-            return obj;
-        }
-        Code_line(id) {
-            const obj = new this.$.$mol_text_code_row();
-            obj.numb_showed = () => false;
-            obj.highlight = () => this.highlight();
-            obj.text = () => this.line_text(id);
-            obj.uri_resolve = (id) => this.uri_resolve(id);
-            obj.syntax = () => this.code_syntax();
-            return obj;
-        }
-        Link(id) {
-            const obj = new this.$.$mol_link_iconed();
-            obj.uri = () => this.link_uri(id);
-            obj.content = () => this.line_content(id);
-            return obj;
-        }
-        Link_http(id) {
-            const obj = new this.$.$mol_link_iconed();
-            obj.uri = () => this.link_uri(id);
-            obj.content = () => [
-                this.link_host(id)
-            ];
-            return obj;
-        }
-        Embed(id) {
-            const obj = new this.$.$mol_embed_any();
-            obj.uri = () => this.link_uri(id);
-            obj.title = () => this.line_text(id);
-            return obj;
-        }
-        auto_scroll() {
-            return null;
-        }
-        block_content(id) {
-            return [];
-        }
-        uri_resolve(id) {
-            return "";
-        }
-        quote_text(id) {
-            return "";
-        }
-        highlight() {
-            return "";
-        }
-        list_type(id) {
-            return "-";
-        }
-        list_text(id) {
-            return "";
-        }
-        header_level(id) {
-            return 1;
-        }
-        header_arg(id) {
-            return {};
-        }
-        pre_text(id) {
-            return "";
-        }
-        code_sidebar_showed() {
-            return true;
-        }
-        pre_sidebar_showed() {
-            return this.code_sidebar_showed();
-        }
-        table_head_cells(id) {
-            return [];
-        }
-        table_rows(id) {
-            return [];
-        }
-        table_cells(id) {
-            return [];
-        }
-        table_cell_text(id) {
-            return "";
-        }
-        grid_rows(id) {
-            return [];
-        }
-        grid_cells(id) {
-            return [];
-        }
-        grid_cell_text(id) {
-            return "";
-        }
-        line_text(id) {
-            return "";
-        }
-        line_type(id) {
-            return "";
-        }
-        line_content(id) {
-            return [];
-        }
-        code_syntax() {
-            return null;
-        }
-        link_uri(id) {
-            return "";
-        }
-        link_host(id) {
-            return "";
-        }
-    }
-    __decorate([
-        $mol_mem_key
-    ], $mol_text.prototype, "Paragraph", null);
-    __decorate([
-        $mol_mem_key
-    ], $mol_text.prototype, "Quote", null);
-    __decorate([
-        $mol_mem_key
-    ], $mol_text.prototype, "List", null);
-    __decorate([
-        $mol_mem_key
-    ], $mol_text.prototype, "Header", null);
-    __decorate([
-        $mol_mem_key
-    ], $mol_text.prototype, "Pre", null);
-    __decorate([
-        $mol_mem_key
-    ], $mol_text.prototype, "Cut", null);
-    __decorate([
-        $mol_mem_key
-    ], $mol_text.prototype, "Table", null);
-    __decorate([
-        $mol_mem_key
-    ], $mol_text.prototype, "Table_row", null);
-    __decorate([
-        $mol_mem_key
-    ], $mol_text.prototype, "Table_cell", null);
-    __decorate([
-        $mol_mem_key
-    ], $mol_text.prototype, "Grid", null);
-    __decorate([
-        $mol_mem_key
-    ], $mol_text.prototype, "Grid_row", null);
-    __decorate([
-        $mol_mem_key
-    ], $mol_text.prototype, "Grid_cell", null);
-    __decorate([
-        $mol_mem_key
-    ], $mol_text.prototype, "String", null);
-    __decorate([
-        $mol_mem_key
-    ], $mol_text.prototype, "Span", null);
-    __decorate([
-        $mol_mem_key
-    ], $mol_text.prototype, "Code_line", null);
-    __decorate([
-        $mol_mem_key
-    ], $mol_text.prototype, "Link", null);
-    __decorate([
-        $mol_mem_key
-    ], $mol_text.prototype, "Link_http", null);
-    __decorate([
-        $mol_mem_key
-    ], $mol_text.prototype, "Embed", null);
-    $.$mol_text = $mol_text;
-    class $mol_text_header extends $mol_paragraph {
-        level() {
-            return 1;
-        }
-        sub() {
-            return [
-                this.Link()
-            ];
-        }
-        arg() {
-            return {};
-        }
-        content() {
-            return [];
-        }
-        Link() {
-            const obj = new this.$.$mol_link();
-            obj.arg = () => this.arg();
-            obj.hint = () => this.$.$mol_locale.text('$mol_text_header_Link_hint');
-            obj.sub = () => this.content();
-            return obj;
-        }
-    }
-    __decorate([
-        $mol_mem
-    ], $mol_text_header.prototype, "Link", null);
-    $.$mol_text_header = $mol_text_header;
-    class $mol_text_span extends $mol_paragraph {
-        dom_name() {
-            return "span";
-        }
-        attr() {
-            return {
-                ...super.attr(),
-                mol_text_type: this.type()
-            };
-        }
-        type() {
-            return "";
-        }
-    }
-    $.$mol_text_span = $mol_text_span;
-})($ || ($ = {}));
-//mol/text/text/-view.tree/text.view.tree.ts
-;
-"use strict";
-var $;
-(function ($) {
-    var $$;
-    (function ($$) {
-        class $mol_text extends $.$mol_text {
-            flow_tokens() {
-                const tokens = [];
-                this.$.$mol_syntax2_md_flow.tokenize(this.text(), (name, found, chunks) => tokens.push({ name, found, chunks }));
-                return tokens;
-            }
-            block_type(index) {
-                return this.flow_tokens()[index].name;
-            }
-            rows() {
-                return this.flow_tokens().map(({ name }, index) => {
-                    switch (name) {
-                        case 'quote': return this.Quote(index);
-                        case 'header': return this.Header(index);
-                        case 'list': return this.List(index);
-                        case 'code': return this.Pre(index);
-                        case 'code-indent': return this.Pre(index);
-                        case 'table': return this.Table(index);
-                        case 'grid': return this.Grid(index);
-                        case 'cut': return this.Cut(index);
-                        default: return this.Paragraph(index);
-                    }
-                });
-            }
-            param() {
-                return this.toString().replace(/^.*?\)\./, '').replace(/[()]/g, '');
-            }
-            header_level(index) {
-                return this.flow_tokens()[index].chunks[0].length;
-            }
-            header_arg(index) {
-                return {
-                    [this.param()]: this.block_text(index)
-                };
-            }
-            list_type(index) {
-                return this.flow_tokens()[index].chunks[1] ?? '';
-            }
-            item_index(index) {
-                return this.flow_tokens().slice(0, index).filter(token => token.name === 'block').length + 1;
-            }
-            pre_text(index) {
-                const token = this.flow_tokens()[index];
-                return (token.chunks[2] ?? token.chunks[0].replace(/^(\t|  (?:\+\+|--|\*\*|  ))/gm, '')).replace(/[\n\r]*$/, '');
-            }
-            quote_text(index) {
-                return this.flow_tokens()[index].chunks[0].replace(/^[>"] /mg, '');
-            }
-            list_text(index) {
-                return this.flow_tokens()[index].chunks[0].replace(/^([-*+]|(?:\d+[\.\)])+) ?/mg, '').replace(/^  ?/mg, '');
-            }
-            cell_content(indexBlock) {
-                return this.flow_tokens()[indexBlock].chunks[0]
-                    .split(/\r?\n/g)
-                    .filter(row => row && !/\|--/.test(row))
-                    .map((row, rowId) => {
-                    return row.split(/\|/g)
-                        .filter(cell => cell)
-                        .map((cell, cellId) => cell.trim());
-                });
-            }
-            table_rows(blockId) {
-                return this.cell_content(blockId)
-                    .slice(1)
-                    .map((row, rowId) => this.Table_row({ block: blockId, row: rowId + 1 }));
-            }
-            table_head_cells(blockId) {
-                return this.cell_content(blockId)[0]
-                    .map((cell, cellId) => this.Table_cell({ block: blockId, row: 0, cell: cellId }));
-            }
-            table_cells(id) {
-                return this.cell_content(id.block)[id.row]
-                    .map((cell, cellId) => this.Table_cell({ block: id.block, row: id.row, cell: cellId }));
-            }
-            table_cell_text(id) {
-                return this.cell_content(id.block)[id.row][id.cell];
-            }
-            grid_content(indexBlock) {
-                return [...this.flow_tokens()[indexBlock].chunks[0].match(/(?:^! .*?$\r?\n?)+(?:^ +! .*?$\r?\n?)*/gm)]
-                    .map((row, rowId) => {
-                    const cells = [];
-                    for (const line of row.trim().split(/\r?\n/)) {
-                        const [_, indent, content] = /^( *)! (.*)/.exec(line);
-                        const col = Math.ceil(indent.length / 2);
-                        cells[col] = (cells[col] ? cells[col] + '\n' : '') + content;
-                    }
-                    return cells;
-                });
-            }
-            grid_rows(blockId) {
-                return this.grid_content(blockId)
-                    .map((row, rowId) => this.Grid_row({ block: blockId, row: rowId }));
-            }
-            grid_cells(id) {
-                return this.grid_content(id.block)[id.row]
-                    .map((cell, cellId) => this.Grid_cell({ block: id.block, row: id.row, cell: cellId }));
-            }
-            grid_cell_text(id) {
-                return this.grid_content(id.block)[id.row][id.cell];
-            }
-            uri_base() {
-                return $mol_dom_context.document.location.href;
-            }
-            uri_resolve(uri) {
-                if (/^(\w+script+:)+/.test(uri))
-                    return null;
-                if (/^#\!/.test(uri)) {
-                    const params = {};
-                    for (const chunk of uri.slice(2).split(this.$.$mol_state_arg.separator)) {
-                        if (!chunk)
-                            continue;
-                        const vals = chunk.split('=').map(decodeURIComponent);
-                        params[vals.shift()] = vals.join('=');
-                    }
-                    return this.$.$mol_state_arg.link(params);
-                }
-                try {
-                    const url = new URL(uri, this.uri_base());
-                    return url.toString();
-                }
-                catch (error) {
-                    $mol_fail_log(error);
-                    return null;
-                }
-            }
-            code_syntax() {
-                return this.$.$mol_syntax2_md_code;
-            }
-            block_text(index) {
-                const token = this.flow_tokens()[index];
-                switch (token.name) {
-                    case 'header': return token.chunks[2];
-                    default: return token.chunks[0];
-                }
-            }
-            block_content(index) {
-                return this.line_content([index]);
-            }
-            line_tokens(path) {
-                const tokens = [];
-                this.$.$mol_syntax2_md_line.tokenize(this.line_text(path), (name, found, chunks) => tokens.push({ name, found, chunks }));
-                return tokens;
-            }
-            line_token(path) {
-                const tokens = this.line_tokens(path.slice(0, path.length - 1));
-                return tokens[path[path.length - 1]];
-            }
-            line_type(path) {
-                return this.line_token(path).name;
-            }
-            line_text(path) {
-                if (path.length === 1)
-                    return this.block_text(path[0]);
-                const { name, found, chunks } = this.line_token(path);
-                switch (name) {
-                    case 'link': return chunks[0] || chunks[1].replace(/^.*?\/\/|\/.*$/g, '');
-                    case 'text-link': return chunks[0] || chunks[1].replace(/^.*?\/\/|\/.*$/g, '');
-                    default: return (chunks[0] || chunks[1] || chunks[2]) ?? found;
-                }
-            }
-            line_content(path) {
-                return this.line_tokens(path).map(({ name, chunks }, index) => {
-                    const path2 = [...path, index];
-                    switch (name) {
-                        case 'embed': return this.Embed(path2);
-                        case 'link': return this.Link(path2);
-                        case 'text-link-http': return this.Link_http(path2);
-                        case 'text-link': return this.Link(path2);
-                        case 'image-link': return this.Embed(path2);
-                        case 'code': return this.Code_line(path2);
-                        case '': return this.String(path2);
-                        default: return this.Span(path2);
-                    }
-                });
-            }
-            link_uri(path) {
-                const token = this.line_token(path);
-                const uri = this.uri_resolve(token.chunks[1] ?? token.found);
-                if (!uri)
-                    throw new Error('Bad link');
-                return uri;
-            }
-            link_host(path) {
-                return this.link_uri(path).replace(/^.*?\/\/|\/.*$/g, '');
-            }
-            auto_scroll() {
-                for (const [index, token] of this.flow_tokens().entries()) {
-                    if (token.name !== 'header')
-                        continue;
-                    const header = this.Header(index);
-                    if (!header.Link().current())
-                        continue;
-                    new $mol_after_tick(() => this.ensure_visible(header));
-                }
-            }
-        }
-        __decorate([
-            $mol_mem
-        ], $mol_text.prototype, "flow_tokens", null);
-        __decorate([
-            $mol_mem_key
-        ], $mol_text.prototype, "block_type", null);
-        __decorate([
-            $mol_mem
-        ], $mol_text.prototype, "rows", null);
-        __decorate([
-            $mol_mem
-        ], $mol_text.prototype, "param", null);
-        __decorate([
-            $mol_mem_key
-        ], $mol_text.prototype, "header_level", null);
-        __decorate([
-            $mol_mem_key
-        ], $mol_text.prototype, "header_arg", null);
-        __decorate([
-            $mol_mem_key
-        ], $mol_text.prototype, "pre_text", null);
-        __decorate([
-            $mol_mem_key
-        ], $mol_text.prototype, "quote_text", null);
-        __decorate([
-            $mol_mem_key
-        ], $mol_text.prototype, "list_text", null);
-        __decorate([
-            $mol_mem_key
-        ], $mol_text.prototype, "cell_content", null);
-        __decorate([
-            $mol_mem_key
-        ], $mol_text.prototype, "table_rows", null);
-        __decorate([
-            $mol_mem_key
-        ], $mol_text.prototype, "table_head_cells", null);
-        __decorate([
-            $mol_mem_key
-        ], $mol_text.prototype, "table_cells", null);
-        __decorate([
-            $mol_mem_key
-        ], $mol_text.prototype, "table_cell_text", null);
-        __decorate([
-            $mol_mem_key
-        ], $mol_text.prototype, "grid_content", null);
-        __decorate([
-            $mol_mem_key
-        ], $mol_text.prototype, "grid_rows", null);
-        __decorate([
-            $mol_mem_key
-        ], $mol_text.prototype, "grid_cells", null);
-        __decorate([
-            $mol_mem_key
-        ], $mol_text.prototype, "grid_cell_text", null);
-        __decorate([
-            $mol_mem_key
-        ], $mol_text.prototype, "uri_resolve", null);
-        __decorate([
-            $mol_mem_key
-        ], $mol_text.prototype, "block_text", null);
-        __decorate([
-            $mol_mem_key
-        ], $mol_text.prototype, "line_tokens", null);
-        __decorate([
-            $mol_mem_key
-        ], $mol_text.prototype, "line_token", null);
-        __decorate([
-            $mol_mem_key
-        ], $mol_text.prototype, "line_type", null);
-        __decorate([
-            $mol_mem_key
-        ], $mol_text.prototype, "line_text", null);
-        __decorate([
-            $mol_mem_key
-        ], $mol_text.prototype, "line_content", null);
-        __decorate([
-            $mol_mem_key
-        ], $mol_text.prototype, "link_uri", null);
-        __decorate([
-            $mol_mem_key
-        ], $mol_text.prototype, "link_host", null);
-        __decorate([
-            $mol_mem
-        ], $mol_text.prototype, "auto_scroll", null);
-        $$.$mol_text = $mol_text;
-        class $mol_text_header extends $.$mol_text_header {
-            dom_name() {
-                return 'h' + this.level();
-            }
-        }
-        $$.$mol_text_header = $mol_text_header;
-    })($$ = $.$$ || ($.$$ = {}));
-})($ || ($ = {}));
-//mol/text/text/text.view.ts
-;
-"use strict";
-var $;
-(function ($) {
-    $mol_style_attach("mol/text/text/text.view.css", "[mol_text] {\n\tline-height: 1.5em;\n\tbox-sizing: border-box;\n\tborder-radius: var(--mol_gap_round);\n\twhite-space: pre-line;\n\tdisplay: flex;\n\tflex-direction: column;\n\tflex: 0 0 auto;\n\ttab-size: 4;\n}\n\n[mol_text_paragraph] {\n\tpadding: var(--mol_gap_text);\n\toverflow: auto;\n\toverflow-x: overlay;\n\tmax-width: 100%;\n\tdisplay: block;\n\tmax-width: 60rem;\n}\n\n[mol_text_span] {\n\tdisplay: inline;\n}\n\n[mol_text_string] {\n\tdisplay: inline;\n\tflex: 0 1 auto;\n\twhite-space: normal;\n}\n\n[mol_text_quote] {\n\tmargin: var(--mol_gap_block);\n\tpadding: var(--mol_gap_block);\n\tbackground: var(--mol_theme_card);\n\tbox-shadow: 0 0 0 1px var(--mol_theme_back);\n}\n\n[mol_text_header] {\n\tdisplay: block;\n\ttext-shadow: 0 0;\n\tfont-weight: normal;\n}\n\n* + [mol_text_header] {\n\tmargin-top: 0.75rem;\n}\n\nh1[mol_text_header] {\n\tfont-size: 1.5rem;\n}\n\nh2[mol_text_header] {\n\tfont-size: 1.5rem;\n\tfont-style: italic;\n}\n\nh3[mol_text_header] {\n\tfont-size: 1.25rem;\n}\n\nh4[mol_text_header] {\n\tfont-size: 1.25em;\n\tfont-style: italic;\n}\n\nh5[mol_text_header] {\n\tfont-size: 1rem;\n}\n\nh6[mol_text_header] {\n\tfont-size: 1rem;\n\tfont-style: italic;\n}\n\n[mol_text_header_link] {\n\tcolor: inherit;\n}\n\n[mol_text_table_cell] {\n\twidth: auto;\n\tdisplay: table-cell;\n\tvertical-align: baseline;\n\tpadding: 0;\n\tborder-radius: 0;\n}\n\n[mol_text_grid_cell] {\n\twidth: auto;\n\tdisplay: table-cell;\n\tvertical-align: top;\n\tpadding: 0;\n\tborder-radius: 0;\n}\n\n[mol_text_cut] {\n\tborder: none;\n\twidth: 100%;\n\tbox-shadow: 0 0 0 1px var(--mol_theme_line);\n}\n\n[mol_text_link_http],\n[mol_text_link] {\n\tpadding: 0;\n\tdisplay: inline;\n\twhite-space: nowrap;\n}\n\n[mol_text_link_icon] + [mol_text_embed] {\n\tmargin-left: -1.5rem;\n}\n\n[mol_text_embed_youtube] {\n\tdisplay: inline;\n}\n\n[mol_text_embed_youtube_image],\n[mol_text_embed_youtube_frame],\n[mol_text_embed_object] {\n\tobject-fit: contain;\n\tobject-position: center;\n\tdisplay: inline;\n\twidth: 100vw;\n\tmax-height: calc( 100vh - 6rem );\n\tvertical-align: top;\n}\n[mol_text_embed_object_fallback] {\n\tpadding: 0;\n}\n[mol_text_embed_image] {\n\tobject-fit: contain;\n\tobject-position: center;\n\tdisplay: inline;\n\t/* max-height: calc( 100vh - 6rem ); */\n\tvertical-align: top;\n}\n\n[mol_text_pre] {\n\twhite-space: pre;\n\toverflow-x: auto;\n\toverflow-x: overlay;\n\ttab-size: 2;\n}\n\n[mol_text_code_line] {\n\tdisplay: inline-block;\n\twhite-space: nowrap;\n}\n\n[mol_text_type=\"strong\"] {\n\ttext-shadow: 0 0;\n\tfilter: contrast(1.5);\n}\n\n[mol_text_type=\"emphasis\"] {\n\tfont-style: italic;\n}\n\n[mol_text_type=\"insert\"] {\n\tcolor: var(--mol_theme_special);\n}\n\n[mol_text_type=\"delete\"] {\n\tcolor: var(--mol_theme_shade);\n}\n\n[mol_text_type=\"remark\"] {\n\tcolor: var(--mol_theme_shade);\n}\n\n[mol_text_type=\"quote\"] {\n\tfont-style: italic;\n}\n");
-})($ || ($ = {}));
-//mol/text/text/-css/text.view.css.ts
-;
-"use strict";
-var $;
-(function ($) {
     class $mol_icon_chevron_down extends $mol_icon {
         path() {
             return "M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z";
@@ -17776,55 +17776,6 @@ var $;
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));
 //mol/theme/auto/auto.view.ts
-;
-"use strict";
-var $;
-(function ($) {
-    class $mol_text_list extends $mol_text {
-        auto_scroll() {
-            return null;
-        }
-        attr() {
-            return {
-                ...super.attr(),
-                mol_text_list_type: this.type()
-            };
-        }
-        Paragraph(id) {
-            const obj = new this.$.$mol_text_list_item();
-            obj.index = () => this.item_index(id);
-            obj.sub = () => this.block_content(id);
-            return obj;
-        }
-        type() {
-            return "";
-        }
-    }
-    __decorate([
-        $mol_mem_key
-    ], $mol_text_list.prototype, "Paragraph", null);
-    $.$mol_text_list = $mol_text_list;
-    class $mol_text_list_item extends $mol_paragraph {
-        attr() {
-            return {
-                ...super.attr(),
-                mol_text_list_item_index: this.index()
-            };
-        }
-        index() {
-            return 0;
-        }
-    }
-    $.$mol_text_list_item = $mol_text_list_item;
-})($ || ($ = {}));
-//mol/text/list/-view.tree/list.view.tree.ts
-;
-"use strict";
-var $;
-(function ($) {
-    $mol_style_attach("mol/text/list/list.view.css", "[mol_text_list] {\r\n\tpadding-left: 1.75rem;\r\n}\r\n\r\n[mol_text_list_item] {\r\n\tcontain: none;\r\n\tdisplay: list-item;\r\n}\r\n\r\n[mol_text_list_item]::before {\r\n\tcontent: attr( mol_text_list_item_index ) \".\";\r\n\twidth: 1.25rem;\r\n\tdisplay: inline-block;\r\n\tposition: absolute;\r\n\tmargin-left: -1.75rem;\r\n\ttext-align: end;\r\n}\r\n\r\n[mol_text_list_type=\"-\"] > [mol_text_list_item]::before,\r\n[mol_text_list_type=\"*\"] > [mol_text_list_item]::before {\r\n\tcontent: \"•\";\r\n}\r\n");
-})($ || ($ = {}));
-//mol/text/list/-css/list.view.css.ts
 ;
 "use strict";
 var $;
@@ -19338,9 +19289,58 @@ var $node = $node || {} ; $node[ "/hyoo/calc/calc_logo.svg" ] = "data:image/svg+
 "use strict";
 var $;
 (function ($) {
+    class $mol_text_list extends $mol_text {
+        auto_scroll() {
+            return null;
+        }
+        attr() {
+            return {
+                ...super.attr(),
+                mol_text_list_type: this.type()
+            };
+        }
+        Paragraph(id) {
+            const obj = new this.$.$mol_text_list_item();
+            obj.index = () => this.item_index(id);
+            obj.sub = () => this.block_content(id);
+            return obj;
+        }
+        type() {
+            return "";
+        }
+    }
+    __decorate([
+        $mol_mem_key
+    ], $mol_text_list.prototype, "Paragraph", null);
+    $.$mol_text_list = $mol_text_list;
+    class $mol_text_list_item extends $mol_paragraph {
+        attr() {
+            return {
+                ...super.attr(),
+                mol_text_list_item_index: this.index()
+            };
+        }
+        index() {
+            return 0;
+        }
+    }
+    $.$mol_text_list_item = $mol_text_list_item;
+})($ || ($ = {}));
+//mol/text/list/-view.tree/list.view.tree.ts
+;
+"use strict";
+var $;
+(function ($) {
+    $mol_style_attach("mol/text/list/list.view.css", "[mol_text_list] {\r\n\tpadding-left: 1.75rem;\r\n}\r\n\r\n[mol_text_list_item] {\r\n\tcontain: none;\r\n\tdisplay: list-item;\r\n}\r\n\r\n[mol_text_list_item]::before {\r\n\tcontent: attr( mol_text_list_item_index ) \".\";\r\n\twidth: 1.25rem;\r\n\tdisplay: inline-block;\r\n\tposition: absolute;\r\n\tmargin-left: -1.75rem;\r\n\ttext-align: end;\r\n}\r\n\r\n[mol_text_list_type=\"-\"] > [mol_text_list_item]::before,\r\n[mol_text_list_type=\"*\"] > [mol_text_list_item]::before {\r\n\tcontent: \"•\";\r\n}\r\n");
+})($ || ($ = {}));
+//mol/text/list/-css/list.view.css.ts
+;
+"use strict";
+var $;
+(function ($) {
     class $hyoo_cras_app extends $mol_book2_catalog {
         menu_title() {
-            return "💨CRAS";
+            return "CRUS🦵DB";
         }
         param() {
             return "section";
@@ -19356,6 +19356,7 @@ var $;
         }
         spreads() {
             return {
+                "": this.Intro(),
                 realm: this.Realm(),
                 casting: this.Casting()
             };
@@ -19366,6 +19367,22 @@ var $;
         Source() {
             const obj = new this.$.$mol_link_source();
             obj.uri = () => "https://github.com/hyoo-ru/cras.hyoo.ru";
+            return obj;
+        }
+        intro() {
+            return "";
+        }
+        Intro_content() {
+            const obj = new this.$.$mol_text();
+            obj.text = () => this.intro();
+            return obj;
+        }
+        Intro() {
+            const obj = new this.$.$mol_page();
+            obj.title = () => "💨Intro";
+            obj.body = () => [
+                this.Intro_content()
+            ];
             return obj;
         }
         Realm() {
@@ -19394,6 +19411,12 @@ var $;
     ], $hyoo_cras_app.prototype, "Source", null);
     __decorate([
         $mol_mem
+    ], $hyoo_cras_app.prototype, "Intro_content", null);
+    __decorate([
+        $mol_mem
+    ], $hyoo_cras_app.prototype, "Intro", null);
+    __decorate([
+        $mol_mem
     ], $hyoo_cras_app.prototype, "Realm", null);
     __decorate([
         $mol_mem
@@ -19413,10 +19436,16 @@ var $;
                 realm.home().base();
                 return realm;
             }
+            intro() {
+                return this.$.$mol_fetch.text('hyoo/cras/readme.md');
+            }
         }
         __decorate([
             $mol_mem
         ], $hyoo_cras_app.prototype, "realm", null);
+        __decorate([
+            $mol_mem
+        ], $hyoo_cras_app.prototype, "intro", null);
         $$.$hyoo_cras_app = $hyoo_cras_app;
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));

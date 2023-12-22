@@ -79,3 +79,4 @@
 	deploy \/hyoo/calc/calc_logo.svg
 \/hyoo/cras/app
 	deploy \/hyoo/cras/logo/logo.svg
+	deploy \/hyoo/cras/readme.md
