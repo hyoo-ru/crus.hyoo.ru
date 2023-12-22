@@ -8,5 +8,10 @@ namespace $.$$ {
 			return realm
 		}
 		
+		@ $mol_mem
+		intro() {
+			return this.$.$mol_fetch.text( 'hyoo/cras/readme.md' )
+		}
+		
 	}
 }

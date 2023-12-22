@@ -1,13 +1,13 @@
-# CRAS
+# CRUS🦵DB
 
-![](logo/logo.svg)
+> *The elegant basis for reactive architecture.*
 
-Tomorrow-days database with unique abilities:
-
-- **C**onflict-free: CvRDT, partial-order, oracle-free, interleaving-free, weak-typed
-- **R**eal-time: delta-replication, web-sockets, web-rtc
-- **A**vailable: local-first, long-offline, partition-tolerance
-- **S**ecure: local-authorization, signed-changes, encrypted-merge, leakage-proof, corruption-proof
+- **C**onvergent: *CvRDT, Total Ordered, Interleaving Free, Weak Typed*
+- **R**ealtime: *Delta Replication, WebSocket/WebRTC, Inplace Updates, Reactive, In Memory*
+- **U**nbreakable: *High Available, Partition Tolerance, Auto Recovery, Long Offline, WAL Free, Backup Free, Persistent*
+- **S**ecure: *Private Key Auth, Signed Changes, Encrypted Merge, leakage Proof*
+- **D**ecentralized: *Local First, Oracle Free, Peer to Peer*
+- **B**rilliant: *Graph Data Model, First Class JSON/DOM/Tree*
 
 ## Units
 
