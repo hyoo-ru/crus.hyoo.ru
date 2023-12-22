@@ -919,7 +919,7 @@ $hyoo_cras_lord_book $mol_book2_catalog
 			click? <=> land_new? null
 
 $hyoo_cras_realm_book $mol_book2_catalog
-	menu_title \🌌Realm
+	menu_title \🌌 Realm
 	param \lord
 	realm $hyoo_cras_realm
 	Spread* <= Lord* $hyoo_cras_lord_book
@@ -1153,13 +1153,13 @@ $hyoo_cras_app $mol_book2_catalog
 	spreads *
 		\
 			<= Intro $mol_page
-				title \💨Intro
+				title \💨 Intro
 				body /
 					<= Intro_content $mol_text text <= intro \
 		realm <= Realm $hyoo_cras_realm_book
 			realm <= realm
 		casting <= Casting $hyoo_calc
-			title \🔀Casting
+			title \🔀 Casting
 			editable false
 			sheet_id \jfls98_bf0zru
 			Fork null

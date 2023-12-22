@@ -15170,7 +15170,7 @@ var $;
 (function ($) {
     class $hyoo_cras_realm_book extends $mol_book2_catalog {
         menu_title() {
-            return "🌌Realm";
+            return "🌌 Realm";
         }
         param() {
             return "lord";
@@ -19371,7 +19371,7 @@ var $;
         }
         Intro() {
             const obj = new this.$.$mol_page();
-            obj.title = () => "💨Intro";
+            obj.title = () => "💨 Intro";
             obj.body = () => [
                 this.Intro_content()
             ];
@@ -19384,7 +19384,7 @@ var $;
         }
         Casting() {
             const obj = new this.$.$hyoo_calc();
-            obj.title = () => "🔀Casting";
+            obj.title = () => "🔀 Casting";
             obj.editable = () => false;
             obj.sheet_id = () => "jfls98_bf0zru";
             obj.Fork = () => null;
