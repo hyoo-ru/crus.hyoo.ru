@@ -9016,10 +9016,10 @@ var $;
             return [...this.native.objectStoreNames];
         }
         read(...names) {
-            return new $mol_db_transaction(this.native.transaction(names, 'readonly')).stores;
+            return new $mol_db_transaction(this.native.transaction(names, 'readonly', { durability: 'relaxed' })).stores;
         }
         change(...names) {
-            return new $mol_db_transaction(this.native.transaction(names, 'readwrite'));
+            return new $mol_db_transaction(this.native.transaction(names, 'readwrite', { durability: 'relaxed' }));
         }
         kill() {
             this.native.close();
