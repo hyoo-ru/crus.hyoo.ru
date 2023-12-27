@@ -9047,7 +9047,9 @@ var $;
             return new Proxy({}, {
                 ownKeys: () => [...this.native.objectStoreNames],
                 has: (_, name) => this.native.objectStoreNames.contains(name),
-                get: (_, name) => new $mol_db_store(this.native.objectStore(name)),
+                get: (_, name, proxy) => (name in proxy)
+                    ? new $mol_db_store(this.native.objectStore(name))
+                    : undefined,
             });
         }
         store_make(name) {
