@@ -10,7 +10,7 @@ namespace $.$$ {
 		
 		@ $mol_mem
 		intro() {
-			return this.$.$mol_fetch.text( 'hyoo/cras/readme.md' )
+			return this.$.$mol_fetch.text( 'hyoo/crus/readme.md' )
 		}
 		
 	}
