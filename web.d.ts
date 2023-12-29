@@ -2686,6 +2686,17 @@ declare namespace $ {
 }
 
 declare namespace $ {
+    class $mol_bus<Data> extends $mol_object {
+        readonly name: string;
+        readonly handle: (data: Data) => void;
+        readonly channel: BroadcastChannel;
+        constructor(name: string, handle: (data: Data) => void);
+        destructor(): void;
+        send(data: Data): void;
+    }
+}
+
+declare namespace $ {
     class $hyoo_crus_yard extends $mol_object {
         static persisted: WeakSet<$hyoo_crus_unit>;
         static load(land_ref: string): readonly $hyoo_crus_unit[];
@@ -2696,7 +2707,7 @@ declare namespace $ {
 declare namespace $.$$ {
     class $hyoo_crus_yard extends $.$hyoo_crus_yard {
         static save(land_ref: string, units: readonly $hyoo_crus_unit[]): Promise<void>;
-        static load(land_ref: string): ($hyoo_crus_gift | $hyoo_crus_pass | $hyoo_crus_gist)[];
+        static load(land_ref: string): ($hyoo_crus_pass | $hyoo_crus_gift | $hyoo_crus_gist)[];
         static query(key: IDBKeyRange): Promise<[ArrayBuffer[], ArrayBuffer[], ArrayBuffer[]]>;
         static db(): Promise<$mol_db_database<{
             Pass: {
@@ -3349,6 +3360,8 @@ declare namespace $ {
         post(lead: number, head: number, self: number, vary: $hyoo_crus_vary_type, tag?: "keys" | "vals" | "head" | "term"): $hyoo_crus_gist;
         gist_move(gist: $hyoo_crus_gist, head: number, seat: number): void;
         gist_wipe(gist: $hyoo_crus_gist): void;
+        sync(): void;
+        bus(): $mol_bus<ArrayBuffer[]>;
         loading(): void;
         saving(): void;
         unit_sign(unit: $hyoo_crus_unit): void;

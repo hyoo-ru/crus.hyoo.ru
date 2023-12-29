@@ -9146,6 +9146,32 @@ var $;
 "use strict";
 var $;
 (function ($) {
+    class $mol_bus extends $mol_object {
+        name;
+        handle;
+        channel;
+        constructor(name, handle) {
+            super();
+            this.name = name;
+            this.handle = handle;
+            const channel = new BroadcastChannel(name);
+            channel.onmessage = (event) => this.handle(event.data);
+            this.channel = channel;
+        }
+        destructor() {
+            this.channel.close();
+        }
+        send(data) {
+            this.channel.postMessage(data);
+        }
+    }
+    $.$mol_bus = $mol_bus;
+})($ || ($ = {}));
+//mol/bus/bus.ts
+;
+"use strict";
+var $;
+(function ($) {
     class $hyoo_crus_yard extends $mol_object {
         static persisted = new WeakSet();
         static load(land_ref) {
@@ -9181,8 +9207,8 @@ var $;
                 const key = $mol_wire_sync(IDBKeyRange).bound([land_ref], [land_ref + '\uFFFF']);
                 const [pass, gift, gist] = $mol_wire_sync(this).query(key);
                 const units = [
-                    ...gift.map(bin => new $hyoo_crus_gift(bin)),
                     ...pass.map(bin => new $hyoo_crus_pass(bin)),
+                    ...gift.map(bin => new $hyoo_crus_gift(bin)),
                     ...gist.map(bin => new $hyoo_crus_gist(bin)),
                 ];
                 for (const unit of units)
@@ -10080,13 +10106,7 @@ var $;
             return this.Node($hyoo_crus_list).Item(this.numb());
         }
         gists_ordered(head) {
-            this.loading();
-            try {
-                this.saving();
-            }
-            catch (error) {
-                $mol_fail_log(error);
-            }
+            this.sync();
             const queue = [...this.gists.get(head)?.values() ?? []];
             merge: if (this.numb() && (head !== this.numb())) {
                 const cloves = this.cloves().items().slice().reverse();
@@ -10225,6 +10245,21 @@ var $;
             const seat = units.indexOf(gist);
             this.post(seat && units[seat - 1].self(), gist.head(), gist.self(), null, 'term');
         }
+        sync() {
+            this.loading();
+            try {
+                this.saving();
+            }
+            catch (error) {
+                $mol_fail_log(error);
+            }
+            this.bus();
+        }
+        bus() {
+            return new $mol_bus(`$hyoo_crus_land:${this.ref()}`, $mol_wire_async(bins => {
+                this.apply_unit(bins.map(bin => new $hyoo_crus_unit(bin)));
+            }));
+        }
         loading() {
             const units = this.$.$hyoo_crus_yard.load(this.ref().toString());
             const errors = this.apply_unit(units).filter(Boolean);
@@ -10264,6 +10299,7 @@ var $;
             }
             $mol_wire_race(...encoding.map(unit => () => this.gist_encode(unit)));
             $mol_wire_race(...signing.map(unit => () => this.unit_sign(unit)));
+            this.bus().send(persisting.map(unit => unit.buffer));
             if (persisting.length)
                 $mol_wire_sync(yard).save(this.ref().toString(), persisting);
         }
@@ -10404,6 +10440,12 @@ var $;
     __decorate([
         $mol_action
     ], $hyoo_crus_land.prototype, "gist_wipe", null);
+    __decorate([
+        $mol_mem
+    ], $hyoo_crus_land.prototype, "sync", null);
+    __decorate([
+        $mol_mem
+    ], $hyoo_crus_land.prototype, "bus", null);
     __decorate([
         $mol_mem
     ], $hyoo_crus_land.prototype, "loading", null);
