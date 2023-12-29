@@ -19584,7 +19584,7 @@ var $;
                 return realm;
             }
             intro() {
-                return this.$.$mol_fetch.text('hyoo/cras/readme.md');
+                return this.$.$mol_fetch.text('hyoo/crus/readme.md');
             }
         }
         __decorate([
