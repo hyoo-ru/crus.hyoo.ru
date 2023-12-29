@@ -1,6 +1,8 @@
 namespace $ {
 	export class $hyoo_crus_yard extends $mol_object {
 		
+		static persisted = new WeakSet< $hyoo_crus_unit >()
+		
 		static load( land_ref: string ) {
 			return [] as readonly $hyoo_crus_unit[]
 		}
