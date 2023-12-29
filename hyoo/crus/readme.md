@@ -1,4 +1,4 @@
-# CRUS🦵DB
+# CRUS🦿DB
 
 > *The elegant basis for reactive architecture.*
 

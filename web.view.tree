@@ -838,8 +838,8 @@ $mol_select $mol_pick
 		enabled <= enabled true
 	Trigger_icon $mol_icon_dots_vertical
 
-$hyoo_cras_node_dump $mol_expander
-	node $hyoo_cras_node
+$hyoo_crus_node_dump $mol_expander
+	node $hyoo_crus_node
 		can_change => can_change
 	tag \keys
 	label /
@@ -868,7 +868,7 @@ $hyoo_cras_node_dump $mol_expander
 			value? <=> value_str? \
 	content <= nodes /
 		<= Inner*0 $mol_view sub /
-			<= Node_inner* $hyoo_cras_node_dump
+			<= Node_inner* $hyoo_crus_node_dump
 				tag <= unit_tag*
 				Value <= Unit_value* $mol_dump_value
 					value <= unit_value* null
@@ -887,43 +887,43 @@ $hyoo_cras_node_dump $mol_expander
 						sub / <= Unit_wipe_icon* $mol_icon_cross
 						enabled <= can_change
 						click? <=> unit_wipe*? null
-				node <= node_inner* $hyoo_cras_node
+				node <= node_inner* $hyoo_crus_node
 
-$hyoo_cras_node_page $mol_page
-	node $hyoo_cras_node
+$hyoo_crus_node_page $mol_page
+	node $hyoo_crus_node
 	title \Node
 	body /
-		<= Dump $hyoo_cras_node_dump
+		<= Dump $hyoo_crus_node_dump
 			node <= node
 		<= Text $mol_textarea
 			value? <=> text? \
 
-$hyoo_cras_land_book $mol_book2_catalog
+$hyoo_crus_land_book $mol_book2_catalog
 	menu_title \Heads
 	param \node
-	land $hyoo_cras_land
-	Spread* <= Node* $hyoo_cras_node_page
-		node <= node* $hyoo_cras_node
+	land $hyoo_crus_land
+	Spread* <= Node* $hyoo_crus_node_page
+		node <= node* $hyoo_crus_node
 
 $mol_icon_plus $mol_icon path \M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z
 
-$hyoo_cras_lord_book $mol_book2_catalog
+$hyoo_crus_lord_book $mol_book2_catalog
 	menu_title \Areas
 	param \land
-	lord $hyoo_cras_lord
-	Spread* <= Land* $hyoo_cras_land_book
-		land <= land* $hyoo_cras_land
+	lord $hyoo_crus_lord
+	Spread* <= Land* $hyoo_crus_land_book
+		land <= land* $hyoo_crus_land
 	menu_tools /
 		<= Area_new $mol_button_minor
 			sub / <= Area_new_icon $mol_icon_plus
 			click? <=> land_new? null
 
-$hyoo_cras_realm_book $mol_book2_catalog
+$hyoo_crus_realm_book $mol_book2_catalog
 	menu_title \🌌 Realm
 	param \lord
-	realm $hyoo_cras_realm
-	Spread* <= Lord* $hyoo_cras_lord_book
-		lord <= lord* $hyoo_cras_lord
+	realm $hyoo_crus_realm
+	Spread* <= Lord* $hyoo_crus_lord_book
+		lord <= lord* $hyoo_crus_lord
 	- menu_tools /
 		<= Land_new $mol_button_minor
 			sub / <= lord_new_icon $mol_icon_plus
@@ -1143,10 +1143,10 @@ $mol_text_list_item $mol_paragraph
 		^
 		mol_text_list_item_index <= index 0
 
-$hyoo_cras_app $mol_book2_catalog
-	menu_title \CRUS🦵DB
+$hyoo_crus_app $mol_book2_catalog
+	menu_title \CRUS🦿DB
 	param \section
-	realm $hyoo_cras_realm
+	realm $hyoo_crus_realm
 	menu_tools /
 		<= Source $mol_link_source
 			uri \https://github.com/hyoo-ru/cras.hyoo.ru
@@ -1156,7 +1156,7 @@ $hyoo_cras_app $mol_book2_catalog
 				title \💨 Intro
 				body /
 					<= Intro_content $mol_text text <= intro \
-		realm <= Realm $hyoo_cras_realm_book
+		realm <= Realm $hyoo_crus_realm_book
 			realm <= realm
 		casting <= Casting $hyoo_calc
 			title \🔀 Casting

@@ -7449,28 +7449,31 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    let $hyoo_cras_unit_kind;
-    (function ($hyoo_cras_unit_kind) {
-        $hyoo_cras_unit_kind[$hyoo_cras_unit_kind["gist"] = 0] = "gist";
-        $hyoo_cras_unit_kind[$hyoo_cras_unit_kind["pass"] = 255] = "pass";
-        $hyoo_cras_unit_kind[$hyoo_cras_unit_kind["gift"] = 253] = "gift";
-    })($hyoo_cras_unit_kind = $.$hyoo_cras_unit_kind || ($.$hyoo_cras_unit_kind = {}));
-    class $hyoo_cras_unit extends $mol_buffer {
+    let $hyoo_crus_unit_kind;
+    (function ($hyoo_crus_unit_kind) {
+        $hyoo_crus_unit_kind[$hyoo_crus_unit_kind["gist"] = 0] = "gist";
+        $hyoo_crus_unit_kind[$hyoo_crus_unit_kind["pass"] = 255] = "pass";
+        $hyoo_crus_unit_kind[$hyoo_crus_unit_kind["gift"] = 253] = "gift";
+    })($hyoo_crus_unit_kind = $.$hyoo_crus_unit_kind || ($.$hyoo_crus_unit_kind = {}));
+    class $hyoo_crus_unit extends $mol_buffer {
         static size = 128;
-        constructor(buffer = new ArrayBuffer($hyoo_cras_unit.size), byteOffset = 0, byteLength = buffer.byteLength) {
+        constructor(buffer = new ArrayBuffer($hyoo_crus_unit.size), byteOffset = 0, byteLength = buffer.byteLength) {
             super(buffer, byteOffset, byteLength);
         }
         kind() {
-            return ($hyoo_cras_unit_kind[this.uint8(0)] ?? 'gist');
+            return ($hyoo_crus_unit_kind[this.uint8(0)] ?? 'gist');
         }
         choose(ways) {
             const way = this.kind();
             const Unit = {
-                gist: $hyoo_cras_gist,
-                pass: $hyoo_cras_pass,
-                gift: $hyoo_cras_gift,
+                gist: $hyoo_crus_gist,
+                pass: $hyoo_crus_pass,
+                gift: $hyoo_crus_gift,
             }[way];
-            return ways[way](new Unit(this.buffer, this.byteOffset, this.byteLength));
+            if (this instanceof Unit)
+                return ways[way](this);
+            const unit = new Unit(this.buffer, this.byteOffset, this.byteLength);
+            return ways[way](unit);
         }
         peer(next) {
             return this.uint48(2, next);
@@ -7490,10 +7493,13 @@ var $;
                 prev.set(next);
             return prev;
         }
+        signed() {
+            return this.sign().some(b => b);
+        }
     }
-    $.$hyoo_cras_unit = $hyoo_cras_unit;
+    $.$hyoo_crus_unit = $hyoo_crus_unit;
 })($ || ($ = {}));
-//hyoo/cras/unit/unit.ts
+//hyoo/crus/unit/unit.ts
 ;
 "use strict";
 var $;
@@ -7566,7 +7572,7 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    class $hyoo_cras_pass extends $hyoo_cras_unit {
+    class $hyoo_crus_pass extends $hyoo_crus_unit {
         work() {
             return this.uint8(1);
         }
@@ -7587,33 +7593,33 @@ var $;
             return $mol_dev_format_span({}, $mol_dev_format_native(this), ' ', this.peer().toString(16), ' 🔑 ', this.lord().toString(16));
         }
     }
-    $.$hyoo_cras_pass = $hyoo_cras_pass;
+    $.$hyoo_crus_pass = $hyoo_crus_pass;
 })($ || ($ = {}));
-//hyoo/cras/pass/pass.ts
+//hyoo/crus/pass/pass.ts
 ;
 "use strict";
 var $;
 (function ($) {
-    let $hyoo_cras_rang;
-    (function ($hyoo_cras_rang) {
-        $hyoo_cras_rang[$hyoo_cras_rang["nil"] = 0] = "nil";
-        $hyoo_cras_rang[$hyoo_cras_rang["get"] = 1] = "get";
-        $hyoo_cras_rang[$hyoo_cras_rang["add"] = 3] = "add";
-        $hyoo_cras_rang[$hyoo_cras_rang["mod"] = 7] = "mod";
-        $hyoo_cras_rang[$hyoo_cras_rang["law"] = 15] = "law";
-    })($hyoo_cras_rang = $.$hyoo_cras_rang || ($.$hyoo_cras_rang = {}));
+    let $hyoo_crus_rang;
+    (function ($hyoo_crus_rang) {
+        $hyoo_crus_rang[$hyoo_crus_rang["nil"] = 0] = "nil";
+        $hyoo_crus_rang[$hyoo_crus_rang["get"] = 1] = "get";
+        $hyoo_crus_rang[$hyoo_crus_rang["add"] = 3] = "add";
+        $hyoo_crus_rang[$hyoo_crus_rang["mod"] = 7] = "mod";
+        $hyoo_crus_rang[$hyoo_crus_rang["law"] = 15] = "law";
+    })($hyoo_crus_rang = $.$hyoo_crus_rang || ($.$hyoo_crus_rang = {}));
 })($ || ($ = {}));
-//hyoo/cras/rang/rang.ts
+//hyoo/crus/rang/rang.ts
 ;
 "use strict";
 var $;
 (function ($) {
-    class $hyoo_cras_gift extends $hyoo_cras_unit {
+    class $hyoo_crus_gift extends $hyoo_crus_unit {
         rang(next) {
             if (next !== undefined)
-                this.uint8(0, $hyoo_cras_unit_kind.gift);
+                this.uint8(0, $hyoo_crus_unit_kind.gift);
             next = this.uint8(1, next);
-            if (next < $hyoo_cras_rang.get || next > $hyoo_cras_rang.law) {
+            if (next < $hyoo_crus_rang.get || next > $hyoo_crus_rang.law) {
                 $mol_fail(new RangeError(`Wrong rang ${next}`));
             }
             return next;
@@ -7641,17 +7647,17 @@ var $;
             return (right.time() - left.time()) || (right.peer() - left.peer());
         }
         [$mol_dev_format_head]() {
-            return $mol_dev_format_span({}, $mol_dev_format_native(this), ' ', this.peer().toString(16), ' 🏅 ', $mol_dev_format_accent($hyoo_cras_rang[this.rang()]), ' ', this.dest().toString(16), ' ', $mol_dev_format_shade(new Date(this.time())));
+            return $mol_dev_format_span({}, $mol_dev_format_native(this), ' ', this.peer().toString(16), ' 🏅 ', $mol_dev_format_accent($hyoo_crus_rang[this.rang()]), ' ', this.dest().toString(16), ' ', $mol_dev_format_shade(new Date(this.time())));
         }
     }
-    $.$hyoo_cras_gift = $hyoo_cras_gift;
+    $.$hyoo_crus_gift = $hyoo_crus_gift;
 })($ || ($ = {}));
-//hyoo/cras/gift/gift.ts
+//hyoo/crus/gift/gift.ts
 ;
 "use strict";
 var $;
 (function ($) {
-    class $hyoo_cras_ref extends $mol_buffer {
+    class $hyoo_crus_ref extends $mol_buffer {
         static size = 12 + 6 + 6;
         static make(lord = 0n, land = 0, head = 0) {
             const ref = this.from(new Uint8Array(this.size));
@@ -7683,9 +7689,9 @@ var $;
             return $mol_dev_format_span({}, $mol_dev_format_native(this), ' ', this.toString());
         }
     }
-    $.$hyoo_cras_ref = $hyoo_cras_ref;
+    $.$hyoo_crus_ref = $hyoo_crus_ref;
 })($ || ($ = {}));
-//hyoo/cras/ref/ref.ts
+//hyoo/crus/ref/ref.ts
 ;
 "use strict";
 var $;
@@ -8273,32 +8279,32 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    $.$hyoo_cras_vary_mapping = {
+    $.$hyoo_crus_vary_mapping = {
         bin: Uint8Array,
         bool: Boolean,
         int: BigInt,
         real: Number,
-        ref: $hyoo_cras_ref,
+        ref: $hyoo_crus_ref,
         str: String,
         time: $mol_time_moment,
         json: Object,
         xml: $mol_dom_context.Element,
         tree: $mol_tree2,
     };
-    let $hyoo_cras_vary_tip;
-    (function ($hyoo_cras_vary_tip) {
-        $hyoo_cras_vary_tip[$hyoo_cras_vary_tip["bin"] = 0] = "bin";
-        $hyoo_cras_vary_tip[$hyoo_cras_vary_tip["bool"] = 1] = "bool";
-        $hyoo_cras_vary_tip[$hyoo_cras_vary_tip["int"] = 2] = "int";
-        $hyoo_cras_vary_tip[$hyoo_cras_vary_tip["real"] = 3] = "real";
-        $hyoo_cras_vary_tip[$hyoo_cras_vary_tip["ref"] = 4] = "ref";
-        $hyoo_cras_vary_tip[$hyoo_cras_vary_tip["str"] = 16] = "str";
-        $hyoo_cras_vary_tip[$hyoo_cras_vary_tip["time"] = 17] = "time";
-        $hyoo_cras_vary_tip[$hyoo_cras_vary_tip["json"] = 18] = "json";
-        $hyoo_cras_vary_tip[$hyoo_cras_vary_tip["xml"] = 19] = "xml";
-        $hyoo_cras_vary_tip[$hyoo_cras_vary_tip["tree"] = 20] = "tree";
-    })($hyoo_cras_vary_tip = $.$hyoo_cras_vary_tip || ($.$hyoo_cras_vary_tip = {}));
-    function $hyoo_cras_vary_switch(vary, ways) {
+    let $hyoo_crus_vary_tip;
+    (function ($hyoo_crus_vary_tip) {
+        $hyoo_crus_vary_tip[$hyoo_crus_vary_tip["bin"] = 0] = "bin";
+        $hyoo_crus_vary_tip[$hyoo_crus_vary_tip["bool"] = 1] = "bool";
+        $hyoo_crus_vary_tip[$hyoo_crus_vary_tip["int"] = 2] = "int";
+        $hyoo_crus_vary_tip[$hyoo_crus_vary_tip["real"] = 3] = "real";
+        $hyoo_crus_vary_tip[$hyoo_crus_vary_tip["ref"] = 4] = "ref";
+        $hyoo_crus_vary_tip[$hyoo_crus_vary_tip["str"] = 16] = "str";
+        $hyoo_crus_vary_tip[$hyoo_crus_vary_tip["time"] = 17] = "time";
+        $hyoo_crus_vary_tip[$hyoo_crus_vary_tip["json"] = 18] = "json";
+        $hyoo_crus_vary_tip[$hyoo_crus_vary_tip["xml"] = 19] = "xml";
+        $hyoo_crus_vary_tip[$hyoo_crus_vary_tip["tree"] = 20] = "tree";
+    })($hyoo_crus_vary_tip = $.$hyoo_crus_vary_tip || ($.$hyoo_crus_vary_tip = {}));
+    function $hyoo_crus_vary_switch(vary, ways) {
         if (vary === null)
             return ways.bin(vary);
         switch (typeof vary) {
@@ -8311,7 +8317,7 @@ var $;
             return ways.bin(vary);
         if (vary instanceof $mol_dom_context.Element)
             return ways.xml(vary);
-        if (vary instanceof $hyoo_cras_ref)
+        if (vary instanceof $hyoo_crus_ref)
             return ways.ref(vary);
         if (vary instanceof $mol_time_moment)
             return ways.time(vary);
@@ -8323,9 +8329,9 @@ var $;
         }
         return $mol_fail(new TypeError(`Unsupported vary type`));
     }
-    $.$hyoo_cras_vary_switch = $hyoo_cras_vary_switch;
-    function $hyoo_cras_vary_encode(vary) {
-        return $hyoo_cras_vary_switch(vary, {
+    $.$hyoo_crus_vary_switch = $hyoo_crus_vary_switch;
+    function $hyoo_crus_vary_encode(vary) {
+        return $hyoo_crus_vary_switch(vary, {
             bin: vary => ({ tip: 'bin', bin: vary ?? new Uint8Array([]) }),
             bool: vary => ({ tip: 'bool', bin: new Uint8Array([Number(vary)]) }),
             int: vary => ({ tip: 'int', bin: new Uint8Array(new BigInt64Array([vary]).buffer) }),
@@ -8338,14 +8344,14 @@ var $;
             tree: vary => ({ tip: 'tree', bin: $mol_charset_encode(String(vary)) }),
         });
     }
-    $.$hyoo_cras_vary_encode = $hyoo_cras_vary_encode;
-    function $hyoo_cras_vary_decode({ tip, bin }) {
+    $.$hyoo_crus_vary_encode = $hyoo_crus_vary_encode;
+    function $hyoo_crus_vary_decode({ tip, bin }) {
         switch (tip) {
             case 'bin': return bin.byteLength ? bin : null;
             case 'bool': return Boolean(bin[0]);
             case 'int': return new BigInt64Array(bin.buffer, bin.byteOffset, bin.byteLength / 8)[0];
             case 'real': return new Float64Array(bin.buffer, bin.byteOffset, bin.byteLength / 8)[0];
-            case 'ref': return $hyoo_cras_ref.from(bin);
+            case 'ref': return $hyoo_crus_ref.from(bin);
             case 'str': return $mol_charset_decode(bin);
             case 'time': return new $mol_time_moment($mol_charset_decode(bin));
             case 'json': return JSON.parse($mol_charset_decode(bin));
@@ -8353,9 +8359,9 @@ var $;
             case 'tree': return $$.$mol_tree2_from_string($mol_charset_decode(bin));
         }
     }
-    $.$hyoo_cras_vary_decode = $hyoo_cras_vary_decode;
+    $.$hyoo_crus_vary_decode = $hyoo_crus_vary_decode;
 })($ || ($ = {}));
-//hyoo/cras/vary/vary.ts
+//hyoo/crus/vary/vary.ts
 ;
 "use strict";
 var $;
@@ -8432,19 +8438,21 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    let $hyoo_cras_gist_tag;
-    (function ($hyoo_cras_gist_tag) {
-        $hyoo_cras_gist_tag[$hyoo_cras_gist_tag["term"] = 0] = "term";
-        $hyoo_cras_gist_tag[$hyoo_cras_gist_tag["head"] = 1] = "head";
-        $hyoo_cras_gist_tag[$hyoo_cras_gist_tag["vals"] = 2] = "vals";
-        $hyoo_cras_gist_tag[$hyoo_cras_gist_tag["keys"] = 3] = "keys";
-    })($hyoo_cras_gist_tag = $.$hyoo_cras_gist_tag || ($.$hyoo_cras_gist_tag = {}));
-    class $hyoo_cras_gist extends $hyoo_cras_unit {
+    let $hyoo_crus_gist_tag;
+    (function ($hyoo_crus_gist_tag) {
+        $hyoo_crus_gist_tag[$hyoo_crus_gist_tag["term"] = 0] = "term";
+        $hyoo_crus_gist_tag[$hyoo_crus_gist_tag["head"] = 1] = "head";
+        $hyoo_crus_gist_tag[$hyoo_crus_gist_tag["vals"] = 2] = "vals";
+        $hyoo_crus_gist_tag[$hyoo_crus_gist_tag["keys"] = 3] = "keys";
+    })($hyoo_crus_gist_tag = $.$hyoo_crus_gist_tag || ($.$hyoo_crus_gist_tag = {}));
+    class $hyoo_crus_gist extends $hyoo_crus_unit {
+        _vary = undefined;
+        _open = undefined;
         hint(tip = 'null', tag = 'term') {
-            this.uint8(0, ($hyoo_cras_gist_tag[tag] << 1) | ($hyoo_cras_vary_tip[tip] << 3));
+            this.uint8(0, ($hyoo_crus_gist_tag[tag] << 1) | ($hyoo_crus_vary_tip[tip] << 3));
         }
         tip() {
-            return $hyoo_cras_vary_tip[this.uint8(0) >> 3];
+            return $hyoo_crus_vary_tip[this.uint8(0) >> 3];
         }
         pic() {
             return Boolean(this.uint8(0) & 0b01000000);
@@ -8453,7 +8461,7 @@ var $;
             return Boolean(this.uint8(0) & 0b10000000);
         }
         tag() {
-            return $hyoo_cras_gist_tag[((this.uint8(0) >> 1) & 0b11)];
+            return $hyoo_crus_gist_tag[((this.uint8(0) >> 1) & 0b11)];
         }
         nil() {
             return !this.uint16(0);
@@ -8501,6 +8509,7 @@ var $;
                 this.uint8(1, next.byteLength);
                 const bin = new Uint8Array(this.buffer, this.byteOffset + 32, next.byteLength);
                 bin.set(next);
+                new Uint8Array(this.buffer, this.byteOffset + 32 + next.length, 32 - next.length).fill(0);
                 return bin;
             }
         }
@@ -8514,32 +8523,30 @@ var $;
             return (right.time() - left.time()) || (right.peer() - left.peer());
         }
         [$mol_dev_format_head]() {
-            return $mol_dev_format_span({}, $mol_dev_format_native(this), ' ', this.peer().toString(16), ' ', $mol_dev_format_shade(new Date(this.time())), ' ', this.lead().toString(16), $mol_dev_format_shade('\\'), $mol_dev_format_accent(this.head().toString(16)), $mol_dev_format_shade('/'), this.self().toString(16), ' ', $mol_dev_format_shade(this.tag(), ' ', this.tip()), ' ', this.size() > 32
-                ? $mol_dev_format_shade(this.hash())
-                : $mol_dev_format_native($hyoo_cras_vary_decode({ tip: this.tip(), bin: this.data() })));
+            return $mol_dev_format_span({}, $mol_dev_format_native(this), ' ', this.peer().toString(16), ' ', $mol_dev_format_shade(new Date(this.time())), ' ', this.lead().toString(16), $mol_dev_format_shade('\\'), $mol_dev_format_accent(this.head().toString(16)), $mol_dev_format_shade('/'), this.self().toString(16), ' ', $mol_dev_format_shade(this.tag(), ' ', this.tip()), ' ', this._vary);
         }
     }
-    $.$hyoo_cras_gist = $hyoo_cras_gist;
+    $.$hyoo_crus_gist = $hyoo_crus_gist;
 })($ || ($ = {}));
-//hyoo/cras/gist/gist.ts
+//hyoo/crus/gist/gist.ts
 ;
 "use strict";
 var $;
 (function ($) {
-    class $hyoo_cras_auth extends $mol_crypto_key_private {
+    class $hyoo_crus_auth extends $mol_crypto_key_private {
         static current() {
             $mol_wire_solid();
-            let key = String($mol_state_local.value('$hyoo_cras_auth') ?? '');
+            let key = String($mol_state_local.value('$hyoo_crus_auth') ?? '');
             if (key)
-                return $hyoo_cras_auth.from(key);
+                return $hyoo_crus_auth.from(key);
             const auth = $mol_wire_sync(this).generate();
-            $mol_state_local.value('$hyoo_cras_auth', auth.toString());
+            $mol_state_local.value('$hyoo_crus_auth', auth.toString());
             return auth;
         }
         static async generate() {
             for (let i = 0; i < 4096; ++i) {
                 const auth = await super.generate();
-                if (auth.uint8(0) !== $hyoo_cras_unit_kind.pass)
+                if (auth.uint8(0) !== $hyoo_crus_unit_kind.pass)
                     continue;
                 return this.from(auth);
             }
@@ -8557,13 +8564,61 @@ var $;
     }
     __decorate([
         $mol_mem_key
-    ], $hyoo_cras_auth.prototype, "secret_mutual", null);
+    ], $hyoo_crus_auth.prototype, "secret_mutual", null);
     __decorate([
         $mol_mem
-    ], $hyoo_cras_auth, "current", null);
-    $.$hyoo_cras_auth = $hyoo_cras_auth;
+    ], $hyoo_crus_auth, "current", null);
+    $.$hyoo_crus_auth = $hyoo_crus_auth;
 })($ || ($ = {}));
-//hyoo/cras/auth/auth.ts
+//hyoo/crus/auth/auth.ts
+;
+"use strict";
+var $;
+(function ($) {
+    class $hyoo_crus_face extends Map {
+        last = 0;
+        constructor(entries) {
+            super(entries);
+            if (!entries)
+                return;
+            for (const [peer, time] of entries) {
+                this.see_time(time);
+            }
+        }
+        sync(right) {
+            for (const [peer, time] of right) {
+                this.see_peer(peer, time);
+            }
+        }
+        see_time(time) {
+            if (time < this.last)
+                return;
+            this.last = time;
+        }
+        see_peer(peer, time) {
+            const exists = this.get(peer);
+            if (exists)
+                time = Math.max(exists, time);
+            this.set(peer, time);
+            this.see_time(time);
+        }
+        tick(peer) {
+            let time = Date.now();
+            if (time <= this.last)
+                time = this.last + 1;
+            this.see_peer(peer, time);
+            return time;
+        }
+        [$mol_dev_format_head]() {
+            return $mol_dev_format_span({}, $mol_dev_format_native(this), $mol_dev_format_shade(' ', new Date(this.last)));
+        }
+    }
+    __decorate([
+        $mol_action
+    ], $hyoo_crus_face.prototype, "tick", null);
+    $.$hyoo_crus_face = $hyoo_crus_face;
+})($ || ($ = {}));
+//hyoo/crus/face/face.ts
 ;
 "use strict";
 var $;
@@ -8634,56 +8689,8 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    class $hyoo_cras_face extends Map {
-        last = 0;
-        constructor(entries) {
-            super(entries);
-            if (!entries)
-                return;
-            for (const [peer, time] of entries) {
-                this.see_time(time);
-            }
-        }
-        sync(right) {
-            for (const [peer, time] of right) {
-                this.see_peer(peer, time);
-            }
-        }
-        see_time(time) {
-            if (time < this.last)
-                return;
-            this.last = time;
-        }
-        see_peer(peer, time) {
-            const exists = this.get(peer);
-            if (exists)
-                time = Math.max(exists, time);
-            this.set(peer, time);
-            this.see_time(time);
-        }
-        tick(peer) {
-            let time = Date.now();
-            if (time <= this.last)
-                time = this.last + 1;
-            this.see_peer(peer, time);
-            return time;
-        }
-        [$mol_dev_format_head]() {
-            return $mol_dev_format_span({}, $mol_dev_format_native(this), $mol_dev_format_shade(' ', new Date(this.last)));
-        }
-    }
-    __decorate([
-        $mol_action
-    ], $hyoo_cras_face.prototype, "tick", null);
-    $.$hyoo_cras_face = $hyoo_cras_face;
-})($ || ($ = {}));
-//hyoo/cras/face/face.ts
-;
-"use strict";
-var $;
-(function ($) {
-    class $hyoo_cras_node extends $mol_object {
-        static tag = $hyoo_cras_gist_tag[$hyoo_cras_gist_tag.vals];
+    class $hyoo_crus_node extends $mol_object {
+        static tag = $hyoo_crus_gist_tag[$hyoo_crus_gist_tag.vals];
         land() {
             return null;
         }
@@ -8697,10 +8704,10 @@ var $;
             return this.lord()?.realm() ?? null;
         }
         lord_numb() {
-            return this.lord()?.numb() ?? this.$.$hyoo_cras_auth.current().lord();
+            return this.lord()?.numb() ?? this.$.$hyoo_crus_auth.current().lord();
         }
         ref() {
-            return $hyoo_cras_ref.make(this.lord_numb(), this.land().numb(), this.head());
+            return $hyoo_crus_ref.make(this.lord_numb(), this.land().numb(), this.head());
         }
         slug() {
             return this.ref().toString().slice(24);
@@ -8711,10 +8718,10 @@ var $;
         nodes(Node) {
             const land = this.land();
             const map = {
-                term: land.Node(Node || $hyoo_cras_reg),
-                head: land.Node(Node || $hyoo_cras_reg),
-                vals: land.Node(Node || $hyoo_cras_list),
-                keys: land.Node(Node || $hyoo_cras_dict),
+                term: land.Node(Node || $hyoo_crus_reg),
+                head: land.Node(Node || $hyoo_crus_reg),
+                vals: land.Node(Node || $hyoo_crus_list),
+                keys: land.Node(Node || $hyoo_crus_dict),
             };
             return this.units().map(unit => map[unit.tag()].Item(unit.self()));
         }
@@ -8722,7 +8729,7 @@ var $;
             return this.land().gists_ordered(this.head());
         }
         can_change(lord = this.land().auth().lord()) {
-            return this.land().lord_rang(lord) >= $hyoo_cras_rang.add;
+            return this.land().lord_rang(lord) >= $hyoo_crus_rang.add;
         }
         ;
         [$mol_dev_format_head]() {
@@ -8731,24 +8738,24 @@ var $;
     }
     __decorate([
         $mol_memo.method
-    ], $hyoo_cras_node.prototype, "ref", null);
+    ], $hyoo_crus_node.prototype, "ref", null);
     __decorate([
         $mol_mem_key
-    ], $hyoo_cras_node.prototype, "cast", null);
+    ], $hyoo_crus_node.prototype, "cast", null);
     __decorate([
         $mol_mem_key
-    ], $hyoo_cras_node.prototype, "nodes", null);
+    ], $hyoo_crus_node.prototype, "nodes", null);
     __decorate([
         $mol_mem
-    ], $hyoo_cras_node.prototype, "units", null);
-    $.$hyoo_cras_node = $hyoo_cras_node;
+    ], $hyoo_crus_node.prototype, "units", null);
+    $.$hyoo_crus_node = $hyoo_crus_node;
 })($ || ($ = {}));
-//hyoo/cras/node/node.ts
+//hyoo/crus/node/node.ts
 ;
 "use strict";
 var $;
 (function ($) {
-    class $hyoo_cras_fund extends $mol_object {
+    class $hyoo_crus_fund extends $mol_object {
         item_make;
         constructor(item_make) {
             super();
@@ -8760,10 +8767,10 @@ var $;
     }
     __decorate([
         $mol_mem_key
-    ], $hyoo_cras_fund.prototype, "Item", null);
-    $.$hyoo_cras_fund = $hyoo_cras_fund;
+    ], $hyoo_crus_fund.prototype, "Item", null);
+    $.$hyoo_crus_fund = $hyoo_crus_fund;
 })($ || ($ = {}));
-//hyoo/cras/fund/fund.ts
+//hyoo/crus/fund/fund.ts
 ;
 "use strict";
 var $;
@@ -8806,8 +8813,8 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    class $hyoo_cras_list extends $hyoo_cras_node {
-        static tag = $hyoo_cras_gist_tag[$hyoo_cras_gist_tag.vals];
+    class $hyoo_crus_list extends $hyoo_crus_node {
+        static tag = $hyoo_crus_gist_tag[$hyoo_crus_gist_tag.vals];
         items(next, tag = 'term') {
             const units = this.units();
             if (next === undefined)
@@ -8876,10 +8883,10 @@ var $;
     }
     __decorate([
         $mol_mem
-    ], $hyoo_cras_list.prototype, "items", null);
-    $.$hyoo_cras_list = $hyoo_cras_list;
+    ], $hyoo_crus_list.prototype, "items", null);
+    $.$hyoo_crus_list = $hyoo_crus_list;
 })($ || ($ = {}));
-//hyoo/cras/list/list.ts
+//hyoo/crus/list/list.ts
 ;
 "use strict";
 var $;
@@ -9126,17 +9133,23 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    class $hyoo_cras_mine extends $mol_object {
-        static store = new Map();
+    class $hyoo_crus_mine extends $mol_object {
         static hash(blob) {
             return $mol_crypto_hash(blob);
         }
         static rock(hash, next) {
             $mol_wire_solid();
-            if (!next)
-                return $mol_wire_sync(this.read()).get([hash]);
-            this.change().then(Rock => Rock.put(next, [hash]));
-            return next;
+            const prev = $mol_mem_cached(() => this.rock(hash));
+            if (prev)
+                return prev;
+            if (next) {
+                this.change().then(Rock => Rock.put(next.buffer, [hash]));
+                return next;
+            }
+            else {
+                const buf = $mol_wire_sync(this.read()).get([hash]);
+                return buf ? new Uint8Array(buf) : undefined;
+            }
         }
         static save(blob) {
             const hash = this.hash(blob);
@@ -9152,27 +9165,102 @@ var $;
             return db.change('Rock').stores.Rock;
         }
         static async db() {
-            return await this.$.$mol_db('$hyoo_cras_mine', mig => mig.store_make('Rock'));
+            return await this.$.$mol_db('$hyoo_crus_mine', mig => mig.store_make('Rock'));
         }
     }
     __decorate([
         $mol_mem_key
-    ], $hyoo_cras_mine, "hash", null);
+    ], $hyoo_crus_mine, "hash", null);
     __decorate([
         $mol_mem_key
-    ], $hyoo_cras_mine, "rock", null);
+    ], $hyoo_crus_mine, "rock", null);
     __decorate([
         $mol_action
-    ], $hyoo_cras_mine, "save", null);
+    ], $hyoo_crus_mine, "save", null);
     __decorate([
         $mol_action
-    ], $hyoo_cras_mine, "read", null);
+    ], $hyoo_crus_mine, "read", null);
     __decorate([
         $mol_memo.method
-    ], $hyoo_cras_mine, "db", null);
-    $.$hyoo_cras_mine = $hyoo_cras_mine;
+    ], $hyoo_crus_mine, "db", null);
+    $.$hyoo_crus_mine = $hyoo_crus_mine;
 })($ || ($ = {}));
-//hyoo/cras/mine/mine.ts
+//hyoo/crus/mine/mine.ts
+;
+"use strict";
+var $;
+(function ($) {
+    class $hyoo_crus_yard extends $mol_object {
+        static persisted = new WeakSet();
+        static load(land_ref) {
+            return [];
+        }
+        static async save(land_ref, units) { }
+    }
+    $.$hyoo_crus_yard = $hyoo_crus_yard;
+})($ || ($ = {}));
+//hyoo/crus/yard/yard.ts
+;
+"use strict";
+var $;
+(function ($) {
+    function $mol_promise() {
+        let done;
+        let fail;
+        const promise = new Promise((d, f) => {
+            done = d;
+            fail = f;
+        });
+        return Object.assign(promise, {
+            done,
+            fail,
+        });
+    }
+    $.$mol_promise = $mol_promise;
+})($ || ($ = {}));
+//mol/promise/promise/promise.ts
+;
+"use strict";
+var $;
+(function ($) {
+    function $mol_wait_timeout_async(timeout) {
+        const promise = $mol_promise();
+        const task = new this.$mol_after_timeout(timeout, () => promise.done());
+        return Object.assign(promise, {
+            destructor: () => task.destructor()
+        });
+    }
+    $.$mol_wait_timeout_async = $mol_wait_timeout_async;
+    function $mol_wait_timeout(timeout) {
+        return this.$mol_wire_sync(this).$mol_wait_timeout_async(timeout);
+    }
+    $.$mol_wait_timeout = $mol_wait_timeout;
+})($ || ($ = {}));
+//mol/wait/timeout/timeout.ts
+;
+"use strict";
+var $;
+(function ($) {
+    function $mol_wire_race(...tasks) {
+        const results = tasks.map(task => {
+            try {
+                return task();
+            }
+            catch (error) {
+                return error;
+            }
+        });
+        const promises = results.filter(res => $mol_promise_like(res));
+        if (promises.length)
+            $mol_fail(Promise.race(promises));
+        const error = results.find(res => res instanceof Error);
+        if (error)
+            $mol_fail(error);
+        return results;
+    }
+    $.$mol_wire_race = $mol_wire_race;
+})($ || ($ = {}));
+//mol/wire/race/race.ts
 ;
 "use strict";
 //mol/type/partial/deep/deep.ts
@@ -9383,12 +9471,12 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    function $hyoo_cras_vary_cast_bin(vary) {
-        return vary === null || vary === '' ? null : $hyoo_cras_vary_encode(vary).bin;
+    function $hyoo_crus_vary_cast_bin(vary) {
+        return vary === null || vary === '' ? null : $hyoo_crus_vary_encode(vary).bin;
     }
-    $.$hyoo_cras_vary_cast_bin = $hyoo_cras_vary_cast_bin;
-    function $hyoo_cras_vary_cast_bool(vary) {
-        return $hyoo_cras_vary_switch(vary, {
+    $.$hyoo_crus_vary_cast_bin = $hyoo_crus_vary_cast_bin;
+    function $hyoo_crus_vary_cast_bool(vary) {
+        return $hyoo_crus_vary_switch(vary, {
             bin: vary => Boolean(vary?.length),
             bool: vary => vary,
             int: vary => Boolean(vary),
@@ -9401,9 +9489,9 @@ var $;
             tree: vary => Boolean(vary.value || vary.kids.length),
         });
     }
-    $.$hyoo_cras_vary_cast_bool = $hyoo_cras_vary_cast_bool;
-    function $hyoo_cras_vary_cast_int(vary) {
-        return $hyoo_cras_vary_switch(vary, {
+    $.$hyoo_crus_vary_cast_bool = $hyoo_crus_vary_cast_bool;
+    function $hyoo_crus_vary_cast_int(vary) {
+        return $hyoo_crus_vary_switch(vary, {
             bin: vary => vary ? BigInt(vary.length) : 0n,
             bool: vary => BigInt(vary),
             int: vary => vary,
@@ -9430,9 +9518,9 @@ var $;
             },
         });
     }
-    $.$hyoo_cras_vary_cast_int = $hyoo_cras_vary_cast_int;
-    function $hyoo_cras_vary_cast_real(vary) {
-        return $hyoo_cras_vary_switch(vary, {
+    $.$hyoo_crus_vary_cast_int = $hyoo_crus_vary_cast_int;
+    function $hyoo_crus_vary_cast_real(vary) {
+        return $hyoo_crus_vary_switch(vary, {
             bin: vary => vary?.length ?? Number.NaN,
             bool: vary => Number(vary),
             int: vary => Number(vary),
@@ -9445,24 +9533,24 @@ var $;
             tree: vary => Number(vary.value || vary.kids.length),
         });
     }
-    $.$hyoo_cras_vary_cast_real = $hyoo_cras_vary_cast_real;
-    function $hyoo_cras_vary_cast_ref(vary) {
-        return $hyoo_cras_vary_switch(vary, {
-            bin: vary => vary ? $hyoo_cras_ref.from(vary) : $hyoo_cras_ref.make(),
-            bool: vary => $hyoo_cras_ref.make(),
-            int: vary => $hyoo_cras_ref.make(vary & 0xffffffffffffffffn, Number((vary >> 64n) & 0xffffffffn), Number((vary >> 96n) & 0xffffffffffffn)),
-            real: vary => $hyoo_cras_ref.make(),
+    $.$hyoo_crus_vary_cast_real = $hyoo_crus_vary_cast_real;
+    function $hyoo_crus_vary_cast_ref(vary) {
+        return $hyoo_crus_vary_switch(vary, {
+            bin: vary => vary ? $hyoo_crus_ref.from(vary) : $hyoo_crus_ref.make(),
+            bool: vary => $hyoo_crus_ref.make(),
+            int: vary => $hyoo_crus_ref.make(vary & 0xffffffffffffffffn, Number((vary >> 64n) & 0xffffffffn), Number((vary >> 96n) & 0xffffffffffffn)),
+            real: vary => $hyoo_crus_ref.make(),
             ref: vary => vary,
-            str: vary => $hyoo_cras_ref.from(vary),
-            time: vary => $hyoo_cras_ref.make(),
-            json: vary => $hyoo_cras_ref.make(),
-            xml: vary => $hyoo_cras_ref.make(),
-            tree: vary => $hyoo_cras_ref.make(),
+            str: vary => $hyoo_crus_ref.from(vary),
+            time: vary => $hyoo_crus_ref.make(),
+            json: vary => $hyoo_crus_ref.make(),
+            xml: vary => $hyoo_crus_ref.make(),
+            tree: vary => $hyoo_crus_ref.make(),
         });
     }
-    $.$hyoo_cras_vary_cast_ref = $hyoo_cras_vary_cast_ref;
-    function $hyoo_cras_vary_cast_str(vary) {
-        return $hyoo_cras_vary_switch(vary, {
+    $.$hyoo_crus_vary_cast_ref = $hyoo_crus_vary_cast_ref;
+    function $hyoo_crus_vary_cast_str(vary) {
+        return $hyoo_crus_vary_switch(vary, {
             bin: vary => vary ? [...vary].map(n => n.toString(16).padStart(2, '0')).join('') : '',
             bool: vary => String(vary),
             int: vary => String(vary),
@@ -9475,9 +9563,9 @@ var $;
             tree: vary => String(vary),
         });
     }
-    $.$hyoo_cras_vary_cast_str = $hyoo_cras_vary_cast_str;
-    function $hyoo_cras_vary_cast_time(vary) {
-        return $hyoo_cras_vary_switch(vary, {
+    $.$hyoo_crus_vary_cast_str = $hyoo_crus_vary_cast_str;
+    function $hyoo_crus_vary_cast_time(vary) {
+        return $hyoo_crus_vary_switch(vary, {
             bin: vary => new $mol_time_moment(vary ? $mol_charset_decode(vary) : 0),
             bool: vary => new $mol_time_moment(0),
             int: vary => new $mol_time_moment(Number(vary & 0xffffffffffffn)),
@@ -9490,9 +9578,9 @@ var $;
             tree: vary => new $mol_time_moment(0),
         });
     }
-    $.$hyoo_cras_vary_cast_time = $hyoo_cras_vary_cast_time;
-    function $hyoo_cras_vary_cast_json(vary) {
-        return $hyoo_cras_vary_switch(vary, {
+    $.$hyoo_crus_vary_cast_time = $hyoo_crus_vary_cast_time;
+    function $hyoo_crus_vary_cast_json(vary) {
+        return $hyoo_crus_vary_switch(vary, {
             bin: vary => vary && [...vary],
             bool: vary => [vary],
             int: vary => [vary.toString()],
@@ -9505,9 +9593,9 @@ var $;
             tree: vary => [vary.toString()],
         });
     }
-    $.$hyoo_cras_vary_cast_json = $hyoo_cras_vary_cast_json;
-    function $hyoo_cras_vary_cast_xml(vary) {
-        return $hyoo_cras_vary_switch(vary, {
+    $.$hyoo_crus_vary_cast_json = $hyoo_crus_vary_cast_json;
+    function $hyoo_crus_vary_cast_xml(vary) {
+        return $hyoo_crus_vary_switch(vary, {
             bin: vary => $mol_jsx("body", null, vary && $mol_base64_ae_encode(vary)),
             bool: vary => $mol_jsx("body", null, vary),
             int: vary => $mol_jsx("body", null, vary),
@@ -9520,9 +9608,9 @@ var $;
             tree: vary => $mol_jsx("body", null, vary),
         });
     }
-    $.$hyoo_cras_vary_cast_xml = $hyoo_cras_vary_cast_xml;
-    function $hyoo_cras_vary_cast_tree(vary) {
-        return $hyoo_cras_vary_switch(vary, {
+    $.$hyoo_crus_vary_cast_xml = $hyoo_crus_vary_cast_xml;
+    function $hyoo_crus_vary_cast_tree(vary) {
+        return $hyoo_crus_vary_switch(vary, {
             bin: vary => vary ? $mol_tree2_bin_from_bytes(vary) : $mol_tree2.list([]),
             bool: vary => $mol_tree2.struct(vary.toString()),
             int: vary => $mol_tree2.struct(vary.toString()),
@@ -9535,25 +9623,25 @@ var $;
             tree: vary => vary,
         });
     }
-    $.$hyoo_cras_vary_cast_tree = $hyoo_cras_vary_cast_tree;
-    $.$hyoo_cras_vary_cast_funcs = {
-        bin: $hyoo_cras_vary_cast_bin,
-        bool: $hyoo_cras_vary_cast_bool,
-        int: $hyoo_cras_vary_cast_int,
-        real: $hyoo_cras_vary_cast_real,
-        ref: $hyoo_cras_vary_cast_ref,
-        str: $hyoo_cras_vary_cast_str,
-        time: $hyoo_cras_vary_cast_time,
-        json: $hyoo_cras_vary_cast_json,
-        xml: $hyoo_cras_vary_cast_xml,
-        tree: $hyoo_cras_vary_cast_tree,
+    $.$hyoo_crus_vary_cast_tree = $hyoo_crus_vary_cast_tree;
+    $.$hyoo_crus_vary_cast_funcs = {
+        bin: $hyoo_crus_vary_cast_bin,
+        bool: $hyoo_crus_vary_cast_bool,
+        int: $hyoo_crus_vary_cast_int,
+        real: $hyoo_crus_vary_cast_real,
+        ref: $hyoo_crus_vary_cast_ref,
+        str: $hyoo_crus_vary_cast_str,
+        time: $hyoo_crus_vary_cast_time,
+        json: $hyoo_crus_vary_cast_json,
+        xml: $hyoo_crus_vary_cast_xml,
+        tree: $hyoo_crus_vary_cast_tree,
     };
-    function $hyoo_cras_vary_cast(tip, vary) {
-        return $.$hyoo_cras_vary_cast_funcs[tip](vary);
+    function $hyoo_crus_vary_cast(tip, vary) {
+        return $.$hyoo_crus_vary_cast_funcs[tip](vary);
     }
-    $.$hyoo_cras_vary_cast = $hyoo_cras_vary_cast;
+    $.$hyoo_crus_vary_cast = $hyoo_crus_vary_cast;
 })($ || ($ = {}));
-//hyoo/cras/vary/cast/cast.tsx
+//hyoo/crus/vary/cast/cast.tsx
 ;
 "use strict";
 //mol/data/value/value.ts
@@ -9561,8 +9649,8 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    class $hyoo_cras_reg extends $hyoo_cras_node {
-        static tag = $hyoo_cras_gist_tag[$hyoo_cras_gist_tag.head];
+    class $hyoo_crus_reg extends $hyoo_crus_node {
+        static tag = $hyoo_crus_gist_tag[$hyoo_crus_gist_tag.head];
         pick_unit() {
             return this.units().at(0);
         }
@@ -9577,23 +9665,23 @@ var $;
             return this.value_vary();
         }
         value_bool(next) {
-            return $hyoo_cras_vary_cast_bool(this.value_vary(next));
+            return $hyoo_crus_vary_cast_bool(this.value_vary(next));
         }
         value_int(next) {
-            return $hyoo_cras_vary_cast_int(this.value_vary(next));
+            return $hyoo_crus_vary_cast_int(this.value_vary(next));
         }
         value_real(next) {
-            return $hyoo_cras_vary_cast_real(this.value_vary(next));
+            return $hyoo_crus_vary_cast_real(this.value_vary(next));
         }
         value_str(next) {
-            return $hyoo_cras_vary_cast_str(this.value_vary(next));
+            return $hyoo_crus_vary_cast_str(this.value_vary(next));
         }
         value_bin(next) {
-            return $hyoo_cras_vary_cast_bin(this.value_vary(next));
+            return $hyoo_crus_vary_cast_bin(this.value_vary(next));
         }
         value_ref(next) {
             const bin = this.value_vary(next);
-            return bin instanceof $hyoo_cras_ref ? bin : null;
+            return bin instanceof $hyoo_crus_ref ? bin : null;
         }
         value_as(decode, next) {
             if (next === undefined) {
@@ -9617,7 +9705,7 @@ var $;
             const ref = this.value_ref();
             if (ref)
                 return realm.Lord(ref.lord()).Land(ref.land());
-            const hash = $mol_crypto_hash($hyoo_cras_vary_encode(vary).bin);
+            const hash = $mol_crypto_hash($hyoo_crus_vary_encode(vary).bin);
             const idea = new $mol_buffer(hash.buffer).uint32(0) + this.land().numb();
             const land = realm.Lord(this.land().auth().lord()).Land_new(idea);
             this.value_ref(land.ref());
@@ -9630,37 +9718,37 @@ var $;
     }
     __decorate([
         $mol_mem
-    ], $hyoo_cras_reg.prototype, "value_vary", null);
+    ], $hyoo_crus_reg.prototype, "value_vary", null);
     __decorate([
         $mol_mem
-    ], $hyoo_cras_reg.prototype, "value_bool", null);
+    ], $hyoo_crus_reg.prototype, "value_bool", null);
     __decorate([
         $mol_mem
-    ], $hyoo_cras_reg.prototype, "value_int", null);
+    ], $hyoo_crus_reg.prototype, "value_int", null);
     __decorate([
         $mol_mem
-    ], $hyoo_cras_reg.prototype, "value_real", null);
+    ], $hyoo_crus_reg.prototype, "value_real", null);
     __decorate([
         $mol_mem
-    ], $hyoo_cras_reg.prototype, "value_str", null);
+    ], $hyoo_crus_reg.prototype, "value_str", null);
     __decorate([
         $mol_mem
-    ], $hyoo_cras_reg.prototype, "value_bin", null);
+    ], $hyoo_crus_reg.prototype, "value_bin", null);
     __decorate([
         $mol_mem
-    ], $hyoo_cras_reg.prototype, "value_ref", null);
+    ], $hyoo_crus_reg.prototype, "value_ref", null);
     __decorate([
         $mol_mem_key
-    ], $hyoo_cras_reg.prototype, "value_as", null);
+    ], $hyoo_crus_reg.prototype, "value_as", null);
     __decorate([
         $mol_mem_key
-    ], $hyoo_cras_reg.prototype, "yoke", null);
-    $.$hyoo_cras_reg = $hyoo_cras_reg;
-    function $hyoo_cras_reg_narrow(tip) {
-        class Narrow extends $hyoo_cras_reg {
+    ], $hyoo_crus_reg.prototype, "yoke", null);
+    $.$hyoo_crus_reg = $hyoo_crus_reg;
+    function $hyoo_crus_reg_narrow(tip) {
+        class Narrow extends $hyoo_crus_reg {
             static tip = tip;
             value(next) {
-                return $hyoo_cras_vary_cast_funcs[tip](this.value_vary(next));
+                return $hyoo_crus_vary_cast_funcs[tip](this.value_vary(next));
             }
         }
         __decorate([
@@ -9668,51 +9756,51 @@ var $;
         ], Narrow.prototype, "value", null);
         return Narrow;
     }
-    $.$hyoo_cras_reg_narrow = $hyoo_cras_reg_narrow;
-    class $hyoo_cras_reg_bin extends $hyoo_cras_reg_narrow('bin') {
+    $.$hyoo_crus_reg_narrow = $hyoo_crus_reg_narrow;
+    class $hyoo_crus_reg_bin extends $hyoo_crus_reg_narrow('bin') {
     }
-    $.$hyoo_cras_reg_bin = $hyoo_cras_reg_bin;
-    class $hyoo_cras_reg_bool extends $hyoo_cras_reg_narrow('bool') {
+    $.$hyoo_crus_reg_bin = $hyoo_crus_reg_bin;
+    class $hyoo_crus_reg_bool extends $hyoo_crus_reg_narrow('bool') {
     }
-    $.$hyoo_cras_reg_bool = $hyoo_cras_reg_bool;
-    class $hyoo_cras_reg_int extends $hyoo_cras_reg_narrow('int') {
+    $.$hyoo_crus_reg_bool = $hyoo_crus_reg_bool;
+    class $hyoo_crus_reg_int extends $hyoo_crus_reg_narrow('int') {
     }
-    $.$hyoo_cras_reg_int = $hyoo_cras_reg_int;
-    class $hyoo_cras_reg_real extends $hyoo_cras_reg_narrow('real') {
+    $.$hyoo_crus_reg_int = $hyoo_crus_reg_int;
+    class $hyoo_crus_reg_real extends $hyoo_crus_reg_narrow('real') {
     }
-    $.$hyoo_cras_reg_real = $hyoo_cras_reg_real;
-    class $hyoo_cras_reg_str extends $hyoo_cras_reg_narrow('str') {
+    $.$hyoo_crus_reg_real = $hyoo_crus_reg_real;
+    class $hyoo_crus_reg_str extends $hyoo_crus_reg_narrow('str') {
     }
-    $.$hyoo_cras_reg_str = $hyoo_cras_reg_str;
-    class $hyoo_cras_reg_time extends $hyoo_cras_reg_narrow('time') {
+    $.$hyoo_crus_reg_str = $hyoo_crus_reg_str;
+    class $hyoo_crus_reg_time extends $hyoo_crus_reg_narrow('time') {
     }
-    $.$hyoo_cras_reg_time = $hyoo_cras_reg_time;
-    class $hyoo_cras_reg_json extends $hyoo_cras_reg_narrow('json') {
+    $.$hyoo_crus_reg_time = $hyoo_crus_reg_time;
+    class $hyoo_crus_reg_json extends $hyoo_crus_reg_narrow('json') {
     }
-    $.$hyoo_cras_reg_json = $hyoo_cras_reg_json;
-    class $hyoo_cras_reg_xml extends $hyoo_cras_reg_narrow('xml') {
+    $.$hyoo_crus_reg_json = $hyoo_crus_reg_json;
+    class $hyoo_crus_reg_xml extends $hyoo_crus_reg_narrow('xml') {
     }
-    $.$hyoo_cras_reg_xml = $hyoo_cras_reg_xml;
-    class $hyoo_cras_reg_tree extends $hyoo_cras_reg_narrow('tree') {
+    $.$hyoo_crus_reg_xml = $hyoo_crus_reg_xml;
+    class $hyoo_crus_reg_tree extends $hyoo_crus_reg_narrow('tree') {
     }
-    $.$hyoo_cras_reg_tree = $hyoo_cras_reg_tree;
+    $.$hyoo_crus_reg_tree = $hyoo_crus_reg_tree;
 })($ || ($ = {}));
-//hyoo/cras/reg/reg.ts
+//hyoo/crus/reg/reg.ts
 ;
 "use strict";
 var $;
 (function ($) {
-    class $hyoo_cras_dict extends $hyoo_cras_node {
-        static tag = $hyoo_cras_gist_tag[$hyoo_cras_gist_tag.keys];
+    class $hyoo_crus_dict extends $hyoo_crus_node {
+        static tag = $hyoo_crus_gist_tag[$hyoo_crus_gist_tag.keys];
         keys() {
-            return this.cast($hyoo_cras_list).items();
+            return this.cast($hyoo_crus_list).items();
         }
         has(key, next) {
-            return this.cast($hyoo_cras_list).has(key, next, 'head');
+            return this.cast($hyoo_crus_list).has(key, next, 'head');
         }
         dive(key, Node) {
-            this.cast($hyoo_cras_list).has(key, true, Node.tag);
-            const unit = this.cast($hyoo_cras_list).find(key);
+            this.cast($hyoo_crus_list).has(key, true, Node.tag);
+            const unit = this.cast($hyoo_crus_list).find(key);
             return this.land().Node(Node).Item(unit.self());
         }
         ;
@@ -9723,8 +9811,8 @@ var $;
     }
     __decorate([
         $mol_mem
-    ], $hyoo_cras_dict.prototype, "keys", null);
-    $.$hyoo_cras_dict = $hyoo_cras_dict;
+    ], $hyoo_crus_dict.prototype, "keys", null);
+    $.$hyoo_crus_dict = $hyoo_crus_dict;
     class Pair {
         key;
         val;
@@ -9738,12 +9826,12 @@ var $;
         }
     }
 })($ || ($ = {}));
-//hyoo/cras/dict/dict.ts
+//hyoo/crus/dict/dict.ts
 ;
 "use strict";
 var $;
 (function ($) {
-    class $hyoo_cras_land extends $mol_object {
+    class $hyoo_crus_land extends $mol_object {
         lord() {
             return null;
         }
@@ -9757,20 +9845,26 @@ var $;
             return this.lord()?.realm() ?? null;
         }
         auth() {
-            return this.$.$hyoo_cras_auth.current();
+            return this.$.$hyoo_crus_auth.current();
         }
         ref() {
-            return $hyoo_cras_ref.make(this.lord_numb(), this.numb(), 0);
+            return $hyoo_crus_ref.make(this.lord_numb(), this.numb(), 0);
         }
         slug() {
             return this.ref().toString().slice(16, 24);
         }
+        face = new $hyoo_crus_face;
         passes = new $mol_wire_dict();
         gifts = new $mol_wire_dict();
         gists = new $mol_wire_dict();
         self_all = new $mol_wire_set();
-        face = new $hyoo_cras_face;
         self_make(idea = Math.floor(Math.random() * 2 ** 48)) {
+            const auth = this.auth();
+            const rang = this.lord_rang(auth.lord());
+            if (rang === $hyoo_crus_rang.add)
+                return auth.peer();
+            if (rang === $hyoo_crus_rang.nil)
+                $mol_fail(new Error('Rang too low (nil)'));
             const numb = this.numb();
             for (let i = 0; i < 4096; ++i) {
                 idea = (idea + 1) % 2 ** 48;
@@ -9789,7 +9883,7 @@ var $;
             return this.Node(Node).Item(0);
         }
         Node(Node) {
-            return new $hyoo_cras_fund((head) => Node.make({
+            return new $hyoo_crus_fund((head) => Node.make({
                 land: $mol_const(this),
                 head: $mol_const(head),
             }));
@@ -9805,16 +9899,16 @@ var $;
         }
         lord_rang(lord) {
             if (lord === this.lord_numb())
-                return $hyoo_cras_rang.law;
-            return this.gifts.get(lord)?.rang() ?? $hyoo_cras_rang.get;
+                return $hyoo_crus_rang.law;
+            return this.gifts.get(lord)?.rang() ?? $hyoo_crus_rang.get;
         }
         peer_rang(peer) {
             const auth = this.passes.get(peer);
             if (!auth)
-                return $hyoo_cras_rang.get;
+                return $hyoo_crus_rang.get;
             return this.lord_rang(auth.lord());
         }
-        delta_unit(face = new $hyoo_cras_face) {
+        delta_unit(face = new $hyoo_crus_face) {
             const delta = [];
             for (const unit of this.passes.values()) {
                 if (face.get(unit.peer()))
@@ -9835,12 +9929,12 @@ var $;
             }
             return delta;
         }
-        delta_buffer(face = new $hyoo_cras_face) {
+        delta_buffer(face = new $hyoo_crus_face) {
             const delta = this.delta_unit(face);
-            const bytes = new Uint8Array(delta.length * $hyoo_cras_unit.size);
+            const bytes = new Uint8Array(delta.length * $hyoo_crus_unit.size);
             for (let i = 0; i < delta.length; ++i) {
                 const unit = delta[i];
-                bytes.set(unit.asArray(), i * $hyoo_cras_unit.size);
+                bytes.set(unit.asArray(), i * $hyoo_crus_unit.size);
             }
             return bytes;
         }
@@ -9862,11 +9956,11 @@ var $;
                     gift: next => {
                         const dest = next.dest();
                         const prev = this.gifts.get(dest);
-                        if (prev && $hyoo_cras_gift.compare(prev, next) <= 0)
+                        if (prev && $hyoo_crus_gift.compare(prev, next) <= 0)
                             return 'Unit too old';
                         this.gifts.set(dest, next);
                         this.face.see_peer(Number(dest >> 16n), next.time());
-                        if ((prev?.rang() ?? $hyoo_cras_rang.get) > next.rang())
+                        if ((prev?.rang() ?? $hyoo_crus_rang.get) > next.rang())
                             need_recheck = true;
                     },
                     gist: next => {
@@ -9876,7 +9970,7 @@ var $;
                         if (!units)
                             this.gists.set(head, units = new $mol_wire_dict);
                         const prev = units.get(self);
-                        if (prev && $hyoo_cras_gist.compare(prev, next) <= 0)
+                        if (prev && $hyoo_crus_gist.compare(prev, next) <= 0)
                             return 'Unit too old';
                         units.set(self, next);
                         this.self_all.add(self);
@@ -9909,11 +10003,11 @@ var $;
         }
         check_unit(unit) {
             return unit.choose({
-                pass: next => this.lord_rang(next.lord()) < $hyoo_cras_rang.add ? 'Need add rang to join' : '',
-                gift: next => this.peer_rang(next.peer()) < $hyoo_cras_rang.law ? 'Need law rang to change rang' : '',
+                pass: next => this.lord_rang(next.lord()) < $hyoo_crus_rang.add ? 'Need add rang to join' : '',
+                gift: next => this.peer_rang(next.peer()) < $hyoo_crus_rang.law ? 'Need law rang to change rang' : '',
                 gist: next => next.peer() === next.self()
-                    ? this.peer_rang(next.peer()) < $hyoo_cras_rang.add ? 'Need add rang to post self data' : ''
-                    : this.peer_rang(next.peer()) < $hyoo_cras_rang.mod ? 'Need mod rang to post any data' : '',
+                    ? this.peer_rang(next.peer()) < $hyoo_crus_rang.add ? 'Need add rang to post self data' : ''
+                    : this.peer_rang(next.peer()) < $hyoo_crus_rang.mod ? 'Need mod rang to post any data' : '',
             });
         }
         fork() {
@@ -9924,9 +10018,16 @@ var $;
         cloves() {
             if (!this.numb())
                 return null;
-            return this.Node($hyoo_cras_list).Item(this.numb());
+            return this.Node($hyoo_crus_list).Item(this.numb());
         }
         gists_ordered(head) {
+            this.loading();
+            try {
+                this.saving();
+            }
+            catch (error) {
+                $mol_fail_log(error);
+            }
             const queue = [...this.gists.get(head)?.values() ?? []];
             merge: if (this.numb() && (head !== this.numb())) {
                 const cloves = this.cloves().items().slice().reverse();
@@ -9946,7 +10047,7 @@ var $;
             }
             if (queue.length < 2)
                 return queue.filter(unit => !unit.nil());
-            queue.sort($hyoo_cras_gist.compare);
+            queue.sort($hyoo_crus_gist.compare);
             const res = [];
             const locate = (self) => {
                 for (let i = res.length - 1; i >= 0; --i) {
@@ -9965,7 +10066,7 @@ var $;
                         if (!index)
                             continue;
                     }
-                    while (res[index] && ($hyoo_cras_gist.compare(res[index], kid) < 0))
+                    while (res[index] && ($hyoo_crus_gist.compare(res[index], kid) < 0))
                         ++index;
                     const exists = locate(kid.self());
                     if (index === exists) {
@@ -9991,7 +10092,7 @@ var $;
             const prev = this.passes.get(auth.peer());
             if (prev)
                 return prev;
-            const next = new $hyoo_cras_pass;
+            const next = new $hyoo_crus_pass;
             next.auth(auth.public().asArray());
             const error = this.apply_unit([next])[0];
             if (error)
@@ -10001,7 +10102,7 @@ var $;
         give(dest, rang) {
             this.join();
             const auth = this.auth();
-            const unit = new $hyoo_cras_gift;
+            const unit = new $hyoo_crus_gift;
             unit.rang(rang);
             unit.time(this.face.tick(auth.peer()));
             unit.peer(auth.peer());
@@ -10011,23 +10112,27 @@ var $;
                 $mol_fail(new Error(error));
             return unit;
         }
-        post(lead, head, self, data, tag = 'term') {
+        post(lead, head, self, vary, tag = 'term') {
             this.join();
-            const secret = this.secret();
             const auth = this.auth();
-            const unit = new $hyoo_cras_gist;
+            const unit = new $hyoo_crus_gist;
             unit.time(this.face.tick(auth.peer()));
             unit.peer(auth.peer());
             unit.lead(lead);
             unit.head(head);
-            let { tip, bin } = $hyoo_cras_vary_encode(data);
-            if (secret)
-                bin = new Uint8Array($mol_wire_sync(secret).encrypt(bin, unit.salt()));
-            if (bin.byteLength > 32)
-                unit.hash(this.$.$hyoo_cras_mine.save(bin), tip, tag);
-            else
-                unit.data(bin, tip, tag);
-            unit.self(self || (this.lord_rang(auth.lord()) >= $hyoo_cras_rang.mod ? this.self_make(unit.idea()) : auth.peer()));
+            unit._vary = vary;
+            let { tip, bin } = $hyoo_crus_vary_encode(vary);
+            unit._open = bin;
+            if (this.encrypted()) {
+                unit.hash($mol_crypto_hash(bin), tip, tag);
+            }
+            else {
+                if (bin.byteLength > 32)
+                    unit.hash(this.$.$hyoo_crus_mine.hash(bin), tip, tag);
+                else
+                    unit.data(bin, tip, tag);
+            }
+            unit.self(self || this.self_make(unit.idea()));
             const error = this.apply_unit([unit])[0];
             if (error)
                 $mol_fail(new Error(error));
@@ -10061,12 +10166,78 @@ var $;
             const seat = units.indexOf(gist);
             this.post(seat && units[seat - 1].self(), gist.head(), gist.self(), null, 'term');
         }
+        loading() {
+            const units = this.$.$hyoo_crus_yard.load(this.ref().toString());
+            const errors = this.apply_unit(units).filter(Boolean);
+            if (errors.length)
+                this.$.$mol_log3_fail({
+                    place: this,
+                    message: errors.join('\n'),
+                });
+        }
+        saving() {
+            this.$.$mol_wait_timeout(250);
+            const yard = this.$.$hyoo_crus_yard;
+            const encoding = [];
+            const signing = [];
+            const persisting = [];
+            for (const pass of this.passes.values()) {
+                if (!pass.signed())
+                    signing.push(pass);
+                if (!yard.persisted.has(pass))
+                    persisting.push(pass);
+            }
+            for (const gift of this.gifts.values()) {
+                if (!gift.signed())
+                    signing.push(gift);
+                if (!yard.persisted.has(gift))
+                    persisting.push(gift);
+            }
+            for (const kids of this.gists.values()) {
+                for (const gist of kids.values()) {
+                    if (!gist.signed()) {
+                        encoding.push(gist);
+                        signing.push(gist);
+                    }
+                    if (!yard.persisted.has(gist))
+                        persisting.push(gist);
+                }
+            }
+            $mol_wire_race(...encoding.map(unit => () => this.gist_encode(unit)));
+            $mol_wire_race(...signing.map(unit => () => this.unit_sign(unit)));
+            if (persisting.length)
+                $mol_wire_sync(yard).save(this.ref().toString(), persisting);
+        }
+        unit_sign(unit) {
+            if (unit.signed())
+                return;
+            const key = $mol_wire_sync(this.auth());
+            const sign = new Uint8Array(key.sign(unit.sens()));
+            unit.sign(sign);
+        }
+        gist_encode(gist) {
+            if (gist._open === undefined)
+                return gist;
+            let bin = gist._open;
+            const secret = this.secret();
+            if (secret)
+                bin = new Uint8Array($mol_wire_sync(secret).encrypt(bin, gist.salt()));
+            if (bin.byteLength > 32)
+                gist.hash(this.$.$hyoo_crus_mine.save(bin), gist.tip(), gist.tag());
+            else
+                gist.data(bin, gist.tip(), gist.tag());
+            return gist;
+        }
         gist_decode(gist) {
-            let bin = gist.size() > 32 ? this.$.$hyoo_cras_mine.rock(gist.hash()) : gist.data();
+            if (gist._vary !== undefined)
+                return gist._vary;
+            if (gist._open !== undefined)
+                return gist._vary = $hyoo_crus_vary_decode({ tip: gist.tip(), bin: gist._open });
+            let bin = gist.size() > 32 ? this.$.$hyoo_crus_mine.rock(gist.hash()) : gist.data();
             if (bin && this.secret())
                 bin = new Uint8Array($mol_wire_sync(this.secret()).decrypt(bin, gist.salt()));
-            const vary = bin ? $hyoo_cras_vary_decode({ tip: gist.tip(), bin }) : null;
-            return vary;
+            gist._open = bin;
+            return gist._vary = (bin ? $hyoo_crus_vary_decode({ tip: gist.tip(), bin }) : null);
         }
         key_public(peer) {
             const key = this.passes.get(peer)?.auth();
@@ -10080,16 +10251,16 @@ var $;
         }
         encrypt() {
             if (!this.numb())
-                $mol_fail(new Error('Home Area never encrypted'));
-            if (this.secret())
+                $mol_fail(new Error('Home Land never encrypted'));
+            if (this.encrypted())
                 return;
             this.join();
             const auth = this.auth();
             const secret = $mol_wire_sync($mol_crypto_secret).generate();
             const secret_land = $mol_wire_sync(secret).serial();
             const secret_mutual = auth.secret_mutual(auth.public().toString());
-            const unit = new $hyoo_cras_gift;
-            unit.rang($hyoo_cras_rang.law);
+            const unit = new $hyoo_crus_gift;
+            unit.rang($hyoo_crus_rang.law);
             unit.time(this.face.tick(auth.peer()));
             unit.peer(auth.peer());
             unit.dest(auth.lord());
@@ -10099,6 +10270,15 @@ var $;
             if (error)
                 $mol_fail(new Error(error));
         }
+        encrypted() {
+            if (!this.numb())
+                return false;
+            const gift = this.gifts.get(this.lord_numb());
+            if (!gift)
+                return false;
+            const bill = gift.bill();
+            return bill.some(b => b);
+        }
         secret() {
             if (!this.numb())
                 return null;
@@ -10107,7 +10287,7 @@ var $;
             if (!gift)
                 return null;
             const bill = gift.bill();
-            if (bill.every(b => b === 0))
+            if (!bill.some(b => b))
                 return null;
             const secret_mutual = auth.secret_mutual(this.key_public(gift.peer()).toString());
             if (!secret_mutual)
@@ -10122,111 +10302,129 @@ var $;
     }
     __decorate([
         $mol_memo.method
-    ], $hyoo_cras_land.prototype, "ref", null);
+    ], $hyoo_crus_land.prototype, "ref", null);
     __decorate([
         $mol_action
-    ], $hyoo_cras_land.prototype, "self_make", null);
+    ], $hyoo_crus_land.prototype, "self_make", null);
     __decorate([
         $mol_mem_key
-    ], $hyoo_cras_land.prototype, "Root", null);
+    ], $hyoo_crus_land.prototype, "Root", null);
     __decorate([
         $mol_mem_key
-    ], $hyoo_cras_land.prototype, "Node", null);
+    ], $hyoo_crus_land.prototype, "Node", null);
     __decorate([
         $mol_mem
-    ], $hyoo_cras_land.prototype, "total", null);
+    ], $hyoo_crus_land.prototype, "total", null);
     __decorate([
         $mol_mem
-    ], $hyoo_cras_land.prototype, "joined_list", null);
+    ], $hyoo_crus_land.prototype, "joined_list", null);
     __decorate([
         $mol_mem_key
-    ], $hyoo_cras_land.prototype, "lord_rang", null);
+    ], $hyoo_crus_land.prototype, "lord_rang", null);
     __decorate([
         $mol_action
-    ], $hyoo_cras_land.prototype, "fork", null);
+    ], $hyoo_crus_land.prototype, "apply_unit", null);
+    __decorate([
+        $mol_action
+    ], $hyoo_crus_land.prototype, "fork", null);
     __decorate([
         $mol_mem_key
-    ], $hyoo_cras_land.prototype, "gists_ordered", null);
+    ], $hyoo_crus_land.prototype, "gists_ordered", null);
     __decorate([
         $mol_action
-    ], $hyoo_cras_land.prototype, "join", null);
+    ], $hyoo_crus_land.prototype, "join", null);
     __decorate([
         $mol_action
-    ], $hyoo_cras_land.prototype, "give", null);
+    ], $hyoo_crus_land.prototype, "give", null);
     __decorate([
         $mol_action
-    ], $hyoo_cras_land.prototype, "post", null);
+    ], $hyoo_crus_land.prototype, "post", null);
     __decorate([
         $mol_action
-    ], $hyoo_cras_land.prototype, "gist_move", null);
+    ], $hyoo_crus_land.prototype, "gist_move", null);
     __decorate([
         $mol_action
-    ], $hyoo_cras_land.prototype, "gist_wipe", null);
-    __decorate([
-        $mol_action
-    ], $hyoo_cras_land.prototype, "gist_decode", null);
-    __decorate([
-        $mol_mem_key
-    ], $hyoo_cras_land.prototype, "key_public", null);
-    __decorate([
-        $mol_mem_key
-    ], $hyoo_cras_land.prototype, "secret_mutual", null);
-    __decorate([
-        $mol_action
-    ], $hyoo_cras_land.prototype, "encrypt", null);
+    ], $hyoo_crus_land.prototype, "gist_wipe", null);
     __decorate([
         $mol_mem
-    ], $hyoo_cras_land.prototype, "secret", null);
-    $.$hyoo_cras_land = $hyoo_cras_land;
+    ], $hyoo_crus_land.prototype, "loading", null);
+    __decorate([
+        $mol_mem
+    ], $hyoo_crus_land.prototype, "saving", null);
+    __decorate([
+        $mol_mem_key
+    ], $hyoo_crus_land.prototype, "unit_sign", null);
+    __decorate([
+        $mol_mem_key
+    ], $hyoo_crus_land.prototype, "gist_encode", null);
+    __decorate([
+        $mol_mem_key
+    ], $hyoo_crus_land.prototype, "gist_decode", null);
+    __decorate([
+        $mol_mem_key
+    ], $hyoo_crus_land.prototype, "key_public", null);
+    __decorate([
+        $mol_mem_key
+    ], $hyoo_crus_land.prototype, "secret_mutual", null);
+    __decorate([
+        $mol_action
+    ], $hyoo_crus_land.prototype, "encrypt", null);
+    __decorate([
+        $mol_mem
+    ], $hyoo_crus_land.prototype, "encrypted", null);
+    __decorate([
+        $mol_mem
+    ], $hyoo_crus_land.prototype, "secret", null);
+    $.$hyoo_crus_land = $hyoo_crus_land;
 })($ || ($ = {}));
-//hyoo/cras/land/land.ts
+//hyoo/crus/land/land.ts
 ;
 "use strict";
 var $;
 (function ($) {
-    class $hyoo_cras_base extends $hyoo_cras_dict {
+    class $hyoo_crus_base extends $hyoo_crus_dict {
         title(next) {
-            return this.dive('title', $hyoo_cras_reg).value_str(next);
+            return this.dive('title', $hyoo_crus_reg).value_str(next);
         }
         selection(next) {
-            return (this.dive('selection', $hyoo_cras_reg).value_vary(next) ?? [[0, 0], [0, 0]]);
+            return (this.dive('selection', $hyoo_crus_reg).value_vary(next) ?? [[0, 0], [0, 0]]);
         }
         profiles() {
-            return this.dive('profiles', $hyoo_cras_dict).keys();
+            return this.dive('profiles', $hyoo_crus_dict).keys();
         }
         Profile(app) {
-            return this.dive('profiles', $hyoo_cras_dict).dive(app, $hyoo_cras_reg).yoke(app);
+            return this.dive('profiles', $hyoo_crus_dict).dive(app, $hyoo_crus_reg).yoke(app);
         }
     }
     __decorate([
         $mol_mem
-    ], $hyoo_cras_base.prototype, "title", null);
+    ], $hyoo_crus_base.prototype, "title", null);
     __decorate([
         $mol_mem
-    ], $hyoo_cras_base.prototype, "selection", null);
+    ], $hyoo_crus_base.prototype, "selection", null);
     __decorate([
         $mol_mem
-    ], $hyoo_cras_base.prototype, "profiles", null);
+    ], $hyoo_crus_base.prototype, "profiles", null);
     __decorate([
         $mol_mem_key
-    ], $hyoo_cras_base.prototype, "Profile", null);
-    $.$hyoo_cras_base = $hyoo_cras_base;
+    ], $hyoo_crus_base.prototype, "Profile", null);
+    $.$hyoo_crus_base = $hyoo_crus_base;
 })($ || ($ = {}));
-//hyoo/cras/base/base.ts
+//hyoo/crus/base/base.ts
 ;
 "use strict";
 var $;
 (function ($) {
-    class $hyoo_cras_lord extends $mol_object {
+    class $hyoo_crus_lord extends $mol_object {
         realm() {
             return null;
         }
         numb() {
-            return this.$.$hyoo_cras_auth.current().lord();
+            return this.$.$hyoo_crus_auth.current().lord();
         }
         lands = new $mol_wire_dict();
         base() {
-            return this.Land(0).Root($hyoo_cras_base);
+            return this.Land(0).Root($hyoo_crus_base);
         }
         ref() {
             return this.base().ref();
@@ -10241,7 +10439,7 @@ var $;
             let land = this.lands.get(numb);
             if (land)
                 return land;
-            land = $hyoo_cras_land.make({
+            land = $hyoo_crus_land.make({
                 lord: $mol_const(this),
                 numb: $mol_const(numb),
             });
@@ -10265,30 +10463,30 @@ var $;
     }
     __decorate([
         $mol_mem_key
-    ], $hyoo_cras_lord.prototype, "Land", null);
+    ], $hyoo_crus_lord.prototype, "Land", null);
     __decorate([
         $mol_action
-    ], $hyoo_cras_lord.prototype, "Land_new", null);
+    ], $hyoo_crus_lord.prototype, "Land_new", null);
     __decorate([
         $mol_action
-    ], $hyoo_cras_lord.prototype, "numb_make", null);
-    $.$hyoo_cras_lord = $hyoo_cras_lord;
+    ], $hyoo_crus_lord.prototype, "numb_make", null);
+    $.$hyoo_crus_lord = $hyoo_crus_lord;
 })($ || ($ = {}));
-//hyoo/cras/lord/lord.ts
+//hyoo/crus/lord/lord.ts
 ;
 "use strict";
 var $;
 (function ($) {
-    class $hyoo_cras_realm extends $mol_object {
+    class $hyoo_crus_realm extends $mol_object {
         lords = new $mol_wire_dict();
         home() {
-            return this.Lord(this.$.$hyoo_cras_auth.current().lord());
+            return this.Lord(this.$.$hyoo_crus_auth.current().lord());
         }
         Lord(numb) {
             let lord = this.lords.get(numb);
             if (lord)
                 return lord;
-            lord = $hyoo_cras_lord.make({
+            lord = $hyoo_crus_lord.make({
                 realm: $mol_const(this),
                 numb: $mol_const(numb),
             });
@@ -10301,10 +10499,10 @@ var $;
     }
     __decorate([
         $mol_mem_key
-    ], $hyoo_cras_realm.prototype, "Lord", null);
-    $.$hyoo_cras_realm = $hyoo_cras_realm;
+    ], $hyoo_crus_realm.prototype, "Lord", null);
+    $.$hyoo_crus_realm = $hyoo_crus_realm;
 })($ || ($ = {}));
-//hyoo/cras/realm/realm.ts
+//hyoo/crus/realm/realm.ts
 ;
 "use strict";
 var $;
@@ -11999,43 +12197,6 @@ var $;
     $.$mol_embed_native = $mol_embed_native;
 })($ || ($ = {}));
 //mol/embed/native/-view.tree/native.view.tree.ts
-;
-"use strict";
-var $;
-(function ($) {
-    function $mol_promise() {
-        let done;
-        let fail;
-        const promise = new Promise((d, f) => {
-            done = d;
-            fail = f;
-        });
-        return Object.assign(promise, {
-            done,
-            fail,
-        });
-    }
-    $.$mol_promise = $mol_promise;
-})($ || ($ = {}));
-//mol/promise/promise/promise.ts
-;
-"use strict";
-var $;
-(function ($) {
-    function $mol_wait_timeout_async(timeout) {
-        const promise = $mol_promise();
-        const task = new this.$mol_after_timeout(timeout, () => promise.done());
-        return Object.assign(promise, {
-            destructor: () => task.destructor()
-        });
-    }
-    $.$mol_wait_timeout_async = $mol_wait_timeout_async;
-    function $mol_wait_timeout(timeout) {
-        return this.$mol_wire_sync(this).$mol_wait_timeout_async(timeout);
-    }
-    $.$mol_wait_timeout = $mol_wait_timeout;
-})($ || ($ = {}));
-//mol/wait/timeout/timeout.ts
 ;
 "use strict";
 var $;
@@ -14205,12 +14366,12 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    class $hyoo_cras_node_dump extends $mol_expander {
+    class $hyoo_crus_node_dump extends $mol_expander {
         can_change() {
             return this.node().can_change();
         }
         node() {
-            const obj = new this.$.$hyoo_cras_node();
+            const obj = new this.$.$hyoo_crus_node();
             return obj;
         }
         tag() {
@@ -14379,11 +14540,11 @@ var $;
             return obj;
         }
         node_inner(id) {
-            const obj = new this.$.$hyoo_cras_node();
+            const obj = new this.$.$hyoo_crus_node();
             return obj;
         }
         Node_inner(id) {
-            const obj = new this.$.$hyoo_cras_node_dump();
+            const obj = new this.$.$hyoo_crus_node_dump();
             obj.tag = () => this.unit_tag(id);
             obj.Value = () => this.Unit_value(id);
             obj.addons = () => [
@@ -14410,79 +14571,79 @@ var $;
     }
     __decorate([
         $mol_mem
-    ], $hyoo_cras_node_dump.prototype, "node", null);
+    ], $hyoo_crus_node_dump.prototype, "node", null);
     __decorate([
         $mol_mem
-    ], $hyoo_cras_node_dump.prototype, "Tools", null);
+    ], $hyoo_crus_node_dump.prototype, "Tools", null);
     __decorate([
         $mol_mem
-    ], $hyoo_cras_node_dump.prototype, "Head", null);
+    ], $hyoo_crus_node_dump.prototype, "Head", null);
     __decorate([
         $mol_mem
-    ], $hyoo_cras_node_dump.prototype, "key_new", null);
+    ], $hyoo_crus_node_dump.prototype, "key_new", null);
     __decorate([
         $mol_mem
-    ], $hyoo_cras_node_dump.prototype, "add_key", null);
+    ], $hyoo_crus_node_dump.prototype, "add_key", null);
     __decorate([
         $mol_mem
-    ], $hyoo_cras_node_dump.prototype, "Add_key", null);
+    ], $hyoo_crus_node_dump.prototype, "Add_key", null);
     __decorate([
         $mol_mem
-    ], $hyoo_cras_node_dump.prototype, "value_new", null);
+    ], $hyoo_crus_node_dump.prototype, "value_new", null);
     __decorate([
         $mol_mem
-    ], $hyoo_cras_node_dump.prototype, "add_value", null);
+    ], $hyoo_crus_node_dump.prototype, "add_value", null);
     __decorate([
         $mol_mem
-    ], $hyoo_cras_node_dump.prototype, "Add_value", null);
+    ], $hyoo_crus_node_dump.prototype, "Add_value", null);
     __decorate([
         $mol_mem
-    ], $hyoo_cras_node_dump.prototype, "text", null);
+    ], $hyoo_crus_node_dump.prototype, "text", null);
     __decorate([
         $mol_mem
-    ], $hyoo_cras_node_dump.prototype, "Value_text", null);
+    ], $hyoo_crus_node_dump.prototype, "Value_text", null);
     __decorate([
         $mol_mem
-    ], $hyoo_cras_node_dump.prototype, "value_str", null);
+    ], $hyoo_crus_node_dump.prototype, "value_str", null);
     __decorate([
         $mol_mem
-    ], $hyoo_cras_node_dump.prototype, "Value_str", null);
+    ], $hyoo_crus_node_dump.prototype, "Value_str", null);
     __decorate([
         $mol_mem_key
-    ], $hyoo_cras_node_dump.prototype, "Unit_value", null);
+    ], $hyoo_crus_node_dump.prototype, "Unit_value", null);
     __decorate([
         $mol_mem_key
-    ], $hyoo_cras_node_dump.prototype, "Unit_tip", null);
+    ], $hyoo_crus_node_dump.prototype, "Unit_tip", null);
     __decorate([
         $mol_mem_key
-    ], $hyoo_cras_node_dump.prototype, "unit_tag", null);
+    ], $hyoo_crus_node_dump.prototype, "unit_tag", null);
     __decorate([
         $mol_mem_key
-    ], $hyoo_cras_node_dump.prototype, "Unit_tag", null);
+    ], $hyoo_crus_node_dump.prototype, "Unit_tag", null);
     __decorate([
         $mol_mem_key
-    ], $hyoo_cras_node_dump.prototype, "Unit_time", null);
+    ], $hyoo_crus_node_dump.prototype, "Unit_time", null);
     __decorate([
         $mol_mem_key
-    ], $hyoo_cras_node_dump.prototype, "Unit_wipe_icon", null);
+    ], $hyoo_crus_node_dump.prototype, "Unit_wipe_icon", null);
     __decorate([
         $mol_mem_key
-    ], $hyoo_cras_node_dump.prototype, "unit_wipe", null);
+    ], $hyoo_crus_node_dump.prototype, "unit_wipe", null);
     __decorate([
         $mol_mem_key
-    ], $hyoo_cras_node_dump.prototype, "Unit_wipe", null);
+    ], $hyoo_crus_node_dump.prototype, "Unit_wipe", null);
     __decorate([
         $mol_mem_key
-    ], $hyoo_cras_node_dump.prototype, "node_inner", null);
+    ], $hyoo_crus_node_dump.prototype, "node_inner", null);
     __decorate([
         $mol_mem_key
-    ], $hyoo_cras_node_dump.prototype, "Node_inner", null);
+    ], $hyoo_crus_node_dump.prototype, "Node_inner", null);
     __decorate([
         $mol_mem_key
-    ], $hyoo_cras_node_dump.prototype, "Inner", null);
-    $.$hyoo_cras_node_dump = $hyoo_cras_node_dump;
+    ], $hyoo_crus_node_dump.prototype, "Inner", null);
+    $.$hyoo_crus_node_dump = $hyoo_crus_node_dump;
 })($ || ($ = {}));
-//hyoo/cras/node/dump/-view.tree/dump.view.tree.ts
+//hyoo/crus/node/dump/-view.tree/dump.view.tree.ts
 ;
 "use strict";
 var $;
@@ -14562,8 +14723,8 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    class $hyoo_cras_text extends $hyoo_cras_list {
-        static tag = $hyoo_cras_gist_tag[$hyoo_cras_gist_tag.vals];
+    class $hyoo_crus_text extends $hyoo_crus_list {
+        static tag = $hyoo_crus_gist_tag[$hyoo_crus_gist_tag.vals];
         text(next) {
             if (next !== undefined) {
                 const land = this.land();
@@ -14575,16 +14736,16 @@ var $;
                     to: prev.length,
                     next: lines,
                     equal: (next, prev) => {
-                        return land.Node($hyoo_cras_text).Item(prev.self()).str() === next;
+                        return land.Node($hyoo_crus_text).Item(prev.self()).str() === next;
                     },
                     drop: (prev, lead) => this.land().post(lead?.self() ?? 0, prev.head(), prev.self(), null),
                     insert: (next, lead) => {
                         const gist = this.land().post(lead?.self() ?? 0, this.head(), land.self_make(), 'p', 'vals');
-                        land.Node($hyoo_cras_text).Item(gist.self()).str(next);
+                        land.Node($hyoo_crus_text).Item(gist.self()).str(next);
                         return gist;
                     },
                     update: (next, prev, lead) => {
-                        land.Node($hyoo_cras_text).Item(prev.self()).str(next);
+                        land.Node($hyoo_crus_text).Item(prev.self()).str(next);
                         return prev;
                     },
                 });
@@ -14599,7 +14760,7 @@ var $;
                     if (unit.tag() === 'term')
                         str += String(land.gist_decode(unit) ?? '');
                     else
-                        str += land.Node($hyoo_cras_text).Item(unit.self()).str();
+                        str += land.Node($hyoo_crus_text).Item(unit.self()).str();
                 }
                 return str;
             }
@@ -14654,7 +14815,7 @@ var $;
                         off -= len;
                 }
                 else {
-                    const found = land.Node($hyoo_cras_text).Item(unit.self()).point_by_offset(off);
+                    const found = land.Node($hyoo_crus_text).Item(unit.self()).point_by_offset(off);
                     if (found[0])
                         return found;
                     off = found[1];
@@ -14671,7 +14832,7 @@ var $;
                     offset += String(land.gist_decode(unit) ?? '').length;
                 }
                 else {
-                    const found = land.Node($hyoo_cras_text).Item(unit.self()).offset_by_point([self, offset]);
+                    const found = land.Node($hyoo_crus_text).Item(unit.self()).offset_by_point([self, offset]);
                     if (found[0])
                         return [self, found[1]];
                     offset = found[1];
@@ -14692,40 +14853,40 @@ var $;
     }
     __decorate([
         $mol_mem
-    ], $hyoo_cras_text.prototype, "text", null);
+    ], $hyoo_crus_text.prototype, "text", null);
     __decorate([
         $mol_mem
-    ], $hyoo_cras_text.prototype, "str", null);
+    ], $hyoo_crus_text.prototype, "str", null);
     __decorate([
         $mol_action
-    ], $hyoo_cras_text.prototype, "write", null);
+    ], $hyoo_crus_text.prototype, "write", null);
     __decorate([
         $mol_action
-    ], $hyoo_cras_text.prototype, "point_by_offset", null);
+    ], $hyoo_crus_text.prototype, "point_by_offset", null);
     __decorate([
         $mol_action
-    ], $hyoo_cras_text.prototype, "offset_by_point", null);
+    ], $hyoo_crus_text.prototype, "offset_by_point", null);
     __decorate([
         $mol_mem_key
-    ], $hyoo_cras_text.prototype, "selection", null);
-    $.$hyoo_cras_text = $hyoo_cras_text;
+    ], $hyoo_crus_text.prototype, "selection", null);
+    $.$hyoo_crus_text = $hyoo_crus_text;
 })($ || ($ = {}));
-//hyoo/cras/text/text.ts
+//hyoo/crus/text/text.ts
 ;
 "use strict";
 var $;
 (function ($) {
     var $$;
     (function ($$) {
-        class $hyoo_cras_node_dump extends $.$hyoo_cras_node_dump {
+        class $hyoo_crus_node_dump extends $.$hyoo_crus_node_dump {
             title() {
                 return this.node().slug().padEnd(8, ' ');
             }
             value() {
-                return this.node().cast($hyoo_cras_reg).value_vary();
+                return this.node().cast($hyoo_crus_reg).value_vary();
             }
             items() {
-                return this.node().cast($hyoo_cras_list).items();
+                return this.node().cast($hyoo_crus_list).items();
             }
             nodes() {
                 return this.node().units().map((_, i) => this.Inner(i));
@@ -14745,10 +14906,10 @@ var $;
                 return new $mol_time_moment(this.node().units()[index].time()).toString('YYYY-MM-DD hh:mm:ss.sss');
             }
             unit_value(index) {
-                return this.node().cast($hyoo_cras_list).items()[index];
+                return this.node().cast($hyoo_crus_list).items()[index];
             }
             unit_wipe(index, event) {
-                this.node().cast($hyoo_cras_list).wipe(index);
+                this.node().cast($hyoo_crus_list).wipe(index);
             }
             node_inner(index) {
                 return this.node().nodes(null)[index];
@@ -14756,20 +14917,20 @@ var $;
             add_key(event) {
                 if (!this.expandable())
                     this.expanded(true);
-                this.node().cast($hyoo_cras_list).has(this.key_new(), true, 'head');
+                this.node().cast($hyoo_crus_list).has(this.key_new(), true, 'head');
                 this.key_new('');
             }
             add_value(event) {
                 if (!this.expandable())
                     this.expanded(true);
-                this.node().cast($hyoo_cras_list).splice([this.value_new()]);
+                this.node().cast($hyoo_crus_list).splice([this.value_new()]);
                 this.value_new('');
             }
             value_str(next) {
-                return this.node().cast($hyoo_cras_reg).value_str(next);
+                return this.node().cast($hyoo_crus_reg).value_str(next);
             }
             text(next) {
-                return this.node().cast($hyoo_cras_text).str(next);
+                return this.node().cast($hyoo_crus_text).str(next);
             }
             editors() {
                 return [
@@ -14784,18 +14945,18 @@ var $;
         }
         __decorate([
             $mol_mem
-        ], $hyoo_cras_node_dump.prototype, "editors", null);
-        $$.$hyoo_cras_node_dump = $hyoo_cras_node_dump;
+        ], $hyoo_crus_node_dump.prototype, "editors", null);
+        $$.$hyoo_crus_node_dump = $hyoo_crus_node_dump;
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));
-//hyoo/cras/node/dump/dump.view.ts
+//hyoo/crus/node/dump/dump.view.ts
 ;
 "use strict";
 var $;
 (function ($) {
     var $$;
     (function ($$) {
-        $mol_style_define($hyoo_cras_node_dump, {
+        $mol_style_define($hyoo_crus_node_dump, {
             font: {
                 family: 'monospace',
             },
@@ -14821,6 +14982,8 @@ var $;
             Tools: {
                 flex: {
                     grow: 1,
+                    shrink: 1,
+                    wrap: `wrap`,
                 },
                 justify: {
                     content: `flex-end`,
@@ -14843,6 +15006,12 @@ var $;
                 },
             },
             Head: {},
+            Value_text: {
+                flex: {
+                    basis: `20rem`,
+                    shrink: 1,
+                }
+            },
             Unit_time: {
                 color: $mol_theme.shade,
                 padding: $mol_gap.text,
@@ -14871,14 +15040,14 @@ var $;
         });
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));
-//hyoo/cras/node/dump/dump.view.css.ts
+//hyoo/crus/node/dump/dump.view.css.ts
 ;
 "use strict";
 var $;
 (function ($) {
-    class $hyoo_cras_node_page extends $mol_page {
+    class $hyoo_crus_node_page extends $mol_page {
         node() {
-            const obj = new this.$.$hyoo_cras_node();
+            const obj = new this.$.$hyoo_crus_node();
             return obj;
         }
         title() {
@@ -14891,7 +15060,7 @@ var $;
             ];
         }
         Dump() {
-            const obj = new this.$.$hyoo_cras_node_dump();
+            const obj = new this.$.$hyoo_crus_node_dump();
             obj.node = () => this.node();
             return obj;
         }
@@ -14908,56 +15077,56 @@ var $;
     }
     __decorate([
         $mol_mem
-    ], $hyoo_cras_node_page.prototype, "node", null);
+    ], $hyoo_crus_node_page.prototype, "node", null);
     __decorate([
         $mol_mem
-    ], $hyoo_cras_node_page.prototype, "Dump", null);
+    ], $hyoo_crus_node_page.prototype, "Dump", null);
     __decorate([
         $mol_mem
-    ], $hyoo_cras_node_page.prototype, "text", null);
+    ], $hyoo_crus_node_page.prototype, "text", null);
     __decorate([
         $mol_mem
-    ], $hyoo_cras_node_page.prototype, "Text", null);
-    $.$hyoo_cras_node_page = $hyoo_cras_node_page;
+    ], $hyoo_crus_node_page.prototype, "Text", null);
+    $.$hyoo_crus_node_page = $hyoo_crus_node_page;
 })($ || ($ = {}));
-//hyoo/cras/node/page/-view.tree/page.view.tree.ts
+//hyoo/crus/node/page/-view.tree/page.view.tree.ts
 ;
 "use strict";
 var $;
 (function ($) {
     var $$;
     (function ($$) {
-        class $hyoo_cras_node_page extends $.$hyoo_cras_node_page {
+        class $hyoo_crus_node_page extends $.$hyoo_crus_node_page {
             title() {
                 return '🧩Node ' + this.node().slug();
             }
             text(next) {
-                return this.node().cast($hyoo_cras_text).text(next);
+                return this.node().cast($hyoo_crus_text).text(next);
             }
         }
-        $$.$hyoo_cras_node_page = $hyoo_cras_node_page;
+        $$.$hyoo_crus_node_page = $hyoo_crus_node_page;
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));
-//hyoo/cras/node/page/page.view.ts
+//hyoo/crus/node/page/page.view.ts
 ;
 "use strict";
 var $;
 (function ($) {
     var $$;
     (function ($$) {
-        $mol_style_define($hyoo_cras_node_page, {
+        $mol_style_define($hyoo_crus_node_page, {
             flex: {
                 grow: 1,
             },
         });
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));
-//hyoo/cras/node/page/page.view.css.ts
+//hyoo/crus/node/page/page.view.css.ts
 ;
 "use strict";
 var $;
 (function ($) {
-    class $hyoo_cras_land_book extends $mol_book2_catalog {
+    class $hyoo_crus_land_book extends $mol_book2_catalog {
         menu_title() {
             return "Heads";
         }
@@ -14965,69 +15134,69 @@ var $;
             return "node";
         }
         land() {
-            const obj = new this.$.$hyoo_cras_land();
+            const obj = new this.$.$hyoo_crus_land();
             return obj;
         }
         Spread(id) {
             return this.Node(id);
         }
         node(id) {
-            const obj = new this.$.$hyoo_cras_node();
+            const obj = new this.$.$hyoo_crus_node();
             return obj;
         }
         Node(id) {
-            const obj = new this.$.$hyoo_cras_node_page();
+            const obj = new this.$.$hyoo_crus_node_page();
             obj.node = () => this.node(id);
             return obj;
         }
     }
     __decorate([
         $mol_mem
-    ], $hyoo_cras_land_book.prototype, "land", null);
+    ], $hyoo_crus_land_book.prototype, "land", null);
     __decorate([
         $mol_mem_key
-    ], $hyoo_cras_land_book.prototype, "node", null);
+    ], $hyoo_crus_land_book.prototype, "node", null);
     __decorate([
         $mol_mem_key
-    ], $hyoo_cras_land_book.prototype, "Node", null);
-    $.$hyoo_cras_land_book = $hyoo_cras_land_book;
+    ], $hyoo_crus_land_book.prototype, "Node", null);
+    $.$hyoo_crus_land_book = $hyoo_crus_land_book;
 })($ || ($ = {}));
-//hyoo/cras/land/book/-view.tree/book.view.tree.ts
+//hyoo/crus/land/book/-view.tree/book.view.tree.ts
 ;
 "use strict";
 var $;
 (function ($) {
     var $$;
     (function ($$) {
-        class $hyoo_cras_land_book extends $.$hyoo_cras_land_book {
+        class $hyoo_crus_land_book extends $.$hyoo_crus_land_book {
             menu_title() {
                 return '🌍Land ' + this.land().slug();
             }
             spread_ids() {
                 const land = this.land();
-                return [0, ...land.self_all.values()].map(head => land.Node($hyoo_cras_node).Item(head).slug() || 'AAAAAAAA');
+                return [0, ...land.self_all.values()].map(head => land.Node($hyoo_crus_node).Item(head).slug() || 'AAAAAAAA');
             }
             spread_title(head) {
                 return this.node(head).slug() || 'Root';
             }
             node(id) {
-                return this.land().Node($hyoo_cras_node).Item(new $mol_buffer($mol_base64_ae_decode(id).buffer).uint48(0));
+                return this.land().Node($hyoo_crus_node).Item(new $mol_buffer($mol_base64_ae_decode(id).buffer).uint48(0));
             }
         }
         __decorate([
             $mol_mem
-        ], $hyoo_cras_land_book.prototype, "spread_ids", null);
-        $$.$hyoo_cras_land_book = $hyoo_cras_land_book;
+        ], $hyoo_crus_land_book.prototype, "spread_ids", null);
+        $$.$hyoo_crus_land_book = $hyoo_crus_land_book;
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));
-//hyoo/cras/land/book/book.view.ts
+//hyoo/crus/land/book/book.view.ts
 ;
 "use strict";
 var $;
 (function ($) {
     var $$;
     (function ($$) {
-        $mol_style_define($hyoo_cras_land_book, {
+        $mol_style_define($hyoo_crus_land_book, {
             Menu_link: {
                 font: {
                     family: 'monospace',
@@ -15036,7 +15205,7 @@ var $;
         });
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));
-//hyoo/cras/land/book/book.view.css.ts
+//hyoo/crus/land/book/book.view.css.ts
 ;
 "use strict";
 var $;
@@ -15053,7 +15222,7 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    class $hyoo_cras_lord_book extends $mol_book2_catalog {
+    class $hyoo_crus_lord_book extends $mol_book2_catalog {
         menu_title() {
             return "Areas";
         }
@@ -15061,7 +15230,7 @@ var $;
             return "land";
         }
         lord() {
-            const obj = new this.$.$hyoo_cras_lord();
+            const obj = new this.$.$hyoo_crus_lord();
             return obj;
         }
         Spread(id) {
@@ -15073,11 +15242,11 @@ var $;
             ];
         }
         land(id) {
-            const obj = new this.$.$hyoo_cras_land();
+            const obj = new this.$.$hyoo_crus_land();
             return obj;
         }
         Land(id) {
-            const obj = new this.$.$hyoo_cras_land_book();
+            const obj = new this.$.$hyoo_crus_land_book();
             obj.land = () => this.land(id);
             return obj;
         }
@@ -15101,32 +15270,32 @@ var $;
     }
     __decorate([
         $mol_mem
-    ], $hyoo_cras_lord_book.prototype, "lord", null);
+    ], $hyoo_crus_lord_book.prototype, "lord", null);
     __decorate([
         $mol_mem_key
-    ], $hyoo_cras_lord_book.prototype, "land", null);
+    ], $hyoo_crus_lord_book.prototype, "land", null);
     __decorate([
         $mol_mem_key
-    ], $hyoo_cras_lord_book.prototype, "Land", null);
+    ], $hyoo_crus_lord_book.prototype, "Land", null);
     __decorate([
         $mol_mem
-    ], $hyoo_cras_lord_book.prototype, "Area_new_icon", null);
+    ], $hyoo_crus_lord_book.prototype, "Area_new_icon", null);
     __decorate([
         $mol_mem
-    ], $hyoo_cras_lord_book.prototype, "land_new", null);
+    ], $hyoo_crus_lord_book.prototype, "land_new", null);
     __decorate([
         $mol_mem
-    ], $hyoo_cras_lord_book.prototype, "Area_new", null);
-    $.$hyoo_cras_lord_book = $hyoo_cras_lord_book;
+    ], $hyoo_crus_lord_book.prototype, "Area_new", null);
+    $.$hyoo_crus_lord_book = $hyoo_crus_lord_book;
 })($ || ($ = {}));
-//hyoo/cras/lord/book/-view.tree/book.view.tree.ts
+//hyoo/crus/lord/book/-view.tree/book.view.tree.ts
 ;
 "use strict";
 var $;
 (function ($) {
     var $$;
     (function ($$) {
-        class $hyoo_cras_lord_book extends $.$hyoo_cras_lord_book {
+        class $hyoo_crus_lord_book extends $.$hyoo_crus_lord_book {
             menu_title() {
                 return '👑Lord ' + this.lord().slug();
             }
@@ -15137,7 +15306,7 @@ var $;
                 return this.land(id).slug() || 'Home';
             }
             land(id) {
-                return this.lord().Land($hyoo_cras_ref.from(this.lord().ref() + id).land());
+                return this.lord().Land($hyoo_crus_ref.from(this.lord().ref() + id).land());
             }
             land_new() {
                 this.spread(this.lord().Land_new(0).slug());
@@ -15145,18 +15314,18 @@ var $;
         }
         __decorate([
             $mol_mem
-        ], $hyoo_cras_lord_book.prototype, "spread_ids", null);
-        $$.$hyoo_cras_lord_book = $hyoo_cras_lord_book;
+        ], $hyoo_crus_lord_book.prototype, "spread_ids", null);
+        $$.$hyoo_crus_lord_book = $hyoo_crus_lord_book;
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));
-//hyoo/cras/lord/book/book.view.ts
+//hyoo/crus/lord/book/book.view.ts
 ;
 "use strict";
 var $;
 (function ($) {
     var $$;
     (function ($$) {
-        $mol_style_define($hyoo_cras_lord_book, {
+        $mol_style_define($hyoo_crus_lord_book, {
             Menu_link: {
                 font: {
                     family: 'monospace',
@@ -15165,12 +15334,12 @@ var $;
         });
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));
-//hyoo/cras/lord/book/book.view.css.ts
+//hyoo/crus/lord/book/book.view.css.ts
 ;
 "use strict";
 var $;
 (function ($) {
-    class $hyoo_cras_realm_book extends $mol_book2_catalog {
+    class $hyoo_crus_realm_book extends $mol_book2_catalog {
         menu_title() {
             return "🌌 Realm";
         }
@@ -15178,46 +15347,46 @@ var $;
             return "lord";
         }
         realm() {
-            const obj = new this.$.$hyoo_cras_realm();
+            const obj = new this.$.$hyoo_crus_realm();
             return obj;
         }
         Spread(id) {
             return this.Lord(id);
         }
         lord(id) {
-            const obj = new this.$.$hyoo_cras_lord();
+            const obj = new this.$.$hyoo_crus_lord();
             return obj;
         }
         Lord(id) {
-            const obj = new this.$.$hyoo_cras_lord_book();
+            const obj = new this.$.$hyoo_crus_lord_book();
             obj.lord = () => this.lord(id);
             return obj;
         }
     }
     __decorate([
         $mol_mem
-    ], $hyoo_cras_realm_book.prototype, "realm", null);
+    ], $hyoo_crus_realm_book.prototype, "realm", null);
     __decorate([
         $mol_mem_key
-    ], $hyoo_cras_realm_book.prototype, "lord", null);
+    ], $hyoo_crus_realm_book.prototype, "lord", null);
     __decorate([
         $mol_mem_key
-    ], $hyoo_cras_realm_book.prototype, "Lord", null);
-    $.$hyoo_cras_realm_book = $hyoo_cras_realm_book;
+    ], $hyoo_crus_realm_book.prototype, "Lord", null);
+    $.$hyoo_crus_realm_book = $hyoo_crus_realm_book;
 })($ || ($ = {}));
-//hyoo/cras/realm/book/-view.tree/book.view.tree.ts
+//hyoo/crus/realm/book/-view.tree/book.view.tree.ts
 ;
 "use strict";
 var $;
 (function ($) {
     var $$;
     (function ($$) {
-        class $hyoo_cras_realm_book extends $.$hyoo_cras_realm_book {
+        class $hyoo_crus_realm_book extends $.$hyoo_crus_realm_book {
             spread_ids() {
                 return [...this.realm().lords.values()].map(lord => lord.ref().toString());
             }
             lord(id) {
-                return this.realm().Lord($hyoo_cras_ref.from(id).lord());
+                return this.realm().Lord($hyoo_crus_ref.from(id).lord());
             }
             spread_title(id) {
                 return this.lord(id).slug();
@@ -15225,18 +15394,18 @@ var $;
         }
         __decorate([
             $mol_mem
-        ], $hyoo_cras_realm_book.prototype, "spread_ids", null);
-        $$.$hyoo_cras_realm_book = $hyoo_cras_realm_book;
+        ], $hyoo_crus_realm_book.prototype, "spread_ids", null);
+        $$.$hyoo_crus_realm_book = $hyoo_crus_realm_book;
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));
-//hyoo/cras/realm/book/book.view.ts
+//hyoo/crus/realm/book/book.view.ts
 ;
 "use strict";
 var $;
 (function ($) {
     var $$;
     (function ($$) {
-        $mol_style_define($hyoo_cras_realm_book, {
+        $mol_style_define($hyoo_crus_realm_book, {
             Menu_link: {
                 font: {
                     family: 'monospace',
@@ -15245,7 +15414,7 @@ var $;
         });
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));
-//hyoo/cras/realm/book/book.view.css.ts
+//hyoo/crus/realm/book/book.view.css.ts
 ;
 "use strict";
 let $hyoo_sync_revision = "echo";
@@ -16695,30 +16864,6 @@ var $;
     $.$hyoo_crowd_world = $hyoo_crowd_world;
 })($ || ($ = {}));
 //hyoo/crowd/world/world.ts
-;
-"use strict";
-var $;
-(function ($) {
-    function $mol_wire_race(...tasks) {
-        const results = tasks.map(task => {
-            try {
-                return task();
-            }
-            catch (error) {
-                return error;
-            }
-        });
-        const promises = results.filter(res => $mol_promise_like(res));
-        if (promises.length)
-            $mol_fail(Promise.race(promises));
-        const error = results.find(res => res instanceof Error);
-        if (error)
-            $mol_fail(error);
-        return results;
-    }
-    $.$mol_wire_race = $mol_wire_race;
-})($ || ($ = {}));
-//mol/wire/race/race.ts
 ;
 "use strict";
 var $;
@@ -19332,15 +19477,15 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    class $hyoo_cras_app extends $mol_book2_catalog {
+    class $hyoo_crus_app extends $mol_book2_catalog {
         menu_title() {
-            return "CRUS🦵DB";
+            return "CRUS🦿DB";
         }
         param() {
             return "section";
         }
         realm() {
-            const obj = new this.$.$hyoo_cras_realm();
+            const obj = new this.$.$hyoo_crus_realm();
             return obj;
         }
         menu_tools() {
@@ -19380,7 +19525,7 @@ var $;
             return obj;
         }
         Realm() {
-            const obj = new this.$.$hyoo_cras_realm_book();
+            const obj = new this.$.$hyoo_crus_realm_book();
             obj.realm = () => this.realm();
             return obj;
         }
@@ -19399,32 +19544,32 @@ var $;
     }
     __decorate([
         $mol_mem
-    ], $hyoo_cras_app.prototype, "realm", null);
+    ], $hyoo_crus_app.prototype, "realm", null);
     __decorate([
         $mol_mem
-    ], $hyoo_cras_app.prototype, "Source", null);
+    ], $hyoo_crus_app.prototype, "Source", null);
     __decorate([
         $mol_mem
-    ], $hyoo_cras_app.prototype, "Intro_content", null);
+    ], $hyoo_crus_app.prototype, "Intro_content", null);
     __decorate([
         $mol_mem
-    ], $hyoo_cras_app.prototype, "Intro", null);
+    ], $hyoo_crus_app.prototype, "Intro", null);
     __decorate([
         $mol_mem
-    ], $hyoo_cras_app.prototype, "Realm", null);
+    ], $hyoo_crus_app.prototype, "Realm", null);
     __decorate([
         $mol_mem
-    ], $hyoo_cras_app.prototype, "Casting", null);
-    $.$hyoo_cras_app = $hyoo_cras_app;
+    ], $hyoo_crus_app.prototype, "Casting", null);
+    $.$hyoo_crus_app = $hyoo_crus_app;
 })($ || ($ = {}));
-//hyoo/cras/app/-view.tree/app.view.tree.ts
+//hyoo/crus/app/-view.tree/app.view.tree.ts
 ;
 "use strict";
 var $;
 (function ($) {
     var $$;
     (function ($$) {
-        class $hyoo_cras_app extends $.$hyoo_cras_app {
+        class $hyoo_crus_app extends $.$hyoo_crus_app {
             realm() {
                 const realm = super.realm();
                 realm.home().base();
@@ -19436,21 +19581,21 @@ var $;
         }
         __decorate([
             $mol_mem
-        ], $hyoo_cras_app.prototype, "realm", null);
+        ], $hyoo_crus_app.prototype, "realm", null);
         __decorate([
             $mol_mem
-        ], $hyoo_cras_app.prototype, "intro", null);
-        $$.$hyoo_cras_app = $hyoo_cras_app;
+        ], $hyoo_crus_app.prototype, "intro", null);
+        $$.$hyoo_crus_app = $hyoo_crus_app;
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));
-//hyoo/cras/app/app.view.ts
+//hyoo/crus/app/app.view.ts
 ;
 "use strict";
 var $;
 (function ($) {
     var $$;
     (function ($$) {
-        $mol_style_define($hyoo_cras_app, {
+        $mol_style_define($hyoo_crus_app, {
             Casting: {
                 flex: {
                     grow: 1,
@@ -19459,7 +19604,7 @@ var $;
         });
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));
-//hyoo/cras/app/app.view.css.ts
+//hyoo/crus/app/app.view.css.ts
 ;
 "use strict";
 var $;
@@ -23516,37 +23661,37 @@ var $;
 (function ($_1) {
     $mol_test({
         'unit type'() {
-            const unit = new $hyoo_cras_unit;
+            const unit = new $hyoo_crus_unit;
             $mol_assert_equal(unit.kind(), 'gist');
         },
         'auth unit type'() {
-            const auth = new $hyoo_cras_pass;
+            const auth = new $hyoo_crus_pass;
             auth.auth([0xFF, 0, 0xFC, 0xFB, 0xFA, 0xF9, 0xF8, 0xF7, 0xF6, 0xF5, 0xF4, 0xF3, 0xF2, 0xF1]);
             $mol_assert_like(auth.kind(), 'pass');
             $mol_assert_like(auth.lord(), 0xf1f2f3f4f5f6f7f8f9fafbfcn);
             $mol_assert_like(auth.peer(), 0xF7F8F9FAFBFC);
         },
         'gift unit type'() {
-            const gift = new $hyoo_cras_gift;
-            gift.rang($hyoo_cras_rang.law);
+            const gift = new $hyoo_crus_gift;
+            gift.rang($hyoo_crus_rang.law);
             $mol_assert_like(gift.kind(), 'gift');
-            $mol_assert_like(gift.rang(), $hyoo_cras_rang.law);
+            $mol_assert_like(gift.rang(), $hyoo_crus_rang.law);
         },
         'data unit type'() {
-            const unit = new $hyoo_cras_gist;
+            const unit = new $hyoo_crus_gist;
             unit.data(new Uint8Array([0xFF, 0xFF]));
             $mol_assert_like(unit.kind(), 'gist');
             $mol_assert_like(unit.size(), 2);
             $mol_assert_like(unit.data(), new Uint8Array([0xFF, 0xFF]));
         },
         'unit peer'() {
-            const unit = new $hyoo_cras_unit;
+            const unit = new $hyoo_crus_unit;
             $mol_assert_equal(unit.peer(), 0);
             unit.peer(0xf1f2f3f4f5f6);
             $mol_assert_equal(unit.peer(), 0xf1f2f3f4f5f6);
         },
         'gift unit fields'() {
-            const unit = new $hyoo_cras_gift;
+            const unit = new $hyoo_crus_gift;
             $mol_assert_equal(unit.time(), 0);
             $mol_assert_equal(unit.dest(), 0n);
             unit.time(0xd1d2d3d4d5d6);
@@ -23555,7 +23700,7 @@ var $;
             $mol_assert_equal(unit.dest(), 0xa1a2a3a4a5a6a7a8n);
         },
         'data unit fields'() {
-            const unit = new $hyoo_cras_gist;
+            const unit = new $hyoo_crus_gist;
             $mol_assert_equal(unit.time(), 0);
             $mol_assert_equal(unit.head(), 0);
             $mol_assert_equal(unit.self(), 0);
@@ -23570,7 +23715,7 @@ var $;
             $mol_assert_equal(unit.lead(), 0xc1c2c3c4c5c6);
         },
         async 'sign / verify'($) {
-            const source = new $hyoo_cras_gist;
+            const source = new $hyoo_crus_gist;
             source.data(new Uint8Array([0xF1, 0xF2]));
             const key = await $.$mol_crypto_auditor_pair();
             source.sign(new Uint8Array(await key.private.sign(source.sens())));
@@ -23578,7 +23723,7 @@ var $;
         },
     });
 })($ || ($ = {}));
-//hyoo/cras/unit/unit.test.ts
+//hyoo/crus/unit/unit.test.ts
 ;
 "use strict";
 var $;
@@ -23724,7 +23869,7 @@ var $;
     var $$;
     (function ($$) {
         function check(vary) {
-            $mol_assert_like(vary, $hyoo_cras_vary_decode($hyoo_cras_vary_encode(vary)));
+            $mol_assert_like(vary, $hyoo_crus_vary_decode($hyoo_crus_vary_encode(vary)));
         }
         $mol_test({
             "Bin"($) {
@@ -23751,8 +23896,8 @@ var $;
                 check(Number.MIN_VALUE);
             },
             "Ref"($) {
-                check($hyoo_cras_ref.make());
-                check($hyoo_cras_ref.make(4611686018427387904n, 2, 3));
+                check($hyoo_crus_ref.make());
+                check($hyoo_crus_ref.make(4611686018427387904n, 2, 3));
             },
             "Str"($) {
                 check('');
@@ -23770,19 +23915,19 @@ var $;
             "DOM"($) {
                 const xml = ($mol_jsx("div", null,
                     $mol_jsx("span", { class: "bar" }, "xxx")));
-                $mol_assert_like($mol_dom_serialize($hyoo_cras_vary_decode($hyoo_cras_vary_encode(xml))), $mol_dom_serialize(xml));
+                $mol_assert_like($mol_dom_serialize($hyoo_crus_vary_decode($hyoo_crus_vary_encode(xml))), $mol_dom_serialize(xml));
             },
             "Tree"($) {
                 const tree = $.$mol_tree2_from_string(`
 				foo \\bar
 					foo \\bar
 			`);
-                $mol_assert_like($.$mol_tree2_to_string($hyoo_cras_vary_decode($hyoo_cras_vary_encode(tree))), $.$mol_tree2_to_string(tree));
+                $mol_assert_like($.$mol_tree2_to_string($hyoo_crus_vary_decode($hyoo_crus_vary_encode(tree))), $.$mol_tree2_to_string(tree));
             },
         });
     })($$ = $_1.$$ || ($_1.$$ = {}));
 })($ || ($ = {}));
-//hyoo/cras/vary/vary.test.tsx
+//hyoo/crus/vary/vary.test.tsx
 ;
 "use strict";
 var $;
@@ -23808,18 +23953,18 @@ var $;
 var $;
 (function ($_1) {
     $mol_test_mocks.push($ => {
-        class $hyoo_cras_auth extends $.$hyoo_cras_auth {
+        class $hyoo_crus_auth extends $.$hyoo_crus_auth {
             static current() {
                 return this.from('_9nV1NuqbUeu1sUiLaq_KI_g1ViEjhM3-PNwxwl4t6AumN_FTqZzWpZ0T1ec64n418nazPbKmzimFyjEJST1cAMPU48vm3r966UVMmfXwrUCGXPHIcvsxSsP1x4Tf7R9c');
             }
         }
         __decorate([
             $mol_mem
-        ], $hyoo_cras_auth, "current", null);
-        $.$hyoo_cras_auth = $hyoo_cras_auth;
+        ], $hyoo_crus_auth, "current", null);
+        $.$hyoo_crus_auth = $hyoo_crus_auth;
     });
 })($ || ($ = {}));
-//hyoo/cras/auth/auth.test.ts
+//hyoo/crus/auth/auth.test.ts
 ;
 "use strict";
 var $;
@@ -24085,147 +24230,162 @@ var $;
 var $;
 (function ($_1) {
     $mol_test_mocks.push($ => {
-        class $hyoo_cras_mine extends $.$hyoo_cras_mine {
+        class $hyoo_crus_mine extends $.$hyoo_crus_mine {
             static rock(hash, next) {
                 return next;
             }
         }
         __decorate([
             $mol_mem_key
-        ], $hyoo_cras_mine, "rock", null);
-        $.$hyoo_cras_mine = $hyoo_cras_mine;
+        ], $hyoo_crus_mine, "rock", null);
+        $.$hyoo_crus_mine = $hyoo_crus_mine;
     });
 })($ || ($ = {}));
-//hyoo/cras/mine/mine.test.ts
+//hyoo/crus/mine/mine.test.ts
 ;
 "use strict";
 var $;
 (function ($_1) {
-    const auth1 = $hyoo_cras_auth.from('_4eLnQsSr5wj6XOzgS5bZa254pkEOf_hg1nReCSR4Zkd-E07aLSwj-II-rZt4ZubInw_f1rZiA0Qa92qR0Gq3I6xYWCkW9Aagc7-97L2P-gI84NaLwdabp_DrZEX3RJTY');
-    const auth2 = $hyoo_cras_auth.from('_5THYp_Njx6-cAU53dRwdv3z8RBAVK7Z2L3OeZmTp8sCsMNXmdssFljy2fxIMDX_oxTFRrRCvAH7s92kUOVn5YYTPGuZ5fQFOAEeRNGGQ47JVCK3Cy_XDSUDvklZ-3Ix4');
+    $mol_test_mocks.push($ => {
+        class $hyoo_crus_yard extends $.$hyoo_crus_yard {
+            static load(land_ref) {
+                return [];
+            }
+            static async save(land_ref, units) { }
+        }
+        $.$hyoo_crus_yard = $hyoo_crus_yard;
+    });
+})($ || ($ = {}));
+//hyoo/crus/yard/yard.test.ts
+;
+"use strict";
+var $;
+(function ($_1) {
+    const auth1 = $hyoo_crus_auth.from('_4eLnQsSr5wj6XOzgS5bZa254pkEOf_hg1nReCSR4Zkd-E07aLSwj-II-rZt4ZubInw_f1rZiA0Qa92qR0Gq3I6xYWCkW9Aagc7-97L2P-gI84NaLwdabp_DrZEX3RJTY');
+    const auth2 = $hyoo_crus_auth.from('_5THYp_Njx6-cAU53dRwdv3z8RBAVK7Z2L3OeZmTp8sCsMNXmdssFljy2fxIMDX_oxTFRrRCvAH7s92kUOVn5YYTPGuZ5fQFOAEeRNGGQ47JVCK3Cy_XDSUDvklZ-3Ix4');
     $mol_test({
         'Join'($) {
-            const land = $hyoo_cras_land.make({ $ });
-            $mol_assert_like(land.joined_list(), []);
-            $mol_assert_like(land.lord_rang(land.lord_numb()), $hyoo_cras_rang.law);
+            const land = $hyoo_crus_land.make({ $ });
+            $mol_assert_equal(land.joined_list(), []);
+            $mol_assert_equal(land.lord_rang(land.lord_numb()), $hyoo_crus_rang.law);
             land.join();
-            $mol_assert_like(land.joined_list(), [land.lord_numb()]);
+            $mol_assert_equal(land.joined_list(), [land.lord_numb()]);
         },
         'Give rights'($) {
-            const land1 = $hyoo_cras_land.make({ $ });
-            const land2 = $hyoo_cras_land.make({ $, lord_numb: () => land1.lord_numb(), auth: () => auth1 });
-            $mol_assert_like(land1.lord_rang(land1.lord_numb()), $hyoo_cras_rang.law);
-            $mol_assert_like(land1.lord_rang(auth1.lord()), $hyoo_cras_rang.get);
-            $mol_assert_fail(() => land2.give(auth2.lord(), $hyoo_cras_rang.add), 'Need add rang to join');
-            $mol_assert_like(land1.lord_rang(auth1.lord()), $hyoo_cras_rang.get);
-            land1.give(auth1.lord(), $hyoo_cras_rang.get);
-            $mol_assert_like(land1.lord_rang(auth1.lord()), $hyoo_cras_rang.get);
-            land1.give(auth1.lord(), $hyoo_cras_rang.add);
-            $mol_assert_like(land1.lord_rang(auth1.lord()), $hyoo_cras_rang.add);
-            land1.give(auth1.lord(), $hyoo_cras_rang.get);
-            $mol_assert_like(land1.lord_rang(auth1.lord()), $hyoo_cras_rang.get);
-            land1.give(auth1.lord(), $hyoo_cras_rang.mod);
-            $mol_assert_like(land1.lord_rang(auth1.lord()), $hyoo_cras_rang.mod);
-            land1.give(auth1.lord(), $hyoo_cras_rang.add);
-            $mol_assert_like(land1.lord_rang(auth1.lord()), $hyoo_cras_rang.add);
-            land1.give(auth1.lord(), $hyoo_cras_rang.law);
-            $mol_assert_like(land1.lord_rang(auth1.lord()), $hyoo_cras_rang.law);
-            land1.give(auth1.lord(), $hyoo_cras_rang.mod);
-            $mol_assert_like(land1.lord_rang(auth1.lord()), $hyoo_cras_rang.mod);
+            const land1 = $hyoo_crus_land.make({ $ });
+            const land2 = $hyoo_crus_land.make({ $, lord_numb: () => land1.lord_numb(), auth: () => auth1 });
+            $mol_assert_equal(land1.lord_rang(land1.lord_numb()), $hyoo_crus_rang.law);
+            $mol_assert_equal(land1.lord_rang(auth1.lord()), $hyoo_crus_rang.get);
+            $mol_assert_fail(() => land2.give(auth2.lord(), $hyoo_crus_rang.add), 'Need add rang to join');
+            $mol_assert_equal(land1.lord_rang(auth1.lord()), $hyoo_crus_rang.get);
+            land1.give(auth1.lord(), $hyoo_crus_rang.get);
+            $mol_assert_equal(land1.lord_rang(auth1.lord()), $hyoo_crus_rang.get);
+            land1.give(auth1.lord(), $hyoo_crus_rang.add);
+            $mol_assert_equal(land1.lord_rang(auth1.lord()), $hyoo_crus_rang.add);
+            land1.give(auth1.lord(), $hyoo_crus_rang.get);
+            $mol_assert_equal(land1.lord_rang(auth1.lord()), $hyoo_crus_rang.get);
+            land1.give(auth1.lord(), $hyoo_crus_rang.mod);
+            $mol_assert_equal(land1.lord_rang(auth1.lord()), $hyoo_crus_rang.mod);
+            land1.give(auth1.lord(), $hyoo_crus_rang.add);
+            $mol_assert_equal(land1.lord_rang(auth1.lord()), $hyoo_crus_rang.add);
+            land1.give(auth1.lord(), $hyoo_crus_rang.law);
+            $mol_assert_equal(land1.lord_rang(auth1.lord()), $hyoo_crus_rang.law);
+            land1.give(auth1.lord(), $hyoo_crus_rang.mod);
+            $mol_assert_equal(land1.lord_rang(auth1.lord()), $hyoo_crus_rang.mod);
             land2.apply_unit(land1.delta_unit());
-            $mol_assert_fail(() => land2.give(auth2.lord(), $hyoo_cras_rang.add), 'Need law rang to change rang');
+            $mol_assert_fail(() => land2.give(auth2.lord(), $hyoo_crus_rang.add), 'Need law rang to change rang');
         },
         'Post Data and pick Delta'($) {
-            const land1 = $hyoo_cras_land.make({ $ });
-            const land2 = $hyoo_cras_land.make({ $, lord_numb: () => land1.lord_numb(), auth: () => auth1 });
-            $mol_assert_like(land1.delta_unit(), []);
+            const land1 = $hyoo_crus_land.make({ $ });
+            const land2 = $hyoo_crus_land.make({ $, lord_numb: () => land1.lord_numb(), auth: () => auth1 });
+            $mol_assert_equal(land1.delta_unit(), []);
             land1.post(0, 0, 1, new Uint8Array([1]));
-            $mol_assert_like(land1.delta_unit().length, 2);
-            const face = new $hyoo_cras_face(land1.face);
+            $mol_assert_equal(land1.delta_unit().length, 2);
+            const face = new $hyoo_crus_face(land1.face);
             land1.post(1, 0, 2, new Uint8Array([2]));
-            $mol_assert_like(land1.delta_unit().length, 3);
-            $mol_assert_like(land1.delta_unit(face).length, 1);
+            $mol_assert_equal(land1.delta_unit().length, 3);
+            $mol_assert_equal(land1.delta_unit(face).length, 1);
             land2.apply_unit(land1.delta_unit());
             $mol_assert_fail(() => land2.post(2, 0, 3, new Uint8Array([3])), 'Need add rang to join');
-            $mol_assert_like(land2.delta_unit().length, 3);
-            $mol_assert_like(land2.delta_unit(face).length, 1);
-            land1.give(auth1.lord(), $hyoo_cras_rang.add);
+            $mol_assert_equal(land2.delta_unit().length, 3);
+            $mol_assert_equal(land2.delta_unit(face).length, 1);
+            land1.give(auth1.lord(), $hyoo_crus_rang.add);
             land2.apply_unit(land1.delta_unit());
             $mol_assert_fail(() => land2.post(2, 0, 3, new Uint8Array([3])), 'Need mod rang to post any data');
-            $mol_assert_like(land2.delta_unit().length, 5);
-            $mol_assert_like(land2.delta_unit(face).length, 3);
+            $mol_assert_equal(land2.delta_unit().length, 5);
+            $mol_assert_equal(land2.delta_unit(face).length, 3);
             land2.post(2, 0, auth1.peer(), new Uint8Array([4]));
-            $mol_assert_like(land2.delta_unit().length, 6);
-            $mol_assert_like(land2.delta_unit(face).length, 4);
-            land1.give(auth1.lord(), $hyoo_cras_rang.mod);
+            $mol_assert_equal(land2.delta_unit().length, 6);
+            $mol_assert_equal(land2.delta_unit(face).length, 4);
+            land1.give(auth1.lord(), $hyoo_crus_rang.mod);
             land2.apply_unit(land1.delta_unit());
             land2.post(2, 0, 3, new Uint8Array([3]));
-            $mol_assert_like(land2.delta_unit().length, 7);
-            $mol_assert_like(land2.delta_unit(face).length, 5);
-            land1.give(auth1.lord(), $hyoo_cras_rang.add);
+            $mol_assert_equal(land2.delta_unit().length, 7);
+            $mol_assert_equal(land2.delta_unit(face).length, 5);
+            land1.give(auth1.lord(), $hyoo_crus_rang.add);
             land2.apply_unit(land1.delta_unit());
-            $mol_assert_like(land2.delta_unit().length, 6);
-            land1.give(auth1.lord(), $hyoo_cras_rang.get);
+            $mol_assert_equal(land2.delta_unit().length, 6);
+            land1.give(auth1.lord(), $hyoo_crus_rang.get);
             land2.apply_unit(land1.delta_unit());
-            $mol_assert_like(land2.delta_unit().length, 4);
+            $mol_assert_equal(land2.delta_unit().length, 4);
         },
         'Self restriction for Add Rang'($) {
-            const land1 = $hyoo_cras_land.make({ $ });
-            const land2 = $hyoo_cras_land.make({ $, lord_numb: () => land1.lord_numb(), auth: () => auth2 });
-            $mol_assert_like(land1.delta_unit(), []);
-            land1.give(auth2.lord(), $hyoo_cras_rang.add);
+            const land1 = $hyoo_crus_land.make({ $ });
+            const land2 = $hyoo_crus_land.make({ $, lord_numb: () => land1.lord_numb(), auth: () => auth2 });
+            $mol_assert_equal(land1.delta_unit(), []);
+            land1.give(auth2.lord(), $hyoo_crus_rang.add);
             land2.apply_unit(land1.delta_unit());
-            $mol_assert_like(land2.delta_unit().length, 2);
+            $mol_assert_equal(land2.delta_unit().length, 2);
             const gist1 = land2.post(0, 0, 0, 'foo');
-            $mol_assert_like(gist1.self(), auth2.peer());
-            $mol_assert_like(land2.delta_unit().length, 4);
+            $mol_assert_equal(gist1.self(), auth2.peer());
+            $mol_assert_equal(land2.delta_unit().length, 4);
             const gist2 = land2.post(0, 0, 0, 'bar');
-            $mol_assert_like(gist2.self(), auth2.peer());
-            $mol_assert_like(land2.delta_unit().length, 4);
+            $mol_assert_equal(gist2.self(), auth2.peer());
+            $mol_assert_equal(land2.delta_unit().length, 4);
         },
-        'Home Area no encryption'($) {
-            const land = $hyoo_cras_land.make({ $ });
-            $mol_assert_not(land.secret());
-            $mol_assert_fail(() => land.encrypt(), 'Home Area never encrypted');
-            $mol_assert_not(land.secret());
+        'Home Land no encryption'($) {
+            const land = $hyoo_crus_land.make({ $ });
+            $mol_assert_equal(land.encrypted(), false);
+            $mol_assert_fail(() => land.encrypt(), 'Home Land never encrypted');
+            $mol_assert_equal(land.encrypted(), false);
         },
-        async 'Area encryption'($) {
-            const land = $mol_wire_async($hyoo_cras_land.make({ $, numb: () => 1 }));
-            $mol_assert_not(await land.secret());
+        async 'Land encryption'($) {
+            const land = $mol_wire_async($hyoo_crus_land.make({ $, numb: () => 1 }));
+            $mol_assert_equal(await land.encrypted(), false);
             await land.encrypt();
-            $mol_assert_ok(await land.secret());
+            $mol_assert_equal(await land.encrypted(), true);
             const gist = await land.post(0, 0, 0, new Uint8Array([1, 2, 3]));
-            $mol_assert_equal(gist.data().length, 7);
-            $mol_assert_like(await land.gist_decode(gist), new Uint8Array([1, 2, 3]));
+            $mol_assert_equal((await land.gist_encode(gist)).data().length, 7);
+            $mol_assert_equal(await land.gist_decode(gist), new Uint8Array([1, 2, 3]));
         },
-        'Area fork & merge'($) {
-            const realm = $hyoo_cras_realm.make({ $ });
+        'Land fork & merge'($) {
+            const realm = $hyoo_crus_realm.make({ $ });
             const base = realm.home().base().land();
             const left = base.fork();
-            base.Root($hyoo_cras_list).items(['foo', 'xxx']);
-            $mol_assert_like(base.Root($hyoo_cras_list).items(), ['foo', 'xxx']);
-            $mol_assert_like(left.Root($hyoo_cras_list).items(), ['foo', 'xxx']);
+            base.Root($hyoo_crus_list).items(['foo', 'xxx']);
+            $mol_assert_equal(base.Root($hyoo_crus_list).items(), ['foo', 'xxx']);
+            $mol_assert_equal(left.Root($hyoo_crus_list).items(), ['foo', 'xxx']);
             left.face.sync(base.face);
-            left.Root($hyoo_cras_list).items(['foo', 'yyy']);
-            $mol_assert_like(left.Root($hyoo_cras_list).items(), ['foo', 'yyy']);
+            left.Root($hyoo_crus_list).items(['foo', 'yyy']);
+            $mol_assert_equal(left.Root($hyoo_crus_list).items(), ['foo', 'yyy']);
             const right = base.fork();
             right.face.sync(left.face);
-            right.Root($hyoo_cras_list).items(['foo', 'zzz']);
-            $mol_assert_like(right.Root($hyoo_cras_list).items(), ['foo', 'zzz']);
+            right.Root($hyoo_crus_list).items(['foo', 'zzz']);
+            $mol_assert_equal(right.Root($hyoo_crus_list).items(), ['foo', 'zzz']);
             const both = base.fork();
-            $mol_assert_like(both.Root($hyoo_cras_list).items(), ['foo', 'xxx']);
+            $mol_assert_equal(both.Root($hyoo_crus_list).items(), ['foo', 'xxx']);
             both.cloves().items([right.ref()]);
-            $mol_assert_like(both.Root($hyoo_cras_list).items(), ['foo', 'zzz']);
+            $mol_assert_equal(both.Root($hyoo_crus_list).items(), ['foo', 'zzz']);
             both.cloves().items([left.ref()]);
-            $mol_assert_like(both.Root($hyoo_cras_list).items(), ['foo', 'yyy']);
+            $mol_assert_equal(both.Root($hyoo_crus_list).items(), ['foo', 'yyy']);
             both.cloves().items([right.ref(), left.ref()]);
-            $mol_assert_like(both.Root($hyoo_cras_list).items(), ['foo', 'yyy']);
+            $mol_assert_equal(both.Root($hyoo_crus_list).items(), ['foo', 'yyy']);
             both.cloves().items([left.ref(), right.ref()]);
-            $mol_assert_like(both.Root($hyoo_cras_list).items(), ['foo', 'zzz']);
+            $mol_assert_equal(both.Root($hyoo_crus_list).items(), ['foo', 'zzz']);
         },
     });
 })($ || ($ = {}));
-//hyoo/cras/land/land.test.ts
+//hyoo/crus/land/land.test.ts
 ;
 "use strict";
 var $;
@@ -24370,7 +24530,7 @@ var $;
 var $;
 (function ($_1) {
     function fork(base) {
-        const land = $hyoo_cras_land.make({ $: base.$ });
+        const land = $hyoo_crus_land.make({ $: base.$ });
         land.apply_land(base);
         return land;
     }
@@ -24380,8 +24540,8 @@ var $;
     }
     $mol_test({
         'Basic list ops'($) {
-            const land = $hyoo_cras_land.make({ $ });
-            const list = land.Node($hyoo_cras_list).Item(0);
+            const land = $hyoo_crus_land.make({ $ });
+            const list = land.Node($hyoo_crus_list).Item(0);
             $mol_assert_like(list.items(), []);
             list.items([2, 3]);
             $mol_assert_like(list.items(), [2, 3]);
@@ -24408,8 +24568,8 @@ var $;
             $mol_assert_like(list.items(), [1, 3]);
         },
         'Different types'($) {
-            const land = $hyoo_cras_land.make({ $ });
-            const list = land.Node($hyoo_cras_list).Item(0);
+            const land = $hyoo_crus_land.make({ $ });
+            const list = land.Node($hyoo_crus_list).Item(0);
             list.items([
                 null,
                 false,
@@ -24444,10 +24604,10 @@ var $;
             ]);
         },
         'List merge'($) {
-            const land1 = $hyoo_cras_land.make({ $ });
-            const land2 = $hyoo_cras_land.make({ $ });
-            const list1 = land1.Node($hyoo_cras_list).Item(0);
-            const list2 = land2.Node($hyoo_cras_list).Item(0);
+            const land1 = $hyoo_crus_land.make({ $ });
+            const land2 = $hyoo_crus_land.make({ $ });
+            const list1 = land1.Node($hyoo_crus_list).Item(0);
+            const list2 = land2.Node($hyoo_crus_list).Item(0);
             list1.items(['foo', 'xxx']);
             land2.face.tick(land2.auth().peer());
             list2.items(['foo', 'yyy']);
@@ -24455,16 +24615,16 @@ var $;
             $mol_assert_like(list1.items(), ['foo', 'yyy', 'foo', 'xxx']);
         },
         'Insert before removed before changed'($) {
-            const land = $hyoo_cras_land.make({ $ });
-            const list = land.Node($hyoo_cras_list).Item(0);
+            const land = $hyoo_crus_land.make({ $ });
+            const list = land.Node($hyoo_crus_list).Item(0);
             list.items(['foo', 'bar']);
             list.items(['xxx', 'foo', 'bar']);
             list.items(['xxx', 'bars']);
             $mol_assert_like(list.items(), ['xxx', 'bars']);
         },
         'Many moves'($) {
-            const land = $hyoo_cras_land.make({ $ });
-            const list = land.Node($hyoo_cras_list).Item(0);
+            const land = $hyoo_crus_land.make({ $ });
+            const list = land.Node($hyoo_crus_list).Item(0);
             list.items(['foo', 'bar', 'lol']);
             list.move(2, 1);
             list.move(2, 1);
@@ -24473,8 +24633,8 @@ var $;
             $mol_assert_like(list.items(), ['bar', 'foo', 'lol']);
         },
         'Reorder separated sublists'($) {
-            const land = $hyoo_cras_land.make({ $ });
-            const list = land.Node($hyoo_cras_list).Item(0);
+            const land = $hyoo_crus_land.make({ $ });
+            const list = land.Node($hyoo_crus_list).Item(0);
             list.items([1, 2, 3, 4, 5, 6]);
             list.move(3, 5);
             list.move(3, 5);
@@ -24485,176 +24645,176 @@ var $;
             $mol_assert_like(list.items(), [1, 3, 2, 4, 6, 5]);
         },
         'Insert after moved right'($) {
-            const base = $hyoo_cras_land.make({ $ });
-            base.Root($hyoo_cras_list).items([1, 2, 3, 4]);
+            const base = $hyoo_crus_land.make({ $ });
+            base.Root($hyoo_crus_list).items([1, 2, 3, 4]);
             const left = fork(base);
-            left.Root($hyoo_cras_list).items([1, 7, 2, 3, 4]);
+            left.Root($hyoo_crus_list).items([1, 7, 2, 3, 4]);
             const right = fork(base);
-            right.Root($hyoo_cras_list).move(0, 2);
+            right.Root($hyoo_crus_list).move(0, 2);
             sync(left, right);
-            $mol_assert_like(left.Root($hyoo_cras_list).items(), right.Root($hyoo_cras_list).items(), [2, 1, 7, 3, 4]);
+            $mol_assert_like(left.Root($hyoo_crus_list).items(), right.Root($hyoo_crus_list).items(), [2, 1, 7, 3, 4]);
         },
         'Insert before moved left'($) {
-            const base = $hyoo_cras_land.make({ $ });
-            base.Root($hyoo_cras_list).items([1, 2, 3, 4]);
+            const base = $hyoo_crus_land.make({ $ });
+            base.Root($hyoo_crus_list).items([1, 2, 3, 4]);
             const left = fork(base);
-            left.Root($hyoo_cras_list).move(1, 0);
+            left.Root($hyoo_crus_list).move(1, 0);
             const right = fork(base);
             right.face.sync(left.face);
-            right.Root($hyoo_cras_list).items([1, 7, 2, 3, 4]);
+            right.Root($hyoo_crus_list).items([1, 7, 2, 3, 4]);
             sync(left, right);
-            $mol_assert_like(left.Root($hyoo_cras_list).items(), right.Root($hyoo_cras_list).items(), [2, 1, 7, 3, 4]);
+            $mol_assert_like(left.Root($hyoo_crus_list).items(), right.Root($hyoo_crus_list).items(), [2, 1, 7, 3, 4]);
         },
         'Move left after inserted'($) {
-            const base = $hyoo_cras_land.make({ $ });
-            base.Root($hyoo_cras_list).items([1, 2, 3, 4]);
+            const base = $hyoo_crus_land.make({ $ });
+            base.Root($hyoo_crus_list).items([1, 2, 3, 4]);
             const left = fork(base);
-            left.Root($hyoo_cras_list).items([1, 7, 2, 3, 4]);
+            left.Root($hyoo_crus_list).items([1, 7, 2, 3, 4]);
             const right = fork(base);
             right.face.sync(left.face);
-            right.Root($hyoo_cras_list).move(1, 0);
+            right.Root($hyoo_crus_list).move(1, 0);
             sync(left, right);
-            $mol_assert_like(left.Root($hyoo_cras_list).items(), right.Root($hyoo_cras_list).items(), [2, 1, 3, 7, 4]);
+            $mol_assert_like(left.Root($hyoo_crus_list).items(), right.Root($hyoo_crus_list).items(), [2, 1, 3, 7, 4]);
         },
         'Insert before moved right'($) {
-            const base = $hyoo_cras_land.make({ $ });
-            base.Root($hyoo_cras_list).items([1, 2, 3, 4]);
+            const base = $hyoo_crus_land.make({ $ });
+            base.Root($hyoo_crus_list).items([1, 2, 3, 4]);
             const left = fork(base);
-            left.Root($hyoo_cras_list).move(1, 4);
+            left.Root($hyoo_crus_list).move(1, 4);
             const right = fork(base);
             right.face.sync(left.face);
-            right.Root($hyoo_cras_list).items([1, 7, 2, 3, 4]);
+            right.Root($hyoo_crus_list).items([1, 7, 2, 3, 4]);
             sync(left, right);
-            $mol_assert_like(left.Root($hyoo_cras_list).items(), right.Root($hyoo_cras_list).items(), [1, 7, 3, 4, 2]);
+            $mol_assert_like(left.Root($hyoo_crus_list).items(), right.Root($hyoo_crus_list).items(), [1, 7, 3, 4, 2]);
         },
         'Move right after inserted'($) {
-            const base = $hyoo_cras_land.make({ $ });
-            base.Root($hyoo_cras_list).items([1, 2, 3, 4]);
+            const base = $hyoo_crus_land.make({ $ });
+            base.Root($hyoo_crus_list).items([1, 2, 3, 4]);
             const left = fork(base);
-            left.Root($hyoo_cras_list).items([1, 7, 2, 3, 4]);
+            left.Root($hyoo_crus_list).items([1, 7, 2, 3, 4]);
             const right = fork(base);
             right.face.sync(left.face);
-            right.Root($hyoo_cras_list).move(1, 4);
+            right.Root($hyoo_crus_list).move(1, 4);
             sync(left, right);
-            $mol_assert_like(left.Root($hyoo_cras_list).items(), right.Root($hyoo_cras_list).items(), [1, 3, 7, 4, 2]);
+            $mol_assert_like(left.Root($hyoo_crus_list).items(), right.Root($hyoo_crus_list).items(), [1, 3, 7, 4, 2]);
         },
         'Insert after wiped'($) {
-            const base = $hyoo_cras_land.make({ $ });
-            base.Root($hyoo_cras_list).items([1, 2, 3, 4]);
+            const base = $hyoo_crus_land.make({ $ });
+            base.Root($hyoo_crus_list).items([1, 2, 3, 4]);
             const left = fork(base);
-            left.Root($hyoo_cras_list).items([1, 3, 4]);
+            left.Root($hyoo_crus_list).items([1, 3, 4]);
             const right = fork(base);
             right.face.sync(left.face);
-            right.Root($hyoo_cras_list).items([1, 2, 7, 3, 4]);
+            right.Root($hyoo_crus_list).items([1, 2, 7, 3, 4]);
             sync(left, right);
-            $mol_assert_like(left.Root($hyoo_cras_list).items(), right.Root($hyoo_cras_list).items(), [1, 7, 3, 4]);
+            $mol_assert_like(left.Root($hyoo_crus_list).items(), right.Root($hyoo_crus_list).items(), [1, 7, 3, 4]);
         },
         'Wiped before inserted'($) {
-            const base = $hyoo_cras_land.make({ $ });
-            base.Root($hyoo_cras_list).items([1, 2, 3, 4]);
+            const base = $hyoo_crus_land.make({ $ });
+            base.Root($hyoo_crus_list).items([1, 2, 3, 4]);
             const left = fork(base);
-            left.Root($hyoo_cras_list).items([1, 2, 7, 3, 4]);
+            left.Root($hyoo_crus_list).items([1, 2, 7, 3, 4]);
             const right = fork(base);
             right.face.sync(left.face);
-            right.Root($hyoo_cras_list).items([1, 3, 4]);
+            right.Root($hyoo_crus_list).items([1, 3, 4]);
             sync(left, right);
-            $mol_assert_like(left.Root($hyoo_cras_list).items(), right.Root($hyoo_cras_list).items(), [1, 7, 3, 4]);
+            $mol_assert_like(left.Root($hyoo_crus_list).items(), right.Root($hyoo_crus_list).items(), [1, 7, 3, 4]);
         },
         'Insert before wiped'($) {
-            const base = $hyoo_cras_land.make({ $ });
-            base.Root($hyoo_cras_list).items([1, 2, 3, 4]);
+            const base = $hyoo_crus_land.make({ $ });
+            base.Root($hyoo_crus_list).items([1, 2, 3, 4]);
             const left = fork(base);
-            left.Root($hyoo_cras_list).wipe(2);
+            left.Root($hyoo_crus_list).wipe(2);
             const right = fork(base);
             right.face.sync(left.face);
-            right.Root($hyoo_cras_list).items([1, 2, 7, 3, 4]);
+            right.Root($hyoo_crus_list).items([1, 2, 7, 3, 4]);
             sync(left, right);
-            $mol_assert_like(left.Root($hyoo_cras_list).items(), right.Root($hyoo_cras_list).items(), [1, 2, 7, 4]);
+            $mol_assert_like(left.Root($hyoo_crus_list).items(), right.Root($hyoo_crus_list).items(), [1, 2, 7, 4]);
         },
         'Wiped after inserted'($) {
-            const base = $hyoo_cras_land.make({ $ });
-            base.Root($hyoo_cras_list).items([1, 2, 3, 4]);
+            const base = $hyoo_crus_land.make({ $ });
+            base.Root($hyoo_crus_list).items([1, 2, 3, 4]);
             const left = fork(base);
-            left.Root($hyoo_cras_list).items([1, 2, 7, 3, 4]);
+            left.Root($hyoo_crus_list).items([1, 2, 7, 3, 4]);
             const right = fork(base);
             right.face.sync(left.face);
-            right.Root($hyoo_cras_list).wipe(2);
+            right.Root($hyoo_crus_list).wipe(2);
             sync(left, right);
-            $mol_assert_like(left.Root($hyoo_cras_list).items(), right.Root($hyoo_cras_list).items(), [1, 2, 7, 4]);
+            $mol_assert_like(left.Root($hyoo_crus_list).items(), right.Root($hyoo_crus_list).items(), [1, 2, 7, 4]);
         },
         'Insert after moved out'($) {
-            const base = $hyoo_cras_land.make({ $ });
-            base.Root($hyoo_cras_list).items([1, 2, 3, 4]);
+            const base = $hyoo_crus_land.make({ $ });
+            base.Root($hyoo_crus_list).items([1, 2, 3, 4]);
             const left = fork(base);
-            left.gist_move(left.Root($hyoo_cras_list).units()[1], 1, 0);
+            left.gist_move(left.Root($hyoo_crus_list).units()[1], 1, 0);
             const right = fork(base);
             right.face.sync(left.face);
-            right.Root($hyoo_cras_list).items([1, 2, 7, 3, 4]);
+            right.Root($hyoo_crus_list).items([1, 2, 7, 3, 4]);
             sync(left, right);
-            $mol_assert_like(left.Root($hyoo_cras_list).items(), right.Root($hyoo_cras_list).items(), [1, 7, 3, 4]);
-            $mol_assert_like(left.Node($hyoo_cras_list).Item(1).items(), right.Node($hyoo_cras_list).Item(1).items(), [2]);
+            $mol_assert_like(left.Root($hyoo_crus_list).items(), right.Root($hyoo_crus_list).items(), [1, 7, 3, 4]);
+            $mol_assert_like(left.Node($hyoo_crus_list).Item(1).items(), right.Node($hyoo_crus_list).Item(1).items(), [2]);
         },
         'Move out before inserted'($) {
-            const base = $hyoo_cras_land.make({ $ });
-            base.Root($hyoo_cras_list).items([1, 2, 3, 4]);
+            const base = $hyoo_crus_land.make({ $ });
+            base.Root($hyoo_crus_list).items([1, 2, 3, 4]);
             const left = fork(base);
-            left.Root($hyoo_cras_list).items([1, 2, 7, 3, 4]);
+            left.Root($hyoo_crus_list).items([1, 2, 7, 3, 4]);
             const right = fork(base);
             right.face.sync(left.face);
-            right.gist_move(right.Root($hyoo_cras_list).units()[1], 1, 0);
+            right.gist_move(right.Root($hyoo_crus_list).units()[1], 1, 0);
             sync(left, right);
-            $mol_assert_like(left.Root($hyoo_cras_list).items(), right.Root($hyoo_cras_list).items(), [1, 7, 3, 4]);
-            $mol_assert_like(left.Node($hyoo_cras_list).Item(1).items(), right.Node($hyoo_cras_list).Item(1).items(), [2]);
+            $mol_assert_like(left.Root($hyoo_crus_list).items(), right.Root($hyoo_crus_list).items(), [1, 7, 3, 4]);
+            $mol_assert_like(left.Node($hyoo_crus_list).Item(1).items(), right.Node($hyoo_crus_list).Item(1).items(), [2]);
         },
         'Insert before changed'($) {
-            const base = $hyoo_cras_land.make({ $ });
-            base.Root($hyoo_cras_list).items([1, 2, 3, 4]);
+            const base = $hyoo_crus_land.make({ $ });
+            base.Root($hyoo_crus_list).items([1, 2, 3, 4]);
             const left = fork(base);
-            left.Root($hyoo_cras_list).items([1, 2, 7, 4]);
+            left.Root($hyoo_crus_list).items([1, 2, 7, 4]);
             const right = fork(base);
             right.face.sync(left.face);
-            right.Root($hyoo_cras_list).items([1, 2, 13, 3, 4]);
+            right.Root($hyoo_crus_list).items([1, 2, 13, 3, 4]);
             sync(left, right);
-            $mol_assert_like(left.Root($hyoo_cras_list).items(), right.Root($hyoo_cras_list).items(), [1, 2, 13, 7, 4]);
+            $mol_assert_like(left.Root($hyoo_crus_list).items(), right.Root($hyoo_crus_list).items(), [1, 2, 13, 7, 4]);
         },
         'Change after inserted'($) {
-            const base = $hyoo_cras_land.make({ $ });
-            base.Root($hyoo_cras_list).items([1, 2, 3, 4]);
+            const base = $hyoo_crus_land.make({ $ });
+            base.Root($hyoo_crus_list).items([1, 2, 3, 4]);
             const left = fork(base);
-            left.Root($hyoo_cras_list).items([1, 2, 13, 3, 4]);
+            left.Root($hyoo_crus_list).items([1, 2, 13, 3, 4]);
             const right = fork(base);
             right.face.sync(left.face);
-            right.Root($hyoo_cras_list).items([1, 2, 7, 4]);
+            right.Root($hyoo_crus_list).items([1, 2, 7, 4]);
             sync(left, right);
-            $mol_assert_like(left.Root($hyoo_cras_list).items(), right.Root($hyoo_cras_list).items(), [1, 2, 7, 13, 4]);
+            $mol_assert_like(left.Root($hyoo_crus_list).items(), right.Root($hyoo_crus_list).items(), [1, 2, 7, 13, 4]);
         },
         'Insert between moved'($) {
-            const base = $hyoo_cras_land.make({ $ });
-            base.Root($hyoo_cras_list).items([1, 2, 3, 4, 5, 6]);
+            const base = $hyoo_crus_land.make({ $ });
+            base.Root($hyoo_crus_list).items([1, 2, 3, 4, 5, 6]);
             const left = fork(base);
-            left.Root($hyoo_cras_list).move(1, 5);
-            left.Root($hyoo_cras_list).move(1, 5);
+            left.Root($hyoo_crus_list).move(1, 5);
+            left.Root($hyoo_crus_list).move(1, 5);
             const right = fork(base);
             right.face.sync(left.face);
-            right.Root($hyoo_cras_list).items([1, 2, 7, 3, 4, 5, 6]);
+            right.Root($hyoo_crus_list).items([1, 2, 7, 3, 4, 5, 6]);
             sync(left, right);
-            $mol_assert_like(left.Root($hyoo_cras_list).items(), right.Root($hyoo_cras_list).items(), [1, 4, 5, 2, 7, 3, 6]);
+            $mol_assert_like(left.Root($hyoo_crus_list).items(), right.Root($hyoo_crus_list).items(), [1, 4, 5, 2, 7, 3, 6]);
         },
         'Move near inserted'($) {
-            const base = $hyoo_cras_land.make({ $ });
-            base.Root($hyoo_cras_list).items([1, 2, 3, 4, 5, 6]);
+            const base = $hyoo_crus_land.make({ $ });
+            base.Root($hyoo_crus_list).items([1, 2, 3, 4, 5, 6]);
             const left = fork(base);
-            left.Root($hyoo_cras_list).items([1, 2, 7, 3, 4, 5, 6]);
+            left.Root($hyoo_crus_list).items([1, 2, 7, 3, 4, 5, 6]);
             const right = fork(base);
             right.face.sync(left.face);
-            right.Root($hyoo_cras_list).move(1, 5);
-            right.Root($hyoo_cras_list).move(1, 5);
+            right.Root($hyoo_crus_list).move(1, 5);
+            right.Root($hyoo_crus_list).move(1, 5);
             sync(left, right);
-            $mol_assert_like(left.Root($hyoo_cras_list).items(), right.Root($hyoo_cras_list).items(), [1, 4, 5, 2, 3, 7, 6]);
+            $mol_assert_like(left.Root($hyoo_crus_list).items(), right.Root($hyoo_crus_list).items(), [1, 4, 5, 2, 3, 7, 6]);
         },
     });
 })($ || ($ = {}));
-//hyoo/cras/list/list.test.ts
+//hyoo/crus/list/list.test.ts
 ;
 "use strict";
 var $;
@@ -24807,8 +24967,8 @@ var $;
     (function ($$) {
         $mol_test({
             "Empty representation"($) {
-                const land = $hyoo_cras_land.make({ $ });
-                const reg = land.Node($hyoo_cras_reg).Item(0);
+                const land = $hyoo_crus_land.make({ $ });
+                const reg = land.Node($hyoo_crus_reg).Item(0);
                 $mol_assert_like(reg.value_bool(), false);
                 $mol_assert_like(reg.value_int(), 0n);
                 $mol_assert_like(reg.value_real(), Number.NaN);
@@ -24817,8 +24977,8 @@ var $;
                 $mol_assert_like(reg.value_ref(), null);
             },
             "Bool representation"($) {
-                const land = $hyoo_cras_land.make({ $ });
-                const reg = land.Node($hyoo_cras_reg).Item(0);
+                const land = $hyoo_crus_land.make({ $ });
+                const reg = land.Node($hyoo_crus_reg).Item(0);
                 reg.value_bool(true);
                 $mol_assert_like(reg.value_bool(), true);
                 $mol_assert_like(reg.value_int(), 1n);
@@ -24835,8 +24995,8 @@ var $;
                 $mol_assert_like(reg.value_ref(), null);
             },
             "Int representation"($) {
-                const land = $hyoo_cras_land.make({ $ });
-                const reg = land.Node($hyoo_cras_reg).Item(0);
+                const land = $hyoo_crus_land.make({ $ });
+                const reg = land.Node($hyoo_crus_reg).Item(0);
                 reg.value_int(4611686018427387904n);
                 $mol_assert_like(reg.value_bool(), true);
                 $mol_assert_like(reg.value_int(), 4611686018427387904n);
@@ -24853,8 +25013,8 @@ var $;
                 $mol_assert_like(reg.value_ref(), null);
             },
             "Real representation"($) {
-                const land = $hyoo_cras_land.make({ $ });
-                const reg = land.Node($hyoo_cras_reg).Item(0);
+                const land = $hyoo_crus_land.make({ $ });
+                const reg = land.Node($hyoo_crus_reg).Item(0);
                 reg.value_real(Math.PI);
                 $mol_assert_like(reg.value_bool(), true);
                 $mol_assert_like(reg.value_int(), 3n);
@@ -24899,8 +25059,8 @@ var $;
                 $mol_assert_like(reg.value_ref(), null);
             },
             "Bin representation"($) {
-                const land = $hyoo_cras_land.make({ $ });
-                const reg = land.Node($hyoo_cras_reg).Item(0);
+                const land = $hyoo_crus_land.make({ $ });
+                const reg = land.Node($hyoo_crus_reg).Item(0);
                 reg.value_bin(new Uint8Array([1, 2, 3]));
                 $mol_assert_like(reg.value_bool(), true);
                 $mol_assert_like(reg.value_int(), 3n);
@@ -24924,8 +25084,8 @@ var $;
                 $mol_assert_like(reg.value_ref(), null);
             },
             "String representation"($) {
-                const land = $hyoo_cras_land.make({ $ });
-                const reg = land.Node($hyoo_cras_reg).Item(0);
+                const land = $hyoo_crus_land.make({ $ });
+                const reg = land.Node($hyoo_crus_reg).Item(0);
                 reg.value_str('foo');
                 $mol_assert_like(reg.value_bool(), true);
                 $mol_assert_like(reg.value_int(), 0n);
@@ -24954,8 +25114,8 @@ var $;
                 $mol_assert_like(reg.value_ref(), null);
             },
             "Reference representation"($) {
-                const land = $hyoo_cras_land.make({ $ });
-                const reg = land.Node($hyoo_cras_reg).Item(123);
+                const land = $hyoo_crus_land.make({ $ });
+                const reg = land.Node($hyoo_crus_reg).Item(123);
                 reg.value_ref(reg.ref());
                 $mol_assert_like(reg.value_bool(), true);
                 $mol_assert_like(reg.value_int(), land.lord_numb() + (123n << 96n));
@@ -24972,8 +25132,8 @@ var $;
                 $mol_assert_like(reg.value_ref(), null);
             },
             "Store custom types"($) {
-                const land = $hyoo_cras_land.make({ $ });
-                const reg = land.Node($hyoo_cras_reg).Item(0);
+                const land = $hyoo_crus_land.make({ $ });
+                const reg = land.Node($hyoo_crus_reg).Item(0);
                 $mol_assert_like(reg.value_as($mol_data_email), null);
                 reg.value_as($mol_data_email, 'foo@exaple.org');
                 $mol_assert_like(reg.value_as($mol_data_email), 'foo@exaple.org');
@@ -24983,30 +25143,30 @@ var $;
                 $mol_assert_like(reg.value_as($mol_data_email), null);
             },
             "Hyper link to another land"($) {
-                const realm = $hyoo_cras_realm.make({ $ });
+                const realm = $hyoo_crus_realm.make({ $ });
                 const land = realm.home().base().land();
-                const reg = land.Node($hyoo_cras_reg).Item(1);
-                const remote = reg.yoke(null).Root($hyoo_cras_reg);
+                const reg = land.Node($hyoo_crus_reg).Item(1);
+                const remote = reg.yoke(null).Root($hyoo_crus_reg);
                 $mol_assert_unique(reg.land(), remote.land());
                 $mol_assert_like(reg.value_ref(), remote.ref());
-                $mol_assert_like(reg.yoke(null).Root($hyoo_cras_reg), remote);
+                $mol_assert_like(reg.yoke(null).Root($hyoo_crus_reg), remote);
             },
             "Narrow registers"($) {
-                const realm = $hyoo_cras_realm.make({ $ });
+                const realm = $hyoo_crus_realm.make({ $ });
                 const land = realm.home().base().land();
-                const bin = land.Node($hyoo_cras_reg_bin).Item(1);
+                const bin = land.Node($hyoo_crus_reg_bin).Item(1);
                 $mol_assert_like(bin.value(), null);
                 bin.value(new Uint8Array([1, 2, 3]));
                 $mol_assert_like(bin.value(), new Uint8Array([1, 2, 3]));
-                const str = land.Node($hyoo_cras_reg_str).Item(2);
+                const str = land.Node($hyoo_crus_reg_str).Item(2);
                 $mol_assert_like(str.value(), '');
                 str.value('foo');
                 $mol_assert_like(str.value(), 'foo');
             },
             "Register with linked nodes"($) {
-                const realm = $hyoo_cras_realm.make({ $ });
+                const realm = $hyoo_crus_realm.make({ $ });
                 const land = realm.home().base().land();
-                const reg = land.Node($hyoo_cras_reg_ref(() => $hyoo_cras_reg)).Item(1);
+                const reg = land.Node($hyoo_crus_reg_ref(() => $hyoo_crus_reg)).Item(1);
                 $mol_assert_like(reg.remote(), null);
                 reg.remote(reg);
                 $mol_assert_like(reg.value_ref(), reg.remote().value_ref(), reg.ref());
@@ -25014,16 +25174,16 @@ var $;
         });
     })($$ = $_1.$$ || ($_1.$$ = {}));
 })($ || ($ = {}));
-//hyoo/cras/reg/reg.test.ts
+//hyoo/crus/reg/reg.test.ts
 ;
 "use strict";
 var $;
 (function ($) {
-    function $hyoo_cras_reg_ref(Value) {
-        class Narrow extends $hyoo_cras_reg {
+    function $hyoo_crus_reg_ref(Value) {
+        class Narrow extends $hyoo_crus_reg {
             static Value = Value;
             static toJSON() {
-                return '$hyoo_cras_reg_ref(()=>' + Value() + ')';
+                return '$hyoo_crus_reg_ref(()=>' + Value() + ')';
             }
             remote(next) {
                 const realm = this.realm();
@@ -25045,24 +25205,24 @@ var $;
         ], Narrow.prototype, "remote_ensure", null);
         return Narrow;
     }
-    $.$hyoo_cras_reg_ref = $hyoo_cras_reg_ref;
+    $.$hyoo_crus_reg_ref = $hyoo_crus_reg_ref;
 })($ || ($ = {}));
-//hyoo/cras/reg/ref/ref.ts
+//hyoo/crus/reg/ref/ref.ts
 ;
 "use strict";
 var $;
 (function ($) {
-    function $hyoo_cras_list_ref(Value) {
-        class Narrow extends $hyoo_cras_list {
+    function $hyoo_crus_list_ref(Value) {
+        class Narrow extends $hyoo_crus_list {
             static Value = Value;
             static toJSON() {
-                return '$hyoo_cras_list_ref(()=>' + Value() + ')';
+                return '$hyoo_crus_list_ref(()=>' + Value() + ')';
             }
             remote_list(next) {
                 const realm = this.realm();
                 const Node = Value();
                 return this.items(next?.map(item => item.ref()))
-                    .map($hyoo_cras_vary_cast_ref)
+                    .map($hyoo_crus_vary_cast_ref)
                     .map(ref => realm.Node(Node, ref));
             }
             remote_make() {
@@ -25079,69 +25239,69 @@ var $;
         ], Narrow.prototype, "remote_make", null);
         return Narrow;
     }
-    $.$hyoo_cras_list_ref = $hyoo_cras_list_ref;
+    $.$hyoo_crus_list_ref = $hyoo_crus_list_ref;
 })($ || ($ = {}));
-//hyoo/cras/list/ref/ref.ts
+//hyoo/crus/list/ref/ref.ts
 ;
 "use strict";
 var $;
 (function ($_1) {
     var $$;
     (function ($$) {
-        const auth1 = $hyoo_cras_auth.from('_4eLnQsSr5wj6XOzgS5bZa254pkEOf_hg1nReCSR4Zkd-E07aLSwj-II-rZt4ZubInw_f1rZiA0Qa92qR0Gq3I6xYWCkW9Aagc7-97L2P-gI84NaLwdabp_DrZEX3RJTY');
+        const auth1 = $hyoo_crus_auth.from('_4eLnQsSr5wj6XOzgS5bZa254pkEOf_hg1nReCSR4Zkd-E07aLSwj-II-rZt4ZubInw_f1rZiA0Qa92qR0Gq3I6xYWCkW9Aagc7-97L2P-gI84NaLwdabp_DrZEX3RJTY');
         $mol_test({
             async 'Dictionary invariants'($) {
-                const land = $hyoo_cras_land.make({ $ });
-                const dict = land.Node($hyoo_cras_dict).Item(0);
+                const land = $hyoo_crus_land.make({ $ });
+                const dict = land.Node($hyoo_crus_dict).Item(0);
                 $mol_assert_like(dict.keys(), []);
-                dict.dive(123, $hyoo_cras_reg);
-                dict.dive('xxx', $hyoo_cras_reg);
+                dict.dive(123, $hyoo_crus_reg);
+                dict.dive('xxx', $hyoo_crus_reg);
                 $mol_assert_like(dict.keys(), ['xxx', 123]);
                 $mol_assert_ok(dict.has(123));
                 $mol_assert_ok(dict.has('xxx'));
                 $mol_assert_not(dict.has('yyy'));
-                $mol_assert_like(dict.dive(123, $hyoo_cras_reg).value_vary(), null);
-                $mol_assert_like(dict.dive('xxx', $hyoo_cras_reg).value_vary(), null);
-                dict.dive(123, $hyoo_cras_reg).value_vary(777);
-                $mol_assert_like(dict.dive(123, $hyoo_cras_reg).value_vary(), 777);
-                dict.dive('xxx', $hyoo_cras_list).items(['foo', 'bar']);
-                $mol_assert_like(dict.dive('xxx', $hyoo_cras_list).items(), ['foo', 'bar']);
+                $mol_assert_like(dict.dive(123, $hyoo_crus_reg).value_vary(), null);
+                $mol_assert_like(dict.dive('xxx', $hyoo_crus_reg).value_vary(), null);
+                dict.dive(123, $hyoo_crus_reg).value_vary(777);
+                $mol_assert_like(dict.dive(123, $hyoo_crus_reg).value_vary(), 777);
+                dict.dive('xxx', $hyoo_crus_list).items(['foo', 'bar']);
+                $mol_assert_like(dict.dive('xxx', $hyoo_crus_list).items(), ['foo', 'bar']);
                 dict.has(123, false);
                 $mol_assert_like(dict.keys(), ['xxx']);
             },
             async 'Dictionary merge'($) {
-                const land1 = $hyoo_cras_land.make({ $ });
-                const land2 = $hyoo_cras_land.make({ $ });
-                const dict1 = land1.Node($hyoo_cras_dict).Item(0);
-                const dict2 = land2.Node($hyoo_cras_dict).Item(0);
-                dict1.dive(123, $hyoo_cras_reg).value_vary(666);
+                const land1 = $hyoo_crus_land.make({ $ });
+                const land2 = $hyoo_crus_land.make({ $ });
+                const dict1 = land1.Node($hyoo_crus_dict).Item(0);
+                const dict2 = land2.Node($hyoo_crus_dict).Item(0);
+                dict1.dive(123, $hyoo_crus_reg).value_vary(666);
                 land2.face.tick(land2.auth().peer());
-                dict2.dive(123, $hyoo_cras_reg).value_vary(777);
+                dict2.dive(123, $hyoo_crus_reg).value_vary(777);
                 land1.apply_unit(land2.delta_unit());
-                $mol_assert_like(dict1.dive(123, $hyoo_cras_reg).value_vary(), 777);
-                dict1.dive('xxx', $hyoo_cras_list).items(['foo']);
+                $mol_assert_like(dict1.dive(123, $hyoo_crus_reg).value_vary(), 777);
+                dict1.dive('xxx', $hyoo_crus_list).items(['foo']);
                 land2.face.tick(land2.auth().peer());
-                dict2.dive('xxx', $hyoo_cras_list).items(['bar']);
+                dict2.dive('xxx', $hyoo_crus_list).items(['bar']);
                 land1.apply_unit(land2.delta_unit());
-                $mol_assert_like(dict1.dive('xxx', $hyoo_cras_list).items(), ['bar', 'foo']);
+                $mol_assert_like(dict1.dive('xxx', $hyoo_crus_list).items(), ['bar', 'foo']);
             },
             "Narrowed Dictionary with linked Dictionaries and others"($) {
-                const realm = $hyoo_cras_realm.make({ $ });
+                const realm = $hyoo_crus_realm.make({ $ });
                 const land = realm.home().base().land();
-                class User extends $hyoo_cras_dict_obj({
-                    Title: $hyoo_cras_reg_str,
-                    Account: $hyoo_cras_reg_ref(() => Account),
-                    Articles: $hyoo_cras_list_ref(() => Article),
+                class User extends $hyoo_crus_dict_obj({
+                    Title: $hyoo_crus_reg_str,
+                    Account: $hyoo_crus_reg_ref(() => Account),
+                    Articles: $hyoo_crus_list_ref(() => Article),
                 }) {
                 }
-                class Account extends $hyoo_cras_dict_obj({
-                    Title: $hyoo_cras_reg_str,
-                    User: $hyoo_cras_reg_ref(() => User),
+                class Account extends $hyoo_crus_dict_obj({
+                    Title: $hyoo_crus_reg_str,
+                    User: $hyoo_crus_reg_ref(() => User),
                 }) {
                 }
-                class Article extends $hyoo_cras_dict_obj({
-                    Title: $hyoo_cras_reg_str,
-                    Author: $hyoo_cras_reg_ref(() => User),
+                class Article extends $hyoo_crus_dict_obj({
+                    Title: $hyoo_crus_reg_str,
+                    Author: $hyoo_crus_reg_ref(() => User),
                 }) {
                 }
                 const user = land.Node(User).Item(1);
@@ -25159,7 +25319,7 @@ var $;
         });
     })($$ = $_1.$$ || ($_1.$$ = {}));
 })($ || ($ = {}));
-//hyoo/cras/dict/dict.test.ts
+//hyoo/crus/dict/dict.test.ts
 ;
 "use strict";
 var $;
@@ -25232,8 +25392,8 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    function $hyoo_cras_dict_obj(schema) {
-        const Entity = class Entity extends $hyoo_cras_dict {
+    function $hyoo_crus_dict_obj(schema) {
+        const Entity = class Entity extends $hyoo_crus_dict {
         };
         for (const field in schema) {
             Object.defineProperty(Entity.prototype, field, { get: function () {
@@ -25243,16 +25403,16 @@ var $;
         }
         return Entity;
     }
-    $.$hyoo_cras_dict_obj = $hyoo_cras_dict_obj;
+    $.$hyoo_crus_dict_obj = $hyoo_crus_dict_obj;
 })($ || ($ = {}));
-//hyoo/cras/dict/obj/obj.ts
+//hyoo/crus/dict/obj/obj.ts
 ;
 "use strict";
 var $;
 (function ($_1) {
     $mol_test({
         'Per app profiles'($) {
-            const realm = $hyoo_cras_realm.make({ $ });
+            const realm = $hyoo_crus_realm.make({ $ });
             const base = realm.home().base();
             const profile1 = base.Profile('my_foo');
             const profile2 = base.Profile('my_bar');
@@ -25262,7 +25422,7 @@ var $;
         },
     });
 })($ || ($ = {}));
-//hyoo/cras/base/base.test.ts
+//hyoo/crus/base/base.test.ts
 ;
 "use strict";
 var $;
@@ -25388,9 +25548,9 @@ var $;
 (function ($_1) {
     $mol_test({
         'Change sequences'($) {
-            const land = $hyoo_cras_land.make({ $ });
-            const text = land.Root($hyoo_cras_text);
-            const list = land.Root($hyoo_cras_list);
+            const land = $hyoo_crus_land.make({ $ });
+            const text = land.Root($hyoo_crus_text);
+            const list = land.Root($hyoo_crus_list);
             $mol_assert_like(text.str(), '');
             $mol_assert_like(list.items(), []);
             text.str('foo');
@@ -25416,8 +25576,8 @@ var $;
             $mol_assert_like(list.items(), ['foo', ' ', ' Bar', 'Bar']);
         },
         async 'str: Offset <=> Point'($) {
-            const land = $hyoo_cras_land.make({ $ });
-            const text = land.Root($hyoo_cras_text);
+            const land = $hyoo_crus_land.make({ $ });
+            const text = land.Root($hyoo_crus_text);
             text.str('fooBar');
             const [first, second] = text.units();
             $mol_assert_like(text.point_by_offset(0), [first.self(), 0]);
@@ -25433,20 +25593,20 @@ var $;
             $mol_assert_like(text.offset_by_point([0, 1]), [0, 7]);
         },
         async 'text: Offset <=> Point'($) {
-            const land = $hyoo_cras_land.make({ $ });
-            const text = land.Root($hyoo_cras_text);
+            const land = $hyoo_crus_land.make({ $ });
+            const text = land.Root($hyoo_crus_text);
             text.text('foo bar\n666 777');
-            const [first, second] = text.nodes($hyoo_cras_text);
+            const [first, second] = text.nodes($hyoo_crus_text);
             $mol_assert_like(text.point_by_offset(0), [first.units()[0].self(), 0]);
             $mol_assert_like(text.offset_by_point([first.units()[0].self(), 0]), [first.units()[0].self(), 0]);
             $mol_assert_like(text.point_by_offset(8), [first.units()[2].self(), 1]);
             $mol_assert_like(text.offset_by_point([first.units()[2].self(), 1]), [first.units()[2].self(), 8]);
         },
         async 'Merge different sequences'($) {
-            const land1 = $hyoo_cras_land.make({ $ });
-            const land2 = $hyoo_cras_land.make({ $ });
-            const text1 = land1.Node($hyoo_cras_text).Item(0);
-            const text2 = land2.Node($hyoo_cras_text).Item(0);
+            const land1 = $hyoo_crus_land.make({ $ });
+            const land2 = $hyoo_crus_land.make({ $ });
+            const text1 = land1.Node($hyoo_crus_text).Item(0);
+            const text2 = land2.Node($hyoo_crus_text).Item(0);
             text1.str('foo bar.');
             land2.face.sync(land1.face);
             text2.str('xxx yyy.');
@@ -25457,26 +25617,26 @@ var $;
             $mol_assert_like(text1.str(), text2.str(), 'xxx yyy.foo bar.');
         },
         async 'Merge same insertions with different changes to same place'($) {
-            const base = $hyoo_cras_land.make({ $ });
-            base.Root($hyoo_cras_text).str('( )');
-            const left = $hyoo_cras_land.make({ $ });
+            const base = $hyoo_crus_land.make({ $ });
+            base.Root($hyoo_crus_text).str('( )');
+            const left = $hyoo_crus_land.make({ $ });
             left.apply_unit(base.delta_unit());
-            left.Root($hyoo_cras_text).str('( [ f ] )');
-            left.Root($hyoo_cras_text).str('( [ foo ] )');
-            const right = $hyoo_cras_land.make({ $ });
+            left.Root($hyoo_crus_text).str('( [ f ] )');
+            left.Root($hyoo_crus_text).str('( [ foo ] )');
+            const right = $hyoo_crus_land.make({ $ });
             right.apply_unit(base.delta_unit());
             right.face.sync(left.face);
-            right.Root($hyoo_cras_text).str('( [ f ] )');
-            right.Root($hyoo_cras_text).str('( [ fu ] )');
+            right.Root($hyoo_crus_text).str('( [ f ] )');
+            right.Root($hyoo_crus_text).str('( [ fu ] )');
             const left_delta = left.delta_unit(base.face);
             const right_delta = right.delta_unit(base.face);
             left.apply_unit(right_delta);
             right.apply_unit(left_delta);
-            $mol_assert_like(left.Root($hyoo_cras_text).str(), right.Root($hyoo_cras_text).str(), '( [ fu ] [ foo ] )');
+            $mol_assert_like(left.Root($hyoo_crus_text).str(), right.Root($hyoo_crus_text).str(), '( [ fu ] [ foo ] )');
         },
     });
 })($ || ($ = {}));
-//hyoo/cras/text/text.test.ts
+//hyoo/crus/text/text.test.ts
 ;
 "use strict";
 var $;

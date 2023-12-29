@@ -2096,24 +2096,25 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    enum $hyoo_cras_unit_kind {
+    enum $hyoo_crus_unit_kind {
         gist = 0,
         pass = 255,
         gift = 253
     }
-    class $hyoo_cras_unit extends $mol_buffer {
+    class $hyoo_crus_unit extends $mol_buffer {
         static size: number;
         constructor(buffer?: ArrayBuffer, byteOffset?: number, byteLength?: number);
         kind(): "gist" | "pass" | "gift";
         choose<Res>(ways: {
-            pass: (unit: $hyoo_cras_pass) => Res;
-            gift: (unit: $hyoo_cras_gift) => Res;
-            gist: (unit: $hyoo_cras_gist) => Res;
+            pass: (unit: $hyoo_crus_pass) => Res;
+            gift: (unit: $hyoo_crus_gift) => Res;
+            gist: (unit: $hyoo_crus_gist) => Res;
         }): Res;
         peer(next?: number): number;
         salt(): Uint8Array;
         sens(next?: ArrayLike<number>): Uint8Array;
         sign(next?: ArrayLike<number>): Uint8Array;
+        signed(): boolean;
     }
 }
 
@@ -2137,7 +2138,7 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    class $hyoo_cras_pass extends $hyoo_cras_unit {
+    class $hyoo_crus_pass extends $hyoo_crus_unit {
         work(): number;
         lord(next?: bigint): bigint;
         auth(next?: ArrayLike<number>): Uint8Array;
@@ -2145,7 +2146,7 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    enum $hyoo_cras_rang {
+    enum $hyoo_crus_rang {
         nil = 0,
         get = 1,
         add = 3,
@@ -2155,21 +2156,21 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    class $hyoo_cras_gift extends $hyoo_cras_unit {
-        rang(next?: $hyoo_cras_rang): $hyoo_cras_rang;
+    class $hyoo_crus_gift extends $hyoo_crus_unit {
+        rang(next?: $hyoo_crus_rang): $hyoo_crus_rang;
         time(next?: number): number;
         free(): Uint8Array;
         dest(next?: bigint): bigint;
         bill(): Uint8Array;
         tail(): Uint8Array;
-        static compare(left: $hyoo_cras_gift, right: $hyoo_cras_gift): number;
+        static compare(left: $hyoo_crus_gift, right: $hyoo_crus_gift): number;
     }
 }
 
 declare namespace $ {
-    class $hyoo_cras_ref extends $mol_buffer {
+    class $hyoo_crus_ref extends $mol_buffer {
         static size: number;
-        static make<This extends typeof $hyoo_cras_ref>(this: This, lord?: bigint, land?: number, head?: number): InstanceType<This>;
+        static make<This extends typeof $hyoo_crus_ref>(this: This, lord?: bigint, land?: number, head?: number): InstanceType<This>;
         lord(next?: bigint): bigint;
         land(next?: number): number;
         head(next?: number): number;
@@ -2386,13 +2387,13 @@ declare namespace $ {
     type json = null | boolean | number | string | {
         [key in string]: json;
     } | readonly json[];
-    export type $hyoo_cras_vary_type = null | Uint8Array | bigint | $hyoo_cras_ref | $mol_time_moment | $mol_tree2 | json | Node;
-    export let $hyoo_cras_vary_mapping: {
+    export type $hyoo_crus_vary_type = null | Uint8Array | bigint | $hyoo_crus_ref | $mol_time_moment | $mol_tree2 | json | Node;
+    export let $hyoo_crus_vary_mapping: {
         bin: Uint8ArrayConstructor;
         bool: BooleanConstructor;
         int: BigIntConstructor;
         real: NumberConstructor;
-        ref: typeof $hyoo_cras_ref;
+        ref: typeof $hyoo_crus_ref;
         str: StringConstructor;
         time: typeof $mol_time_moment;
         json: ObjectConstructor;
@@ -2402,12 +2403,12 @@ declare namespace $ {
         };
         tree: typeof $mol_tree2;
     };
-    export type $hyoo_cras_vary_classes = typeof $hyoo_cras_vary_mapping[keyof typeof $hyoo_cras_vary_mapping];
-    export type $hyoo_cras_vary_pack = {
-        tip: keyof typeof $hyoo_cras_vary_tip;
+    export type $hyoo_crus_vary_classes = typeof $hyoo_crus_vary_mapping[keyof typeof $hyoo_crus_vary_mapping];
+    export type $hyoo_crus_vary_pack = {
+        tip: keyof typeof $hyoo_crus_vary_tip;
         bin: Uint8Array;
     };
-    export enum $hyoo_cras_vary_tip {
+    export enum $hyoo_crus_vary_tip {
         bin = 0,
         bool = 1,
         int = 2,
@@ -2419,20 +2420,20 @@ declare namespace $ {
         xml = 19,
         tree = 20
     }
-    export function $hyoo_cras_vary_switch<Ways extends {
+    export function $hyoo_crus_vary_switch<Ways extends {
         bin: (vary: null | Uint8Array) => any;
         bool: (vary: boolean) => any;
         int: (vary: bigint) => any;
         real: (vary: number) => any;
-        ref: (vary: $hyoo_cras_ref) => any;
+        ref: (vary: $hyoo_crus_ref) => any;
         str: (vary: string) => any;
         time: (vary: $mol_time_moment) => any;
         json: (vary: {} | any[]) => any;
         xml: (vary: Element) => any;
         tree: (vary: $mol_tree2) => any;
-    }>(vary: $hyoo_cras_vary_type, ways: Ways): $mol_type_result<Ways[keyof Ways]>;
-    export function $hyoo_cras_vary_encode(vary: $hyoo_cras_vary_type): $hyoo_cras_vary_pack;
-    export function $hyoo_cras_vary_decode({ tip, bin }: $hyoo_cras_vary_pack): $hyoo_cras_vary_type;
+    }>(vary: $hyoo_crus_vary_type, ways: Ways): $mol_type_result<Ways[keyof Ways]>;
+    export function $hyoo_crus_vary_encode(vary: $hyoo_crus_vary_type): $hyoo_crus_vary_pack;
+    export function $hyoo_crus_vary_decode({ tip, bin }: $hyoo_crus_vary_pack): $hyoo_crus_vary_type;
     export {};
 }
 
@@ -2441,13 +2442,15 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    enum $hyoo_cras_gist_tag {
+    enum $hyoo_crus_gist_tag {
         term = 0,
         head = 1,
         vals = 2,
         keys = 3
     }
-    class $hyoo_cras_gist extends $hyoo_cras_unit {
+    class $hyoo_crus_gist extends $hyoo_crus_unit {
+        _vary: $hyoo_crus_vary_type | undefined;
+        _open: Uint8Array | undefined;
         hint(tip?: "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "xml" | "tree", tag?: "keys" | "vals" | "head" | "term"): void;
         tip(): "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "xml" | "tree";
         pic(): boolean;
@@ -2463,17 +2466,29 @@ declare namespace $ {
         meta(): Uint8Array;
         data(next?: Uint8Array, tip?: "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "xml" | "tree", tag?: "keys" | "vals" | "head" | "term"): Uint8Array;
         idea(): number;
-        static compare(left: $hyoo_cras_gist, right: $hyoo_cras_gist): number;
+        static compare(left: $hyoo_crus_gist, right: $hyoo_crus_gist): number;
     }
 }
 
 declare namespace $ {
-    class $hyoo_cras_auth extends $mol_crypto_key_private {
-        static current(): $hyoo_cras_auth;
-        static generate(): Promise<$hyoo_cras_auth>;
+    class $hyoo_crus_auth extends $mol_crypto_key_private {
+        static current(): $hyoo_crus_auth;
+        static generate(): Promise<$hyoo_crus_auth>;
         lord(): bigint;
         peer(): number;
         secret_mutual(pub: string): $mol_crypto_secret;
+    }
+}
+
+declare namespace $ {
+    type $hyoo_crus_face_data = Iterable<readonly [number, number]>;
+    class $hyoo_crus_face extends Map<number, number> {
+        last: number;
+        constructor(entries?: $hyoo_crus_face_data);
+        sync(right: $hyoo_crus_face_data): void;
+        see_time(time: number): void;
+        see_peer(peer: number, time: number): void;
+        tick(peer: number): number;
     }
 }
 
@@ -2495,36 +2510,24 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    type $hyoo_cras_face_data = Iterable<readonly [number, number]>;
-    class $hyoo_cras_face extends Map<number, number> {
-        last: number;
-        constructor(entries?: $hyoo_cras_face_data);
-        sync(right: $hyoo_cras_face_data): void;
-        see_time(time: number): void;
-        see_peer(peer: number, time: number): void;
-        tick(peer: number): number;
-    }
-}
-
-declare namespace $ {
-    class $hyoo_cras_node extends $mol_object {
+    class $hyoo_crus_node extends $mol_object {
         static tag: "keys" | "vals" | "head" | "term";
-        land(): $hyoo_cras_land;
+        land(): $hyoo_crus_land;
         head(): number;
-        lord(): $hyoo_cras_lord | null;
-        realm(): $hyoo_cras_realm | null;
+        lord(): $hyoo_crus_lord | null;
+        realm(): $hyoo_crus_realm | null;
         lord_numb(): bigint;
-        ref(): $hyoo_cras_ref;
+        ref(): $hyoo_crus_ref;
         slug(): string;
-        cast<Node extends typeof $hyoo_cras_node>(Node: Node): InstanceType<Node>;
-        nodes<Node extends typeof $hyoo_cras_node>(Node: Node | null): readonly InstanceType<Node>[];
-        units(): $hyoo_cras_gist[];
+        cast<Node extends typeof $hyoo_crus_node>(Node: Node): InstanceType<Node>;
+        nodes<Node extends typeof $hyoo_crus_node>(Node: Node | null): readonly InstanceType<Node>[];
+        units(): $hyoo_crus_gist[];
         can_change(lord?: bigint): boolean;
     }
 }
 
 declare namespace $ {
-    class $hyoo_cras_fund<Key, Node> extends $mol_object {
+    class $hyoo_crus_fund<Key, Node> extends $mol_object {
         readonly item_make: (head: Key) => Node;
         constructor(item_make: (head: Key) => Node);
         Item(head: Key): Node;
@@ -2545,17 +2548,17 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    class $hyoo_cras_list extends $hyoo_cras_node {
+    class $hyoo_crus_list extends $hyoo_crus_node {
         static tag: "keys" | "vals" | "head" | "term";
-        items(next?: readonly $hyoo_cras_vary_type[], tag?: "keys" | "vals" | "head" | "term"): readonly $hyoo_cras_vary_type[];
-        splice(next: readonly $hyoo_cras_vary_type[], from?: number, to?: number, tag?: "keys" | "vals" | "head" | "term"): void;
-        find(vary: $hyoo_cras_vary_type): $hyoo_cras_gist | null;
-        has(vary: $hyoo_cras_vary_type, next?: boolean, tag?: "keys" | "vals" | "head" | "term"): boolean;
-        add(vary: $hyoo_cras_vary_type, tag?: "keys" | "vals" | "head" | "term"): void;
-        cut(vary: $hyoo_cras_vary_type): void;
+        items(next?: readonly $hyoo_crus_vary_type[], tag?: "keys" | "vals" | "head" | "term"): readonly $hyoo_crus_vary_type[];
+        splice(next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: "keys" | "vals" | "head" | "term"): void;
+        find(vary: $hyoo_crus_vary_type): $hyoo_crus_gist | null;
+        has(vary: $hyoo_crus_vary_type, next?: boolean, tag?: "keys" | "vals" | "head" | "term"): boolean;
+        add(vary: $hyoo_crus_vary_type, tag?: "keys" | "vals" | "head" | "term"): void;
+        cut(vary: $hyoo_crus_vary_type): void;
         move(from: number, to: number): void;
         wipe(seat: number): void;
-        node_make<Node extends typeof $hyoo_cras_node>(Node: Node, vary: $hyoo_cras_vary_type, tag?: "keys" | "vals" | "head" | "term"): InstanceType<Node>;
+        node_make<Node extends typeof $hyoo_crus_node>(Node: Node, vary: $hyoo_crus_vary_type, tag?: "keys" | "vals" | "head" | "term"): InstanceType<Node>;
     }
 }
 
@@ -2658,29 +2661,84 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    class $hyoo_cras_mine extends $mol_object {
-        static store: Map<bigint, Uint8Array>;
+    class $hyoo_crus_mine extends $mol_object {
         static hash(blob: Uint8Array): Uint8Array;
         static rock(hash: Uint8Array, next?: Uint8Array): Uint8Array | undefined;
         static save(blob: Uint8Array): Uint8Array;
         static read(): $mol_db_store<{
             Key: [Uint8Array];
-            Doc: Uint8Array;
+            Doc: ArrayBuffer;
             Indexes: {};
         }>;
         static change(): Promise<$mol_db_store<{
             Key: [Uint8Array];
-            Doc: Uint8Array;
+            Doc: ArrayBuffer;
             Indexes: {};
         }>>;
         static db(): Promise<$mol_db_database<{
             Rock: {
                 Key: [Uint8Array];
-                Doc: Uint8Array;
+                Doc: ArrayBuffer;
                 Indexes: {};
             };
         }>>;
     }
+}
+
+declare namespace $ {
+    class $hyoo_crus_yard extends $mol_object {
+        static persisted: WeakSet<$hyoo_crus_unit>;
+        static load(land_ref: string): readonly $hyoo_crus_unit[];
+        static save(land_ref: string, units: readonly $hyoo_crus_unit[]): Promise<void>;
+    }
+}
+
+declare namespace $.$$ {
+    class $hyoo_crus_yard extends $.$hyoo_crus_yard {
+        static save(land_ref: string, units: readonly $hyoo_crus_unit[]): Promise<void>;
+        static load(land_ref: string): ($hyoo_crus_gift | $hyoo_crus_pass | $hyoo_crus_gist)[];
+        static query(key: IDBKeyRange): Promise<[ArrayBuffer[], ArrayBuffer[], ArrayBuffer[]]>;
+        static db(): Promise<$mol_db_database<{
+            Pass: {
+                Key: [string, number];
+                Doc: ArrayBuffer;
+                Indexes: {};
+            };
+            Gift: {
+                Key: [string, string];
+                Doc: ArrayBuffer;
+                Indexes: {};
+            };
+            Gist: {
+                Key: [string, number, number];
+                Doc: ArrayBuffer;
+                Indexes: {};
+            };
+        }>>;
+    }
+}
+
+declare namespace $ {
+    function $mol_promise<Result = void>(): Promise<Result> & {
+        done: (res: Result | PromiseLike<Result>) => void;
+        fail: (error?: any) => void;
+    };
+}
+
+declare namespace $ {
+    function $mol_wait_timeout_async(this: $, timeout: number): Promise<void> & {
+        done: (res: void | PromiseLike<void>) => void;
+        fail: (error?: any) => void;
+    } & {
+        destructor: () => void;
+    };
+    function $mol_wait_timeout(this: $, timeout: number): void;
+}
+
+declare namespace $ {
+    function $mol_wire_race<Tasks extends ((...args: any) => any)[]>(...tasks: Tasks): {
+        [index in keyof Tasks]: ReturnType<Tasks[index]>;
+    };
 }
 
 declare namespace $ {
@@ -2739,33 +2797,33 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    function $hyoo_cras_vary_cast_bin(vary: $hyoo_cras_vary_type): Uint8Array | null;
-    function $hyoo_cras_vary_cast_bool(vary: $hyoo_cras_vary_type): boolean;
-    function $hyoo_cras_vary_cast_int(vary: $hyoo_cras_vary_type): bigint;
-    function $hyoo_cras_vary_cast_real(vary: $hyoo_cras_vary_type): number;
-    function $hyoo_cras_vary_cast_ref(vary: $hyoo_cras_vary_type): $hyoo_cras_ref;
-    function $hyoo_cras_vary_cast_str(vary: $hyoo_cras_vary_type): string;
-    function $hyoo_cras_vary_cast_time(vary: $hyoo_cras_vary_type): $mol_time_moment;
-    function $hyoo_cras_vary_cast_json(vary: $hyoo_cras_vary_type): {} | any[] | string[] | number[] | boolean[] | {
+    function $hyoo_crus_vary_cast_bin(vary: $hyoo_crus_vary_type): Uint8Array | null;
+    function $hyoo_crus_vary_cast_bool(vary: $hyoo_crus_vary_type): boolean;
+    function $hyoo_crus_vary_cast_int(vary: $hyoo_crus_vary_type): bigint;
+    function $hyoo_crus_vary_cast_real(vary: $hyoo_crus_vary_type): number;
+    function $hyoo_crus_vary_cast_ref(vary: $hyoo_crus_vary_type): $hyoo_crus_ref;
+    function $hyoo_crus_vary_cast_str(vary: $hyoo_crus_vary_type): string;
+    function $hyoo_crus_vary_cast_time(vary: $hyoo_crus_vary_type): $mol_time_moment;
+    function $hyoo_crus_vary_cast_json(vary: $hyoo_crus_vary_type): {} | any[] | string[] | number[] | boolean[] | {
         lord: string;
         numb: number;
         head: number;
     } | null;
-    function $hyoo_cras_vary_cast_xml(vary: $hyoo_cras_vary_type): Element | HTMLElement | $mol_jsx.JSX.Element;
-    function $hyoo_cras_vary_cast_tree(vary: $hyoo_cras_vary_type): $mol_tree2;
-    const $hyoo_cras_vary_cast_funcs: {
-        readonly bin: typeof $hyoo_cras_vary_cast_bin;
-        readonly bool: typeof $hyoo_cras_vary_cast_bool;
-        readonly int: typeof $hyoo_cras_vary_cast_int;
-        readonly real: typeof $hyoo_cras_vary_cast_real;
-        readonly ref: typeof $hyoo_cras_vary_cast_ref;
-        readonly str: typeof $hyoo_cras_vary_cast_str;
-        readonly time: typeof $hyoo_cras_vary_cast_time;
-        readonly json: typeof $hyoo_cras_vary_cast_json;
-        readonly xml: typeof $hyoo_cras_vary_cast_xml;
-        readonly tree: typeof $hyoo_cras_vary_cast_tree;
+    function $hyoo_crus_vary_cast_xml(vary: $hyoo_crus_vary_type): Element | HTMLElement | $mol_jsx.JSX.Element;
+    function $hyoo_crus_vary_cast_tree(vary: $hyoo_crus_vary_type): $mol_tree2;
+    const $hyoo_crus_vary_cast_funcs: {
+        readonly bin: typeof $hyoo_crus_vary_cast_bin;
+        readonly bool: typeof $hyoo_crus_vary_cast_bool;
+        readonly int: typeof $hyoo_crus_vary_cast_int;
+        readonly real: typeof $hyoo_crus_vary_cast_real;
+        readonly ref: typeof $hyoo_crus_vary_cast_ref;
+        readonly str: typeof $hyoo_crus_vary_cast_str;
+        readonly time: typeof $hyoo_crus_vary_cast_time;
+        readonly json: typeof $hyoo_crus_vary_cast_json;
+        readonly xml: typeof $hyoo_crus_vary_cast_xml;
+        readonly tree: typeof $hyoo_crus_vary_cast_tree;
     };
-    function $hyoo_cras_vary_cast<Tip extends keyof typeof $hyoo_cras_vary_tip>(tip: Tip, vary: $hyoo_cras_vary_type): {} | null;
+    function $hyoo_crus_vary_cast<Tip extends keyof typeof $hyoo_crus_vary_tip>(tip: Tip, vary: $hyoo_crus_vary_type): {} | null;
 }
 
 declare namespace $ {
@@ -2773,64 +2831,64 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    export class $hyoo_cras_reg extends $hyoo_cras_node {
+    export class $hyoo_crus_reg extends $hyoo_crus_node {
         static tag: "keys" | "vals" | "head" | "term";
-        pick_unit(): $hyoo_cras_gist | undefined;
-        value_vary(next?: $hyoo_cras_vary_type): $hyoo_cras_vary_type;
+        pick_unit(): $hyoo_crus_gist | undefined;
+        value_vary(next?: $hyoo_crus_vary_type): $hyoo_crus_vary_type;
         value_bool(next?: boolean): boolean;
         value_int(next?: bigint): bigint;
         value_real(next?: number): number;
         value_str(next?: string): string;
         value_bin(next?: Uint8Array | null): Uint8Array | null;
-        value_ref(next?: $hyoo_cras_ref | null): $hyoo_cras_ref | null;
+        value_ref(next?: $hyoo_crus_ref | null): $hyoo_crus_ref | null;
         value_as<Decode extends $mol_data_value>(decode: Decode, next?: ReturnType<Decode>): any;
-        yoke(vary: $hyoo_cras_vary_type): $hyoo_cras_land;
+        yoke(vary: $hyoo_crus_vary_type): $hyoo_crus_land;
     }
-    export function $hyoo_cras_reg_narrow<Tip extends keyof typeof $hyoo_cras_vary_tip>(tip: Tip): {
+    export function $hyoo_crus_reg_narrow<Tip extends keyof typeof $hyoo_crus_vary_tip>(tip: Tip): {
         new (): {
             value(next?: ReturnType<{
-                readonly bin: typeof $hyoo_cras_vary_cast_bin;
-                readonly bool: typeof $hyoo_cras_vary_cast_bool;
-                readonly int: typeof $hyoo_cras_vary_cast_int;
-                readonly real: typeof $hyoo_cras_vary_cast_real;
-                readonly ref: typeof $hyoo_cras_vary_cast_ref;
-                readonly str: typeof $hyoo_cras_vary_cast_str;
-                readonly time: typeof $hyoo_cras_vary_cast_time;
-                readonly json: typeof $hyoo_cras_vary_cast_json;
-                readonly xml: typeof $hyoo_cras_vary_cast_xml;
-                readonly tree: typeof $hyoo_cras_vary_cast_tree;
+                readonly bin: typeof $hyoo_crus_vary_cast_bin;
+                readonly bool: typeof $hyoo_crus_vary_cast_bool;
+                readonly int: typeof $hyoo_crus_vary_cast_int;
+                readonly real: typeof $hyoo_crus_vary_cast_real;
+                readonly ref: typeof $hyoo_crus_vary_cast_ref;
+                readonly str: typeof $hyoo_crus_vary_cast_str;
+                readonly time: typeof $hyoo_crus_vary_cast_time;
+                readonly json: typeof $hyoo_crus_vary_cast_json;
+                readonly xml: typeof $hyoo_crus_vary_cast_xml;
+                readonly tree: typeof $hyoo_crus_vary_cast_tree;
             }[Tip]> | undefined): ReturnType<{
-                readonly bin: typeof $hyoo_cras_vary_cast_bin;
-                readonly bool: typeof $hyoo_cras_vary_cast_bool;
-                readonly int: typeof $hyoo_cras_vary_cast_int;
-                readonly real: typeof $hyoo_cras_vary_cast_real;
-                readonly ref: typeof $hyoo_cras_vary_cast_ref;
-                readonly str: typeof $hyoo_cras_vary_cast_str;
-                readonly time: typeof $hyoo_cras_vary_cast_time;
-                readonly json: typeof $hyoo_cras_vary_cast_json;
-                readonly xml: typeof $hyoo_cras_vary_cast_xml;
-                readonly tree: typeof $hyoo_cras_vary_cast_tree;
+                readonly bin: typeof $hyoo_crus_vary_cast_bin;
+                readonly bool: typeof $hyoo_crus_vary_cast_bool;
+                readonly int: typeof $hyoo_crus_vary_cast_int;
+                readonly real: typeof $hyoo_crus_vary_cast_real;
+                readonly ref: typeof $hyoo_crus_vary_cast_ref;
+                readonly str: typeof $hyoo_crus_vary_cast_str;
+                readonly time: typeof $hyoo_crus_vary_cast_time;
+                readonly json: typeof $hyoo_crus_vary_cast_json;
+                readonly xml: typeof $hyoo_crus_vary_cast_xml;
+                readonly tree: typeof $hyoo_crus_vary_cast_tree;
             }[Tip]>;
-            pick_unit(): $hyoo_cras_gist | undefined;
-            value_vary(next?: $hyoo_cras_vary_type | undefined): $hyoo_cras_vary_type;
+            pick_unit(): $hyoo_crus_gist | undefined;
+            value_vary(next?: $hyoo_crus_vary_type | undefined): $hyoo_crus_vary_type;
             value_bool(next?: boolean | undefined): boolean;
             value_int(next?: bigint | undefined): bigint;
             value_real(next?: number | undefined): number;
             value_str(next?: string | undefined): string;
             value_bin(next?: Uint8Array | null | undefined): Uint8Array | null;
-            value_ref(next?: $hyoo_cras_ref | null | undefined): $hyoo_cras_ref | null;
+            value_ref(next?: $hyoo_crus_ref | null | undefined): $hyoo_crus_ref | null;
             value_as<Decode extends $mol_data_value<any, any>>(decode: Decode, next?: ReturnType<Decode> | undefined): any;
-            yoke(vary: $hyoo_cras_vary_type): $hyoo_cras_land;
-            land(): $hyoo_cras_land;
+            yoke(vary: $hyoo_crus_vary_type): $hyoo_crus_land;
+            land(): $hyoo_crus_land;
             head(): number;
-            lord(): $hyoo_cras_lord | null;
-            realm(): $hyoo_cras_realm | null;
+            lord(): $hyoo_crus_lord | null;
+            realm(): $hyoo_crus_realm | null;
             lord_numb(): bigint;
-            ref(): $hyoo_cras_ref;
+            ref(): $hyoo_crus_ref;
             slug(): string;
-            cast<Node_1 extends typeof $hyoo_cras_node>(Node: Node_1): InstanceType<Node_1>;
-            nodes<Node_2 extends typeof $hyoo_cras_node>(Node: Node_2 | null): readonly InstanceType<Node_2>[];
-            units(): $hyoo_cras_gist[];
+            cast<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1): InstanceType<Node_1>;
+            nodes<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2 | null): readonly InstanceType<Node_2>[];
+            units(): $hyoo_crus_gist[];
             can_change(lord?: bigint): boolean;
             $: typeof $$;
             destructor(): void;
@@ -2849,29 +2907,29 @@ declare namespace $ {
         toJSON(): any;
         [Symbol.toPrimitive](): string;
     };
-    const $hyoo_cras_reg_bin_base: {
+    const $hyoo_crus_reg_bin_base: {
         new (): {
             value(next?: Uint8Array | null | undefined): Uint8Array | null;
-            pick_unit(): $hyoo_cras_gist | undefined;
-            value_vary(next?: $hyoo_cras_vary_type | undefined): $hyoo_cras_vary_type;
+            pick_unit(): $hyoo_crus_gist | undefined;
+            value_vary(next?: $hyoo_crus_vary_type | undefined): $hyoo_crus_vary_type;
             value_bool(next?: boolean | undefined): boolean;
             value_int(next?: bigint | undefined): bigint;
             value_real(next?: number | undefined): number;
             value_str(next?: string | undefined): string;
             value_bin(next?: Uint8Array | null | undefined): Uint8Array | null;
-            value_ref(next?: $hyoo_cras_ref | null | undefined): $hyoo_cras_ref | null;
+            value_ref(next?: $hyoo_crus_ref | null | undefined): $hyoo_crus_ref | null;
             value_as<Decode extends $mol_data_value<any, any>>(decode: Decode, next?: ReturnType<Decode> | undefined): any;
-            yoke(vary: $hyoo_cras_vary_type): $hyoo_cras_land;
-            land(): $hyoo_cras_land;
+            yoke(vary: $hyoo_crus_vary_type): $hyoo_crus_land;
+            land(): $hyoo_crus_land;
             head(): number;
-            lord(): $hyoo_cras_lord | null;
-            realm(): $hyoo_cras_realm | null;
+            lord(): $hyoo_crus_lord | null;
+            realm(): $hyoo_crus_realm | null;
             lord_numb(): bigint;
-            ref(): $hyoo_cras_ref;
+            ref(): $hyoo_crus_ref;
             slug(): string;
-            cast<Node_1 extends typeof $hyoo_cras_node>(Node: Node_1): InstanceType<Node_1>;
-            nodes<Node_2 extends typeof $hyoo_cras_node>(Node: Node_2 | null): readonly InstanceType<Node_2>[];
-            units(): $hyoo_cras_gist[];
+            cast<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1): InstanceType<Node_1>;
+            nodes<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2 | null): readonly InstanceType<Node_2>[];
+            units(): $hyoo_crus_gist[];
             can_change(lord?: bigint): boolean;
             $: typeof $$;
             destructor(): void;
@@ -2890,31 +2948,31 @@ declare namespace $ {
         toJSON(): any;
         [Symbol.toPrimitive](): string;
     };
-    export class $hyoo_cras_reg_bin extends $hyoo_cras_reg_bin_base {
+    export class $hyoo_crus_reg_bin extends $hyoo_crus_reg_bin_base {
     }
-    const $hyoo_cras_reg_bool_base: {
+    const $hyoo_crus_reg_bool_base: {
         new (): {
             value(next?: boolean | undefined): boolean;
-            pick_unit(): $hyoo_cras_gist | undefined;
-            value_vary(next?: $hyoo_cras_vary_type | undefined): $hyoo_cras_vary_type;
+            pick_unit(): $hyoo_crus_gist | undefined;
+            value_vary(next?: $hyoo_crus_vary_type | undefined): $hyoo_crus_vary_type;
             value_bool(next?: boolean | undefined): boolean;
             value_int(next?: bigint | undefined): bigint;
             value_real(next?: number | undefined): number;
             value_str(next?: string | undefined): string;
             value_bin(next?: Uint8Array | null | undefined): Uint8Array | null;
-            value_ref(next?: $hyoo_cras_ref | null | undefined): $hyoo_cras_ref | null;
+            value_ref(next?: $hyoo_crus_ref | null | undefined): $hyoo_crus_ref | null;
             value_as<Decode extends $mol_data_value<any, any>>(decode: Decode, next?: ReturnType<Decode> | undefined): any;
-            yoke(vary: $hyoo_cras_vary_type): $hyoo_cras_land;
-            land(): $hyoo_cras_land;
+            yoke(vary: $hyoo_crus_vary_type): $hyoo_crus_land;
+            land(): $hyoo_crus_land;
             head(): number;
-            lord(): $hyoo_cras_lord | null;
-            realm(): $hyoo_cras_realm | null;
+            lord(): $hyoo_crus_lord | null;
+            realm(): $hyoo_crus_realm | null;
             lord_numb(): bigint;
-            ref(): $hyoo_cras_ref;
+            ref(): $hyoo_crus_ref;
             slug(): string;
-            cast<Node_1 extends typeof $hyoo_cras_node>(Node: Node_1): InstanceType<Node_1>;
-            nodes<Node_2 extends typeof $hyoo_cras_node>(Node: Node_2 | null): readonly InstanceType<Node_2>[];
-            units(): $hyoo_cras_gist[];
+            cast<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1): InstanceType<Node_1>;
+            nodes<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2 | null): readonly InstanceType<Node_2>[];
+            units(): $hyoo_crus_gist[];
             can_change(lord?: bigint): boolean;
             $: typeof $$;
             destructor(): void;
@@ -2933,31 +2991,31 @@ declare namespace $ {
         toJSON(): any;
         [Symbol.toPrimitive](): string;
     };
-    export class $hyoo_cras_reg_bool extends $hyoo_cras_reg_bool_base {
+    export class $hyoo_crus_reg_bool extends $hyoo_crus_reg_bool_base {
     }
-    const $hyoo_cras_reg_int_base: {
+    const $hyoo_crus_reg_int_base: {
         new (): {
             value(next?: bigint | undefined): bigint;
-            pick_unit(): $hyoo_cras_gist | undefined;
-            value_vary(next?: $hyoo_cras_vary_type | undefined): $hyoo_cras_vary_type;
+            pick_unit(): $hyoo_crus_gist | undefined;
+            value_vary(next?: $hyoo_crus_vary_type | undefined): $hyoo_crus_vary_type;
             value_bool(next?: boolean | undefined): boolean;
             value_int(next?: bigint | undefined): bigint;
             value_real(next?: number | undefined): number;
             value_str(next?: string | undefined): string;
             value_bin(next?: Uint8Array | null | undefined): Uint8Array | null;
-            value_ref(next?: $hyoo_cras_ref | null | undefined): $hyoo_cras_ref | null;
+            value_ref(next?: $hyoo_crus_ref | null | undefined): $hyoo_crus_ref | null;
             value_as<Decode extends $mol_data_value<any, any>>(decode: Decode, next?: ReturnType<Decode> | undefined): any;
-            yoke(vary: $hyoo_cras_vary_type): $hyoo_cras_land;
-            land(): $hyoo_cras_land;
+            yoke(vary: $hyoo_crus_vary_type): $hyoo_crus_land;
+            land(): $hyoo_crus_land;
             head(): number;
-            lord(): $hyoo_cras_lord | null;
-            realm(): $hyoo_cras_realm | null;
+            lord(): $hyoo_crus_lord | null;
+            realm(): $hyoo_crus_realm | null;
             lord_numb(): bigint;
-            ref(): $hyoo_cras_ref;
+            ref(): $hyoo_crus_ref;
             slug(): string;
-            cast<Node_1 extends typeof $hyoo_cras_node>(Node: Node_1): InstanceType<Node_1>;
-            nodes<Node_2 extends typeof $hyoo_cras_node>(Node: Node_2 | null): readonly InstanceType<Node_2>[];
-            units(): $hyoo_cras_gist[];
+            cast<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1): InstanceType<Node_1>;
+            nodes<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2 | null): readonly InstanceType<Node_2>[];
+            units(): $hyoo_crus_gist[];
             can_change(lord?: bigint): boolean;
             $: typeof $$;
             destructor(): void;
@@ -2976,31 +3034,31 @@ declare namespace $ {
         toJSON(): any;
         [Symbol.toPrimitive](): string;
     };
-    export class $hyoo_cras_reg_int extends $hyoo_cras_reg_int_base {
+    export class $hyoo_crus_reg_int extends $hyoo_crus_reg_int_base {
     }
-    const $hyoo_cras_reg_real_base: {
+    const $hyoo_crus_reg_real_base: {
         new (): {
             value(next?: number | undefined): number;
-            pick_unit(): $hyoo_cras_gist | undefined;
-            value_vary(next?: $hyoo_cras_vary_type | undefined): $hyoo_cras_vary_type;
+            pick_unit(): $hyoo_crus_gist | undefined;
+            value_vary(next?: $hyoo_crus_vary_type | undefined): $hyoo_crus_vary_type;
             value_bool(next?: boolean | undefined): boolean;
             value_int(next?: bigint | undefined): bigint;
             value_real(next?: number | undefined): number;
             value_str(next?: string | undefined): string;
             value_bin(next?: Uint8Array | null | undefined): Uint8Array | null;
-            value_ref(next?: $hyoo_cras_ref | null | undefined): $hyoo_cras_ref | null;
+            value_ref(next?: $hyoo_crus_ref | null | undefined): $hyoo_crus_ref | null;
             value_as<Decode extends $mol_data_value<any, any>>(decode: Decode, next?: ReturnType<Decode> | undefined): any;
-            yoke(vary: $hyoo_cras_vary_type): $hyoo_cras_land;
-            land(): $hyoo_cras_land;
+            yoke(vary: $hyoo_crus_vary_type): $hyoo_crus_land;
+            land(): $hyoo_crus_land;
             head(): number;
-            lord(): $hyoo_cras_lord | null;
-            realm(): $hyoo_cras_realm | null;
+            lord(): $hyoo_crus_lord | null;
+            realm(): $hyoo_crus_realm | null;
             lord_numb(): bigint;
-            ref(): $hyoo_cras_ref;
+            ref(): $hyoo_crus_ref;
             slug(): string;
-            cast<Node_1 extends typeof $hyoo_cras_node>(Node: Node_1): InstanceType<Node_1>;
-            nodes<Node_2 extends typeof $hyoo_cras_node>(Node: Node_2 | null): readonly InstanceType<Node_2>[];
-            units(): $hyoo_cras_gist[];
+            cast<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1): InstanceType<Node_1>;
+            nodes<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2 | null): readonly InstanceType<Node_2>[];
+            units(): $hyoo_crus_gist[];
             can_change(lord?: bigint): boolean;
             $: typeof $$;
             destructor(): void;
@@ -3019,31 +3077,31 @@ declare namespace $ {
         toJSON(): any;
         [Symbol.toPrimitive](): string;
     };
-    export class $hyoo_cras_reg_real extends $hyoo_cras_reg_real_base {
+    export class $hyoo_crus_reg_real extends $hyoo_crus_reg_real_base {
     }
-    const $hyoo_cras_reg_str_base: {
+    const $hyoo_crus_reg_str_base: {
         new (): {
             value(next?: string | undefined): string;
-            pick_unit(): $hyoo_cras_gist | undefined;
-            value_vary(next?: $hyoo_cras_vary_type | undefined): $hyoo_cras_vary_type;
+            pick_unit(): $hyoo_crus_gist | undefined;
+            value_vary(next?: $hyoo_crus_vary_type | undefined): $hyoo_crus_vary_type;
             value_bool(next?: boolean | undefined): boolean;
             value_int(next?: bigint | undefined): bigint;
             value_real(next?: number | undefined): number;
             value_str(next?: string | undefined): string;
             value_bin(next?: Uint8Array | null | undefined): Uint8Array | null;
-            value_ref(next?: $hyoo_cras_ref | null | undefined): $hyoo_cras_ref | null;
+            value_ref(next?: $hyoo_crus_ref | null | undefined): $hyoo_crus_ref | null;
             value_as<Decode extends $mol_data_value<any, any>>(decode: Decode, next?: ReturnType<Decode> | undefined): any;
-            yoke(vary: $hyoo_cras_vary_type): $hyoo_cras_land;
-            land(): $hyoo_cras_land;
+            yoke(vary: $hyoo_crus_vary_type): $hyoo_crus_land;
+            land(): $hyoo_crus_land;
             head(): number;
-            lord(): $hyoo_cras_lord | null;
-            realm(): $hyoo_cras_realm | null;
+            lord(): $hyoo_crus_lord | null;
+            realm(): $hyoo_crus_realm | null;
             lord_numb(): bigint;
-            ref(): $hyoo_cras_ref;
+            ref(): $hyoo_crus_ref;
             slug(): string;
-            cast<Node_1 extends typeof $hyoo_cras_node>(Node: Node_1): InstanceType<Node_1>;
-            nodes<Node_2 extends typeof $hyoo_cras_node>(Node: Node_2 | null): readonly InstanceType<Node_2>[];
-            units(): $hyoo_cras_gist[];
+            cast<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1): InstanceType<Node_1>;
+            nodes<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2 | null): readonly InstanceType<Node_2>[];
+            units(): $hyoo_crus_gist[];
             can_change(lord?: bigint): boolean;
             $: typeof $$;
             destructor(): void;
@@ -3062,31 +3120,31 @@ declare namespace $ {
         toJSON(): any;
         [Symbol.toPrimitive](): string;
     };
-    export class $hyoo_cras_reg_str extends $hyoo_cras_reg_str_base {
+    export class $hyoo_crus_reg_str extends $hyoo_crus_reg_str_base {
     }
-    const $hyoo_cras_reg_time_base: {
+    const $hyoo_crus_reg_time_base: {
         new (): {
             value(next?: $mol_time_moment | undefined): $mol_time_moment;
-            pick_unit(): $hyoo_cras_gist | undefined;
-            value_vary(next?: $hyoo_cras_vary_type | undefined): $hyoo_cras_vary_type;
+            pick_unit(): $hyoo_crus_gist | undefined;
+            value_vary(next?: $hyoo_crus_vary_type | undefined): $hyoo_crus_vary_type;
             value_bool(next?: boolean | undefined): boolean;
             value_int(next?: bigint | undefined): bigint;
             value_real(next?: number | undefined): number;
             value_str(next?: string | undefined): string;
             value_bin(next?: Uint8Array | null | undefined): Uint8Array | null;
-            value_ref(next?: $hyoo_cras_ref | null | undefined): $hyoo_cras_ref | null;
+            value_ref(next?: $hyoo_crus_ref | null | undefined): $hyoo_crus_ref | null;
             value_as<Decode extends $mol_data_value<any, any>>(decode: Decode, next?: ReturnType<Decode> | undefined): any;
-            yoke(vary: $hyoo_cras_vary_type): $hyoo_cras_land;
-            land(): $hyoo_cras_land;
+            yoke(vary: $hyoo_crus_vary_type): $hyoo_crus_land;
+            land(): $hyoo_crus_land;
             head(): number;
-            lord(): $hyoo_cras_lord | null;
-            realm(): $hyoo_cras_realm | null;
+            lord(): $hyoo_crus_lord | null;
+            realm(): $hyoo_crus_realm | null;
             lord_numb(): bigint;
-            ref(): $hyoo_cras_ref;
+            ref(): $hyoo_crus_ref;
             slug(): string;
-            cast<Node_1 extends typeof $hyoo_cras_node>(Node: Node_1): InstanceType<Node_1>;
-            nodes<Node_2 extends typeof $hyoo_cras_node>(Node: Node_2 | null): readonly InstanceType<Node_2>[];
-            units(): $hyoo_cras_gist[];
+            cast<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1): InstanceType<Node_1>;
+            nodes<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2 | null): readonly InstanceType<Node_2>[];
+            units(): $hyoo_crus_gist[];
             can_change(lord?: bigint): boolean;
             $: typeof $$;
             destructor(): void;
@@ -3105,9 +3163,9 @@ declare namespace $ {
         toJSON(): any;
         [Symbol.toPrimitive](): string;
     };
-    export class $hyoo_cras_reg_time extends $hyoo_cras_reg_time_base {
+    export class $hyoo_crus_reg_time extends $hyoo_crus_reg_time_base {
     }
-    const $hyoo_cras_reg_json_base: {
+    const $hyoo_crus_reg_json_base: {
         new (): {
             value(next?: {} | any[] | string[] | number[] | boolean[] | {
                 lord: string;
@@ -3118,26 +3176,26 @@ declare namespace $ {
                 numb: number;
                 head: number;
             } | null;
-            pick_unit(): $hyoo_cras_gist | undefined;
-            value_vary(next?: $hyoo_cras_vary_type | undefined): $hyoo_cras_vary_type;
+            pick_unit(): $hyoo_crus_gist | undefined;
+            value_vary(next?: $hyoo_crus_vary_type | undefined): $hyoo_crus_vary_type;
             value_bool(next?: boolean | undefined): boolean;
             value_int(next?: bigint | undefined): bigint;
             value_real(next?: number | undefined): number;
             value_str(next?: string | undefined): string;
             value_bin(next?: Uint8Array | null | undefined): Uint8Array | null;
-            value_ref(next?: $hyoo_cras_ref | null | undefined): $hyoo_cras_ref | null;
+            value_ref(next?: $hyoo_crus_ref | null | undefined): $hyoo_crus_ref | null;
             value_as<Decode extends $mol_data_value<any, any>>(decode: Decode, next?: ReturnType<Decode> | undefined): any;
-            yoke(vary: $hyoo_cras_vary_type): $hyoo_cras_land;
-            land(): $hyoo_cras_land;
+            yoke(vary: $hyoo_crus_vary_type): $hyoo_crus_land;
+            land(): $hyoo_crus_land;
             head(): number;
-            lord(): $hyoo_cras_lord | null;
-            realm(): $hyoo_cras_realm | null;
+            lord(): $hyoo_crus_lord | null;
+            realm(): $hyoo_crus_realm | null;
             lord_numb(): bigint;
-            ref(): $hyoo_cras_ref;
+            ref(): $hyoo_crus_ref;
             slug(): string;
-            cast<Node_1 extends typeof $hyoo_cras_node>(Node: Node_1): InstanceType<Node_1>;
-            nodes<Node_2 extends typeof $hyoo_cras_node>(Node: Node_2 | null): readonly InstanceType<Node_2>[];
-            units(): $hyoo_cras_gist[];
+            cast<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1): InstanceType<Node_1>;
+            nodes<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2 | null): readonly InstanceType<Node_2>[];
+            units(): $hyoo_crus_gist[];
             can_change(lord?: bigint): boolean;
             $: typeof $$;
             destructor(): void;
@@ -3156,31 +3214,31 @@ declare namespace $ {
         toJSON(): any;
         [Symbol.toPrimitive](): string;
     };
-    export class $hyoo_cras_reg_json extends $hyoo_cras_reg_json_base {
+    export class $hyoo_crus_reg_json extends $hyoo_crus_reg_json_base {
     }
-    const $hyoo_cras_reg_xml_base: {
+    const $hyoo_crus_reg_xml_base: {
         new (): {
             value(next?: Element | HTMLElement | $mol_jsx.JSX.Element | undefined): Element | HTMLElement | $mol_jsx.JSX.Element;
-            pick_unit(): $hyoo_cras_gist | undefined;
-            value_vary(next?: $hyoo_cras_vary_type | undefined): $hyoo_cras_vary_type;
+            pick_unit(): $hyoo_crus_gist | undefined;
+            value_vary(next?: $hyoo_crus_vary_type | undefined): $hyoo_crus_vary_type;
             value_bool(next?: boolean | undefined): boolean;
             value_int(next?: bigint | undefined): bigint;
             value_real(next?: number | undefined): number;
             value_str(next?: string | undefined): string;
             value_bin(next?: Uint8Array | null | undefined): Uint8Array | null;
-            value_ref(next?: $hyoo_cras_ref | null | undefined): $hyoo_cras_ref | null;
+            value_ref(next?: $hyoo_crus_ref | null | undefined): $hyoo_crus_ref | null;
             value_as<Decode extends $mol_data_value<any, any>>(decode: Decode, next?: ReturnType<Decode> | undefined): any;
-            yoke(vary: $hyoo_cras_vary_type): $hyoo_cras_land;
-            land(): $hyoo_cras_land;
+            yoke(vary: $hyoo_crus_vary_type): $hyoo_crus_land;
+            land(): $hyoo_crus_land;
             head(): number;
-            lord(): $hyoo_cras_lord | null;
-            realm(): $hyoo_cras_realm | null;
+            lord(): $hyoo_crus_lord | null;
+            realm(): $hyoo_crus_realm | null;
             lord_numb(): bigint;
-            ref(): $hyoo_cras_ref;
+            ref(): $hyoo_crus_ref;
             slug(): string;
-            cast<Node_1 extends typeof $hyoo_cras_node>(Node: Node_1): InstanceType<Node_1>;
-            nodes<Node_2 extends typeof $hyoo_cras_node>(Node: Node_2 | null): readonly InstanceType<Node_2>[];
-            units(): $hyoo_cras_gist[];
+            cast<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1): InstanceType<Node_1>;
+            nodes<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2 | null): readonly InstanceType<Node_2>[];
+            units(): $hyoo_crus_gist[];
             can_change(lord?: bigint): boolean;
             $: typeof $$;
             destructor(): void;
@@ -3199,31 +3257,31 @@ declare namespace $ {
         toJSON(): any;
         [Symbol.toPrimitive](): string;
     };
-    export class $hyoo_cras_reg_xml extends $hyoo_cras_reg_xml_base {
+    export class $hyoo_crus_reg_xml extends $hyoo_crus_reg_xml_base {
     }
-    const $hyoo_cras_reg_tree_base: {
+    const $hyoo_crus_reg_tree_base: {
         new (): {
             value(next?: $mol_tree2 | undefined): $mol_tree2;
-            pick_unit(): $hyoo_cras_gist | undefined;
-            value_vary(next?: $hyoo_cras_vary_type | undefined): $hyoo_cras_vary_type;
+            pick_unit(): $hyoo_crus_gist | undefined;
+            value_vary(next?: $hyoo_crus_vary_type | undefined): $hyoo_crus_vary_type;
             value_bool(next?: boolean | undefined): boolean;
             value_int(next?: bigint | undefined): bigint;
             value_real(next?: number | undefined): number;
             value_str(next?: string | undefined): string;
             value_bin(next?: Uint8Array | null | undefined): Uint8Array | null;
-            value_ref(next?: $hyoo_cras_ref | null | undefined): $hyoo_cras_ref | null;
+            value_ref(next?: $hyoo_crus_ref | null | undefined): $hyoo_crus_ref | null;
             value_as<Decode extends $mol_data_value<any, any>>(decode: Decode, next?: ReturnType<Decode> | undefined): any;
-            yoke(vary: $hyoo_cras_vary_type): $hyoo_cras_land;
-            land(): $hyoo_cras_land;
+            yoke(vary: $hyoo_crus_vary_type): $hyoo_crus_land;
+            land(): $hyoo_crus_land;
             head(): number;
-            lord(): $hyoo_cras_lord | null;
-            realm(): $hyoo_cras_realm | null;
+            lord(): $hyoo_crus_lord | null;
+            realm(): $hyoo_crus_realm | null;
             lord_numb(): bigint;
-            ref(): $hyoo_cras_ref;
+            ref(): $hyoo_crus_ref;
             slug(): string;
-            cast<Node_1 extends typeof $hyoo_cras_node>(Node: Node_1): InstanceType<Node_1>;
-            nodes<Node_2 extends typeof $hyoo_cras_node>(Node: Node_2 | null): readonly InstanceType<Node_2>[];
-            units(): $hyoo_cras_gist[];
+            cast<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1): InstanceType<Node_1>;
+            nodes<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2 | null): readonly InstanceType<Node_2>[];
+            units(): $hyoo_crus_gist[];
             can_change(lord?: bigint): boolean;
             $: typeof $$;
             destructor(): void;
@@ -3242,93 +3300,98 @@ declare namespace $ {
         toJSON(): any;
         [Symbol.toPrimitive](): string;
     };
-    export class $hyoo_cras_reg_tree extends $hyoo_cras_reg_tree_base {
+    export class $hyoo_crus_reg_tree extends $hyoo_crus_reg_tree_base {
     }
     export {};
 }
 
 declare namespace $ {
-    class $hyoo_cras_dict extends $hyoo_cras_node {
+    class $hyoo_crus_dict extends $hyoo_crus_node {
         static tag: "keys" | "vals" | "head" | "term";
-        keys(): readonly $hyoo_cras_vary_type[];
-        has(key: $hyoo_cras_vary_type, next?: false): boolean;
-        dive<Node extends typeof $hyoo_cras_node>(key: $hyoo_cras_vary_type, Node: Node): InstanceType<Node>;
+        keys(): readonly $hyoo_crus_vary_type[];
+        has(key: $hyoo_crus_vary_type, next?: false): boolean;
+        dive<Node extends typeof $hyoo_crus_node>(key: $hyoo_crus_vary_type, Node: Node): InstanceType<Node>;
     }
 }
 
 declare namespace $ {
-    class $hyoo_cras_land extends $mol_object {
-        lord(): $hyoo_cras_lord | null;
+    class $hyoo_crus_land extends $mol_object {
+        lord(): $hyoo_crus_lord | null;
         numb(): number;
         lord_numb(): bigint;
-        realm(): $hyoo_cras_realm | null;
-        auth(): $hyoo_cras_auth;
-        ref(): $hyoo_cras_ref;
+        realm(): $hyoo_crus_realm | null;
+        auth(): $hyoo_crus_auth;
+        ref(): $hyoo_crus_ref;
         slug(): string;
-        passes: $mol_wire_dict<number, $hyoo_cras_pass>;
-        gifts: $mol_wire_dict<bigint, $hyoo_cras_gift>;
-        gists: $mol_wire_dict<number, $mol_wire_dict<number, $hyoo_cras_gist>>;
+        face: $hyoo_crus_face;
+        passes: $mol_wire_dict<number, $hyoo_crus_pass>;
+        gifts: $mol_wire_dict<bigint, $hyoo_crus_gift>;
+        gists: $mol_wire_dict<number, $mol_wire_dict<number, $hyoo_crus_gist>>;
         self_all: $mol_wire_set<number>;
-        face: $hyoo_cras_face;
         self_make(idea?: number): number;
-        Root<Node extends typeof $hyoo_cras_node>(Node: Node): InstanceType<Node>;
-        Node<Node extends typeof $hyoo_cras_node>(Node: Node): $hyoo_cras_fund<number, InstanceType<Node>>;
+        Root<Node extends typeof $hyoo_crus_node>(Node: Node): InstanceType<Node>;
+        Node<Node extends typeof $hyoo_crus_node>(Node: Node): $hyoo_crus_fund<number, InstanceType<Node>>;
         total(): number;
         joined_list(): bigint[];
-        lord_rang(lord: bigint): $hyoo_cras_rang;
-        peer_rang(peer: number): $hyoo_cras_rang;
-        delta_unit(face?: $hyoo_cras_face): $hyoo_cras_unit[];
-        delta_buffer(face?: $hyoo_cras_face): Uint8Array;
-        apply_unit(delta: readonly $hyoo_cras_unit[]): ("" | "Need add rang to join" | "Need law rang to change rang" | "Need add rang to post self data" | "Need mod rang to post any data" | "Already joined" | "Unit too old")[];
-        apply_land(land: $hyoo_cras_land): ("" | "Need add rang to join" | "Need law rang to change rang" | "Need add rang to post self data" | "Need mod rang to post any data" | "Already joined" | "Unit too old")[];
+        lord_rang(lord: bigint): $hyoo_crus_rang;
+        peer_rang(peer: number): $hyoo_crus_rang;
+        delta_unit(face?: $hyoo_crus_face): $hyoo_crus_unit[];
+        delta_buffer(face?: $hyoo_crus_face): Uint8Array;
+        apply_unit(delta: readonly $hyoo_crus_unit[]): ("" | "Need add rang to join" | "Need law rang to change rang" | "Need add rang to post self data" | "Need mod rang to post any data" | "Already joined" | "Unit too old")[];
+        apply_land(land: $hyoo_crus_land): ("" | "Need add rang to join" | "Need law rang to change rang" | "Need add rang to post self data" | "Need mod rang to post any data" | "Already joined" | "Unit too old")[];
         recheck(): void;
-        check_unit(unit: $hyoo_cras_unit): "" | "Need add rang to join" | "Need law rang to change rang" | "Need add rang to post self data" | "Need mod rang to post any data";
-        fork(): $hyoo_cras_land;
-        cloves(): $hyoo_cras_list | null;
-        gists_ordered(head: number): $hyoo_cras_gist[];
-        join(): $hyoo_cras_pass;
-        give(dest: bigint, rang: $hyoo_cras_rang): $hyoo_cras_gift;
-        post(lead: number, head: number, self: number, data: $hyoo_cras_vary_type, tag?: "keys" | "vals" | "head" | "term"): $hyoo_cras_gist;
-        gist_move(gist: $hyoo_cras_gist, head: number, seat: number): void;
-        gist_wipe(gist: $hyoo_cras_gist): void;
-        gist_decode(gist: $hyoo_cras_gist): $hyoo_cras_vary_type;
+        check_unit(unit: $hyoo_crus_unit): "" | "Need add rang to join" | "Need law rang to change rang" | "Need add rang to post self data" | "Need mod rang to post any data";
+        fork(): $hyoo_crus_land;
+        cloves(): $hyoo_crus_list | null;
+        gists_ordered(head: number): $hyoo_crus_gist[];
+        join(): $hyoo_crus_pass;
+        give(dest: bigint, rang: $hyoo_crus_rang): $hyoo_crus_gift;
+        post(lead: number, head: number, self: number, vary: $hyoo_crus_vary_type, tag?: "keys" | "vals" | "head" | "term"): $hyoo_crus_gist;
+        gist_move(gist: $hyoo_crus_gist, head: number, seat: number): void;
+        gist_wipe(gist: $hyoo_crus_gist): void;
+        loading(): void;
+        saving(): void;
+        unit_sign(unit: $hyoo_crus_unit): void;
+        gist_encode(gist: $hyoo_crus_gist): $hyoo_crus_gist;
+        gist_decode(gist: $hyoo_crus_gist): $hyoo_crus_vary_type;
         key_public(peer: number): $mol_crypto_key_public | null;
         secret_mutual(peer: number): $mol_crypto_secret | null;
         encrypt(): void;
+        encrypted(): boolean;
         secret(): $mol_crypto_secret | null;
     }
 }
 
 declare namespace $ {
-    class $hyoo_cras_base extends $hyoo_cras_dict {
+    class $hyoo_crus_base extends $hyoo_crus_dict {
         title(next?: string): string;
         selection(next?: readonly (readonly [number, number])[]): readonly (readonly [number, number])[];
-        profiles(): readonly $hyoo_cras_vary_type[];
-        Profile(app: string): $hyoo_cras_land;
+        profiles(): readonly $hyoo_crus_vary_type[];
+        Profile(app: string): $hyoo_crus_land;
     }
 }
 
 declare namespace $ {
-    class $hyoo_cras_lord extends $mol_object {
-        realm(): $hyoo_cras_realm | null;
+    class $hyoo_crus_lord extends $mol_object {
+        realm(): $hyoo_crus_realm | null;
         numb(): bigint;
-        lands: $mol_wire_dict<number, $hyoo_cras_land>;
-        base(): $hyoo_cras_base;
-        ref(): $hyoo_cras_ref;
+        lands: $mol_wire_dict<number, $hyoo_crus_land>;
+        base(): $hyoo_crus_base;
+        ref(): $hyoo_crus_ref;
         toString(): string;
         slug(): string;
-        Land(numb: number): $hyoo_cras_land;
-        Land_new(idea: number): $hyoo_cras_land;
+        Land(numb: number): $hyoo_crus_land;
+        Land_new(idea: number): $hyoo_crus_land;
         numb_make(idea?: number): number;
     }
 }
 
 declare namespace $ {
-    class $hyoo_cras_realm extends $mol_object {
-        lords: $mol_wire_dict<bigint, $hyoo_cras_lord>;
-        home(): $hyoo_cras_lord;
-        Lord(numb: bigint): $hyoo_cras_lord;
-        Node<Node extends typeof $hyoo_cras_node>(Node: Node, ref: $hyoo_cras_ref): InstanceType<Node>;
+    class $hyoo_crus_realm extends $mol_object {
+        lords: $mol_wire_dict<bigint, $hyoo_crus_lord>;
+        home(): $hyoo_crus_lord;
+        Lord(numb: bigint): $hyoo_crus_lord;
+        Node<Node extends typeof $hyoo_crus_node>(Node: Node, ref: $hyoo_crus_ref): InstanceType<Node>;
     }
 }
 
@@ -3859,23 +3922,6 @@ declare namespace $ {
     }
 }
 
-declare namespace $ {
-    function $mol_promise<Result = void>(): Promise<Result> & {
-        done: (res: Result | PromiseLike<Result>) => void;
-        fail: (error?: any) => void;
-    };
-}
-
-declare namespace $ {
-    function $mol_wait_timeout_async(this: $, timeout: number): Promise<void> & {
-        done: (res: void | PromiseLike<void>) => void;
-        fail: (error?: any) => void;
-    } & {
-        destructor: () => void;
-    };
-    function $mol_wait_timeout(this: $, timeout: number): void;
-}
-
 declare namespace $.$$ {
     class $mol_embed_native extends $.$mol_embed_native {
         window(): Window;
@@ -4345,9 +4391,9 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    class $hyoo_cras_node_dump extends $mol_expander {
+    class $hyoo_crus_node_dump extends $mol_expander {
         can_change(): boolean;
-        node(): $hyoo_cras_node;
+        node(): $hyoo_crus_node;
         tag(): string;
         label(): readonly any[];
         addons(): readonly any[];
@@ -4378,8 +4424,8 @@ declare namespace $ {
         Unit_wipe_icon(id: any): $mol_icon_cross;
         unit_wipe(id: any, next?: any): any;
         Unit_wipe(id: any): $mol_button_minor;
-        node_inner(id: any): $hyoo_cras_node;
-        Node_inner(id: any): $$.$hyoo_cras_node_dump;
+        node_inner(id: any): $hyoo_crus_node;
+        Node_inner(id: any): $$.$hyoo_crus_node_dump;
         Inner(id: any): $mol_view;
         nodes(): readonly any[];
     }
@@ -4390,7 +4436,7 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    class $hyoo_cras_text extends $hyoo_cras_list {
+    class $hyoo_crus_text extends $hyoo_crus_list {
         static tag: "keys" | "vals" | "head" | "term";
         text(next?: string): string;
         str(next?: string): string;
@@ -4402,17 +4448,17 @@ declare namespace $ {
 }
 
 declare namespace $.$$ {
-    class $hyoo_cras_node_dump extends $.$hyoo_cras_node_dump {
+    class $hyoo_crus_node_dump extends $.$hyoo_crus_node_dump {
         title(): string;
-        value(): $hyoo_cras_vary_type;
-        items(): readonly $hyoo_cras_vary_type[];
+        value(): $hyoo_crus_vary_type;
+        items(): readonly $hyoo_crus_vary_type[];
         nodes(): $mol_view[];
-        unit_tag(index: number, next?: keyof typeof $hyoo_cras_gist_tag): "keys" | "vals" | "head" | "term";
+        unit_tag(index: number, next?: keyof typeof $hyoo_crus_gist_tag): "keys" | "vals" | "head" | "term";
         unit_tip(index: number): "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "xml" | "tree";
         unit_time(index: number): string;
-        unit_value(index: number): $hyoo_cras_vary_type;
+        unit_value(index: number): $hyoo_crus_vary_type;
         unit_wipe(index: number, event?: Event): void;
-        node_inner(index: number): $hyoo_cras_node;
+        node_inner(index: number): $hyoo_crus_node;
         add_key(event: Event): void;
         add_value(event: Event): void;
         value_str(next?: string): string;
@@ -4425,18 +4471,18 @@ declare namespace $.$$ {
 }
 
 declare namespace $ {
-    class $hyoo_cras_node_page extends $mol_page {
-        node(): $hyoo_cras_node;
+    class $hyoo_crus_node_page extends $mol_page {
+        node(): $hyoo_crus_node;
         title(): string;
         body(): readonly any[];
-        Dump(): $$.$hyoo_cras_node_dump;
+        Dump(): $$.$hyoo_crus_node_dump;
         text(next?: any): string;
         Text(): $$.$mol_textarea;
     }
 }
 
 declare namespace $.$$ {
-    class $hyoo_cras_node_page extends $.$hyoo_cras_node_page {
+    class $hyoo_crus_node_page extends $.$hyoo_crus_node_page {
         title(): string;
         text(next?: string): string;
     }
@@ -4446,22 +4492,22 @@ declare namespace $.$$ {
 }
 
 declare namespace $ {
-    class $hyoo_cras_land_book extends $mol_book2_catalog {
+    class $hyoo_crus_land_book extends $mol_book2_catalog {
         menu_title(): string;
         param(): string;
-        land(): $hyoo_cras_land;
-        Spread(id: any): $$.$hyoo_cras_node_page;
-        node(id: any): $hyoo_cras_node;
-        Node(id: any): $$.$hyoo_cras_node_page;
+        land(): $hyoo_crus_land;
+        Spread(id: any): $$.$hyoo_crus_node_page;
+        node(id: any): $hyoo_crus_node;
+        Node(id: any): $$.$hyoo_crus_node_page;
     }
 }
 
 declare namespace $.$$ {
-    class $hyoo_cras_land_book extends $.$hyoo_cras_land_book {
+    class $hyoo_crus_land_book extends $.$hyoo_crus_land_book {
         menu_title(): string;
         spread_ids(): string[];
         spread_title(head: string): string;
-        node(id: string): $hyoo_cras_node;
+        node(id: string): $hyoo_crus_node;
     }
 }
 
@@ -4475,14 +4521,14 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    class $hyoo_cras_lord_book extends $mol_book2_catalog {
+    class $hyoo_crus_lord_book extends $mol_book2_catalog {
         menu_title(): string;
         param(): string;
-        lord(): $hyoo_cras_lord;
-        Spread(id: any): $$.$hyoo_cras_land_book;
+        lord(): $hyoo_crus_lord;
+        Spread(id: any): $$.$hyoo_crus_land_book;
         menu_tools(): readonly any[];
-        land(id: any): $hyoo_cras_land;
-        Land(id: any): $$.$hyoo_cras_land_book;
+        land(id: any): $hyoo_crus_land;
+        Land(id: any): $$.$hyoo_crus_land_book;
         Area_new_icon(): $mol_icon_plus;
         land_new(next?: any): any;
         Area_new(): $mol_button_minor;
@@ -4490,11 +4536,11 @@ declare namespace $ {
 }
 
 declare namespace $.$$ {
-    class $hyoo_cras_lord_book extends $.$hyoo_cras_lord_book {
+    class $hyoo_crus_lord_book extends $.$hyoo_crus_lord_book {
         menu_title(): string;
         spread_ids(): string[];
         spread_title(id: string): string;
-        land(id: string): $hyoo_cras_land;
+        land(id: string): $hyoo_crus_land;
         land_new(): void;
     }
 }
@@ -4503,20 +4549,20 @@ declare namespace $.$$ {
 }
 
 declare namespace $ {
-    class $hyoo_cras_realm_book extends $mol_book2_catalog {
+    class $hyoo_crus_realm_book extends $mol_book2_catalog {
         menu_title(): string;
         param(): string;
-        realm(): $hyoo_cras_realm;
-        Spread(id: any): $$.$hyoo_cras_lord_book;
-        lord(id: any): $hyoo_cras_lord;
-        Lord(id: any): $$.$hyoo_cras_lord_book;
+        realm(): $hyoo_crus_realm;
+        Spread(id: any): $$.$hyoo_crus_lord_book;
+        lord(id: any): $hyoo_crus_lord;
+        Lord(id: any): $$.$hyoo_crus_lord_book;
     }
 }
 
 declare namespace $.$$ {
-    class $hyoo_cras_realm_book extends $.$hyoo_cras_realm_book {
+    class $hyoo_crus_realm_book extends $.$hyoo_crus_realm_book {
         spread_ids(): string[];
-        lord(id: string): $hyoo_cras_lord;
+        lord(id: string): $hyoo_crus_lord;
         spread_title(id: string): string;
     }
 }
@@ -4866,12 +4912,6 @@ declare namespace $ {
             forbid: Map<$hyoo_crowd_unit, string>;
         }>;
     }
-}
-
-declare namespace $ {
-    function $mol_wire_race<Tasks extends ((...args: any) => any)[]>(...tasks: Tasks): {
-        [index in keyof Tasks]: ReturnType<Tasks[index]>;
-    };
 }
 
 declare namespace $ {
@@ -5351,10 +5391,10 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    class $hyoo_cras_app extends $mol_book2_catalog {
+    class $hyoo_crus_app extends $mol_book2_catalog {
         menu_title(): string;
         param(): string;
-        realm(): $hyoo_cras_realm;
+        realm(): $hyoo_crus_realm;
         menu_tools(): readonly any[];
         spreads(): Record<string, any>;
         Placeholder(): any;
@@ -5362,14 +5402,14 @@ declare namespace $ {
         intro(): string;
         Intro_content(): $$.$mol_text;
         Intro(): $mol_page;
-        Realm(): $$.$hyoo_cras_realm_book;
+        Realm(): $$.$hyoo_crus_realm_book;
         Casting(): $$.$hyoo_calc;
     }
 }
 
 declare namespace $.$$ {
-    class $hyoo_cras_app extends $.$hyoo_cras_app {
-        realm(): $hyoo_cras_realm;
+    class $hyoo_crus_app extends $.$hyoo_crus_app {
+        realm(): $hyoo_crus_realm;
         intro(): string;
     }
 }
