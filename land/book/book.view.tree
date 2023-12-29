@@ -1,6 +1,6 @@
-$hyoo_cras_land_book $mol_book2_catalog
+$hyoo_crus_land_book $mol_book2_catalog
 	menu_title \Heads
 	param \node
-	land $hyoo_cras_land
-	Spread* <= Node* $hyoo_cras_node_page
-		node <= node* $hyoo_cras_node
+	land $hyoo_crus_land
+	Spread* <= Node* $hyoo_crus_node_page
+		node <= node* $hyoo_crus_node

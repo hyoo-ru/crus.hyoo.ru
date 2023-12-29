@@ -1,6 +1,6 @@
 namespace $.$$ {
 	
-	$mol_style_define( $hyoo_cras_app, {
+	$mol_style_define( $hyoo_crus_app, {
 		
 		Casting: {
 			flex: {

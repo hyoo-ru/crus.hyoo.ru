@@ -1,29 +1,29 @@
 namespace $.$$ {
 	
-	const auth1 = $hyoo_cras_auth.from( '_4eLnQsSr5wj6XOzgS5bZa254pkEOf_hg1nReCSR4Zkd-E07aLSwj-II-rZt4ZubInw_f1rZiA0Qa92qR0Gq3I6xYWCkW9Aagc7-97L2P-gI84NaLwdabp_DrZEX3RJTY' )
+	const auth1 = $hyoo_crus_auth.from( '_4eLnQsSr5wj6XOzgS5bZa254pkEOf_hg1nReCSR4Zkd-E07aLSwj-II-rZt4ZubInw_f1rZiA0Qa92qR0Gq3I6xYWCkW9Aagc7-97L2P-gI84NaLwdabp_DrZEX3RJTY' )
 	
 	$mol_test({
 		
 		async 'Dictionary invariants'( $ ) {
 			
-			const land = $hyoo_cras_land.make({ $ })
-			const dict = land.Node( $hyoo_cras_dict ).Item(0)
+			const land = $hyoo_crus_land.make({ $ })
+			const dict = land.Node( $hyoo_crus_dict ).Item(0)
 			$mol_assert_like( dict.keys(), [] )
 			
-			dict.dive( 123, $hyoo_cras_reg )
-			dict.dive( 'xxx', $hyoo_cras_reg )
+			dict.dive( 123, $hyoo_crus_reg )
+			dict.dive( 'xxx', $hyoo_crus_reg )
 			$mol_assert_like( dict.keys(), [ 'xxx', 123 ] )
 			$mol_assert_ok( dict.has( 123 ) )
 			$mol_assert_ok( dict.has( 'xxx' ) )
 			$mol_assert_not( dict.has( 'yyy' ) )
-			$mol_assert_like( dict.dive( 123, $hyoo_cras_reg ).value_vary(), null )
-			$mol_assert_like( dict.dive( 'xxx', $hyoo_cras_reg ).value_vary(), null )
+			$mol_assert_like( dict.dive( 123, $hyoo_crus_reg ).value_vary(), null )
+			$mol_assert_like( dict.dive( 'xxx', $hyoo_crus_reg ).value_vary(), null )
 			
-			dict.dive( 123, $hyoo_cras_reg ).value_vary( 777 )
-			$mol_assert_like( dict.dive( 123, $hyoo_cras_reg ).value_vary(), 777 )
+			dict.dive( 123, $hyoo_crus_reg ).value_vary( 777 )
+			$mol_assert_like( dict.dive( 123, $hyoo_crus_reg ).value_vary(), 777 )
 
-			dict.dive( 'xxx', $hyoo_cras_list ).items([ 'foo', 'bar' ])
-			$mol_assert_like( dict.dive( 'xxx', $hyoo_cras_list ).items(), [ 'foo', 'bar' ] )
+			dict.dive( 'xxx', $hyoo_crus_list ).items([ 'foo', 'bar' ])
+			$mol_assert_like( dict.dive( 'xxx', $hyoo_crus_list ).items(), [ 'foo', 'bar' ] )
 			
 			dict.has( 123, false )
 			$mol_assert_like( dict.keys(), [ 'xxx' ] )
@@ -32,45 +32,45 @@ namespace $.$$ {
 		
 		async 'Dictionary merge'( $ ) {
 			
-			const land1 = $hyoo_cras_land.make({ $ })
-			const land2 = $hyoo_cras_land.make({ $ })
+			const land1 = $hyoo_crus_land.make({ $ })
+			const land2 = $hyoo_crus_land.make({ $ })
 			
-			const dict1 = land1.Node( $hyoo_cras_dict ).Item(0)
-			const dict2 = land2.Node( $hyoo_cras_dict ).Item(0)
+			const dict1 = land1.Node( $hyoo_crus_dict ).Item(0)
+			const dict2 = land2.Node( $hyoo_crus_dict ).Item(0)
 
-			dict1.dive( 123, $hyoo_cras_reg ).value_vary( 666 )
+			dict1.dive( 123, $hyoo_crus_reg ).value_vary( 666 )
 			land2.face.tick( land2.auth().peer() )
-			dict2.dive( 123, $hyoo_cras_reg ).value_vary( 777 )
+			dict2.dive( 123, $hyoo_crus_reg ).value_vary( 777 )
 			land1.apply_unit( land2.delta_unit() )
-			$mol_assert_like( dict1.dive( 123, $hyoo_cras_reg ).value_vary(), 777 )
+			$mol_assert_like( dict1.dive( 123, $hyoo_crus_reg ).value_vary(), 777 )
 			
-			dict1.dive( 'xxx', $hyoo_cras_list ).items([ 'foo' ])
+			dict1.dive( 'xxx', $hyoo_crus_list ).items([ 'foo' ])
 			land2.face.tick( land2.auth().peer() )
-			dict2.dive( 'xxx', $hyoo_cras_list ).items([ 'bar' ])
+			dict2.dive( 'xxx', $hyoo_crus_list ).items([ 'bar' ])
 			land1.apply_unit( land2.delta_unit() )
-			$mol_assert_like( dict1.dive( 'xxx', $hyoo_cras_list ).items(), [ 'bar', 'foo' ] )
+			$mol_assert_like( dict1.dive( 'xxx', $hyoo_crus_list ).items(), [ 'bar', 'foo' ] )
 
 		},
 		
 		"Narrowed Dictionary with linked Dictionaries and others"( $ ) {
 			
-			const realm = $hyoo_cras_realm.make({ $ })
+			const realm = $hyoo_crus_realm.make({ $ })
 			const land = realm.home().base().land()
 			
-			class User extends $hyoo_cras_dict_obj({
-				Title: $hyoo_cras_reg_str,
-				Account: $hyoo_cras_reg_ref( ()=> Account ),
-				Articles: $hyoo_cras_list_ref( ()=> Article ),
+			class User extends $hyoo_crus_dict_obj({
+				Title: $hyoo_crus_reg_str,
+				Account: $hyoo_crus_reg_ref( ()=> Account ),
+				Articles: $hyoo_crus_list_ref( ()=> Article ),
 			}) {}
 			
-			class Account extends $hyoo_cras_dict_obj({
-				Title: $hyoo_cras_reg_str,
-				User: $hyoo_cras_reg_ref( ()=> User ),
+			class Account extends $hyoo_crus_dict_obj({
+				Title: $hyoo_crus_reg_str,
+				User: $hyoo_crus_reg_ref( ()=> User ),
 			}) {}
 			
-			class Article extends $hyoo_cras_dict_obj({
-				Title: $hyoo_cras_reg_str,
-				Author: $hyoo_cras_reg_ref( ()=> User ),
+			class Article extends $hyoo_crus_dict_obj({
+				Title: $hyoo_crus_reg_str,
+				Author: $hyoo_crus_reg_ref( ()=> User ),
 			}) {}
 			
 			const user = land.Node( User ).Item(1)

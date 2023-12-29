@@ -1,7 +1,7 @@
-$hyoo_cras_app $mol_book2_catalog
+$hyoo_crus_app $mol_book2_catalog
 	menu_title \CRUS🦵DB
 	param \section
-	realm $hyoo_cras_realm
+	realm $hyoo_crus_realm
 	menu_tools /
 		<= Source $mol_link_source
 			uri \https://github.com/hyoo-ru/cras.hyoo.ru
@@ -11,7 +11,7 @@ $hyoo_cras_app $mol_book2_catalog
 				title \💨 Intro
 				body /
 					<= Intro_content $mol_text text <= intro \
-		realm <= Realm $hyoo_cras_realm_book
+		realm <= Realm $hyoo_crus_realm_book
 			realm <= realm
 		casting <= Casting $hyoo_calc
 			title \🔀 Casting

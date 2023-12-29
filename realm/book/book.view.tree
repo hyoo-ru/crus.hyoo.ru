@@ -1,9 +1,9 @@
-$hyoo_cras_realm_book $mol_book2_catalog
+$hyoo_crus_realm_book $mol_book2_catalog
 	menu_title \🌌 Realm
 	param \lord
-	realm $hyoo_cras_realm
-	Spread* <= Lord* $hyoo_cras_lord_book
-		lord <= lord* $hyoo_cras_lord
+	realm $hyoo_crus_realm
+	Spread* <= Lord* $hyoo_crus_lord_book
+		lord <= lord* $hyoo_crus_lord
 	- menu_tools /
 		<= Land_new $mol_button_minor
 			sub / <= lord_new_icon $mol_icon_plus

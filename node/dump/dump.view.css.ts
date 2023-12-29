@@ -1,6 +1,6 @@
 namespace $.$$ {
 	
-	$mol_style_define( $hyoo_cras_node_dump, {
+	$mol_style_define( $hyoo_crus_node_dump, {
 		
 		font: {
 			family: 'monospace',

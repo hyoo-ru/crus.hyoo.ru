@@ -1,9 +1,9 @@
 namespace $.$$ {
-	export class $hyoo_cras_yard extends $.$hyoo_cras_yard {
+	export class $hyoo_crus_yard extends $.$hyoo_crus_yard {
 		
-		static persisted = new WeakSet< $hyoo_cras_unit >()
+		static persisted = new WeakSet< $hyoo_crus_unit >()
 		
-		static async save( land_ref: string, units: readonly $hyoo_cras_unit[] ) {
+		static async save( land_ref: string, units: readonly $hyoo_crus_unit[] ) {
 			
 			const db = await this.db()
 			const change = db.change( 'Pass', 'Gift', 'Gist' )
@@ -13,7 +13,7 @@ namespace $.$$ {
 				
 				unit.choose({
 					pass: pass => Pass.put( pass.buffer, [ land_ref, pass.peer() ] ),
-					gift: gift => Gift.put( gift.buffer, [ land_ref, $hyoo_cras_ref.make( gift.dest() ).toString() ] ),
+					gift: gift => Gift.put( gift.buffer, [ land_ref, $hyoo_crus_ref.make( gift.dest() ).toString() ] ),
 					gist: gist => Gist.put( gist.buffer, [ land_ref, gist.head(), gist.self() ] ),
 				})
 				
@@ -33,9 +33,9 @@ namespace $.$$ {
 			const [ pass, gift, gist ] = $mol_wire_sync( this ).query( key )
 			
 			const units = [
-				... gift.map( bin => new $hyoo_cras_gift( bin ) ),
-				... pass.map( bin => new $hyoo_cras_pass( bin ) ),
-				... gist.map( bin => new $hyoo_cras_gist( bin ) ),
+				... gift.map( bin => new $hyoo_crus_gift( bin ) ),
+				... pass.map( bin => new $hyoo_crus_pass( bin ) ),
+				... gist.map( bin => new $hyoo_crus_gist( bin ) ),
 			]
 			
 			for( const unit of units ) this.persisted.add( unit )

@@ -1,12 +1,12 @@
 /** @jsx $mol_jsx */
 namespace $ {
 	
-	export function $hyoo_cras_vary_cast_bin( vary: $hyoo_cras_vary_type ) {
-		return vary === null || vary === '' ? null : $hyoo_cras_vary_encode( vary ).bin
+	export function $hyoo_crus_vary_cast_bin( vary: $hyoo_crus_vary_type ) {
+		return vary === null || vary === '' ? null : $hyoo_crus_vary_encode( vary ).bin
 	}
 	
-	export function $hyoo_cras_vary_cast_bool( vary: $hyoo_cras_vary_type ) {
-		return $hyoo_cras_vary_switch( vary, {
+	export function $hyoo_crus_vary_cast_bool( vary: $hyoo_crus_vary_type ) {
+		return $hyoo_crus_vary_switch( vary, {
 			
 			bin: vary => Boolean( vary?.length ),
 			bool: vary => vary,
@@ -23,8 +23,8 @@ namespace $ {
 		})
 	}
 
-	export function $hyoo_cras_vary_cast_int( vary: $hyoo_cras_vary_type ) {
-		return $hyoo_cras_vary_switch( vary, {
+	export function $hyoo_crus_vary_cast_int( vary: $hyoo_crus_vary_type ) {
+		return $hyoo_crus_vary_switch( vary, {
 			
 			bin: vary => vary ? BigInt( vary.length ) : 0n,
 			bool: vary => BigInt( vary ),
@@ -56,8 +56,8 @@ namespace $ {
 		})
 	}
 
-	export function $hyoo_cras_vary_cast_real( vary: $hyoo_cras_vary_type ) {
-		return $hyoo_cras_vary_switch( vary, {
+	export function $hyoo_crus_vary_cast_real( vary: $hyoo_crus_vary_type ) {
+		return $hyoo_crus_vary_switch( vary, {
 			
 			bin: vary => vary?.length ?? Number.NaN,
 			bool: vary => Number( vary ),
@@ -74,30 +74,30 @@ namespace $ {
 		})
 	}
 
-	export function $hyoo_cras_vary_cast_ref( vary: $hyoo_cras_vary_type ) {
-		return $hyoo_cras_vary_switch( vary, {
+	export function $hyoo_crus_vary_cast_ref( vary: $hyoo_crus_vary_type ) {
+		return $hyoo_crus_vary_switch( vary, {
 			
-			bin: vary => vary ? $hyoo_cras_ref.from( vary ) : $hyoo_cras_ref.make(),
-			bool: vary => $hyoo_cras_ref.make(),
-			int: vary => $hyoo_cras_ref.make(
+			bin: vary => vary ? $hyoo_crus_ref.from( vary ) : $hyoo_crus_ref.make(),
+			bool: vary => $hyoo_crus_ref.make(),
+			int: vary => $hyoo_crus_ref.make(
 				vary & 0xFFFFFFFFFFFFFFFFn,
 				Number( ( vary >> 64n ) & 0xFFFFFFFFn ),
 				Number( ( vary >> 96n ) & 0xFFFFFFFFFFFFn ),
 			),
-			real: vary => $hyoo_cras_ref.make(),
+			real: vary => $hyoo_crus_ref.make(),
 			ref: vary => vary,
 			
-			str: vary => $hyoo_cras_ref.from( vary ),
-			time: vary => $hyoo_cras_ref.make(),
-			json: vary => $hyoo_cras_ref.make(),
-			xml: vary => $hyoo_cras_ref.make(),
-			tree: vary => $hyoo_cras_ref.make(),
+			str: vary => $hyoo_crus_ref.from( vary ),
+			time: vary => $hyoo_crus_ref.make(),
+			json: vary => $hyoo_crus_ref.make(),
+			xml: vary => $hyoo_crus_ref.make(),
+			tree: vary => $hyoo_crus_ref.make(),
 			
 		})
 	}
 
-	export function $hyoo_cras_vary_cast_str( vary: $hyoo_cras_vary_type ) {
-		return $hyoo_cras_vary_switch( vary, {
+	export function $hyoo_crus_vary_cast_str( vary: $hyoo_crus_vary_type ) {
+		return $hyoo_crus_vary_switch( vary, {
 			
 			bin: vary => vary ? [ ... vary ].map( n => n.toString(16).padStart( 2, '0' ) ).join( '' ) : '',
 			bool: vary => String( vary ),
@@ -114,8 +114,8 @@ namespace $ {
 		})
 	}
 
-	export function $hyoo_cras_vary_cast_time( vary: $hyoo_cras_vary_type ) {
-		return $hyoo_cras_vary_switch( vary, {
+	export function $hyoo_crus_vary_cast_time( vary: $hyoo_crus_vary_type ) {
+		return $hyoo_crus_vary_switch( vary, {
 			
 			bin: vary => new $mol_time_moment( vary ? $mol_charset_decode( vary ) : 0 ),
 			bool: vary => new $mol_time_moment( 0 ),
@@ -132,8 +132,8 @@ namespace $ {
 		})
 	}
 
-	export function $hyoo_cras_vary_cast_json( vary: $hyoo_cras_vary_type ) {
-		return $hyoo_cras_vary_switch( vary, {
+	export function $hyoo_crus_vary_cast_json( vary: $hyoo_crus_vary_type ) {
+		return $hyoo_crus_vary_switch( vary, {
 			
 			bin: vary => vary && [ ... vary ],
 			bool: vary => [ vary ],
@@ -150,8 +150,8 @@ namespace $ {
 		})
 	}
 
-	export function $hyoo_cras_vary_cast_xml( vary: $hyoo_cras_vary_type ) {
-		return $hyoo_cras_vary_switch( vary, {
+	export function $hyoo_crus_vary_cast_xml( vary: $hyoo_crus_vary_type ) {
+		return $hyoo_crus_vary_switch( vary, {
 			
 			bin: vary => <body>{ vary && $mol_base64_ae_encode( vary ) }</body>,
 			bool: vary => <body>{ vary }</body>,
@@ -168,8 +168,8 @@ namespace $ {
 		})
 	}
 
-	export function $hyoo_cras_vary_cast_tree( vary: $hyoo_cras_vary_type ) {
-		return $hyoo_cras_vary_switch( vary, {
+	export function $hyoo_crus_vary_cast_tree( vary: $hyoo_crus_vary_type ) {
+		return $hyoo_crus_vary_switch( vary, {
 			
 			bin: vary => vary ? $mol_tree2_bin_from_bytes( vary ) : $mol_tree2.list([]),
 			bool: vary => $mol_tree2.struct( vary.toString() ),
@@ -186,29 +186,29 @@ namespace $ {
 		})
 	}
 
-	export const $hyoo_cras_vary_cast_funcs = {
+	export const $hyoo_crus_vary_cast_funcs = {
 			
-		bin: $hyoo_cras_vary_cast_bin,
-		bool: $hyoo_cras_vary_cast_bool,
-		int: $hyoo_cras_vary_cast_int,
-		real: $hyoo_cras_vary_cast_real,
-		ref: $hyoo_cras_vary_cast_ref,
+		bin: $hyoo_crus_vary_cast_bin,
+		bool: $hyoo_crus_vary_cast_bool,
+		int: $hyoo_crus_vary_cast_int,
+		real: $hyoo_crus_vary_cast_real,
+		ref: $hyoo_crus_vary_cast_ref,
 		
-		str: $hyoo_cras_vary_cast_str,
-		time: $hyoo_cras_vary_cast_time,
-		json: $hyoo_cras_vary_cast_json,
-		xml: $hyoo_cras_vary_cast_xml,
-		tree: $hyoo_cras_vary_cast_tree,
+		str: $hyoo_crus_vary_cast_str,
+		time: $hyoo_crus_vary_cast_time,
+		json: $hyoo_crus_vary_cast_json,
+		xml: $hyoo_crus_vary_cast_xml,
+		tree: $hyoo_crus_vary_cast_tree,
 		
 	} as const
 	
-	export function $hyoo_cras_vary_cast<
-		Tip extends keyof typeof $hyoo_cras_vary_tip
+	export function $hyoo_crus_vary_cast<
+		Tip extends keyof typeof $hyoo_crus_vary_tip
 	>(
 		tip: Tip,
-		vary: $hyoo_cras_vary_type,
+		vary: $hyoo_crus_vary_type,
 	) {
-		return $hyoo_cras_vary_cast_funcs[ tip ]( vary )
+		return $hyoo_crus_vary_cast_funcs[ tip ]( vary )
 	}
 	
 }

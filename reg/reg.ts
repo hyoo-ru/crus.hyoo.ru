@@ -1,16 +1,16 @@
 
 namespace $ {
 
-	export class $hyoo_cras_reg extends $hyoo_cras_node {
+	export class $hyoo_crus_reg extends $hyoo_crus_node {
 
-		static tag = $hyoo_cras_gist_tag[ $hyoo_cras_gist_tag.head ] as keyof typeof $hyoo_cras_gist_tag;
+		static tag = $hyoo_crus_gist_tag[ $hyoo_crus_gist_tag.head ] as keyof typeof $hyoo_crus_gist_tag;
 
 		pick_unit() {
 			return this.units().at(0)
 		}
 		
 		@ $mol_mem
-		value_vary( next?: $hyoo_cras_vary_type ): $hyoo_cras_vary_type {
+		value_vary( next?: $hyoo_crus_vary_type ): $hyoo_crus_vary_type {
 			
 			let unit_prev = this.pick_unit()
 			let prev = unit_prev ? this.land().gist_decode( unit_prev ) : null
@@ -30,33 +30,33 @@ namespace $ {
 		
 		@ $mol_mem
 		value_bool( next?: boolean ): boolean {
-			return $hyoo_cras_vary_cast_bool( this.value_vary( next ) )
+			return $hyoo_crus_vary_cast_bool( this.value_vary( next ) )
 		}
 		
 		@ $mol_mem
 		value_int( next?: bigint ): bigint {
-			return $hyoo_cras_vary_cast_int( this.value_vary( next ) )
+			return $hyoo_crus_vary_cast_int( this.value_vary( next ) )
 		}
 		
 		@ $mol_mem
 		value_real( next?: number ): number {
-			return $hyoo_cras_vary_cast_real( this.value_vary( next ) )
+			return $hyoo_crus_vary_cast_real( this.value_vary( next ) )
 		}
 		
 		@ $mol_mem
 		value_str( next?: string ): string {
-			return $hyoo_cras_vary_cast_str( this.value_vary( next ) )
+			return $hyoo_crus_vary_cast_str( this.value_vary( next ) )
 		}
 		
 		@ $mol_mem
 		value_bin( next?: Uint8Array | null ): Uint8Array | null {
-			return $hyoo_cras_vary_cast_bin( this.value_vary( next ) )
+			return $hyoo_crus_vary_cast_bin( this.value_vary( next ) )
 		}
 		
 		@ $mol_mem
-		value_ref( next?: $hyoo_cras_ref | null ): $hyoo_cras_ref | null {
+		value_ref( next?: $hyoo_crus_ref | null ): $hyoo_crus_ref | null {
 			const bin = this.value_vary( next )
-			return bin instanceof $hyoo_cras_ref ? bin : null
+			return bin instanceof $hyoo_crus_ref ? bin : null
 		}
 		
 		@ $mol_mem_key
@@ -82,14 +82,14 @@ namespace $ {
 		}
 		
 		@ $mol_mem_key
-		yoke( vary: $hyoo_cras_vary_type ) {
+		yoke( vary: $hyoo_crus_vary_type ) {
 			
 			const realm = this.realm()
 			
 			const ref = this.value_ref()
 			if( ref ) return realm!.Lord( ref.lord() ).Land( ref.land() )
 			
-			const hash = $mol_crypto_hash( $hyoo_cras_vary_encode( vary ).bin )
+			const hash = $mol_crypto_hash( $hyoo_crus_vary_encode( vary ).bin )
 			const idea = new $mol_buffer( hash.buffer ).uint32(0) + this.land().numb()
 
 			const land = realm!.Lord( this.land().auth().lord() ).Land_new( idea )
@@ -110,19 +110,19 @@ namespace $ {
 		
 	}
 
-	export function $hyoo_cras_reg_narrow<
-		Tip extends keyof typeof $hyoo_cras_vary_tip
+	export function $hyoo_crus_reg_narrow<
+		Tip extends keyof typeof $hyoo_crus_vary_tip
 	>( tip: Tip ) {
 
-		type Value = ReturnType<typeof $hyoo_cras_vary_cast_funcs[ Tip ]>
+		type Value = ReturnType<typeof $hyoo_crus_vary_cast_funcs[ Tip ]>
 
-		class Narrow extends $hyoo_cras_reg {
+		class Narrow extends $hyoo_crus_reg {
 
 			static tip = tip;
 
 			@$mol_mem
 			value( next?: Value ): Value {
-				return $hyoo_cras_vary_cast_funcs[ tip ]( this.value_vary( next ) ) as any
+				return $hyoo_crus_vary_cast_funcs[ tip ]( this.value_vary( next ) ) as any
 			}
 
 		}
@@ -130,14 +130,14 @@ namespace $ {
 		return Narrow
 	}
 
-	export class $hyoo_cras_reg_bin extends $hyoo_cras_reg_narrow( 'bin' ) {}
-	export class $hyoo_cras_reg_bool extends $hyoo_cras_reg_narrow( 'bool' ) {}
-	export class $hyoo_cras_reg_int extends $hyoo_cras_reg_narrow( 'int' ) {}
-	export class $hyoo_cras_reg_real extends $hyoo_cras_reg_narrow( 'real' ) {}
-	export class $hyoo_cras_reg_str extends $hyoo_cras_reg_narrow( 'str' ) {}
-	export class $hyoo_cras_reg_time extends $hyoo_cras_reg_narrow( 'time' ) {}
-	export class $hyoo_cras_reg_json extends $hyoo_cras_reg_narrow( 'json' ) {}
-	export class $hyoo_cras_reg_xml extends $hyoo_cras_reg_narrow( 'xml' ) {}
-	export class $hyoo_cras_reg_tree extends $hyoo_cras_reg_narrow( 'tree' ) {}
+	export class $hyoo_crus_reg_bin extends $hyoo_crus_reg_narrow( 'bin' ) {}
+	export class $hyoo_crus_reg_bool extends $hyoo_crus_reg_narrow( 'bool' ) {}
+	export class $hyoo_crus_reg_int extends $hyoo_crus_reg_narrow( 'int' ) {}
+	export class $hyoo_crus_reg_real extends $hyoo_crus_reg_narrow( 'real' ) {}
+	export class $hyoo_crus_reg_str extends $hyoo_crus_reg_narrow( 'str' ) {}
+	export class $hyoo_crus_reg_time extends $hyoo_crus_reg_narrow( 'time' ) {}
+	export class $hyoo_crus_reg_json extends $hyoo_crus_reg_narrow( 'json' ) {}
+	export class $hyoo_crus_reg_xml extends $hyoo_crus_reg_narrow( 'xml' ) {}
+	export class $hyoo_crus_reg_tree extends $hyoo_crus_reg_narrow( 'tree' ) {}
 
 }

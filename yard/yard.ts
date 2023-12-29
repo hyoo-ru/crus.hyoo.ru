@@ -1,4 +1,4 @@
 namespace $ {
-	export class $hyoo_cras_yard extends $mol_object {
+	export class $hyoo_crus_yard extends $mol_object {
 	}
 }

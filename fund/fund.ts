@@ -1,7 +1,7 @@
 namespace $ {
 	
 	/** Registry of nodes as domain entities. */
-	export class $hyoo_cras_fund< Key, Node > extends $mol_object {
+	export class $hyoo_crus_fund< Key, Node > extends $mol_object {
 		
 		constructor(
 			readonly item_make: ( head: Key )=> Node

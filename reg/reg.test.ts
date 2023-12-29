@@ -4,8 +4,8 @@ namespace $.$$ {
 		
 		"Empty representation"( $ ) {
 			
-			const land = $hyoo_cras_land.make({ $ })
-			const reg = land.Node( $hyoo_cras_reg ).Item(0)
+			const land = $hyoo_crus_land.make({ $ })
+			const reg = land.Node( $hyoo_crus_reg ).Item(0)
 			
 			$mol_assert_like( reg.value_bool(), false )
 			$mol_assert_like( reg.value_int(), 0n )
@@ -18,8 +18,8 @@ namespace $.$$ {
 		
 		"Bool representation"( $ ) {
 			
-			const land = $hyoo_cras_land.make({ $ })
-			const reg = land.Node( $hyoo_cras_reg ).Item(0)
+			const land = $hyoo_crus_land.make({ $ })
+			const reg = land.Node( $hyoo_crus_reg ).Item(0)
 			
 			reg.value_bool( true )
 			$mol_assert_like( reg.value_bool(), true )
@@ -41,8 +41,8 @@ namespace $.$$ {
 		
 		"Int representation"( $ ) {
 			
-			const land = $hyoo_cras_land.make({ $ })
-			const reg = land.Node( $hyoo_cras_reg ).Item(0)
+			const land = $hyoo_crus_land.make({ $ })
+			const reg = land.Node( $hyoo_crus_reg ).Item(0)
 			
 			reg.value_int( 4611686018427387904n )
 			$mol_assert_like( reg.value_bool(), true )
@@ -64,8 +64,8 @@ namespace $.$$ {
 		
 		"Real representation"( $ ) {
 			
-			const land = $hyoo_cras_land.make({ $ })
-			const reg = land.Node( $hyoo_cras_reg ).Item(0)
+			const land = $hyoo_crus_land.make({ $ })
+			const reg = land.Node( $hyoo_crus_reg ).Item(0)
 			
 			reg.value_real( Math.PI )
 			$mol_assert_like( reg.value_bool(), true )
@@ -119,8 +119,8 @@ namespace $.$$ {
 		
 		"Bin representation"( $ ) {
 			
-			const land = $hyoo_cras_land.make({ $ })
-			const reg = land.Node( $hyoo_cras_reg ).Item(0)
+			const land = $hyoo_crus_land.make({ $ })
+			const reg = land.Node( $hyoo_crus_reg ).Item(0)
 			
 			reg.value_bin( new Uint8Array([ 1, 2, 3 ]) )
 			$mol_assert_like( reg.value_bool(), true )
@@ -150,8 +150,8 @@ namespace $.$$ {
 		
 		"String representation"( $ ) {
 			
-			const land = $hyoo_cras_land.make({ $ })
-			const reg = land.Node( $hyoo_cras_reg ).Item(0)
+			const land = $hyoo_crus_land.make({ $ })
+			const reg = land.Node( $hyoo_crus_reg ).Item(0)
 			
 			reg.value_str( 'foo' )
 			$mol_assert_like( reg.value_bool(), true )
@@ -186,8 +186,8 @@ namespace $.$$ {
 		
 		"Reference representation"( $ ) {
 			
-			const land = $hyoo_cras_land.make({ $ })
-			const reg = land.Node( $hyoo_cras_reg ).Item(123)
+			const land = $hyoo_crus_land.make({ $ })
+			const reg = land.Node( $hyoo_crus_reg ).Item(123)
 			
 			reg.value_ref( reg.ref() )
 			$mol_assert_like( reg.value_bool(), true )
@@ -209,8 +209,8 @@ namespace $.$$ {
 		
 		"Store custom types"( $ ) {
 			
-			const land = $hyoo_cras_land.make({ $ })
-			const reg = land.Node( $hyoo_cras_reg ).Item(0)
+			const land = $hyoo_crus_land.make({ $ })
+			const reg = land.Node( $hyoo_crus_reg ).Item(0)
 			
 			$mol_assert_like( reg.value_as( $mol_data_email ), null )
 			
@@ -227,29 +227,29 @@ namespace $.$$ {
 		
 		"Hyper link to another land"( $ ) {
 			
-			const realm = $hyoo_cras_realm.make({ $ })
+			const realm = $hyoo_crus_realm.make({ $ })
 			const land = realm.home().base().land()
 			
-			const reg = land.Node( $hyoo_cras_reg ).Item(1)
-			const remote = reg.yoke( null )!.Root( $hyoo_cras_reg )
+			const reg = land.Node( $hyoo_crus_reg ).Item(1)
+			const remote = reg.yoke( null )!.Root( $hyoo_crus_reg )
 			
 			$mol_assert_unique( reg.land(), remote.land() )
 			$mol_assert_like( reg.value_ref(), remote.ref() )
-			$mol_assert_like( reg.yoke( null )!.Root( $hyoo_cras_reg ), remote )
+			$mol_assert_like( reg.yoke( null )!.Root( $hyoo_crus_reg ), remote )
 			
 		},
 		
 		"Narrow registers"( $ ) {
 			
-			const realm = $hyoo_cras_realm.make({ $ })
+			const realm = $hyoo_crus_realm.make({ $ })
 			const land = realm.home().base().land()
 			
-			const bin = land.Node( $hyoo_cras_reg_bin ).Item(1)
+			const bin = land.Node( $hyoo_crus_reg_bin ).Item(1)
 			$mol_assert_like( bin.value(), null )
 			bin.value( new Uint8Array([ 1, 2, 3 ]) )
 			$mol_assert_like( bin.value(), new Uint8Array([ 1, 2, 3 ]) )
 			
-			const str = land.Node( $hyoo_cras_reg_str ).Item(2)
+			const str = land.Node( $hyoo_crus_reg_str ).Item(2)
 			$mol_assert_like( str.value(), '' )
 			str.value( 'foo' )
 			$mol_assert_like( str.value(), 'foo' )
@@ -258,10 +258,10 @@ namespace $.$$ {
 		
 		"Register with linked nodes"( $ ) {
 			
-			const realm = $hyoo_cras_realm.make({ $ })
+			const realm = $hyoo_crus_realm.make({ $ })
 			const land = realm.home().base().land()
 			
-			const reg = land.Node( $hyoo_cras_reg_ref( ()=> $hyoo_cras_reg ) ).Item(1)
+			const reg = land.Node( $hyoo_crus_reg_ref( ()=> $hyoo_crus_reg ) ).Item(1)
 			$mol_assert_like( reg.remote(), null )
 			
 			reg.remote( reg )

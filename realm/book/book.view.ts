@@ -1,5 +1,5 @@
 namespace $.$$ {
-	export class $hyoo_cras_realm_book extends $.$hyoo_cras_realm_book {
+	export class $hyoo_crus_realm_book extends $.$hyoo_crus_realm_book {
 		
 		@ $mol_mem
 		override spread_ids() {
@@ -7,7 +7,7 @@ namespace $.$$ {
 		}
 		
 		override lord( id: string ) {
-			return this.realm().Lord( $hyoo_cras_ref.from( id ).lord() )
+			return this.realm().Lord( $hyoo_crus_ref.from( id ).lord() )
 		}
 		
 		override spread_title( id: string ) {

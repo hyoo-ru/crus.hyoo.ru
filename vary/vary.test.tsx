@@ -1,10 +1,10 @@
 /** @jsx $mol_jsx */
 namespace $.$$ {
 	
-	function check( vary: $hyoo_cras_vary_type ) {
+	function check( vary: $hyoo_crus_vary_type ) {
 		$mol_assert_like(
 			vary,
-			$hyoo_cras_vary_decode( $hyoo_cras_vary_encode( vary ) ),
+			$hyoo_crus_vary_decode( $hyoo_crus_vary_encode( vary ) ),
 		)
 	}	
 	
@@ -38,8 +38,8 @@ namespace $.$$ {
 		},
 		
 		"Ref"( $ ) {
-			check( $hyoo_cras_ref.make() )
-			check( $hyoo_cras_ref.make( 4611686018427387904n, 2, 3 ) )
+			check( $hyoo_crus_ref.make() )
+			check( $hyoo_crus_ref.make( 4611686018427387904n, 2, 3 ) )
 		},
 		
 		"Str"( $ ) {
@@ -67,7 +67,7 @@ namespace $.$$ {
 			)
 			
 			$mol_assert_like(
-				$mol_dom_serialize( $hyoo_cras_vary_decode( $hyoo_cras_vary_encode( xml ) ) as Node ),
+				$mol_dom_serialize( $hyoo_crus_vary_decode( $hyoo_crus_vary_encode( xml ) ) as Node ),
 				$mol_dom_serialize( xml ),
 			)
 			
@@ -81,7 +81,7 @@ namespace $.$$ {
 			`)
 			
 			$mol_assert_like(
-				$.$mol_tree2_to_string( $hyoo_cras_vary_decode( $hyoo_cras_vary_encode( tree ) ) as $mol_tree2 ),
+				$.$mol_tree2_to_string( $hyoo_crus_vary_decode( $hyoo_crus_vary_encode( tree ) ) as $mol_tree2 ),
 				$.$mol_tree2_to_string( tree ),
 			)
 			

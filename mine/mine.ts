@@ -1,5 +1,5 @@
 namespace $ {
-	export class $hyoo_cras_mine extends $mol_object {
+	export class $hyoo_crus_mine extends $mol_object {
 		
 		@ $mol_mem_key
 		static hash( blob: Uint8Array ) {

@@ -1,6 +1,6 @@
 namespace $ {
 	
-	export class $hyoo_cras_pass extends $hyoo_cras_unit {
+	export class $hyoo_crus_pass extends $hyoo_crus_unit {
 		
 		work() {
 			return this.uint8( 1 )

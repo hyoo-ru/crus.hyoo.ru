@@ -1,6 +1,6 @@
 namespace $ {
 	$mol_test_mocks.push( $=> {
-		class $hyoo_cras_auth extends $.$hyoo_cras_auth {
+		class $hyoo_crus_auth extends $.$hyoo_crus_auth {
 
 			@ $mol_mem
 			static current() {
@@ -8,7 +8,7 @@ namespace $ {
 			}
 			
 		}
-		$.$hyoo_cras_auth = $hyoo_cras_auth
+		$.$hyoo_crus_auth = $hyoo_crus_auth
 	} )
 }
 

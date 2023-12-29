@@ -1,11 +1,11 @@
 namespace $ {
 	
 	/** Reference to node that identified by Lord+Numb+Head. */
-	export class $hyoo_cras_ref extends $mol_buffer {
+	export class $hyoo_crus_ref extends $mol_buffer {
 		
 		static size = 12 + 6 + 6
 		
-		static make< This extends typeof $hyoo_cras_ref >(
+		static make< This extends typeof $hyoo_crus_ref >(
 			this: This,
 			lord = 0n /*12B*/,
 			land = 0 /*6B*/,

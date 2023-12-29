@@ -2,13 +2,13 @@ namespace $ {
 	$mol_test({
 		
 		'unit type'() {
-			const unit = new $hyoo_cras_unit
+			const unit = new $hyoo_crus_unit
 			$mol_assert_equal( unit.kind(), 'gist' )
 		},
 		
 		'auth unit type'() {
 			
-			const auth = new $hyoo_cras_pass
+			const auth = new $hyoo_crus_pass
 			auth.auth([ 0xFF, 0, 0xFC, 0xFB, 0xFA, 0xF9, 0xF8, 0xF7, 0xF6, 0xF5, 0xF4, 0xF3, 0xF2, 0xF1 ])
 			
 			$mol_assert_like( auth.kind(), 'pass' )
@@ -19,17 +19,17 @@ namespace $ {
 		
 		'gift unit type'() {
 			
-			const gift = new $hyoo_cras_gift
-			gift.rang( $hyoo_cras_rang.law )
+			const gift = new $hyoo_crus_gift
+			gift.rang( $hyoo_crus_rang.law )
 			
 			$mol_assert_like( gift.kind(), 'gift' )
-			$mol_assert_like( gift.rang(), $hyoo_cras_rang.law )
+			$mol_assert_like( gift.rang(), $hyoo_crus_rang.law )
 			
 		},
 		
 		'data unit type'() {
 			
-			const unit = new $hyoo_cras_gist
+			const unit = new $hyoo_crus_gist
 			unit.data( new Uint8Array([ 0xFF, 0xFF ]) )
 			
 			$mol_assert_like( unit.kind(), 'gist' )
@@ -40,7 +40,7 @@ namespace $ {
 		
 		// 'big data unit type'() {
 			
-		// 	const unit = new $hyoo_cras_gist
+		// 	const unit = new $hyoo_crus_gist
 		// 	unit.hash( 0xa1a2a3a4a5a6a7a8b1b2b3b4b5b6b7b8n )
 			
 		// 	// $mol_assert_like( unit.size(), 255 )
@@ -50,7 +50,7 @@ namespace $ {
 		
 		'unit peer'() {
 			
-			const unit = new $hyoo_cras_unit
+			const unit = new $hyoo_crus_unit
 			$mol_assert_equal( unit.peer(), 0 )
 			
 			unit.peer( 0xf1f2f3f4f5f6 )
@@ -60,7 +60,7 @@ namespace $ {
 		
 		'gift unit fields'() {
 			
-			const unit = new $hyoo_cras_gift
+			const unit = new $hyoo_crus_gift
 			
 			$mol_assert_equal( unit.time(), 0 )
 			$mol_assert_equal( unit.dest(), 0n )
@@ -75,7 +75,7 @@ namespace $ {
 		
 		'data unit fields'() {
 			
-			const unit = new $hyoo_cras_gist
+			const unit = new $hyoo_crus_gist
 			
 			$mol_assert_equal( unit.time(), 0 )
 			$mol_assert_equal( unit.head(), 0 )
@@ -96,7 +96,7 @@ namespace $ {
 		
 		async 'sign / verify'( $ ) {
 			
-			const source = new $hyoo_cras_gist
+			const source = new $hyoo_crus_gist
 			source.data( new Uint8Array([ 0xF1, 0xF2 ]) )
 			
 			const key = await $.$mol_crypto_auditor_pair()

@@ -1,5 +1,5 @@
-$hyoo_cras_node_dump $mol_expander
-	node $hyoo_cras_node
+$hyoo_crus_node_dump $mol_expander
+	node $hyoo_crus_node
 		can_change => can_change
 	tag \keys
 	label /
@@ -28,7 +28,7 @@ $hyoo_cras_node_dump $mol_expander
 			value? <=> value_str? \
 	content <= nodes /
 		<= Inner*0 $mol_view sub /
-			<= Node_inner* $hyoo_cras_node_dump
+			<= Node_inner* $hyoo_crus_node_dump
 				tag <= unit_tag*
 				Value <= Unit_value* $mol_dump_value
 					value <= unit_value* null
@@ -47,4 +47,4 @@ $hyoo_cras_node_dump $mol_expander
 						sub / <= Unit_wipe_icon* $mol_icon_cross
 						enabled <= can_change
 						click? <=> unit_wipe*? null
-				node <= node_inner* $hyoo_cras_node
+				node <= node_inner* $hyoo_crus_node

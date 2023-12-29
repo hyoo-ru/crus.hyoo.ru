@@ -1,5 +1,5 @@
 namespace $.$$ {
-	export class $hyoo_cras_app extends $.$hyoo_cras_app {
+	export class $hyoo_crus_app extends $.$hyoo_crus_app {
 		
 		@ $mol_mem
 		realm() {

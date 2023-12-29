@@ -1,23 +1,23 @@
 namespace $.$$ {
-	export class $hyoo_cras_node_dump extends $.$hyoo_cras_node_dump {
+	export class $hyoo_crus_node_dump extends $.$hyoo_crus_node_dump {
 		
 		title() {
 			return this.node().slug().padEnd( 8, ' ' )
 		}
 		
 		value() {
-			return this.node().cast( $hyoo_cras_reg ).value_vary()
+			return this.node().cast( $hyoo_crus_reg ).value_vary()
 		}
 		
 		items() {
-			return this.node().cast( $hyoo_cras_list ).items()
+			return this.node().cast( $hyoo_crus_list ).items()
 		}
 		
 		nodes() {
 			return this.node().units().map( (_,i)=> this.Inner(i) )
 		}
 		
-		unit_tag( index: number, next?: keyof typeof $hyoo_cras_gist_tag ) {
+		unit_tag( index: number, next?: keyof typeof $hyoo_crus_gist_tag ) {
 			if( next ) {
 				const units = this.node().units()
 				const unit = units[ index ]
@@ -41,11 +41,11 @@ namespace $.$$ {
 		}
 		
 		unit_value( index: number ) {
-			return this.node().cast( $hyoo_cras_list ).items()[ index ]
+			return this.node().cast( $hyoo_crus_list ).items()[ index ]
 		}
 		
 		unit_wipe( index: number, event?: Event ) {
-			this.node().cast( $hyoo_cras_list ).wipe( index )
+			this.node().cast( $hyoo_crus_list ).wipe( index )
 		}
 		
 		node_inner( index: number ) {
@@ -54,22 +54,22 @@ namespace $.$$ {
 		
 		add_key( event: Event ) {
 			if( !this.expandable() ) this.expanded( true )
-			this.node().cast( $hyoo_cras_list ).has( this.key_new(), true, 'head' )
+			this.node().cast( $hyoo_crus_list ).has( this.key_new(), true, 'head' )
 			this.key_new( '' )
 		}
 		
 		add_value( event: Event ) {
 			if( !this.expandable() ) this.expanded( true )
-			this.node().cast( $hyoo_cras_list ).splice([ this.value_new() ])
+			this.node().cast( $hyoo_crus_list ).splice([ this.value_new() ])
 			this.value_new( '' )
 		}
 		
 		value_str( next?: string ) {
-			return this.node().cast( $hyoo_cras_reg ).value_str( next )
+			return this.node().cast( $hyoo_crus_reg ).value_str( next )
 		}
 		
 		text( next?: string ) {
-			return this.node().cast( $hyoo_cras_text ).str( next )
+			return this.node().cast( $hyoo_crus_text ).str( next )
 		}
 		
 		@ $mol_mem
