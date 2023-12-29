@@ -6,3 +6,6 @@ $hyoo_crus_node_page $mol_page
 			node <= node
 		<= Text $mol_textarea
 			value? <=> text? \
+			selection? <=> selection? /
+				0
+				0

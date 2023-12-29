@@ -497,7 +497,7 @@ namespace $ {
 		
 		@ $mol_mem
 		bus() {
-			return new $mol_bus< ArrayBuffer[] >( `$hyoo_crus_land:${ this.ref() }`, $mol_wire_async( bins => {
+			return new this.$.$mol_bus< ArrayBuffer[] >( `$hyoo_crus_land:${ this.ref() }`, $mol_wire_async( bins => {
 				this.apply_unit( bins.map( bin => new $hyoo_crus_unit( bin ) ) )
 			} ) )
 		}

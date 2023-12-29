@@ -7,8 +7,8 @@ $hyoo_crus_node_dump $mol_expander
 		<= Value null
 	addons /
 	Tools $mol_view sub /
-		^ editors
 		^ addons
+		^ editors
 	editors /
 		<= Add_key $mol_textarea
 			enabled <= can_change

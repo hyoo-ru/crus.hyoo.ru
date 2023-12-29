@@ -37,9 +37,9 @@ namespace $.$$ {
 				shrink: 1,
 				wrap: `wrap`,
 			},
-			justify: {
-				content: `flex-end`,
-			},
+			// justify: {
+			// 	content: `flex-end`,
+			// },
 		},
 		
 		Label: {
@@ -69,6 +69,12 @@ namespace $.$$ {
 		Value_text: {
 			flex: {
 				basis: `20rem`,
+				shrink: 1,
+			}
+		},
+		
+		Value_str: {
+			flex: {
 				shrink: 1,
 			}
 		},

@@ -9,5 +9,9 @@ namespace $.$$ {
 			return this.node().cast( $hyoo_crus_text ).text( next )
 		}
 		
+		override selection( next?: [ number, number ] ) {
+			return this.node().cast( $hyoo_crus_text ).selection( this.node().land().auth().lord(), next )
+		}
+		
 	}
 }
