@@ -32,19 +32,27 @@ namespace $ {
 			// return this.ref().toString().replace( /^[^_]*_?/, '' ) || 'Base'
 		}
 		
+		face = new $hyoo_cras_face
+		
 		passes = new $mol_wire_dict< number /*peer*/, $hyoo_cras_pass >()
 		gifts = new $mol_wire_dict< bigint /*lord*/, $hyoo_cras_gift >()
 		gists = new $mol_wire_dict< number /*head*/, $mol_wire_dict< number /*self*/, $hyoo_cras_gist > >()
+		
 		self_all = new $mol_wire_set< number >()
 		
-		face = new $hyoo_cras_face
-
 		@ $mol_action
 		self_make( idea = Math.floor( Math.random() * 2**48 ) ) {
+			
+			const auth = this.auth()
+			const rang = this.lord_rang( auth.lord() )
+			
+			if( rang === $hyoo_cras_rang.add ) return auth.peer()
+			if( rang === $hyoo_cras_rang.nil ) $mol_fail( new Error( 'Rang too low (nil)' ) )
+			
 			const numb = this.numb()
 			for( let i = 0; i < 4096; ++i ) {
 				
-				idea = ( idea + 1  ) % 2**48
+				idea = ( idea + 1 ) % 2**48
 				if( !idea ) continue
 				if( idea === numb ) continue
 				if( this.self_all.has( idea ) ) continue
@@ -53,6 +61,7 @@ namespace $ {
 				return idea
 				
 			}
+			
 			$mol_fail( new Error( `Too long self generation` ) )
 		}
 		
@@ -134,6 +143,7 @@ namespace $ {
 		}
 		
 		/** Applies Delta to current state. */
+		@ $mol_action
 		apply_unit( delta: readonly $hyoo_cras_unit[] ) {
 			return delta.map( unit => {
 				
@@ -244,6 +254,9 @@ namespace $ {
 		
 		@ $mol_mem_key
 		gists_ordered( head: number ) {
+			
+			this.loading()
+			try { this.saving() } catch( error ) { $mol_fail_log( error ) }
 			
 			const queue = [ ... this.gists.get( head )?.values() ?? [] ]
 			
@@ -371,12 +384,11 @@ namespace $ {
 			lead: number,
 			head: number,
 			self: number,
-			data: $hyoo_cras_vary_type,
+			vary: $hyoo_cras_vary_type,
 			tag = 'term' as keyof typeof $hyoo_cras_gist_tag,
 		) {
 			
 			this.join()
-			const secret = this.secret()
 			
 			const auth = this.auth()
 			const unit = new $hyoo_cras_gist
@@ -385,14 +397,19 @@ namespace $ {
 			unit.peer( auth.peer() )
 			unit.lead( lead )
 			unit.head( head )
+			unit._vary = vary
 			
-			let { tip, bin } = $hyoo_cras_vary_encode( data )
-			if( secret ) bin = new Uint8Array( $mol_wire_sync( secret ).encrypt( bin, unit.salt() ) )
+			let { tip, bin } = $hyoo_cras_vary_encode( vary )
+			unit._open = bin
 			
-			if( bin.byteLength > 32 ) unit.hash( this.$.$hyoo_cras_mine.save( bin ), tip, tag )
-			else unit.data( bin, tip, tag )
+			if( this.encrypted() ) {
+				unit.hash( $mol_crypto_hash( bin ), tip, tag )
+			} else {
+				if( bin.byteLength > 32 ) unit.hash( this.$.$hyoo_cras_mine.hash( bin ), tip, tag )
+				else unit.data( bin, tip, tag )
+			}
 		
-			unit.self( self || ( this.lord_rang( auth.lord() ) >= $hyoo_cras_rang.mod ? this.self_make( unit.idea() ) : auth.peer() ) )
+			unit.self( self || this.self_make( unit.idea() ) )
 			
 			const error = this.apply_unit([ unit ])[0]
 			if( error ) $mol_fail( new Error( error ) )
@@ -464,12 +481,94 @@ namespace $ {
 			
 		}
 		
-		@ $mol_action
+		@ $mol_mem
+		loading() {
+			
+			const units = this.$.$hyoo_cras_yard.load( this.ref().toString() )
+			const errors = this.apply_unit( units ).filter( Boolean )
+			
+			if( errors.length ) this.$.$mol_log3_fail({
+				place: this,
+				message: errors.join( '\n' ),
+			})
+			
+		}
+		
+		@ $mol_mem
+		saving() {
+			
+			this.$.$mol_wait_timeout(250)
+			
+			const yard = this.$.$hyoo_cras_yard
+			
+			const encoding = [] as $hyoo_cras_gist[]
+			const signing = [] as $hyoo_cras_unit[]
+			const persisting = [] as $hyoo_cras_unit[]
+			
+			for( const pass of this.passes.values() ) {
+				if( !pass.signed() ) signing.push( pass )
+				if( !yard.persisted.has( pass ) ) persisting.push( pass )
+			}
+			
+			for( const gift of this.gifts.values() ) {
+				if( !gift.signed() ) signing.push( gift )
+				if( !yard.persisted.has( gift ) ) persisting.push( gift )
+			}
+			
+			for( const kids of this.gists.values() ) {
+				for( const gist of kids.values() ) {
+					if( !gist.signed() ) {
+						encoding.push( gist )
+						signing.push( gist )
+					}
+					if( !yard.persisted.has( gist ) ) persisting.push( gist )
+				}
+			}
+			
+			$mol_wire_race( ... encoding.map( unit => ()=> this.gist_encode( unit ) ) )
+			$mol_wire_race( ... signing.map( unit => ()=> this.unit_sign( unit ) ) )
+			if( persisting.length )	$mol_wire_sync( yard ).save( this.ref().toString(), persisting )
+			
+		}
+		
+		@ $mol_mem_key
+		unit_sign( unit: $hyoo_cras_unit ) {
+			if( unit.signed() ) return
+			
+			const key = $mol_wire_sync( this.auth() )
+			const sign = new Uint8Array( key.sign( unit.sens() ) )
+			unit.sign( sign )
+			
+		}
+		
+		@ $mol_mem_key
+		gist_encode( gist: $hyoo_cras_gist ) {
+			
+			if( gist._open === undefined ) return gist
+			
+			let bin = gist._open
+			const secret = this.secret()!
+			
+			if( secret ) bin = new Uint8Array( $mol_wire_sync( secret ).encrypt( bin, gist.salt() ) )
+			
+			if( bin.byteLength > 32 ) gist.hash( this.$.$hyoo_cras_mine.save( bin ), gist.tip(), gist.tag() )
+			else gist.data( bin, gist.tip(), gist.tag() )
+			
+			return gist
+		}
+		
+		@ $mol_mem_key
 		gist_decode( gist: $hyoo_cras_gist ) {
+			
+			if( gist._vary !== undefined ) return gist._vary
+			if( gist._open !== undefined ) return gist._vary = $hyoo_cras_vary_decode({ tip: gist.tip(), bin: gist._open })
+			
 			let bin = gist.size() > 32 ? this.$.$hyoo_cras_mine.rock( gist.hash() ) : gist.data()
 			if( bin && this.secret() ) bin = new Uint8Array( $mol_wire_sync( this.secret()! ).decrypt( bin, gist.salt() ) )
-			const vary = bin ? $hyoo_cras_vary_decode({ tip: gist.tip(), bin }) : null
-			return vary
+			
+			gist._open = bin
+			return gist._vary = ( bin ? $hyoo_cras_vary_decode({ tip: gist.tip(), bin }) : null )
+			
 		}
 		
 		@ $mol_mem_key
@@ -494,8 +593,8 @@ namespace $ {
 		@ $mol_action
 		encrypt() {
 			
-			if( !this.numb() ) $mol_fail( new Error( 'Home Area never encrypted' ) )
-			if( this.secret() ) return
+			if( !this.numb() ) $mol_fail( new Error( 'Home Land never encrypted' ) )
+			if( this.encrypted() ) return
 			
 			this.join()
 			
@@ -520,6 +619,19 @@ namespace $ {
 		}
 		
 		@ $mol_mem
+		encrypted() {
+			
+			if( !this.numb() ) return false // home land never encrypted
+			
+			const gift = this.gifts.get( this.lord_numb() )
+			if( !gift ) return false // no secret for lord
+			
+			const bill = gift.bill()
+			return bill.some( b => b ) // secret isn't empty
+			
+		}
+		
+		@ $mol_mem
 		secret() {
 			
 			if( !this.numb() ) return null // home land never encrypted
@@ -529,7 +641,7 @@ namespace $ {
 			if( !gift ) return null
 			
 			const bill = gift.bill()
-			if( bill.every( b => b === 0 ) ) return null
+			if( !bill.some( b => b ) ) return null
 			
 			const secret_mutual = auth.secret_mutual( this.key_public( gift.peer() )!.toString() )
 			if( !secret_mutual ) return null

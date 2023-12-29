@@ -1,21 +1,25 @@
 namespace $ {
 	export class $hyoo_cras_mine extends $mol_object {
 		
-		static store = new Map< bigint, Uint8Array >()
-		
 		@ $mol_mem_key
 		static hash( blob: Uint8Array ) {
 			return $mol_crypto_hash( blob )
 		}
 		
 		@ $mol_mem_key
-		static rock( hash: Uint8Array, next?: Uint8Array ) {
+		static rock( hash: Uint8Array, next?: Uint8Array ): Uint8Array | undefined {
 			$mol_wire_solid()
-			if( !next ) return $mol_wire_sync( this.read() ).get([ hash ])
 			
-			this.change().then( Rock => Rock.put( next, [ hash ] ) )
+			const prev = $mol_mem_cached( ()=> this.rock( hash ) )
+			if( prev ) return prev
 			
-			return next
+			if( next ) {
+				this.change().then( Rock => Rock.put( next.buffer, [ hash ] ) )
+				return next
+			} else {
+				const buf = $mol_wire_sync( this.read() ).get([ hash ])
+				return buf ? new Uint8Array( buf ) : undefined
+			}
 			
 		}
 		
@@ -43,12 +47,12 @@ namespace $ {
 			type Scheme = {
 				Rock: {
 					Key: [ Uint8Array ]
-					Doc: Uint8Array
+					Doc: ArrayBuffer
 					Indexes: {}
 				}
 			}
 			
-			return await this.$.$mol_db< Scheme >( '$hyoo_cras_mine',
+			return await this.$.$mol_db< Scheme >( '$hyoo_crus_mine',
 				mig => mig.store_make( 'Rock' ),
 			)
 			

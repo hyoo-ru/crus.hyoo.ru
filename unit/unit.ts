@@ -36,7 +36,9 @@ namespace $ {
 				pass: $hyoo_cras_pass,
 				gift: $hyoo_cras_gift,
 			}[ way ]
-			return ways[ way ]( new Unit( this.buffer, this.byteOffset, this.byteLength ) as any )
+			if( this instanceof Unit ) return ways[ way ]( this as any )
+			const unit = new Unit( this.buffer, this.byteOffset, this.byteLength ) as any
+			return ways[ way ]( unit )
 		}
 		
 		peer( next?: number ) {
@@ -57,6 +59,10 @@ namespace $ {
 			const prev = new Uint8Array( this.buffer, this.byteOffset + 64, 64 )
 			if( next ) prev.set( next )
 			return prev
+		}
+		
+		signed() {
+			return this.sign().some( b => b )
 		}
 		
 	}

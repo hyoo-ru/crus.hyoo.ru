@@ -8,11 +8,11 @@ namespace $ {
 		'Join'( $ ) {
 			
 			const land = $hyoo_cras_land.make({ $ })
-			$mol_assert_like( land.joined_list(), [] )
-			$mol_assert_like( land.lord_rang( land.lord_numb() ), $hyoo_cras_rang.law )
+			$mol_assert_equal( land.joined_list(), [] )
+			$mol_assert_equal( land.lord_rang( land.lord_numb() ), $hyoo_cras_rang.law )
 			
 			land.join()
-			$mol_assert_like( land.joined_list(), [ land.lord_numb() ] )
+			$mol_assert_equal( land.joined_list(), [ land.lord_numb() ] )
 			
 		},
 		
@@ -21,32 +21,32 @@ namespace $ {
 			const land1 = $hyoo_cras_land.make({ $ })
 			const land2 = $hyoo_cras_land.make({ $, lord_numb: ()=> land1.lord_numb(), auth: ()=> auth1 })
 			
-			$mol_assert_like( land1.lord_rang( land1.lord_numb() ), $hyoo_cras_rang.law )
-			$mol_assert_like( land1.lord_rang( auth1.lord() ), $hyoo_cras_rang.get )
+			$mol_assert_equal( land1.lord_rang( land1.lord_numb() ), $hyoo_cras_rang.law )
+			$mol_assert_equal( land1.lord_rang( auth1.lord() ), $hyoo_cras_rang.get )
 			
 			$mol_assert_fail( ()=> land2.give( auth2.lord(), $hyoo_cras_rang.add ), 'Need add rang to join' )
-			$mol_assert_like( land1.lord_rang( auth1.lord() ), $hyoo_cras_rang.get )
+			$mol_assert_equal( land1.lord_rang( auth1.lord() ), $hyoo_cras_rang.get )
 			
 			land1.give( auth1.lord(), $hyoo_cras_rang.get )
-			$mol_assert_like( land1.lord_rang( auth1.lord() ), $hyoo_cras_rang.get )
+			$mol_assert_equal( land1.lord_rang( auth1.lord() ), $hyoo_cras_rang.get )
 			
 			land1.give( auth1.lord(), $hyoo_cras_rang.add )
-			$mol_assert_like( land1.lord_rang( auth1.lord() ), $hyoo_cras_rang.add )
+			$mol_assert_equal( land1.lord_rang( auth1.lord() ), $hyoo_cras_rang.add )
 			
 			land1.give( auth1.lord(), $hyoo_cras_rang.get )
-			$mol_assert_like( land1.lord_rang( auth1.lord() ), $hyoo_cras_rang.get )
+			$mol_assert_equal( land1.lord_rang( auth1.lord() ), $hyoo_cras_rang.get )
 			
 			land1.give( auth1.lord(), $hyoo_cras_rang.mod )
-			$mol_assert_like( land1.lord_rang( auth1.lord() ), $hyoo_cras_rang.mod )
+			$mol_assert_equal( land1.lord_rang( auth1.lord() ), $hyoo_cras_rang.mod )
 			
 			land1.give( auth1.lord(), $hyoo_cras_rang.add )
-			$mol_assert_like( land1.lord_rang( auth1.lord() ), $hyoo_cras_rang.add )
+			$mol_assert_equal( land1.lord_rang( auth1.lord() ), $hyoo_cras_rang.add )
 			
 			land1.give( auth1.lord(), $hyoo_cras_rang.law )
-			$mol_assert_like( land1.lord_rang( auth1.lord() ), $hyoo_cras_rang.law )
+			$mol_assert_equal( land1.lord_rang( auth1.lord() ), $hyoo_cras_rang.law )
 			
 			land1.give( auth1.lord(), $hyoo_cras_rang.mod )
-			$mol_assert_like( land1.lord_rang( auth1.lord() ), $hyoo_cras_rang.mod )
+			$mol_assert_equal( land1.lord_rang( auth1.lord() ), $hyoo_cras_rang.mod )
 			
 			land2.apply_unit( land1.delta_unit() )
 			$mol_assert_fail( ()=> land2.give( auth2.lord(), $hyoo_cras_rang.add ), 'Need law rang to change rang' )
@@ -58,46 +58,46 @@ namespace $ {
 			const land1 = $hyoo_cras_land.make({ $ })
 			const land2 = $hyoo_cras_land.make({ $, lord_numb: ()=> land1.lord_numb(), auth: ()=> auth1 })
 			
-			$mol_assert_like( land1.delta_unit(), [] )
+			$mol_assert_equal( land1.delta_unit(), [] )
 			
 			land1.post( 0, 0, 1, new Uint8Array([ 1 ]) )
-			$mol_assert_like( land1.delta_unit().length, 2 )
+			$mol_assert_equal( land1.delta_unit().length, 2 )
 			
 			const face = new $hyoo_cras_face( land1.face )
 			
 			land1.post( 1, 0, 2, new Uint8Array([ 2 ]) )
-			$mol_assert_like( land1.delta_unit().length, 3 )
-			$mol_assert_like( land1.delta_unit( face ).length, 1 )
+			$mol_assert_equal( land1.delta_unit().length, 3 )
+			$mol_assert_equal( land1.delta_unit( face ).length, 1 )
 			
 			land2.apply_unit( land1.delta_unit() )
 			
 			$mol_assert_fail( ()=> land2.post( 2, 0, 3, new Uint8Array([ 3 ]) ), 'Need add rang to join' )
-			$mol_assert_like( land2.delta_unit().length, 3 )
-			$mol_assert_like( land2.delta_unit( face ).length, 1 )
+			$mol_assert_equal( land2.delta_unit().length, 3 )
+			$mol_assert_equal( land2.delta_unit( face ).length, 1 )
 			
 			land1.give( auth1.lord(), $hyoo_cras_rang.add )
 			land2.apply_unit( land1.delta_unit() )
 			$mol_assert_fail( ()=> land2.post( 2, 0, 3, new Uint8Array([ 3 ]) ), 'Need mod rang to post any data' )
-			$mol_assert_like( land2.delta_unit().length, 5 )
-			$mol_assert_like( land2.delta_unit( face ).length, 3 )
+			$mol_assert_equal( land2.delta_unit().length, 5 )
+			$mol_assert_equal( land2.delta_unit( face ).length, 3 )
 			
 			land2.post( 2, 0, auth1.peer(), new Uint8Array([ 4 ]) )
-			$mol_assert_like( land2.delta_unit().length, 6 )
-			$mol_assert_like( land2.delta_unit( face ).length, 4 )
+			$mol_assert_equal( land2.delta_unit().length, 6 )
+			$mol_assert_equal( land2.delta_unit( face ).length, 4 )
 			
 			land1.give( auth1.lord(), $hyoo_cras_rang.mod )
 			land2.apply_unit( land1.delta_unit() )
 			land2.post( 2, 0, 3, new Uint8Array([ 3 ]) )
-			$mol_assert_like( land2.delta_unit().length, 7 )
-			$mol_assert_like( land2.delta_unit( face ).length, 5 )
+			$mol_assert_equal( land2.delta_unit().length, 7 )
+			$mol_assert_equal( land2.delta_unit( face ).length, 5 )
 			
 			land1.give( auth1.lord(), $hyoo_cras_rang.add )
 			land2.apply_unit( land1.delta_unit() )
-			$mol_assert_like( land2.delta_unit().length, 6 )
+			$mol_assert_equal( land2.delta_unit().length, 6 )
 			
 			land1.give( auth1.lord(), $hyoo_cras_rang.get )
 			land2.apply_unit( land1.delta_unit() )
-			$mol_assert_like( land2.delta_unit().length, 4 )
+			$mol_assert_equal( land2.delta_unit().length, 4 )
 			
 		},
 		
@@ -106,83 +106,83 @@ namespace $ {
 			const land1 = $hyoo_cras_land.make({ $ })
 			const land2 = $hyoo_cras_land.make({ $, lord_numb: ()=> land1.lord_numb(), auth: ()=> auth2 })
 			
-			$mol_assert_like( land1.delta_unit(), [] )
+			$mol_assert_equal( land1.delta_unit(), [] )
 			
 			land1.give( auth2.lord(), $hyoo_cras_rang.add )
 			land2.apply_unit( land1.delta_unit() )
-			$mol_assert_like( land2.delta_unit().length, 2 )
+			$mol_assert_equal( land2.delta_unit().length, 2 )
 			
 			const gist1 = land2.post( 0, 0, 0, 'foo' )
-			$mol_assert_like( gist1.self(), auth2.peer() )
-			$mol_assert_like( land2.delta_unit().length, 4 )
+			$mol_assert_equal( gist1.self(), auth2.peer() )
+			$mol_assert_equal( land2.delta_unit().length, 4 )
 			
 			const gist2 = land2.post( 0, 0, 0, 'bar' )
-			$mol_assert_like( gist2.self(), auth2.peer() )
-			$mol_assert_like( land2.delta_unit().length, 4 )
+			$mol_assert_equal( gist2.self(), auth2.peer() )
+			$mol_assert_equal( land2.delta_unit().length, 4 )
 			
 		},
 		
-		'Home Area no encryption'( $ ) {
+		'Home Land no encryption'( $ ) {
 			
 			const land = $hyoo_cras_land.make({ $ })
-			$mol_assert_not( land.secret() )
+			$mol_assert_equal( land.encrypted(), false )
 			
-			$mol_assert_fail( ()=> land.encrypt(), 'Home Area never encrypted' )
-			$mol_assert_not( land.secret() )
+			$mol_assert_fail( ()=> land.encrypt(), 'Home Land never encrypted' )
+			$mol_assert_equal( land.encrypted(), false )
 			
 		},
 		
-		async 'Area encryption'( $ ) {
+		async 'Land encryption'( $ ) {
 			
 			const land = $mol_wire_async( $hyoo_cras_land.make({ $, numb: ()=> 1 }) )
-			$mol_assert_not( await land.secret() )
+			$mol_assert_equal( await land.encrypted(), false )
 			
 			await land.encrypt()
-			$mol_assert_ok( await land.secret() )
+			$mol_assert_equal( await land.encrypted(), true )
 			
 			const gist = await land.post( 0, 0, 0, new Uint8Array([ 1, 2, 3 ]) )
 			
-			$mol_assert_equal( gist.data().length, 7 )
-			$mol_assert_like(
+			$mol_assert_equal( ( await land.gist_encode( gist ) ).data().length, 7 )
+			$mol_assert_equal(
 				await land.gist_decode( gist ),
 				new Uint8Array([ 1, 2, 3 ]),
 			)
 			
 		},
 		
-		'Area fork & merge'( $ ) {
+		'Land fork & merge'( $ ) {
 			
 			const realm = $hyoo_cras_realm.make({ $ })
 			const base = realm.home().base().land()
 			const left = base.fork()
 			
 			base.Root( $hyoo_cras_list ).items([ 'foo', 'xxx' ])
-			$mol_assert_like( base.Root( $hyoo_cras_list ).items(), [ 'foo', 'xxx' ] )
-			$mol_assert_like( left.Root( $hyoo_cras_list ).items(), [ 'foo', 'xxx' ] )
+			$mol_assert_equal( base.Root( $hyoo_cras_list ).items(), [ 'foo', 'xxx' ] )
+			$mol_assert_equal( left.Root( $hyoo_cras_list ).items(), [ 'foo', 'xxx' ] )
 			
 			left.face.sync( base.face )
 			left.Root( $hyoo_cras_list ).items([ 'foo', 'yyy' ])
-			$mol_assert_like( left.Root( $hyoo_cras_list ).items(), [ 'foo', 'yyy' ] )
+			$mol_assert_equal( left.Root( $hyoo_cras_list ).items(), [ 'foo', 'yyy' ] )
 			
 			const right = base.fork()
 			right.face.sync( left.face )
 			right.Root( $hyoo_cras_list ).items([ 'foo', 'zzz' ])
-			$mol_assert_like( right.Root( $hyoo_cras_list ).items(), [ 'foo', 'zzz' ] )
+			$mol_assert_equal( right.Root( $hyoo_cras_list ).items(), [ 'foo', 'zzz' ] )
 			
 			const both = base.fork()
-			$mol_assert_like( both.Root( $hyoo_cras_list ).items(), [ 'foo', 'xxx' ] )
+			$mol_assert_equal( both.Root( $hyoo_cras_list ).items(), [ 'foo', 'xxx' ] )
 			
 			both.cloves()!.items([ right.ref() ])
-			$mol_assert_like( both.Root( $hyoo_cras_list ).items(), [ 'foo', 'zzz' ] )
+			$mol_assert_equal( both.Root( $hyoo_cras_list ).items(), [ 'foo', 'zzz' ] )
 			
 			both.cloves()!.items([ left.ref() ])
-			$mol_assert_like( both.Root( $hyoo_cras_list ).items(), [ 'foo', 'yyy' ] )
+			$mol_assert_equal( both.Root( $hyoo_cras_list ).items(), [ 'foo', 'yyy' ] )
 			
 			both.cloves()!.items([ right.ref(), left.ref() ])
-			$mol_assert_like( both.Root( $hyoo_cras_list ).items(), [ 'foo', 'yyy' ] )
+			$mol_assert_equal( both.Root( $hyoo_cras_list ).items(), [ 'foo', 'yyy' ] )
 			
 			both.cloves()!.items([ left.ref(), right.ref() ])
-			$mol_assert_like( both.Root( $hyoo_cras_list ).items(), [ 'foo', 'zzz' ] )
+			$mol_assert_equal( both.Root( $hyoo_cras_list ).items(), [ 'foo', 'zzz' ] )
 			
 		},
 		
@@ -218,7 +218,7 @@ namespace $ {
 		// 	store.chief.as( $hyoo_crowd_text ).str( 'foobar' )
 		// 	store.chief.as( $hyoo_crowd_text ).write( 'xyz', 3 )
 			
-		// 	$mol_assert_like( store.chief.as( $hyoo_crowd_list ).list(), [ 'fooxyzbar' ] )
+		// 	$mol_assert_equal( store.chief.as( $hyoo_crowd_list ).list(), [ 'fooxyzbar' ] )
 			
 		// },
 		
@@ -228,7 +228,7 @@ namespace $ {
 		// 	store.chief.as( $hyoo_crowd_text ).str( 'foobar' )
 		// 	store.chief.as( $hyoo_crowd_text ).write( 'XYZ', 2, 4 )
 			
-		// 	$mol_assert_like( store.chief.as( $hyoo_crowd_list ).list(), [ 'fo', 'XYZar' ] )
+		// 	$mol_assert_equal( store.chief.as( $hyoo_crowd_list ).list(), [ 'fo', 'XYZar' ] )
 			
 		// },
 		
@@ -238,7 +238,7 @@ namespace $ {
 		// 	store.chief.as( $hyoo_crowd_text ).str( 'xxx foo bar yyy' )
 		// 	store.chief.as( $hyoo_crowd_text ).write( 'X Y Z', 6, 9 )
 			
-		// 	$mol_assert_like( store.chief.as( $hyoo_crowd_list ).list(), [ 'xxx', ' fo', 'X', ' Y', ' Zar', ' yyy' ] )
+		// 	$mol_assert_equal( store.chief.as( $hyoo_crowd_list ).list(), [ 'xxx', ' fo', 'X', ' Y', ' Zar', ' yyy' ] )
 			
 		// },
 		
@@ -248,7 +248,7 @@ namespace $ {
 		// 	store.chief.as( $hyoo_crowd_text ).str( 'xxxFoo yyy' )
 		// 	store.chief.as( $hyoo_crowd_text ).write( 'bar', 3, 7 )
 			
-		// 	$mol_assert_like( store.chief.as( $hyoo_crowd_list ).list(), [ 'xxxbaryyy' ] )
+		// 	$mol_assert_equal( store.chief.as( $hyoo_crowd_list ).list(), [ 'xxxbaryyy' ] )
 			
 		// },
 		
@@ -258,7 +258,7 @@ namespace $ {
 		// 	store.chief.as( $hyoo_crowd_text ).str( 'foo bar' )
 		// 	store.chief.as( $hyoo_crowd_text ).write( 'xxx', 0, 7 )
 			
-		// 	$mol_assert_like( store.chief.as( $hyoo_crowd_list ).list(), [ 'xxx' ] )
+		// 	$mol_assert_equal( store.chief.as( $hyoo_crowd_list ).list(), [ 'xxx' ] )
 			
 		// },
 		
@@ -268,7 +268,7 @@ namespace $ {
 		// 	store.chief.as( $hyoo_crowd_text ).str( 'foo' )
 		// 	store.chief.as( $hyoo_crowd_text ).write( 'bar' )
 			
-		// 	$mol_assert_like( store.chief.as( $hyoo_crowd_list ).list(), [ 'foobar' ] )
+		// 	$mol_assert_equal( store.chief.as( $hyoo_crowd_list ).list(), [ 'foobar' ] )
 			
 		// },
 		
@@ -278,7 +278,7 @@ namespace $ {
 		// 	store.chief.as( $hyoo_crowd_text ).str( 'foo bar' )
 		// 	store.chief.as( $hyoo_crowd_text ).write( 'xxx', 4 )
 			
-		// 	$mol_assert_like( store.chief.as( $hyoo_crowd_list ).list(), [ 'foo', ' xxxbar' ] )
+		// 	$mol_assert_equal( store.chief.as( $hyoo_crowd_list ).list(), [ 'foo', ' xxxbar' ] )
 			
 		// },
 

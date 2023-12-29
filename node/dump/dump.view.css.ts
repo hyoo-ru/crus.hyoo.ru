@@ -32,7 +32,10 @@ namespace $.$$ {
 		
 		Tools: {
 			flex: {
+				//basis: `40rem`,
 				grow: 1,
+				shrink: 1,
+				wrap: `wrap`,
 			},
 			justify: {
 				content: `flex-end`,
@@ -61,6 +64,13 @@ namespace $.$$ {
 		
 		Head: {
 			// color: $mol_theme.special,
+		},
+		
+		Value_text: {
+			flex: {
+				basis: `20rem`,
+				shrink: 1,
+			}
 		},
 		
 		Unit_time: {

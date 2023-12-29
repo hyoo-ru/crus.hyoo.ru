@@ -13,6 +13,9 @@ namespace $ {
 	
 	export class $hyoo_cras_gist extends $hyoo_cras_unit {
 		
+		_vary = undefined as undefined | $hyoo_cras_vary_type
+		_open = undefined as undefined | Uint8Array
+		
 		hint(
 			tip = 'null' as keyof typeof $hyoo_cras_vary_tip,
 			tag = 'term' as keyof typeof $hyoo_cras_gist_tag,
@@ -94,6 +97,7 @@ namespace $ {
 				this.uint8( 1, next.byteLength )
 				const bin = new Uint8Array( this.buffer, this.byteOffset + 32, next.byteLength )
 				bin.set( next )
+				new Uint8Array( this.buffer, this.byteOffset + 32 + next.length, 32 - next.length ).fill( 0 )
 				return bin
 			}
 		}
@@ -133,9 +137,11 @@ namespace $ {
 					this.tip(),
 				),
 				' ',
-				this.size() > 32
-					? $mol_dev_format_shade( this.hash() )
-					: $mol_dev_format_native( $hyoo_cras_vary_decode({ tip: this.tip(), bin: this.data() }) ),
+				this._vary //??
+					// ( this.size() > 32
+					// 	? $mol_dev_format_shade( this.hash() )
+					// 	: $mol_dev_format_native( $hyoo_cras_vary_decode({ tip: this.tip(), bin: this.data() }) )
+					// ),
 			)
 		}
 		
