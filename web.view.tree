@@ -847,8 +847,8 @@ $hyoo_crus_node_dump $mol_expander
 		<= Value null
 	addons /
 	Tools $mol_view sub /
-		^ editors
 		^ addons
+		^ editors
 	editors /
 		<= Add_key $mol_textarea
 			enabled <= can_change
@@ -897,6 +897,9 @@ $hyoo_crus_node_page $mol_page
 			node <= node
 		<= Text $mol_textarea
 			value? <=> text? \
+			selection? <=> selection? /
+				0
+				0
 
 $hyoo_crus_land_book $mol_book2_catalog
 	menu_title \Heads

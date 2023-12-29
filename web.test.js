@@ -4783,6 +4783,18 @@ var $;
 var $;
 (function ($_1) {
     $mol_test_mocks.push($ => {
+        class $mol_bus extends $.$mol_bus {
+            send() { }
+        }
+        $.$mol_bus = $mol_bus;
+    });
+})($ || ($ = {}));
+//mol/bus/bus.test.ts
+;
+"use strict";
+var $;
+(function ($_1) {
+    $mol_test_mocks.push($ => {
         class $hyoo_crus_yard extends $.$hyoo_crus_yard {
             static load(land_ref) {
                 return [];

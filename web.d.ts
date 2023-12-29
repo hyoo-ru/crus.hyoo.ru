@@ -4490,6 +4490,7 @@ declare namespace $ {
         body(): readonly any[];
         Dump(): $$.$hyoo_crus_node_dump;
         text(next?: any): string;
+        selection(next?: any): readonly any[];
         Text(): $$.$mol_textarea;
     }
 }
@@ -4498,6 +4499,7 @@ declare namespace $.$$ {
     class $hyoo_crus_node_page extends $.$hyoo_crus_node_page {
         title(): string;
         text(next?: string): string;
+        selection(next?: [number, number]): number[] | readonly [number, number];
     }
 }
 

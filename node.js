@@ -10205,7 +10205,7 @@ var $;
             this.bus();
         }
         bus() {
-            return new $mol_bus(`$hyoo_crus_land:${this.ref()}`, $mol_wire_async(bins => {
+            return new this.$.$mol_bus(`$hyoo_crus_land:${this.ref()}`, $mol_wire_async(bins => {
                 this.apply_unit(bins.map(bin => new $hyoo_crus_unit(bin)));
             }));
         }
@@ -14439,8 +14439,8 @@ var $;
         Tools() {
             const obj = new this.$.$mol_view();
             obj.sub = () => [
-                ...this.editors(),
-                ...this.addons()
+                ...this.addons(),
+                ...this.editors()
             ];
             return obj;
         }
@@ -15035,9 +15035,6 @@ var $;
                     shrink: 1,
                     wrap: `wrap`,
                 },
-                justify: {
-                    content: `flex-end`,
-                },
             },
             Label: {
                 justify: {},
@@ -15059,6 +15056,11 @@ var $;
             Value_text: {
                 flex: {
                     basis: `20rem`,
+                    shrink: 1,
+                }
+            },
+            Value_str: {
+                flex: {
                     shrink: 1,
                 }
             },
@@ -15119,9 +15121,18 @@ var $;
                 return next;
             return "";
         }
+        selection(next) {
+            if (next !== undefined)
+                return next;
+            return [
+                0,
+                0
+            ];
+        }
         Text() {
             const obj = new this.$.$mol_textarea();
             obj.value = (next) => this.text(next);
+            obj.selection = (next) => this.selection(next);
             return obj;
         }
     }
@@ -15134,6 +15145,9 @@ var $;
     __decorate([
         $mol_mem
     ], $hyoo_crus_node_page.prototype, "text", null);
+    __decorate([
+        $mol_mem
+    ], $hyoo_crus_node_page.prototype, "selection", null);
     __decorate([
         $mol_mem
     ], $hyoo_crus_node_page.prototype, "Text", null);
@@ -15153,6 +15167,9 @@ var $;
             text(next) {
                 return this.node().cast($hyoo_crus_text).text(next);
             }
+            selection(next) {
+                return this.node().cast($hyoo_crus_text).selection(this.node().land().auth().lord(), next);
+            }
         }
         $$.$hyoo_crus_node_page = $hyoo_crus_node_page;
     })($$ = $.$$ || ($.$$ = {}));
@@ -15166,6 +15183,7 @@ var $;
     (function ($$) {
         $mol_style_define($hyoo_crus_node_page, {
             flex: {
+                basis: `40rem`,
                 grow: 1,
             },
         });
