@@ -4139,6 +4139,20 @@ declare namespace $ {
 }
 
 declare namespace $ {
+    class $mol_icon_lock extends $mol_icon {
+        path(): string;
+    }
+}
+
+declare namespace $ {
+    class $mol_check_icon extends $mol_check {
+    }
+}
+
+declare namespace $ {
+}
+
+declare namespace $ {
     class $mol_expander extends $mol_list {
         rows(): readonly any[];
         expanded(next?: any): boolean;
@@ -4465,7 +4479,11 @@ declare namespace $ {
         menu_title(): string;
         param(): string;
         land(): $hyoo_crus_land;
+        menu_tools(): readonly any[];
         Spread(id: any): $$.$hyoo_crus_node_page;
+        Encrypted_icon(): $mol_icon_lock;
+        encrypted(next?: any): boolean;
+        Encrypted(): $mol_check_icon;
         node(id: any): $hyoo_crus_node;
         Node(id: any): $$.$hyoo_crus_node_page;
     }
@@ -4477,6 +4495,7 @@ declare namespace $.$$ {
         spread_ids(): string[];
         spread_title(head: string): string;
         node(id: string): $hyoo_crus_node;
+        encrypted(next?: boolean): boolean;
     }
 }
 
@@ -5010,14 +5029,6 @@ declare namespace $ {
 
 declare namespace $ {
     function $mol_lights(this: $, next?: boolean): boolean;
-}
-
-declare namespace $ {
-    class $mol_check_icon extends $mol_check {
-    }
-}
-
-declare namespace $ {
 }
 
 declare namespace $ {
