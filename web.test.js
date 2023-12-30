@@ -4038,52 +4038,52 @@ var $;
         'auth unit type'() {
             const auth = new $hyoo_crus_pass;
             auth.auth([0xFF, 0, 0xFC, 0xFB, 0xFA, 0xF9, 0xF8, 0xF7, 0xF6, 0xF5, 0xF4, 0xF3, 0xF2, 0xF1]);
-            $mol_assert_like(auth.kind(), 'pass');
-            $mol_assert_like(auth.lord(), 0xf1f2f3f4f5f6f7f8f9fafbfcn);
-            $mol_assert_like(auth.peer(), 0xF7F8F9FAFBFC);
+            $mol_assert_equal(auth.kind(), 'pass');
+            $mol_assert_equal(auth.lord(), 'ÆPv6æfj39vX08ÆLx');
+            $mol_assert_equal(auth.peer(), 'ÆPv6æfj3');
         },
         'gift unit type'() {
             const gift = new $hyoo_crus_gift;
             gift.rang($hyoo_crus_rang.law);
-            $mol_assert_like(gift.kind(), 'gift');
-            $mol_assert_like(gift.rang(), $hyoo_crus_rang.law);
+            $mol_assert_equal(gift.kind(), 'gift');
+            $mol_assert_equal(gift.rang(), $hyoo_crus_rang.law);
         },
         'data unit type'() {
             const unit = new $hyoo_crus_gist;
             unit.data(new Uint8Array([0xFF, 0xFF]));
-            $mol_assert_like(unit.kind(), 'gist');
-            $mol_assert_like(unit.size(), 2);
-            $mol_assert_like(unit.data(), new Uint8Array([0xFF, 0xFF]));
+            $mol_assert_equal(unit.kind(), 'gist');
+            $mol_assert_equal(unit.size(), 2);
+            $mol_assert_equal(unit.data(), new Uint8Array([0xFF, 0xFF]));
         },
         'unit peer'() {
             const unit = new $hyoo_crus_unit;
-            $mol_assert_equal(unit.peer(), 0);
-            unit.peer(0xf1f2f3f4f5f6);
-            $mol_assert_equal(unit.peer(), 0xf1f2f3f4f5f6);
+            $mol_assert_equal(unit.peer(), '');
+            unit.peer('ÆPv6æfj3');
+            $mol_assert_equal(unit.peer(), 'ÆPv6æfj3');
         },
         'gift unit fields'() {
             const unit = new $hyoo_crus_gift;
             $mol_assert_equal(unit.time(), 0);
-            $mol_assert_equal(unit.dest(), 0n);
+            $mol_assert_equal(unit.dest(), '');
             unit.time(0xd1d2d3d4d5d6);
-            unit.dest(0xa1a2a3a4a5a6a7a8n);
+            unit.dest('ÆPv6æfj39vX08ÆLx');
             $mol_assert_equal(unit.time(), 0xd1d2d3d4d5d6);
-            $mol_assert_equal(unit.dest(), 0xa1a2a3a4a5a6a7a8n);
+            $mol_assert_equal(unit.dest(), 'ÆPv6æfj39vX08ÆLx');
         },
         'data unit fields'() {
             const unit = new $hyoo_crus_gist;
             $mol_assert_equal(unit.time(), 0);
-            $mol_assert_equal(unit.head(), 0);
-            $mol_assert_equal(unit.self(), 0);
-            $mol_assert_equal(unit.lead(), 0);
+            $mol_assert_equal(unit.head(), '');
+            $mol_assert_equal(unit.self(), '');
+            $mol_assert_equal(unit.lead(), '');
             unit.time(0xd1d2d3d4d5d6);
-            unit.head(0xa1a2a3a4a5a6);
-            unit.self(0xb1b2b3b4b5b6);
-            unit.lead(0xc1c2c3c4c5c6);
+            unit.head('ÆPv6æfj3');
+            unit.self('Pv6æfj39');
+            unit.lead('v6æfj39v');
             $mol_assert_equal(unit.time(), 0xd1d2d3d4d5d6);
-            $mol_assert_equal(unit.head(), 0xa1a2a3a4a5a6);
-            $mol_assert_equal(unit.self(), 0xb1b2b3b4b5b6);
-            $mol_assert_equal(unit.lead(), 0xc1c2c3c4c5c6);
+            $mol_assert_equal(unit.head(), 'ÆPv6æfj3');
+            $mol_assert_equal(unit.self(), 'Pv6æfj39');
+            $mol_assert_equal(unit.lead(), 'v6æfj39v');
         },
         async 'sign / verify'($) {
             const source = new $hyoo_crus_gist;
@@ -4430,10 +4430,6 @@ var $;
                 check(Number.MIN_SAFE_INTEGER);
                 check(Number.MAX_VALUE);
                 check(Number.MIN_VALUE);
-            },
-            "Ref"($) {
-                check($hyoo_crus_ref.make());
-                check($hyoo_crus_ref.make(4611686018427387904n, 2, 3));
             },
             "Str"($) {
                 check('');
@@ -4794,21 +4790,6 @@ var $;
 "use strict";
 var $;
 (function ($_1) {
-    $mol_test_mocks.push($ => {
-        class $hyoo_crus_yard extends $.$hyoo_crus_yard {
-            static load(land_ref) {
-                return [];
-            }
-            static async save(land_ref, units) { }
-        }
-        $.$hyoo_crus_yard = $hyoo_crus_yard;
-    });
-})($ || ($ = {}));
-//hyoo/crus/yard/yard.test.ts
-;
-"use strict";
-var $;
-(function ($_1) {
     const auth1 = $hyoo_crus_auth.from('_4eLnQsSr5wj6XOzgS5bZa254pkEOf_hg1nReCSR4Zkd-E07aLSwj-II-rZt4ZubInw_f1rZiA0Qa92qR0Gq3I6xYWCkW9Aagc7-97L2P-gI84NaLwdabp_DrZEX3RJTY');
     const auth2 = $hyoo_crus_auth.from('_5THYp_Njx6-cAU53dRwdv3z8RBAVK7Z2L3OeZmTp8sCsMNXmdssFljy2fxIMDX_oxTFRrRCvAH7s92kUOVn5YYTPGuZ5fQFOAEeRNGGQ47JVCK3Cy_XDSUDvklZ-3Ix4');
     $mol_test({
@@ -4847,27 +4828,27 @@ var $;
             const land1 = $hyoo_crus_land.make({ $ });
             const land2 = $hyoo_crus_land.make({ $, lord_numb: () => land1.lord_numb(), auth: () => auth1 });
             $mol_assert_equal(land1.delta_unit(), []);
-            land1.post(0, 0, 1, new Uint8Array([1]));
+            land1.post('', '', '11111111', new Uint8Array([1]));
             $mol_assert_equal(land1.delta_unit().length, 2);
             const face = new $hyoo_crus_face(land1.face);
-            land1.post(1, 0, 2, new Uint8Array([2]));
+            land1.post('11111111', '', '22222222', new Uint8Array([2]));
             $mol_assert_equal(land1.delta_unit().length, 3);
             $mol_assert_equal(land1.delta_unit(face).length, 1);
             land2.apply_unit(land1.delta_unit());
-            $mol_assert_fail(() => land2.post(2, 0, 3, new Uint8Array([3])), 'Need add rang to join');
+            $mol_assert_fail(() => land2.post('22222222', '', '33333333', new Uint8Array([3])), 'Need add rang to join');
             $mol_assert_equal(land2.delta_unit().length, 3);
             $mol_assert_equal(land2.delta_unit(face).length, 1);
             land1.give(auth1.lord(), $hyoo_crus_rang.add);
             land2.apply_unit(land1.delta_unit());
-            $mol_assert_fail(() => land2.post(2, 0, 3, new Uint8Array([3])), 'Need mod rang to post any data');
+            $mol_assert_fail(() => land2.post('22222222', '', '33333333', new Uint8Array([3])), 'Need mod rang to post any data');
             $mol_assert_equal(land2.delta_unit().length, 5);
             $mol_assert_equal(land2.delta_unit(face).length, 3);
-            land2.post(2, 0, auth1.peer(), new Uint8Array([4]));
+            land2.post('22222222', '', auth1.peer(), new Uint8Array([4]));
             $mol_assert_equal(land2.delta_unit().length, 6);
             $mol_assert_equal(land2.delta_unit(face).length, 4);
             land1.give(auth1.lord(), $hyoo_crus_rang.mod);
             land2.apply_unit(land1.delta_unit());
-            land2.post(2, 0, 3, new Uint8Array([3]));
+            land2.post('22222222', '', '33333333', new Uint8Array([3]));
             $mol_assert_equal(land2.delta_unit().length, 7);
             $mol_assert_equal(land2.delta_unit(face).length, 5);
             land1.give(auth1.lord(), $hyoo_crus_rang.add);
@@ -4884,10 +4865,10 @@ var $;
             land1.give(auth2.lord(), $hyoo_crus_rang.add);
             land2.apply_unit(land1.delta_unit());
             $mol_assert_equal(land2.delta_unit().length, 2);
-            const gist1 = land2.post(0, 0, 0, 'foo');
+            const gist1 = land2.post('', '', '', 'foo');
             $mol_assert_equal(gist1.self(), auth2.peer());
             $mol_assert_equal(land2.delta_unit().length, 4);
-            const gist2 = land2.post(0, 0, 0, 'bar');
+            const gist2 = land2.post('', '', '', 'bar');
             $mol_assert_equal(gist2.self(), auth2.peer());
             $mol_assert_equal(land2.delta_unit().length, 4);
         },
@@ -4898,11 +4879,11 @@ var $;
             $mol_assert_equal(land.encrypted(), false);
         },
         async 'Land encryption'($) {
-            const land = $mol_wire_async($hyoo_crus_land.make({ $, numb: () => 1 }));
+            const land = $mol_wire_async($hyoo_crus_land.make({ $, numb: () => '11111111' }));
             $mol_assert_equal(await land.encrypted(), false);
             await land.encrypt();
             $mol_assert_equal(await land.encrypted(), true);
-            const gist = await land.post(0, 0, 0, new Uint8Array([1, 2, 3]));
+            const gist = await land.post('', '', '', new Uint8Array([1, 2, 3]));
             $mol_assert_equal((await land.gist_encode(gist)).data().length, 7);
             $mol_assert_equal(await land.gist_decode(gist), new Uint8Array([1, 2, 3]));
         },
@@ -4922,13 +4903,13 @@ var $;
             $mol_assert_equal(right.Root($hyoo_crus_list).items(), ['foo', 'zzz']);
             const both = base.fork();
             $mol_assert_equal(both.Root($hyoo_crus_list).items(), ['foo', 'xxx']);
-            both.cloves().items([right.ref()]);
+            both.cloves().items([right.guid()]);
             $mol_assert_equal(both.Root($hyoo_crus_list).items(), ['foo', 'zzz']);
-            both.cloves().items([left.ref()]);
+            both.cloves().items([left.guid()]);
             $mol_assert_equal(both.Root($hyoo_crus_list).items(), ['foo', 'yyy']);
-            both.cloves().items([right.ref(), left.ref()]);
+            both.cloves().items([right.guid(), left.guid()]);
             $mol_assert_equal(both.Root($hyoo_crus_list).items(), ['foo', 'yyy']);
-            both.cloves().items([left.ref(), right.ref()]);
+            both.cloves().items([left.guid(), right.guid()]);
             $mol_assert_equal(both.Root($hyoo_crus_list).items(), ['foo', 'zzz']);
         },
     });
@@ -5089,35 +5070,35 @@ var $;
     $mol_test({
         'Basic list ops'($) {
             const land = $hyoo_crus_land.make({ $ });
-            const list = land.Node($hyoo_crus_list).Item(0);
-            $mol_assert_like(list.items(), []);
+            const list = land.Node($hyoo_crus_list).Item('');
+            $mol_assert_equal(list.items(), []);
             list.items([2, 3]);
-            $mol_assert_like(list.items(), [2, 3]);
-            $mol_assert_not(list.has(1));
+            $mol_assert_equal(list.items(), [2, 3]);
+            $mol_assert_equal(list.has(1), false);
             list.add(1);
-            $mol_assert_like(list.items(), [1, 2, 3]);
-            $mol_assert_ok(list.has(1));
+            $mol_assert_equal(list.items(), [1, 2, 3]);
+            $mol_assert_equal(list.has(1), true);
             list.add(3);
-            $mol_assert_like(list.items(), [1, 2, 3]);
+            $mol_assert_equal(list.items(), [1, 2, 3]);
             list.splice([2]);
-            $mol_assert_like(list.items(), [1, 2, 3, 2]);
+            $mol_assert_equal(list.items(), [1, 2, 3, 2]);
             list.splice([2], 0);
-            $mol_assert_like(list.items(), [2, 1, 2, 3, 2]);
+            $mol_assert_equal(list.items(), [2, 1, 2, 3, 2]);
             list.wipe(2);
-            $mol_assert_like(list.items(), [2, 1, 3, 2]);
+            $mol_assert_equal(list.items(), [2, 1, 3, 2]);
             list.move(2, 1);
-            $mol_assert_like(list.items(), [2, 3, 1, 2]);
+            $mol_assert_equal(list.items(), [2, 3, 1, 2]);
             list.move(1, 3);
-            $mol_assert_like(list.items(), [2, 1, 3, 2]);
+            $mol_assert_equal(list.items(), [2, 1, 3, 2]);
             list.cut(2);
-            $mol_assert_like(list.items(), [1, 3]);
-            $mol_assert_not(list.has(2));
+            $mol_assert_equal(list.items(), [1, 3]);
+            $mol_assert_equal(list.has(2), false);
             list.cut(2);
-            $mol_assert_like(list.items(), [1, 3]);
+            $mol_assert_equal(list.items(), [1, 3]);
         },
         'Different types'($) {
             const land = $hyoo_crus_land.make({ $ });
-            const list = land.Node($hyoo_crus_list).Item(0);
+            const list = land.Node($hyoo_crus_list).Item('');
             list.items([
                 null,
                 false,
@@ -5133,9 +5114,9 @@ var $;
                 new Uint8Array([]),
                 new Uint8Array([1, 2, 3]),
                 new Uint8Array([1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0]),
-                list.ref(),
+                list.guid(),
             ]);
-            $mol_assert_like(list.items(), [
+            $mol_assert_equal(list.items(), [
                 false,
                 true,
                 0n,
@@ -5148,41 +5129,41 @@ var $;
                 '1234567890123456789012345678901234567890',
                 new Uint8Array([1, 2, 3]),
                 new Uint8Array([1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0]),
-                list.ref(),
+                list.guid(),
             ]);
         },
         'List merge'($) {
             const land1 = $hyoo_crus_land.make({ $ });
             const land2 = $hyoo_crus_land.make({ $ });
-            const list1 = land1.Node($hyoo_crus_list).Item(0);
-            const list2 = land2.Node($hyoo_crus_list).Item(0);
+            const list1 = land1.Node($hyoo_crus_list).Item('');
+            const list2 = land2.Node($hyoo_crus_list).Item('');
             list1.items(['foo', 'xxx']);
             land2.face.tick(land2.auth().peer());
             list2.items(['foo', 'yyy']);
             land1.apply_unit(land2.delta_unit());
-            $mol_assert_like(list1.items(), ['foo', 'yyy', 'foo', 'xxx']);
+            $mol_assert_equal(list1.items(), ['foo', 'yyy', 'foo', 'xxx']);
         },
         'Insert before removed before changed'($) {
             const land = $hyoo_crus_land.make({ $ });
-            const list = land.Node($hyoo_crus_list).Item(0);
+            const list = land.Node($hyoo_crus_list).Item('');
             list.items(['foo', 'bar']);
             list.items(['xxx', 'foo', 'bar']);
             list.items(['xxx', 'bars']);
-            $mol_assert_like(list.items(), ['xxx', 'bars']);
+            $mol_assert_equal(list.items(), ['xxx', 'bars']);
         },
         'Many moves'($) {
             const land = $hyoo_crus_land.make({ $ });
-            const list = land.Node($hyoo_crus_list).Item(0);
+            const list = land.Node($hyoo_crus_list).Item('');
             list.items(['foo', 'bar', 'lol']);
             list.move(2, 1);
             list.move(2, 1);
             list.move(0, 3);
             list.move(2, 1);
-            $mol_assert_like(list.items(), ['bar', 'foo', 'lol']);
+            $mol_assert_equal(list.items(), ['bar', 'foo', 'lol']);
         },
         'Reorder separated sublists'($) {
             const land = $hyoo_crus_land.make({ $ });
-            const list = land.Node($hyoo_crus_list).Item(0);
+            const list = land.Node($hyoo_crus_list).Item('');
             list.items([1, 2, 3, 4, 5, 6]);
             list.move(3, 5);
             list.move(3, 5);
@@ -5190,7 +5171,7 @@ var $;
             list.move(0, 2);
             list.move(0, 2);
             list.move(2, 1);
-            $mol_assert_like(list.items(), [1, 3, 2, 4, 6, 5]);
+            $mol_assert_equal(list.items(), [1, 3, 2, 4, 6, 5]);
         },
         'Insert after moved right'($) {
             const base = $hyoo_crus_land.make({ $ });
@@ -5200,7 +5181,7 @@ var $;
             const right = fork(base);
             right.Root($hyoo_crus_list).move(0, 2);
             sync(left, right);
-            $mol_assert_like(left.Root($hyoo_crus_list).items(), right.Root($hyoo_crus_list).items(), [2, 1, 7, 3, 4]);
+            $mol_assert_equal(left.Root($hyoo_crus_list).items(), right.Root($hyoo_crus_list).items(), [2, 1, 7, 3, 4]);
         },
         'Insert before moved left'($) {
             const base = $hyoo_crus_land.make({ $ });
@@ -5211,7 +5192,7 @@ var $;
             right.face.sync(left.face);
             right.Root($hyoo_crus_list).items([1, 7, 2, 3, 4]);
             sync(left, right);
-            $mol_assert_like(left.Root($hyoo_crus_list).items(), right.Root($hyoo_crus_list).items(), [2, 1, 7, 3, 4]);
+            $mol_assert_equal(left.Root($hyoo_crus_list).items(), right.Root($hyoo_crus_list).items(), [2, 1, 7, 3, 4]);
         },
         'Move left after inserted'($) {
             const base = $hyoo_crus_land.make({ $ });
@@ -5222,7 +5203,7 @@ var $;
             right.face.sync(left.face);
             right.Root($hyoo_crus_list).move(1, 0);
             sync(left, right);
-            $mol_assert_like(left.Root($hyoo_crus_list).items(), right.Root($hyoo_crus_list).items(), [2, 1, 3, 7, 4]);
+            $mol_assert_equal(left.Root($hyoo_crus_list).items(), right.Root($hyoo_crus_list).items(), [2, 1, 3, 7, 4]);
         },
         'Insert before moved right'($) {
             const base = $hyoo_crus_land.make({ $ });
@@ -5233,7 +5214,7 @@ var $;
             right.face.sync(left.face);
             right.Root($hyoo_crus_list).items([1, 7, 2, 3, 4]);
             sync(left, right);
-            $mol_assert_like(left.Root($hyoo_crus_list).items(), right.Root($hyoo_crus_list).items(), [1, 7, 3, 4, 2]);
+            $mol_assert_equal(left.Root($hyoo_crus_list).items(), right.Root($hyoo_crus_list).items(), [1, 7, 3, 4, 2]);
         },
         'Move right after inserted'($) {
             const base = $hyoo_crus_land.make({ $ });
@@ -5244,7 +5225,7 @@ var $;
             right.face.sync(left.face);
             right.Root($hyoo_crus_list).move(1, 4);
             sync(left, right);
-            $mol_assert_like(left.Root($hyoo_crus_list).items(), right.Root($hyoo_crus_list).items(), [1, 3, 7, 4, 2]);
+            $mol_assert_equal(left.Root($hyoo_crus_list).items(), right.Root($hyoo_crus_list).items(), [1, 3, 7, 4, 2]);
         },
         'Insert after wiped'($) {
             const base = $hyoo_crus_land.make({ $ });
@@ -5255,7 +5236,7 @@ var $;
             right.face.sync(left.face);
             right.Root($hyoo_crus_list).items([1, 2, 7, 3, 4]);
             sync(left, right);
-            $mol_assert_like(left.Root($hyoo_crus_list).items(), right.Root($hyoo_crus_list).items(), [1, 7, 3, 4]);
+            $mol_assert_equal(left.Root($hyoo_crus_list).items(), right.Root($hyoo_crus_list).items(), [1, 7, 3, 4]);
         },
         'Wiped before inserted'($) {
             const base = $hyoo_crus_land.make({ $ });
@@ -5266,7 +5247,7 @@ var $;
             right.face.sync(left.face);
             right.Root($hyoo_crus_list).items([1, 3, 4]);
             sync(left, right);
-            $mol_assert_like(left.Root($hyoo_crus_list).items(), right.Root($hyoo_crus_list).items(), [1, 7, 3, 4]);
+            $mol_assert_equal(left.Root($hyoo_crus_list).items(), right.Root($hyoo_crus_list).items(), [1, 7, 3, 4]);
         },
         'Insert before wiped'($) {
             const base = $hyoo_crus_land.make({ $ });
@@ -5277,7 +5258,7 @@ var $;
             right.face.sync(left.face);
             right.Root($hyoo_crus_list).items([1, 2, 7, 3, 4]);
             sync(left, right);
-            $mol_assert_like(left.Root($hyoo_crus_list).items(), right.Root($hyoo_crus_list).items(), [1, 2, 7, 4]);
+            $mol_assert_equal(left.Root($hyoo_crus_list).items(), right.Root($hyoo_crus_list).items(), [1, 2, 7, 4]);
         },
         'Wiped after inserted'($) {
             const base = $hyoo_crus_land.make({ $ });
@@ -5288,19 +5269,19 @@ var $;
             right.face.sync(left.face);
             right.Root($hyoo_crus_list).wipe(2);
             sync(left, right);
-            $mol_assert_like(left.Root($hyoo_crus_list).items(), right.Root($hyoo_crus_list).items(), [1, 2, 7, 4]);
+            $mol_assert_equal(left.Root($hyoo_crus_list).items(), right.Root($hyoo_crus_list).items(), [1, 2, 7, 4]);
         },
         'Insert after moved out'($) {
             const base = $hyoo_crus_land.make({ $ });
             base.Root($hyoo_crus_list).items([1, 2, 3, 4]);
             const left = fork(base);
-            left.gist_move(left.Root($hyoo_crus_list).units()[1], 1, 0);
+            left.gist_move(left.Root($hyoo_crus_list).units()[1], '11111111', 0);
             const right = fork(base);
             right.face.sync(left.face);
             right.Root($hyoo_crus_list).items([1, 2, 7, 3, 4]);
             sync(left, right);
-            $mol_assert_like(left.Root($hyoo_crus_list).items(), right.Root($hyoo_crus_list).items(), [1, 7, 3, 4]);
-            $mol_assert_like(left.Node($hyoo_crus_list).Item(1).items(), right.Node($hyoo_crus_list).Item(1).items(), [2]);
+            $mol_assert_equal(left.Root($hyoo_crus_list).items(), right.Root($hyoo_crus_list).items(), [1, 7, 3, 4]);
+            $mol_assert_equal(left.Node($hyoo_crus_list).Item('11111111').items(), right.Node($hyoo_crus_list).Item('11111111').items(), [2]);
         },
         'Move out before inserted'($) {
             const base = $hyoo_crus_land.make({ $ });
@@ -5309,10 +5290,10 @@ var $;
             left.Root($hyoo_crus_list).items([1, 2, 7, 3, 4]);
             const right = fork(base);
             right.face.sync(left.face);
-            right.gist_move(right.Root($hyoo_crus_list).units()[1], 1, 0);
+            right.gist_move(right.Root($hyoo_crus_list).units()[1], '11111111', 0);
             sync(left, right);
-            $mol_assert_like(left.Root($hyoo_crus_list).items(), right.Root($hyoo_crus_list).items(), [1, 7, 3, 4]);
-            $mol_assert_like(left.Node($hyoo_crus_list).Item(1).items(), right.Node($hyoo_crus_list).Item(1).items(), [2]);
+            $mol_assert_equal(left.Root($hyoo_crus_list).items(), right.Root($hyoo_crus_list).items(), [1, 7, 3, 4]);
+            $mol_assert_equal(left.Node($hyoo_crus_list).Item('11111111').items(), right.Node($hyoo_crus_list).Item('11111111').items(), [2]);
         },
         'Insert before changed'($) {
             const base = $hyoo_crus_land.make({ $ });
@@ -5323,7 +5304,7 @@ var $;
             right.face.sync(left.face);
             right.Root($hyoo_crus_list).items([1, 2, 13, 3, 4]);
             sync(left, right);
-            $mol_assert_like(left.Root($hyoo_crus_list).items(), right.Root($hyoo_crus_list).items(), [1, 2, 13, 7, 4]);
+            $mol_assert_equal(left.Root($hyoo_crus_list).items(), right.Root($hyoo_crus_list).items(), [1, 2, 13, 7, 4]);
         },
         'Change after inserted'($) {
             const base = $hyoo_crus_land.make({ $ });
@@ -5334,7 +5315,7 @@ var $;
             right.face.sync(left.face);
             right.Root($hyoo_crus_list).items([1, 2, 7, 4]);
             sync(left, right);
-            $mol_assert_like(left.Root($hyoo_crus_list).items(), right.Root($hyoo_crus_list).items(), [1, 2, 7, 13, 4]);
+            $mol_assert_equal(left.Root($hyoo_crus_list).items(), right.Root($hyoo_crus_list).items(), [1, 2, 7, 13, 4]);
         },
         'Insert between moved'($) {
             const base = $hyoo_crus_land.make({ $ });
@@ -5346,7 +5327,7 @@ var $;
             right.face.sync(left.face);
             right.Root($hyoo_crus_list).items([1, 2, 7, 3, 4, 5, 6]);
             sync(left, right);
-            $mol_assert_like(left.Root($hyoo_crus_list).items(), right.Root($hyoo_crus_list).items(), [1, 4, 5, 2, 7, 3, 6]);
+            $mol_assert_equal(left.Root($hyoo_crus_list).items(), right.Root($hyoo_crus_list).items(), [1, 4, 5, 2, 7, 3, 6]);
         },
         'Move near inserted'($) {
             const base = $hyoo_crus_land.make({ $ });
@@ -5358,7 +5339,7 @@ var $;
             right.Root($hyoo_crus_list).move(1, 5);
             right.Root($hyoo_crus_list).move(1, 5);
             sync(left, right);
-            $mol_assert_like(left.Root($hyoo_crus_list).items(), right.Root($hyoo_crus_list).items(), [1, 4, 5, 2, 3, 7, 6]);
+            $mol_assert_equal(left.Root($hyoo_crus_list).items(), right.Root($hyoo_crus_list).items(), [1, 4, 5, 2, 3, 7, 6]);
         },
     });
 })($ || ($ = {}));
@@ -5532,208 +5513,173 @@ var $;
         $mol_test({
             "Empty representation"($) {
                 const land = $hyoo_crus_land.make({ $ });
-                const reg = land.Node($hyoo_crus_reg).Item(0);
-                $mol_assert_like(reg.value_bool(), false);
-                $mol_assert_like(reg.value_int(), 0n);
-                $mol_assert_like(reg.value_real(), Number.NaN);
-                $mol_assert_like(reg.value_bin(), null);
-                $mol_assert_like(reg.value_str(), '');
-                $mol_assert_like(reg.value_ref(), null);
+                const reg = land.Node($hyoo_crus_reg).Item('');
+                $mol_assert_equal(reg.value_bool(), false);
+                $mol_assert_equal(reg.value_int(), 0n);
+                $mol_assert_equal(reg.value_real(), Number.NaN);
+                $mol_assert_equal(reg.value_bin(), null);
+                $mol_assert_equal(reg.value_str(), '');
             },
             "Bool representation"($) {
                 const land = $hyoo_crus_land.make({ $ });
-                const reg = land.Node($hyoo_crus_reg).Item(0);
+                const reg = land.Node($hyoo_crus_reg).Item('');
                 reg.value_bool(true);
-                $mol_assert_like(reg.value_bool(), true);
-                $mol_assert_like(reg.value_int(), 1n);
-                $mol_assert_like(reg.value_real(), 1);
-                $mol_assert_like(reg.value_bin(), new Uint8Array([1]));
-                $mol_assert_like(reg.value_str(), 'true');
-                $mol_assert_like(reg.value_ref(), null);
+                $mol_assert_equal(reg.value_bool(), true);
+                $mol_assert_equal(reg.value_int(), 1n);
+                $mol_assert_equal(reg.value_real(), 1);
+                $mol_assert_equal(reg.value_bin(), new Uint8Array([1]));
+                $mol_assert_equal(reg.value_str(), 'true');
                 reg.value_bool(false);
-                $mol_assert_like(reg.value_bool(), false);
-                $mol_assert_like(reg.value_int(), 0n);
-                $mol_assert_like(reg.value_real(), 0);
-                $mol_assert_like(reg.value_bin(), new Uint8Array([0]));
-                $mol_assert_like(reg.value_str(), 'false');
-                $mol_assert_like(reg.value_ref(), null);
+                $mol_assert_equal(reg.value_bool(), false);
+                $mol_assert_equal(reg.value_int(), 0n);
+                $mol_assert_equal(reg.value_real(), 0);
+                $mol_assert_equal(reg.value_bin(), new Uint8Array([0]));
+                $mol_assert_equal(reg.value_str(), 'false');
             },
             "Int representation"($) {
                 const land = $hyoo_crus_land.make({ $ });
-                const reg = land.Node($hyoo_crus_reg).Item(0);
+                const reg = land.Node($hyoo_crus_reg).Item('');
                 reg.value_int(4611686018427387904n);
-                $mol_assert_like(reg.value_bool(), true);
-                $mol_assert_like(reg.value_int(), 4611686018427387904n);
-                $mol_assert_like(reg.value_real(), 4611686018427388000);
-                $mol_assert_like(reg.value_bin(), new Uint8Array([0, 0, 0, 0, 0, 0, 0, 0x40]));
-                $mol_assert_like(reg.value_str(), '4611686018427387904');
-                $mol_assert_like(reg.value_ref(), null);
+                $mol_assert_equal(reg.value_bool(), true);
+                $mol_assert_equal(reg.value_int(), 4611686018427387904n);
+                $mol_assert_equal(reg.value_real(), 4611686018427388000);
+                $mol_assert_equal(reg.value_bin(), new Uint8Array([0, 0, 0, 0, 0, 0, 0, 0x40]));
+                $mol_assert_equal(reg.value_str(), '4611686018427387904');
                 reg.value_int(0n);
-                $mol_assert_like(reg.value_bool(), false);
-                $mol_assert_like(reg.value_int(), 0n);
-                $mol_assert_like(reg.value_real(), 0);
-                $mol_assert_like(reg.value_bin(), new Uint8Array([0, 0, 0, 0, 0, 0, 0, 0]));
-                $mol_assert_like(reg.value_str(), '0');
-                $mol_assert_like(reg.value_ref(), null);
+                $mol_assert_equal(reg.value_bool(), false);
+                $mol_assert_equal(reg.value_int(), 0n);
+                $mol_assert_equal(reg.value_real(), 0);
+                $mol_assert_equal(reg.value_bin(), new Uint8Array([0, 0, 0, 0, 0, 0, 0, 0]));
+                $mol_assert_equal(reg.value_str(), '0');
             },
             "Real representation"($) {
                 const land = $hyoo_crus_land.make({ $ });
-                const reg = land.Node($hyoo_crus_reg).Item(0);
+                const reg = land.Node($hyoo_crus_reg).Item('');
                 reg.value_real(Math.PI);
-                $mol_assert_like(reg.value_bool(), true);
-                $mol_assert_like(reg.value_int(), 3n);
-                $mol_assert_like(reg.value_real(), Math.PI);
-                $mol_assert_like(reg.value_bin(), new Uint8Array([24, 45, 68, 84, 251, 33, 9, 64]));
-                $mol_assert_like(reg.value_str(), '3.141592653589793');
-                $mol_assert_like(reg.value_ref(), null);
+                $mol_assert_equal(reg.value_bool(), true);
+                $mol_assert_equal(reg.value_int(), 3n);
+                $mol_assert_equal(reg.value_real(), Math.PI);
+                $mol_assert_equal(reg.value_bin(), new Uint8Array([24, 45, 68, 84, 251, 33, 9, 64]));
+                $mol_assert_equal(reg.value_str(), '3.141592653589793');
                 reg.value_real(0);
-                $mol_assert_like(reg.value_bool(), false);
-                $mol_assert_like(reg.value_int(), 0n);
-                $mol_assert_like(reg.value_real(), 0);
-                $mol_assert_like(reg.value_bin(), new Uint8Array([0, 0, 0, 0, 0, 0, 0, 0]));
-                $mol_assert_like(reg.value_str(), '0');
-                $mol_assert_like(reg.value_ref(), null);
+                $mol_assert_equal(reg.value_bool(), false);
+                $mol_assert_equal(reg.value_int(), 0n);
+                $mol_assert_equal(reg.value_real(), 0);
+                $mol_assert_equal(reg.value_bin(), new Uint8Array([0, 0, 0, 0, 0, 0, 0, 0]));
+                $mol_assert_equal(reg.value_str(), '0');
                 reg.value_real(-Math.PI);
-                $mol_assert_like(reg.value_bool(), true);
-                $mol_assert_like(reg.value_int(), -3n);
-                $mol_assert_like(reg.value_real(), -Math.PI);
-                $mol_assert_like(reg.value_bin(), new Uint8Array([24, 45, 68, 84, 251, 33, 9, 192]));
-                $mol_assert_like(reg.value_str(), '-3.141592653589793');
-                $mol_assert_like(reg.value_ref(), null);
+                $mol_assert_equal(reg.value_bool(), true);
+                $mol_assert_equal(reg.value_int(), -3n);
+                $mol_assert_equal(reg.value_real(), -Math.PI);
+                $mol_assert_equal(reg.value_bin(), new Uint8Array([24, 45, 68, 84, 251, 33, 9, 192]));
+                $mol_assert_equal(reg.value_str(), '-3.141592653589793');
                 reg.value_real(Number.NaN);
-                $mol_assert_like(reg.value_bool(), false);
-                $mol_assert_like(reg.value_int(), 0n);
-                $mol_assert_like(reg.value_real(), Number.NaN);
-                $mol_assert_like(reg.value_bin(), new Uint8Array([0, 0, 0, 0, 0, 0, 248, 127]));
-                $mol_assert_like(reg.value_str(), 'NaN');
-                $mol_assert_like(reg.value_ref(), null);
+                $mol_assert_equal(reg.value_bool(), false);
+                $mol_assert_equal(reg.value_int(), 0n);
+                $mol_assert_equal(reg.value_real(), Number.NaN);
+                $mol_assert_equal(reg.value_bin(), new Uint8Array([0, 0, 0, 0, 0, 0, 248, 127]));
+                $mol_assert_equal(reg.value_str(), 'NaN');
                 reg.value_real(Number.POSITIVE_INFINITY);
-                $mol_assert_like(reg.value_bool(), true);
-                $mol_assert_like(reg.value_int(), 0n);
-                $mol_assert_like(reg.value_real(), Number.POSITIVE_INFINITY);
-                $mol_assert_like(reg.value_bin(), new Uint8Array([0, 0, 0, 0, 0, 0, 240, 127]));
-                $mol_assert_like(reg.value_str(), 'Infinity');
-                $mol_assert_like(reg.value_ref(), null);
+                $mol_assert_equal(reg.value_bool(), true);
+                $mol_assert_equal(reg.value_int(), 0n);
+                $mol_assert_equal(reg.value_real(), Number.POSITIVE_INFINITY);
+                $mol_assert_equal(reg.value_bin(), new Uint8Array([0, 0, 0, 0, 0, 0, 240, 127]));
+                $mol_assert_equal(reg.value_str(), 'Infinity');
                 reg.value_real(Number.NEGATIVE_INFINITY);
-                $mol_assert_like(reg.value_bool(), true);
-                $mol_assert_like(reg.value_int(), 0n);
-                $mol_assert_like(reg.value_real(), Number.NEGATIVE_INFINITY);
-                $mol_assert_like(reg.value_bin(), new Uint8Array([0, 0, 0, 0, 0, 0, 240, 255]));
-                $mol_assert_like(reg.value_str(), '-Infinity');
-                $mol_assert_like(reg.value_ref(), null);
+                $mol_assert_equal(reg.value_bool(), true);
+                $mol_assert_equal(reg.value_int(), 0n);
+                $mol_assert_equal(reg.value_real(), Number.NEGATIVE_INFINITY);
+                $mol_assert_equal(reg.value_bin(), new Uint8Array([0, 0, 0, 0, 0, 0, 240, 255]));
+                $mol_assert_equal(reg.value_str(), '-Infinity');
             },
             "Bin representation"($) {
                 const land = $hyoo_crus_land.make({ $ });
-                const reg = land.Node($hyoo_crus_reg).Item(0);
+                const reg = land.Node($hyoo_crus_reg).Item('');
                 reg.value_bin(new Uint8Array([1, 2, 3]));
-                $mol_assert_like(reg.value_bool(), true);
-                $mol_assert_like(reg.value_int(), 3n);
-                $mol_assert_like(reg.value_real(), 3);
-                $mol_assert_like(reg.value_bin(), new Uint8Array([1, 2, 3]));
-                $mol_assert_like(reg.value_str(), '010203');
-                $mol_assert_like(reg.value_ref(), null);
+                $mol_assert_equal(reg.value_bool(), true);
+                $mol_assert_equal(reg.value_int(), 3n);
+                $mol_assert_equal(reg.value_real(), 3);
+                $mol_assert_equal(reg.value_bin(), new Uint8Array([1, 2, 3]));
+                $mol_assert_equal(reg.value_str(), '010203');
                 reg.value_bin(new Uint8Array([1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0]));
-                $mol_assert_like(reg.value_bool(), true);
-                $mol_assert_like(reg.value_int(), 40n);
-                $mol_assert_like(reg.value_real(), 40);
-                $mol_assert_like(reg.value_bin(), new Uint8Array([1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0]));
-                $mol_assert_like(reg.value_str(), '01020304050607080900010203040506070809000102030405060708090001020304050607080900');
-                $mol_assert_like(reg.value_ref(), null);
+                $mol_assert_equal(reg.value_bool(), true);
+                $mol_assert_equal(reg.value_int(), 40n);
+                $mol_assert_equal(reg.value_real(), 40);
+                $mol_assert_equal(reg.value_bin(), new Uint8Array([1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0]));
+                $mol_assert_equal(reg.value_str(), '01020304050607080900010203040506070809000102030405060708090001020304050607080900');
                 reg.value_bin(null);
-                $mol_assert_like(reg.value_bool(), false);
-                $mol_assert_like(reg.value_int(), 0n);
-                $mol_assert_like(reg.value_real(), Number.NaN);
-                $mol_assert_like(reg.value_bin(), null);
-                $mol_assert_like(reg.value_str(), '');
-                $mol_assert_like(reg.value_ref(), null);
+                $mol_assert_equal(reg.value_bool(), false);
+                $mol_assert_equal(reg.value_int(), 0n);
+                $mol_assert_equal(reg.value_real(), Number.NaN);
+                $mol_assert_equal(reg.value_bin(), null);
+                $mol_assert_equal(reg.value_str(), '');
             },
             "String representation"($) {
                 const land = $hyoo_crus_land.make({ $ });
-                const reg = land.Node($hyoo_crus_reg).Item(0);
+                const reg = land.Node($hyoo_crus_reg).Item('');
                 reg.value_str('foo');
-                $mol_assert_like(reg.value_bool(), true);
-                $mol_assert_like(reg.value_int(), 0n);
-                $mol_assert_like(reg.value_real(), Number.NaN);
-                $mol_assert_like(reg.value_bin(), new Uint8Array([102, 111, 111]));
-                $mol_assert_like(reg.value_str(), 'foo');
-                $mol_assert_like(reg.value_ref(), null);
+                $mol_assert_equal(reg.value_bool(), true);
+                $mol_assert_equal(reg.value_int(), 0n);
+                $mol_assert_equal(reg.value_real(), Number.NaN);
+                $mol_assert_equal(reg.value_bin(), new Uint8Array([102, 111, 111]));
+                $mol_assert_equal(reg.value_str(), 'foo');
                 reg.value_str('1234567890123456789012345678901234567890');
-                $mol_assert_like(reg.value_bool(), true);
-                $mol_assert_like(reg.value_int(), 1234567890123456789012345678901234567890n);
-                $mol_assert_like(reg.value_real(), 1.2345678901234568e+39);
-                $mol_assert_like(reg.value_bin(), new Uint8Array([
+                $mol_assert_equal(reg.value_bool(), true);
+                $mol_assert_equal(reg.value_int(), 1234567890123456789012345678901234567890n);
+                $mol_assert_equal(reg.value_real(), 1.2345678901234568e+39);
+                $mol_assert_equal(reg.value_bin(), new Uint8Array([
                     49, 50, 51, 52, 53, 54, 55, 56, 57, 48,
                     49, 50, 51, 52, 53, 54, 55, 56, 57, 48,
                     49, 50, 51, 52, 53, 54, 55, 56, 57, 48,
                     49, 50, 51, 52, 53, 54, 55, 56, 57, 48,
                 ]));
-                $mol_assert_like(reg.value_str(), '1234567890123456789012345678901234567890');
-                $mol_assert_like(reg.value_ref(), null);
+                $mol_assert_equal(reg.value_str(), '1234567890123456789012345678901234567890');
                 reg.value_str('');
-                $mol_assert_like(reg.value_bool(), false);
-                $mol_assert_like(reg.value_int(), 0n);
-                $mol_assert_like(reg.value_real(), Number.NaN);
-                $mol_assert_like(reg.value_bin(), null);
-                $mol_assert_like(reg.value_str(), '');
-                $mol_assert_like(reg.value_ref(), null);
-            },
-            "Reference representation"($) {
-                const land = $hyoo_crus_land.make({ $ });
-                const reg = land.Node($hyoo_crus_reg).Item(123);
-                reg.value_ref(reg.ref());
-                $mol_assert_like(reg.value_bool(), true);
-                $mol_assert_like(reg.value_int(), land.lord_numb() + (123n << 96n));
-                $mol_assert_like(reg.value_real(), Number.NaN);
-                $mol_assert_like(reg.value_bin(), new Uint8Array([213, 212, 219, 170, 109, 71, 174, 214, 197, 34, 45, 170, 0, 0, 0, 0, 0, 0, 123, 0, 0, 0, 0, 0]));
-                $mol_assert_like(reg.value_str(), reg.ref().toString());
-                $mol_assert_like(reg.value_ref(), reg.ref());
-                reg.value_ref(null);
-                $mol_assert_like(reg.value_bool(), false);
-                $mol_assert_like(reg.value_int(), 0n);
-                $mol_assert_like(reg.value_real(), Number.NaN);
-                $mol_assert_like(reg.value_bin(), null);
-                $mol_assert_like(reg.value_str(), '');
-                $mol_assert_like(reg.value_ref(), null);
+                $mol_assert_equal(reg.value_bool(), false);
+                $mol_assert_equal(reg.value_int(), 0n);
+                $mol_assert_equal(reg.value_real(), Number.NaN);
+                $mol_assert_equal(reg.value_bin(), null);
+                $mol_assert_equal(reg.value_str(), '');
             },
             "Store custom types"($) {
                 const land = $hyoo_crus_land.make({ $ });
-                const reg = land.Node($hyoo_crus_reg).Item(0);
-                $mol_assert_like(reg.value_as($mol_data_email), null);
+                const reg = land.Node($hyoo_crus_reg).Item('');
+                $mol_assert_equal(reg.value_as($mol_data_email), null);
                 reg.value_as($mol_data_email, 'foo@exaple.org');
-                $mol_assert_like(reg.value_as($mol_data_email), 'foo@exaple.org');
+                $mol_assert_equal(reg.value_as($mol_data_email), 'foo@exaple.org');
                 $mol_assert_fail(() => reg.value_as($mol_data_email, 'xxx'), 'xxx is not a /.+@.+/');
-                $mol_assert_like(reg.value_as($mol_data_email), 'foo@exaple.org');
+                $mol_assert_equal(reg.value_as($mol_data_email), 'foo@exaple.org');
                 reg.value_str('xxx');
-                $mol_assert_like(reg.value_as($mol_data_email), null);
+                $mol_assert_equal(reg.value_as($mol_data_email), null);
             },
             "Hyper link to another land"($) {
                 const realm = $hyoo_crus_realm.make({ $ });
                 const land = realm.home().base().land();
-                const reg = land.Node($hyoo_crus_reg).Item(1);
+                const reg = land.Node($hyoo_crus_reg).Item('11111111');
                 const remote = reg.yoke(null).Root($hyoo_crus_reg);
                 $mol_assert_unique(reg.land(), remote.land());
-                $mol_assert_like(reg.value_ref(), remote.ref());
-                $mol_assert_like(reg.yoke(null).Root($hyoo_crus_reg), remote);
+                $mol_assert_equal(reg.value_str(), remote.guid());
+                $mol_assert_equal(reg.yoke(null).Root($hyoo_crus_reg), remote);
             },
             "Narrow registers"($) {
                 const realm = $hyoo_crus_realm.make({ $ });
                 const land = realm.home().base().land();
-                const bin = land.Node($hyoo_crus_reg_bin).Item(1);
-                $mol_assert_like(bin.value(), null);
+                const bin = land.Node($hyoo_crus_reg_bin).Item('11111111');
+                $mol_assert_equal(bin.value(), null);
                 bin.value(new Uint8Array([1, 2, 3]));
-                $mol_assert_like(bin.value(), new Uint8Array([1, 2, 3]));
-                const str = land.Node($hyoo_crus_reg_str).Item(2);
-                $mol_assert_like(str.value(), '');
+                $mol_assert_equal(bin.value(), new Uint8Array([1, 2, 3]));
+                const str = land.Node($hyoo_crus_reg_str).Item('22222222');
+                $mol_assert_equal(str.value(), '');
                 str.value('foo');
-                $mol_assert_like(str.value(), 'foo');
+                $mol_assert_equal(str.value(), 'foo');
             },
             "Register with linked nodes"($) {
                 const realm = $hyoo_crus_realm.make({ $ });
                 const land = realm.home().base().land();
-                const reg = land.Node($hyoo_crus_reg_ref(() => $hyoo_crus_reg)).Item(1);
-                $mol_assert_like(reg.remote(), null);
+                const reg = land.Node($hyoo_crus_reg_ref(() => $hyoo_crus_reg)).Item('11111111');
+                $mol_assert_equal(reg.remote(), null);
                 reg.remote(reg);
-                $mol_assert_like(reg.value_ref(), reg.remote().value_ref(), reg.ref());
+                $mol_assert_equal(reg.value_str(), reg.remote().guid(), reg.guid());
             },
         });
     })($$ = $_1.$$ || ($_1.$$ = {}));
@@ -5751,13 +5697,13 @@ var $;
             }
             remote(next) {
                 const realm = this.realm();
-                const ref = this.value_ref(next?.ref());
+                const ref = this.value_str(next?.guid());
                 if (!ref)
                     return null;
-                return realm.Lord(ref.lord()).Land(ref.land()).Node(Value()).Item(ref.head());
+                return realm.Node(Value(), ref);
             }
             remote_ensure() {
-                this.yoke(this.ref());
+                this.yoke(this.guid());
                 return this.remote();
             }
         }
@@ -5785,14 +5731,13 @@ var $;
             remote_list(next) {
                 const realm = this.realm();
                 const Node = Value();
-                return this.items(next?.map(item => item.ref()))
-                    .map($hyoo_crus_vary_cast_ref)
+                return this.items(next?.map(item => item.guid()))
                     .map(ref => realm.Node(Node, ref));
             }
             remote_make() {
                 const land = this.realm().home().Land_new(0);
-                this.splice([land.ref()]);
-                return land.Node(Value()).Item(0);
+                this.splice([land.guid()]);
+                return land.Node(Value()).Item('');
             }
         }
         __decorate([
@@ -5816,38 +5761,38 @@ var $;
         $mol_test({
             async 'Dictionary invariants'($) {
                 const land = $hyoo_crus_land.make({ $ });
-                const dict = land.Node($hyoo_crus_dict).Item(0);
-                $mol_assert_like(dict.keys(), []);
+                const dict = land.Node($hyoo_crus_dict).Item('');
+                $mol_assert_equal(dict.keys(), []);
                 dict.dive(123, $hyoo_crus_reg);
                 dict.dive('xxx', $hyoo_crus_reg);
-                $mol_assert_like(dict.keys(), ['xxx', 123]);
-                $mol_assert_ok(dict.has(123));
-                $mol_assert_ok(dict.has('xxx'));
-                $mol_assert_not(dict.has('yyy'));
-                $mol_assert_like(dict.dive(123, $hyoo_crus_reg).value_vary(), null);
-                $mol_assert_like(dict.dive('xxx', $hyoo_crus_reg).value_vary(), null);
+                $mol_assert_equal(dict.keys(), ['xxx', 123]);
+                $mol_assert_equal(dict.has(123), true);
+                $mol_assert_equal(dict.has('xxx'), true);
+                $mol_assert_equal(dict.has('yyy'), false);
+                $mol_assert_equal(dict.dive(123, $hyoo_crus_reg).value_vary(), null);
+                $mol_assert_equal(dict.dive('xxx', $hyoo_crus_reg).value_vary(), null);
                 dict.dive(123, $hyoo_crus_reg).value_vary(777);
-                $mol_assert_like(dict.dive(123, $hyoo_crus_reg).value_vary(), 777);
+                $mol_assert_equal(dict.dive(123, $hyoo_crus_reg).value_vary(), 777);
                 dict.dive('xxx', $hyoo_crus_list).items(['foo', 'bar']);
-                $mol_assert_like(dict.dive('xxx', $hyoo_crus_list).items(), ['foo', 'bar']);
+                $mol_assert_equal(dict.dive('xxx', $hyoo_crus_list).items(), ['foo', 'bar']);
                 dict.has(123, false);
-                $mol_assert_like(dict.keys(), ['xxx']);
+                $mol_assert_equal(dict.keys(), ['xxx']);
             },
             async 'Dictionary merge'($) {
                 const land1 = $hyoo_crus_land.make({ $ });
                 const land2 = $hyoo_crus_land.make({ $ });
-                const dict1 = land1.Node($hyoo_crus_dict).Item(0);
-                const dict2 = land2.Node($hyoo_crus_dict).Item(0);
+                const dict1 = land1.Node($hyoo_crus_dict).Item('');
+                const dict2 = land2.Node($hyoo_crus_dict).Item('');
                 dict1.dive(123, $hyoo_crus_reg).value_vary(666);
                 land2.face.tick(land2.auth().peer());
                 dict2.dive(123, $hyoo_crus_reg).value_vary(777);
                 land1.apply_unit(land2.delta_unit());
-                $mol_assert_like(dict1.dive(123, $hyoo_crus_reg).value_vary(), 777);
+                $mol_assert_equal(dict1.dive(123, $hyoo_crus_reg).value_vary(), 777);
                 dict1.dive('xxx', $hyoo_crus_list).items(['foo']);
                 land2.face.tick(land2.auth().peer());
                 dict2.dive('xxx', $hyoo_crus_list).items(['bar']);
                 land1.apply_unit(land2.delta_unit());
-                $mol_assert_like(dict1.dive('xxx', $hyoo_crus_list).items(), ['bar', 'foo']);
+                $mol_assert_equal(dict1.dive('xxx', $hyoo_crus_list).items(), ['bar', 'foo']);
             },
             "Narrowed Dictionary with linked Dictionaries and others"($) {
                 const realm = $hyoo_crus_realm.make({ $ });
@@ -5868,16 +5813,16 @@ var $;
                     Author: $hyoo_crus_reg_ref(() => User),
                 }) {
                 }
-                const user = land.Node(User).Item(1);
-                $mol_assert_like(user.Account.remote(), null);
-                $mol_assert_like(user.Articles.remote_list(), []);
+                const user = land.Node(User).Item('11111111');
+                $mol_assert_equal(user.Account.remote(), null);
+                $mol_assert_equal(user.Articles.remote_list(), []);
                 const account = user.Account.remote_ensure();
-                $mol_assert_like(user.Account.remote(), account);
-                $mol_assert_like(account.User.remote(), null);
+                $mol_assert_equal(user.Account.remote(), account);
+                $mol_assert_equal(account.User.remote(), null);
                 account.User.remote(user);
-                $mol_assert_like(account.User.remote(), user);
+                $mol_assert_equal(account.User.remote(), user);
                 const articles = [user.Articles.remote_make(), user.Articles.remote_make()];
-                $mol_assert_like(user.Articles.remote_list(), articles);
+                $mol_assert_equal(user.Articles.remote_list(), articles);
                 $mol_assert_unique(user.land(), account.land(), ...articles.map(article => article.land()));
             },
         });
@@ -5990,6 +5935,21 @@ var $;
 ;
 "use strict";
 var $;
+(function ($_1) {
+    $mol_test_mocks.push($ => {
+        class $hyoo_crus_yard extends $.$hyoo_crus_yard {
+            static load(land) {
+                return [];
+            }
+            static async save(land, units) { }
+        }
+        $.$hyoo_crus_yard = $hyoo_crus_yard;
+    });
+})($ || ($ = {}));
+//hyoo/crus/yard/yard.test.ts
+;
+"use strict";
+var $;
 (function ($) {
     $mol_test({
         '$mol_syntax2_md_flow'() {
@@ -6099,62 +6059,62 @@ var $;
             const land = $hyoo_crus_land.make({ $ });
             const text = land.Root($hyoo_crus_text);
             const list = land.Root($hyoo_crus_list);
-            $mol_assert_like(text.str(), '');
-            $mol_assert_like(list.items(), []);
+            $mol_assert_equal(text.str(), '');
+            $mol_assert_equal(list.items(), []);
             text.str('foo');
-            $mol_assert_like(text.str(), 'foo');
-            $mol_assert_like(list.items(), ['foo']);
+            $mol_assert_equal(text.str(), 'foo');
+            $mol_assert_equal(list.items(), ['foo']);
             text.str('foo bar');
-            $mol_assert_like(text.str(), 'foo bar');
-            $mol_assert_like(list.items(), ['foo', ' bar']);
+            $mol_assert_equal(text.str(), 'foo bar');
+            $mol_assert_equal(list.items(), ['foo', ' bar']);
             text.str('foo lol bar');
-            $mol_assert_like(text.str(), 'foo lol bar');
-            $mol_assert_like(list.items(), ['foo', ' lol', ' bar']);
+            $mol_assert_equal(text.str(), 'foo lol bar');
+            $mol_assert_equal(list.items(), ['foo', ' lol', ' bar']);
             text.str('lol bar');
-            $mol_assert_like(text.str(), 'lol bar');
-            $mol_assert_like(list.items(), ['lol', ' bar']);
+            $mol_assert_equal(text.str(), 'lol bar');
+            $mol_assert_equal(list.items(), ['lol', ' bar']);
             text.str('foo bar');
-            $mol_assert_like(text.str(), 'foo bar');
-            $mol_assert_like(list.items(), ['foo', ' bar']);
+            $mol_assert_equal(text.str(), 'foo bar');
+            $mol_assert_equal(list.items(), ['foo', ' bar']);
             text.str('foo  bar');
-            $mol_assert_like(text.str(), 'foo  bar');
-            $mol_assert_like(list.items(), ['foo', ' ', ' bar']);
+            $mol_assert_equal(text.str(), 'foo  bar');
+            $mol_assert_equal(list.items(), ['foo', ' ', ' bar']);
             text.str('foo  BarBar');
-            $mol_assert_like(text.str(), 'foo  BarBar');
-            $mol_assert_like(list.items(), ['foo', ' ', ' Bar', 'Bar']);
+            $mol_assert_equal(text.str(), 'foo  BarBar');
+            $mol_assert_equal(list.items(), ['foo', ' ', ' Bar', 'Bar']);
         },
         async 'str: Offset <=> Point'($) {
             const land = $hyoo_crus_land.make({ $ });
             const text = land.Root($hyoo_crus_text);
             text.str('fooBar');
             const [first, second] = text.units();
-            $mol_assert_like(text.point_by_offset(0), [first.self(), 0]);
-            $mol_assert_like(text.offset_by_point([first.self(), 0]), [first.self(), 0]);
-            $mol_assert_like(text.point_by_offset(3), [first.self(), 3]);
-            $mol_assert_like(text.offset_by_point([first.self(), 3]), [first.self(), 3]);
-            $mol_assert_like(text.offset_by_point([first.self(), 5]), [first.self(), 5]);
-            $mol_assert_like(text.point_by_offset(5), [second.self(), 2]);
-            $mol_assert_like(text.offset_by_point([second.self(), 2]), [second.self(), 5]);
-            $mol_assert_like(text.point_by_offset(6), [second.self(), 3]);
-            $mol_assert_like(text.offset_by_point([second.self(), 3]), [second.self(), 6]);
-            $mol_assert_like(text.point_by_offset(7), [0, 1]);
-            $mol_assert_like(text.offset_by_point([0, 1]), [0, 7]);
+            $mol_assert_equal(text.point_by_offset(0), [first.self(), 0]);
+            $mol_assert_equal(text.offset_by_point([first.self(), 0]), [first.self(), 0]);
+            $mol_assert_equal(text.point_by_offset(3), [first.self(), 3]);
+            $mol_assert_equal(text.offset_by_point([first.self(), 3]), [first.self(), 3]);
+            $mol_assert_equal(text.offset_by_point([first.self(), 5]), [first.self(), 5]);
+            $mol_assert_equal(text.point_by_offset(5), [second.self(), 2]);
+            $mol_assert_equal(text.offset_by_point([second.self(), 2]), [second.self(), 5]);
+            $mol_assert_equal(text.point_by_offset(6), [second.self(), 3]);
+            $mol_assert_equal(text.offset_by_point([second.self(), 3]), [second.self(), 6]);
+            $mol_assert_equal(text.point_by_offset(7), ['', 1]);
+            $mol_assert_equal(text.offset_by_point(['', 1]), ['', 7]);
         },
         async 'text: Offset <=> Point'($) {
             const land = $hyoo_crus_land.make({ $ });
             const text = land.Root($hyoo_crus_text);
             text.text('foo bar\n666 777');
             const [first, second] = text.nodes($hyoo_crus_text);
-            $mol_assert_like(text.point_by_offset(0), [first.units()[0].self(), 0]);
-            $mol_assert_like(text.offset_by_point([first.units()[0].self(), 0]), [first.units()[0].self(), 0]);
-            $mol_assert_like(text.point_by_offset(8), [first.units()[2].self(), 1]);
-            $mol_assert_like(text.offset_by_point([first.units()[2].self(), 1]), [first.units()[2].self(), 8]);
+            $mol_assert_equal(text.point_by_offset(0), [first.units()[0].self(), 0]);
+            $mol_assert_equal(text.offset_by_point([first.units()[0].self(), 0]), [first.units()[0].self(), 0]);
+            $mol_assert_equal(text.point_by_offset(8), [first.units()[2].self(), 1]);
+            $mol_assert_equal(text.offset_by_point([first.units()[2].self(), 1]), [first.units()[2].self(), 8]);
         },
         async 'Merge different sequences'($) {
             const land1 = $hyoo_crus_land.make({ $ });
             const land2 = $hyoo_crus_land.make({ $ });
-            const text1 = land1.Node($hyoo_crus_text).Item(0);
-            const text2 = land2.Node($hyoo_crus_text).Item(0);
+            const text1 = land1.Node($hyoo_crus_text).Item('');
+            const text2 = land2.Node($hyoo_crus_text).Item('');
             text1.str('foo bar.');
             land2.face.sync(land1.face);
             text2.str('xxx yyy.');
@@ -6162,7 +6122,7 @@ var $;
             const delta2 = land2.delta_unit();
             land1.apply_unit(delta2);
             land2.apply_unit(delta1);
-            $mol_assert_like(text1.str(), text2.str(), 'xxx yyy.foo bar.');
+            $mol_assert_equal(text1.str(), text2.str(), 'xxx yyy.foo bar.');
         },
         async 'Merge same insertions with different changes to same place'($) {
             const base = $hyoo_crus_land.make({ $ });
@@ -6180,7 +6140,7 @@ var $;
             const right_delta = right.delta_unit(base.face);
             left.apply_unit(right_delta);
             right.apply_unit(left_delta);
-            $mol_assert_like(left.Root($hyoo_crus_text).str(), right.Root($hyoo_crus_text).str(), '( [ fu ] [ foo ] )');
+            $mol_assert_equal(left.Root($hyoo_crus_text).str(), right.Root($hyoo_crus_text).str(), '( [ fu ] [ foo ] )');
         },
     });
 })($ || ($ = {}));
