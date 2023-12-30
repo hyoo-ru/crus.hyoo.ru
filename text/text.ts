@@ -22,9 +22,9 @@ namespace $ {
 						//if( typeof prev.data === 'string' ) return false // ???
 						return land.Node( $hyoo_crus_text ).Item( prev.self() ).str() === next
 					},
-					drop: ( prev, lead )=> this.land().post( lead?.self() ?? 0, prev.head(), prev.self(), null ),
+					drop: ( prev, lead )=> this.land().post( lead?.self() ?? '', prev.head(), prev.self(), null ),
 					insert: ( next, lead )=> {
-						const gist = this.land().post( lead?.self() ?? 0, this.head(), land.self_make(), 'p', 'vals' )
+						const gist = this.land().post( lead?.self() ?? '', this.head(), land.self_make(), 'p', 'vals' )
 						land.Node( $hyoo_crus_text ).Item( gist.self() ).str( next )
 						return gist
 					},
@@ -121,7 +121,7 @@ namespace $ {
 		}
 
 		@ $mol_action
-		point_by_offset( offset: number ): readonly[ number /*self*/, number /*pos*/ ] {
+		point_by_offset( offset: number ): readonly[ string /*self*/, number /*pos*/ ] {
 			
 			const land = this.land()
 			let off = offset
@@ -146,11 +146,11 @@ namespace $ {
 				
 			}
 			
-			return [ 0, off ]
+			return [ '', off ]
 		}
 		
 		@ $mol_action
-		offset_by_point( [ self, offset ]: readonly[ number /*self*/, number /*pos*/ ] ): readonly[ number /*self*/, number /*pos*/ ]  {
+		offset_by_point( [ self, offset ]: readonly[ string /*self*/, number /*pos*/ ] ): readonly[ string /*self*/, number /*pos*/ ]  {
 			
 			const land = this.land()
 			
@@ -173,23 +173,26 @@ namespace $ {
 				
 			}
 			
-			return [ 0, offset ]
+			return [ '', offset ]
 		}
 		
 		@ $mol_mem_key
-		selection( lord: bigint, next?: readonly[ number /*begin*/, number /*end*/ ] ) {
+		selection( lord: string, next?: readonly[ number /*begin*/, number /*end*/ ] ) {
 			
 			const base = this.realm()!.Lord( lord ).base()
 			
 			if( next ) {
 				
-				base.selection( next.map( offset => this.point_by_offset( offset ) ) )
+				base.selection( next.map( offset => this.point_by_offset( offset ).join( ':' ) ).join( '|' ) )
 				return next
 				
 			} else {
 				
 				// this.units() // track text to recalc selection on its change
-				return base.selection().map( point => this.offset_by_point( point )[1] )
+				return base.selection().split( '|' ).map( point => {
+					const chunks = point.split( ':' )
+					return this.offset_by_point([ chunks[0], Number( chunks[1] ) || 0 ])[1]
+				} )
 					
 			}
 			

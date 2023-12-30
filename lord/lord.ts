@@ -10,26 +10,24 @@ namespace $ {
 			return this.$.$hyoo_crus_auth.current().lord()
 		}
 		
-		lands = new $mol_wire_dict< number /*numb*/, $hyoo_crus_land >()
+		lands = new $mol_wire_dict< string /*numb*/, $hyoo_crus_land >()
 		
 		base() {
-			return this.Land( 0 ).Root( $hyoo_crus_base )
+			return this.Land( '' ).Root( $hyoo_crus_base )
 		}
 		
-		ref() {
-			return this.base().ref()
+		guid() {
+			return this.numb()
 		}
 		
 		toString() {
-			return this.ref().toString()
-		}
-		
-		slug() {
-			return this.ref().toString().slice( 0, 16 )
+			return this.numb()
 		}
 		
 		@ $mol_mem_key
-		Land( numb: number ) {
+		Land( numb: string ): $hyoo_crus_land {
+			
+			if( numb === 'AAAAAAAA' ) return this.Land( '' )
 		
 			let land = this.lands.get( numb )
 			if( land ) return land
@@ -52,10 +50,11 @@ namespace $ {
 		@ $mol_action
 		numb_make( idea = Math.floor( Math.random() * 2**48 ) ) {
 			for( let i = 0; i < 4096; ++i ) {
-				idea = ( idea + 1  ) % 2**48
+				idea = ( idea + 1 ) % 2**48
 				if( !idea ) continue
-				if( this.lands.has( idea ) ) continue
-				return idea
+				const idea_str = $mol_base64_ae_encode( new Uint8Array( new BigUint64Array([ BigInt( idea ) ]).buffer, 0, 6 ) )
+				if( this.lands.has( idea_str ) ) continue
+				return idea_str
 			}
 			$mol_fail( new Error( `Too long numb generation` ) )
 		}

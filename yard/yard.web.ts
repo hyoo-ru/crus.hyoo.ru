@@ -1,20 +1,21 @@
 namespace $.$$ {
 	export class $hyoo_crus_yard extends $.$hyoo_crus_yard {
 		
-		static async save( land_ref: string, units: readonly $hyoo_crus_unit[] ) {
-			
-			land_ref = land_ref.padEnd( 24, 'A' )
+		static async save( land: $hyoo_crus_land, units: readonly $hyoo_crus_unit[] ) {
 			
 			const db = await this.db()
 			const change = db.change( 'Pass', 'Gift', 'Gist' )
 			const { Pass, Gift, Gist } = change.stores
 			
+			const lord_numb = land.lord()!.numb()
+			const land_numb = land.numb() || 'AAAAAAAA'
+			
 			for( const unit of units ) {
 				
 				unit.choose({
-					pass: pass => Pass.put( pass.buffer, [ land_ref, pass.peer() ] ),
-					gift: gift => Gift.put( gift.buffer, [ land_ref, $hyoo_crus_ref.make( gift.dest() ).toString() ] ),
-					gist: gist => Gist.put( gist.buffer, [ land_ref, gist.head(), gist.self() ] ),
+					pass: pass => Pass.put( pass.buffer, [ lord_numb, land_numb, pass.peer() || 'AAAAAAAA' ] ),
+					gift: gift => Gift.put( gift.buffer, [ lord_numb, land_numb, gift.dest() || 'AAAAAAAAAAAAAAAA' ] ),
+					gist: gist => Gist.put( gist.buffer, [ lord_numb, land_numb, gist.head() || 'AAAAAAAA', gist.self() || 'AAAAAAAA' ] ),
 				})
 				
 				this.persisted.add( unit )
@@ -26,11 +27,12 @@ namespace $.$$ {
 		}
 		
 		@ $mol_action
-		static load( land_ref: string ) {
+		static load( land: $hyoo_crus_land ) {
 			
-			land_ref = land_ref.padEnd( 24, 'A' )
+			const lord_numb = land.lord()!.numb()
+			const land_numb = land.numb() || 'AAAAAAAA'
 			
-			const key = $mol_wire_sync( IDBKeyRange ).bound( [ land_ref ], [ land_ref + '\uFFFF' ] )
+			const key = $mol_wire_sync( IDBKeyRange ).bound( [ lord_numb, land_numb ], [ lord_numb, land_numb + '\uFFFF' ] )
 			
 			const [ pass, gift, gist ] = $mol_wire_sync( this ).query( key )
 			
@@ -56,20 +58,20 @@ namespace $.$$ {
 			
 			return await this.$.$mol_db<{
 				Pass: {
-					//     land    peer
-					Key: [ string, number ]
+					//     lord    land    peer
+					Key: [ string, string, string ]
 					Doc: ArrayBuffer
 					Indexes: {}
 				}
 				Gift: {
-					//     land    dest
-					Key: [ string, string ]
+					//     lord    land    dest
+					Key: [ string, string, string ]
 					Doc: ArrayBuffer
 					Indexes: {}
 				}
 				Gist: {
-					//     land    head    self
-					Key: [ string, number, number ]
+					//     lord    land    head    self
+					Key: [ string, string, string, string ]
 					Doc: ArrayBuffer
 					Indexes: {}
 				}

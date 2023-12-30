@@ -7,7 +7,7 @@ namespace $ {
 		}
 		
 		numb() {
-			return 0
+			return ''
 		}
 		
 		lord_numb() {
@@ -22,23 +22,17 @@ namespace $ {
 			return this.$.$hyoo_crus_auth.current()
 		}
 		
-		@ $mol_memo.method
-		ref() {
-			return $hyoo_crus_ref.make( this.lord_numb(), this.numb(), 0 )
-		}
-		
-		slug() {
-			return this.ref().toString().slice( 16, 24 )
-			// return this.ref().toString().replace( /^[^_]*_?/, '' ) || 'Base'
+		guid() {
+			return this.lord_numb() + this.numb()
 		}
 		
 		face = new $hyoo_crus_face
 		
-		passes = new $mol_wire_dict< number /*peer*/, $hyoo_crus_pass >()
-		gifts = new $mol_wire_dict< bigint /*lord*/, $hyoo_crus_gift >()
-		gists = new $mol_wire_dict< number /*head*/, $mol_wire_dict< number /*self*/, $hyoo_crus_gist > >()
+		passes = new $mol_wire_dict< string /*peer*/, $hyoo_crus_pass >()
+		gifts = new $mol_wire_dict< string /*lord*/, $hyoo_crus_gift >()
+		gists = new $mol_wire_dict< string /*head*/, $mol_wire_dict< string /*self*/, $hyoo_crus_gist > >()
 		
-		self_all = new $mol_wire_set< number >()
+		self_all = new $mol_wire_set< string >()
 		
 		@ $mol_action
 		self_make( idea = Math.floor( Math.random() * 2**48 ) ) {
@@ -54,11 +48,13 @@ namespace $ {
 				
 				idea = ( idea + 1 ) % 2**48
 				if( !idea ) continue
-				if( idea === numb ) continue
-				if( this.self_all.has( idea ) ) continue
 				
-				this.self_all.add( idea )
-				return idea
+				const idea_str = $mol_base64_ae_encode( new Uint8Array( new BigUint64Array([ BigInt( idea ) ]).buffer, 0, 6 ) )
+				if( idea_str === numb ) continue
+				if( this.self_all.has( idea_str ) ) continue
+				
+				this.self_all.add( idea_str )
+				return idea_str
 				
 			}
 			
@@ -67,12 +63,12 @@ namespace $ {
 		
 		@ $mol_mem_key
 		Root< Node extends typeof $hyoo_crus_node >( Node: Node ) {
-			return this.Node( Node ).Item( 0 )
+			return this.Node( Node ).Item( '' )
 		} 
 		
 		@ $mol_mem_key
 		Node< Node extends typeof $hyoo_crus_node >( Node: Node ) {
-			return new $hyoo_crus_fund( ( head: number )=> Node.make({
+			return new $hyoo_crus_fund( ( head: string )=> Node.make({
 				land: $mol_const( this ),
 				head: $mol_const( head ),
 			}) as InstanceType< Node > )
@@ -91,12 +87,12 @@ namespace $ {
 		}
 		
 		@ $mol_mem_key
-		lord_rang( lord: bigint ) {
+		lord_rang( lord: string ) {
 			if( lord === this.lord_numb() ) return $hyoo_crus_rang.law
 			return this.gifts.get( lord )?.rang() ?? $hyoo_crus_rang.get
 		}
 		
-		peer_rang( peer: number ) {
+		peer_rang( peer: string ) {
 			const auth = this.passes.get( peer )!
 			if( !auth ) return $hyoo_crus_rang.get
 			return this.lord_rang( auth.lord() )
@@ -113,7 +109,7 @@ namespace $ {
 			}
 			
 			for( const [ lord, unit ] of this.gifts ) {
-				const time = face.get( Number( lord >> 16n ) )
+				const time = face.get( lord.slice( 0, 8 ) )
 				if( !time || time < unit.time() ) delta.push( unit )
 			}
 			
@@ -173,7 +169,7 @@ namespace $ {
 						if( prev && $hyoo_crus_gift.compare( prev, next ) <= 0 ) return 'Unit too old'
 						
 						this.gifts.set( dest, next )
-						this.face.see_peer( Number( dest >> 16n ), next.time() )
+						this.face.see_peer( dest.slice( 0, 8 ), next.time() )
 						
 						if( ( prev?.rang() ?? $hyoo_crus_rang.get ) > next.rang() ) need_recheck = true
 						
@@ -243,7 +239,7 @@ namespace $ {
 		@ $mol_action
 		fork() {
 			const land = this.realm()!.home().Land_new(0)
-			land.cloves()!.items([ this.ref() ])
+			land.cloves()!.items([ this.guid() ])
 			return land
 		}
 		
@@ -253,7 +249,7 @@ namespace $ {
 		}
 		
 		@ $mol_mem_key
-		gists_ordered( head: number ) {
+		gists_ordered( head: string ) {
 			
 			this.sync()
 			
@@ -261,15 +257,15 @@ namespace $ {
 			
 			merge: if( this.numb() && ( head !== this.numb() ) ) {
 				
-				const cloves = this.cloves()!.items().slice().reverse() as $hyoo_crus_ref[]
+				const cloves = this.cloves()!.items().slice().reverse() as string[]
 				if( !cloves.length ) break merge
 				
 				const exists = new Set([ ... this.gists.get( head )?.keys() ?? [] ])
 				
 				const realm  = this.realm()!
-				for( const ref of cloves ) {
+				for( const guid of cloves ) {
 					
-					const clove = realm.Lord( ref.lord() ).Land( ref.land() )
+					const clove = realm.Land( guid )
 					for( const gist of clove.gists_ordered( head ) ) {
 						
 						if( exists.has( gist.self() ) ) continue
@@ -288,7 +284,7 @@ namespace $ {
 			
 			const res = [] as $hyoo_crus_gist[]
 			
-			const locate = ( self: number )=> {
+			const locate = ( self: string )=> {
 				
 				for( let i = res.length - 1; i >= 0; --i ) {
 					if( res[i].self() === self ) return i
@@ -357,7 +353,7 @@ namespace $ {
 		/** Places data to tree. */
 		@ $mol_action
 		give(
-			dest: bigint,
+			dest: string,
 			rang: $hyoo_crus_rang,
 		) {
 				
@@ -380,9 +376,9 @@ namespace $ {
 		/** Places data to tree. */
 		@ $mol_action
 		post(
-			lead: number,
-			head: number,
-			self: number,
+			lead: string,
+			head: string,
+			self: string,
 			vary: $hyoo_crus_vary_type,
 			tag = 'term' as keyof typeof $hyoo_crus_gist_tag,
 		) {
@@ -419,7 +415,7 @@ namespace $ {
 		@ $mol_action
 		gist_move(
 			gist: $hyoo_crus_gist,
-			head: number,
+			head: string,
 			seat: number,
 		) {
 			
@@ -428,7 +424,7 @@ namespace $ {
 			const units = this.gists_ordered( head )
 			if( seat > units.length ) $mol_fail( new RangeError( `Seat (${seat}) out of units length (${units.length})` ) )
 			
-			const lead = seat && units[ seat - 1 ].self()
+			const lead = seat ? units[ seat - 1 ].self() : ''
 			
 			if( gist.head() === head ) {
 				
@@ -437,7 +433,7 @@ namespace $ {
 				if( seat === seat_prev ) return
 				if( seat === seat_prev + 1 ) return
 				
-				const prev = seat_prev && units[ seat_prev - 1 ].self()
+				const prev = seat_prev ? units[ seat_prev - 1 ].self() : ''
 				const next = units[ seat_prev + 1 ]
 				
 				if( next ) this.post(
@@ -471,7 +467,7 @@ namespace $ {
 			const seat = units.indexOf( gist )
 			
 			this.post(
-				seat && units[ seat - 1 ].self(),
+				seat ? units[ seat - 1 ].self() : '',
 				gist.head(),
 				gist.self(),
 				null,
@@ -497,7 +493,7 @@ namespace $ {
 		
 		@ $mol_mem
 		bus() {
-			return new this.$.$mol_bus< ArrayBuffer[] >( `$hyoo_crus_land:${ this.ref() }`, $mol_wire_async( bins => {
+			return new this.$.$mol_bus< ArrayBuffer[] >( `$hyoo_crus_land:${ this.guid() }`, $mol_wire_async( bins => {
 				const yard = this.$.$hyoo_crus_yard
 				this.apply_unit( bins.map( bin => {
 					const unit = new $hyoo_crus_unit( bin ).narrow()
@@ -510,7 +506,9 @@ namespace $ {
 		@ $mol_mem
 		loading() {
 			
-			const units = this.$.$hyoo_crus_yard.load( this.ref().toString() )
+			$mol_wire_solid()
+			
+			const units = this.$.$hyoo_crus_yard.load( this )
 			const errors = this.apply_unit( units ).filter( Boolean )
 			
 			if( errors.length ) this.$.$mol_log3_fail({
@@ -555,7 +553,7 @@ namespace $ {
 			$mol_wire_race( ... signing.map( unit => ()=> this.unit_sign( unit ) ) )
 			
 			this.bus().send( persisting.map( unit => unit.buffer ) )
-			if( persisting.length )	$mol_wire_sync( yard ).save( this.ref().toString(), persisting )
+			if( persisting.length )	$mol_wire_sync( yard ).save( this, persisting )
 			
 		}
 		
@@ -600,13 +598,13 @@ namespace $ {
 		}
 		
 		@ $mol_mem_key
-		key_public( peer: number ) {
+		key_public( peer: string ) {
 			const key = this.passes.get( peer )?.auth()
 			return key ? $mol_crypto_key_public.from( key ) : null
 		}
 		
 		@ $mol_mem_key
-		secret_mutual( peer: number ) {
+		secret_mutual( peer: string ) {
 			
 			const key = this.key_public( peer )
 			if( !key ) return null
@@ -683,7 +681,7 @@ namespace $ {
 			return $mol_dev_format_span( {} ,
 				$mol_dev_format_native( this ) ,
 				' ',
-				this.slug(),
+				this.numb(),
 			)
 		}
 		

@@ -22,12 +22,10 @@ namespace $ {
 			return new Uint8Array( this.buffer, this.byteOffset + 14, 18 )
 		}
 		
-		dest( next?: bigint ) {
-			if( next !== undefined ) {
-				this.uint32( 52, Number( next & 0xFFFFFFFFn ) )
-				this.uint64( 56, next >> 32n )
-			}
-			return BigInt( this.uint32( 52 ) ) + ( this.uint64( 56 ) << 32n )
+		_dest!: string
+		dest( next?: string ) {
+			if( next === undefined && this._dest !== undefined ) return this._dest
+			else return this._dest = this.id12( 56, next )
 		}
 		
 		bill() {
@@ -42,18 +40,18 @@ namespace $ {
 			left: $hyoo_crus_gift,
 			right: $hyoo_crus_gift,
 		) {
-			return ( right.time() - left.time() ) || ( right.peer() - left.peer() )
+			return ( right.time() - left.time() ) || ( right.peer() > left.peer() ? 1 : right.peer() < left.peer() ? -1 : 0 )
 		}
 		
 		[ $mol_dev_format_head ]() {
 			return $mol_dev_format_span( {} ,
 				$mol_dev_format_native( this ) ,
 				' ',
-				this.peer().toString(16) ,
+				this.peer(),
 				' 🏅 ',
 				$mol_dev_format_accent( $hyoo_crus_rang[ this.rang() ] ) ,
 				' ',
-				this.dest().toString(16),
+				this.dest(),
 				' ',
 				$mol_dev_format_shade( new Date( this.time() ) ) ,
 			)

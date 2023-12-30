@@ -60,34 +60,34 @@ namespace $ {
 			
 			$mol_assert_equal( land1.delta_unit(), [] )
 			
-			land1.post( 0, 0, 1, new Uint8Array([ 1 ]) )
+			land1.post( '', '', '11111111', new Uint8Array([ 1 ]) )
 			$mol_assert_equal( land1.delta_unit().length, 2 )
 			
 			const face = new $hyoo_crus_face( land1.face )
 			
-			land1.post( 1, 0, 2, new Uint8Array([ 2 ]) )
+			land1.post( '11111111', '', '22222222', new Uint8Array([ 2 ]) )
 			$mol_assert_equal( land1.delta_unit().length, 3 )
 			$mol_assert_equal( land1.delta_unit( face ).length, 1 )
 			
 			land2.apply_unit( land1.delta_unit() )
 			
-			$mol_assert_fail( ()=> land2.post( 2, 0, 3, new Uint8Array([ 3 ]) ), 'Need add rang to join' )
+			$mol_assert_fail( ()=> land2.post( '22222222', '', '33333333', new Uint8Array([ 3 ]) ), 'Need add rang to join' )
 			$mol_assert_equal( land2.delta_unit().length, 3 )
 			$mol_assert_equal( land2.delta_unit( face ).length, 1 )
 			
 			land1.give( auth1.lord(), $hyoo_crus_rang.add )
 			land2.apply_unit( land1.delta_unit() )
-			$mol_assert_fail( ()=> land2.post( 2, 0, 3, new Uint8Array([ 3 ]) ), 'Need mod rang to post any data' )
+			$mol_assert_fail( ()=> land2.post( '22222222', '', '33333333', new Uint8Array([ 3 ]) ), 'Need mod rang to post any data' )
 			$mol_assert_equal( land2.delta_unit().length, 5 )
 			$mol_assert_equal( land2.delta_unit( face ).length, 3 )
 			
-			land2.post( 2, 0, auth1.peer(), new Uint8Array([ 4 ]) )
+			land2.post( '22222222', '', auth1.peer(), new Uint8Array([ 4 ]) )
 			$mol_assert_equal( land2.delta_unit().length, 6 )
 			$mol_assert_equal( land2.delta_unit( face ).length, 4 )
 			
 			land1.give( auth1.lord(), $hyoo_crus_rang.mod )
 			land2.apply_unit( land1.delta_unit() )
-			land2.post( 2, 0, 3, new Uint8Array([ 3 ]) )
+			land2.post( '22222222', '', '33333333', new Uint8Array([ 3 ]) )
 			$mol_assert_equal( land2.delta_unit().length, 7 )
 			$mol_assert_equal( land2.delta_unit( face ).length, 5 )
 			
@@ -112,11 +112,11 @@ namespace $ {
 			land2.apply_unit( land1.delta_unit() )
 			$mol_assert_equal( land2.delta_unit().length, 2 )
 			
-			const gist1 = land2.post( 0, 0, 0, 'foo' )
+			const gist1 = land2.post( '', '', '', 'foo' )
 			$mol_assert_equal( gist1.self(), auth2.peer() )
 			$mol_assert_equal( land2.delta_unit().length, 4 )
 			
-			const gist2 = land2.post( 0, 0, 0, 'bar' )
+			const gist2 = land2.post( '', '', '', 'bar' )
 			$mol_assert_equal( gist2.self(), auth2.peer() )
 			$mol_assert_equal( land2.delta_unit().length, 4 )
 			
@@ -134,13 +134,13 @@ namespace $ {
 		
 		async 'Land encryption'( $ ) {
 			
-			const land = $mol_wire_async( $hyoo_crus_land.make({ $, numb: ()=> 1 }) )
+			const land = $mol_wire_async( $hyoo_crus_land.make({ $, numb: ()=> '11111111' }) )
 			$mol_assert_equal( await land.encrypted(), false )
 			
 			await land.encrypt()
 			$mol_assert_equal( await land.encrypted(), true )
 			
-			const gist = await land.post( 0, 0, 0, new Uint8Array([ 1, 2, 3 ]) )
+			const gist = await land.post( '', '', '', new Uint8Array([ 1, 2, 3 ]) )
 			
 			$mol_assert_equal( ( await land.gist_encode( gist ) ).data().length, 7 )
 			$mol_assert_equal(
@@ -172,16 +172,16 @@ namespace $ {
 			const both = base.fork()
 			$mol_assert_equal( both.Root( $hyoo_crus_list ).items(), [ 'foo', 'xxx' ] )
 			
-			both.cloves()!.items([ right.ref() ])
+			both.cloves()!.items([ right.guid() ])
 			$mol_assert_equal( both.Root( $hyoo_crus_list ).items(), [ 'foo', 'zzz' ] )
 			
-			both.cloves()!.items([ left.ref() ])
+			both.cloves()!.items([ left.guid() ])
 			$mol_assert_equal( both.Root( $hyoo_crus_list ).items(), [ 'foo', 'yyy' ] )
 			
-			both.cloves()!.items([ right.ref(), left.ref() ])
+			both.cloves()!.items([ right.guid(), left.guid() ])
 			$mol_assert_equal( both.Root( $hyoo_crus_list ).items(), [ 'foo', 'yyy' ] )
 			
-			both.cloves()!.items([ left.ref(), right.ref() ])
+			both.cloves()!.items([ left.guid(), right.guid() ])
 			$mol_assert_equal( both.Root( $hyoo_crus_list ).items(), [ 'foo', 'zzz' ] )
 			
 		},

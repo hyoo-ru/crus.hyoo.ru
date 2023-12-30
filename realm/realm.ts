@@ -2,14 +2,14 @@ namespace $ {
 	
 	export class $hyoo_crus_realm extends $mol_object {
 		
-		lords = new $mol_wire_dict< bigint, $hyoo_crus_lord >()
+		lords = new $mol_wire_dict< string, $hyoo_crus_lord >()
 		
 		home() {
 			return this.Lord( this.$.$hyoo_crus_auth.current().lord() )
 		}
 		
 		@ $mol_mem_key
-		Lord( numb: bigint ) {
+		Lord( numb: string ) {
 			
 //			this.$.$mol_wait_timeout(1000)
 			
@@ -26,8 +26,12 @@ namespace $ {
 			
 		}
 		
-		Node< Node extends typeof $hyoo_crus_node > ( Node: Node, ref: $hyoo_crus_ref ) {
-			return this.Lord( ref.lord() ).Land( ref.land() ).Node( Node ).Item( ref.head() )
+		Land( guid: string ) {
+			return this.Lord( guid.slice( 0, 16 ) ).Land( guid.slice( 16, 24 ) )
+		}
+		
+		Node< Node extends typeof $hyoo_crus_node > ( Node: Node, guid: string ) {
+			return this.Land( guid.slice( 0, 24 ) ).Node( Node ).Item( guid.slice( 24, 32 ) )
 		}
 		
 		// @ $mol_mem_key

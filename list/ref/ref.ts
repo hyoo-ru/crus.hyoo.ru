@@ -15,16 +15,15 @@ namespace $ {
 			remote_list( next?: Vals ): Vals {
 				const realm = this.realm()
 				const Node = ( Value as any )()
-				return this.items( next?.map( item => ( item as $hyoo_crus_node ).ref() ) )
-					.map( $hyoo_crus_vary_cast_ref )
-					.map( ref => realm!.Node( Node, ref ) )
+				return this.items( next?.map( item => ( item as $hyoo_crus_node ).guid() ) )
+					.map( ref => realm!.Node( Node, ref as string ) )
 			}
 			
 			@ $mol_action
 			remote_make() {
 				const land = this.realm()!.home().Land_new( 0 )
-				this.splice([ land.ref() ])
-				return land.Node( ( Value as any )() ).Item(0)
+				this.splice([ land.guid() ])
+				return land.Node( ( Value as any )() ).Item('')
 			}
 			
 		}

@@ -16,48 +16,48 @@ namespace $ {
 		'Basic list ops'( $ ) {
 			
 			const land = $hyoo_crus_land.make({ $ })
-			const list = land.Node( $hyoo_crus_list ).Item(0)
-			$mol_assert_like( list.items(), [] )
+			const list = land.Node( $hyoo_crus_list ).Item('')
+			$mol_assert_equal( list.items(), [] )
 			
 			list.items([ 2, 3 ])
-			$mol_assert_like( list.items(), [ 2, 3 ] )
-			$mol_assert_not( list.has( 1 ) )
+			$mol_assert_equal( list.items(), [ 2, 3 ] )
+			$mol_assert_equal( list.has( 1 ), false )
 			
 			list.add( 1 )
-			$mol_assert_like( list.items(), [ 1, 2, 3 ] )
-			$mol_assert_ok( list.has( 1 ) )
+			$mol_assert_equal( list.items(), [ 1, 2, 3 ] )
+			$mol_assert_equal( list.has( 1 ), true )
 			
 			list.add( 3 )
-			$mol_assert_like( list.items(), [ 1, 2, 3 ] )
+			$mol_assert_equal( list.items(), [ 1, 2, 3 ] )
 			
 			list.splice([ 2 ])
-			$mol_assert_like( list.items(), [ 1, 2, 3, 2 ] )
+			$mol_assert_equal( list.items(), [ 1, 2, 3, 2 ] )
 			
 			list.splice( [ 2 ], 0 )
-			$mol_assert_like( list.items(), [ 2, 1, 2, 3, 2 ] )
+			$mol_assert_equal( list.items(), [ 2, 1, 2, 3, 2 ] )
 			
 			list.wipe( 2 )
-			$mol_assert_like( list.items(), [ 2, 1, 3, 2 ] )
+			$mol_assert_equal( list.items(), [ 2, 1, 3, 2 ] )
 			
 			list.move( 2, 1 )
-			$mol_assert_like( list.items(), [ 2, 3, 1, 2 ] )
+			$mol_assert_equal( list.items(), [ 2, 3, 1, 2 ] )
 			
 			list.move( 1, 3 )
-			$mol_assert_like( list.items(), [ 2, 1, 3, 2 ] )
+			$mol_assert_equal( list.items(), [ 2, 1, 3, 2 ] )
 			
 			list.cut( 2 )
-			$mol_assert_like( list.items(), [ 1, 3 ] )
-			$mol_assert_not( list.has( 2 ) )
+			$mol_assert_equal( list.items(), [ 1, 3 ] )
+			$mol_assert_equal( list.has( 2 ), false )
 			
 			list.cut( 2 )
-			$mol_assert_like( list.items(), [ 1, 3 ] )
+			$mol_assert_equal( list.items(), [ 1, 3 ] )
 			
 		},
 		
 		'Different types'( $ ) {
 			
 			const land = $hyoo_crus_land.make({ $ })
-			const list = land.Node( $hyoo_crus_list ).Item(0)
+			const list = land.Node( $hyoo_crus_list ).Item('')
 			
 			list.items([
 				null,
@@ -74,10 +74,10 @@ namespace $ {
 				new Uint8Array([]),
 				new Uint8Array([ 1, 2, 3 ]),
 				new Uint8Array([ 1,2,3,4,5,6,7,8,9,0, 1,2,3,4,5,6,7,8,9,0, 1,2,3,4,5,6,7,8,9,0, 1,2,3,4,5,6,7,8,9,0 ]),
-				list.ref(),
+				list.guid(),
 			])
 			
-			$mol_assert_like( list.items(), [
+			$mol_assert_equal( list.items(), [
 				false,
 				true,
 				0n,
@@ -90,7 +90,7 @@ namespace $ {
 				'1234567890123456789012345678901234567890',
 				new Uint8Array([ 1, 2, 3 ]),
 				new Uint8Array([ 1,2,3,4,5,6,7,8,9,0, 1,2,3,4,5,6,7,8,9,0, 1,2,3,4,5,6,7,8,9,0, 1,2,3,4,5,6,7,8,9,0 ]),
-				list.ref(),
+				list.guid(),
 			] )
 			
 		},
@@ -100,34 +100,34 @@ namespace $ {
 			const land1 = $hyoo_crus_land.make({ $ })
 			const land2 = $hyoo_crus_land.make({ $ })
 			
-			const list1 = land1.Node( $hyoo_crus_list ).Item(0)
-			const list2 = land2.Node( $hyoo_crus_list ).Item(0)
+			const list1 = land1.Node( $hyoo_crus_list ).Item('')
+			const list2 = land2.Node( $hyoo_crus_list ).Item('')
 
 			list1.items([ 'foo', 'xxx' ])
 			land2.face.tick( land2.auth().peer() )
 			list2.items([ 'foo', 'yyy' ])
 			land1.apply_unit( land2.delta_unit() )
-			$mol_assert_like( list1.items(), [ 'foo', 'yyy', 'foo', 'xxx' ] )
+			$mol_assert_equal( list1.items(), [ 'foo', 'yyy', 'foo', 'xxx' ] )
 
 		},
 		
 		'Insert before removed before changed'( $ ) {
 			
 			const land = $hyoo_crus_land.make({ $ })
-			const list = land.Node( $hyoo_crus_list ).Item(0)
+			const list = land.Node( $hyoo_crus_list ).Item('')
 			
 			list.items([ 'foo', 'bar' ])
 			list.items([ 'xxx', 'foo', 'bar' ])
 			list.items([ 'xxx', 'bars' ])
 			
-			$mol_assert_like( list.items(), [ 'xxx', 'bars' ] )
+			$mol_assert_equal( list.items(), [ 'xxx', 'bars' ] )
 			
 		},
 		
 		'Many moves'( $ ) {
 			
 			const land = $hyoo_crus_land.make({ $ })
-			const list = land.Node( $hyoo_crus_list ).Item(0)
+			const list = land.Node( $hyoo_crus_list ).Item('')
 			
 			list.items([ 'foo', 'bar', 'lol' ])
 			list.move( 2, 1 )
@@ -135,14 +135,14 @@ namespace $ {
 			list.move( 0, 3 )
 			list.move( 2, 1 )
 			
-			$mol_assert_like( list.items(), [ 'bar', 'foo', 'lol' ] )
+			$mol_assert_equal( list.items(), [ 'bar', 'foo', 'lol' ] )
 			
 		},
 		
 		'Reorder separated sublists'( $ ) {
 			
 			const land = $hyoo_crus_land.make({ $ })
-			const list = land.Node( $hyoo_crus_list ).Item(0)
+			const list = land.Node( $hyoo_crus_list ).Item('')
 			
 			list.items([ 1, 2, 3, 4, 5, 6 ])
 			
@@ -154,7 +154,7 @@ namespace $ {
 			list.move( 0, 2 )
 			list.move( 2, 1 )
 			
-			$mol_assert_like( list.items(), [ 1, 3, 2, 4, 6, 5 ] )
+			$mol_assert_equal( list.items(), [ 1, 3, 2, 4, 6, 5 ] )
 			
 		},
 		
@@ -170,7 +170,7 @@ namespace $ {
 			right.Root( $hyoo_crus_list ).move( 0, 2 )
 			
 			sync( left, right )
-			$mol_assert_like(
+			$mol_assert_equal(
 				left.Root( $hyoo_crus_list ).items(),
 				right.Root( $hyoo_crus_list ).items(),
 				[ 2, 1, 7, 3, 4 ],
@@ -191,7 +191,7 @@ namespace $ {
 			right.Root( $hyoo_crus_list ).items([ 1, 7, 2, 3, 4 ])
 			
 			sync( left, right )
-			$mol_assert_like(
+			$mol_assert_equal(
 				left.Root( $hyoo_crus_list ).items(),
 				right.Root( $hyoo_crus_list ).items(),
 				[ 2, 1, 7, 3, 4 ],
@@ -212,7 +212,7 @@ namespace $ {
 			right.Root( $hyoo_crus_list ).move( 1, 0 )
 			
 			sync( left, right )
-			$mol_assert_like(
+			$mol_assert_equal(
 				left.Root( $hyoo_crus_list ).items(),
 				right.Root( $hyoo_crus_list ).items(),
 				[ 2, 1, 3, 7, 4 ], // extra change (3) => unexpected result (7 after 3)
@@ -233,7 +233,7 @@ namespace $ {
 			right.Root( $hyoo_crus_list ).items([ 1, 7, 2, 3, 4 ])
 			
 			sync( left, right )
-			$mol_assert_like(
+			$mol_assert_equal(
 				left.Root( $hyoo_crus_list ).items(),
 				right.Root( $hyoo_crus_list ).items(),
 				[ 1, 7, 3, 4, 2 ],
@@ -254,7 +254,7 @@ namespace $ {
 			right.Root( $hyoo_crus_list ).move( 1, 4 )
 			
 			sync( left, right )
-			$mol_assert_like(
+			$mol_assert_equal(
 				left.Root( $hyoo_crus_list ).items(),
 				right.Root( $hyoo_crus_list ).items(),
 				[ 1, 3, 7, 4, 2 ], // extra change (3) => unexpected result (7 after 3)
@@ -275,7 +275,7 @@ namespace $ {
 			right.Root( $hyoo_crus_list ).items([ 1, 2, 7, 3, 4 ])
 			
 			sync( left, right )
-			$mol_assert_like(
+			$mol_assert_equal(
 				left.Root( $hyoo_crus_list ).items(),
 				right.Root( $hyoo_crus_list ).items(),
 				[ 1, 7, 3, 4 ],
@@ -296,7 +296,7 @@ namespace $ {
 			right.Root( $hyoo_crus_list ).items([ 1, 3, 4 ])
 			
 			sync( left, right )
-			$mol_assert_like(
+			$mol_assert_equal(
 				left.Root( $hyoo_crus_list ).items(),
 				right.Root( $hyoo_crus_list ).items(),
 				[ 1, 7, 3, 4 ],
@@ -317,7 +317,7 @@ namespace $ {
 			right.Root( $hyoo_crus_list ).items([ 1, 2, 7, 3, 4 ])
 			
 			sync( left, right )
-			$mol_assert_like(
+			$mol_assert_equal(
 				left.Root( $hyoo_crus_list ).items(),
 				right.Root( $hyoo_crus_list ).items(),
 				[ 1, 2, 7, 4 ],
@@ -338,7 +338,7 @@ namespace $ {
 			right.Root( $hyoo_crus_list ).wipe( 2 )
 			
 			sync( left, right )
-			$mol_assert_like(
+			$mol_assert_equal(
 				left.Root( $hyoo_crus_list ).items(),
 				right.Root( $hyoo_crus_list ).items(),
 				[ 1, 2, 7, 4 ],
@@ -352,21 +352,21 @@ namespace $ {
 			base.Root( $hyoo_crus_list ).items([ 1, 2, 3, 4 ])
 			
 			const left = fork( base )
-			left.gist_move( left.Root( $hyoo_crus_list ).units()[1], 1, 0 )
+			left.gist_move( left.Root( $hyoo_crus_list ).units()[1], '11111111', 0 )
 			
 			const right = fork( base )
 			right.face.sync( left.face )
 			right.Root( $hyoo_crus_list ).items([ 1, 2, 7, 3, 4 ])
 			
 			sync( left, right )
-			$mol_assert_like(
+			$mol_assert_equal(
 				left.Root( $hyoo_crus_list ).items(),
 				right.Root( $hyoo_crus_list ).items(),
 				[ 1, 7, 3, 4 ],
 			)
-			$mol_assert_like(
-				left.Node( $hyoo_crus_list ).Item(1).items(),
-				right.Node( $hyoo_crus_list ).Item(1).items(),
+			$mol_assert_equal(
+				left.Node( $hyoo_crus_list ).Item('11111111').items(),
+				right.Node( $hyoo_crus_list ).Item('11111111').items(),
 				[ 2 ],
 			)
 			
@@ -382,17 +382,17 @@ namespace $ {
 			
 			const right = fork( base )
 			right.face.sync( left.face )
-			right.gist_move( right.Root( $hyoo_crus_list ).units()[1], 1, 0 )
+			right.gist_move( right.Root( $hyoo_crus_list ).units()[1], '11111111', 0 )
 			
 			sync( left, right )
-			$mol_assert_like(
+			$mol_assert_equal(
 				left.Root( $hyoo_crus_list ).items(),
 				right.Root( $hyoo_crus_list ).items(),
 				[ 1, 7, 3, 4 ],
 			)
-			$mol_assert_like(
-				left.Node( $hyoo_crus_list ).Item(1).items(),
-				right.Node( $hyoo_crus_list ).Item(1).items(),
+			$mol_assert_equal(
+				left.Node( $hyoo_crus_list ).Item('11111111').items(),
+				right.Node( $hyoo_crus_list ).Item('11111111').items(),
 				[ 2 ],
 			)
 			
@@ -411,7 +411,7 @@ namespace $ {
 			right.Root( $hyoo_crus_list ).items([ 1, 2, 13, 3, 4 ])
 			
 			sync( left, right )
-			$mol_assert_like(
+			$mol_assert_equal(
 				left.Root( $hyoo_crus_list ).items(),
 				right.Root( $hyoo_crus_list ).items(),
 				[ 1, 2, 13, 7, 4 ],
@@ -432,7 +432,7 @@ namespace $ {
 			right.Root( $hyoo_crus_list ).items([ 1, 2, 7, 4 ])
 			
 			sync( left, right )
-			$mol_assert_like(
+			$mol_assert_equal(
 				left.Root( $hyoo_crus_list ).items(),
 				right.Root( $hyoo_crus_list ).items(),
 				[ 1, 2, 7, 13, 4 ],
@@ -454,7 +454,7 @@ namespace $ {
 			right.Root( $hyoo_crus_list ).items([ 1, 2, 7, 3, 4, 5, 6 ])
 			
 			sync( left, right )
-			$mol_assert_like(
+			$mol_assert_equal(
 				left.Root( $hyoo_crus_list ).items(),
 				right.Root( $hyoo_crus_list ).items(),
 				[ 1, 4, 5, 2, 7, 3, 6 ],
@@ -476,7 +476,7 @@ namespace $ {
 			right.Root( $hyoo_crus_list ).move( 1, 5 )
 			
 			sync( left, right )
-			$mol_assert_like(
+			$mol_assert_equal(
 				left.Root( $hyoo_crus_list ).items(),
 				right.Root( $hyoo_crus_list ).items(),
 				[ 1, 4, 5, 2, 3, 7, 6 ],

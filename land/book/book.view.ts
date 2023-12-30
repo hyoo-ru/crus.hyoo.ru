@@ -2,21 +2,21 @@ namespace $.$$ {
 	export class $hyoo_crus_land_book extends $.$hyoo_crus_land_book {
 		
 		override menu_title() {
-			return '🌍Land ' + this.land().slug()
+			return '🌍Land ' + this.land().numb()
 		}
 		
 		@ $mol_mem
 		override spread_ids() {
 			const land = this.land()
-			return [ 0, ... land.self_all.values() ].map( head => land.Node( $hyoo_crus_node ).Item( head ).slug() || 'AAAAAAAA' )
+			return [ '', ... land.self_all.values() ].map( head => land.Node( $hyoo_crus_node ).Item( head ).head() )
 		}
 		
 		override spread_title( head: string ) {
-			return this.node( head ).slug() || 'Root'
+			return this.node( head ).head() || 'Root'
 		}
 		
 		override node( id: string ) {
-			return this.land().Node( $hyoo_crus_node ).Item( new $mol_buffer( $mol_base64_ae_decode( id ).buffer ).uint48(0) )
+			return this.land().Node( $hyoo_crus_node ).Item( id )
 		}
 		
 	}

@@ -3,15 +3,15 @@ namespace $.$$ {
 		
 		@ $mol_mem
 		override spread_ids() {
-			return [ ... this.realm().lords.values() ].map( lord => lord.ref().toString() )
+			return [ ... this.realm().lords.values() ].map( lord => lord.numb() )
 		}
 		
 		override lord( id: string ) {
-			return this.realm().Lord( $hyoo_crus_ref.from( id ).lord() )
+			return this.realm().Lord( id )
 		}
 		
 		override spread_title( id: string ) {
-			return this.lord( id ).slug()
+			return id
 		}
 		
 		// override lord_new() {

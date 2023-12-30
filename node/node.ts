@@ -10,7 +10,7 @@ namespace $ {
 		}
 		
 		head() {
-			return 0
+			return ''
 		}
 		
 		lord() {
@@ -26,12 +26,8 @@ namespace $ {
 		}
 		
 		@ $mol_memo.method
-		ref() {
-			return $hyoo_crus_ref.make( this.lord_numb(), this.land().numb(), this.head() )
-		}
-		
-		slug() {
-			return this.ref().toString().slice( 24 )
+		guid() {
+			return this.lord_numb() + ( this.land().numb() || 'AAAAAAAA' ) + this.head()
 		}
 		
 		/** Returns another representation of this node. */
@@ -66,7 +62,7 @@ namespace $ {
 			return $mol_dev_format_span( {} ,
 				$mol_dev_format_native( this ) ,
 				' ',
-				this.slug(),
+				this.head(),
 			)
 		}
 		

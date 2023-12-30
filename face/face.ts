@@ -1,6 +1,6 @@
 namespace $ {
 	
-	export type $hyoo_crus_face_data = Iterable< readonly [ number /*peer*/, number /* timestamp */ ] >
+	export type $hyoo_crus_face_data = Iterable< readonly [ string /*peer*/, number /* timestamp */ ] >
 	
 	// export class $hyoo_crus_face_lord {
 		
@@ -27,7 +27,7 @@ namespace $ {
 		
 	// }
 	
-	export class $hyoo_crus_face extends Map< number /*peer*/, number /* timestamp */ > {
+	export class $hyoo_crus_face extends Map< string /*peer*/, number /* timestamp */ > {
 		
 		/** Maximum time for all peers. */
 		last = 0
@@ -60,7 +60,7 @@ namespace $ {
 		
 		/** Merge new `face` for `peer` and increase `last`. */
 		see_peer(
-			peer: number,
+			peer: string,
 			time: number,
 		) {
 			
@@ -105,7 +105,7 @@ namespace $ {
 		
 		/** Gererates new time for peer that greater then other seen. */
 		@ $mol_action
-		tick( peer: number ) {
+		tick( peer: string ) {
 			
 			let time = Date.now()
 			if( time <= this.last ) time = this.last + 1

@@ -7,8 +7,8 @@ namespace $ {
 		}
 		
 		@ $mol_mem
-		selection( next?: readonly( readonly[ number, number ] )[] ) {
-			return ( this.dive( 'selection', $hyoo_crus_reg ).value_vary( next ) ?? [ [ 0, 0 ], [ 0, 0 ] ] ) as readonly( readonly[ number, number ])[]
+		selection( next?: string ) {
+			return this.dive( 'selection', $hyoo_crus_reg ).value_str( next ) ?? ''
 		}
 		
 		@ $mol_mem

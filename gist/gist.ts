@@ -51,16 +51,22 @@ namespace $ {
 			return this.uint48( 8, next )
 		}
 		
-		self( next?: number ) {
-			return this.uint48( 14, next )
+		_self!: string
+		self( next?: string ) {
+			if( next === undefined && this._self !== undefined ) return this._self
+			else return this._self = this.id6( 14, next )
 		}
 		
-		head( next?: number ) {
-			return this.uint48( 20, next )
+		_head!: string
+		head( next?: string ) {
+			if( next === undefined && this._head !== undefined ) return this._head
+			else return this._head = this.id6( 20, next )
 		}
 		
-		lead( next?: number ) {
-			return this.uint48( 26, next )
+		_lead!: string
+		lead( next?: string ) {
+			if( next === undefined && this._lead !== undefined ) return this._lead
+			else return this._lead = this.id6( 26, next )
 		}
 		
 		hash(
@@ -114,22 +120,22 @@ namespace $ {
 			left: $hyoo_crus_gist,
 			right: $hyoo_crus_gist,
 		) {
-			return ( right.time() - left.time() ) || ( right.peer() - left.peer() )
+			return ( right.time() - left.time() ) || ( right.peer() > left.peer() ? 1 : right.peer() < left.peer() ? -1 : 0 )
 		}
 		
 		[ $mol_dev_format_head ]() {
 			return $mol_dev_format_span( {},
 				$mol_dev_format_native( this ),
 				' ',
-				this.peer().toString(16),
+				this.peer(),
 				' ',
 				$mol_dev_format_shade( new Date( this.time() ) ),
 				' ',
-				this.lead().toString(16),
+				this.lead(),
 				$mol_dev_format_shade( '\\' ),
-				$mol_dev_format_accent( this.head().toString(16) ),
+				$mol_dev_format_accent( this.head() ),
 				$mol_dev_format_shade( '/' ),
-				this.self().toString(16),
+				this.self(),
 				' ',
 				$mol_dev_format_shade(
 					this.tag(),

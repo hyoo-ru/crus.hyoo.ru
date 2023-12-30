@@ -31,9 +31,9 @@ namespace $ {
 				to,
 				next,
 				equal: ( next, prev )=> $mol_compare_deep( this.land().gist_decode( prev ), next ),
-				drop: ( prev, lead )=> this.land().post( lead?.self() ?? 0, prev.head(), prev.self(), null ),
-				insert: ( next, lead )=> this.land().post( lead?.self() ?? 0, this.head(), land.self_make(), next, tag ),
-				update: ( next, prev, lead )=> this.land().post( lead?.self() ?? 0, prev.head(), prev.self(), next, prev.tag() ),
+				drop: ( prev, lead )=> this.land().post( lead?.self() ?? '', prev.head(), prev.self(), null ),
+				insert: ( next, lead )=> this.land().post( lead?.self() ?? '', this.head(), land.self_make(), next, tag ),
+				update: ( next, prev, lead )=> this.land().post( lead?.self() ?? '', prev.head(), prev.self(), next, prev.tag() ),
 			})
 		}
 		
@@ -60,7 +60,7 @@ namespace $ {
 			tag = 'term' as keyof typeof $hyoo_crus_gist_tag,
 		) {
 			if( this.has( vary ) ) return
-			this.land().post( 0, this.head(), 0, vary, tag )
+			this.land().post( '', this.head(), '', vary, tag )
 		}
 		
 		cut( vary: $hyoo_crus_vary_type ) {
@@ -105,7 +105,7 @@ namespace $ {
 			return $mol_dev_format_span( {} ,
 				$mol_dev_format_native( this ) ,
 				' ',
-				this.slug(),
+				this.head(),
 				' ',
 				$mol_dev_format_auto( this.items() ),
 			)

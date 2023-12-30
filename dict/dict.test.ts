@@ -7,26 +7,26 @@ namespace $.$$ {
 		async 'Dictionary invariants'( $ ) {
 			
 			const land = $hyoo_crus_land.make({ $ })
-			const dict = land.Node( $hyoo_crus_dict ).Item(0)
-			$mol_assert_like( dict.keys(), [] )
+			const dict = land.Node( $hyoo_crus_dict ).Item('')
+			$mol_assert_equal( dict.keys(), [] )
 			
 			dict.dive( 123, $hyoo_crus_reg )
 			dict.dive( 'xxx', $hyoo_crus_reg )
-			$mol_assert_like( dict.keys(), [ 'xxx', 123 ] )
-			$mol_assert_ok( dict.has( 123 ) )
-			$mol_assert_ok( dict.has( 'xxx' ) )
-			$mol_assert_not( dict.has( 'yyy' ) )
-			$mol_assert_like( dict.dive( 123, $hyoo_crus_reg ).value_vary(), null )
-			$mol_assert_like( dict.dive( 'xxx', $hyoo_crus_reg ).value_vary(), null )
+			$mol_assert_equal( dict.keys(), [ 'xxx', 123 ] )
+			$mol_assert_equal( dict.has( 123 ), true )
+			$mol_assert_equal( dict.has( 'xxx' ), true )
+			$mol_assert_equal( dict.has( 'yyy' ), false )
+			$mol_assert_equal( dict.dive( 123, $hyoo_crus_reg ).value_vary(), null )
+			$mol_assert_equal( dict.dive( 'xxx', $hyoo_crus_reg ).value_vary(), null )
 			
 			dict.dive( 123, $hyoo_crus_reg ).value_vary( 777 )
-			$mol_assert_like( dict.dive( 123, $hyoo_crus_reg ).value_vary(), 777 )
+			$mol_assert_equal( dict.dive( 123, $hyoo_crus_reg ).value_vary(), 777 )
 
 			dict.dive( 'xxx', $hyoo_crus_list ).items([ 'foo', 'bar' ])
-			$mol_assert_like( dict.dive( 'xxx', $hyoo_crus_list ).items(), [ 'foo', 'bar' ] )
+			$mol_assert_equal( dict.dive( 'xxx', $hyoo_crus_list ).items(), [ 'foo', 'bar' ] )
 			
 			dict.has( 123, false )
-			$mol_assert_like( dict.keys(), [ 'xxx' ] )
+			$mol_assert_equal( dict.keys(), [ 'xxx' ] )
 
 		},
 		
@@ -35,20 +35,20 @@ namespace $.$$ {
 			const land1 = $hyoo_crus_land.make({ $ })
 			const land2 = $hyoo_crus_land.make({ $ })
 			
-			const dict1 = land1.Node( $hyoo_crus_dict ).Item(0)
-			const dict2 = land2.Node( $hyoo_crus_dict ).Item(0)
+			const dict1 = land1.Node( $hyoo_crus_dict ).Item('')
+			const dict2 = land2.Node( $hyoo_crus_dict ).Item('')
 
 			dict1.dive( 123, $hyoo_crus_reg ).value_vary( 666 )
 			land2.face.tick( land2.auth().peer() )
 			dict2.dive( 123, $hyoo_crus_reg ).value_vary( 777 )
 			land1.apply_unit( land2.delta_unit() )
-			$mol_assert_like( dict1.dive( 123, $hyoo_crus_reg ).value_vary(), 777 )
+			$mol_assert_equal( dict1.dive( 123, $hyoo_crus_reg ).value_vary(), 777 )
 			
 			dict1.dive( 'xxx', $hyoo_crus_list ).items([ 'foo' ])
 			land2.face.tick( land2.auth().peer() )
 			dict2.dive( 'xxx', $hyoo_crus_list ).items([ 'bar' ])
 			land1.apply_unit( land2.delta_unit() )
-			$mol_assert_like( dict1.dive( 'xxx', $hyoo_crus_list ).items(), [ 'bar', 'foo' ] )
+			$mol_assert_equal( dict1.dive( 'xxx', $hyoo_crus_list ).items(), [ 'bar', 'foo' ] )
 
 		},
 		
@@ -73,19 +73,19 @@ namespace $.$$ {
 				Author: $hyoo_crus_reg_ref( ()=> User ),
 			}) {}
 			
-			const user = land.Node( User ).Item(1)
-			$mol_assert_like( user.Account.remote(), null )
-			$mol_assert_like( user.Articles.remote_list(), [] )
+			const user = land.Node( User ).Item('11111111')
+			$mol_assert_equal( user.Account.remote(), null )
+			$mol_assert_equal( user.Articles.remote_list(), [] )
 			
 			const account = user.Account.remote_ensure()
-			$mol_assert_like( user.Account.remote(), account )
-			$mol_assert_like( account.User.remote(), null )
+			$mol_assert_equal( user.Account.remote(), account )
+			$mol_assert_equal( account.User.remote(), null )
 			
 			account.User.remote( user )
-			$mol_assert_like( account.User.remote(), user )
+			$mol_assert_equal( account.User.remote(), user )
 			
 			const articles = [ user.Articles.remote_make(), user.Articles.remote_make() ]
-			$mol_assert_like( user.Articles.remote_list(), articles )
+			$mol_assert_equal( user.Articles.remote_list(), articles )
 			
 			$mol_assert_unique( user.land(), account.land(), ... articles.map( article => article.land() ) )
 		},

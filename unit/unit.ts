@@ -49,8 +49,30 @@ namespace $ {
 			})
 		}
 		
-		peer( next?: number ) {
-			return this.uint48( 2, next )
+		id6( offset: number, next?: string ) {
+			if( next === undefined ) {
+				const str = $mol_base64_ae_encode( new Uint8Array( this.buffer, offset, 6 ) )
+				return str === 'AAAAAAAA' ? '' : str
+			} else {
+				this.asArray().set( $mol_base64_ae_decode( next || 'AAAAAAAA' ), offset )
+				return next
+			}
+		}
+		
+		id12( offset: number, next?: string ) {
+			if( next === undefined ) {
+				const str = $mol_base64_ae_encode( new Uint8Array( this.buffer, offset, 12 ) )
+				return str === 'AAAAAAAAAAAAAAAA' ? '' : str
+			} else {
+				this.asArray().set( $mol_base64_ae_decode( next || 'AAAAAAAAAAAAAAAA' ), offset )
+				return next
+			}
+		}
+		
+		_peer!: string
+		peer( next?: string ) {
+			if( next === undefined && this._peer !== undefined ) return this._peer
+			else return this._peer = this.id6( 2, next )
 		}
 		
 		salt() {

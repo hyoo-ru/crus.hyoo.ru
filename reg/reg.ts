@@ -19,9 +19,9 @@ namespace $ {
 			if( $mol_compare_deep( prev , next ) ) return next
 			
 			this.land().post(
-				0, 
+				'', 
 				unit_prev?.head() ?? this.head(),
-				unit_prev?.self() ?? 0,
+				unit_prev?.self() ?? '',
 				next
 			)
 			
@@ -53,11 +53,11 @@ namespace $ {
 			return $hyoo_crus_vary_cast_bin( this.value_vary( next ) )
 		}
 		
-		@ $mol_mem
-		value_ref( next?: $hyoo_crus_ref | null ): $hyoo_crus_ref | null {
-			const bin = this.value_vary( next )
-			return bin instanceof $hyoo_crus_ref ? bin : null
-		}
+		// @ $mol_mem
+		// value_ref( next?: $hyoo_crus_ref | null ): $hyoo_crus_ref | null {
+		// 	const bin = this.value_vary( next )
+		// 	return bin instanceof $hyoo_crus_ref ? bin : null
+		// }
 		
 		@ $mol_mem_key
 		value_as< Decode extends $mol_data_value >( decode: Decode, next?: ReturnType< Decode > ) {
@@ -86,14 +86,15 @@ namespace $ {
 			
 			const realm = this.realm()
 			
-			const ref = this.value_ref()
-			if( ref ) return realm!.Lord( ref.lord() ).Land( ref.land() )
+			const ref = this.value_str()
+			if( ref ) return realm!.Land( ref )
 			
 			const hash = $mol_crypto_hash( $hyoo_crus_vary_encode( vary ).bin )
-			const idea = new $mol_buffer( hash.buffer ).uint32(0) + this.land().numb()
+			const numb = new Uint16Array( $mol_base64_decode( this.land().numb() ).buffer )
+			const idea = new $mol_buffer( hash.buffer ).uint32(0) + numb[0] + numb[1] * 2**16 + numb[2] * 2**32
 
 			const land = realm!.Lord( this.land().auth().lord() ).Land_new( idea )
-			this.value_ref( land.ref() )
+			this.value_str( land.guid() )
 			
 			return land
 		}
@@ -102,7 +103,7 @@ namespace $ {
 			return $mol_dev_format_span( {} ,
 				$mol_dev_format_native( this ) ,
 				' ',
-				this.slug(),
+				this.head(),
 				' ',
 				$mol_dev_format_auto( this.value_vary() ),
 			)

@@ -3,11 +3,11 @@ namespace $ {
 		
 		static persisted = new WeakSet< $hyoo_crus_unit >()
 		
-		static load( land_ref: string ) {
+		static load( land: $hyoo_crus_land ) {
 			return [] as readonly $hyoo_crus_unit[]
 		}
 		
-		static async save( land_ref: string, units: readonly $hyoo_crus_unit[] ) {}
+		static async save( land: $hyoo_crus_land, units: readonly $hyoo_crus_unit[] ) {}
 		
 	}
 }

@@ -11,9 +11,9 @@ namespace $ {
 			const auth = new $hyoo_crus_pass
 			auth.auth([ 0xFF, 0, 0xFC, 0xFB, 0xFA, 0xF9, 0xF8, 0xF7, 0xF6, 0xF5, 0xF4, 0xF3, 0xF2, 0xF1 ])
 			
-			$mol_assert_like( auth.kind(), 'pass' )
-			$mol_assert_like( auth.lord(), 0xF1F2F3F4F5F6F7F8F9FAFbFCn )
-			$mol_assert_like( auth.peer(), 0xF7F8F9FAFBFC )
+			$mol_assert_equal( auth.kind(), 'pass' )
+			$mol_assert_equal( auth.lord(), 'ÆPv6æfj39vX08ÆLx' )
+			$mol_assert_equal( auth.peer(), 'ÆPv6æfj3' )
 			
 		},
 		
@@ -22,8 +22,8 @@ namespace $ {
 			const gift = new $hyoo_crus_gift
 			gift.rang( $hyoo_crus_rang.law )
 			
-			$mol_assert_like( gift.kind(), 'gift' )
-			$mol_assert_like( gift.rang(), $hyoo_crus_rang.law )
+			$mol_assert_equal( gift.kind(), 'gift' )
+			$mol_assert_equal( gift.rang(), $hyoo_crus_rang.law )
 			
 		},
 		
@@ -32,9 +32,9 @@ namespace $ {
 			const unit = new $hyoo_crus_gist
 			unit.data( new Uint8Array([ 0xFF, 0xFF ]) )
 			
-			$mol_assert_like( unit.kind(), 'gist' )
-			$mol_assert_like( unit.size(), 2 )
-			$mol_assert_like( unit.data(), new Uint8Array([ 0xFF, 0xFF ]) )
+			$mol_assert_equal( unit.kind(), 'gist' )
+			$mol_assert_equal( unit.size(), 2 )
+			$mol_assert_equal( unit.data(), new Uint8Array([ 0xFF, 0xFF ]) )
 			
 		},
 		
@@ -43,18 +43,18 @@ namespace $ {
 		// 	const unit = new $hyoo_crus_gist
 		// 	unit.hash( 0xa1a2a3a4a5a6a7a8b1b2b3b4b5b6b7b8n )
 			
-		// 	// $mol_assert_like( unit.size(), 255 )
-		// 	$mol_assert_like( unit.hash(), 0xa1a2a3a4a5a6a7a8b1b2b3b4b5b6b7b8n )
+		// 	// $mol_assert_equal( unit.size(), 255 )
+		// 	$mol_assert_equal( unit.hash(), 0xa1a2a3a4a5a6a7a8b1b2b3b4b5b6b7b8n )
 			
 		// },
 		
 		'unit peer'() {
 			
 			const unit = new $hyoo_crus_unit
-			$mol_assert_equal( unit.peer(), 0 )
+			$mol_assert_equal( unit.peer(), '' )
 			
-			unit.peer( 0xf1f2f3f4f5f6 )
-			$mol_assert_equal( unit.peer(), 0xf1f2f3f4f5f6 )
+			unit.peer( 'ÆPv6æfj3' )
+			$mol_assert_equal( unit.peer(), 'ÆPv6æfj3' )
 			
 		},
 		
@@ -63,13 +63,13 @@ namespace $ {
 			const unit = new $hyoo_crus_gift
 			
 			$mol_assert_equal( unit.time(), 0 )
-			$mol_assert_equal( unit.dest(), 0n )
+			$mol_assert_equal( unit.dest(), '' )
 			
 			unit.time( 0xd1d2d3d4d5d6 )
-			unit.dest( 0xa1a2a3a4a5a6a7a8n )
+			unit.dest( 'ÆPv6æfj39vX08ÆLx' )
 			
 			$mol_assert_equal( unit.time(), 0xd1d2d3d4d5d6 )
-			$mol_assert_equal( unit.dest(), 0xa1a2a3a4a5a6a7a8n )
+			$mol_assert_equal( unit.dest(), 'ÆPv6æfj39vX08ÆLx' )
 			
 		},
 		
@@ -78,19 +78,19 @@ namespace $ {
 			const unit = new $hyoo_crus_gist
 			
 			$mol_assert_equal( unit.time(), 0 )
-			$mol_assert_equal( unit.head(), 0 )
-			$mol_assert_equal( unit.self(), 0 )
-			$mol_assert_equal( unit.lead(), 0 )
+			$mol_assert_equal( unit.head(), '' )
+			$mol_assert_equal( unit.self(), '' )
+			$mol_assert_equal( unit.lead(), '' )
 			
 			unit.time( 0xd1d2d3d4d5d6 )
-			unit.head( 0xa1a2a3a4a5a6 )
-			unit.self( 0xb1b2b3b4b5b6 )
-			unit.lead( 0xc1c2c3c4c5c6 )
+			unit.head( 'ÆPv6æfj3' )
+			unit.self( 'Pv6æfj39' )
+			unit.lead( 'v6æfj39v' )
 			
 			$mol_assert_equal( unit.time(), 0xd1d2d3d4d5d6 )
-			$mol_assert_equal( unit.head(), 0xa1a2a3a4a5a6 )
-			$mol_assert_equal( unit.self(), 0xb1b2b3b4b5b6 )
-			$mol_assert_equal( unit.lead(), 0xc1c2c3c4c5c6 )
+			$mol_assert_equal( unit.head(), 'ÆPv6æfj3' )
+			$mol_assert_equal( unit.self(), 'Pv6æfj39' )
+			$mol_assert_equal( unit.lead(), 'v6æfj39v' )
 			
 		},
 		

@@ -37,10 +37,10 @@ namespace $.$$ {
 			check( Number.MIN_VALUE )
 		},
 		
-		"Ref"( $ ) {
-			check( $hyoo_crus_ref.make() )
-			check( $hyoo_crus_ref.make( 4611686018427387904n, 2, 3 ) )
-		},
+		// "Ref"( $ ) {
+		// 	check( $hyoo_crus_ref.make() )
+		// 	check( $hyoo_crus_ref.make( 4611686018427387904n, 2, 3 ) )
+		// },
 		
 		"Str"( $ ) {
 			check( '' )

@@ -6,36 +6,36 @@ namespace $ {
 			const land = $hyoo_crus_land.make({ $ })
 			const text = land.Root( $hyoo_crus_text )
 			const list = land.Root( $hyoo_crus_list )
-			$mol_assert_like( text.str(), '' )
-			$mol_assert_like( list.items(), [] )
+			$mol_assert_equal( text.str(), '' )
+			$mol_assert_equal( list.items(), [] )
 			
 			text.str( 'foo' )
-			$mol_assert_like( text.str(), 'foo' )
-			$mol_assert_like( list.items(), [ 'foo' ] )
+			$mol_assert_equal( text.str(), 'foo' )
+			$mol_assert_equal( list.items(), [ 'foo' ] )
 			
 			text.str( 'foo bar' )
-			$mol_assert_like( text.str(), 'foo bar' )
-			$mol_assert_like( list.items(), [ 'foo', ' bar' ] )
+			$mol_assert_equal( text.str(), 'foo bar' )
+			$mol_assert_equal( list.items(), [ 'foo', ' bar' ] )
 			
 			text.str( 'foo lol bar' )
-			$mol_assert_like( text.str(), 'foo lol bar' )
-			$mol_assert_like( list.items(), [ 'foo', ' lol', ' bar' ] )
+			$mol_assert_equal( text.str(), 'foo lol bar' )
+			$mol_assert_equal( list.items(), [ 'foo', ' lol', ' bar' ] )
 			
 			text.str( 'lol bar' )
-			$mol_assert_like( text.str(), 'lol bar' )
-			$mol_assert_like( list.items(), [ 'lol', ' bar' ] )
+			$mol_assert_equal( text.str(), 'lol bar' )
+			$mol_assert_equal( list.items(), [ 'lol', ' bar' ] )
 			
 			text.str( 'foo bar' )
-			$mol_assert_like( text.str(), 'foo bar' )
-			$mol_assert_like( list.items(), [ 'foo', ' bar' ] )
+			$mol_assert_equal( text.str(), 'foo bar' )
+			$mol_assert_equal( list.items(), [ 'foo', ' bar' ] )
 			
 			text.str( 'foo  bar' )
-			$mol_assert_like( text.str(), 'foo  bar' )
-			$mol_assert_like( list.items(), [ 'foo', ' ', ' bar' ] )
+			$mol_assert_equal( text.str(), 'foo  bar' )
+			$mol_assert_equal( list.items(), [ 'foo', ' ', ' bar' ] )
 			
 			text.str( 'foo  BarBar' )
-			$mol_assert_like( text.str(), 'foo  BarBar' )
-			$mol_assert_like( list.items(), [ 'foo', ' ', ' Bar', 'Bar' ] )
+			$mol_assert_equal( text.str(), 'foo  BarBar' )
+			$mol_assert_equal( list.items(), [ 'foo', ' ', ' Bar', 'Bar' ] )
 			
 		},
 		
@@ -47,21 +47,21 @@ namespace $ {
 			text.str( 'fooBar' )
 			const [ first, second ] = text.units()
 			
-			$mol_assert_like( text.point_by_offset( 0 ), [ first.self(), 0 ] )
-			$mol_assert_like( text.offset_by_point([ first.self(), 0 ]), [ first.self(), 0 ] )
+			$mol_assert_equal( text.point_by_offset( 0 ), [ first.self(), 0 ] )
+			$mol_assert_equal( text.offset_by_point([ first.self(), 0 ]), [ first.self(), 0 ] )
 			
-			$mol_assert_like( text.point_by_offset( 3 ), [ first.self(), 3 ] )
-			$mol_assert_like( text.offset_by_point([ first.self(), 3 ]), [ first.self(), 3 ] )
-			$mol_assert_like( text.offset_by_point([ first.self(), 5 ]), [ first.self(), 5 ] )
+			$mol_assert_equal( text.point_by_offset( 3 ), [ first.self(), 3 ] )
+			$mol_assert_equal( text.offset_by_point([ first.self(), 3 ]), [ first.self(), 3 ] )
+			$mol_assert_equal( text.offset_by_point([ first.self(), 5 ]), [ first.self(), 5 ] )
 			
-			$mol_assert_like( text.point_by_offset( 5 ), [ second.self(), 2 ] )
-			$mol_assert_like( text.offset_by_point([ second.self(), 2 ]), [ second.self(), 5 ] )
+			$mol_assert_equal( text.point_by_offset( 5 ), [ second.self(), 2 ] )
+			$mol_assert_equal( text.offset_by_point([ second.self(), 2 ]), [ second.self(), 5 ] )
 			
-			$mol_assert_like( text.point_by_offset( 6 ), [ second.self(), 3 ] )
-			$mol_assert_like( text.offset_by_point([ second.self(), 3 ]), [ second.self(), 6 ] )
+			$mol_assert_equal( text.point_by_offset( 6 ), [ second.self(), 3 ] )
+			$mol_assert_equal( text.offset_by_point([ second.self(), 3 ]), [ second.self(), 6 ] )
 			
-			$mol_assert_like( text.point_by_offset( 7 ), [ 0, 1 ] )
-			$mol_assert_like( text.offset_by_point([ 0, 1 ]), [ 0, 7 ] )
+			$mol_assert_equal( text.point_by_offset( 7 ), [ '', 1 ] )
+			$mol_assert_equal( text.offset_by_point([ '', 1 ]), [ '', 7 ] )
 			
 		},
 
@@ -73,11 +73,11 @@ namespace $ {
 			text.text( 'foo bar\n666 777' )
 			const [ first, second ] = text.nodes( $hyoo_crus_text )
 			
-			$mol_assert_like( text.point_by_offset( 0 ), [ first.units()[0].self(), 0 ] )
-			$mol_assert_like( text.offset_by_point([ first.units()[0].self(), 0 ]), [ first.units()[0].self(), 0 ] )
+			$mol_assert_equal( text.point_by_offset( 0 ), [ first.units()[0].self(), 0 ] )
+			$mol_assert_equal( text.offset_by_point([ first.units()[0].self(), 0 ]), [ first.units()[0].self(), 0 ] )
 			
-			$mol_assert_like( text.point_by_offset( 8 ), [ first.units()[2].self(), 1 ] )
-			$mol_assert_like( text.offset_by_point([ first.units()[2].self(), 1 ]), [ first.units()[2].self(), 8 ] )
+			$mol_assert_equal( text.point_by_offset( 8 ), [ first.units()[2].self(), 1 ] )
+			$mol_assert_equal( text.offset_by_point([ first.units()[2].self(), 1 ]), [ first.units()[2].self(), 8 ] )
 			
 		},
 
@@ -86,8 +86,8 @@ namespace $ {
 			const land1 = $hyoo_crus_land.make({ $ })
 			const land2 = $hyoo_crus_land.make({ $ })
 			
-			const text1 = land1.Node( $hyoo_crus_text ).Item(0)
-			const text2 = land2.Node( $hyoo_crus_text ).Item(0)
+			const text1 = land1.Node( $hyoo_crus_text ).Item('')
+			const text2 = land2.Node( $hyoo_crus_text ).Item('')
 			
 			text1.str( 'foo bar.' )
 			land2.face.sync( land1.face )
@@ -99,7 +99,7 @@ namespace $ {
 			land1.apply_unit( delta2 )
 			land2.apply_unit( delta1 )
 	
-			$mol_assert_like(
+			$mol_assert_equal(
 				text1.str(),
 				text2.str(),
 				'xxx yyy.foo bar.',
@@ -129,7 +129,7 @@ namespace $ {
 			left.apply_unit( right_delta )
 			right.apply_unit( left_delta )
 	
-			$mol_assert_like(
+			$mol_assert_equal(
 				left.Root( $hyoo_crus_text ).str(),
 				right.Root( $hyoo_crus_text ).str(),
 				'( [ fu ] [ foo ] )',

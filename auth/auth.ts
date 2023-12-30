@@ -21,12 +21,14 @@ namespace $ {
 			$mol_fail( new Error( `Too long key generation` ) )
 		}
 		
+		@ $mol_memo.method
 		lord() {
-			return BigInt( this.peer() ) + ( BigInt( this.uint48( 8 ) ) << 48n )
+			return $mol_base64_ae_encode( new Uint8Array( this.buffer, 2, 12 ) )
 		}
 		
+		@ $mol_memo.method
 		peer() {
-			return this.uint48( 2 )
+			return $mol_base64_ae_encode( new Uint8Array( this.buffer, 2, 6 ) )
 		}
 		
 		@ $mol_mem_key

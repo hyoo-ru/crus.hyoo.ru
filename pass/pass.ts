@@ -6,12 +6,10 @@ namespace $ {
 			return this.uint8( 1 )
 		}
 		
-		lord( next?: bigint ) {
-			if( next !== undefined ) {
-				this.uint48( 2, Number( next & 0xFFFFFFFFFFFFn ) )
-				this.uint48( 8, Number( next >> 48n ) )
-			}
-			return BigInt( this.uint48( 2 ) ) + ( BigInt( this.uint48( 8 ) ) << 48n )
+		_lord!: string
+		lord( next?: string ) {
+			if( next === undefined && this._lord !== undefined ) return this._lord
+			else return this._lord = this.id12( 2, next )
 		}
 		
 		auth( next?: ArrayLike< number > ) {
@@ -24,9 +22,9 @@ namespace $ {
 			return $mol_dev_format_span( {} ,
 				$mol_dev_format_native( this ) ,
 				' ',
-				this.peer().toString(16),
+				this.peer(),
 				' 🔑 ',
-				this.lord().toString(16) ,
+				this.lord(),
 			)
 		}
 		

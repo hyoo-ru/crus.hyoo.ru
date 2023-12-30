@@ -2,7 +2,7 @@ namespace $.$$ {
 	export class $hyoo_crus_node_page extends $.$hyoo_crus_node_page {
 		
 		override title() {
-			return '🧩Node ' + this.node().slug()
+			return '🧩Node ' + this.node().head()
 		}
 		
 		override text( next?: string ) {
