@@ -3291,6 +3291,7 @@ declare namespace $ {
         key_public(peer: string): $mol_crypto_key_public | null;
         secret_mutual(peer: string): $mol_crypto_secret | null;
         encrypt(): void;
+        encryptable(): boolean;
         encrypted(): boolean;
         secret(): $mol_crypto_secret | null;
     }
@@ -4483,6 +4484,7 @@ declare namespace $ {
         Spread(id: any): $$.$hyoo_crus_node_page;
         Encrypted_icon(): $mol_icon_lock;
         encrypted(next?: any): boolean;
+        encryptable(): boolean;
         Encrypted(): $mol_check_icon;
         node(id: any): $hyoo_crus_node;
         Node(id: any): $$.$hyoo_crus_node_page;
@@ -4495,6 +4497,7 @@ declare namespace $.$$ {
         spread_ids(): string[];
         spread_title(head: string): string;
         node(id: string): $hyoo_crus_node;
+        encryptable(): boolean;
         encrypted(next?: boolean): boolean;
     }
 }

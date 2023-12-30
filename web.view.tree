@@ -913,6 +913,7 @@ $hyoo_crus_land_book $mol_book2_catalog
 		<= Encrypted $mol_check_icon
 			Icon <= Encrypted_icon $mol_icon_lock
 			checked? <=> encrypted? false
+			enabled <= encryptable true
 	Spread* <= Node* $hyoo_crus_node_page
 		node <= node* $hyoo_crus_node
 

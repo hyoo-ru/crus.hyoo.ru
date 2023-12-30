@@ -10238,8 +10238,19 @@ var $;
             if (gist._open !== undefined)
                 return gist._vary = $hyoo_crus_vary_decode({ tip: gist.tip(), bin: gist._open });
             let bin = gist.size() > 32 ? this.$.$hyoo_crus_mine.rock(gist.hash()) : gist.data();
-            if (bin && this.secret())
-                bin = new Uint8Array($mol_wire_sync(this.secret()).decrypt(bin, gist.salt()));
+            if (bin && this.secret()) {
+                try {
+                    bin = new Uint8Array($mol_wire_sync(this.secret()).decrypt(bin, gist.salt()));
+                }
+                catch (error) {
+                    if ($mol_fail_catch(error)) {
+                        if (error.message)
+                            $mol_fail_hidden(error);
+                        else
+                            $mol_fail_hidden(new Error(`Can't decrypt`, { cause: error }));
+                    }
+                }
+            }
             gist._open = bin;
             return gist._vary = (bin ? $hyoo_crus_vary_decode({ tip: gist.tip(), bin }) : null);
         }
@@ -10256,6 +10267,8 @@ var $;
         encrypt() {
             if (!this.numb())
                 $mol_fail(new Error('Home Land never encrypted'));
+            if (!this.encryptable())
+                $mol_fail(new Error(`Non empty Land never encrypted`));
             if (this.encrypted())
                 return;
             this.join();
@@ -10273,6 +10286,9 @@ var $;
             const error = this.apply_unit([unit])[0];
             if (error)
                 $mol_fail(new Error(error));
+        }
+        encryptable() {
+            return !this.gists.size;
         }
         encrypted() {
             if (!this.numb())
@@ -15289,10 +15305,14 @@ var $;
                 return next;
             return false;
         }
+        encryptable() {
+            return true;
+        }
         Encrypted() {
             const obj = new this.$.$mol_check_icon();
             obj.Icon = () => this.Encrypted_icon();
             obj.checked = (next) => this.encrypted(next);
+            obj.enabled = () => this.encryptable();
             return obj;
         }
         node(id) {
@@ -15345,6 +15365,9 @@ var $;
             }
             node(id) {
                 return this.land().Node($hyoo_crus_node).Item(id);
+            }
+            encryptable() {
+                return this.land().encrypted() || this.land().encryptable();
             }
             encrypted(next) {
                 if (next)
