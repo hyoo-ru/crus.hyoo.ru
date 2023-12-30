@@ -593,7 +593,16 @@ namespace $ {
 			if( gist._open !== undefined ) return gist._vary = $hyoo_crus_vary_decode({ tip: gist.tip(), bin: gist._open })
 			
 			let bin = gist.size() > 32 ? this.$.$hyoo_crus_mine.rock( gist.hash() ) : gist.data()
-			if( bin && this.secret() ) bin = new Uint8Array( $mol_wire_sync( this.secret()! ).decrypt( bin, gist.salt() ) )
+			if( bin && this.secret() ) {
+				try {
+					bin = new Uint8Array( $mol_wire_sync( this.secret()! ).decrypt( bin, gist.salt() ) )
+				} catch( error: any ) {
+					if( $mol_fail_catch( error ) ) {
+						if( error.message ) $mol_fail_hidden( error )
+						else $mol_fail_hidden( new Error( `Can't decrypt`, { cause: error } ) )
+					}
+				}
+			}
 			
 			gist._open = bin
 			return gist._vary = ( bin ? $hyoo_crus_vary_decode({ tip: gist.tip(), bin }) : null )
@@ -623,6 +632,7 @@ namespace $ {
 		encrypt() {
 			
 			if( !this.numb() ) $mol_fail( new Error( 'Home Land never encrypted' ) )
+			if( !this.encryptable() ) $mol_fail( new Error( `Non empty Land never encrypted` ) )
 			if( this.encrypted() ) return
 			
 			this.join()
@@ -647,6 +657,10 @@ namespace $ {
 			
 		}
 		
+		encryptable() {
+			return !this.gists.size
+		}
+		
 		@ $mol_mem
 		encrypted() {
 			
@@ -663,7 +677,7 @@ namespace $ {
 		@ $mol_mem
 		secret() {
 			
-			if( !this.encrypted() ) return null // home land never encrypted
+			if( !this.encrypted() ) return null
 			
 			const auth = this.auth()
 			const gift = this.gifts.get( auth.lord() )
