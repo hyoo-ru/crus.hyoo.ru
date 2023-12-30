@@ -67,11 +67,14 @@ namespace $ {
 		} 
 		
 		@ $mol_mem_key
-		Node< Node extends typeof $hyoo_crus_node >( Node: Node ) {
-			return new $hyoo_crus_fund( ( head: string )=> Node.make({
-				land: $mol_const( this ),
-				head: $mol_const( head ),
-			}) as InstanceType< Node > )
+		Node< Node extends typeof $hyoo_crus_node >( Node: Node ): $hyoo_crus_fund< string, InstanceType< Node > > {
+			return new $hyoo_crus_fund( ( head: string )=> {
+				if( head === 'AAAAAAAA' ) return this.Node( Node ).Item( '' )
+				return Node.make({
+					land: $mol_const( this ),
+					head: $mol_const( head ),
+				}) as InstanceType< Node >
+			} )
 		} 
 		
 		@ $mol_mem

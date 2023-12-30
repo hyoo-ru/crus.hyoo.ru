@@ -8,7 +8,7 @@ namespace $.$$ {
 		@ $mol_mem
 		override spread_ids() {
 			const land = this.land()
-			return [ '', ... land.self_all.values() ].map( head => land.Node( $hyoo_crus_node ).Item( head ).head() )
+			return [ 'AAAAAAAA', ... land.self_all.values() ]//.map( head => land.Node( $hyoo_crus_node ).Item( head ).head() )
 		}
 		
 		override spread_title( head: string ) {

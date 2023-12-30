@@ -7,7 +7,7 @@ namespace $.$$ {
 		
 		@ $mol_mem
 		override spread_ids() {
-			return [ ... this.lord().lands.values() ].map( land => land.numb() )
+			return [ ... this.lord().lands.values() ].map( land => land.numb() || 'AAAAAAAA' )
 		}
 		
 		override spread_title( id: string ) {
