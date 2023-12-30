@@ -9872,10 +9872,14 @@ var $;
             return this.Node(Node).Item('');
         }
         Node(Node) {
-            return new $hyoo_crus_fund((head) => Node.make({
-                land: $mol_const(this),
-                head: $mol_const(head),
-            }));
+            return new $hyoo_crus_fund((head) => {
+                if (head === 'AAAAAAAA')
+                    return this.Node(Node).Item('');
+                return Node.make({
+                    land: $mol_const(this),
+                    head: $mol_const(head),
+                });
+            });
         }
         total() {
             let total = this.passes.size + this.gifts.size;
@@ -15220,7 +15224,7 @@ var $;
             }
             spread_ids() {
                 const land = this.land();
-                return ['', ...land.self_all.values()].map(head => land.Node($hyoo_crus_node).Item(head).head());
+                return ['AAAAAAAA', ...land.self_all.values()];
             }
             spread_title(head) {
                 return this.node(head).head() || 'Root';
@@ -15346,7 +15350,7 @@ var $;
                 return '👑Lord ' + this.lord().numb();
             }
             spread_ids() {
-                return [...this.lord().lands.values()].map(land => land.numb());
+                return [...this.lord().lands.values()].map(land => land.numb() || 'AAAAAAAA');
             }
             spread_title(id) {
                 return this.land(id).numb() || 'Home';
