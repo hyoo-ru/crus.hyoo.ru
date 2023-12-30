@@ -41,6 +41,14 @@ namespace $ {
 			return ways[ way ]( unit )
 		}
 		
+		narrow() {
+			return this.choose< $hyoo_crus_unit >({
+				gist: unit => unit,
+				pass: unit => unit,
+				gift: unit => unit,
+			})
+		}
+		
 		peer( next?: number ) {
 			return this.uint48( 2, next )
 		}

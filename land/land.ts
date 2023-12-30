@@ -498,7 +498,12 @@ namespace $ {
 		@ $mol_mem
 		bus() {
 			return new this.$.$mol_bus< ArrayBuffer[] >( `$hyoo_crus_land:${ this.ref() }`, $mol_wire_async( bins => {
-				this.apply_unit( bins.map( bin => new $hyoo_crus_unit( bin ) ) )
+				const yard = this.$.$hyoo_crus_yard
+				this.apply_unit( bins.map( bin => {
+					const unit = new $hyoo_crus_unit( bin ).narrow()
+					yard.persisted.add( unit )
+					return unit
+				} ) )
 			} ) )
 		}
 		

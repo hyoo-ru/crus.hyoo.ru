@@ -3,6 +3,8 @@ namespace $.$$ {
 		
 		static async save( land_ref: string, units: readonly $hyoo_crus_unit[] ) {
 			
+			land_ref = land_ref.padEnd( 24, 'A' )
+			
 			const db = await this.db()
 			const change = db.change( 'Pass', 'Gift', 'Gist' )
 			const { Pass, Gift, Gist } = change.stores
@@ -25,6 +27,8 @@ namespace $.$$ {
 		
 		@ $mol_action
 		static load( land_ref: string ) {
+			
+			land_ref = land_ref.padEnd( 24, 'A' )
 			
 			const key = $mol_wire_sync( IDBKeyRange ).bound( [ land_ref ], [ land_ref + '\uFFFF' ] )
 			

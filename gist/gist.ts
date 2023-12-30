@@ -137,7 +137,7 @@ namespace $ {
 					this.tip(),
 				),
 				' ',
-				this._vary //??
+				$mol_dev_format_native( this._vary ) //??
 					// ( this.size() > 32
 					// 	? $mol_dev_format_shade( this.hash() )
 					// 	: $mol_dev_format_native( $hyoo_crus_vary_decode({ tip: this.tip(), bin: this.data() }) )
