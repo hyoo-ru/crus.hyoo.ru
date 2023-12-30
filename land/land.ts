@@ -663,17 +663,17 @@ namespace $ {
 		@ $mol_mem
 		secret() {
 			
-			if( !this.numb() ) return null // home land never encrypted
+			if( !this.encrypted() ) return null // home land never encrypted
 			
 			const auth = this.auth()
 			const gift = this.gifts.get( auth.lord() )
-			if( !gift ) return null
+			if( !gift ) return $mol_fail( new Error( `Access denied` ) )
 			
 			const bill = gift.bill()
-			if( !bill.some( b => b ) ) return null
+			if( !bill.some( b => b ) ) return $mol_fail( new Error( `No key to decrypt` ) )
 			
 			const secret_mutual = auth.secret_mutual( this.key_public( gift.peer() )!.toString() )
-			if( !secret_mutual ) return null
+			if( !secret_mutual ) return $mol_fail( new Error( `Can't decrypt secret` ) )
 			
 			const secret_land = $mol_wire_sync( secret_mutual ).decrypt( bill, gift.salt() )
 			return $mol_wire_sync( $mol_crypto_secret ).from( secret_land )

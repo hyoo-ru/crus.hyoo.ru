@@ -19,5 +19,10 @@ namespace $.$$ {
 			return this.land().Node( $hyoo_crus_node ).Item( id )
 		}
 		
+		override encrypted( next?: boolean ) {
+			if( next ) this.land().encrypt()
+			return this.land().encrypted()
+		}
+		
 	}
 }
