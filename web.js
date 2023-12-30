@@ -7093,6 +7093,13 @@ var $;
             const unit = new Unit(this.buffer, this.byteOffset, this.byteLength);
             return ways[way](unit);
         }
+        narrow() {
+            return this.choose({
+                gist: unit => unit,
+                pass: unit => unit,
+                gift: unit => unit,
+            });
+        }
         peer(next) {
             return this.uint48(2, next);
         }
@@ -8497,7 +8504,7 @@ var $;
             return (right.time() - left.time()) || (right.peer() - left.peer());
         }
         [$mol_dev_format_head]() {
-            return $mol_dev_format_span({}, $mol_dev_format_native(this), ' ', this.peer().toString(16), ' ', $mol_dev_format_shade(new Date(this.time())), ' ', this.lead().toString(16), $mol_dev_format_shade('\\'), $mol_dev_format_accent(this.head().toString(16)), $mol_dev_format_shade('/'), this.self().toString(16), ' ', $mol_dev_format_shade(this.tag(), ' ', this.tip()), ' ', this._vary);
+            return $mol_dev_format_span({}, $mol_dev_format_native(this), ' ', this.peer().toString(16), ' ', $mol_dev_format_shade(new Date(this.time())), ' ', this.lead().toString(16), $mol_dev_format_shade('\\'), $mol_dev_format_accent(this.head().toString(16)), $mol_dev_format_shade('/'), this.self().toString(16), ' ', $mol_dev_format_shade(this.tag(), ' ', this.tip()), ' ', $mol_dev_format_native(this._vary));
         }
     }
     $.$hyoo_crus_gist = $hyoo_crus_gist;
@@ -9190,6 +9197,7 @@ var $;
     (function ($$) {
         class $hyoo_crus_yard extends $.$hyoo_crus_yard {
             static async save(land_ref, units) {
+                land_ref = land_ref.padEnd(24, 'A');
                 const db = await this.db();
                 const change = db.change('Pass', 'Gift', 'Gist');
                 const { Pass, Gift, Gist } = change.stores;
@@ -9204,6 +9212,7 @@ var $;
                 await change.commit();
             }
             static load(land_ref) {
+                land_ref = land_ref.padEnd(24, 'A');
                 const key = $mol_wire_sync(IDBKeyRange).bound([land_ref], [land_ref + '\uFFFF']);
                 const [pass, gift, gist] = $mol_wire_sync(this).query(key);
                 const units = [
@@ -10257,7 +10266,12 @@ var $;
         }
         bus() {
             return new this.$.$mol_bus(`$hyoo_crus_land:${this.ref()}`, $mol_wire_async(bins => {
-                this.apply_unit(bins.map(bin => new $hyoo_crus_unit(bin)));
+                const yard = this.$.$hyoo_crus_yard;
+                this.apply_unit(bins.map(bin => {
+                    const unit = new $hyoo_crus_unit(bin).narrow();
+                    yard.persisted.add(unit);
+                    return unit;
+                }));
             }));
         }
         loading() {

@@ -2110,6 +2110,7 @@ declare namespace $ {
             gift: (unit: $hyoo_crus_gift) => Res;
             gist: (unit: $hyoo_crus_gist) => Res;
         }): Res;
+        narrow(): $hyoo_crus_unit;
         peer(next?: number): number;
         salt(): Uint8Array;
         sens(next?: ArrayLike<number>): Uint8Array;
