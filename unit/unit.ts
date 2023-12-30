@@ -41,7 +41,7 @@ namespace $ {
 			return ways[ way ]( unit )
 		}
 		
-		narrow() {
+		narrow(): $hyoo_crus_unit {
 			return this.choose< $hyoo_crus_unit >({
 				gist: unit => unit,
 				pass: unit => unit,
