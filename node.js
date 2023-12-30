@@ -10272,10 +10272,10 @@ var $;
         encrypt() {
             if (!this.numb())
                 $mol_fail(new Error('Home Land never encrypted'));
-            if (!this.encryptable())
-                $mol_fail(new Error(`Non empty Land never encrypted`));
             if (this.encrypted())
                 return;
+            if (!this.encryptable())
+                $mol_fail(new Error(`Non empty Land never encrypted`));
             this.join();
             const auth = this.auth();
             const secret = $mol_wire_sync($mol_crypto_secret).generate();
@@ -10397,6 +10397,9 @@ var $;
     __decorate([
         $mol_action
     ], $hyoo_crus_land.prototype, "encrypt", null);
+    __decorate([
+        $mol_mem
+    ], $hyoo_crus_land.prototype, "encryptable", null);
     __decorate([
         $mol_mem
     ], $hyoo_crus_land.prototype, "encrypted", null);
