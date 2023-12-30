@@ -632,8 +632,8 @@ namespace $ {
 		encrypt() {
 			
 			if( !this.numb() ) $mol_fail( new Error( 'Home Land never encrypted' ) )
-			if( !this.encryptable() ) $mol_fail( new Error( `Non empty Land never encrypted` ) )
 			if( this.encrypted() ) return
+			if( !this.encryptable() ) $mol_fail( new Error( `Non empty Land never encrypted` ) )
 			
 			this.join()
 			
@@ -657,6 +657,7 @@ namespace $ {
 			
 		}
 		
+		@ $mol_mem
 		encryptable() {
 			return !this.gists.size
 		}
