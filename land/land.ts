@@ -628,11 +628,24 @@ namespace $ {
 			
 		}
 		
-		@ $mol_action
-		encrypt() {
+		@ $mol_mem
+		encryptable() {
+			return !this.gists.size
+		}
+		
+		@ $mol_mem
+		encrypted( next?: boolean ) {
 			
-			if( !this.numb() ) $mol_fail( new Error( 'Home Land never encrypted' ) )
-			if( this.encrypted() ) return
+			$mol_wire_solid()
+			
+			if( !this.numb() ) return false // home land never encrypted
+			
+			const gift = this.gifts.get( this.lord_numb() )
+			const prev = gift?.bill().some( b => b ) ?? false
+			
+			if( next === undefined ) return prev
+			if( prev === next ) return prev
+			
 			if( !this.encryptable() ) $mol_fail( new Error( `Non empty Land never encrypted` ) )
 			
 			this.join()
@@ -655,24 +668,7 @@ namespace $ {
 			const error = this.apply_unit([ unit ])[0]
 			if( error ) $mol_fail( new Error( error ) )
 			
-		}
-		
-		@ $mol_mem
-		encryptable() {
-			return !this.gists.size
-		}
-		
-		@ $mol_mem
-		encrypted() {
-			
-			if( !this.numb() ) return false // home land never encrypted
-			
-			const gift = this.gifts.get( this.lord_numb() )
-			if( !gift ) return false // no secret for lord
-			
-			const bill = gift.bill()
-			return bill.some( b => b ) // secret isn't empty
-			
+			return next
 		}
 		
 		@ $mol_mem

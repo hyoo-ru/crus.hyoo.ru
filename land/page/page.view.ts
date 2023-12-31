@@ -15,13 +15,14 @@ namespace $.$$ {
 			return this.land().Node( $hyoo_crus_node ).Item( head )
 		}
 		
+		@ $mol_mem
 		override encryptable() {
 			return this.land().encrypted() || this.land().encryptable()
 		}
 		
+		@ $mol_mem
 		override encrypted( next?: boolean ) {
-			if( next ) this.land().encrypt()
-			return this.land().encrypted()
+			return this.land().encrypted( next )
 		}
 		
 		@ $mol_mem
