@@ -10012,12 +10012,12 @@ var $;
         cloves() {
             if (!this.numb())
                 return null;
-            return this.Node($hyoo_crus_list).Item(this.numb());
+            return this.Node($hyoo_crus_list).Item('AAAAAAAB');
         }
         gists_ordered(head) {
             this.sync();
             const queue = [...this.gists.get(head)?.values() ?? []];
-            merge: if (this.numb() && (head !== this.numb())) {
+            merge: if (this.numb() && (head !== 'AAAAAAAB')) {
                 const cloves = this.cloves().items().slice().reverse();
                 if (!cloves.length)
                     break merge;
@@ -13306,34 +13306,6 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    class $mol_icon_lock extends $mol_icon {
-        path() {
-            return "M12,17C13.1,17 14,16.1 14,15C14,13.89 13.1,13 12,13C10.9,13 10,13.9 10,15C10,16.1 10.9,17 12,17M18,8C19.1,8 20,8.9 20,10V20C20,21.1 19.1,22 18,22H6C4.9,22 4,21.1 4,20V10C4,8.89 4.9,8 6,8H7V6C7,3.24 9.24,1 12,1C14.76,1 17,3.24 17,6V8H18M12,3C10.34,3 9,4.34 9,6V8H15V6C15,4.34 13.66,3 12,3Z";
-        }
-    }
-    $.$mol_icon_lock = $mol_icon_lock;
-})($ || ($ = {}));
-//mol/icon/lock/-view.tree/lock.view.tree.ts
-;
-"use strict";
-var $;
-(function ($) {
-    class $mol_check_icon extends $mol_check {
-    }
-    $.$mol_check_icon = $mol_check_icon;
-})($ || ($ = {}));
-//mol/check/icon/-view.tree/icon.view.tree.ts
-;
-"use strict";
-var $;
-(function ($) {
-    $mol_style_attach("mol/check/icon/icon.view.css", "[mol_check_icon]:where([mol_check_checked]) {\n\tcolor: var(--mol_theme_current);\n}\n");
-})($ || ($ = {}));
-//mol/check/icon/-css/icon.view.css.ts
-;
-"use strict";
-var $;
-(function ($) {
     class $mol_expander extends $mol_list {
         rows() {
             return [
@@ -15189,121 +15161,64 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    class $hyoo_crus_node_page extends $mol_page {
-        node() {
-            const obj = new this.$.$hyoo_crus_node();
-            return obj;
-        }
-        title() {
-            return "Node";
-        }
-        body() {
-            return [
-                this.Dump(),
-                this.Text()
-            ];
-        }
-        Dump() {
-            const obj = new this.$.$hyoo_crus_node_dump();
-            obj.node = () => this.node();
-            return obj;
-        }
-        text(next) {
-            if (next !== undefined)
-                return next;
-            return "";
-        }
-        selection(next) {
-            if (next !== undefined)
-                return next;
-            return [
-                0,
-                0
-            ];
-        }
-        Text() {
-            const obj = new this.$.$mol_textarea();
-            obj.value = (next) => this.text(next);
-            obj.selection = (next) => this.selection(next);
-            return obj;
+    class $mol_icon_lock extends $mol_icon {
+        path() {
+            return "M12,17C13.1,17 14,16.1 14,15C14,13.89 13.1,13 12,13C10.9,13 10,13.9 10,15C10,16.1 10.9,17 12,17M18,8C19.1,8 20,8.9 20,10V20C20,21.1 19.1,22 18,22H6C4.9,22 4,21.1 4,20V10C4,8.89 4.9,8 6,8H7V6C7,3.24 9.24,1 12,1C14.76,1 17,3.24 17,6V8H18M12,3C10.34,3 9,4.34 9,6V8H15V6C15,4.34 13.66,3 12,3Z";
         }
     }
-    __decorate([
-        $mol_mem
-    ], $hyoo_crus_node_page.prototype, "node", null);
-    __decorate([
-        $mol_mem
-    ], $hyoo_crus_node_page.prototype, "Dump", null);
-    __decorate([
-        $mol_mem
-    ], $hyoo_crus_node_page.prototype, "text", null);
-    __decorate([
-        $mol_mem
-    ], $hyoo_crus_node_page.prototype, "selection", null);
-    __decorate([
-        $mol_mem
-    ], $hyoo_crus_node_page.prototype, "Text", null);
-    $.$hyoo_crus_node_page = $hyoo_crus_node_page;
+    $.$mol_icon_lock = $mol_icon_lock;
 })($ || ($ = {}));
-//hyoo/crus/node/page/-view.tree/page.view.tree.ts
+//mol/icon/lock/-view.tree/lock.view.tree.ts
 ;
 "use strict";
 var $;
 (function ($) {
-    var $$;
-    (function ($$) {
-        class $hyoo_crus_node_page extends $.$hyoo_crus_node_page {
-            title() {
-                return '🧩Node ' + this.node().head();
-            }
-            text(next) {
-                return this.node().cast($hyoo_crus_text).text(next);
-            }
-            selection(next) {
-                return this.node().cast($hyoo_crus_text).selection(this.node().land().auth().lord(), next);
-            }
-        }
-        $$.$hyoo_crus_node_page = $hyoo_crus_node_page;
-    })($$ = $.$$ || ($.$$ = {}));
+    class $mol_check_icon extends $mol_check {
+    }
+    $.$mol_check_icon = $mol_check_icon;
 })($ || ($ = {}));
-//hyoo/crus/node/page/page.view.ts
+//mol/check/icon/-view.tree/icon.view.tree.ts
 ;
 "use strict";
 var $;
 (function ($) {
-    var $$;
-    (function ($$) {
-        $mol_style_define($hyoo_crus_node_page, {
-            flex: {
-                basis: `40rem`,
-                grow: 1,
-            },
-        });
-    })($$ = $.$$ || ($.$$ = {}));
+    $mol_style_attach("mol/check/icon/icon.view.css", "[mol_check_icon]:where([mol_check_checked]) {\n\tcolor: var(--mol_theme_current);\n}\n");
 })($ || ($ = {}));
-//hyoo/crus/node/page/page.view.css.ts
+//mol/check/icon/-css/icon.view.css.ts
 ;
 "use strict";
 var $;
 (function ($) {
-    class $hyoo_crus_land_book extends $mol_book2_catalog {
-        menu_title() {
-            return "Heads";
-        }
-        param() {
-            return "node";
-        }
+    class $hyoo_crus_land_page extends $mol_page {
         land() {
             const obj = new this.$.$hyoo_crus_land();
             return obj;
         }
-        menu_tools() {
+        tools() {
+            return [];
+        }
+        body() {
+            return [
+                this.Node("AAAAAAAA")
+            ];
+        }
+        foot() {
             return [
                 this.Encrypted()
             ];
         }
-        Spread(id) {
-            return this.Node(id);
+        node_title(id) {
+            return "";
+        }
+        node(id) {
+            const obj = new this.$.$hyoo_crus_node();
+            return obj;
+        }
+        Node(id) {
+            const obj = new this.$.$hyoo_crus_node_dump();
+            obj.title = () => this.node_title(id);
+            obj.node = () => this.node(id);
+            return obj;
         }
         Encrypted_icon() {
             const obj = new this.$.$mol_icon_lock();
@@ -15319,64 +15234,52 @@ var $;
         }
         Encrypted() {
             const obj = new this.$.$mol_check_icon();
+            obj.hint = () => "Encrypt";
             obj.Icon = () => this.Encrypted_icon();
             obj.checked = (next) => this.encrypted(next);
             obj.enabled = () => this.encryptable();
             return obj;
         }
-        node(id) {
-            const obj = new this.$.$hyoo_crus_node();
-            return obj;
-        }
-        Node(id) {
-            const obj = new this.$.$hyoo_crus_node_page();
-            obj.node = () => this.node(id);
-            obj.tools = () => [
-                this.Spread_close()
-            ];
-            return obj;
-        }
     }
     __decorate([
         $mol_mem
-    ], $hyoo_crus_land_book.prototype, "land", null);
-    __decorate([
-        $mol_mem
-    ], $hyoo_crus_land_book.prototype, "Encrypted_icon", null);
-    __decorate([
-        $mol_mem
-    ], $hyoo_crus_land_book.prototype, "encrypted", null);
-    __decorate([
-        $mol_mem
-    ], $hyoo_crus_land_book.prototype, "Encrypted", null);
+    ], $hyoo_crus_land_page.prototype, "land", null);
     __decorate([
         $mol_mem_key
-    ], $hyoo_crus_land_book.prototype, "node", null);
+    ], $hyoo_crus_land_page.prototype, "node", null);
     __decorate([
         $mol_mem_key
-    ], $hyoo_crus_land_book.prototype, "Node", null);
-    $.$hyoo_crus_land_book = $hyoo_crus_land_book;
+    ], $hyoo_crus_land_page.prototype, "Node", null);
+    __decorate([
+        $mol_mem
+    ], $hyoo_crus_land_page.prototype, "Encrypted_icon", null);
+    __decorate([
+        $mol_mem
+    ], $hyoo_crus_land_page.prototype, "encrypted", null);
+    __decorate([
+        $mol_mem
+    ], $hyoo_crus_land_page.prototype, "Encrypted", null);
+    $.$hyoo_crus_land_page = $hyoo_crus_land_page;
 })($ || ($ = {}));
-//hyoo/crus/land/book/-view.tree/book.view.tree.ts
+//hyoo/crus/land/page/-view.tree/page.view.tree.ts
 ;
 "use strict";
 var $;
 (function ($) {
     var $$;
     (function ($$) {
-        class $hyoo_crus_land_book extends $.$hyoo_crus_land_book {
-            menu_title() {
-                return '🌍Land ' + this.land().numb();
+        class $hyoo_crus_land_page extends $.$hyoo_crus_land_page {
+            title() {
+                return '🌍 ' + this.land().guid();
             }
-            spread_ids() {
-                const land = this.land();
-                return ['AAAAAAAA', ...land.self_all.values()];
+            node_title(head) {
+                const id = this.node(head).head();
+                if (id === 'AAAAAAAB')
+                    return 'Cloves';
+                return id || 'Root';
             }
-            spread_title(head) {
-                return this.node(head).head() || 'Root';
-            }
-            node(id) {
-                return this.land().Node($hyoo_crus_node).Item(id);
+            node(head) {
+                return this.land().Node($hyoo_crus_node).Item(head);
             }
             encryptable() {
                 return this.land().encrypted() || this.land().encryptable();
@@ -15386,22 +15289,31 @@ var $;
                     this.land().encrypt();
                 return this.land().encrypted();
             }
+            body() {
+                return [
+                    this.Node(''),
+                    this.Node('AAAAAAAB'),
+                ];
+            }
         }
         __decorate([
             $mol_mem
-        ], $hyoo_crus_land_book.prototype, "spread_ids", null);
-        $$.$hyoo_crus_land_book = $hyoo_crus_land_book;
+        ], $hyoo_crus_land_page.prototype, "body", null);
+        $$.$hyoo_crus_land_page = $hyoo_crus_land_page;
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));
-//hyoo/crus/land/book/book.view.ts
+//hyoo/crus/land/page/page.view.ts
 ;
 "use strict";
 var $;
 (function ($) {
     var $$;
     (function ($$) {
-        $mol_style_define($hyoo_crus_land_book, {
-            Menu_link: {
+        $mol_style_define($hyoo_crus_land_page, {
+            flex: {
+                basis: `60rem`,
+            },
+            Title: {
                 font: {
                     family: 'monospace',
                 }
@@ -15409,7 +15321,7 @@ var $;
         });
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));
-//hyoo/crus/land/book/book.view.css.ts
+//hyoo/crus/land/page/page.view.css.ts
 ;
 "use strict";
 var $;
@@ -15426,23 +15338,23 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    class $hyoo_crus_lord_book extends $mol_book2_catalog {
+    class $hyoo_crus_realm_book extends $mol_book2_catalog {
         menu_title() {
-            return "Areas";
+            return "🌌 Realm";
         }
         param() {
             return "land";
         }
-        lord() {
-            const obj = new this.$.$hyoo_crus_lord();
+        realm() {
+            const obj = new this.$.$hyoo_crus_realm();
             return obj;
         }
         Spread(id) {
             return this.Land(id);
         }
-        menu_tools() {
+        menu_foot() {
             return [
-                this.Area_new()
+                this.Land_new()
             ];
         }
         land(id) {
@@ -15450,14 +15362,14 @@ var $;
             return obj;
         }
         Land(id) {
-            const obj = new this.$.$hyoo_crus_land_book();
+            const obj = new this.$.$hyoo_crus_land_page();
             obj.land = () => this.land(id);
-            obj.addon_tools = () => [
+            obj.tools = () => [
                 this.Spread_close()
             ];
             return obj;
         }
-        Area_new_icon() {
+        Land_new_icon() {
             const obj = new this.$.$mol_icon_plus();
             return obj;
         }
@@ -15466,110 +15378,13 @@ var $;
                 return next;
             return null;
         }
-        Area_new() {
+        Land_new() {
             const obj = new this.$.$mol_button_minor();
+            obj.hint = () => "Grab new Land";
             obj.sub = () => [
-                this.Area_new_icon()
+                this.Land_new_icon()
             ];
             obj.click = (next) => this.land_new(next);
-            return obj;
-        }
-    }
-    __decorate([
-        $mol_mem
-    ], $hyoo_crus_lord_book.prototype, "lord", null);
-    __decorate([
-        $mol_mem_key
-    ], $hyoo_crus_lord_book.prototype, "land", null);
-    __decorate([
-        $mol_mem_key
-    ], $hyoo_crus_lord_book.prototype, "Land", null);
-    __decorate([
-        $mol_mem
-    ], $hyoo_crus_lord_book.prototype, "Area_new_icon", null);
-    __decorate([
-        $mol_mem
-    ], $hyoo_crus_lord_book.prototype, "land_new", null);
-    __decorate([
-        $mol_mem
-    ], $hyoo_crus_lord_book.prototype, "Area_new", null);
-    $.$hyoo_crus_lord_book = $hyoo_crus_lord_book;
-})($ || ($ = {}));
-//hyoo/crus/lord/book/-view.tree/book.view.tree.ts
-;
-"use strict";
-var $;
-(function ($) {
-    var $$;
-    (function ($$) {
-        class $hyoo_crus_lord_book extends $.$hyoo_crus_lord_book {
-            menu_title() {
-                return '👑Lord ' + this.lord().numb();
-            }
-            spread_ids() {
-                return [...this.lord().lands.values()].map(land => land.numb() || 'AAAAAAAA');
-            }
-            spread_title(id) {
-                return this.land(id).numb() || 'Home';
-            }
-            land(id) {
-                return this.lord().Land(id);
-            }
-            land_new() {
-                this.spread(this.lord().Land_new(0).numb());
-            }
-        }
-        __decorate([
-            $mol_mem
-        ], $hyoo_crus_lord_book.prototype, "spread_ids", null);
-        $$.$hyoo_crus_lord_book = $hyoo_crus_lord_book;
-    })($$ = $.$$ || ($.$$ = {}));
-})($ || ($ = {}));
-//hyoo/crus/lord/book/book.view.ts
-;
-"use strict";
-var $;
-(function ($) {
-    var $$;
-    (function ($$) {
-        $mol_style_define($hyoo_crus_lord_book, {
-            Menu_link: {
-                font: {
-                    family: 'monospace',
-                }
-            },
-        });
-    })($$ = $.$$ || ($.$$ = {}));
-})($ || ($ = {}));
-//hyoo/crus/lord/book/book.view.css.ts
-;
-"use strict";
-var $;
-(function ($) {
-    class $hyoo_crus_realm_book extends $mol_book2_catalog {
-        menu_title() {
-            return "🌌 Realm";
-        }
-        param() {
-            return "lord";
-        }
-        realm() {
-            const obj = new this.$.$hyoo_crus_realm();
-            return obj;
-        }
-        Spread(id) {
-            return this.Lord(id);
-        }
-        lord(id) {
-            const obj = new this.$.$hyoo_crus_lord();
-            return obj;
-        }
-        Lord(id) {
-            const obj = new this.$.$hyoo_crus_lord_book();
-            obj.lord = () => this.lord(id);
-            obj.addon_tools = () => [
-                this.Spread_close()
-            ];
             return obj;
         }
     }
@@ -15578,10 +15393,19 @@ var $;
     ], $hyoo_crus_realm_book.prototype, "realm", null);
     __decorate([
         $mol_mem_key
-    ], $hyoo_crus_realm_book.prototype, "lord", null);
+    ], $hyoo_crus_realm_book.prototype, "land", null);
     __decorate([
         $mol_mem_key
-    ], $hyoo_crus_realm_book.prototype, "Lord", null);
+    ], $hyoo_crus_realm_book.prototype, "Land", null);
+    __decorate([
+        $mol_mem
+    ], $hyoo_crus_realm_book.prototype, "Land_new_icon", null);
+    __decorate([
+        $mol_mem
+    ], $hyoo_crus_realm_book.prototype, "land_new", null);
+    __decorate([
+        $mol_mem
+    ], $hyoo_crus_realm_book.prototype, "Land_new", null);
     $.$hyoo_crus_realm_book = $hyoo_crus_realm_book;
 })($ || ($ = {}));
 //hyoo/crus/realm/book/-view.tree/book.view.tree.ts
@@ -15593,13 +15417,16 @@ var $;
     (function ($$) {
         class $hyoo_crus_realm_book extends $.$hyoo_crus_realm_book {
             spread_ids() {
-                return [...this.realm().lords.values()].map(lord => lord.numb());
+                return [...this.realm().lords.values()].flatMap(lord => [...lord.lands.values()].map(land => land.guid() || 'AAAAAAAA'));
             }
-            lord(id) {
-                return this.realm().Lord(id);
+            land(id) {
+                return this.realm().Land(id);
             }
             spread_title(id) {
-                return id;
+                return id.length > 16 ? '   🌍 ' + id.slice(16) : '👑 ' + id;
+            }
+            land_new() {
+                this.spread(this.realm().home().Land_new(0).guid());
             }
         }
         __decorate([
@@ -15617,6 +15444,7 @@ var $;
     (function ($$) {
         $mol_style_define($hyoo_crus_realm_book, {
             Menu_link: {
+                whiteSpace: 'pre',
                 font: {
                     family: 'monospace',
                 }

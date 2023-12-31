@@ -4110,20 +4110,6 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    class $mol_icon_lock extends $mol_icon {
-        path(): string;
-    }
-}
-
-declare namespace $ {
-    class $mol_check_icon extends $mol_check {
-    }
-}
-
-declare namespace $ {
-}
-
-declare namespace $ {
     class $mol_expander extends $mol_list {
         rows(): readonly any[];
         expanded(next?: any): boolean;
@@ -4423,52 +4409,43 @@ declare namespace $.$$ {
 }
 
 declare namespace $ {
-    class $hyoo_crus_node_page extends $mol_page {
-        node(): $hyoo_crus_node;
-        title(): string;
-        body(): readonly any[];
-        Dump(): $$.$hyoo_crus_node_dump;
-        text(next?: any): string;
-        selection(next?: any): readonly any[];
-        Text(): $$.$mol_textarea;
+    class $mol_icon_lock extends $mol_icon {
+        path(): string;
     }
-}
-
-declare namespace $.$$ {
-    class $hyoo_crus_node_page extends $.$hyoo_crus_node_page {
-        title(): string;
-        text(next?: string): string;
-        selection(next?: [number, number]): number[] | readonly [number, number];
-    }
-}
-
-declare namespace $.$$ {
 }
 
 declare namespace $ {
-    class $hyoo_crus_land_book extends $mol_book2_catalog {
-        menu_title(): string;
-        param(): string;
+    class $mol_check_icon extends $mol_check {
+    }
+}
+
+declare namespace $ {
+}
+
+declare namespace $ {
+    class $hyoo_crus_land_page extends $mol_page {
         land(): $hyoo_crus_land;
-        menu_tools(): readonly any[];
-        Spread(id: any): $$.$hyoo_crus_node_page;
+        tools(): readonly any[];
+        body(): readonly any[];
+        foot(): readonly any[];
+        node_title(id: any): string;
+        node(id: any): $hyoo_crus_node;
+        Node(id: any): $$.$hyoo_crus_node_dump;
         Encrypted_icon(): $mol_icon_lock;
         encrypted(next?: any): boolean;
         encryptable(): boolean;
         Encrypted(): $mol_check_icon;
-        node(id: any): $hyoo_crus_node;
-        Node(id: any): $$.$hyoo_crus_node_page;
     }
 }
 
 declare namespace $.$$ {
-    class $hyoo_crus_land_book extends $.$hyoo_crus_land_book {
-        menu_title(): string;
-        spread_ids(): string[];
-        spread_title(head: string): string;
-        node(id: string): $hyoo_crus_node;
+    class $hyoo_crus_land_page extends $.$hyoo_crus_land_page {
+        title(): string;
+        node_title(head: string): string;
+        node(head: string): $hyoo_crus_node;
         encryptable(): boolean;
         encrypted(next?: boolean): boolean;
+        body(): $hyoo_crus_node_dump[];
     }
 }
 
@@ -4482,49 +4459,26 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    class $hyoo_crus_lord_book extends $mol_book2_catalog {
-        menu_title(): string;
-        param(): string;
-        lord(): $hyoo_crus_lord;
-        Spread(id: any): $$.$hyoo_crus_land_book;
-        menu_tools(): readonly any[];
-        land(id: any): $hyoo_crus_land;
-        Land(id: any): $$.$hyoo_crus_land_book;
-        Area_new_icon(): $mol_icon_plus;
-        land_new(next?: any): any;
-        Area_new(): $mol_button_minor;
-    }
-}
-
-declare namespace $.$$ {
-    class $hyoo_crus_lord_book extends $.$hyoo_crus_lord_book {
-        menu_title(): string;
-        spread_ids(): string[];
-        spread_title(id: string): string;
-        land(id: string): $hyoo_crus_land;
-        land_new(): void;
-    }
-}
-
-declare namespace $.$$ {
-}
-
-declare namespace $ {
     class $hyoo_crus_realm_book extends $mol_book2_catalog {
         menu_title(): string;
         param(): string;
         realm(): $hyoo_crus_realm;
-        Spread(id: any): $$.$hyoo_crus_lord_book;
-        lord(id: any): $hyoo_crus_lord;
-        Lord(id: any): $$.$hyoo_crus_lord_book;
+        Spread(id: any): $$.$hyoo_crus_land_page;
+        menu_foot(): readonly any[];
+        land(id: any): $hyoo_crus_land;
+        Land(id: any): $$.$hyoo_crus_land_page;
+        Land_new_icon(): $mol_icon_plus;
+        land_new(next?: any): any;
+        Land_new(): $mol_button_minor;
     }
 }
 
 declare namespace $.$$ {
     class $hyoo_crus_realm_book extends $.$hyoo_crus_realm_book {
         spread_ids(): string[];
-        lord(id: string): $hyoo_crus_lord;
+        land(id: string): $hyoo_crus_land;
         spread_title(id: string): string;
+        land_new(): void;
     }
 }
 
