@@ -10130,6 +10130,7 @@ var $;
             if (seat > units.length)
                 $mol_fail(new RangeError(`Seat (${seat}) out of units length (${units.length})`));
             const lead = seat ? units[seat - 1].self() : '';
+            const vary = this.gist_decode(gist);
             if (gist.head() === head) {
                 const seat_prev = units.indexOf(gist);
                 if (seat === seat_prev)
@@ -10144,7 +10145,7 @@ var $;
             else {
                 this.gist_wipe(gist);
             }
-            this.post(lead, head, gist.self(), this.gist_decode(gist), gist.tag());
+            this.post(lead, head, gist.self(), vary, gist.tag());
         }
         gist_wipe(gist) {
             const units = this.gists_ordered(gist.head());
@@ -10236,6 +10237,14 @@ var $;
             return gist;
         }
         gist_decode(gist) {
+            if (this.gists.get(gist.head())?.get(gist.self()) !== gist) {
+                for (const id of this.cloves()?.items() ?? []) {
+                    const vary = this.realm()?.Land(id).gist_decode(gist);
+                    if (vary !== undefined)
+                        return vary;
+                }
+                return undefined;
+            }
             if (gist._vary !== undefined)
                 return gist._vary;
             if (gist._open !== undefined)
@@ -19443,7 +19452,7 @@ var $;
             const obj = new this.$.$hyoo_crus_realm();
             return obj;
         }
-        menu_tools() {
+        menu_foot() {
             return [
                 this.Source()
             ];

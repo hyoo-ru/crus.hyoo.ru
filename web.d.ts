@@ -5332,7 +5332,7 @@ declare namespace $ {
         menu_title(): string;
         param(): string;
         realm(): $hyoo_crus_realm;
-        menu_tools(): readonly any[];
+        menu_foot(): readonly any[];
         spreads(): Record<string, any>;
         Placeholder(): any;
         Source(): $mol_link_source;
