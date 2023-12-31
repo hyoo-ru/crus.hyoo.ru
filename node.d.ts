@@ -3281,9 +3281,8 @@ declare namespace $ {
         gist_decode(gist: $hyoo_crus_gist): $hyoo_crus_vary_type;
         key_public(peer: string): $mol_crypto_key_public | null;
         secret_mutual(peer: string): $mol_crypto_secret | null;
-        encrypt(): void;
         encryptable(): boolean;
-        encrypted(): boolean;
+        encrypted(next?: boolean): boolean;
         secret(): $mol_crypto_secret | null;
     }
 }

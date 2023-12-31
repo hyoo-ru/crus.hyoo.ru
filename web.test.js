@@ -4876,13 +4876,13 @@ var $;
         'Home Land no encryption'($) {
             const land = $hyoo_crus_land.make({ $ });
             $mol_assert_equal(land.encrypted(), false);
-            $mol_assert_fail(() => land.encrypt(), 'Home Land never encrypted');
+            land.encrypted(true);
             $mol_assert_equal(land.encrypted(), false);
         },
         async 'Land encryption'($) {
             const land = $mol_wire_async($hyoo_crus_land.make({ $, numb: () => '11111111' }));
             $mol_assert_equal(await land.encrypted(), false);
-            await land.encrypt();
+            await land.encrypted(true);
             $mol_assert_equal(await land.encrypted(), true);
             const gist = await land.post('', '', '', new Uint8Array([1, 2, 3]));
             $mol_assert_equal((await land.gist_encode(gist)).data().length, 7);

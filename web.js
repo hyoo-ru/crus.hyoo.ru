@@ -10270,11 +10270,19 @@ var $;
                 return null;
             return $mol_wire_sync($mol_crypto_secret).derive(this.auth().toString(), key.toString());
         }
-        encrypt() {
+        encryptable() {
+            return !this.gists.size;
+        }
+        encrypted(next) {
+            $mol_wire_solid();
             if (!this.numb())
-                $mol_fail(new Error('Home Land never encrypted'));
-            if (this.encrypted())
-                return;
+                return false;
+            const gift = this.gifts.get(this.lord_numb());
+            const prev = gift?.bill().some(b => b) ?? false;
+            if (next === undefined)
+                return prev;
+            if (prev === next)
+                return prev;
             if (!this.encryptable())
                 $mol_fail(new Error(`Non empty Land never encrypted`));
             this.join();
@@ -10292,18 +10300,7 @@ var $;
             const error = this.apply_unit([unit])[0];
             if (error)
                 $mol_fail(new Error(error));
-        }
-        encryptable() {
-            return !this.gists.size;
-        }
-        encrypted() {
-            if (!this.numb())
-                return false;
-            const gift = this.gifts.get(this.lord_numb());
-            if (!gift)
-                return false;
-            const bill = gift.bill();
-            return bill.some(b => b);
+            return next;
         }
         secret() {
             if (!this.encrypted())
@@ -10395,9 +10392,6 @@ var $;
     __decorate([
         $mol_mem_key
     ], $hyoo_crus_land.prototype, "secret_mutual", null);
-    __decorate([
-        $mol_action
-    ], $hyoo_crus_land.prototype, "encrypt", null);
     __decorate([
         $mol_mem
     ], $hyoo_crus_land.prototype, "encryptable", null);
@@ -15285,9 +15279,7 @@ var $;
                 return this.land().encrypted() || this.land().encryptable();
             }
             encrypted(next) {
-                if (next)
-                    this.land().encrypt();
-                return this.land().encrypted();
+                return this.land().encrypted(next);
             }
             body() {
                 return [
@@ -15296,6 +15288,12 @@ var $;
                 ];
             }
         }
+        __decorate([
+            $mol_mem
+        ], $hyoo_crus_land_page.prototype, "encryptable", null);
+        __decorate([
+            $mol_mem
+        ], $hyoo_crus_land_page.prototype, "encrypted", null);
         __decorate([
             $mol_mem
         ], $hyoo_crus_land_page.prototype, "body", null);
