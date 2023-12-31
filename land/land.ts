@@ -428,6 +428,7 @@ namespace $ {
 			if( seat > units.length ) $mol_fail( new RangeError( `Seat (${seat}) out of units length (${units.length})` ) )
 			
 			const lead = seat ? units[ seat - 1 ].self() : ''
+			const vary = this.gist_decode( gist )
 			
 			if( gist.head() === head ) {
 				
@@ -457,7 +458,7 @@ namespace $ {
 				lead,
 				head,
 				gist.self(),
-				this.gist_decode( gist ),
+				vary,
 				gist.tag(),
 			)
 			
