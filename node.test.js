@@ -4272,7 +4272,7 @@ var $;
                     this.status([null]);
                 }
                 catch (error) {
-                    this.status([error]);
+                    Promise.resolve().then(() => this.status([error]));
                     $mol_fail_hidden(error);
                 }
             }
@@ -6847,6 +6847,12 @@ var $;
         spread_ids_filtered() {
             return [];
         }
+        menu_tools() {
+            return [];
+        }
+        addon_tools() {
+            return [];
+        }
         pages() {
             return [
                 this.Menu()
@@ -6862,9 +6868,6 @@ var $;
         }
         menu_title() {
             return "";
-        }
-        menu_tools() {
-            return [];
         }
         menu_head() {
             return [
@@ -6933,7 +6936,10 @@ var $;
         Menu() {
             const obj = new this.$.$mol_page();
             obj.title = () => this.menu_title();
-            obj.tools = () => this.menu_tools();
+            obj.tools = () => [
+                ...this.menu_tools(),
+                ...this.addon_tools()
+            ];
             obj.head = () => this.menu_head();
             obj.body = () => this.menu_body();
             obj.foot = () => this.menu_foot();
@@ -15260,6 +15266,9 @@ var $;
         Node(id) {
             const obj = new this.$.$hyoo_crus_node_page();
             obj.node = () => this.node(id);
+            obj.tools = () => [
+                this.Spread_close()
+            ];
             return obj;
         }
     }
@@ -15378,6 +15387,9 @@ var $;
         Land(id) {
             const obj = new this.$.$hyoo_crus_land_book();
             obj.land = () => this.land(id);
+            obj.addon_tools = () => [
+                this.Spread_close()
+            ];
             return obj;
         }
         Area_new_icon() {
@@ -15490,6 +15502,9 @@ var $;
         Lord(id) {
             const obj = new this.$.$hyoo_crus_lord_book();
             obj.lord = () => this.lord(id);
+            obj.addon_tools = () => [
+                this.Spread_close()
+            ];
             return obj;
         }
     }
@@ -19641,6 +19656,9 @@ var $;
         Realm() {
             const obj = new this.$.$hyoo_crus_realm_book();
             obj.realm = () => this.realm();
+            obj.addon_tools = () => [
+                this.Spread_close()
+            ];
             return obj;
         }
         Casting() {
@@ -19653,6 +19671,9 @@ var $;
             obj.Lights = () => null;
             obj.Source = () => null;
             obj.Current = () => null;
+            obj.tools = () => [
+                this.Spread_close()
+            ];
             return obj;
         }
     }
@@ -23273,13 +23294,14 @@ var $;
                 element.dispatchEvent(event);
                 $mol_assert_not(clicked);
             },
-            'Store error'($) {
+            async 'Store error'($) {
                 const clicker = $mol_button.make({
                     $,
                     click: (event) => $.$mol_fail(new Error('Test error')),
                 });
                 const event = $mol_dom_context.document.createEvent('mouseevent');
                 $mol_assert_fail(() => clicker.event_activate(event), 'Test error');
+                await Promise.resolve();
                 $mol_assert_equal(clicker.status()[0].message, 'Test error');
             },
         });

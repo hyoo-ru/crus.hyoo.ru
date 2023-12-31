@@ -292,12 +292,16 @@ $mol_book2_catalog $mol_book2
 	spread_ids /string
 	menu_filter_enabled false
 	spread_ids_filtered /string
+	menu_tools /
+	addon_tools /
 	pages /
 		<= Menu $mol_page
 			Title => Menu_title
 			title <= menu_title \
 			Tools => Menu_tools
-			tools <= menu_tools /
+			tools /
+				^ menu_tools
+				^ addon_tools
 			head <= menu_head /
 				<= Menu_title
 				<= Menu_tools
@@ -916,6 +920,8 @@ $hyoo_crus_land_book $mol_book2_catalog
 			enabled <= encryptable true
 	Spread* <= Node* $hyoo_crus_node_page
 		node <= node* $hyoo_crus_node
+		tools /
+			<= Spread_close
 
 $mol_icon_plus $mol_icon path \M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z
 
@@ -925,6 +931,8 @@ $hyoo_crus_lord_book $mol_book2_catalog
 	lord $hyoo_crus_lord
 	Spread* <= Land* $hyoo_crus_land_book
 		land <= land* $hyoo_crus_land
+		addon_tools /
+			<= Spread_close
 	menu_tools /
 		<= Area_new $mol_button_minor
 			sub / <= Area_new_icon $mol_icon_plus
@@ -936,6 +944,8 @@ $hyoo_crus_realm_book $mol_book2_catalog
 	realm $hyoo_crus_realm
 	Spread* <= Lord* $hyoo_crus_lord_book
 		lord <= lord* $hyoo_crus_lord
+		addon_tools /
+			<= Spread_close
 	- menu_tools /
 		<= Land_new $mol_button_minor
 			sub / <= lord_new_icon $mol_icon_plus
@@ -1168,6 +1178,8 @@ $hyoo_crus_app $mol_book2_catalog
 					<= Intro_content $mol_text text <= intro \
 		realm <= Realm $hyoo_crus_realm_book
 			realm <= realm
+			addon_tools /
+				<= Spread_close
 		casting <= Casting $hyoo_calc
 			title \🔀 Casting
 			editable false
@@ -1177,4 +1189,6 @@ $hyoo_crus_app $mol_book2_catalog
 			Lights null
 			Source null
 			Current null
+			tools /
+				<= Spread_close
 	Placeholder null
