@@ -587,7 +587,15 @@ namespace $ {
 		}
 		
 		@ $mol_mem_key
-		gist_decode( gist: $hyoo_crus_gist ) {
+		gist_decode( gist: $hyoo_crus_gist ): $hyoo_crus_vary_type {
+			
+			if( this.gists.get( gist.head() )?.get( gist.self() ) !== gist ) {
+				for( const id of this.cloves()?.items() ?? [] ) {
+					const vary = this.realm()?.Land( id as string ).gist_decode( gist )
+					if( vary !== undefined ) return vary
+				}
+				return undefined!
+			}
 			
 			if( gist._vary !== undefined ) return gist._vary
 			if( gist._open !== undefined ) return gist._vary = $hyoo_crus_vary_decode({ tip: gist.tip(), bin: gist._open })
