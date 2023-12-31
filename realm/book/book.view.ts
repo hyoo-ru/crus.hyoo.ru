@@ -3,22 +3,22 @@ namespace $.$$ {
 		
 		@ $mol_mem
 		override spread_ids() {
-			return [ ... this.realm().lords.values() ].map( lord => lord.numb() )
+			return [ ... this.realm().lords.values() ].flatMap(
+				lord => [ ... lord.lands.values() ].map( land => land.guid() || 'AAAAAAAA' )
+			)
 		}
 		
-		override lord( id: string ) {
-			return this.realm().Lord( id )
+		override land( id: string ) {
+			return this.realm().Land( id )
 		}
 		
 		override spread_title( id: string ) {
-			return id
+			return id.length > 16 ? '   🌍 ' + id.slice( 16 ) : '👑 ' + id
 		}
 		
-		// override lord_new() {
-		// 	const lord = BigInt( Math.random() * 2**64 )
-		// 	this.realm().Land( lord )
-		// 	this.spread( lord.toString() )
-		// }
+		override land_new() {
+			this.spread( this.realm().home().Land_new( 0 ).guid() )
+		}
 		
 	}
 }

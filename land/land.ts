@@ -248,7 +248,7 @@ namespace $ {
 		
 		cloves() {
 			if( !this.numb() ) return null
-			return this.Node( $hyoo_crus_list ).Item( this.numb() )
+			return this.Node( $hyoo_crus_list ).Item( 'AAAAAAAB' )
 		}
 		
 		@ $mol_mem_key
@@ -258,7 +258,7 @@ namespace $ {
 			
 			const queue = [ ... this.gists.get( head )?.values() ?? [] ]
 			
-			merge: if( this.numb() && ( head !== this.numb() ) ) {
+			merge: if( this.numb() && ( head !== 'AAAAAAAB' ) ) {
 				
 				const cloves = this.cloves()!.items().slice().reverse() as string[]
 				if( !cloves.length ) break merge

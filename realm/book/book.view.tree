@@ -1,12 +1,13 @@
 $hyoo_crus_realm_book $mol_book2_catalog
 	menu_title \🌌 Realm
-	param \lord
+	param \land
 	realm $hyoo_crus_realm
-	Spread* <= Lord* $hyoo_crus_lord_book
-		lord <= lord* $hyoo_crus_lord
-		addon_tools /
+	Spread* <= Land* $hyoo_crus_land_page
+		land <= land* $hyoo_crus_land
+		tools /
 			<= Spread_close
-	- menu_tools /
+	menu_foot /
 		<= Land_new $mol_button_minor
-			sub / <= lord_new_icon $mol_icon_plus
-			click? <=> lord_new? null
+			hint \Grab new Land
+			sub / <= Land_new_icon $mol_icon_plus
+			click? <=> land_new? null

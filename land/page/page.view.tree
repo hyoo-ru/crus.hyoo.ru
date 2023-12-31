@@ -1,0 +1,18 @@
+$hyoo_crus_land_page $mol_page
+	land $hyoo_crus_land
+	tools /
+	body /
+		<= Node*AAAAAAAA $hyoo_crus_node_dump
+			title <= node_title* \
+			node <= node* $hyoo_crus_node
+		- <= Text $mol_textarea
+			value? <=> text? \
+			selection? <=> selection? /
+				0
+				0
+	foot /
+		<= Encrypted $mol_check_icon
+			hint \Encrypt
+			Icon <= Encrypted_icon $mol_icon_lock
+			checked? <=> encrypted? false
+			enabled <= encryptable true
