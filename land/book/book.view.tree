@@ -9,3 +9,5 @@ $hyoo_crus_land_book $mol_book2_catalog
 			enabled <= encryptable true
 	Spread* <= Node* $hyoo_crus_node_page
 		node <= node* $hyoo_crus_node
+		tools /
+			<= Spread_close

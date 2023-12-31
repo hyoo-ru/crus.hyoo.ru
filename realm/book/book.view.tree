@@ -4,6 +4,8 @@ $hyoo_crus_realm_book $mol_book2_catalog
 	realm $hyoo_crus_realm
 	Spread* <= Lord* $hyoo_crus_lord_book
 		lord <= lord* $hyoo_crus_lord
+		addon_tools /
+			<= Spread_close
 	- menu_tools /
 		<= Land_new $mol_button_minor
 			sub / <= lord_new_icon $mol_icon_plus

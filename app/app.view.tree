@@ -13,6 +13,8 @@ $hyoo_crus_app $mol_book2_catalog
 					<= Intro_content $mol_text text <= intro \
 		realm <= Realm $hyoo_crus_realm_book
 			realm <= realm
+			addon_tools /
+				<= Spread_close
 		casting <= Casting $hyoo_calc
 			title \🔀 Casting
 			editable false
@@ -22,4 +24,6 @@ $hyoo_crus_app $mol_book2_catalog
 			Lights null
 			Source null
 			Current null
+			tools /
+				<= Spread_close
 	Placeholder null

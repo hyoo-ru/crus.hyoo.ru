@@ -4,6 +4,8 @@ $hyoo_crus_lord_book $mol_book2_catalog
 	lord $hyoo_crus_lord
 	Spread* <= Land* $hyoo_crus_land_book
 		land <= land* $hyoo_crus_land
+		addon_tools /
+			<= Spread_close
 	menu_tools /
 		<= Area_new $mol_button_minor
 			sub / <= Area_new_icon $mol_icon_plus
