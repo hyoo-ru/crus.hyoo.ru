@@ -32,7 +32,18 @@ namespace $.$$ {
 			return this.node().units()[ index ].tag()
 		}
 		
-		unit_tip( index: number ) {
+		unit_tip( index: number, next?: keyof typeof $hyoo_crus_vary_tip ) {
+			if( next ) {
+				const units = this.node().units()
+				const unit = units[ index ]
+				this.node().land().post(
+					index ? units[ index - 1 ].self() : '',
+					unit.head(),
+					unit.self(),
+					$hyoo_crus_vary_cast( next, this.node().land().gist_decode( unit ) ),
+					unit.tag(),
+				)
+			}
 			return this.node().units()[ index ].tip()
 		}
 		
