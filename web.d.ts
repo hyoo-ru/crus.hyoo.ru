@@ -4505,6 +4505,25 @@ declare namespace $ {
     }
 }
 
+declare namespace $ {
+    function $mol_wire_field<Host extends object, Field extends keyof Host, Value extends Host[Field]>(host: Host, field: Field, descr?: TypedPropertyDescriptor<Value>): any;
+}
+
+declare namespace $ {
+    function $hyoo_crus_dict_obj<Schema extends Record<string, typeof $hyoo_crus_node>>(schema: Schema): Pick<typeof $hyoo_crus_dict, typeof Symbol.toPrimitive | "toString" | "prototype" | "make" | "$" | "create" | "destructor" | "toJSON" | "tag"> & (new () => $hyoo_crus_dict & { [Key in keyof Schema]: InstanceType<Schema[Key]>; } & { [Key_1 in keyof Schema as Lowercase<Extract<Key_1, string>>]: (next?: ReturnType<InstanceType<Schema[Key_1]>["value"]> | undefined) => ReturnType<InstanceType<Schema[Key_1]>["value"]> | null; });
+}
+
+declare namespace $ {
+    const $hyoo_crus_entity_base: Pick<typeof $hyoo_crus_dict, typeof Symbol.toPrimitive | "toString" | "prototype" | "make" | "$" | "create" | "destructor" | "toJSON" | "tag"> & (new () => $hyoo_crus_dict & {
+        Title: $hyoo_crus_reg_str;
+    } & {
+        title: (next?: string | undefined) => string | null;
+    });
+    export class $hyoo_crus_entity extends $hyoo_crus_entity_base {
+    }
+    export {};
+}
+
 declare namespace $.$$ {
     class $hyoo_crus_realm_book extends $.$hyoo_crus_realm_book {
         spread_ids(): string[];
