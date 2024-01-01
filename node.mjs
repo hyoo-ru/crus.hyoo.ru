@@ -15395,7 +15395,9 @@ var $;
                 return this.realm().Land(id);
             }
             spread_title(id) {
-                return id.length > 16 ? '   🌍 ' + id.slice(16) : '👑 ' + id;
+                const title = this.realm().Land(id).Root($hyoo_crus_dict).dive('title', $hyoo_crus_reg).value_str();
+                const suffix = title || (id.length > 16 ? id.slice(16) : id);
+                return (id.length > 16 ? '   🌍 ' : '👑 ') + suffix;
             }
             land_new() {
                 this.spread(this.realm().home().Land_new(0).guid());
@@ -15415,8 +15417,13 @@ var $;
     var $$;
     (function ($$) {
         $mol_style_define($hyoo_crus_realm_book, {
+            Menu: {
+                flex: {
+                    basis: `20rem`,
+                },
+            },
             Menu_link: {
-                whiteSpace: 'pre',
+                whiteSpace: 'pre-wrap',
                 font: {
                     family: 'monospace',
                 }
