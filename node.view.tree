@@ -877,7 +877,19 @@ $hyoo_crus_node_dump $mol_expander
 				Value <= Unit_value* $mol_dump_value
 					value <= unit_value* null
 				addons /
-					<= Unit_tip* $mol_view sub / <= unit_tip* \
+					<= Unit_tip* $mol_select
+						value? <=> unit_tip*? \bin
+						enabled <= can_change
+						options /
+							\bin
+							\bool
+							\int
+							\real
+							\str
+							\time
+							\json
+							\xml
+							\tree
 					<= Unit_tag* $mol_select
 						value? <=> unit_tag*? \term
 						enabled <= can_change

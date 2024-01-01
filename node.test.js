@@ -14536,13 +14536,25 @@ var $;
             obj.value = () => this.unit_value(id);
             return obj;
         }
-        unit_tip(id) {
-            return "";
+        unit_tip(id, next) {
+            if (next !== undefined)
+                return next;
+            return "bin";
         }
         Unit_tip(id) {
-            const obj = new this.$.$mol_view();
-            obj.sub = () => [
-                this.unit_tip(id)
+            const obj = new this.$.$mol_select();
+            obj.value = (next) => this.unit_tip(id, next);
+            obj.enabled = () => this.can_change();
+            obj.options = () => [
+                "bin",
+                "bool",
+                "int",
+                "real",
+                "str",
+                "time",
+                "json",
+                "xml",
+                "tree"
             ];
             return obj;
         }
@@ -14663,6 +14675,9 @@ var $;
     __decorate([
         $mol_mem_key
     ], $hyoo_crus_node_dump.prototype, "Unit_value", null);
+    __decorate([
+        $mol_mem_key
+    ], $hyoo_crus_node_dump.prototype, "unit_tip", null);
     __decorate([
         $mol_mem_key
     ], $hyoo_crus_node_dump.prototype, "Unit_tip", null);
@@ -14954,7 +14969,12 @@ var $;
                 }
                 return this.node().units()[index].tag();
             }
-            unit_tip(index) {
+            unit_tip(index, next) {
+                if (next) {
+                    const units = this.node().units();
+                    const unit = units[index];
+                    this.node().land().post(index ? units[index - 1].self() : '', unit.head(), unit.self(), $hyoo_crus_vary_cast(next, this.node().land().gist_decode(unit)), unit.tag());
+                }
                 return this.node().units()[index].tip();
             }
             unit_time(index) {
@@ -15075,7 +15095,6 @@ var $;
             },
             Unit_tip: {
                 color: $mol_theme.shade,
-                padding: $mol_gap.text,
             },
             Unit_tag: {
                 color: $mol_theme.shade,

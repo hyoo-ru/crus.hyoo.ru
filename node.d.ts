@@ -4354,8 +4354,8 @@ declare namespace $ {
         Value_str(): $$.$mol_textarea;
         unit_value(id: any): any;
         Unit_value(id: any): $$.$mol_dump_value;
-        unit_tip(id: any): string;
-        Unit_tip(id: any): $mol_view;
+        unit_tip(id: any, next?: any): string;
+        Unit_tip(id: any): $$.$mol_select;
         unit_tag(id: any, next?: any): string;
         Unit_tag(id: any): $$.$mol_select;
         unit_time(id: any): string;
@@ -4393,7 +4393,7 @@ declare namespace $.$$ {
         items(): readonly $hyoo_crus_vary_type[];
         nodes(): $mol_view[];
         unit_tag(index: number, next?: keyof typeof $hyoo_crus_gist_tag): "keys" | "vals" | "head" | "term";
-        unit_tip(index: number): "bin" | "bool" | "int" | "real" | "str" | "time" | "json" | "xml" | "tree";
+        unit_tip(index: number, next?: keyof typeof $hyoo_crus_vary_tip): "bin" | "bool" | "int" | "real" | "str" | "time" | "json" | "xml" | "tree";
         unit_time(index: number): string;
         unit_value(index: number): $hyoo_crus_vary_type;
         unit_wipe(index: number, event?: Event): void;
