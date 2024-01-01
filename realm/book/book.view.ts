@@ -13,7 +13,7 @@ namespace $.$$ {
 		}
 		
 		override spread_title( id: string ) {
-			const title = this.realm().Land( id ).Root( $hyoo_crus_dict ).dive( 'title', $hyoo_crus_reg ).value_str()
+			const title = this.realm().Land( id ).Root( $hyoo_crus_entity ).title()
 			const suffix = title || ( id.length > 16 ? id.slice( 16 ) : id )
 			return ( id.length > 16 ? '   🌍 ' : '👑 ' ) + suffix
 		}

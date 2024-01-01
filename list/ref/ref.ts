@@ -12,7 +12,7 @@ namespace $ {
 			}
 			
 			@ $mol_mem
-			remote_list( next?: Vals ): Vals {
+			value( next?: Vals ): Vals {
 				const realm = this.realm()
 				const Node = ( Value as any )()
 				return this.items( next?.map( item => ( item as $hyoo_crus_node ).guid() ) )
@@ -20,7 +20,7 @@ namespace $ {
 			}
 			
 			@ $mol_action
-			remote_make() {
+			value_add() {
 				const land = this.realm()!.home().Land_new( 0 )
 				this.splice([ land.guid() ])
 				return land.Node( ( Value as any )() ).Item('')

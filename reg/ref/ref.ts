@@ -11,18 +11,18 @@ namespace $ {
 				return '$hyoo_crus_reg_ref(()=>' + ( Value as any )() + ')'
 			}
 
-			@$mol_mem
-			remote( next?: null | Val ): null | Val {
+			@ $mol_mem
+			value( next?: null | Val ): null | Val {
 				const realm = this.realm()
 				const ref = this.value_str( ( next as $hyoo_crus_node )?.guid() )
 				if( !ref ) return null
 				return realm!.Node( ( Value as any )(), ref )
 			}
-
+			
 			@$mol_action
-			remote_ensure() {
+			value_ensure() {
 				this.yoke( this.guid() )
-				return this.remote()!
+				return this.value()!
 			}
 
 		}
