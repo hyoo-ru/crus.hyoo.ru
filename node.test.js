@@ -25242,9 +25242,9 @@ var $;
                 const realm = $hyoo_crus_realm.make({ $ });
                 const land = realm.home().base().land();
                 const reg = land.Node($hyoo_crus_reg_ref(() => $hyoo_crus_reg)).Item('11111111');
-                $mol_assert_equal(reg.value(), null);
-                reg.value(reg);
-                $mol_assert_equal(reg.value_str(), reg.value().guid(), reg.guid());
+                $mol_assert_equal(reg.remote(), null);
+                reg.remote(reg);
+                $mol_assert_equal(reg.value_str(), reg.remote().guid(), reg.guid());
             },
         });
     })($$ = $_1.$$ || ($_1.$$ = {}));
@@ -25261,23 +25261,26 @@ var $;
                 return '$hyoo_crus_reg_ref(()=>' + Value() + ')';
             }
             value(next) {
+                return this.remote(next);
+            }
+            remote(next) {
                 const realm = this.realm();
                 const ref = this.value_str(next?.guid());
                 if (!ref)
                     return null;
                 return realm.Node(ref, Value());
             }
-            value_ensure() {
+            remote_ensure() {
                 this.yoke(this.guid());
-                return this.value();
+                return this.remote();
             }
         }
         __decorate([
             $mol_mem
-        ], Narrow.prototype, "value", null);
+        ], Narrow.prototype, "remote", null);
         __decorate([
             $mol_action
-        ], Narrow.prototype, "value_ensure", null);
+        ], Narrow.prototype, "remote_ensure", null);
         return Narrow;
     }
     $.$hyoo_crus_reg_ref = $hyoo_crus_reg_ref;
@@ -25302,7 +25305,7 @@ var $;
                 return this.items(next?.map(item => item.guid()))
                     .map(ref => realm.Node(ref, Node));
             }
-            remote_add() {
+            remote_make() {
                 const land = this.realm().home().Land_new(0);
                 this.splice([land.guid()]);
                 return land.Node(Value()).Item('');
@@ -25313,7 +25316,7 @@ var $;
         ], Narrow.prototype, "remote_list", null);
         __decorate([
             $mol_action
-        ], Narrow.prototype, "remote_add", null);
+        ], Narrow.prototype, "remote_make", null);
         return Narrow;
     }
     $.$hyoo_crus_list_ref = $hyoo_crus_list_ref;
@@ -25383,16 +25386,16 @@ var $;
                 }
                 const user = land.Node(User).Item('11111111');
                 $mol_assert_equal(user.title() ?? '', user.Title.value(), '');
-                $mol_assert_equal(user.account(), user.Account.value(), null);
+                $mol_assert_equal(user.account(), user.Account.remote(), null);
                 $mol_assert_equal(user.articles() ?? [], user.Articles.remote_list(), []);
                 user.title('Jin');
                 $mol_assert_equal(user.title() ?? '', user.Title.value(), 'Jin');
-                const account = user.Account.value_ensure();
-                $mol_assert_equal(user.account(), user.Account.value(), account);
-                $mol_assert_equal(account.user(), account.User.value(), null);
+                const account = user.Account.remote_ensure();
+                $mol_assert_equal(user.account(), user.Account.remote(), account);
+                $mol_assert_equal(account.user(), account.User.remote(), null);
                 account.user(user);
-                $mol_assert_equal(account.user(), account.User.value(), user);
-                const articles = [user.Articles.remote_add(), user.Articles.remote_add()];
+                $mol_assert_equal(account.user(), account.User.remote(), user);
+                const articles = [user.Articles.remote_make(), user.Articles.remote_make()];
                 $mol_assert_equal(user.articles() ?? [], user.Articles.remote_list(), articles);
                 $mol_assert_unique(user.land(), account.land(), ...articles.map(article => article.land()));
             },

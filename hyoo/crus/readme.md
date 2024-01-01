@@ -201,7 +201,7 @@
 			const me = this.Profile()
 			
 			// populate external entity
-			const kid = me.Kids.add_remote()
+			const kid = me.Kids.remote_make()
 			
 			// fill self fields
 			kid.title( name )
