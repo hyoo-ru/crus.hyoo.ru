@@ -16,6 +16,9 @@ $hyoo_crus_land_page $mol_page
 			Icon <= Encrypted_icon $mol_icon_lock
 			checked? <=> encrypted? false
 			enabled <= encryptable true
+		<= Update $mol_button_open
+			hiny \Upload dump
+			files? <=> update? /
 		<= Dump $mol_button_download
 			hiny \Download dump
 			blob <= dump $mol_blob

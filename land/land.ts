@@ -748,6 +748,40 @@ namespace $ {
 			return dump
 		}
 		
+		@ $mol_action
+		apply_dump( dump: Uint8Array ) {
+			
+			const buf = new $mol_buffer( dump.buffer )
+			
+			const type = buf.uint8( 0 )
+			
+			if( type !== 2 ) $mol_fail( new Error( 'Wrong type' ) )
+			const units_count = buf.uint32( 2 )
+		
+			const units = [] as $hyoo_crus_unit[]
+			const rocks = [] as Uint8Array[]
+			
+			let offset = 24
+			for( let i = 0; i < units_count; ++i ) {
+				const bin = dump.slice( offset, offset + $hyoo_crus_unit.size ).buffer
+				const unit = new $hyoo_crus_unit( bin )
+				units.push( unit.narrow() )
+				offset += $hyoo_crus_unit.size
+			}
+			this.apply_unit( units )
+
+			while( offset < dump.byteLength ) {
+				const hash = dump.slice( offset, offset += 20 )
+				const size = buf.uint32( offset )
+				const rock = dump.slice( offset += 4, offset += size )
+				if( !$mol_compare_deep( hash, this.$.$hyoo_crus_mine.hash( rock ) ) ) {
+					$mol_fail( new Error( 'Wrong hash' ) )
+				}
+				this.$.$hyoo_crus_mine.rock( hash, rock )
+			}
+			
+		}
+		
 		;[ $mol_dev_format_head ]() {
 			return $mol_dev_format_span( {} ,
 				$mol_dev_format_native( this ) ,

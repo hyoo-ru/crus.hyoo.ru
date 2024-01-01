@@ -42,6 +42,15 @@ namespace $.$$ {
 			return `${ this.land().guid() }.land`
 		}
 		
+		@ $mol_action
+		override update( files: File[] ) {
+			for( const file of files ) {
+				const dump = $mol_wire_sync( file ).arrayBuffer()
+				this.land().apply_dump( new Uint8Array( dump ) )
+			}
+			return []
+		}
+		
 		// override text( next?: string ) {
 		// 	return this.node().cast( $hyoo_crus_text ).text( next )
 		// }
