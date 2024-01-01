@@ -34,14 +34,14 @@ namespace $ {
 				new(...args:any[]): InstanceType< This > & {
 					[ Key in keyof Schema ]: InstanceType< Schema[ Key ] >
 				} & {
-					readonly [ Key in keyof Schema as Lowercase< Extract< Key, string > > ]:
+					readonly [ Key in keyof Schema as Uncapitalize< Extract< Key, string > > ]:
 						( next?: ReturnType< InstanceType< Schema[ Key ] >[ 'value' ] > )=> ReturnType< InstanceType< Schema[ Key ] >[ 'value' ] > | null
 				}
 			}
 
 			for( const Field in schema ) {
 				
-				const field = Field.toLowerCase()
+				const field = Field[0].toLowerCase() + Field.slice(1)
 				
 				Object.defineProperty( Entity.prototype, Field, { get: function() {
 					return ( this as any as $hyoo_crus_dict ).dive( field, schema[ Field ] )
