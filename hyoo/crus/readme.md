@@ -1,6 +1,6 @@
 # CRUS🦿DB
 
-> *The elegant basis for reactive architecture.*
+> *💃 The elegant basis for reactive architecture.*
 
 - **C**onvergent: *CvRDT, Total Ordered, Interleaving Free, Weak Typed*
 - **R**ealtime: *Delta Replication, WebSocket/WebRTC, Inplace Updates, Reactive, In Memory with Persistance*
@@ -11,7 +11,7 @@
 
 ## Features
 
-### Convergent
+### 🔆 Convergent
 
 Изменения от всех пиров неизбежно объединяются в единое для всех состояние мира.
 
@@ -31,7 +31,7 @@
 
 Возможность динамического изменения типа данных, без потери возможности слияния изменений, внесённых в разные типы.
 
-### Realtime
+### 💨 Realtime
 
 Внесённые данные в реалном времени распространяются между всеми заинтересованными в них пирами.
 
@@ -55,7 +55,7 @@
 
 Данные хранятся в памяти, что позволяет не практически зависеть от дисковых задержек. При этом сброс в постоянное хранилище происходит в фоне.
 
-### Unbreakable
+### 💪 Unbreakable
 
 Архитектура эффективно сопротивляется болшинству технических неполадок.
 
@@ -83,7 +83,7 @@
 
 Бэкапы не требуются, так как даные легко могут быть восстановлены с других узлов сети. В том числе сервер может восстановить данные с клиентских устройств.
 
-### Secure
+### 🔐 Secure
 
 Максимальный уровень безопасности обеспечивается криптографией.
 
@@ -107,7 +107,7 @@
 
 Утечка всей базы данных не приводит к раскрытиию приватных данных, так как они хранятся в зашифрованном виде. Зашифрованный секретный ключ передаётся вместе с остальными правами от одного пира другому.
 
-### Decentralized
+### 💱 Decentralized
 
 Все пиры равноправны, что защищает от падения или компрометации любого узла сети.
 
@@ -123,7 +123,7 @@
 
 Все узлы, работающие с базой данных, образуют связную одноранговую сеть. Любой сервер - такой же клиент базы данных, как и все остальные узлы.
 
-### Brilliant
+### 💎 Brilliant
 
 Элегантная крайне простая архитертура даёт при этом высокую гибкость и надёжность.
 
@@ -135,36 +135,121 @@
 
 Популярные модели данных являются частными случаями используемой в базе данных.
 
-## Units
+## API
+
+### Entity Models
+
+```ts
+	/** Organ Model */
+	class $my_organ extends $hyoo_crus_entity.of({
+		// Title: $hyoo_crus_reg_str, // atomic short string, inherited from $hyoo_crus_entity
+		Critical: $hyoo_crus_reg_bool, // atomic boolean
+		Count: $hyoo_crus_reg_int, // atomic big integer
+		Weight: $hyoo_crus_reg_real, // atomic double size float
+		Photo: $hyoo_crus_reg_bin, // atoic blob
+		Description: $hyoo_crus_text, // mergeable long text
+		Contains: $hyoo_crus_list_ref( ()=> $my_organ ), // reference to same Model
+	}) {}
+	
+	/** Person Model */
+	class $my_person extends $hyoo_crus_entity.of({
+		// Title: $hyoo_crus_reg_str, // atomic short string, inherited from $hyoo_crus_entity
+		Sex: $hyoo_crus_reg_str, // atomic short string
+		Birthday: $hyoo_crus_reg_time, // atomic time moment
+		Heart: $my_organ, // embedded Model
+		Father: $hyoo_crus_reg_ref( ()=> $my_person ), // reference to Model
+		Mother: $hyoo_crus_reg_ref( ()=> $my_person ),
+		Kids: $hyoo_crus_list_ref( ()=> $my_person ), // list of references to Models
+	}) {
+		
+		// override default implementation
+		get sex() {
+			return ( next?: string )=> super.sex( next ) ?? 'male'
+		}
+		
+	}
+```
+
+### Realm Usage
+
+```ts
+	/** Application, component etc */
+	class $my_app extends $mol_object {
+	
+		// whole database
+		@ $mol_mem
+		Realm() {
+			return new $hyoo_crus_realm
+		}
+		
+		// current user profile for current application
+		@ $mol_mem
+		Profile() {
+			return this.Realm().Profile( '$my_app', $my_person )
+		}
+		
+		// use existed entity by reference
+		@ $mol_mem_key
+		Person( ref: string ) {
+			return this.Realm().Node( ref, $my_person )
+		}
+		
+		// add new linked entity
+		@ $mol_action
+		kid_add( name: string ) {
+			
+			const me = this.Profile()
+			
+			// populate external entity
+			const kid = me.Kids.add_remote()
+			
+			// fill self fields
+			kid.title( name )
+			kid[ me.sex() === 'male' ? 'father' : 'mother' ]( me )
+			
+			// fill embedded entities
+			const heart = kid.Heart
+			heart.critical( true )
+			heart.count( 1n )
+			heart.weight( 1.4 )
+			heart.description( 'Pumps blood!' )
+			
+			return kid
+		}
+		
+	}
+```
+
+### Units
 
 ![](https://i.imgur.com/jBnmgeS.png)
 
-## Types
+### Types
 
-### LWW-Register
+#### LWW-Register
 
 ![](https://i.imgur.com/qAq7fhO.png)
 
-### Ordered List
+#### Ordered List
 
 ![](https://i.imgur.com/PUzXjpZ.png)
 
-### Ordered Dictionary
+#### Ordered Dictionary
 
 ![](https://i.imgur.com/kjS7sPP.png)
 
-### Plain Text
+#### Plain Text
 
 ![](https://i.imgur.com/GGVfwH9.png)
 
-### DOM
+#### DOM
 
 ![](https://i.imgur.com/LedB2Oo.png)
 
-### JSON
+#### JSON
 
 ![](https://i.imgur.com/UEmg34A.png)
 
-## Synchronization Protocol
+### Synchronization Protocol
 
 ![](https://i.imgur.com/Jh7t5Uf.png)

@@ -5348,6 +5348,41 @@ var $;
 ;
 "use strict";
 var $;
+(function ($_1) {
+    $mol_test({
+        'Cached field'($) {
+            class App extends $mol_object2 {
+                static $ = $;
+                static low = 1;
+                static get high() {
+                    return this.low + 1;
+                }
+                static set high(next) {
+                    this.low = next - 1;
+                }
+                static test() {
+                    $mol_assert_equal(App.high, 2);
+                    App.high = 3;
+                    $mol_assert_equal(App.high, 3);
+                }
+            }
+            __decorate([
+                $mol_wire_field
+            ], App, "low", void 0);
+            __decorate([
+                $mol_wire_field
+            ], App, "high", null);
+            __decorate([
+                $mol_wire_method
+            ], App, "test", null);
+            App.test();
+        },
+    });
+})($ || ($ = {}));
+//mol/wire/field/field.test.ts
+;
+"use strict";
+var $;
 (function ($) {
     $mol_test({
         'fromJSON'() {
@@ -5701,7 +5736,7 @@ var $;
                 const ref = this.value_str(next?.guid());
                 if (!ref)
                     return null;
-                return realm.Node(Value(), ref);
+                return realm.Node(ref, Value());
             }
             value_ensure() {
                 this.yoke(this.guid());
@@ -5730,12 +5765,15 @@ var $;
                 return '$hyoo_crus_list_ref(()=>' + Value() + ')';
             }
             value(next) {
+                return this.remote_list(next);
+            }
+            remote_list(next) {
                 const realm = this.realm();
                 const Node = Value();
                 return this.items(next?.map(item => item.guid()))
-                    .map(ref => realm.Node(Node, ref));
+                    .map(ref => realm.Node(ref, Node));
             }
-            value_add() {
+            remote_add() {
                 const land = this.realm().home().Land_new(0);
                 this.splice([land.guid()]);
                 return land.Node(Value()).Item('');
@@ -5743,10 +5781,10 @@ var $;
         }
         __decorate([
             $mol_mem
-        ], Narrow.prototype, "value", null);
+        ], Narrow.prototype, "remote_list", null);
         __decorate([
             $mol_action
-        ], Narrow.prototype, "value_add", null);
+        ], Narrow.prototype, "remote_add", null);
         return Narrow;
     }
     $.$hyoo_crus_list_ref = $hyoo_crus_list_ref;
@@ -5798,18 +5836,18 @@ var $;
             "Narrowed Dictionary with linked Dictionaries and others"($) {
                 const realm = $hyoo_crus_realm.make({ $ });
                 const land = realm.home().base().land();
-                class User extends $hyoo_crus_dict_obj({
+                class User extends $hyoo_crus_dict.of({
                     Title: $hyoo_crus_reg_str,
                     Account: $hyoo_crus_reg_ref(() => Account),
                     Articles: $hyoo_crus_list_ref(() => Article),
                 }) {
                 }
-                class Account extends $hyoo_crus_dict_obj({
+                class Account extends $hyoo_crus_dict.of({
                     Title: $hyoo_crus_reg_str,
                     User: $hyoo_crus_reg_ref(() => User),
                 }) {
                 }
-                class Article extends $hyoo_crus_dict_obj({
+                class Article extends $hyoo_crus_dict.of({
                     Title: $hyoo_crus_reg_str,
                     Author: $hyoo_crus_reg_ref(() => User),
                 }) {
@@ -5817,7 +5855,7 @@ var $;
                 const user = land.Node(User).Item('11111111');
                 $mol_assert_equal(user.title() ?? '', user.Title.value(), '');
                 $mol_assert_equal(user.account(), user.Account.value(), null);
-                $mol_assert_equal(user.articles() ?? [], user.Articles.value(), []);
+                $mol_assert_equal(user.articles() ?? [], user.Articles.remote_list(), []);
                 user.title('Jin');
                 $mol_assert_equal(user.title() ?? '', user.Title.value(), 'Jin');
                 const account = user.Account.value_ensure();
@@ -5825,49 +5863,14 @@ var $;
                 $mol_assert_equal(account.user(), account.User.value(), null);
                 account.user(user);
                 $mol_assert_equal(account.user(), account.User.value(), user);
-                const articles = [user.Articles.value_add(), user.Articles.value_add()];
-                $mol_assert_equal(user.articles() ?? [], user.Articles.value(), articles);
+                const articles = [user.Articles.remote_add(), user.Articles.remote_add()];
+                $mol_assert_equal(user.articles() ?? [], user.Articles.remote_list(), articles);
                 $mol_assert_unique(user.land(), account.land(), ...articles.map(article => article.land()));
             },
         });
     })($$ = $_1.$$ || ($_1.$$ = {}));
 })($ || ($ = {}));
 //hyoo/crus/dict/dict.test.ts
-;
-"use strict";
-var $;
-(function ($_1) {
-    $mol_test({
-        'Cached field'($) {
-            class App extends $mol_object2 {
-                static $ = $;
-                static low = 1;
-                static get high() {
-                    return this.low + 1;
-                }
-                static set high(next) {
-                    this.low = next - 1;
-                }
-                static test() {
-                    $mol_assert_equal(App.high, 2);
-                    App.high = 3;
-                    $mol_assert_equal(App.high, 3);
-                }
-            }
-            __decorate([
-                $mol_wire_field
-            ], App, "low", void 0);
-            __decorate([
-                $mol_wire_field
-            ], App, "high", null);
-            __decorate([
-                $mol_wire_method
-            ], App, "test", null);
-            App.test();
-        },
-    });
-})($ || ($ = {}));
-//mol/wire/field/field.test.ts
 ;
 "use strict";
 var $;

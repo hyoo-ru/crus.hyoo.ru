@@ -9782,6 +9782,39 @@ var $;
 "use strict";
 var $;
 (function ($) {
+    function $mol_wire_field(host, field, descr) {
+        if (!descr)
+            descr = Reflect.getOwnPropertyDescriptor(host, field);
+        const _get = descr?.get || $mol_const(descr?.value);
+        const _set = descr?.set || function (next) {
+            $mol_wire_atom.solo(this, _get).put(next);
+        };
+        const sup = Reflect.getPrototypeOf(host);
+        const sup_descr = Reflect.getOwnPropertyDescriptor(sup, field);
+        Object.defineProperty(_get, 'name', { value: sup_descr?.get?.name ?? field });
+        Object.defineProperty(_set, 'name', { value: sup_descr?.set?.name ?? field });
+        function get() {
+            return $mol_wire_atom.solo(this, _get).sync();
+        }
+        const temp = $mol_wire_task.getter(_set);
+        function set(next) {
+            temp(this, [next]).sync();
+        }
+        Object.defineProperty(get, 'name', { value: _get.name + '$' });
+        Object.defineProperty(set, 'name', { value: _set.name + '@' });
+        Object.assign(get, { orig: _get });
+        Object.assign(set, { orig: _set });
+        const { value, writable, ...descr2 } = { ...descr, get, set };
+        Reflect.defineProperty(host, field, descr2);
+        return descr2;
+    }
+    $.$mol_wire_field = $mol_wire_field;
+})($ || ($ = {}));
+//mol/wire/field/field.ts
+;
+"use strict";
+var $;
+(function ($) {
     class $hyoo_crus_dict extends $hyoo_crus_node {
         static tag = $hyoo_crus_gist_tag[$hyoo_crus_gist_tag.keys];
         keys() {
@@ -9794,6 +9827,24 @@ var $;
             this.cast($hyoo_crus_list).has(key, true, Node.tag);
             const unit = this.cast($hyoo_crus_list).find(key);
             return this.land().Node(Node).Item(unit.self());
+        }
+        value() {
+            return this;
+        }
+        static of(schema) {
+            const Entity = class Entity extends this {
+            };
+            for (const Field in schema) {
+                const field = Field.toLowerCase();
+                Object.defineProperty(Entity.prototype, Field, { get: function () {
+                        return this.dive(field, schema[Field]);
+                    } });
+                Object.defineProperty(Entity.prototype, field, {
+                    value: function (next) { return (next === undefined && !this.has(field)) ? null : this[Field].value(next); }
+                });
+                $mol_wire_field(Entity.prototype, Field);
+            }
+            return Entity;
         }
         ;
         [$mol_dev_format_head]() {
@@ -10545,8 +10596,11 @@ var $;
         Land(guid) {
             return this.Lord(guid.slice(0, 16)).Land(guid.slice(16, 24));
         }
-        Node(Node, guid) {
+        Node(guid, Node) {
             return this.Land(guid.slice(0, 24)).Node(Node).Item(guid.slice(24, 32));
+        }
+        Profile(app, Node) {
+            return this.home().base().Profile(app).Root(Node);
         }
     }
     __decorate([
@@ -14792,6 +14846,9 @@ var $;
 (function ($) {
     class $hyoo_crus_text extends $hyoo_crus_list {
         static tag = $hyoo_crus_gist_tag[$hyoo_crus_gist_tag.vals];
+        value(next) {
+            return this.text(next);
+        }
         text(next) {
             if (next !== undefined) {
                 const land = this.land();
@@ -15377,62 +15434,7 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    function $mol_wire_field(host, field, descr) {
-        if (!descr)
-            descr = Reflect.getOwnPropertyDescriptor(host, field);
-        const _get = descr?.get || $mol_const(descr?.value);
-        const _set = descr?.set || function (next) {
-            $mol_wire_atom.solo(this, _get).put(next);
-        };
-        const sup = Reflect.getPrototypeOf(host);
-        const sup_descr = Reflect.getOwnPropertyDescriptor(sup, field);
-        Object.defineProperty(_get, 'name', { value: sup_descr?.get?.name ?? field });
-        Object.defineProperty(_set, 'name', { value: sup_descr?.set?.name ?? field });
-        function get() {
-            return $mol_wire_atom.solo(this, _get).sync();
-        }
-        const temp = $mol_wire_task.getter(_set);
-        function set(next) {
-            temp(this, [next]).sync();
-        }
-        Object.defineProperty(get, 'name', { value: _get.name + '$' });
-        Object.defineProperty(set, 'name', { value: _set.name + '@' });
-        Object.assign(get, { orig: _get });
-        Object.assign(set, { orig: _set });
-        const { value, writable, ...descr2 } = { ...descr, get, set };
-        Reflect.defineProperty(host, field, descr2);
-        return descr2;
-    }
-    $.$mol_wire_field = $mol_wire_field;
-})($ || ($ = {}));
-//mol/wire/field/field.ts
-;
-"use strict";
-var $;
-(function ($) {
-    function $hyoo_crus_dict_obj(schema) {
-        const Entity = class Entity extends $hyoo_crus_dict {
-        };
-        for (const Field in schema) {
-            const field = Field.toLowerCase();
-            Object.defineProperty(Entity.prototype, Field, { get: function () {
-                    return this.dive(field, schema[Field]);
-                } });
-            Object.defineProperty(Entity.prototype, field, {
-                value: function (next) { return (next === undefined && !this.has(field)) ? null : this[Field].value(next); }
-            });
-            $mol_wire_field(Entity.prototype, Field);
-        }
-        return Entity;
-    }
-    $.$hyoo_crus_dict_obj = $hyoo_crus_dict_obj;
-})($ || ($ = {}));
-//hyoo/crus/dict/obj/obj.ts
-;
-"use strict";
-var $;
-(function ($) {
-    class $hyoo_crus_entity extends $hyoo_crus_dict_obj({
+    class $hyoo_crus_entity extends $hyoo_crus_dict.of({
         Title: $hyoo_crus_reg_str,
     }) {
     }
@@ -24882,6 +24884,41 @@ var $;
 ;
 "use strict";
 var $;
+(function ($_1) {
+    $mol_test({
+        'Cached field'($) {
+            class App extends $mol_object2 {
+                static $ = $;
+                static low = 1;
+                static get high() {
+                    return this.low + 1;
+                }
+                static set high(next) {
+                    this.low = next - 1;
+                }
+                static test() {
+                    $mol_assert_equal(App.high, 2);
+                    App.high = 3;
+                    $mol_assert_equal(App.high, 3);
+                }
+            }
+            __decorate([
+                $mol_wire_field
+            ], App, "low", void 0);
+            __decorate([
+                $mol_wire_field
+            ], App, "high", null);
+            __decorate([
+                $mol_wire_method
+            ], App, "test", null);
+            App.test();
+        },
+    });
+})($ || ($ = {}));
+//mol/wire/field/field.test.ts
+;
+"use strict";
+var $;
 (function ($) {
     $mol_test({
         'config by value'() {
@@ -25219,7 +25256,7 @@ var $;
                 const ref = this.value_str(next?.guid());
                 if (!ref)
                     return null;
-                return realm.Node(Value(), ref);
+                return realm.Node(ref, Value());
             }
             value_ensure() {
                 this.yoke(this.guid());
@@ -25248,12 +25285,15 @@ var $;
                 return '$hyoo_crus_list_ref(()=>' + Value() + ')';
             }
             value(next) {
+                return this.remote_list(next);
+            }
+            remote_list(next) {
                 const realm = this.realm();
                 const Node = Value();
                 return this.items(next?.map(item => item.guid()))
-                    .map(ref => realm.Node(Node, ref));
+                    .map(ref => realm.Node(ref, Node));
             }
-            value_add() {
+            remote_add() {
                 const land = this.realm().home().Land_new(0);
                 this.splice([land.guid()]);
                 return land.Node(Value()).Item('');
@@ -25261,10 +25301,10 @@ var $;
         }
         __decorate([
             $mol_mem
-        ], Narrow.prototype, "value", null);
+        ], Narrow.prototype, "remote_list", null);
         __decorate([
             $mol_action
-        ], Narrow.prototype, "value_add", null);
+        ], Narrow.prototype, "remote_add", null);
         return Narrow;
     }
     $.$hyoo_crus_list_ref = $hyoo_crus_list_ref;
@@ -25316,18 +25356,18 @@ var $;
             "Narrowed Dictionary with linked Dictionaries and others"($) {
                 const realm = $hyoo_crus_realm.make({ $ });
                 const land = realm.home().base().land();
-                class User extends $hyoo_crus_dict_obj({
+                class User extends $hyoo_crus_dict.of({
                     Title: $hyoo_crus_reg_str,
                     Account: $hyoo_crus_reg_ref(() => Account),
                     Articles: $hyoo_crus_list_ref(() => Article),
                 }) {
                 }
-                class Account extends $hyoo_crus_dict_obj({
+                class Account extends $hyoo_crus_dict.of({
                     Title: $hyoo_crus_reg_str,
                     User: $hyoo_crus_reg_ref(() => User),
                 }) {
                 }
-                class Article extends $hyoo_crus_dict_obj({
+                class Article extends $hyoo_crus_dict.of({
                     Title: $hyoo_crus_reg_str,
                     Author: $hyoo_crus_reg_ref(() => User),
                 }) {
@@ -25335,7 +25375,7 @@ var $;
                 const user = land.Node(User).Item('11111111');
                 $mol_assert_equal(user.title() ?? '', user.Title.value(), '');
                 $mol_assert_equal(user.account(), user.Account.value(), null);
-                $mol_assert_equal(user.articles() ?? [], user.Articles.value(), []);
+                $mol_assert_equal(user.articles() ?? [], user.Articles.remote_list(), []);
                 user.title('Jin');
                 $mol_assert_equal(user.title() ?? '', user.Title.value(), 'Jin');
                 const account = user.Account.value_ensure();
@@ -25343,49 +25383,14 @@ var $;
                 $mol_assert_equal(account.user(), account.User.value(), null);
                 account.user(user);
                 $mol_assert_equal(account.user(), account.User.value(), user);
-                const articles = [user.Articles.value_add(), user.Articles.value_add()];
-                $mol_assert_equal(user.articles() ?? [], user.Articles.value(), articles);
+                const articles = [user.Articles.remote_add(), user.Articles.remote_add()];
+                $mol_assert_equal(user.articles() ?? [], user.Articles.remote_list(), articles);
                 $mol_assert_unique(user.land(), account.land(), ...articles.map(article => article.land()));
             },
         });
     })($$ = $_1.$$ || ($_1.$$ = {}));
 })($ || ($ = {}));
 //hyoo/crus/dict/dict.test.ts
-;
-"use strict";
-var $;
-(function ($_1) {
-    $mol_test({
-        'Cached field'($) {
-            class App extends $mol_object2 {
-                static $ = $;
-                static low = 1;
-                static get high() {
-                    return this.low + 1;
-                }
-                static set high(next) {
-                    this.low = next - 1;
-                }
-                static test() {
-                    $mol_assert_equal(App.high, 2);
-                    App.high = 3;
-                    $mol_assert_equal(App.high, 3);
-                }
-            }
-            __decorate([
-                $mol_wire_field
-            ], App, "low", void 0);
-            __decorate([
-                $mol_wire_field
-            ], App, "high", null);
-            __decorate([
-                $mol_wire_method
-            ], App, "test", null);
-            App.test();
-        },
-    });
-})($ || ($ = {}));
-//mol/wire/field/field.test.ts
 ;
 "use strict";
 var $;

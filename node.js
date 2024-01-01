@@ -9790,6 +9790,39 @@ var $;
 "use strict";
 var $;
 (function ($) {
+    function $mol_wire_field(host, field, descr) {
+        if (!descr)
+            descr = Reflect.getOwnPropertyDescriptor(host, field);
+        const _get = descr?.get || $mol_const(descr?.value);
+        const _set = descr?.set || function (next) {
+            $mol_wire_atom.solo(this, _get).put(next);
+        };
+        const sup = Reflect.getPrototypeOf(host);
+        const sup_descr = Reflect.getOwnPropertyDescriptor(sup, field);
+        Object.defineProperty(_get, 'name', { value: sup_descr?.get?.name ?? field });
+        Object.defineProperty(_set, 'name', { value: sup_descr?.set?.name ?? field });
+        function get() {
+            return $mol_wire_atom.solo(this, _get).sync();
+        }
+        const temp = $mol_wire_task.getter(_set);
+        function set(next) {
+            temp(this, [next]).sync();
+        }
+        Object.defineProperty(get, 'name', { value: _get.name + '$' });
+        Object.defineProperty(set, 'name', { value: _set.name + '@' });
+        Object.assign(get, { orig: _get });
+        Object.assign(set, { orig: _set });
+        const { value, writable, ...descr2 } = { ...descr, get, set };
+        Reflect.defineProperty(host, field, descr2);
+        return descr2;
+    }
+    $.$mol_wire_field = $mol_wire_field;
+})($ || ($ = {}));
+//mol/wire/field/field.ts
+;
+"use strict";
+var $;
+(function ($) {
     class $hyoo_crus_dict extends $hyoo_crus_node {
         static tag = $hyoo_crus_gist_tag[$hyoo_crus_gist_tag.keys];
         keys() {
@@ -9802,6 +9835,24 @@ var $;
             this.cast($hyoo_crus_list).has(key, true, Node.tag);
             const unit = this.cast($hyoo_crus_list).find(key);
             return this.land().Node(Node).Item(unit.self());
+        }
+        value() {
+            return this;
+        }
+        static of(schema) {
+            const Entity = class Entity extends this {
+            };
+            for (const Field in schema) {
+                const field = Field.toLowerCase();
+                Object.defineProperty(Entity.prototype, Field, { get: function () {
+                        return this.dive(field, schema[Field]);
+                    } });
+                Object.defineProperty(Entity.prototype, field, {
+                    value: function (next) { return (next === undefined && !this.has(field)) ? null : this[Field].value(next); }
+                });
+                $mol_wire_field(Entity.prototype, Field);
+            }
+            return Entity;
         }
         ;
         [$mol_dev_format_head]() {
@@ -10553,8 +10604,11 @@ var $;
         Land(guid) {
             return this.Lord(guid.slice(0, 16)).Land(guid.slice(16, 24));
         }
-        Node(Node, guid) {
+        Node(guid, Node) {
             return this.Land(guid.slice(0, 24)).Node(Node).Item(guid.slice(24, 32));
+        }
+        Profile(app, Node) {
+            return this.home().base().Profile(app).Root(Node);
         }
     }
     __decorate([
@@ -14800,6 +14854,9 @@ var $;
 (function ($) {
     class $hyoo_crus_text extends $hyoo_crus_list {
         static tag = $hyoo_crus_gist_tag[$hyoo_crus_gist_tag.vals];
+        value(next) {
+            return this.text(next);
+        }
         text(next) {
             if (next !== undefined) {
                 const land = this.land();
@@ -15385,62 +15442,7 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    function $mol_wire_field(host, field, descr) {
-        if (!descr)
-            descr = Reflect.getOwnPropertyDescriptor(host, field);
-        const _get = descr?.get || $mol_const(descr?.value);
-        const _set = descr?.set || function (next) {
-            $mol_wire_atom.solo(this, _get).put(next);
-        };
-        const sup = Reflect.getPrototypeOf(host);
-        const sup_descr = Reflect.getOwnPropertyDescriptor(sup, field);
-        Object.defineProperty(_get, 'name', { value: sup_descr?.get?.name ?? field });
-        Object.defineProperty(_set, 'name', { value: sup_descr?.set?.name ?? field });
-        function get() {
-            return $mol_wire_atom.solo(this, _get).sync();
-        }
-        const temp = $mol_wire_task.getter(_set);
-        function set(next) {
-            temp(this, [next]).sync();
-        }
-        Object.defineProperty(get, 'name', { value: _get.name + '$' });
-        Object.defineProperty(set, 'name', { value: _set.name + '@' });
-        Object.assign(get, { orig: _get });
-        Object.assign(set, { orig: _set });
-        const { value, writable, ...descr2 } = { ...descr, get, set };
-        Reflect.defineProperty(host, field, descr2);
-        return descr2;
-    }
-    $.$mol_wire_field = $mol_wire_field;
-})($ || ($ = {}));
-//mol/wire/field/field.ts
-;
-"use strict";
-var $;
-(function ($) {
-    function $hyoo_crus_dict_obj(schema) {
-        const Entity = class Entity extends $hyoo_crus_dict {
-        };
-        for (const Field in schema) {
-            const field = Field.toLowerCase();
-            Object.defineProperty(Entity.prototype, Field, { get: function () {
-                    return this.dive(field, schema[Field]);
-                } });
-            Object.defineProperty(Entity.prototype, field, {
-                value: function (next) { return (next === undefined && !this.has(field)) ? null : this[Field].value(next); }
-            });
-            $mol_wire_field(Entity.prototype, Field);
-        }
-        return Entity;
-    }
-    $.$hyoo_crus_dict_obj = $hyoo_crus_dict_obj;
-})($ || ($ = {}));
-//hyoo/crus/dict/obj/obj.ts
-;
-"use strict";
-var $;
-(function ($) {
-    class $hyoo_crus_entity extends $hyoo_crus_dict_obj({
+    class $hyoo_crus_entity extends $hyoo_crus_dict.of({
         Title: $hyoo_crus_reg_str,
     }) {
     }

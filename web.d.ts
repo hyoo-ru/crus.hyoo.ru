@@ -3242,11 +3242,21 @@ declare namespace $ {
 }
 
 declare namespace $ {
+    function $mol_wire_field<Host extends object, Field extends keyof Host, Value extends Host[Field]>(host: Host, field: Field, descr?: TypedPropertyDescriptor<Value>): any;
+}
+
+declare namespace $ {
     class $hyoo_crus_dict extends $hyoo_crus_node {
         static tag: "keys" | "vals" | "head" | "term";
         keys(): readonly $hyoo_crus_vary_type[];
         has(key: $hyoo_crus_vary_type, next?: false): boolean;
         dive<Node extends typeof $hyoo_crus_node>(key: $hyoo_crus_vary_type, Node: Node): InstanceType<Node>;
+        value(): this;
+        static of<This extends typeof $hyoo_crus_dict, Schema extends Record<string, typeof $hyoo_crus_node & {
+            new (): {
+                value: any;
+            };
+        }>>(this: This, schema: Schema): This & (new (...args: any[]) => InstanceType<This> & { [Key in keyof Schema]: InstanceType<Schema[Key]>; } & { readonly [Key_1 in keyof Schema as Lowercase<Extract<Key_1, string>>]: (next?: ReturnType<InstanceType<Schema[Key_1]>["value"]> | undefined) => ReturnType<InstanceType<Schema[Key_1]>["value"]> | null; });
     }
 }
 
@@ -3361,7 +3371,8 @@ declare namespace $ {
         home(): $hyoo_crus_lord;
         Lord(numb: string): $hyoo_crus_lord;
         Land(guid: string): $hyoo_crus_land;
-        Node<Node extends typeof $hyoo_crus_node>(Node: Node, guid: string): InstanceType<Node>;
+        Node<Node extends typeof $hyoo_crus_node>(guid: string, Node: Node): InstanceType<Node>;
+        Profile<Node extends typeof $hyoo_crus_node>(app: string, Node: Node): InstanceType<Node>;
     }
 }
 
@@ -4408,6 +4419,7 @@ declare namespace $ {
 declare namespace $ {
     class $hyoo_crus_text extends $hyoo_crus_list {
         static tag: "keys" | "vals" | "head" | "term";
+        value(next?: string): string;
         text(next?: string): string;
         str(next?: string): string;
         write(next: string, str_from?: number, str_to?: number): this;
@@ -4506,18 +4518,10 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    function $mol_wire_field<Host extends object, Field extends keyof Host, Value extends Host[Field]>(host: Host, field: Field, descr?: TypedPropertyDescriptor<Value>): any;
-}
-
-declare namespace $ {
-    function $hyoo_crus_dict_obj<Schema extends Record<string, typeof $hyoo_crus_node>>(schema: Schema): Pick<typeof $hyoo_crus_dict, typeof Symbol.toPrimitive | "toString" | "prototype" | "make" | "$" | "create" | "destructor" | "toJSON" | "tag"> & (new () => $hyoo_crus_dict & { [Key in keyof Schema]: InstanceType<Schema[Key]>; } & { [Key_1 in keyof Schema as Lowercase<Extract<Key_1, string>>]: (next?: ReturnType<InstanceType<Schema[Key_1]>["value"]> | undefined) => ReturnType<InstanceType<Schema[Key_1]>["value"]> | null; });
-}
-
-declare namespace $ {
-    const $hyoo_crus_entity_base: Pick<typeof $hyoo_crus_dict, typeof Symbol.toPrimitive | "toString" | "prototype" | "make" | "$" | "create" | "destructor" | "toJSON" | "tag"> & (new () => $hyoo_crus_dict & {
+    const $hyoo_crus_entity_base: typeof $hyoo_crus_dict & (new (...args: any[]) => $hyoo_crus_dict & {
         Title: $hyoo_crus_reg_str;
     } & {
-        title: (next?: string | undefined) => string | null;
+        readonly title: (next?: string | undefined) => string | null;
     });
     export class $hyoo_crus_entity extends $hyoo_crus_entity_base {
     }
