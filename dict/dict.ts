@@ -21,6 +21,43 @@ namespace $ {
 			return this.land().Node( Node ).Item( unit.self() )
 		}
 		
+		value() {
+			return this
+		}
+		
+		static of<
+			This extends typeof $hyoo_crus_dict,
+			Schema extends Record< string, typeof $hyoo_crus_node & { new(): { value: any } } >
+		>( this: This, schema: Schema ) {
+			
+			const Entity = class Entity extends ( this as any ) {} as This & {
+				new(...args:any[]): InstanceType< This > & {
+					[ Key in keyof Schema ]: InstanceType< Schema[ Key ] >
+				} & {
+					readonly [ Key in keyof Schema as Lowercase< Extract< Key, string > > ]:
+						( next?: ReturnType< InstanceType< Schema[ Key ] >[ 'value' ] > )=> ReturnType< InstanceType< Schema[ Key ] >[ 'value' ] > | null
+				}
+			}
+
+			for( const Field in schema ) {
+				
+				const field = Field.toLowerCase()
+				
+				Object.defineProperty( Entity.prototype, Field, { get: function() {
+					return ( this as any as $hyoo_crus_dict ).dive( field, schema[ Field ] )
+				} } )
+				
+				Object.defineProperty( Entity.prototype, field, {
+					value: function( next?: any ){ return ( next === undefined && !this.has( field ) ) ? null : this[ Field ].value( next ) }
+				} )
+				
+				$mol_wire_field( Entity.prototype, Field )
+			}
+			
+			return Entity
+			
+		}
+		
 		;[ $mol_dev_format_head ]() {
 			const nodes = this.nodes(null)
 			return $mol_dev_format_span( {} ,

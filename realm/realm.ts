@@ -30,8 +30,12 @@ namespace $ {
 			return this.Lord( guid.slice( 0, 16 ) ).Land( guid.slice( 16, 24 ) )
 		}
 		
-		Node< Node extends typeof $hyoo_crus_node > ( Node: Node, guid: string ) {
+		Node< Node extends typeof $hyoo_crus_node > ( guid: string, Node: Node ) {
 			return this.Land( guid.slice( 0, 24 ) ).Node( Node ).Item( guid.slice( 24, 32 ) )
+		}
+		
+		Profile< Node extends typeof $hyoo_crus_node >( app: string, Node: Node ) {
+			return this.home().base().Profile( app ).Root( Node )
 		}
 		
 		// @ $mol_mem_key

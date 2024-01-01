@@ -3,6 +3,10 @@ namespace $ {
 		
 		static tag = $hyoo_crus_gist_tag[ $hyoo_crus_gist_tag.vals ] as keyof typeof $hyoo_crus_gist_tag
 				
+		value( next?: string ): string {
+			return this.text( next )
+		}
+		
 		/** Text representation. Based on list of strings. */
 		@ $mol_mem
 		text( next?: string ): string {

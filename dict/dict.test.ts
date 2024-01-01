@@ -57,18 +57,18 @@ namespace $.$$ {
 			const realm = $hyoo_crus_realm.make({ $ })
 			const land = realm.home().base().land()
 			
-			class User extends $hyoo_crus_dict_obj({
+			class User extends $hyoo_crus_dict.of({
 				Title: $hyoo_crus_reg_str,
 				Account: $hyoo_crus_reg_ref( ()=> Account ),
 				Articles: $hyoo_crus_list_ref( ()=> Article ),
 			}) {}
 			
-			class Account extends $hyoo_crus_dict_obj({
+			class Account extends $hyoo_crus_dict.of({
 				Title: $hyoo_crus_reg_str,
 				User: $hyoo_crus_reg_ref( ()=> User ),
 			}) {}
 			
-			class Article extends $hyoo_crus_dict_obj({
+			class Article extends $hyoo_crus_dict.of({
 				Title: $hyoo_crus_reg_str,
 				Author: $hyoo_crus_reg_ref( ()=> User ),
 			}) {}
@@ -76,7 +76,7 @@ namespace $.$$ {
 			const user = land.Node( User ).Item('11111111')
 			$mol_assert_equal( user.title() ?? '', user.Title.value(), '' )
 			$mol_assert_equal( user.account(), user.Account.value(), null )
-			$mol_assert_equal( user.articles() ?? [], user.Articles.value(), [] )
+			$mol_assert_equal( user.articles() ?? [], user.Articles.remote_list(), [] )
 			
 			user.title( 'Jin' )
 			$mol_assert_equal( user.title() ?? '', user.Title.value(), 'Jin' )
@@ -88,10 +88,11 @@ namespace $.$$ {
 			account.user( user )
 			$mol_assert_equal( account.user(), account.User.value(), user )
 			
-			const articles = [ user.Articles.value_add(), user.Articles.value_add() ]
-			$mol_assert_equal( user.articles() ?? [], user.Articles.value(), articles )
+			const articles = [ user.Articles.remote_add(), user.Articles.remote_add() ]
+			$mol_assert_equal( user.articles() ?? [], user.Articles.remote_list(), articles )
 			
 			$mol_assert_unique( user.land(), account.land(), ... articles.map( article => article.land() ) )
+			
 		},
 		
 	})

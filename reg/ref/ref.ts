@@ -16,7 +16,7 @@ namespace $ {
 				const realm = this.realm()
 				const ref = this.value_str( ( next as $hyoo_crus_node )?.guid() )
 				if( !ref ) return null
-				return realm!.Node( ( Value as any )(), ref )
+				return realm!.Node( ref, ( Value as any )() )
 			}
 			
 			@$mol_action
