@@ -9835,7 +9835,7 @@ var $;
             const Entity = class Entity extends this {
             };
             for (const Field in schema) {
-                const field = Field.toLowerCase();
+                const field = Field[0].toLowerCase() + Field.slice(1);
                 Object.defineProperty(Entity.prototype, Field, { get: function () {
                         return this.dive(field, schema[Field]);
                     } });
