@@ -142,7 +142,7 @@
 ```ts
 	/** Organ Model */
 	class $my_organ extends $hyoo_crus_entity.of({
-		// Title: $hyoo_crus_reg_str, // atomic short string, inherited from $hyoo_crus_entity
+		// Title: $hyoo_crus_reg_str, - atomic short string, inherited from $hyoo_crus_entity
 		Critical: $hyoo_crus_reg_bool, // atomic boolean
 		Count: $hyoo_crus_reg_int, // atomic big integer
 		Weight: $hyoo_crus_reg_real, // atomic double size float
@@ -153,7 +153,7 @@
 	
 	/** Person Model */
 	class $my_person extends $hyoo_crus_entity.of({
-		// Title: $hyoo_crus_reg_str, // atomic short string, inherited from $hyoo_crus_entity
+		// Title: $hyoo_crus_reg_str, - atomic short string, inherited from $hyoo_crus_entity
 		Sex: $hyoo_crus_reg_str, // atomic short string
 		Birthday: $hyoo_crus_reg_time, // atomic time moment
 		Heart: $my_organ, // embedded Model
