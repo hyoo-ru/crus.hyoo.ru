@@ -19669,6 +19669,9 @@ var $;
             },
             Intro: {
                 margin: [0, 'auto'],
+                flex: {
+                    basis: `60rem`,
+                },
             },
             Casting: {
                 flex: {
