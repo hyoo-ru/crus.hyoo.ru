@@ -24,7 +24,7 @@ namespace $ {
 			}
 			
 			@ $mol_action
-			remote_add(): Vals[number] {
+			remote_make(): Vals[number] {
 				const land = this.realm()!.home().Land_new( 0 )
 				this.splice([ land.guid() ])
 				return land.Node( ( Value as any )() ).Item('')

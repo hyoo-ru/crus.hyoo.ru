@@ -75,20 +75,20 @@ namespace $.$$ {
 			
 			const user = land.Node( User ).Item('11111111')
 			$mol_assert_equal( user.title() ?? '', user.Title.value(), '' )
-			$mol_assert_equal( user.account(), user.Account.value(), null )
+			$mol_assert_equal( user.account(), user.Account.remote(), null )
 			$mol_assert_equal( user.articles() ?? [], user.Articles.remote_list(), [] )
 			
 			user.title( 'Jin' )
 			$mol_assert_equal( user.title() ?? '', user.Title.value(), 'Jin' )
 			
-			const account = user.Account.value_ensure()
-			$mol_assert_equal( user.account(), user.Account.value(), account )
-			$mol_assert_equal( account.user(), account.User.value(), null )
+			const account = user.Account.remote_ensure()
+			$mol_assert_equal( user.account(), user.Account.remote(), account )
+			$mol_assert_equal( account.user(), account.User.remote(), null )
 			
 			account.user( user )
-			$mol_assert_equal( account.user(), account.User.value(), user )
+			$mol_assert_equal( account.user(), account.User.remote(), user )
 			
-			const articles = [ user.Articles.remote_add(), user.Articles.remote_add() ]
+			const articles = [ user.Articles.remote_make(), user.Articles.remote_make() ]
 			$mol_assert_equal( user.articles() ?? [], user.Articles.remote_list(), articles )
 			
 			$mol_assert_unique( user.land(), account.land(), ... articles.map( article => article.land() ) )
