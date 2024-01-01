@@ -33,6 +33,15 @@ namespace $.$$ {
 			]
 		}
 		
+		@ $mol_action
+		override dump() {
+			return new Blob( [ this.land().dump() ], { type: 'application/x-crus-land' } )
+		}
+		
+		override dump_name() {
+			return `${ this.land().guid() }.land`
+		}
+		
 		// override text( next?: string ) {
 		// 	return this.node().cast( $hyoo_crus_text ).text( next )
 		// }

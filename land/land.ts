@@ -700,6 +700,54 @@ namespace $ {
 			
 		}
 		
+		@ $mol_action
+		dump() {
+			
+			const units = [] as $hyoo_crus_unit[]
+			const rocks = [] as Uint8Array[]
+			let rocks_size = 0
+			
+			for( const pass of this.passes.values() ) units.push( pass )
+			for( const gift of this.gifts.values() ) units.push( gift )
+			
+			for( const kids of this.gists.values() ) {
+				for( const gist of kids.values() ) {
+					units.push( gist )
+					if( gist.size() <= 32 ) continue
+					const rock = this.$.$hyoo_crus_mine.rock( gist.hash() )
+					if( !rock ) continue
+					rocks.push( gist.hash(), rock )
+					rocks_size += rock.byteLength + 20 + 4
+				}
+			}
+			
+			const dump = new Uint8Array( 24 + units.length * $hyoo_crus_unit.size + rocks_size )
+			const buf = new $mol_buffer( dump.buffer )
+			
+			buf.uint8( 0, 2 )
+			buf.uint32( 2, units.length )
+			
+			dump.set( $mol_base64_ae_decode( this.numb() || 'AAAAAAAA' ), 6 )
+			dump.set( $mol_base64_ae_decode( this.lord()!.numb() ), 12 )
+			
+			let offset = 24
+			for( let unit of units ) {
+				dump.set( unit.asArray(), offset )
+				offset += unit.byteLength
+			}
+			
+			for( let i = 0; i < rocks.length; i += 2 ) {
+				const hash = rocks[0]
+				const rock = rocks[1]
+				dump.set( hash, offset )
+				buf.uint32( offset + 20, rock.byteLength )
+				dump.set( rock, offset + 24 )
+				offset += 24 + rock.byteLength
+			}
+			
+			return dump
+		}
+		
 		;[ $mol_dev_format_head ]() {
 			return $mol_dev_format_span( {} ,
 				$mol_dev_format_native( this ) ,

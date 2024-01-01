@@ -12,7 +12,11 @@ $hyoo_crus_land_page $mol_page
 				0
 	foot /
 		<= Encrypted $mol_check_icon
-			hint \Encrypt
+			hint \Encrypt forever
 			Icon <= Encrypted_icon $mol_icon_lock
 			checked? <=> encrypted? false
 			enabled <= encryptable true
+		<= Dump $mol_button_download
+			hiny \Download dump
+			blob <= dump $mol_blob
+			file_name <= dump_name \AAAAAAAAAAAAAAAAAAAAAAAA.land
