@@ -875,7 +875,7 @@ $hyoo_crus_node_dump $mol_expander
 				tag <= unit_tag*
 				addons <= node_addons* /
 					<= Unit_ref* $mol_link
-						title <= unit_value* null
+						title <= unit_title* null
 						arg * land <= unit_value* null
 					<= Unit_value* $mol_dump_value
 						value <= unit_value* null

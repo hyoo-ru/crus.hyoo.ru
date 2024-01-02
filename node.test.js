@@ -14669,12 +14669,15 @@ var $;
             obj.value = (next) => this.value_str(next);
             return obj;
         }
+        unit_title(id) {
+            return null;
+        }
         unit_value(id) {
             return null;
         }
         Unit_ref(id) {
             const obj = new this.$.$mol_link();
-            obj.title = () => this.unit_value(id);
+            obj.title = () => this.unit_title(id);
             obj.arg = () => ({
                 land: this.unit_value(id)
             });
@@ -14867,6 +14870,17 @@ var $;
     $.$hyoo_crus_node_dump = $hyoo_crus_node_dump;
 })($ || ($ = {}));
 //hyoo/crus/node/dump/-view.tree/dump.view.tree.ts
+;
+"use strict";
+var $;
+(function ($) {
+    class $hyoo_crus_entity extends $hyoo_crus_dict.of({
+        Title: $hyoo_crus_reg_str,
+    }) {
+    }
+    $.$hyoo_crus_entity = $hyoo_crus_entity;
+})($ || ($ = {}));
+//hyoo/crus/entity/entity.ts
 ;
 "use strict";
 var $;
@@ -15142,6 +15156,10 @@ var $;
             unit_value(index) {
                 return this.node().cast($hyoo_crus_list).items()[index];
             }
+            unit_title(index) {
+                const ref = String(this.unit_value(index));
+                return this.node().realm()?.Node(ref, $hyoo_crus_entity).title() || ref;
+            }
             unit_ref_like(index) {
                 const val = this.unit_value(index);
                 if (typeof val !== 'string')
@@ -15202,6 +15220,9 @@ var $;
                 ];
             }
         }
+        __decorate([
+            $mol_mem_key
+        ], $hyoo_crus_node_dump.prototype, "unit_title", null);
         __decorate([
             $mol_mem_key
         ], $hyoo_crus_node_dump.prototype, "unit_ref_like", null);
@@ -15832,17 +15853,6 @@ var $;
     $.$hyoo_crus_realm_book = $hyoo_crus_realm_book;
 })($ || ($ = {}));
 //hyoo/crus/realm/book/-view.tree/book.view.tree.ts
-;
-"use strict";
-var $;
-(function ($) {
-    class $hyoo_crus_entity extends $hyoo_crus_dict.of({
-        Title: $hyoo_crus_reg_str,
-    }) {
-    }
-    $.$hyoo_crus_entity = $hyoo_crus_entity;
-})($ || ($ = {}));
-//hyoo/crus/entity/entity.ts
 ;
 "use strict";
 var $;

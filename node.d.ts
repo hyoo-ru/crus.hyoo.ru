@@ -4376,6 +4376,7 @@ declare namespace $ {
         Value_text(): $$.$mol_textarea;
         value_str(next?: any): string;
         Value_str(): $$.$mol_textarea;
+        unit_title(id: any): any;
         unit_value(id: any): any;
         Unit_ref(id: any): $$.$mol_link;
         Unit_value(id: any): $$.$mol_dump_value;
@@ -4394,6 +4395,17 @@ declare namespace $ {
         Inner(id: any): $mol_view;
         nodes(): readonly any[];
     }
+}
+
+declare namespace $ {
+    const $hyoo_crus_entity_base: typeof $hyoo_crus_dict & (new (...args: any[]) => $hyoo_crus_dict & {
+        Title: $hyoo_crus_reg_str;
+    } & {
+        readonly title: (next?: string | undefined) => string | null;
+    });
+    export class $hyoo_crus_entity extends $hyoo_crus_entity_base {
+    }
+    export {};
 }
 
 declare namespace $ {
@@ -4423,6 +4435,7 @@ declare namespace $.$$ {
         unit_tip(index: number, next?: keyof typeof $hyoo_crus_vary_tip): "bin" | "bool" | "int" | "real" | "str" | "time" | "json" | "xml" | "tree";
         unit_time(index: number): string;
         unit_value(index: number): $hyoo_crus_vary_type;
+        unit_title(index: number): string;
         unit_ref_like(index: number): boolean;
         unit_wipe(index: number, event?: Event): void;
         node_inner(index: number): $hyoo_crus_node;
@@ -4570,17 +4583,6 @@ declare namespace $ {
         land_new(next?: any): any;
         Land_new(): $mol_button_minor;
     }
-}
-
-declare namespace $ {
-    const $hyoo_crus_entity_base: typeof $hyoo_crus_dict & (new (...args: any[]) => $hyoo_crus_dict & {
-        Title: $hyoo_crus_reg_str;
-    } & {
-        readonly title: (next?: string | undefined) => string | null;
-    });
-    export class $hyoo_crus_entity extends $hyoo_crus_entity_base {
-    }
-    export {};
 }
 
 declare namespace $.$$ {
