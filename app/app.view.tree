@@ -5,11 +5,6 @@ $hyoo_crus_app $mol_book2_catalog
 	menu_foot /
 		<= Source $mol_link_source
 			uri \https://github.com/hyoo-ru/cras.hyoo.ru
-		<= Wipe $mol_button_minor
-			hint \Wipe database
-			click? <=> wipe? null
-			sub /
-				<= Wipe_icon $mol_icon_delete_forever
 	spreads *
 		\
 			<= Intro $mol_page
