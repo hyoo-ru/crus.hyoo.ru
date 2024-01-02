@@ -4,6 +4,7 @@ namespace $.$$ {
 		
 		flex: {
 			basis: `60rem`,
+			grow: 1,
 		},
 		
 		Title: {

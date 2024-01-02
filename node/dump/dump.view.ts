@@ -55,12 +55,38 @@ namespace $.$$ {
 			return this.node().cast( $hyoo_crus_list ).items()[ index ]
 		}
 		
+		@ $mol_mem_key
+		unit_ref_like( index: number ) {
+			const val = this.unit_value( index )
+			if( typeof val !== 'string' ) return false
+			if( ![ 16, 24, 32 ].includes( val.length ) ) return false
+			try {
+				$mol_base64_ae_decode( val )
+				return true
+			} catch {
+				return false
+			}
+		}
+		
 		unit_wipe( index: number, event?: Event ) {
 			this.node().cast( $hyoo_crus_list ).wipe( index )
 		}
 		
 		node_inner( index: number ) {
 			return this.node().nodes(null)[ index ]
+		}
+		
+		@ $mol_mem_key
+		node_addons( index: number ) {
+			return [
+				... this.unit_ref_like( index )
+					? [ this.Unit_ref( index ) ]
+					: [ this.Unit_value( index ) ],
+				this.Unit_tip( index ),
+				this.Unit_tag( index ),
+				this.Unit_time( index ),
+				this.Unit_wipe( index ),
+			]
 		}
 		
 		add_key( event: Event ) {

@@ -6,7 +6,6 @@ $hyoo_crus_node_dump $mol_expander
 		<= Head $mol_paragraph sub / <= title \
 	addons /
 	Tools $mol_view sub /
-		<= Value null
 		^ addons
 		^ editors
 	editors /
@@ -30,9 +29,12 @@ $hyoo_crus_node_dump $mol_expander
 		<= Inner*0 $mol_view sub /
 			<= Node_inner* $hyoo_crus_node_dump
 				tag <= unit_tag*
-				Value <= Unit_value* $mol_dump_value
-					value <= unit_value* null
-				addons /
+				addons <= node_addons* /
+					<= Unit_ref* $mol_link
+						title <= unit_value* null
+						arg * land <= unit_value* null
+					<= Unit_value* $mol_dump_value
+						value <= unit_value* null
 					<= Unit_tip* $mol_select
 						value? <=> unit_tip*? \bin
 						enabled <= can_change

@@ -1,12 +1,16 @@
 namespace $ {
 	
 	export enum $hyoo_crus_unit_kind {
-		/** Changable data. Last writes wins. */
-		gist = 0b0000_0000,
+		
 		/** Public key. First writes wins. */
-		pass = 0b1111_1111,
+		pass = $hyoo_crus_part.pass,
+		
 		/** Rights sharing. More power wins. */
-		gift = 0b1111_1101,
+		gift = $hyoo_crus_part.gift,
+		
+		/** Changable data. Last writes wins. */
+		gist = $hyoo_crus_part.gist,
+		
 	}
 	
 	export class $hyoo_crus_unit extends $mol_buffer {

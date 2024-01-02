@@ -4,7 +4,7 @@ namespace $.$$ {
 		
 		Menu: {
 			flex: {
-				basis: `20rem`,
+				basis: `14rem`,
 			},
 		},
 		

@@ -12,6 +12,12 @@ namespace $.$$ {
 			size: [ 'cover' ],
 		},
 		
+		Menu: {
+			flex: {
+				basis: `8rem`,
+			},
+		},
+		
 		Intro: {
 			margin: [ 0, 'auto' ],
 			flex: {

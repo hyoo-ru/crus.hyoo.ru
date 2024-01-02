@@ -759,7 +759,6 @@ namespace $ {
 			const units_count = buf.uint32( 2 )
 		
 			const units = [] as $hyoo_crus_unit[]
-			const rocks = [] as Uint8Array[]
 			
 			let offset = 24
 			for( let i = 0; i < units_count; ++i ) {
