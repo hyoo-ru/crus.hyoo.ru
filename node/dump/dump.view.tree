@@ -4,9 +4,9 @@ $hyoo_crus_node_dump $mol_expander
 	tag \keys
 	label /
 		<= Head $mol_paragraph sub / <= title \
-		<= Value null
 	addons /
 	Tools $mol_view sub /
+		<= Value null
 		^ addons
 		^ editors
 	editors /
