@@ -10381,6 +10381,73 @@ var $;
             const secret_land = $mol_wire_sync(secret_mutual).decrypt(bill, gift.salt());
             return $mol_wire_sync($mol_crypto_secret).from(secret_land);
         }
+        dump() {
+            const units = [];
+            const rocks = [];
+            let rocks_size = 0;
+            for (const pass of this.passes.values())
+                units.push(pass);
+            for (const gift of this.gifts.values())
+                units.push(gift);
+            for (const kids of this.gists.values()) {
+                for (const gist of kids.values()) {
+                    units.push(gist);
+                    if (gist.size() <= 32)
+                        continue;
+                    const rock = this.$.$hyoo_crus_mine.rock(gist.hash());
+                    if (!rock)
+                        continue;
+                    rocks.push(gist.hash(), rock);
+                    rocks_size += rock.byteLength + 20 + 4;
+                }
+            }
+            const dump = new Uint8Array(24 + units.length * $hyoo_crus_unit.size + rocks_size);
+            const buf = new $mol_buffer(dump.buffer);
+            buf.uint8(0, 2);
+            buf.uint32(2, units.length);
+            dump.set($mol_base64_ae_decode(this.numb() || 'AAAAAAAA'), 6);
+            dump.set($mol_base64_ae_decode(this.lord().numb()), 12);
+            let offset = 24;
+            for (let unit of units) {
+                dump.set(unit.asArray(), offset);
+                offset += unit.byteLength;
+            }
+            for (let i = 0; i < rocks.length; i += 2) {
+                const hash = rocks[0];
+                const rock = rocks[1];
+                dump.set(hash, offset);
+                buf.uint32(offset + 20, rock.byteLength);
+                dump.set(rock, offset + 24);
+                offset += 24 + rock.byteLength;
+            }
+            return dump;
+        }
+        apply_dump(dump) {
+            const buf = new $mol_buffer(dump.buffer);
+            const type = buf.uint8(0);
+            if (type !== 2)
+                $mol_fail(new Error('Wrong type'));
+            const units_count = buf.uint32(2);
+            const units = [];
+            const rocks = [];
+            let offset = 24;
+            for (let i = 0; i < units_count; ++i) {
+                const bin = dump.slice(offset, offset + $hyoo_crus_unit.size).buffer;
+                const unit = new $hyoo_crus_unit(bin);
+                units.push(unit.narrow());
+                offset += $hyoo_crus_unit.size;
+            }
+            this.apply_unit(units);
+            while (offset < dump.byteLength) {
+                const hash = dump.slice(offset, offset += 20);
+                const size = buf.uint32(offset);
+                const rock = dump.slice(offset += 4, offset += size);
+                if (!$mol_compare_deep(hash, this.$.$hyoo_crus_mine.hash(rock))) {
+                    $mol_fail(new Error('Wrong hash'));
+                }
+                this.$.$hyoo_crus_mine.rock(hash, rock);
+            }
+        }
         ;
         [$mol_dev_format_head]() {
             return $mol_dev_format_span({}, $mol_dev_format_native(this), ' ', this.numb());
@@ -10464,6 +10531,12 @@ var $;
     __decorate([
         $mol_mem
     ], $hyoo_crus_land.prototype, "secret", null);
+    __decorate([
+        $mol_action
+    ], $hyoo_crus_land.prototype, "dump", null);
+    __decorate([
+        $mol_action
+    ], $hyoo_crus_land.prototype, "apply_dump", null);
     $.$hyoo_crus_land = $hyoo_crus_land;
 })($ || ($ = {}));
 //hyoo/crus/land/land.ts
@@ -15271,6 +15344,200 @@ var $;
 "use strict";
 var $;
 (function ($) {
+    class $mol_icon_upload extends $mol_icon {
+        path() {
+            return "M9,16V10H5L12,3L19,10H15V16H9M5,20V18H19V20H5Z";
+        }
+    }
+    $.$mol_icon_upload = $mol_icon_upload;
+})($ || ($ = {}));
+//mol/icon/upload/-view.tree/upload.view.tree.ts
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_button_open extends $mol_button_minor {
+        sub() {
+            return [
+                this.Icon(),
+                this.Native()
+            ];
+        }
+        Icon() {
+            const obj = new this.$.$mol_icon_upload();
+            return obj;
+        }
+        files(next) {
+            if (next !== undefined)
+                return next;
+            return [];
+        }
+        accept() {
+            return "";
+        }
+        multiple() {
+            return true;
+        }
+        Native() {
+            const obj = new this.$.$mol_button_open_native();
+            obj.files = (next) => this.files(next);
+            obj.accept = () => this.accept();
+            obj.multiple = () => this.multiple();
+            return obj;
+        }
+    }
+    __decorate([
+        $mol_mem
+    ], $mol_button_open.prototype, "Icon", null);
+    __decorate([
+        $mol_mem
+    ], $mol_button_open.prototype, "files", null);
+    __decorate([
+        $mol_mem
+    ], $mol_button_open.prototype, "Native", null);
+    $.$mol_button_open = $mol_button_open;
+    class $mol_button_open_native extends $mol_view {
+        dom_name() {
+            return "input";
+        }
+        files(next) {
+            if (next !== undefined)
+                return next;
+            return [];
+        }
+        attr() {
+            return {
+                type: "file",
+                accept: this.accept(),
+                multiple: this.multiple()
+            };
+        }
+        event() {
+            return {
+                change: (next) => this.picked(next)
+            };
+        }
+        accept() {
+            return "";
+        }
+        multiple() {
+            return true;
+        }
+        picked(next) {
+            if (next !== undefined)
+                return next;
+            return null;
+        }
+    }
+    __decorate([
+        $mol_mem
+    ], $mol_button_open_native.prototype, "files", null);
+    __decorate([
+        $mol_mem
+    ], $mol_button_open_native.prototype, "picked", null);
+    $.$mol_button_open_native = $mol_button_open_native;
+})($ || ($ = {}));
+//mol/button/open/-view.tree/open.view.tree.ts
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $mol_button_open_native extends $.$mol_button_open_native {
+            dom_node() {
+                return super.dom_node();
+            }
+            picked() {
+                const files = this.dom_node().files;
+                if (!files || !files.length)
+                    return;
+                this.files([...files]);
+            }
+        }
+        $$.$mol_button_open_native = $mol_button_open_native;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+//mol/button/open/open.view.ts
+;
+"use strict";
+var $;
+(function ($) {
+    $mol_style_attach("mol/button/open/open.view.css", "[mol_button_open_native] {\n\tposition: absolute;\n\tleft: 0;\n\ttop: -100%;\n\twidth: 100%;\n\theight: 200%;\n\tcursor: pointer;\n\topacity: 0;\n}\n");
+})($ || ($ = {}));
+//mol/button/open/-css/open.view.css.ts
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_icon_download extends $mol_icon {
+        path() {
+            return "M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z";
+        }
+    }
+    $.$mol_icon_download = $mol_icon_download;
+})($ || ($ = {}));
+//mol/icon/download/-view.tree/download.view.tree.ts
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_button_download extends $mol_button_minor {
+        blob() {
+            return null;
+        }
+        uri() {
+            return "";
+        }
+        file_name() {
+            return "blob.bin";
+        }
+        sub() {
+            return [
+                this.Icon(),
+                this.title()
+            ];
+        }
+        Icon() {
+            const obj = new this.$.$mol_icon_download();
+            return obj;
+        }
+        title() {
+            return "";
+        }
+    }
+    __decorate([
+        $mol_mem
+    ], $mol_button_download.prototype, "Icon", null);
+    $.$mol_button_download = $mol_button_download;
+})($ || ($ = {}));
+//mol/button/download/-view.tree/download.view.tree.ts
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $mol_button_download extends $.$mol_button_download {
+            uri() {
+                return URL.createObjectURL(this.blob());
+            }
+            click() {
+                const a = $mol_jsx("a", { href: this.uri(), download: this.file_name() });
+                a.click();
+            }
+        }
+        __decorate([
+            $mol_mem
+        ], $mol_button_download.prototype, "uri", null);
+        $$.$mol_button_download = $mol_button_download;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+//mol/button/download/download.view.tsx
+;
+"use strict";
+var $;
+(function ($) {
     class $hyoo_crus_land_page extends $mol_page {
         land() {
             const obj = new this.$.$hyoo_crus_land();
@@ -15286,7 +15553,8 @@ var $;
         }
         foot() {
             return [
-                this.Encrypted()
+                this.Encrypted(),
+                this.Dumping()
             ];
         }
         node_title(id) {
@@ -15316,10 +15584,43 @@ var $;
         }
         Encrypted() {
             const obj = new this.$.$mol_check_icon();
-            obj.hint = () => "Encrypt";
+            obj.hint = () => "Encrypt forever";
             obj.Icon = () => this.Encrypted_icon();
             obj.checked = (next) => this.encrypted(next);
             obj.enabled = () => this.encryptable();
+            return obj;
+        }
+        update(next) {
+            if (next !== undefined)
+                return next;
+            return [];
+        }
+        Update() {
+            const obj = new this.$.$mol_button_open();
+            obj.hint = () => "Upload dump";
+            obj.files = (next) => this.update(next);
+            return obj;
+        }
+        dump() {
+            const obj = new this.$.$mol_blob();
+            return obj;
+        }
+        dump_name() {
+            return "AAAAAAAAAAAAAAAAAAAAAAAA.land";
+        }
+        Dump() {
+            const obj = new this.$.$mol_button_download();
+            obj.hint = () => "Download dump";
+            obj.blob = () => this.dump();
+            obj.file_name = () => this.dump_name();
+            return obj;
+        }
+        Dumping() {
+            const obj = new this.$.$mol_view();
+            obj.sub = () => [
+                this.Update(),
+                this.Dump()
+            ];
             return obj;
         }
     }
@@ -15341,6 +15642,21 @@ var $;
     __decorate([
         $mol_mem
     ], $hyoo_crus_land_page.prototype, "Encrypted", null);
+    __decorate([
+        $mol_mem
+    ], $hyoo_crus_land_page.prototype, "update", null);
+    __decorate([
+        $mol_mem
+    ], $hyoo_crus_land_page.prototype, "Update", null);
+    __decorate([
+        $mol_mem
+    ], $hyoo_crus_land_page.prototype, "dump", null);
+    __decorate([
+        $mol_mem
+    ], $hyoo_crus_land_page.prototype, "Dump", null);
+    __decorate([
+        $mol_mem
+    ], $hyoo_crus_land_page.prototype, "Dumping", null);
     $.$hyoo_crus_land_page = $hyoo_crus_land_page;
 })($ || ($ = {}));
 //hyoo/crus/land/page/-view.tree/page.view.tree.ts
@@ -15375,6 +15691,19 @@ var $;
                     this.Node('AAAAAAAB'),
                 ];
             }
+            dump() {
+                return new Blob([this.land().dump()], { type: 'application/x-crus-land' });
+            }
+            dump_name() {
+                return `${this.land().guid()}.land`;
+            }
+            update(files) {
+                for (const file of files) {
+                    const dump = $mol_wire_sync(file).arrayBuffer();
+                    this.land().apply_dump(new Uint8Array(dump));
+                }
+                return [];
+            }
         }
         __decorate([
             $mol_mem
@@ -15385,6 +15714,12 @@ var $;
         __decorate([
             $mol_mem
         ], $hyoo_crus_land_page.prototype, "body", null);
+        __decorate([
+            $mol_action
+        ], $hyoo_crus_land_page.prototype, "dump", null);
+        __decorate([
+            $mol_action
+        ], $hyoo_crus_land_page.prototype, "update", null);
         $$.$hyoo_crus_land_page = $hyoo_crus_land_page;
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));
@@ -17533,74 +17868,6 @@ var $;
     $mol_style_attach("mol/string/button/button.view.css", "[mol_string_button]:not(:placeholder-shown):not(:focus):not(:hover):not(:disabled) {\n\tcolor: var(--mol_theme_control);\n\tbackground: transparent;\n\tbox-shadow: none;\n}\n");
 })($ || ($ = {}));
 //mol/string/button/-css/button.view.css.ts
-;
-"use strict";
-var $;
-(function ($) {
-    class $mol_icon_download extends $mol_icon {
-        path() {
-            return "M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z";
-        }
-    }
-    $.$mol_icon_download = $mol_icon_download;
-})($ || ($ = {}));
-//mol/icon/download/-view.tree/download.view.tree.ts
-;
-"use strict";
-var $;
-(function ($) {
-    class $mol_button_download extends $mol_button_minor {
-        blob() {
-            return null;
-        }
-        uri() {
-            return "";
-        }
-        file_name() {
-            return "blob.bin";
-        }
-        sub() {
-            return [
-                this.Icon(),
-                this.title()
-            ];
-        }
-        Icon() {
-            const obj = new this.$.$mol_icon_download();
-            return obj;
-        }
-        title() {
-            return "";
-        }
-    }
-    __decorate([
-        $mol_mem
-    ], $mol_button_download.prototype, "Icon", null);
-    $.$mol_button_download = $mol_button_download;
-})($ || ($ = {}));
-//mol/button/download/-view.tree/download.view.tree.ts
-;
-"use strict";
-var $;
-(function ($) {
-    var $$;
-    (function ($$) {
-        class $mol_button_download extends $.$mol_button_download {
-            uri() {
-                return URL.createObjectURL(this.blob());
-            }
-            click() {
-                const a = $mol_jsx("a", { href: this.uri(), download: this.file_name() });
-                a.click();
-            }
-        }
-        __decorate([
-            $mol_mem
-        ], $mol_button_download.prototype, "uri", null);
-        $$.$mol_button_download = $mol_button_download;
-    })($$ = $.$$ || ($.$$ = {}));
-})($ || ($ = {}));
-//mol/button/download/download.view.tsx
 ;
 "use strict";
 var $;

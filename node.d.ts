@@ -3296,6 +3296,8 @@ declare namespace $ {
         encryptable(): boolean;
         encrypted(next?: boolean): boolean;
         secret(): $mol_crypto_secret | null;
+        dump(): Uint8Array;
+        apply_dump(dump: Uint8Array): void;
     }
 }
 
@@ -4436,6 +4438,66 @@ declare namespace $ {
 }
 
 declare namespace $ {
+    class $mol_icon_upload extends $mol_icon {
+        path(): string;
+    }
+}
+
+declare namespace $ {
+    class $mol_button_open extends $mol_button_minor {
+        sub(): readonly any[];
+        Icon(): $mol_icon_upload;
+        files(next?: any): readonly any[];
+        accept(): string;
+        multiple(): boolean;
+        Native(): $$.$mol_button_open_native;
+    }
+    class $mol_button_open_native extends $mol_view {
+        dom_name(): string;
+        files(next?: any): readonly any[];
+        attr(): Record<string, any>;
+        event(): Record<string, any>;
+        accept(): string;
+        multiple(): boolean;
+        picked(next?: any): any;
+    }
+}
+
+declare namespace $.$$ {
+    class $mol_button_open_native extends $.$mol_button_open_native {
+        dom_node(): HTMLInputElement;
+        picked(): void;
+    }
+}
+
+declare namespace $ {
+}
+
+declare namespace $ {
+    class $mol_icon_download extends $mol_icon {
+        path(): string;
+    }
+}
+
+declare namespace $ {
+    class $mol_button_download extends $mol_button_minor {
+        blob(): any;
+        uri(): string;
+        file_name(): string;
+        sub(): readonly any[];
+        Icon(): $mol_icon_download;
+        title(): string;
+    }
+}
+
+declare namespace $.$$ {
+    class $mol_button_download extends $.$mol_button_download {
+        uri(): string;
+        click(): void;
+    }
+}
+
+declare namespace $ {
     class $hyoo_crus_land_page extends $mol_page {
         land(): $hyoo_crus_land;
         tools(): readonly any[];
@@ -4448,6 +4510,12 @@ declare namespace $ {
         encrypted(next?: any): boolean;
         encryptable(): boolean;
         Encrypted(): $mol_check_icon;
+        update(next?: any): readonly any[];
+        Update(): $mol_button_open;
+        dump(): Blob;
+        dump_name(): string;
+        Dump(): $$.$mol_button_download;
+        Dumping(): $mol_view;
     }
 }
 
@@ -4459,6 +4527,9 @@ declare namespace $.$$ {
         encryptable(): boolean;
         encrypted(next?: boolean): boolean;
         body(): $hyoo_crus_node_dump[];
+        dump(): Blob;
+        dump_name(): string;
+        update(files: File[]): never[];
     }
 }
 
@@ -4934,30 +5005,6 @@ declare namespace $ {
 }
 
 declare namespace $ {
-}
-
-declare namespace $ {
-    class $mol_icon_download extends $mol_icon {
-        path(): string;
-    }
-}
-
-declare namespace $ {
-    class $mol_button_download extends $mol_button_minor {
-        blob(): any;
-        uri(): string;
-        file_name(): string;
-        sub(): readonly any[];
-        Icon(): $mol_icon_download;
-        title(): string;
-    }
-}
-
-declare namespace $.$$ {
-    class $mol_button_download extends $.$mol_button_download {
-        uri(): string;
-        click(): void;
-    }
 }
 
 declare namespace $ {
