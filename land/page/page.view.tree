@@ -21,6 +21,6 @@ $hyoo_crus_land_page $mol_page
 				hiny \Upload dump
 				files? <=> update? /
 			<= Dump $mol_button_download
-				hiny \Download dump
+				hint \Download dump
 				blob <= dump $mol_blob
 				file_name <= dump_name \AAAAAAAAAAAAAAAAAAAAAAAA.land
