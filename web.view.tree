@@ -331,6 +331,10 @@ $mol_link_source $mol_link
 	sub /
 		<= Icon $mol_icon_script_text
 
+$mol_icon_delete $mol_icon path \M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19C6,20.1 6.9,21 8,21H16C17.1,21 18,20.1 18,19V7H6V19Z
+
+$mol_icon_delete_forever $mol_icon path \M6,19C6,20.1 6.9,21 8,21H16C17.1,21 18,20.1 18,19V7H6V19M8.46,11.88L9.87,10.47L12,12.59L14.12,10.47L15.53,11.88L13.41,14L15.53,16.12L14.12,17.53L12,15.41L9.88,17.53L8.47,16.12L10.59,14L8.46,11.88M15.5,4L14.5,3H9.5L8.5,4H5V6H19V4H15.5Z
+
 $mol_stack $mol_view
 
 $mol_text_code_token $mol_dimmer
@@ -1193,6 +1197,11 @@ $hyoo_crus_app $mol_book2_catalog
 	menu_foot /
 		<= Source $mol_link_source
 			uri \https://github.com/hyoo-ru/cras.hyoo.ru
+		<= Wipe $mol_button_minor
+			hint \Wipe database
+			click? <=> wipe? null
+			sub /
+				<= Wipe_icon $mol_icon_delete_forever
 	spreads *
 		\
 			<= Intro $mol_page

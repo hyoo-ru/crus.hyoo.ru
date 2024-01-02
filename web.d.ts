@@ -3412,6 +3412,18 @@ declare namespace $ {
 }
 
 declare namespace $ {
+    class $mol_icon_delete extends $mol_icon {
+        path(): string;
+    }
+}
+
+declare namespace $ {
+    class $mol_icon_delete_forever extends $mol_icon {
+        path(): string;
+    }
+}
+
+declare namespace $ {
     class $mol_stack extends $mol_view {
     }
 }
@@ -5426,6 +5438,9 @@ declare namespace $ {
         spreads(): Record<string, any>;
         Placeholder(): any;
         Source(): $mol_link_source;
+        wipe(next?: any): any;
+        Wipe_icon(): $mol_icon_delete_forever;
+        Wipe(): $mol_button_minor;
         intro(): string;
         Intro_content(): $$.$mol_text;
         Intro(): $mol_page;
@@ -5438,6 +5453,7 @@ declare namespace $.$$ {
     class $hyoo_crus_app extends $.$hyoo_crus_app {
         realm(): $hyoo_crus_realm;
         intro(): string;
+        wipe(): Promise<void>;
     }
 }
 

@@ -230,6 +230,8 @@
     "$mol_link_source",
     "$mol_icon_script_text",
     "$mol_icon_script",
+    "$mol_icon_delete_forever",
+    "$mol_icon_delete",
     "$mol_text_text",
     "$mol_text",
     "$mol_text_list",
