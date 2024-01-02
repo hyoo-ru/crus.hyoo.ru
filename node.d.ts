@@ -2196,6 +2196,7 @@ declare namespace $ {
         peer(next?: string): string;
         salt(): Uint8Array;
         sens(next?: ArrayLike<number>): Uint8Array;
+        mix(mixin: Uint8Array): void;
         sign(next?: ArrayLike<number>): Uint8Array;
         signed(): boolean;
     }

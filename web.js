@@ -7164,6 +7164,11 @@ var $;
                 prev.set(next);
             return prev;
         }
+        mix(mixin) {
+            for (let i = 0; i < mixin.length; ++i) {
+                this.uint8(14 + i, this.uint8(14 + i) ^ mixin[i]);
+            }
+        }
         sign(next) {
             const prev = new Uint8Array(this.buffer, this.byteOffset + 64, 64);
             if (next)
@@ -10296,16 +10301,24 @@ var $;
             if (unit.signed())
                 return;
             const key = $mol_wire_sync(this.auth());
-            const sign = new Uint8Array(key.sign(unit.sens()));
-            unit.sign(sign);
+            const mixin = $mol_base64_decode(this.guid());
+            unit.mix(mixin);
+            try {
+                const sign = new Uint8Array(key.sign(unit.sens()));
+                unit.sign(sign);
+            }
+            finally {
+                unit.mix(mixin);
+            }
         }
         gist_encode(gist) {
             if (gist._open === undefined)
                 return gist;
             let bin = gist._open;
             const secret = this.secret();
-            if (secret)
+            if (secret) {
                 bin = new Uint8Array($mol_wire_sync(secret).encrypt(bin, gist.salt()));
+            }
             if (bin.byteLength > 32)
                 gist.hash(this.$.$hyoo_crus_mine.save(bin), gist.tip(), gist.tag());
             else
