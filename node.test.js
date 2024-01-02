@@ -7461,11 +7461,27 @@ var $;
 "use strict";
 var $;
 (function ($) {
+    let $hyoo_crus_part;
+    (function ($hyoo_crus_part) {
+        $hyoo_crus_part[$hyoo_crus_part["land"] = 131] = "land";
+        $hyoo_crus_part[$hyoo_crus_part["face"] = 254] = "face";
+        $hyoo_crus_part[$hyoo_crus_part["pass"] = 255] = "pass";
+        $hyoo_crus_part[$hyoo_crus_part["gift"] = 253] = "gift";
+        $hyoo_crus_part[$hyoo_crus_part["gist"] = 0] = "gist";
+        $hyoo_crus_part[$hyoo_crus_part["rock"] = 132] = "rock";
+        $hyoo_crus_part[$hyoo_crus_part["buck"] = 135] = "buck";
+    })($hyoo_crus_part = $.$hyoo_crus_part || ($.$hyoo_crus_part = {}));
+})($ || ($ = {}));
+//hyoo/crus/part/part.ts
+;
+"use strict";
+var $;
+(function ($) {
     let $hyoo_crus_unit_kind;
     (function ($hyoo_crus_unit_kind) {
-        $hyoo_crus_unit_kind[$hyoo_crus_unit_kind["gist"] = 0] = "gist";
-        $hyoo_crus_unit_kind[$hyoo_crus_unit_kind["pass"] = 255] = "pass";
-        $hyoo_crus_unit_kind[$hyoo_crus_unit_kind["gift"] = 253] = "gift";
+        $hyoo_crus_unit_kind[$hyoo_crus_unit_kind["pass"] = $hyoo_crus_part.pass] = "pass";
+        $hyoo_crus_unit_kind[$hyoo_crus_unit_kind["gift"] = $hyoo_crus_part.gift] = "gift";
+        $hyoo_crus_unit_kind[$hyoo_crus_unit_kind["gist"] = $hyoo_crus_part.gist] = "gist";
     })($hyoo_crus_unit_kind = $.$hyoo_crus_unit_kind || ($.$hyoo_crus_unit_kind = {}));
     class $hyoo_crus_unit extends $mol_buffer {
         static size = 128;
@@ -8447,19 +8463,19 @@ var $;
         _vary = undefined;
         _open = undefined;
         hint(tip = 'null', tag = 'term') {
-            this.uint8(0, ($hyoo_crus_gist_tag[tag] << 1) | ($hyoo_crus_vary_tip[tip] << 3));
+            this.uint8(0, ($hyoo_crus_gist_tag[tag]) | ($hyoo_crus_vary_tip[tip] << 2));
         }
         tip() {
-            return $hyoo_crus_vary_tip[this.uint8(0) >> 3];
+            return $hyoo_crus_vary_tip[this.uint8(0) >> 2];
         }
         pic() {
-            return Boolean(this.uint8(0) & 0b01000000);
+            return Boolean(this.uint8(0) & 0b00100000);
         }
         utf() {
-            return Boolean(this.uint8(0) & 0b10000000);
+            return Boolean(this.uint8(0) & 0b01000000);
         }
         tag() {
-            return $hyoo_crus_gist_tag[((this.uint8(0) >> 1) & 0b11)];
+            return $hyoo_crus_gist_tag[this.uint8(0) & 0b11];
         }
         nil() {
             return !this.uint16(0);
@@ -10429,7 +10445,6 @@ var $;
                 $mol_fail(new Error('Wrong type'));
             const units_count = buf.uint32(2);
             const units = [];
-            const rocks = [];
             let offset = 24;
             for (let i = 0; i < units_count; ++i) {
                 const bin = dump.slice(offset, offset + $hyoo_crus_unit.size).buffer;
@@ -14570,7 +14585,6 @@ var $;
         Tools() {
             const obj = new this.$.$mol_view();
             obj.sub = () => [
-                this.Value(),
                 ...this.addons(),
                 ...this.editors()
             ];
@@ -14596,9 +14610,6 @@ var $;
                 this.title()
             ];
             return obj;
-        }
-        Value() {
-            return null;
         }
         key_new(next) {
             if (next !== undefined)
@@ -14660,6 +14671,14 @@ var $;
         }
         unit_value(id) {
             return null;
+        }
+        Unit_ref(id) {
+            const obj = new this.$.$mol_link();
+            obj.title = () => this.unit_value(id);
+            obj.arg = () => ({
+                land: this.unit_value(id)
+            });
+            return obj;
         }
         Unit_value(id) {
             const obj = new this.$.$mol_dump_value();
@@ -14733,6 +14752,16 @@ var $;
             obj.click = (next) => this.unit_wipe(id, next);
             return obj;
         }
+        node_addons(id) {
+            return [
+                this.Unit_ref(id),
+                this.Unit_value(id),
+                this.Unit_tip(id),
+                this.Unit_tag(id),
+                this.Unit_time(id),
+                this.Unit_wipe(id)
+            ];
+        }
         node_inner(id) {
             const obj = new this.$.$hyoo_crus_node();
             return obj;
@@ -14740,13 +14769,7 @@ var $;
         Node_inner(id) {
             const obj = new this.$.$hyoo_crus_node_dump();
             obj.tag = () => this.unit_tag(id);
-            obj.Value = () => this.Unit_value(id);
-            obj.addons = () => [
-                this.Unit_tip(id),
-                this.Unit_tag(id),
-                this.Unit_time(id),
-                this.Unit_wipe(id)
-            ];
+            obj.addons = () => this.node_addons(id);
             obj.node = () => this.node_inner(id);
             return obj;
         }
@@ -14802,6 +14825,9 @@ var $;
     __decorate([
         $mol_mem
     ], $hyoo_crus_node_dump.prototype, "Value_str", null);
+    __decorate([
+        $mol_mem_key
+    ], $hyoo_crus_node_dump.prototype, "Unit_ref", null);
     __decorate([
         $mol_mem_key
     ], $hyoo_crus_node_dump.prototype, "Unit_value", null);
@@ -15116,11 +15142,36 @@ var $;
             unit_value(index) {
                 return this.node().cast($hyoo_crus_list).items()[index];
             }
+            unit_ref_like(index) {
+                const val = this.unit_value(index);
+                if (typeof val !== 'string')
+                    return false;
+                if (![16, 24, 32].includes(val.length))
+                    return false;
+                try {
+                    $mol_base64_ae_decode(val);
+                    return true;
+                }
+                catch {
+                    return false;
+                }
+            }
             unit_wipe(index, event) {
                 this.node().cast($hyoo_crus_list).wipe(index);
             }
             node_inner(index) {
                 return this.node().nodes(null)[index];
+            }
+            node_addons(index) {
+                return [
+                    ...this.unit_ref_like(index)
+                        ? [this.Unit_ref(index)]
+                        : [this.Unit_value(index)],
+                    this.Unit_tip(index),
+                    this.Unit_tag(index),
+                    this.Unit_time(index),
+                    this.Unit_wipe(index),
+                ];
             }
             add_key(event) {
                 if (!this.expandable())
@@ -15151,6 +15202,12 @@ var $;
                 ];
             }
         }
+        __decorate([
+            $mol_mem_key
+        ], $hyoo_crus_node_dump.prototype, "unit_ref_like", null);
+        __decorate([
+            $mol_mem_key
+        ], $hyoo_crus_node_dump.prototype, "node_addons", null);
         __decorate([
             $mol_mem
         ], $hyoo_crus_node_dump.prototype, "editors", null);
@@ -15238,6 +15295,11 @@ var $;
                     self: 'flex-start',
                 },
                 color: $mol_theme.text,
+                background: {
+                    color: $mol_theme.card,
+                },
+            },
+            Unit_ref: {
                 background: {
                     color: $mol_theme.card,
                 },
@@ -15672,6 +15734,7 @@ var $;
         $mol_style_define($hyoo_crus_land_page, {
             flex: {
                 basis: `60rem`,
+                grow: 1,
             },
             Title: {
                 font: {
@@ -15818,7 +15881,7 @@ var $;
         $mol_style_define($hyoo_crus_realm_book, {
             Menu: {
                 flex: {
-                    basis: `20rem`,
+                    basis: `14rem`,
                 },
             },
             Menu_link: {
@@ -19941,6 +20004,11 @@ var $;
                     [url('https://i.imgur.com/oPsM5Ye.jpeg')],
                 ],
                 size: ['cover'],
+            },
+            Menu: {
+                flex: {
+                    basis: `8rem`,
+                },
             },
             Intro: {
                 margin: [0, 'auto'],

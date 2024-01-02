@@ -178,6 +178,7 @@
     "$mol_base64_url",
     "$mol_crypto_native",
     "$hyoo_crus_unit",
+    "$hyoo_crus_part",
     "$hyoo_crus_pass",
     "$hyoo_crus_gift",
     "$hyoo_crus_rang",

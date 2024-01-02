@@ -2163,10 +2163,22 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    enum $hyoo_crus_unit_kind {
-        gist = 0,
+    enum $hyoo_crus_part {
+        land = 131,
+        face = 254,
         pass = 255,
-        gift = 253
+        gift = 253,
+        gist = 0,
+        rock = 132,
+        buck = 135
+    }
+}
+
+declare namespace $ {
+    enum $hyoo_crus_unit_kind {
+        pass = 255,
+        gift = 253,
+        gist = 0
     }
     class $hyoo_crus_unit extends $mol_buffer {
         static size: number;
@@ -4354,7 +4366,6 @@ declare namespace $ {
         content(): readonly any[];
         title(): string;
         Head(): $$.$mol_paragraph;
-        Value(): any;
         key_new(next?: any): string;
         add_key(next?: any): any;
         Add_key(): $$.$mol_textarea;
@@ -4366,6 +4377,7 @@ declare namespace $ {
         value_str(next?: any): string;
         Value_str(): $$.$mol_textarea;
         unit_value(id: any): any;
+        Unit_ref(id: any): $$.$mol_link;
         Unit_value(id: any): $$.$mol_dump_value;
         unit_tip(id: any, next?: any): string;
         Unit_tip(id: any): $$.$mol_select;
@@ -4376,6 +4388,7 @@ declare namespace $ {
         Unit_wipe_icon(id: any): $mol_icon_cross;
         unit_wipe(id: any, next?: any): any;
         Unit_wipe(id: any): $mol_button_minor;
+        node_addons(id: any): readonly any[];
         node_inner(id: any): $hyoo_crus_node;
         Node_inner(id: any): $$.$hyoo_crus_node_dump;
         Inner(id: any): $mol_view;
@@ -4410,8 +4423,10 @@ declare namespace $.$$ {
         unit_tip(index: number, next?: keyof typeof $hyoo_crus_vary_tip): "bin" | "bool" | "int" | "real" | "str" | "time" | "json" | "xml" | "tree";
         unit_time(index: number): string;
         unit_value(index: number): $hyoo_crus_vary_type;
+        unit_ref_like(index: number): boolean;
         unit_wipe(index: number, event?: Event): void;
         node_inner(index: number): $hyoo_crus_node;
+        node_addons(index: number): ($mol_view | $mol_link | $mol_button_minor | $mol_dump_value | $mol_select)[];
         add_key(event: Event): void;
         add_value(event: Event): void;
         value_str(next?: string): string;

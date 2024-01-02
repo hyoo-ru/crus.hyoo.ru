@@ -7,7 +7,7 @@
 - **U**nbreakable: *High availability, Partition Tolerance, Auto Recovery, Long Offline, WAL Free, Backup Free*
 - **S**ecure: *Private Key Auth, Signed Changes, Encrypted Merge, Zero-Trust, Leakage Proof*
 - **D**ecentralized: *Local First, Oracle Free, Peer to Peer*
-- **B**rilliant: *Graph Data Model, First Class JSON/DOM/Tree*
+- **B**rilliant: *Reactive Architecture, Graph Structure, First Class JSON/DOM/Tree*
 
 ## Features
 
@@ -127,9 +127,13 @@
 
 Элегантная крайне простая архитертура даёт при этом высокую гибкость и надёжность.
 
-#### Graph Data Model
+#### Reactive Architecture
 
-Все данные актуально хранятся в рёбрах глобалного графа, которые сгруппированы в кластеры, каждый из которых имеет свой набор разрешений и синхронзируется лениво-атомарно.
+Вместо удалённых вызовов и распространения событий, тут есть только работа с локальной копией БД, реакции на её текущее состояние, и фоновая синхронизация её между пирами.
+
+#### Graph Structure
+
+Все данные актуально хранятся в рёбрах глобального графа, которые сгруппированы в кластеры, каждый из которых имеет свой набор разрешений и синхронзируется лениво-атомарно.
 
 #### First Class JSON/DOM/Tree
 
@@ -228,10 +232,6 @@ export class $my_app extends $mol_object {
 
 ## Types
 
-### Units
-
-![](https://i.imgur.com/jBnmgeS.png)
-
 ### LWW-Register
 
 ![](https://i.imgur.com/qAq7fhO.png)
@@ -259,3 +259,14 @@ export class $my_app extends $mol_object {
 ## Synchronization Protocol
 
 ![](https://i.imgur.com/Jh7t5Uf.png)
+
+### Pack
+
+Пакет состоит из произволного числа частей разных типов. Пакет может передаваться как сообщениие другому пиру, может сохраняться в файл. И даже СУБД может хранить данные в том же самом формате.
+
+![](https://i.imgur.com/Rwc89Wg.png)
+
+### Unit
+
+![](https://i.imgur.com/HiDBDEu.png)
+
