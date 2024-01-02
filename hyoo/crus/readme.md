@@ -135,121 +135,127 @@
 
 Популярные модели данных являются частными случаями используемой в базе данных.
 
-## API
+## TypeScript API
 
 ### Entity Models
 
 ```ts
-	/** Organ Model */
-	export class $my_organ extends $hyoo_crus_entity.of({
-		// Title: $hyoo_crus_reg_str, - atomic short string, inherited from $hyoo_crus_entity
-		Critical: $hyoo_crus_reg_bool, // atomic boolean
-		Count: $hyoo_crus_reg_int, // atomic big integer
-		Weight: $hyoo_crus_reg_real, // atomic double size float
-		Photo: $hyoo_crus_reg_bin, // atoic blob
-		Description: $hyoo_crus_text, // mergeable long text
-		Contains: $hyoo_crus_list_ref( ()=> $my_organ ), // reference to same Model
-	}) {}
+/** Organ Model */
+export class $my_organ extends $hyoo_crus_entity.of({
+	// Title: $hyoo_crus_reg_str, - inherited from $hyoo_crus_entity
+	Critical: $hyoo_crus_reg_bool, // atomic boolean
+	Count: $hyoo_crus_reg_int, // atomic big integer
+	Weight: $hyoo_crus_reg_real, // atomic double size float
+	Photo: $hyoo_crus_reg_bin, // atoic blob
+	Description: $hyoo_crus_text, // mergeable long text
+	Contains: $hyoo_crus_list_ref( ()=> $my_organ ), // reference to same Model
+}) {}
+
+/** Person Model */
+export class $my_person extends $hyoo_crus_entity.of({
+	// Title: $hyoo_crus_reg_str, - inherited from $hyoo_crus_entity
+	Sex: $hyoo_crus_reg_str, // atomic short string
+	Birthday: $hyoo_crus_reg_time, // atomic time moment
+	Heart: $my_organ, // embedded Model
+	Parent: $hyoo_crus_reg_ref( ()=> $my_person ), // reference to Model
+	Kids: $hyoo_crus_list_ref( ()=> $my_person ), // list of references to Models
+	/** @deprecated */ Father: $hyoo_crus_reg_ref( ()=> $my_person ),
+}) {
 	
-	/** Person Model */
-	export class $my_person extends $hyoo_crus_entity.of({
-		// Title: $hyoo_crus_reg_str, - atomic short string, inherited from $hyoo_crus_entity
-		Sex: $hyoo_crus_reg_str, // atomic short string
-		Birthday: $hyoo_crus_reg_time, // atomic time moment
-		Heart: $my_organ, // embedded Model
-		Father: $hyoo_crus_reg_ref( ()=> $my_person ), // reference to Model
-		Mother: $hyoo_crus_reg_ref( ()=> $my_person ),
-		Kids: $hyoo_crus_list_ref( ()=> $my_person ), // list of references to Models
-	}) {
-		
-		// override default implementation
-		get sex() {
-			return ( next?: string )=> super.sex( next ) ?? 'male'
-		}
-		
+	// override default implementation
+	// Workaround for https://github.com/microsoft/TypeScript/issues/27689
+	get sex() {
+		return ( next?: string )=> super.sex( next ) ?? 'male'
 	}
+	
+	// fallack to old field
+	get parent() {
+		return ( next?: $my_person | null )=> super.parent( next ) ?? super.father()
+	}
+	
+}
 ```
 
 ### Realm Usage
 
 ```ts
-	/** Application, component etc */
-	export class $my_app extends $mol_object {
-	
-		// whole database
-		@ $mol_mem
-		Realm() {
-			return new $hyoo_crus_realm
-		}
-		
-		// current user profile for current application
-		@ $mol_mem
-		Profile() {
-			return this.Realm().Profile( '$my_app', $my_person )
-		}
-		
-		// use existed entity by reference
-		@ $mol_mem_key
-		Person( ref: string ) {
-			return this.Realm().Node( ref, $my_person )
-		}
-		
-		// add new linked entity
-		@ $mol_action
-		kid_add( name: string ) {
-			
-			const me = this.Profile()
-			
-			// populate external entity
-			const kid = me.Kids.remote_make()
-			
-			// fill self fields
-			kid.title( name )
-			kid[ me.sex() === 'male' ? 'father' : 'mother' ]( me )
-			
-			// fill embedded entities
-			const heart = kid.Heart
-			heart.critical( true )
-			heart.count( 1n )
-			heart.weight( 1.4 )
-			heart.description( 'Pumps blood!' )
-			
-			return kid
-		}
-		
+/** Application, component etc */
+export class $my_app extends $mol_object {
+
+	// whole database
+	@ $mol_mem
+	Realm() {
+		return new $hyoo_crus_realm
 	}
+	
+	// current user profile for current application
+	@ $mol_mem
+	Profile() {
+		return this.Realm().Profile( '$my_app', $my_person )
+	}
+	
+	// use existed entity by reference
+	@ $mol_mem_key
+	Person( ref: string ) {
+		return this.Realm().Node( ref, $my_person )
+	}
+	
+	// add new linked entity
+	@ $mol_action
+	kid_add( name: string ) {
+		
+		const me = this.Profile()
+		
+		// populate external entity
+		const kid = me.Kids.remote_make()
+		
+		// fill self fields
+		kid.title( name )
+		kid[ me.sex() === 'male' ? 'father' : 'mother' ]( me )
+		
+		// fill embedded entities
+		const heart = kid.Heart
+		heart.critical( true )
+		heart.count( 1n )
+		heart.weight( 1.4 )
+		heart.description( 'Pumps blood!' )
+		
+		return kid
+	}
+	
+}
 ```
+
+## Types
 
 ### Units
 
 ![](https://i.imgur.com/jBnmgeS.png)
 
-### Types
-
-#### LWW-Register
+### LWW-Register
 
 ![](https://i.imgur.com/qAq7fhO.png)
 
-#### Ordered List
+### Ordered List
 
 ![](https://i.imgur.com/PUzXjpZ.png)
 
-#### Ordered Dictionary
+### Ordered Dictionary
 
 ![](https://i.imgur.com/kjS7sPP.png)
 
-#### Plain Text
+### Plain Text
 
 ![](https://i.imgur.com/GGVfwH9.png)
 
-#### DOM
+### DOM
 
 ![](https://i.imgur.com/LedB2Oo.png)
 
-#### JSON
+### JSON
 
 ![](https://i.imgur.com/UEmg34A.png)
 
-### Synchronization Protocol
+## Synchronization Protocol
 
 ![](https://i.imgur.com/Jh7t5Uf.png)
