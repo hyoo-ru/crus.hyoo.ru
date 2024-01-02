@@ -13,5 +13,13 @@ namespace $.$$ {
 			return this.$.$mol_fetch.text( 'hyoo/crus/readme.md' )
 		}
 		
+		async wipe() {
+			const yard = await this.$.$mol_db( '$hyoo_crus_yard' )
+			const mine = await this.$.$mol_db( '$hyoo_crus_mine' )
+			yard.kill()
+			mine.kill()
+			location.reload()
+		}
+		
 	}
 }
