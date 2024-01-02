@@ -89,6 +89,12 @@ namespace $ {
 			return prev
 		}
 		
+		mix( mixin: Uint8Array ) {
+			for( let i = 0; i < mixin.length; ++i ) {
+				this.uint8( 14 + i, this.uint8( 14 + i ) ^ mixin[i] )
+			}
+		}
+		
 		sign( next?: ArrayLike< number > ) {
 			const prev = new Uint8Array( this.buffer, this.byteOffset + 64, 64 )
 			if( next ) prev.set( next )

@@ -566,9 +566,14 @@ namespace $ {
 			if( unit.signed() ) return
 			
 			const key = $mol_wire_sync( this.auth() )
-			const sign = new Uint8Array( key.sign( unit.sens() ) )
-			unit.sign( sign )
-			
+			const mixin = $mol_base64_decode( this.guid() )
+			unit.mix( mixin )
+			try {
+				const sign = new Uint8Array( key.sign( unit.sens() ) )
+				unit.sign( sign )
+			} finally {
+				unit.mix( mixin )
+			}
 		}
 		
 		@ $mol_mem_key
@@ -579,7 +584,9 @@ namespace $ {
 			let bin = gist._open
 			const secret = this.secret()!
 			
-			if( secret ) bin = new Uint8Array( $mol_wire_sync( secret ).encrypt( bin, gist.salt() ) )
+			if( secret ) {
+				bin = new Uint8Array( $mol_wire_sync( secret ).encrypt( bin, gist.salt() ) )
+			}
 			
 			if( bin.byteLength > 32 ) gist.hash( this.$.$hyoo_crus_mine.save( bin ), gist.tip(), gist.tag() )
 			else gist.data( bin, gist.tip(), gist.tag() )
