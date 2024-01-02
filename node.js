@@ -10773,30 +10773,6 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    class $mol_icon_delete extends $mol_icon {
-        path() {
-            return "M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19C6,20.1 6.9,21 8,21H16C17.1,21 18,20.1 18,19V7H6V19Z";
-        }
-    }
-    $.$mol_icon_delete = $mol_icon_delete;
-})($ || ($ = {}));
-//mol/icon/delete/-view.tree/delete.view.tree.ts
-;
-"use strict";
-var $;
-(function ($) {
-    class $mol_icon_delete_forever extends $mol_icon {
-        path() {
-            return "M6,19C6,20.1 6.9,21 8,21H16C17.1,21 18,20.1 18,19V7H6V19M8.46,11.88L9.87,10.47L12,12.59L14.12,10.47L15.53,11.88L13.41,14L15.53,16.12L14.12,17.53L12,15.41L9.88,17.53L8.47,16.12L10.59,14L8.46,11.88M15.5,4L14.5,3H9.5L8.5,4H5V6H19V4H15.5Z";
-        }
-    }
-    $.$mol_icon_delete_forever = $mol_icon_delete_forever;
-})($ || ($ = {}));
-//mol/icon/delete/forever/-view.tree/forever.view.tree.ts
-;
-"use strict";
-var $;
-(function ($) {
     class $mol_stack extends $mol_view {
     }
     $.$mol_stack = $mol_stack;
@@ -15827,6 +15803,30 @@ var $;
 "use strict";
 var $;
 (function ($) {
+    class $mol_icon_delete extends $mol_icon {
+        path() {
+            return "M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19C6,20.1 6.9,21 8,21H16C17.1,21 18,20.1 18,19V7H6V19Z";
+        }
+    }
+    $.$mol_icon_delete = $mol_icon_delete;
+})($ || ($ = {}));
+//mol/icon/delete/-view.tree/delete.view.tree.ts
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_icon_delete_forever extends $mol_icon {
+        path() {
+            return "M6,19C6,20.1 6.9,21 8,21H16C17.1,21 18,20.1 18,19V7H6V19M8.46,11.88L9.87,10.47L12,12.59L14.12,10.47L15.53,11.88L13.41,14L15.53,16.12L14.12,17.53L12,15.41L9.88,17.53L8.47,16.12L10.59,14L8.46,11.88M15.5,4L14.5,3H9.5L8.5,4H5V6H19V4H15.5Z";
+        }
+    }
+    $.$mol_icon_delete_forever = $mol_icon_delete_forever;
+})($ || ($ = {}));
+//mol/icon/delete/forever/-view.tree/forever.view.tree.ts
+;
+"use strict";
+var $;
+(function ($) {
     class $hyoo_crus_realm_book extends $mol_book2_catalog {
         menu_title() {
             return "🌌 Realm";
@@ -15843,7 +15843,8 @@ var $;
         }
         menu_foot() {
             return [
-                this.Land_new()
+                this.Land_new(),
+                this.Wipe()
             ];
         }
         land(id) {
@@ -15876,6 +15877,24 @@ var $;
             obj.click = (next) => this.land_new(next);
             return obj;
         }
+        wipe(next) {
+            if (next !== undefined)
+                return next;
+            return null;
+        }
+        Wipe_icon() {
+            const obj = new this.$.$mol_icon_delete_forever();
+            return obj;
+        }
+        Wipe() {
+            const obj = new this.$.$mol_button_minor();
+            obj.hint = () => "Wipe database";
+            obj.click = (next) => this.wipe(next);
+            obj.sub = () => [
+                this.Wipe_icon()
+            ];
+            return obj;
+        }
     }
     __decorate([
         $mol_mem
@@ -15895,6 +15914,15 @@ var $;
     __decorate([
         $mol_mem
     ], $hyoo_crus_realm_book.prototype, "Land_new", null);
+    __decorate([
+        $mol_mem
+    ], $hyoo_crus_realm_book.prototype, "wipe", null);
+    __decorate([
+        $mol_mem
+    ], $hyoo_crus_realm_book.prototype, "Wipe_icon", null);
+    __decorate([
+        $mol_mem
+    ], $hyoo_crus_realm_book.prototype, "Wipe", null);
     $.$hyoo_crus_realm_book = $hyoo_crus_realm_book;
 })($ || ($ = {}));
 //hyoo/crus/realm/book/-view.tree/book.view.tree.ts
@@ -15918,6 +15946,13 @@ var $;
             }
             land_new() {
                 this.spread(this.realm().home().Land_new(0).guid());
+            }
+            async wipe() {
+                const yard = await this.$.$mol_db('$hyoo_crus_yard');
+                const mine = await this.$.$mol_db('$hyoo_crus_mine');
+                yard.kill();
+                mine.kill();
+                location.reload();
             }
         }
         __decorate([
@@ -19940,8 +19975,7 @@ var $;
         }
         menu_foot() {
             return [
-                this.Source(),
-                this.Wipe()
+                this.Source()
             ];
         }
         spreads() {
@@ -19957,24 +19991,6 @@ var $;
         Source() {
             const obj = new this.$.$mol_link_source();
             obj.uri = () => "https://github.com/hyoo-ru/cras.hyoo.ru";
-            return obj;
-        }
-        wipe(next) {
-            if (next !== undefined)
-                return next;
-            return null;
-        }
-        Wipe_icon() {
-            const obj = new this.$.$mol_icon_delete_forever();
-            return obj;
-        }
-        Wipe() {
-            const obj = new this.$.$mol_button_minor();
-            obj.hint = () => "Wipe database";
-            obj.click = (next) => this.wipe(next);
-            obj.sub = () => [
-                this.Wipe_icon()
-            ];
             return obj;
         }
         intro() {
@@ -20025,15 +20041,6 @@ var $;
     ], $hyoo_crus_app.prototype, "Source", null);
     __decorate([
         $mol_mem
-    ], $hyoo_crus_app.prototype, "wipe", null);
-    __decorate([
-        $mol_mem
-    ], $hyoo_crus_app.prototype, "Wipe_icon", null);
-    __decorate([
-        $mol_mem
-    ], $hyoo_crus_app.prototype, "Wipe", null);
-    __decorate([
-        $mol_mem
     ], $hyoo_crus_app.prototype, "Intro_content", null);
     __decorate([
         $mol_mem
@@ -20061,13 +20068,6 @@ var $;
             }
             intro() {
                 return this.$.$mol_fetch.text('hyoo/crus/readme.md');
-            }
-            async wipe() {
-                const yard = await this.$.$mol_db('$hyoo_crus_yard');
-                const mine = await this.$.$mol_db('$hyoo_crus_mine');
-                yard.kill();
-                mine.kill();
-                location.reload();
             }
         }
         __decorate([

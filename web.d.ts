@@ -3412,18 +3412,6 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    class $mol_icon_delete extends $mol_icon {
-        path(): string;
-    }
-}
-
-declare namespace $ {
-    class $mol_icon_delete_forever extends $mol_icon {
-        path(): string;
-    }
-}
-
-declare namespace $ {
     class $mol_stack extends $mol_view {
     }
 }
@@ -4615,6 +4603,18 @@ declare namespace $ {
 }
 
 declare namespace $ {
+    class $mol_icon_delete extends $mol_icon {
+        path(): string;
+    }
+}
+
+declare namespace $ {
+    class $mol_icon_delete_forever extends $mol_icon {
+        path(): string;
+    }
+}
+
+declare namespace $ {
     class $hyoo_crus_realm_book extends $mol_book2_catalog {
         menu_title(): string;
         param(): string;
@@ -4626,6 +4626,9 @@ declare namespace $ {
         Land_new_icon(): $mol_icon_plus;
         land_new(next?: any): any;
         Land_new(): $mol_button_minor;
+        wipe(next?: any): any;
+        Wipe_icon(): $mol_icon_delete_forever;
+        Wipe(): $mol_button_minor;
     }
 }
 
@@ -4635,6 +4638,7 @@ declare namespace $.$$ {
         land(id: string): $hyoo_crus_land;
         spread_title(id: string): string;
         land_new(): void;
+        wipe(): Promise<void>;
     }
 }
 
@@ -5438,9 +5442,6 @@ declare namespace $ {
         spreads(): Record<string, any>;
         Placeholder(): any;
         Source(): $mol_link_source;
-        wipe(next?: any): any;
-        Wipe_icon(): $mol_icon_delete_forever;
-        Wipe(): $mol_button_minor;
         intro(): string;
         Intro_content(): $$.$mol_text;
         Intro(): $mol_page;
@@ -5453,7 +5454,6 @@ declare namespace $.$$ {
     class $hyoo_crus_app extends $.$hyoo_crus_app {
         realm(): $hyoo_crus_realm;
         intro(): string;
-        wipe(): Promise<void>;
     }
 }
 
