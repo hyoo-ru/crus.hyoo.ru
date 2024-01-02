@@ -18,7 +18,7 @@ $hyoo_crus_land_page $mol_page
 			enabled <= encryptable true
 		<= Dumping $mol_view sub /
 			<= Update $mol_button_open
-				hiny \Upload dump
+				hint \Upload dump
 				files? <=> update? /
 			<= Dump $mol_button_download
 				hint \Download dump
