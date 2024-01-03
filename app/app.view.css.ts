@@ -6,8 +6,8 @@ namespace $.$$ {
 		
 		background: {
 			image: [
-				[ linear_gradient([ 'to right', [ hsla( 0, 0, 0, 1 ), hsla( 0, 0, 0, 1 ), hsla( 0, 0, 0, .5 ) ] ]) ],
-				[ url( 'https://i.imgur.com/oPsM5Ye.jpeg' ) ],
+				// [ linear_gradient([ 'to right', [ hsla( 0, 0, 0, 1 ), hsla( 0, 0, 0, 1 ), hsla( 0, 0, 0, .5 ) ] ]) ],
+				[ url( 'hyoo/crus/logo/bg.webp' ) ],
 			],
 			size: [ 'cover' ],
 		},
