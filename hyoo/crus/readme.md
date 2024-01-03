@@ -232,29 +232,36 @@ export class $my_app extends $mol_object {
 
 ## Types
 
+Каждый юнит позиционируется относительно head (по вертикали) и lead (по горизонтали) юнитов и имеет один из четырёх тегов:
+
+- **T**erm - просто содержит данные. Вложенные юниты не предполагаются.
+- **V**als - содержит список значений, где каждый вложенный юнит отвечает за элемент списка.
+- **H**ead - регистр, хранящий данные в первом вложенном юните.
+- **K**eys - содержит список ключей, где каждый вложенный юнит отвечает за элемент списка.
+
 ### LWW-Register
 
-![](https://i.imgur.com/qAq7fhO.png)
+![](https://i.imgur.com/LhrSabm.png)
 
 ### Ordered List
 
-![](https://i.imgur.com/PUzXjpZ.png)
+![](https://i.imgur.com/IFMOFxc.png)
 
 ### Ordered Dictionary
 
-![](https://i.imgur.com/kjS7sPP.png)
+![](https://i.imgur.com/GtOcjKL.png)
 
 ### Plain Text
 
-![](https://i.imgur.com/GGVfwH9.png)
+![](https://i.imgur.com/C2cWWf0.png)
 
 ### DOM
 
-![](https://i.imgur.com/LedB2Oo.png)
+![](https://i.imgur.com/jN4G4JZ.png)
 
 ### JSON
 
-![](https://i.imgur.com/UEmg34A.png)
+![](https://i.imgur.com/ayjS2KS.png)
 
 ## Synchronization Protocol
 
