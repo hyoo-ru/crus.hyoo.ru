@@ -172,16 +172,16 @@ namespace $ {
 			const both = base.fork()
 			$mol_assert_equal( both.Root( $hyoo_crus_list ).items(), [ 'foo', 'xxx' ] )
 			
-			both.cloves()!.items([ right.ref() ])
+			both.inflow()!.items([ right.ref() ])
 			$mol_assert_equal( both.Root( $hyoo_crus_list ).items(), [ 'foo', 'zzz' ] )
 			
-			both.cloves()!.items([ left.ref() ])
+			both.inflow()!.items([ left.ref() ])
 			$mol_assert_equal( both.Root( $hyoo_crus_list ).items(), [ 'foo', 'yyy' ] )
 			
-			both.cloves()!.items([ right.ref(), left.ref() ])
+			both.inflow()!.items([ right.ref(), left.ref() ])
 			$mol_assert_equal( both.Root( $hyoo_crus_list ).items(), [ 'foo', 'yyy' ] )
 			
-			both.cloves()!.items([ left.ref(), right.ref() ])
+			both.inflow()!.items([ left.ref(), right.ref() ])
 			$mol_assert_equal( both.Root( $hyoo_crus_list ).items(), [ 'foo', 'zzz' ] )
 			
 		},

@@ -242,11 +242,11 @@ namespace $ {
 		@ $mol_action
 		fork() {
 			const land = this.realm()!.home().Land_new(0)
-			land.cloves()!.items([ this.ref() ])
+			land.inflow()!.items([ this.ref() ])
 			return land
 		}
 		
-		cloves() {
+		inflow() {
 			if( !this.numb() ) return null
 			return this.Node( $hyoo_crus_list ).Item( 'AAAAAAAB' )
 		}
@@ -260,16 +260,16 @@ namespace $ {
 			
 			merge: if( this.numb() && ( head !== 'AAAAAAAB' ) ) {
 				
-				const cloves = this.cloves()!.items().slice().reverse().map( $hyoo_crus_vary_cast_ref )
-				if( !cloves.length ) break merge
+				const inflow = this.inflow()!.items().slice().reverse().map( $hyoo_crus_vary_cast_ref )
+				if( !inflow.length ) break merge
 				
 				const exists = new Set([ ... this.gists.get( head )?.keys() ?? [] ])
 				
 				const realm  = this.realm()!
-				for( const ref of cloves ) {
+				for( const ref of inflow ) {
 					
-					const clove = realm.Land( ref )
-					for( const gist of clove.gists_ordered( head ) ) {
+					const land = realm.Land( ref )
+					for( const gist of land.gists_ordered( head ) ) {
 						
 						if( exists.has( gist.self() ) ) continue
 						queue.push( gist )
@@ -598,7 +598,7 @@ namespace $ {
 		gist_decode( gist: $hyoo_crus_gist ): $hyoo_crus_vary_type {
 			
 			if( this.gists.get( gist.head() )?.get( gist.self() ) !== gist ) {
-				for( const id of this.cloves()?.items() ?? [] ) {
+				for( const id of this.inflow()?.items() ?? [] ) {
 					const vary = this.realm()?.Land( id as symbol ).gist_decode( gist )
 					if( vary !== undefined ) return vary
 				}
