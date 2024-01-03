@@ -47,6 +47,10 @@ namespace $ {
 			return this.Land( this.numb_make( idea || undefined ) )
 		}
 		
+		Profile< Node extends typeof $hyoo_crus_node >( app: string, Node: Node ) {
+			return this.base().Profile( app ).Root( Node )
+		}
+		
 		@ $mol_action
 		numb_make( idea = Math.floor( Math.random() * 2**48 ) ) {
 			for( let i = 0; i < 4096; ++i ) {

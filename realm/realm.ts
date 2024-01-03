@@ -34,10 +34,6 @@ namespace $ {
 			return this.Land( guid.slice( 0, 24 ) ).Node( Node ).Item( guid.slice( 24, 32 ) )
 		}
 		
-		Profile< Node extends typeof $hyoo_crus_node >( app: string, Node: Node ) {
-			return this.home().base().Profile( app ).Root( Node )
-		}
-		
 		// @ $mol_mem_key
 		// key_public( lord: bigint ) {
 		// 	const key = this.Land( lord ).Area( 0 ).pass.get( Number( lord >> 16n ) )?.auth()
