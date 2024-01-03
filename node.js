@@ -10306,7 +10306,7 @@ var $;
             if (unit.signed())
                 return;
             const key = $mol_wire_sync(this.auth());
-            const mixin = $mol_base64_decode(this.guid());
+            const mixin = $mol_base64_ae_decode(this.guid());
             unit.mix(mixin);
             try {
                 const sign = new Uint8Array(key.sign(unit.sens()));
