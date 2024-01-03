@@ -7,7 +7,7 @@ namespace $.$$ {
 		background: {
 			image: [[ url( 'hyoo/crus/logo/bg.webp' ) ]],
 			size: [ 'cover' ],
-			position: 'bottom',
+			position: 'top',
 		},
 		
 		Menu: {
