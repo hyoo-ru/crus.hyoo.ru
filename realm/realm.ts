@@ -2,23 +2,21 @@ namespace $ {
 	
 	export class $hyoo_crus_realm extends $mol_object {
 		
-		lords = new $mol_wire_dict< string, $hyoo_crus_lord >()
+		lords = new $mol_wire_dict< symbol, $hyoo_crus_lord >()
 		
 		home() {
 			return this.Lord( this.$.$hyoo_crus_auth.current().lord() )
 		}
 		
 		@ $mol_mem_key
-		Lord( numb: string ) {
-			
-//			this.$.$mol_wait_timeout(1000)
+		Lord( numb: symbol ) {
 			
 			let lord = this.lords.get( numb )
 			if( lord ) return lord
 			
 			lord = $hyoo_crus_lord.make({
 				realm: $mol_const( this ),
-				numb: $mol_const( numb ),
+				ref: $mol_const( numb ),
 			})
 			
 			this.lords.set( numb, lord )
@@ -26,12 +24,14 @@ namespace $ {
 			
 		}
 		
-		Land( guid: string ) {
-			return this.Lord( guid.slice( 0, 16 ) ).Land( guid.slice( 16, 24 ) )
+		Land( ref: symbol ) {
+			const lord = this.Lord( Symbol.for( ref.description!.slice( 0, 16 ) ) )
+			return lord.Land( ref.description!.slice( 16, 24 ) )
 		}
 		
-		Node< Node extends typeof $hyoo_crus_node > ( guid: string, Node: Node ) {
-			return this.Land( guid.slice( 0, 24 ) ).Node( Node ).Item( guid.slice( 24, 32 ) )
+		Node< Node extends typeof $hyoo_crus_node > ( ref: symbol, Node: Node ) {
+			const land = this.Land( Symbol.for( ref.description!.slice( 0, 24 ) ) )
+			return land.Node( Node ).Item( ref.description!.slice( 24, 32 ) )
 		}
 		
 		// @ $mol_mem_key

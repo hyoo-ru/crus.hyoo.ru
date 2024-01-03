@@ -21,13 +21,13 @@ namespace $ {
 			return this.lord()?.realm() ?? null
 		}
 		
-		lord_numb() {
-			return this.lord()?.numb() ?? this.$.$hyoo_crus_auth.current().lord()
+		lord_ref() {
+			return this.lord()?.ref() ?? this.$.$hyoo_crus_auth.current().lord()
 		}
 		
 		@ $mol_memo.method
-		guid() {
-			return this.lord_numb() + ( this.land().numb() || 'AAAAAAAA' ) + this.head()
+		ref() {
+			return Symbol.for( this.lord_ref().description + ( this.land().numb() || 'AAAAAAAA' ) + this.head() )
 		}
 		
 		/** Returns another representation of this node. */

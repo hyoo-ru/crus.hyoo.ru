@@ -53,11 +53,11 @@ namespace $ {
 			return $hyoo_crus_vary_cast_bin( this.value_vary( next ) )
 		}
 		
-		// @ $mol_mem
-		// value_ref( next?: $hyoo_crus_ref | null ): $hyoo_crus_ref | null {
-		// 	const bin = this.value_vary( next )
-		// 	return bin instanceof $hyoo_crus_ref ? bin : null
-		// }
+		@ $mol_mem
+		value_ref( next?: symbol ): symbol {
+			const bin = this.value_vary( next )
+			return typeof bin === 'symbol' ? bin : Symbol.for( '' )
+		}
 		
 		@ $mol_mem_key
 		value_as< Decode extends $mol_data_value >( decode: Decode, next?: ReturnType< Decode > ) {
@@ -86,15 +86,15 @@ namespace $ {
 			
 			const realm = this.realm()
 			
-			const ref = this.value_str()
-			if( ref ) return realm!.Land( ref )
+			const ref = this.value_ref()
+			if( ref.description ) return realm!.Land( ref )
 			
 			const hash = $mol_crypto_hash( $hyoo_crus_vary_encode( vary ).bin )
 			const numb = new Uint16Array( $mol_base64_decode( this.land().numb() ).buffer )
 			const idea = new $mol_buffer( hash.buffer ).uint32(0) + numb[0] + numb[1] * 2**16 + numb[2] * 2**32
 
 			const land = realm!.Lord( this.land().auth().lord() ).Land_new( idea )
-			this.value_str( land.guid() )
+			this.value_ref( land.ref() )
 			
 			return land
 		}

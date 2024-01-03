@@ -12,7 +12,7 @@ namespace $ {
 			auth.auth([ 0xFF, 0, 0xFC, 0xFB, 0xFA, 0xF9, 0xF8, 0xF7, 0xF6, 0xF5, 0xF4, 0xF3, 0xF2, 0xF1 ])
 			
 			$mol_assert_equal( auth.kind(), 'pass' )
-			$mol_assert_equal( auth.lord(), 'ÆPv6æfj39vX08ÆLx' )
+			$mol_assert_equal( auth.lord(), Symbol.for( 'ÆPv6æfj39vX08ÆLx' ) )
 			$mol_assert_equal( auth.peer(), 'ÆPv6æfj3' )
 			
 		},
@@ -63,13 +63,13 @@ namespace $ {
 			const unit = new $hyoo_crus_gift
 			
 			$mol_assert_equal( unit.time(), 0 )
-			$mol_assert_equal( unit.dest(), '' )
+			$mol_assert_equal( unit.dest(), Symbol.for( '' ) )
 			
 			unit.time( 0xd1d2d3d4d5d6 )
-			unit.dest( 'ÆPv6æfj39vX08ÆLx' )
+			unit.dest( Symbol.for( 'ÆPv6æfj39vX08ÆLx' ) )
 			
 			$mol_assert_equal( unit.time(), 0xd1d2d3d4d5d6 )
-			$mol_assert_equal( unit.dest(), 'ÆPv6æfj39vX08ÆLx' )
+			$mol_assert_equal( unit.dest(), Symbol.for( 'ÆPv6æfj39vX08ÆLx' ) )
 			
 		},
 		

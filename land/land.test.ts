@@ -9,19 +9,19 @@ namespace $ {
 			
 			const land = $hyoo_crus_land.make({ $ })
 			$mol_assert_equal( land.joined_list(), [] )
-			$mol_assert_equal( land.lord_rang( land.lord_numb() ), $hyoo_crus_rang.law )
+			$mol_assert_equal( land.lord_rang( land.lord_ref() ), $hyoo_crus_rang.law )
 			
 			land.join()
-			$mol_assert_equal( land.joined_list(), [ land.lord_numb() ] )
+			$mol_assert_equal( land.joined_list(), [ land.lord_ref() ] )
 			
 		},
 		
 		'Give rights'( $ ) {
 			
 			const land1 = $hyoo_crus_land.make({ $ })
-			const land2 = $hyoo_crus_land.make({ $, lord_numb: ()=> land1.lord_numb(), auth: ()=> auth1 })
+			const land2 = $hyoo_crus_land.make({ $, lord_ref: ()=> land1.lord_ref(), auth: ()=> auth1 })
 			
-			$mol_assert_equal( land1.lord_rang( land1.lord_numb() ), $hyoo_crus_rang.law )
+			$mol_assert_equal( land1.lord_rang( land1.lord_ref() ), $hyoo_crus_rang.law )
 			$mol_assert_equal( land1.lord_rang( auth1.lord() ), $hyoo_crus_rang.get )
 			
 			$mol_assert_fail( ()=> land2.give( auth2.lord(), $hyoo_crus_rang.add ), 'Need add rang to join' )
@@ -56,7 +56,7 @@ namespace $ {
 		'Post Data and pick Delta'( $ ) {
 			
 			const land1 = $hyoo_crus_land.make({ $ })
-			const land2 = $hyoo_crus_land.make({ $, lord_numb: ()=> land1.lord_numb(), auth: ()=> auth1 })
+			const land2 = $hyoo_crus_land.make({ $, lord_ref: ()=> land1.lord_ref(), auth: ()=> auth1 })
 			
 			$mol_assert_equal( land1.delta_unit(), [] )
 			
@@ -104,7 +104,7 @@ namespace $ {
 		'Self restriction for Add Rang'( $ ) {
 			
 			const land1 = $hyoo_crus_land.make({ $ })
-			const land2 = $hyoo_crus_land.make({ $, lord_numb: ()=> land1.lord_numb(), auth: ()=> auth2 })
+			const land2 = $hyoo_crus_land.make({ $, lord_ref: ()=> land1.lord_ref(), auth: ()=> auth2 })
 			
 			$mol_assert_equal( land1.delta_unit(), [] )
 			
@@ -172,16 +172,16 @@ namespace $ {
 			const both = base.fork()
 			$mol_assert_equal( both.Root( $hyoo_crus_list ).items(), [ 'foo', 'xxx' ] )
 			
-			both.cloves()!.items([ right.guid() ])
+			both.cloves()!.items([ right.ref() ])
 			$mol_assert_equal( both.Root( $hyoo_crus_list ).items(), [ 'foo', 'zzz' ] )
 			
-			both.cloves()!.items([ left.guid() ])
+			both.cloves()!.items([ left.ref() ])
 			$mol_assert_equal( both.Root( $hyoo_crus_list ).items(), [ 'foo', 'yyy' ] )
 			
-			both.cloves()!.items([ right.guid(), left.guid() ])
+			both.cloves()!.items([ right.ref(), left.ref() ])
 			$mol_assert_equal( both.Root( $hyoo_crus_list ).items(), [ 'foo', 'yyy' ] )
 			
-			both.cloves()!.items([ left.guid(), right.guid() ])
+			both.cloves()!.items([ left.ref(), right.ref() ])
 			$mol_assert_equal( both.Root( $hyoo_crus_list ).items(), [ 'foo', 'zzz' ] )
 			
 		},

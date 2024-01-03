@@ -10,8 +10,8 @@ namespace $ {
 			return ''
 		}
 		
-		lord_numb() {
-			return this.lord()?.numb() ?? this.auth().lord()
+		lord_ref() {
+			return this.lord()?.ref() ?? this.auth().lord()
 		}
 		
 		realm() {
@@ -22,14 +22,14 @@ namespace $ {
 			return this.$.$hyoo_crus_auth.current()
 		}
 		
-		guid() {
-			return this.lord_numb() + this.numb()
+		ref() {
+			return Symbol.for( this.lord_ref().description + this.numb() )
 		}
 		
 		face = new $hyoo_crus_face
 		
 		passes = new $mol_wire_dict< string /*peer*/, $hyoo_crus_pass >()
-		gifts = new $mol_wire_dict< string /*lord*/, $hyoo_crus_gift >()
+		gifts = new $mol_wire_dict< symbol /*lord*/, $hyoo_crus_gift >()
 		gists = new $mol_wire_dict< string /*head*/, $mol_wire_dict< string /*self*/, $hyoo_crus_gist > >()
 		
 		self_all = new $mol_wire_set< string >()
@@ -90,8 +90,8 @@ namespace $ {
 		}
 		
 		@ $mol_mem_key
-		lord_rang( lord: string ) {
-			if( lord === this.lord_numb() ) return $hyoo_crus_rang.law
+		lord_rang( lord: symbol ) {
+			if( lord === this.lord_ref() ) return $hyoo_crus_rang.law
 			return this.gifts.get( lord )?.rang() ?? $hyoo_crus_rang.get
 		}
 		
@@ -112,7 +112,7 @@ namespace $ {
 			}
 			
 			for( const [ lord, unit ] of this.gifts ) {
-				const time = face.get( lord.slice( 0, 8 ) )
+				const time = face.get( lord.description!.slice( 0, 8 ) )
 				if( !time || time < unit.time() ) delta.push( unit )
 			}
 			
@@ -172,7 +172,7 @@ namespace $ {
 						if( prev && $hyoo_crus_gift.compare( prev, next ) <= 0 ) return 'Unit too old'
 						
 						this.gifts.set( dest, next )
-						this.face.see_peer( dest.slice( 0, 8 ), next.time() )
+						this.face.see_peer( dest.description!.slice( 0, 8 ), next.time() )
 						
 						if( ( prev?.rang() ?? $hyoo_crus_rang.get ) > next.rang() ) need_recheck = true
 						
@@ -242,7 +242,7 @@ namespace $ {
 		@ $mol_action
 		fork() {
 			const land = this.realm()!.home().Land_new(0)
-			land.cloves()!.items([ this.guid() ])
+			land.cloves()!.items([ this.ref() ])
 			return land
 		}
 		
@@ -260,15 +260,15 @@ namespace $ {
 			
 			merge: if( this.numb() && ( head !== 'AAAAAAAB' ) ) {
 				
-				const cloves = this.cloves()!.items().slice().reverse() as string[]
+				const cloves = this.cloves()!.items().slice().reverse().map( $hyoo_crus_vary_cast_ref )
 				if( !cloves.length ) break merge
 				
 				const exists = new Set([ ... this.gists.get( head )?.keys() ?? [] ])
 				
 				const realm  = this.realm()!
-				for( const guid of cloves ) {
+				for( const ref of cloves ) {
 					
-					const clove = realm.Land( guid )
+					const clove = realm.Land( ref )
 					for( const gist of clove.gists_ordered( head ) ) {
 						
 						if( exists.has( gist.self() ) ) continue
@@ -356,7 +356,7 @@ namespace $ {
 		/** Places data to tree. */
 		@ $mol_action
 		give(
-			dest: string,
+			dest: symbol,
 			rang: $hyoo_crus_rang,
 		) {
 				
@@ -497,7 +497,7 @@ namespace $ {
 		
 		@ $mol_mem
 		bus() {
-			return new this.$.$mol_bus< ArrayBuffer[] >( `$hyoo_crus_land:${ this.guid() }`, $mol_wire_async( bins => {
+			return new this.$.$mol_bus< ArrayBuffer[] >( `$hyoo_crus_land:${ this.ref().description }`, $mol_wire_async( bins => {
 				const yard = this.$.$hyoo_crus_yard
 				this.apply_unit( bins.map( bin => {
 					const unit = new $hyoo_crus_unit( bin ).narrow()
@@ -566,7 +566,7 @@ namespace $ {
 			if( unit.signed() ) return
 			
 			const key = $mol_wire_sync( this.auth() )
-			const mixin = $mol_base64_ae_decode( this.guid() )
+			const mixin = $mol_base64_ae_decode( this.ref().description! )
 			unit.mix( mixin )
 			try {
 				const sign = new Uint8Array( key.sign( unit.sens() ) )
@@ -599,7 +599,7 @@ namespace $ {
 			
 			if( this.gists.get( gist.head() )?.get( gist.self() ) !== gist ) {
 				for( const id of this.cloves()?.items() ?? [] ) {
-					const vary = this.realm()?.Land( id as string ).gist_decode( gist )
+					const vary = this.realm()?.Land( id as symbol ).gist_decode( gist )
 					if( vary !== undefined ) return vary
 				}
 				return undefined!
@@ -656,7 +656,7 @@ namespace $ {
 			
 			if( !this.numb() ) return false // home land never encrypted
 			
-			const gift = this.gifts.get( this.lord_numb() )
+			const gift = this.gifts.get( this.lord_ref() )
 			const prev = gift?.bill().some( b => b ) ?? false
 			
 			if( next === undefined ) return prev
@@ -735,7 +735,7 @@ namespace $ {
 			buf.uint32( 2, units.length )
 			
 			dump.set( $mol_base64_ae_decode( this.numb() || 'AAAAAAAA' ), 6 )
-			dump.set( $mol_base64_ae_decode( this.lord()!.numb() ), 12 )
+			dump.set( $mol_base64_ae_decode( this.lord()!.ref().description! ), 12 )
 			
 			let offset = 24
 			for( let unit of units ) {

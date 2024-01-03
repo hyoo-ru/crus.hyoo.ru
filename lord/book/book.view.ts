@@ -2,7 +2,7 @@ namespace $.$$ {
 	export class $hyoo_crus_lord_book extends $.$hyoo_crus_lord_book {
 		
 		override menu_title() {
-			return '👑Lord ' + this.lord().numb() 
+			return '👑Lord ' + this.lord().ref().description
 		}
 		
 		@ $mol_mem

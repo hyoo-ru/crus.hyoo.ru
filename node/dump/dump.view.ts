@@ -57,17 +57,17 @@ namespace $.$$ {
 		
 		@ $mol_mem_key
 		unit_title( index: number ) {
-			const ref = String( this.unit_value( index ) )
+			const ref = this.unit_value( index ) as symbol
 			return this.node().realm()?.Node( ref, $hyoo_crus_entity ).title() || ref
 		}
 		
 		@ $mol_mem_key
 		unit_ref_like( index: number ) {
 			const val = this.unit_value( index )
-			if( typeof val !== 'string' ) return false
-			if( ![ 16, 24, 32 ].includes( val.length ) ) return false
+			if( typeof val !== 'symbol' ) return false
+			if( ![ 16, 24, 32 ].includes( val.description!.length ) ) return false
 			try {
-				$mol_base64_ae_decode( val )
+				$mol_base64_ae_decode( val.description! )
 				return true
 			} catch {
 				return false

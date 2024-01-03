@@ -6,10 +6,10 @@ namespace $ {
 			return this.uint8( 1 )
 		}
 		
-		_lord!: string
+		_lord!: symbol
 		lord( next?: string ) {
 			if( next === undefined && this._lord !== undefined ) return this._lord
-			else return this._lord = this.id12( 2, next )
+			else return this._lord = Symbol.for( this.id12( 2, next ) )
 		}
 		
 		auth( next?: ArrayLike< number > ) {

@@ -18,14 +18,14 @@ namespace $ {
 			@ $mol_mem
 			remote( next?: null | Val ): null | Val {
 				const realm = this.realm()
-				const ref = this.value_str( ( next as $hyoo_crus_node )?.guid() )
-				if( !ref ) return null
+				const ref = this.value_ref( ( next as $hyoo_crus_node )?.ref() )
+				if( !ref.description ) return null
 				return realm!.Node( ref, ( Value as any )() )
 			}
 			
 			@ $mol_action
 			remote_ensure() {
-				this.yoke( this.guid() )
+				this.yoke( this.ref() )
 				return this.remote()!
 			}
 

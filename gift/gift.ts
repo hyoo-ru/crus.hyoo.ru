@@ -22,10 +22,10 @@ namespace $ {
 			return new Uint8Array( this.buffer, this.byteOffset + 14, 18 )
 		}
 		
-		_dest!: string
-		dest( next?: string ) {
+		_dest!: symbol
+		dest( next?: symbol ) {
 			if( next === undefined && this._dest !== undefined ) return this._dest
-			else return this._dest = this.id12( 56, next )
+			else return this._dest = Symbol.for( this.id12( 56, next?.description ) )
 		}
 		
 		bill() {

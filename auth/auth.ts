@@ -23,7 +23,7 @@ namespace $ {
 		
 		@ $mol_memo.method
 		lord() {
-			return $mol_base64_ae_encode( new Uint8Array( this.buffer, 2, 12 ) )
+			return Symbol.for( $mol_base64_ae_encode( new Uint8Array( this.buffer, 2, 12 ) ) )
 		}
 		
 		@ $mol_memo.method

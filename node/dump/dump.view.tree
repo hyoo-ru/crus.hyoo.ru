@@ -38,24 +38,25 @@ $hyoo_crus_node_dump $mol_expander
 					<= Unit_tip* $mol_select
 						value? <=> unit_tip*? \bin
 						enabled <= can_change
-						options /
-							\bin
-							\bool
-							\int
-							\real
-							\str
-							\time
-							\json
-							\xml
-							\tree
+						dictionary *
+							bin \💠bin
+							bool \🚩bool
+							int \🔢int
+							real \💫real
+							ref \🎯ref
+							str \🔠str
+							time \⏳time
+							json \🌜json
+							xml \🪒xml
+							tree \🎄tree
 					<= Unit_tag* $mol_select
 						value? <=> unit_tag*? \term
 						enabled <= can_change
-						options /
-							\term
-							\head
-							\vals
-							\keys
+						dictionary *
+							term \💼term
+							head \1️⃣head
+							vals \🎹vals
+							keys \🔑keys
 					<= Unit_time* $mol_view sub / <= unit_time* \
 					<= Unit_wipe* $mol_button_minor
 						sub / <= Unit_wipe_icon* $mol_icon_cross

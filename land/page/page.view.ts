@@ -2,7 +2,7 @@ namespace $.$$ {
 	export class $hyoo_crus_land_page extends $.$hyoo_crus_land_page {
 		
 		override title() {
-			return '🌍 ' + this.land().guid()
+			return '🌍 ' + this.land().ref().description
 		}
 		
 		override node_title( head: string ) {
@@ -39,7 +39,7 @@ namespace $.$$ {
 		}
 		
 		override dump_name() {
-			return `${ this.land().guid() }.land`
+			return `${ this.land().ref().description }.land`
 		}
 		
 		@ $mol_action

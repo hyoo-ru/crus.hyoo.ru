@@ -184,28 +184,20 @@ namespace $.$$ {
 			
 		},
 		
-		// "Reference representation"( $ ) {
+		"Reference representation"( $ ) {
 			
-		// 	const land = $hyoo_crus_land.make({ $ })
-		// 	const reg = land.Node( $hyoo_crus_reg ).Item(123)
+			const land = $hyoo_crus_land.make({ $ })
+			const reg = land.Node( $hyoo_crus_reg ).Item('12345678')
 			
-		// 	reg.value_ref( reg.guid() )
-		// 	$mol_assert_equal( reg.value_bool(), true )
-		// 	$mol_assert_equal( reg.value_int(), land.lord_numb() + ( 123n << 96n ) )
-		// 	$mol_assert_equal( reg.value_real(), Number.NaN )
-		// 	$mol_assert_equal( reg.value_bin(), new Uint8Array([ 213, 212, 219, 170, 109, 71, 174, 214, 197, 34, 45, 170, 0, 0, 0, 0, 0, 0, 123, 0, 0, 0, 0, 0 ]) )
-		// 	$mol_assert_equal( reg.value_str(), reg.guid().toString() )
-		// 	$mol_assert_equal( reg.value_ref(), reg.guid() )
+			reg.value_ref( reg.ref() )
+			$mol_assert_equal( reg.value_bool(), true )
+			$mol_assert_equal( reg.value_int(), 0n )//land.lord_ref().description + ( 123n << 96n ) )
+			$mol_assert_equal( reg.value_real(), Number.NaN )
+			$mol_assert_equal( reg.value_bin(), new Uint8Array([ 213, 212, 219, 170, 109, 71, 174, 214, 197, 34, 45, 170, 0, 0, 0, 0, 0, 0, 215, 109, 248, 231, 174, 252 ]) )
+			$mol_assert_equal( reg.value_str(), reg.ref().description! )
+			$mol_assert_equal( reg.value_ref(), reg.ref() )
 			
-		// 	reg.value_ref( null )
-		// 	$mol_assert_equal( reg.value_bool(), false )
-		// 	$mol_assert_equal( reg.value_int(), 0n )
-		// 	$mol_assert_equal( reg.value_real(), Number.NaN )
-		// 	$mol_assert_equal( reg.value_bin(), null )
-		// 	$mol_assert_equal( reg.value_str(), '' )
-		// 	$mol_assert_equal( reg.value_ref(), null )
-			
-		// },
+		},
 		
 		"Store custom types"( $ ) {
 			
@@ -234,7 +226,7 @@ namespace $.$$ {
 			const remote = reg.yoke( null )!.Root( $hyoo_crus_reg )
 			
 			$mol_assert_unique( reg.land(), remote.land() )
-			$mol_assert_equal( reg.value_str(), remote.guid() )
+			$mol_assert_equal( reg.value_ref(), remote.ref() )
 			$mol_assert_equal( reg.yoke( null )!.Root( $hyoo_crus_reg ), remote )
 			
 		},
@@ -265,7 +257,7 @@ namespace $.$$ {
 			$mol_assert_equal( reg.remote(), null )
 			
 			reg.remote( reg )
-			$mol_assert_equal( reg.value_str(), reg.remote()!.guid(), reg.guid() )
+			$mol_assert_equal( reg.value_ref(), reg.remote()!.ref(), reg.ref() )
 			
 		},
 		

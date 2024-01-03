@@ -6,7 +6,7 @@ namespace $ {
 			return null as null | $hyoo_crus_realm
 		}
 		
-		numb() {
+		ref() {
 			return this.$.$hyoo_crus_auth.current().lord()
 		}
 		
@@ -16,12 +16,8 @@ namespace $ {
 			return this.Land( '' ).Root( $hyoo_crus_base )
 		}
 		
-		guid() {
-			return this.numb()
-		}
-		
 		toString() {
-			return this.numb()
+			return this.ref().description!
 		}
 		
 		@ $mol_mem_key

@@ -12,7 +12,7 @@ namespace $ {
 			bool: vary => vary,
 			int: vary => Boolean( vary ),
 			real: vary => Boolean( vary ),
-			// ref: vary => Boolean( vary.lord || vary.land || vary.land ),
+			ref: vary => Boolean( vary.description ),
 			
 			str: vary => Boolean( vary ),
 			time: vary => Boolean( vary.valueOf() ),
@@ -30,7 +30,7 @@ namespace $ {
 			bool: vary => BigInt( vary ),
 			int: vary => vary,
 			real: vary => Number.isFinite( vary ) ? BigInt( Math.trunc( vary ) ) : 0n,
-			// ref: vary => vary.lord() + ( BigInt( vary.land() ) << 64n ) + ( BigInt( vary.head() ) << 96n ),
+			ref: vary => 0n,//$mol_base64_ae_decode( vary.description!.slice( 0, 16 ) ) + ( BigInt( vary.land() ) << 64n ) + ( BigInt( vary.head() ) << 96n ),
 			
 			str: vary => {
 				try {
@@ -63,7 +63,7 @@ namespace $ {
 			bool: vary => Number( vary ),
 			int: vary => Number( vary ),
 			real: vary => vary,
-			// ref: vary => Number.NaN,
+			ref: vary => Number.NaN,
 			
 			str: vary => vary ? Number( vary ) : Number.NaN,
 			time: vary => vary.valueOf(),
@@ -74,27 +74,23 @@ namespace $ {
 		})
 	}
 
-	// export function $hyoo_crus_vary_cast_ref( vary: $hyoo_crus_vary_type ) {
-	// 	return $hyoo_crus_vary_switch( vary, {
+	export function $hyoo_crus_vary_cast_ref( vary: $hyoo_crus_vary_type ) {
+		return $hyoo_crus_vary_switch( vary, {
 			
-	// 		bin: vary => vary ? $hyoo_crus_ref.from( vary ) : $hyoo_crus_ref.make(),
-	// 		bool: vary => $hyoo_crus_ref.make(),
-	// 		int: vary => $hyoo_crus_ref.make(
-	// 			vary & 0xFFFFFFFFFFFFFFFFn,
-	// 			Number( ( vary >> 64n ) & 0xFFFFFFFFn ),
-	// 			Number( ( vary >> 96n ) & 0xFFFFFFFFFFFFn ),
-	// 		),
-	// 		real: vary => $hyoo_crus_ref.make(),
-	// 		ref: vary => vary,
+			bin: vary => Symbol.for( vary ? $mol_base64_ae_encode( vary ) : '' ),
+			bool: vary => Symbol.for( '' ),
+			int: vary => Symbol.for( '' ),
+			real: vary => Symbol.for( '' ),
+			ref: vary => vary,
 			
-	// 		str: vary => $hyoo_crus_ref.from( vary ),
-	// 		time: vary => $hyoo_crus_ref.make(),
-	// 		json: vary => $hyoo_crus_ref.make(),
-	// 		xml: vary => $hyoo_crus_ref.make(),
-	// 		tree: vary => $hyoo_crus_ref.make(),
+			str: vary => Symbol.for( vary ),
+			time: vary => Symbol.for( '' ),
+			json: vary => Symbol.for( '' ),
+			xml: vary => Symbol.for( '' ),
+			tree: vary => Symbol.for( vary.type ),
 			
-	// 	})
-	// }
+		})
+	}
 
 	export function $hyoo_crus_vary_cast_str( vary: $hyoo_crus_vary_type ) {
 		return $hyoo_crus_vary_switch( vary, {
@@ -103,7 +99,7 @@ namespace $ {
 			bool: vary => String( vary ),
 			int: vary => String( vary ),
 			real: vary => String( vary ),
-			// ref: vary => String( vary ),
+			ref: vary => vary.description!,
 			
 			str: vary => vary,
 			time: vary => String( vary ),
@@ -121,7 +117,7 @@ namespace $ {
 			bool: vary => new $mol_time_moment( 0 ),
 			int: vary => new $mol_time_moment( Number( vary & 0xFFFFFFFFFFFFn ) ),
 			real: vary => new $mol_time_moment( vary ),
-			// ref: vary => new $mol_time_moment( 0 ),
+			ref: vary => new $mol_time_moment( 0 ),
 			
 			str: vary => new $mol_time_moment( vary ),
 			time: vary => vary,
@@ -139,7 +135,7 @@ namespace $ {
 			bool: vary => [ vary ],
 			int: vary => [ vary.toString() ],
 			real: vary => [ vary ],
-			// ref: vary => ({ lord: vary.lord().toString(), numb: vary.land(), head: vary.head() }),
+			ref: vary => [ vary.description! ],
 			
 			str: vary => JSON.parse( vary ) as {} | any[],
 			time: vary => [ vary.toJSON() ],
@@ -157,7 +153,7 @@ namespace $ {
 			bool: vary => <body>{ vary }</body>,
 			int: vary => <body>{ vary }</body>,
 			real: vary => <body>{ vary }</body>,
-			// ref: vary => <body>{ vary }</body>,
+			ref: vary => <body>{ vary.description }</body>,
 			
 			str: vary => $mol_dom_parse( vary, 'application/xhtml+xml' ).documentElement,
 			time: vary => <body>{ vary }</body>,
@@ -175,7 +171,7 @@ namespace $ {
 			bool: vary => $mol_tree2.struct( vary.toString() ),
 			int: vary => $mol_tree2.struct( vary.toString() ),
 			real: vary => $mol_tree2.struct( vary.toString() ),
-			// ref: vary => $mol_tree2.struct( vary.toString() ),
+			ref: vary => $mol_tree2.struct( vary.description! ),
 			
 			str: vary => $$.$mol_tree2_from_string( vary ),
 			time: vary => $mol_tree2.struct( vary.toString() ),
@@ -192,7 +188,7 @@ namespace $ {
 		bool: $hyoo_crus_vary_cast_bool,
 		int: $hyoo_crus_vary_cast_int,
 		real: $hyoo_crus_vary_cast_real,
-		// ref: $hyoo_crus_vary_cast_ref,
+		ref: $hyoo_crus_vary_cast_ref,
 		
 		str: $hyoo_crus_vary_cast_str,
 		time: $hyoo_crus_vary_cast_time,
