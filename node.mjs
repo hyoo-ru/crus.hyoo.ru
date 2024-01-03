@@ -20090,8 +20090,7 @@ var $;
         $mol_style_define($hyoo_crus_app, {
             background: {
                 image: [
-                    [linear_gradient(['to right', [hsla(0, 0, 0, 1), hsla(0, 0, 0, 1), hsla(0, 0, 0, .5)]])],
-                    [url('https://i.imgur.com/oPsM5Ye.jpeg')],
+                    [url('hyoo/crus/logo/bg.webp')],
                 ],
                 size: ['cover'],
             },
