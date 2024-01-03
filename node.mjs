@@ -903,6 +903,8 @@ var $;
     function $mol_key(value) {
         if (typeof value === 'bigint')
             return value.toString() + 'n';
+        if (typeof value === 'symbol')
+            return value.description;
         if (!value)
             return JSON.stringify(value);
         if (typeof value !== 'object' && typeof value !== 'function')
@@ -910,6 +912,8 @@ var $;
         return JSON.stringify(value, (field, value) => {
             if (typeof value === 'bigint')
                 return value.toString() + 'n';
+            if (typeof value === 'symbol')
+                return value.description;
             if (!value)
                 return value;
             if (typeof value !== 'object' && typeof value !== 'function')
@@ -7653,7 +7657,7 @@ var $;
             if (next === undefined && this._lord !== undefined)
                 return this._lord;
             else
-                return this._lord = this.id12(2, next);
+                return this._lord = Symbol.for(this.id12(2, next));
         }
         auth(next) {
             const prev = new Uint8Array(this.buffer, this.byteOffset, 64);
@@ -7707,7 +7711,7 @@ var $;
             if (next === undefined && this._dest !== undefined)
                 return this._dest;
             else
-                return this._dest = this.id12(56, next);
+                return this._dest = Symbol.for(this.id12(56, next?.description));
         }
         bill() {
             return new Uint8Array(this.buffer, this.byteOffset + 32, 20);
@@ -8317,6 +8321,7 @@ var $;
         bool: Boolean,
         int: BigInt,
         real: Number,
+        ref: Symbol,
         str: String,
         time: $mol_time_moment,
         json: Object,
@@ -8329,6 +8334,7 @@ var $;
         $hyoo_crus_vary_tip[$hyoo_crus_vary_tip["bool"] = 1] = "bool";
         $hyoo_crus_vary_tip[$hyoo_crus_vary_tip["int"] = 2] = "int";
         $hyoo_crus_vary_tip[$hyoo_crus_vary_tip["real"] = 3] = "real";
+        $hyoo_crus_vary_tip[$hyoo_crus_vary_tip["ref"] = 4] = "ref";
         $hyoo_crus_vary_tip[$hyoo_crus_vary_tip["str"] = 16] = "str";
         $hyoo_crus_vary_tip[$hyoo_crus_vary_tip["time"] = 17] = "time";
         $hyoo_crus_vary_tip[$hyoo_crus_vary_tip["json"] = 18] = "json";
@@ -8343,6 +8349,7 @@ var $;
             case "bigint": return ways.int(vary);
             case "number": return ways.real(vary);
             case "string": return ways.str(vary);
+            case 'symbol': return ways.ref(vary);
         }
         if (vary instanceof Uint8Array)
             return ways.bin(vary);
@@ -8365,6 +8372,7 @@ var $;
             bool: vary => ({ tip: 'bool', bin: new Uint8Array([Number(vary)]) }),
             int: vary => ({ tip: 'int', bin: new Uint8Array(new BigInt64Array([vary]).buffer) }),
             real: vary => ({ tip: 'real', bin: new Uint8Array(new Float64Array([vary]).buffer) }),
+            ref: vary => ({ tip: 'ref', bin: $mol_base64_ae_decode(vary.description) }),
             str: vary => ({ tip: 'str', bin: $mol_charset_encode(vary) }),
             time: vary => ({ tip: 'time', bin: $mol_charset_encode(String(vary)) }),
             json: vary => ({ tip: 'json', bin: $mol_charset_encode(JSON.stringify(vary)) }),
@@ -8379,6 +8387,7 @@ var $;
             case 'bool': return Boolean(bin[0]);
             case 'int': return new BigInt64Array(bin.buffer, bin.byteOffset, bin.byteLength / 8)[0];
             case 'real': return new Float64Array(bin.buffer, bin.byteOffset, bin.byteLength / 8)[0];
+            case 'ref': return Symbol.for($mol_base64_ae_encode(bin));
             case 'str': return $mol_charset_decode(bin);
             case 'time': return new $mol_time_moment($mol_charset_decode(bin));
             case 'json': return JSON.parse($mol_charset_decode(bin));
@@ -8592,7 +8601,7 @@ var $;
             $mol_fail(new Error(`Too long key generation`));
         }
         lord() {
-            return $mol_base64_ae_encode(new Uint8Array(this.buffer, 2, 12));
+            return Symbol.for($mol_base64_ae_encode(new Uint8Array(this.buffer, 2, 12)));
         }
         peer() {
             return $mol_base64_ae_encode(new Uint8Array(this.buffer, 2, 6));
@@ -8748,11 +8757,11 @@ var $;
         realm() {
             return this.lord()?.realm() ?? null;
         }
-        lord_numb() {
-            return this.lord()?.numb() ?? this.$.$hyoo_crus_auth.current().lord();
+        lord_ref() {
+            return this.lord()?.ref() ?? this.$.$hyoo_crus_auth.current().lord();
         }
-        guid() {
-            return this.lord_numb() + (this.land().numb() || 'AAAAAAAA') + this.head();
+        ref() {
+            return Symbol.for(this.lord_ref().description + (this.land().numb() || 'AAAAAAAA') + this.head());
         }
         cast(Node) {
             return this.land().Node(Node).Item(this.head());
@@ -8780,7 +8789,7 @@ var $;
     }
     __decorate([
         $mol_memo.method
-    ], $hyoo_crus_node.prototype, "guid", null);
+    ], $hyoo_crus_node.prototype, "ref", null);
     __decorate([
         $mol_mem_key
     ], $hyoo_crus_node.prototype, "cast", null);
@@ -8929,6 +8938,387 @@ var $;
     $.$hyoo_crus_list = $hyoo_crus_list;
 })($ || ($ = {}));
 //hyoo/crus/list/list.ts
+;
+"use strict";
+//mol/type/partial/deep/deep.ts
+;
+"use strict";
+var $;
+(function ($) {
+    $.$mol_jsx_prefix = '';
+    $.$mol_jsx_crumbs = '';
+    $.$mol_jsx_booked = null;
+    $.$mol_jsx_document = {
+        getElementById: () => null,
+        createElementNS: (space, name) => $mol_dom_context.document.createElementNS(space, name),
+        createDocumentFragment: () => $mol_dom_context.document.createDocumentFragment(),
+    };
+    $.$mol_jsx_frag = '';
+    function $mol_jsx(Elem, props, ...childNodes) {
+        const id = props && props.id || '';
+        const guid = id ? $.$mol_jsx_prefix ? $.$mol_jsx_prefix + '/' + id : id : $.$mol_jsx_prefix;
+        const crumbs_self = id ? $.$mol_jsx_crumbs.replace(/(\S+)/g, `$1_${id.replace(/\/.*/i, '')}`) : $.$mol_jsx_crumbs;
+        if (Elem && $.$mol_jsx_booked) {
+            if ($.$mol_jsx_booked.has(id)) {
+                $mol_fail(new Error(`JSX already has tag with id ${JSON.stringify(guid)}`));
+            }
+            else {
+                $.$mol_jsx_booked.add(id);
+            }
+        }
+        let node = guid ? $.$mol_jsx_document.getElementById(guid) : null;
+        if ($.$mol_jsx_prefix) {
+            const prefix_ext = $.$mol_jsx_prefix;
+            const booked_ext = $.$mol_jsx_booked;
+            const crumbs_ext = $.$mol_jsx_crumbs;
+            for (const field in props) {
+                const func = props[field];
+                if (typeof func !== 'function')
+                    continue;
+                const wrapper = function (...args) {
+                    const prefix = $.$mol_jsx_prefix;
+                    const booked = $.$mol_jsx_booked;
+                    const crumbs = $.$mol_jsx_crumbs;
+                    try {
+                        $.$mol_jsx_prefix = prefix_ext;
+                        $.$mol_jsx_booked = booked_ext;
+                        $.$mol_jsx_crumbs = crumbs_ext;
+                        return func.call(this, ...args);
+                    }
+                    finally {
+                        $.$mol_jsx_prefix = prefix;
+                        $.$mol_jsx_booked = booked;
+                        $.$mol_jsx_crumbs = crumbs;
+                    }
+                };
+                $mol_func_name_from(wrapper, func);
+                props[field] = wrapper;
+            }
+        }
+        if (typeof Elem !== 'string') {
+            if ('prototype' in Elem) {
+                const view = node && node[String(Elem)] || new Elem;
+                Object.assign(view, props);
+                view[Symbol.toStringTag] = guid;
+                view.childNodes = childNodes;
+                if (!view.ownerDocument)
+                    view.ownerDocument = $.$mol_jsx_document;
+                view.className = (crumbs_self ? crumbs_self + ' ' : '') + (Elem['name'] || Elem);
+                node = view.valueOf();
+                node[String(Elem)] = view;
+                return node;
+            }
+            else {
+                const prefix = $.$mol_jsx_prefix;
+                const booked = $.$mol_jsx_booked;
+                const crumbs = $.$mol_jsx_crumbs;
+                try {
+                    $.$mol_jsx_prefix = guid;
+                    $.$mol_jsx_booked = new Set;
+                    $.$mol_jsx_crumbs = (crumbs_self ? crumbs_self + ' ' : '') + (Elem['name'] || Elem);
+                    return Elem(props, ...childNodes);
+                }
+                finally {
+                    $.$mol_jsx_prefix = prefix;
+                    $.$mol_jsx_booked = booked;
+                    $.$mol_jsx_crumbs = crumbs;
+                }
+            }
+        }
+        if (!node) {
+            node = Elem
+                ? $.$mol_jsx_document.createElementNS(props?.xmlns ?? 'http://www.w3.org/1999/xhtml', Elem)
+                : $.$mol_jsx_document.createDocumentFragment();
+        }
+        $mol_dom_render_children(node, [].concat(...childNodes));
+        if (!Elem)
+            return node;
+        if (guid)
+            node.id = guid;
+        for (const key in props) {
+            if (key === 'id')
+                continue;
+            if (typeof props[key] === 'string') {
+                if (typeof node[key] === 'string')
+                    node[key] = props[key];
+                node.setAttribute(key, props[key]);
+            }
+            else if (props[key] &&
+                typeof props[key] === 'object' &&
+                Reflect.getPrototypeOf(props[key]) === Reflect.getPrototypeOf({})) {
+                if (typeof node[key] === 'object') {
+                    Object.assign(node[key], props[key]);
+                    continue;
+                }
+            }
+            else {
+                node[key] = props[key];
+            }
+        }
+        if ($.$mol_jsx_crumbs)
+            node.className = (props?.['class'] ? props['class'] + ' ' : '') + crumbs_self;
+        return node;
+    }
+    $.$mol_jsx = $mol_jsx;
+})($ || ($ = {}));
+//mol/jsx/jsx.ts
+;
+"use strict";
+var $;
+(function ($) {
+    function $mol_tree2_bin_to_bytes(tree) {
+        return Uint8Array.from(tree.kids, kid => parseInt(kid.value, 16));
+    }
+    $.$mol_tree2_bin_to_bytes = $mol_tree2_bin_to_bytes;
+    function $mol_tree2_bin_from_bytes(bytes, span = $mol_span.unknown) {
+        return $mol_tree2.list(Array.from(bytes, code => {
+            return $mol_tree2.data(code.toString(16).padStart(2, '0'), [], span);
+        }), span);
+    }
+    $.$mol_tree2_bin_from_bytes = $mol_tree2_bin_from_bytes;
+    function $mol_tree2_bin_from_string(str, span = $mol_span.unknown) {
+        return $mol_tree2_bin_from_bytes([...new TextEncoder().encode(str)], span);
+    }
+    $.$mol_tree2_bin_from_string = $mol_tree2_bin_from_string;
+})($ || ($ = {}));
+//mol/tree2/bin/bin.ts
+;
+"use strict";
+var $;
+(function ($) {
+    function $mol_tree2_xml_from_dom(dom) {
+        switch (dom.nodeType) {
+            case dom.DOCUMENT_NODE: {
+                let kids = [];
+                for (const kid of dom.childNodes) {
+                    kids.push($mol_tree2_xml_from_dom(kid));
+                }
+                return $mol_tree2.list(kids);
+            }
+            case dom.PROCESSING_INSTRUCTION_NODE: {
+                return $mol_tree2.struct('?', [
+                    $mol_tree2.struct(dom.nodeName, dom.nodeValue.split(' ').map(chunk => {
+                        const [, name, value] = /^(.*?)(?:="(.*?)")?$/.exec(chunk);
+                        const kids = value ? [$mol_tree2.data(value)] : [];
+                        return $mol_tree2.struct(name, kids);
+                    }))
+                ]);
+            }
+            case dom.DOCUMENT_TYPE_NODE: {
+                const dom2 = dom;
+                return $mol_tree2.struct('!', [
+                    $mol_tree2.struct('DOCTYPE', [
+                        $mol_tree2.struct(dom2.name)
+                    ])
+                ]);
+            }
+            case dom.ELEMENT_NODE: {
+                let kids = [];
+                for (const attr of dom.attributes) {
+                    kids.push($mol_tree2.struct('@', [
+                        $mol_tree2.struct(attr.nodeName, [
+                            $mol_tree2.data(attr.nodeValue)
+                        ])
+                    ]));
+                }
+                for (const kid of dom.childNodes) {
+                    const k = $mol_tree2_xml_from_dom(kid);
+                    if (k.type || k.value)
+                        kids.push(k);
+                }
+                return $mol_tree2.struct(dom.nodeName, kids);
+            }
+            case dom.COMMENT_NODE: {
+                return $mol_tree2.struct('--', [
+                    $mol_tree2.data(dom.nodeValue)
+                ]);
+            }
+            case dom.TEXT_NODE: {
+                if (!dom.nodeValue.trim())
+                    return $mol_tree2.list([]);
+                return $mol_tree2.data(dom.nodeValue.replace(/\s+/g, ' '));
+            }
+        }
+        return $mol_fail(new Error(`Unsupported node ${dom.nodeName}`));
+    }
+    $.$mol_tree2_xml_from_dom = $mol_tree2_xml_from_dom;
+})($ || ($ = {}));
+//mol/tree2/xml/from/dom/dom.ts
+;
+"use strict";
+var $;
+(function ($) {
+    function $hyoo_crus_vary_cast_bin(vary) {
+        return vary === null || vary === '' ? null : $hyoo_crus_vary_encode(vary).bin;
+    }
+    $.$hyoo_crus_vary_cast_bin = $hyoo_crus_vary_cast_bin;
+    function $hyoo_crus_vary_cast_bool(vary) {
+        return $hyoo_crus_vary_switch(vary, {
+            bin: vary => Boolean(vary?.length),
+            bool: vary => vary,
+            int: vary => Boolean(vary),
+            real: vary => Boolean(vary),
+            ref: vary => Boolean(vary.description),
+            str: vary => Boolean(vary),
+            time: vary => Boolean(vary.valueOf()),
+            json: vary => Boolean(vary instanceof Array ? vary.length : Reflect.ownKeys(vary).length),
+            xml: vary => Boolean(vary.attributes.length + vary.childNodes.length),
+            tree: vary => Boolean(vary.value || vary.kids.length),
+        });
+    }
+    $.$hyoo_crus_vary_cast_bool = $hyoo_crus_vary_cast_bool;
+    function $hyoo_crus_vary_cast_int(vary) {
+        return $hyoo_crus_vary_switch(vary, {
+            bin: vary => vary ? BigInt(vary.length) : 0n,
+            bool: vary => BigInt(vary),
+            int: vary => vary,
+            real: vary => Number.isFinite(vary) ? BigInt(Math.trunc(vary)) : 0n,
+            ref: vary => 0n,
+            str: vary => {
+                try {
+                    return BigInt(vary);
+                }
+                catch {
+                    return 0n;
+                }
+            },
+            time: vary => BigInt(vary.valueOf()),
+            json: vary => BigInt(vary instanceof Array ? vary.length : Reflect.ownKeys(vary).length),
+            xml: vary => BigInt(vary.attributes.length + vary.childNodes.length),
+            tree: vary => {
+                try {
+                    return BigInt(vary.value);
+                }
+                catch {
+                    return BigInt(vary.kids.length);
+                }
+            },
+        });
+    }
+    $.$hyoo_crus_vary_cast_int = $hyoo_crus_vary_cast_int;
+    function $hyoo_crus_vary_cast_real(vary) {
+        return $hyoo_crus_vary_switch(vary, {
+            bin: vary => vary?.length ?? Number.NaN,
+            bool: vary => Number(vary),
+            int: vary => Number(vary),
+            real: vary => vary,
+            ref: vary => Number.NaN,
+            str: vary => vary ? Number(vary) : Number.NaN,
+            time: vary => vary.valueOf(),
+            json: vary => vary instanceof Array ? vary.length : Reflect.ownKeys(vary).length,
+            xml: vary => Number(vary.attributes.length + vary.childNodes.length),
+            tree: vary => Number(vary.value || vary.kids.length),
+        });
+    }
+    $.$hyoo_crus_vary_cast_real = $hyoo_crus_vary_cast_real;
+    function $hyoo_crus_vary_cast_ref(vary) {
+        return $hyoo_crus_vary_switch(vary, {
+            bin: vary => Symbol.for(vary ? $mol_base64_ae_encode(vary) : ''),
+            bool: vary => Symbol.for(''),
+            int: vary => Symbol.for(''),
+            real: vary => Symbol.for(''),
+            ref: vary => vary,
+            str: vary => Symbol.for(vary),
+            time: vary => Symbol.for(''),
+            json: vary => Symbol.for(''),
+            xml: vary => Symbol.for(''),
+            tree: vary => Symbol.for(vary.type),
+        });
+    }
+    $.$hyoo_crus_vary_cast_ref = $hyoo_crus_vary_cast_ref;
+    function $hyoo_crus_vary_cast_str(vary) {
+        return $hyoo_crus_vary_switch(vary, {
+            bin: vary => vary ? [...vary].map(n => n.toString(16).padStart(2, '0')).join('') : '',
+            bool: vary => String(vary),
+            int: vary => String(vary),
+            real: vary => String(vary),
+            ref: vary => vary.description,
+            str: vary => vary,
+            time: vary => String(vary),
+            json: vary => JSON.stringify(vary),
+            xml: vary => $mol_dom_serialize(vary),
+            tree: vary => String(vary),
+        });
+    }
+    $.$hyoo_crus_vary_cast_str = $hyoo_crus_vary_cast_str;
+    function $hyoo_crus_vary_cast_time(vary) {
+        return $hyoo_crus_vary_switch(vary, {
+            bin: vary => new $mol_time_moment(vary ? $mol_charset_decode(vary) : 0),
+            bool: vary => new $mol_time_moment(0),
+            int: vary => new $mol_time_moment(Number(vary & 0xffffffffffffn)),
+            real: vary => new $mol_time_moment(vary),
+            ref: vary => new $mol_time_moment(0),
+            str: vary => new $mol_time_moment(vary),
+            time: vary => vary,
+            json: vary => new $mol_time_moment(vary),
+            xml: vary => new $mol_time_moment(0),
+            tree: vary => new $mol_time_moment(0),
+        });
+    }
+    $.$hyoo_crus_vary_cast_time = $hyoo_crus_vary_cast_time;
+    function $hyoo_crus_vary_cast_json(vary) {
+        return $hyoo_crus_vary_switch(vary, {
+            bin: vary => vary && [...vary],
+            bool: vary => [vary],
+            int: vary => [vary.toString()],
+            real: vary => [vary],
+            ref: vary => [vary.description],
+            str: vary => JSON.parse(vary),
+            time: vary => [vary.toJSON()],
+            json: vary => vary,
+            xml: vary => [$mol_dom_serialize(vary)],
+            tree: vary => [vary.toString()],
+        });
+    }
+    $.$hyoo_crus_vary_cast_json = $hyoo_crus_vary_cast_json;
+    function $hyoo_crus_vary_cast_xml(vary) {
+        return $hyoo_crus_vary_switch(vary, {
+            bin: vary => $mol_jsx("body", null, vary && $mol_base64_ae_encode(vary)),
+            bool: vary => $mol_jsx("body", null, vary),
+            int: vary => $mol_jsx("body", null, vary),
+            real: vary => $mol_jsx("body", null, vary),
+            ref: vary => $mol_jsx("body", null, vary.description),
+            str: vary => $mol_dom_parse(vary, 'application/xhtml+xml').documentElement,
+            time: vary => $mol_jsx("body", null, vary),
+            json: vary => $mol_jsx("body", null, JSON.stringify(vary)),
+            xml: vary => vary,
+            tree: vary => $mol_jsx("body", null, vary),
+        });
+    }
+    $.$hyoo_crus_vary_cast_xml = $hyoo_crus_vary_cast_xml;
+    function $hyoo_crus_vary_cast_tree(vary) {
+        return $hyoo_crus_vary_switch(vary, {
+            bin: vary => vary ? $mol_tree2_bin_from_bytes(vary) : $mol_tree2.list([]),
+            bool: vary => $mol_tree2.struct(vary.toString()),
+            int: vary => $mol_tree2.struct(vary.toString()),
+            real: vary => $mol_tree2.struct(vary.toString()),
+            ref: vary => $mol_tree2.struct(vary.description),
+            str: vary => $$.$mol_tree2_from_string(vary),
+            time: vary => $mol_tree2.struct(vary.toString()),
+            json: vary => $$.$mol_tree2_from_json(vary),
+            xml: vary => $$.$mol_tree2_xml_from_dom(vary),
+            tree: vary => vary,
+        });
+    }
+    $.$hyoo_crus_vary_cast_tree = $hyoo_crus_vary_cast_tree;
+    $.$hyoo_crus_vary_cast_funcs = {
+        bin: $hyoo_crus_vary_cast_bin,
+        bool: $hyoo_crus_vary_cast_bool,
+        int: $hyoo_crus_vary_cast_int,
+        real: $hyoo_crus_vary_cast_real,
+        ref: $hyoo_crus_vary_cast_ref,
+        str: $hyoo_crus_vary_cast_str,
+        time: $hyoo_crus_vary_cast_time,
+        json: $hyoo_crus_vary_cast_json,
+        xml: $hyoo_crus_vary_cast_xml,
+        tree: $hyoo_crus_vary_cast_tree,
+    };
+    function $hyoo_crus_vary_cast(tip, vary) {
+        return $.$hyoo_crus_vary_cast_funcs[tip](vary);
+    }
+    $.$hyoo_crus_vary_cast = $hyoo_crus_vary_cast;
+})($ || ($ = {}));
+//hyoo/crus/vary/cast/cast.tsx
 ;
 "use strict";
 var $;
@@ -9317,363 +9707,6 @@ var $;
 //mol/wire/race/race.ts
 ;
 "use strict";
-//mol/type/partial/deep/deep.ts
-;
-"use strict";
-var $;
-(function ($) {
-    $.$mol_jsx_prefix = '';
-    $.$mol_jsx_crumbs = '';
-    $.$mol_jsx_booked = null;
-    $.$mol_jsx_document = {
-        getElementById: () => null,
-        createElementNS: (space, name) => $mol_dom_context.document.createElementNS(space, name),
-        createDocumentFragment: () => $mol_dom_context.document.createDocumentFragment(),
-    };
-    $.$mol_jsx_frag = '';
-    function $mol_jsx(Elem, props, ...childNodes) {
-        const id = props && props.id || '';
-        const guid = id ? $.$mol_jsx_prefix ? $.$mol_jsx_prefix + '/' + id : id : $.$mol_jsx_prefix;
-        const crumbs_self = id ? $.$mol_jsx_crumbs.replace(/(\S+)/g, `$1_${id.replace(/\/.*/i, '')}`) : $.$mol_jsx_crumbs;
-        if (Elem && $.$mol_jsx_booked) {
-            if ($.$mol_jsx_booked.has(id)) {
-                $mol_fail(new Error(`JSX already has tag with id ${JSON.stringify(guid)}`));
-            }
-            else {
-                $.$mol_jsx_booked.add(id);
-            }
-        }
-        let node = guid ? $.$mol_jsx_document.getElementById(guid) : null;
-        if ($.$mol_jsx_prefix) {
-            const prefix_ext = $.$mol_jsx_prefix;
-            const booked_ext = $.$mol_jsx_booked;
-            const crumbs_ext = $.$mol_jsx_crumbs;
-            for (const field in props) {
-                const func = props[field];
-                if (typeof func !== 'function')
-                    continue;
-                const wrapper = function (...args) {
-                    const prefix = $.$mol_jsx_prefix;
-                    const booked = $.$mol_jsx_booked;
-                    const crumbs = $.$mol_jsx_crumbs;
-                    try {
-                        $.$mol_jsx_prefix = prefix_ext;
-                        $.$mol_jsx_booked = booked_ext;
-                        $.$mol_jsx_crumbs = crumbs_ext;
-                        return func.call(this, ...args);
-                    }
-                    finally {
-                        $.$mol_jsx_prefix = prefix;
-                        $.$mol_jsx_booked = booked;
-                        $.$mol_jsx_crumbs = crumbs;
-                    }
-                };
-                $mol_func_name_from(wrapper, func);
-                props[field] = wrapper;
-            }
-        }
-        if (typeof Elem !== 'string') {
-            if ('prototype' in Elem) {
-                const view = node && node[String(Elem)] || new Elem;
-                Object.assign(view, props);
-                view[Symbol.toStringTag] = guid;
-                view.childNodes = childNodes;
-                if (!view.ownerDocument)
-                    view.ownerDocument = $.$mol_jsx_document;
-                view.className = (crumbs_self ? crumbs_self + ' ' : '') + (Elem['name'] || Elem);
-                node = view.valueOf();
-                node[String(Elem)] = view;
-                return node;
-            }
-            else {
-                const prefix = $.$mol_jsx_prefix;
-                const booked = $.$mol_jsx_booked;
-                const crumbs = $.$mol_jsx_crumbs;
-                try {
-                    $.$mol_jsx_prefix = guid;
-                    $.$mol_jsx_booked = new Set;
-                    $.$mol_jsx_crumbs = (crumbs_self ? crumbs_self + ' ' : '') + (Elem['name'] || Elem);
-                    return Elem(props, ...childNodes);
-                }
-                finally {
-                    $.$mol_jsx_prefix = prefix;
-                    $.$mol_jsx_booked = booked;
-                    $.$mol_jsx_crumbs = crumbs;
-                }
-            }
-        }
-        if (!node) {
-            node = Elem
-                ? $.$mol_jsx_document.createElementNS(props?.xmlns ?? 'http://www.w3.org/1999/xhtml', Elem)
-                : $.$mol_jsx_document.createDocumentFragment();
-        }
-        $mol_dom_render_children(node, [].concat(...childNodes));
-        if (!Elem)
-            return node;
-        if (guid)
-            node.id = guid;
-        for (const key in props) {
-            if (key === 'id')
-                continue;
-            if (typeof props[key] === 'string') {
-                if (typeof node[key] === 'string')
-                    node[key] = props[key];
-                node.setAttribute(key, props[key]);
-            }
-            else if (props[key] &&
-                typeof props[key] === 'object' &&
-                Reflect.getPrototypeOf(props[key]) === Reflect.getPrototypeOf({})) {
-                if (typeof node[key] === 'object') {
-                    Object.assign(node[key], props[key]);
-                    continue;
-                }
-            }
-            else {
-                node[key] = props[key];
-            }
-        }
-        if ($.$mol_jsx_crumbs)
-            node.className = (props?.['class'] ? props['class'] + ' ' : '') + crumbs_self;
-        return node;
-    }
-    $.$mol_jsx = $mol_jsx;
-})($ || ($ = {}));
-//mol/jsx/jsx.ts
-;
-"use strict";
-var $;
-(function ($) {
-    function $mol_tree2_bin_to_bytes(tree) {
-        return Uint8Array.from(tree.kids, kid => parseInt(kid.value, 16));
-    }
-    $.$mol_tree2_bin_to_bytes = $mol_tree2_bin_to_bytes;
-    function $mol_tree2_bin_from_bytes(bytes, span = $mol_span.unknown) {
-        return $mol_tree2.list(Array.from(bytes, code => {
-            return $mol_tree2.data(code.toString(16).padStart(2, '0'), [], span);
-        }), span);
-    }
-    $.$mol_tree2_bin_from_bytes = $mol_tree2_bin_from_bytes;
-    function $mol_tree2_bin_from_string(str, span = $mol_span.unknown) {
-        return $mol_tree2_bin_from_bytes([...new TextEncoder().encode(str)], span);
-    }
-    $.$mol_tree2_bin_from_string = $mol_tree2_bin_from_string;
-})($ || ($ = {}));
-//mol/tree2/bin/bin.ts
-;
-"use strict";
-var $;
-(function ($) {
-    function $mol_tree2_xml_from_dom(dom) {
-        switch (dom.nodeType) {
-            case dom.DOCUMENT_NODE: {
-                let kids = [];
-                for (const kid of dom.childNodes) {
-                    kids.push($mol_tree2_xml_from_dom(kid));
-                }
-                return $mol_tree2.list(kids);
-            }
-            case dom.PROCESSING_INSTRUCTION_NODE: {
-                return $mol_tree2.struct('?', [
-                    $mol_tree2.struct(dom.nodeName, dom.nodeValue.split(' ').map(chunk => {
-                        const [, name, value] = /^(.*?)(?:="(.*?)")?$/.exec(chunk);
-                        const kids = value ? [$mol_tree2.data(value)] : [];
-                        return $mol_tree2.struct(name, kids);
-                    }))
-                ]);
-            }
-            case dom.DOCUMENT_TYPE_NODE: {
-                const dom2 = dom;
-                return $mol_tree2.struct('!', [
-                    $mol_tree2.struct('DOCTYPE', [
-                        $mol_tree2.struct(dom2.name)
-                    ])
-                ]);
-            }
-            case dom.ELEMENT_NODE: {
-                let kids = [];
-                for (const attr of dom.attributes) {
-                    kids.push($mol_tree2.struct('@', [
-                        $mol_tree2.struct(attr.nodeName, [
-                            $mol_tree2.data(attr.nodeValue)
-                        ])
-                    ]));
-                }
-                for (const kid of dom.childNodes) {
-                    const k = $mol_tree2_xml_from_dom(kid);
-                    if (k.type || k.value)
-                        kids.push(k);
-                }
-                return $mol_tree2.struct(dom.nodeName, kids);
-            }
-            case dom.COMMENT_NODE: {
-                return $mol_tree2.struct('--', [
-                    $mol_tree2.data(dom.nodeValue)
-                ]);
-            }
-            case dom.TEXT_NODE: {
-                if (!dom.nodeValue.trim())
-                    return $mol_tree2.list([]);
-                return $mol_tree2.data(dom.nodeValue.replace(/\s+/g, ' '));
-            }
-        }
-        return $mol_fail(new Error(`Unsupported node ${dom.nodeName}`));
-    }
-    $.$mol_tree2_xml_from_dom = $mol_tree2_xml_from_dom;
-})($ || ($ = {}));
-//mol/tree2/xml/from/dom/dom.ts
-;
-"use strict";
-var $;
-(function ($) {
-    function $hyoo_crus_vary_cast_bin(vary) {
-        return vary === null || vary === '' ? null : $hyoo_crus_vary_encode(vary).bin;
-    }
-    $.$hyoo_crus_vary_cast_bin = $hyoo_crus_vary_cast_bin;
-    function $hyoo_crus_vary_cast_bool(vary) {
-        return $hyoo_crus_vary_switch(vary, {
-            bin: vary => Boolean(vary?.length),
-            bool: vary => vary,
-            int: vary => Boolean(vary),
-            real: vary => Boolean(vary),
-            str: vary => Boolean(vary),
-            time: vary => Boolean(vary.valueOf()),
-            json: vary => Boolean(vary instanceof Array ? vary.length : Reflect.ownKeys(vary).length),
-            xml: vary => Boolean(vary.attributes.length + vary.childNodes.length),
-            tree: vary => Boolean(vary.value || vary.kids.length),
-        });
-    }
-    $.$hyoo_crus_vary_cast_bool = $hyoo_crus_vary_cast_bool;
-    function $hyoo_crus_vary_cast_int(vary) {
-        return $hyoo_crus_vary_switch(vary, {
-            bin: vary => vary ? BigInt(vary.length) : 0n,
-            bool: vary => BigInt(vary),
-            int: vary => vary,
-            real: vary => Number.isFinite(vary) ? BigInt(Math.trunc(vary)) : 0n,
-            str: vary => {
-                try {
-                    return BigInt(vary);
-                }
-                catch {
-                    return 0n;
-                }
-            },
-            time: vary => BigInt(vary.valueOf()),
-            json: vary => BigInt(vary instanceof Array ? vary.length : Reflect.ownKeys(vary).length),
-            xml: vary => BigInt(vary.attributes.length + vary.childNodes.length),
-            tree: vary => {
-                try {
-                    return BigInt(vary.value);
-                }
-                catch {
-                    return BigInt(vary.kids.length);
-                }
-            },
-        });
-    }
-    $.$hyoo_crus_vary_cast_int = $hyoo_crus_vary_cast_int;
-    function $hyoo_crus_vary_cast_real(vary) {
-        return $hyoo_crus_vary_switch(vary, {
-            bin: vary => vary?.length ?? Number.NaN,
-            bool: vary => Number(vary),
-            int: vary => Number(vary),
-            real: vary => vary,
-            str: vary => vary ? Number(vary) : Number.NaN,
-            time: vary => vary.valueOf(),
-            json: vary => vary instanceof Array ? vary.length : Reflect.ownKeys(vary).length,
-            xml: vary => Number(vary.attributes.length + vary.childNodes.length),
-            tree: vary => Number(vary.value || vary.kids.length),
-        });
-    }
-    $.$hyoo_crus_vary_cast_real = $hyoo_crus_vary_cast_real;
-    function $hyoo_crus_vary_cast_str(vary) {
-        return $hyoo_crus_vary_switch(vary, {
-            bin: vary => vary ? [...vary].map(n => n.toString(16).padStart(2, '0')).join('') : '',
-            bool: vary => String(vary),
-            int: vary => String(vary),
-            real: vary => String(vary),
-            str: vary => vary,
-            time: vary => String(vary),
-            json: vary => JSON.stringify(vary),
-            xml: vary => $mol_dom_serialize(vary),
-            tree: vary => String(vary),
-        });
-    }
-    $.$hyoo_crus_vary_cast_str = $hyoo_crus_vary_cast_str;
-    function $hyoo_crus_vary_cast_time(vary) {
-        return $hyoo_crus_vary_switch(vary, {
-            bin: vary => new $mol_time_moment(vary ? $mol_charset_decode(vary) : 0),
-            bool: vary => new $mol_time_moment(0),
-            int: vary => new $mol_time_moment(Number(vary & 0xffffffffffffn)),
-            real: vary => new $mol_time_moment(vary),
-            str: vary => new $mol_time_moment(vary),
-            time: vary => vary,
-            json: vary => new $mol_time_moment(vary),
-            xml: vary => new $mol_time_moment(0),
-            tree: vary => new $mol_time_moment(0),
-        });
-    }
-    $.$hyoo_crus_vary_cast_time = $hyoo_crus_vary_cast_time;
-    function $hyoo_crus_vary_cast_json(vary) {
-        return $hyoo_crus_vary_switch(vary, {
-            bin: vary => vary && [...vary],
-            bool: vary => [vary],
-            int: vary => [vary.toString()],
-            real: vary => [vary],
-            str: vary => JSON.parse(vary),
-            time: vary => [vary.toJSON()],
-            json: vary => vary,
-            xml: vary => [$mol_dom_serialize(vary)],
-            tree: vary => [vary.toString()],
-        });
-    }
-    $.$hyoo_crus_vary_cast_json = $hyoo_crus_vary_cast_json;
-    function $hyoo_crus_vary_cast_xml(vary) {
-        return $hyoo_crus_vary_switch(vary, {
-            bin: vary => $mol_jsx("body", null, vary && $mol_base64_ae_encode(vary)),
-            bool: vary => $mol_jsx("body", null, vary),
-            int: vary => $mol_jsx("body", null, vary),
-            real: vary => $mol_jsx("body", null, vary),
-            str: vary => $mol_dom_parse(vary, 'application/xhtml+xml').documentElement,
-            time: vary => $mol_jsx("body", null, vary),
-            json: vary => $mol_jsx("body", null, JSON.stringify(vary)),
-            xml: vary => vary,
-            tree: vary => $mol_jsx("body", null, vary),
-        });
-    }
-    $.$hyoo_crus_vary_cast_xml = $hyoo_crus_vary_cast_xml;
-    function $hyoo_crus_vary_cast_tree(vary) {
-        return $hyoo_crus_vary_switch(vary, {
-            bin: vary => vary ? $mol_tree2_bin_from_bytes(vary) : $mol_tree2.list([]),
-            bool: vary => $mol_tree2.struct(vary.toString()),
-            int: vary => $mol_tree2.struct(vary.toString()),
-            real: vary => $mol_tree2.struct(vary.toString()),
-            str: vary => $$.$mol_tree2_from_string(vary),
-            time: vary => $mol_tree2.struct(vary.toString()),
-            json: vary => $$.$mol_tree2_from_json(vary),
-            xml: vary => $$.$mol_tree2_xml_from_dom(vary),
-            tree: vary => vary,
-        });
-    }
-    $.$hyoo_crus_vary_cast_tree = $hyoo_crus_vary_cast_tree;
-    $.$hyoo_crus_vary_cast_funcs = {
-        bin: $hyoo_crus_vary_cast_bin,
-        bool: $hyoo_crus_vary_cast_bool,
-        int: $hyoo_crus_vary_cast_int,
-        real: $hyoo_crus_vary_cast_real,
-        str: $hyoo_crus_vary_cast_str,
-        time: $hyoo_crus_vary_cast_time,
-        json: $hyoo_crus_vary_cast_json,
-        xml: $hyoo_crus_vary_cast_xml,
-        tree: $hyoo_crus_vary_cast_tree,
-    };
-    function $hyoo_crus_vary_cast(tip, vary) {
-        return $.$hyoo_crus_vary_cast_funcs[tip](vary);
-    }
-    $.$hyoo_crus_vary_cast = $hyoo_crus_vary_cast;
-})($ || ($ = {}));
-//hyoo/crus/vary/cast/cast.tsx
-;
-"use strict";
 //mol/data/value/value.ts
 ;
 "use strict";
@@ -9709,6 +9742,10 @@ var $;
         value_bin(next) {
             return $hyoo_crus_vary_cast_bin(this.value_vary(next));
         }
+        value_ref(next) {
+            const bin = this.value_vary(next);
+            return typeof bin === 'symbol' ? bin : Symbol.for('');
+        }
         value_as(decode, next) {
             if (next === undefined) {
                 try {
@@ -9728,14 +9765,14 @@ var $;
         }
         yoke(vary) {
             const realm = this.realm();
-            const ref = this.value_str();
-            if (ref)
+            const ref = this.value_ref();
+            if (ref.description)
                 return realm.Land(ref);
             const hash = $mol_crypto_hash($hyoo_crus_vary_encode(vary).bin);
             const numb = new Uint16Array($mol_base64_decode(this.land().numb()).buffer);
             const idea = new $mol_buffer(hash.buffer).uint32(0) + numb[0] + numb[1] * 2 ** 16 + numb[2] * 2 ** 32;
             const land = realm.Lord(this.land().auth().lord()).Land_new(idea);
-            this.value_str(land.guid());
+            this.value_ref(land.ref());
             return land;
         }
         ;
@@ -9761,6 +9798,9 @@ var $;
     __decorate([
         $mol_mem
     ], $hyoo_crus_reg.prototype, "value_bin", null);
+    __decorate([
+        $mol_mem
+    ], $hyoo_crus_reg.prototype, "value_ref", null);
     __decorate([
         $mol_mem_key
     ], $hyoo_crus_reg.prototype, "value_as", null);
@@ -9913,8 +9953,8 @@ var $;
         numb() {
             return '';
         }
-        lord_numb() {
-            return this.lord()?.numb() ?? this.auth().lord();
+        lord_ref() {
+            return this.lord()?.ref() ?? this.auth().lord();
         }
         realm() {
             return this.lord()?.realm() ?? null;
@@ -9922,8 +9962,8 @@ var $;
         auth() {
             return this.$.$hyoo_crus_auth.current();
         }
-        guid() {
-            return this.lord_numb() + this.numb();
+        ref() {
+            return Symbol.for(this.lord_ref().description + this.numb());
         }
         face = new $hyoo_crus_face;
         passes = new $mol_wire_dict();
@@ -9975,7 +10015,7 @@ var $;
             return [...this.passes.values()].map(unit => unit.lord());
         }
         lord_rang(lord) {
-            if (lord === this.lord_numb())
+            if (lord === this.lord_ref())
                 return $hyoo_crus_rang.law;
             return this.gifts.get(lord)?.rang() ?? $hyoo_crus_rang.get;
         }
@@ -9993,7 +10033,7 @@ var $;
                 delta.push(unit);
             }
             for (const [lord, unit] of this.gifts) {
-                const time = face.get(lord.slice(0, 8));
+                const time = face.get(lord.description.slice(0, 8));
                 if (!time || time < unit.time())
                     delta.push(unit);
             }
@@ -10036,7 +10076,7 @@ var $;
                         if (prev && $hyoo_crus_gift.compare(prev, next) <= 0)
                             return 'Unit too old';
                         this.gifts.set(dest, next);
-                        this.face.see_peer(dest.slice(0, 8), next.time());
+                        this.face.see_peer(dest.description.slice(0, 8), next.time());
                         if ((prev?.rang() ?? $hyoo_crus_rang.get) > next.rang())
                             need_recheck = true;
                     },
@@ -10089,10 +10129,10 @@ var $;
         }
         fork() {
             const land = this.realm().home().Land_new(0);
-            land.cloves().items([this.guid()]);
+            land.inflow().items([this.ref()]);
             return land;
         }
-        cloves() {
+        inflow() {
             if (!this.numb())
                 return null;
             return this.Node($hyoo_crus_list).Item('AAAAAAAB');
@@ -10101,14 +10141,14 @@ var $;
             this.sync();
             const queue = [...this.gists.get(head)?.values() ?? []];
             merge: if (this.numb() && (head !== 'AAAAAAAB')) {
-                const cloves = this.cloves().items().slice().reverse();
-                if (!cloves.length)
+                const inflow = this.inflow().items().slice().reverse().map($hyoo_crus_vary_cast_ref);
+                if (!inflow.length)
                     break merge;
                 const exists = new Set([...this.gists.get(head)?.keys() ?? []]);
                 const realm = this.realm();
-                for (const guid of cloves) {
-                    const clove = realm.Land(guid);
-                    for (const gist of clove.gists_ordered(head)) {
+                for (const ref of inflow) {
+                    const land = realm.Land(ref);
+                    for (const gist of land.gists_ordered(head)) {
                         if (exists.has(gist.self()))
                             continue;
                         queue.push(gist);
@@ -10249,7 +10289,7 @@ var $;
             this.bus();
         }
         bus() {
-            return new this.$.$mol_bus(`$hyoo_crus_land:${this.guid()}`, $mol_wire_async(bins => {
+            return new this.$.$mol_bus(`$hyoo_crus_land:${this.ref().description}`, $mol_wire_async(bins => {
                 const yard = this.$.$hyoo_crus_yard;
                 this.apply_unit(bins.map(bin => {
                     const unit = new $hyoo_crus_unit(bin).narrow();
@@ -10306,7 +10346,7 @@ var $;
             if (unit.signed())
                 return;
             const key = $mol_wire_sync(this.auth());
-            const mixin = $mol_base64_ae_decode(this.guid());
+            const mixin = $mol_base64_ae_decode(this.ref().description);
             unit.mix(mixin);
             try {
                 const sign = new Uint8Array(key.sign(unit.sens()));
@@ -10332,7 +10372,7 @@ var $;
         }
         gist_decode(gist) {
             if (this.gists.get(gist.head())?.get(gist.self()) !== gist) {
-                for (const id of this.cloves()?.items() ?? []) {
+                for (const id of this.inflow()?.items() ?? []) {
                     const vary = this.realm()?.Land(id).gist_decode(gist);
                     if (vary !== undefined)
                         return vary;
@@ -10377,7 +10417,7 @@ var $;
             $mol_wire_solid();
             if (!this.numb())
                 return false;
-            const gift = this.gifts.get(this.lord_numb());
+            const gift = this.gifts.get(this.lord_ref());
             const prev = gift?.bill().some(b => b) ?? false;
             if (next === undefined)
                 return prev;
@@ -10443,7 +10483,7 @@ var $;
             buf.uint8(0, 2);
             buf.uint32(2, units.length);
             dump.set($mol_base64_ae_decode(this.numb() || 'AAAAAAAA'), 6);
-            dump.set($mol_base64_ae_decode(this.lord().numb()), 12);
+            dump.set($mol_base64_ae_decode(this.lord().ref().description), 12);
             let offset = 24;
             for (let unit of units) {
                 dump.set(unit.asArray(), offset);
@@ -10631,18 +10671,15 @@ var $;
         realm() {
             return null;
         }
-        numb() {
+        ref() {
             return this.$.$hyoo_crus_auth.current().lord();
         }
         lands = new $mol_wire_dict();
         base() {
             return this.Land('').Root($hyoo_crus_base);
         }
-        guid() {
-            return this.numb();
-        }
         toString() {
-            return this.numb();
+            return this.ref().description;
         }
         Land(numb) {
             if (numb === 'AAAAAAAA')
@@ -10703,16 +10740,18 @@ var $;
                 return lord;
             lord = $hyoo_crus_lord.make({
                 realm: $mol_const(this),
-                numb: $mol_const(numb),
+                ref: $mol_const(numb),
             });
             this.lords.set(numb, lord);
             return lord;
         }
-        Land(guid) {
-            return this.Lord(guid.slice(0, 16)).Land(guid.slice(16, 24));
+        Land(ref) {
+            const lord = this.Lord(Symbol.for(ref.description.slice(0, 16)));
+            return lord.Land(ref.description.slice(16, 24));
         }
-        Node(guid, Node) {
-            return this.Land(guid.slice(0, 24)).Node(Node).Item(guid.slice(24, 32));
+        Node(ref, Node) {
+            const land = this.Land(Symbol.for(ref.description.slice(0, 24)));
+            return land.Node(Node).Item(ref.description.slice(24, 32));
         }
     }
     __decorate([
@@ -14718,17 +14757,18 @@ var $;
             const obj = new this.$.$mol_select();
             obj.value = (next) => this.unit_tip(id, next);
             obj.enabled = () => this.can_change();
-            obj.options = () => [
-                "bin",
-                "bool",
-                "int",
-                "real",
-                "str",
-                "time",
-                "json",
-                "xml",
-                "tree"
-            ];
+            obj.dictionary = () => ({
+                bin: "💠bin",
+                bool: "🚩bool",
+                int: "🔢int",
+                real: "💫real",
+                ref: "🎯ref",
+                str: "🔠str",
+                time: "⏳time",
+                json: "🌜json",
+                xml: "🪒xml",
+                tree: "🎄tree"
+            });
             return obj;
         }
         unit_tag(id, next) {
@@ -14740,12 +14780,12 @@ var $;
             const obj = new this.$.$mol_select();
             obj.value = (next) => this.unit_tag(id, next);
             obj.enabled = () => this.can_change();
-            obj.options = () => [
-                "term",
-                "head",
-                "vals",
-                "keys"
-            ];
+            obj.dictionary = () => ({
+                term: "💼term",
+                head: "1️⃣head",
+                vals: "🎹vals",
+                keys: "🔑keys"
+            });
             return obj;
         }
         unit_time(id) {
@@ -15178,17 +15218,17 @@ var $;
                 return this.node().cast($hyoo_crus_list).items()[index];
             }
             unit_title(index) {
-                const ref = String(this.unit_value(index));
+                const ref = this.unit_value(index);
                 return this.node().realm()?.Node(ref, $hyoo_crus_entity).title() || ref;
             }
             unit_ref_like(index) {
                 const val = this.unit_value(index);
-                if (typeof val !== 'string')
+                if (typeof val !== 'symbol')
                     return false;
-                if (![16, 24, 32].includes(val.length))
+                if (![16, 24, 32].includes(val.description.length))
                     return false;
                 try {
-                    $mol_base64_ae_decode(val);
+                    $mol_base64_ae_decode(val.description);
                     return true;
                 }
                 catch {
@@ -15711,12 +15751,12 @@ var $;
     (function ($$) {
         class $hyoo_crus_land_page extends $.$hyoo_crus_land_page {
             title() {
-                return '🌍 ' + this.land().guid();
+                return '🌍 ' + this.land().ref().description;
             }
             node_title(head) {
                 const id = this.node(head).head();
                 if (id === 'AAAAAAAB')
-                    return 'Cloves';
+                    return 'Inflow';
                 return id || 'Root';
             }
             node(head) {
@@ -15738,7 +15778,7 @@ var $;
                 return new Blob([this.land().dump()], { type: 'application/x-crus-land' });
             }
             dump_name() {
-                return `${this.land().guid()}.land`;
+                return `${this.land().ref().description}.land`;
             }
             update(files) {
                 for (const file of files) {
@@ -15934,18 +15974,18 @@ var $;
     (function ($$) {
         class $hyoo_crus_realm_book extends $.$hyoo_crus_realm_book {
             spread_ids() {
-                return [...this.realm().lords.values()].flatMap(lord => [...lord.lands.values()].map(land => land.guid() || 'AAAAAAAA'));
+                return [...this.realm().lords.values()].flatMap(lord => [...lord.lands.values()].map(land => land.ref().description || 'AAAAAAAA'));
             }
             land(id) {
-                return this.realm().Land(id);
+                return this.realm().Land(Symbol.for(id));
             }
             spread_title(id) {
-                const title = this.realm().Land(id).Root($hyoo_crus_entity).title();
+                const title = this.land(id).Root($hyoo_crus_entity).title();
                 const suffix = title || (id.length > 16 ? id.slice(16) : id);
                 return (id.length > 16 ? '   🌍 ' : '👑 ') + suffix;
             }
             land_new() {
-                this.spread(this.realm().home().Land_new(0).guid());
+                this.spread(this.realm().home().Land_new(0).ref().description);
             }
             async wipe() {
                 const yard = await this.$.$mol_db('$hyoo_crus_yard');

@@ -4040,7 +4040,7 @@ var $;
             const auth = new $hyoo_crus_pass;
             auth.auth([0xFF, 0, 0xFC, 0xFB, 0xFA, 0xF9, 0xF8, 0xF7, 0xF6, 0xF5, 0xF4, 0xF3, 0xF2, 0xF1]);
             $mol_assert_equal(auth.kind(), 'pass');
-            $mol_assert_equal(auth.lord(), 'ÆPv6æfj39vX08ÆLx');
+            $mol_assert_equal(auth.lord(), Symbol.for('ÆPv6æfj39vX08ÆLx'));
             $mol_assert_equal(auth.peer(), 'ÆPv6æfj3');
         },
         'gift unit type'() {
@@ -4065,11 +4065,11 @@ var $;
         'gift unit fields'() {
             const unit = new $hyoo_crus_gift;
             $mol_assert_equal(unit.time(), 0);
-            $mol_assert_equal(unit.dest(), '');
+            $mol_assert_equal(unit.dest(), Symbol.for(''));
             unit.time(0xd1d2d3d4d5d6);
-            unit.dest('ÆPv6æfj39vX08ÆLx');
+            unit.dest(Symbol.for('ÆPv6æfj39vX08ÆLx'));
             $mol_assert_equal(unit.time(), 0xd1d2d3d4d5d6);
-            $mol_assert_equal(unit.dest(), 'ÆPv6æfj39vX08ÆLx');
+            $mol_assert_equal(unit.dest(), Symbol.for('ÆPv6æfj39vX08ÆLx'));
         },
         'data unit fields'() {
             const unit = new $hyoo_crus_gist;
@@ -4612,6 +4612,22 @@ var $;
 var $;
 (function ($) {
     $mol_test({
+        'fromJSON'() {
+            $mol_assert_equal($mol_tree2_from_json([]).toString(), '/\n');
+            $mol_assert_equal($mol_tree2_from_json([false, true]).toString(), '/\n\tfalse\n\ttrue\n');
+            $mol_assert_equal($mol_tree2_from_json([0, 1, 2.3]).toString(), '/\n\t0\n\t1\n\t2.3\n');
+            $mol_assert_equal($mol_tree2_from_json(new Uint16Array([1, 10, 256])).toString(), '\\\x01\x00\n\\\x00\x00\x01\n');
+            $mol_assert_equal($mol_tree2_from_json(['', 'foo', 'bar\nbaz']).toString(), '/\n\t\\\n\t\\foo\n\t\\\n\t\t\\bar\n\t\t\\baz\n');
+            $mol_assert_equal($mol_tree2_from_json({ 'foo': false, 'bar\nbaz': 'lol' }).toString(), '*\n\tfoo false\n\t\\\n\t\t\\bar\n\t\t\\baz\n\t\t\\lol\n');
+        },
+    });
+})($ || ($ = {}));
+//mol/tree2/from/json/json.test.ts
+;
+"use strict";
+var $;
+(function ($) {
+    $mol_test({
         async 'put, get, drop, count records and clear store'() {
             const db = await $$.$mol_db('$mol_db_test', mig => mig.store_make('letters'));
             const trans = db.change('letters');
@@ -4797,14 +4813,14 @@ var $;
         'Join'($) {
             const land = $hyoo_crus_land.make({ $ });
             $mol_assert_equal(land.joined_list(), []);
-            $mol_assert_equal(land.lord_rang(land.lord_numb()), $hyoo_crus_rang.law);
+            $mol_assert_equal(land.lord_rang(land.lord_ref()), $hyoo_crus_rang.law);
             land.join();
-            $mol_assert_equal(land.joined_list(), [land.lord_numb()]);
+            $mol_assert_equal(land.joined_list(), [land.lord_ref()]);
         },
         'Give rights'($) {
             const land1 = $hyoo_crus_land.make({ $ });
-            const land2 = $hyoo_crus_land.make({ $, lord_numb: () => land1.lord_numb(), auth: () => auth1 });
-            $mol_assert_equal(land1.lord_rang(land1.lord_numb()), $hyoo_crus_rang.law);
+            const land2 = $hyoo_crus_land.make({ $, lord_ref: () => land1.lord_ref(), auth: () => auth1 });
+            $mol_assert_equal(land1.lord_rang(land1.lord_ref()), $hyoo_crus_rang.law);
             $mol_assert_equal(land1.lord_rang(auth1.lord()), $hyoo_crus_rang.get);
             $mol_assert_fail(() => land2.give(auth2.lord(), $hyoo_crus_rang.add), 'Need add rang to join');
             $mol_assert_equal(land1.lord_rang(auth1.lord()), $hyoo_crus_rang.get);
@@ -4827,7 +4843,7 @@ var $;
         },
         'Post Data and pick Delta'($) {
             const land1 = $hyoo_crus_land.make({ $ });
-            const land2 = $hyoo_crus_land.make({ $, lord_numb: () => land1.lord_numb(), auth: () => auth1 });
+            const land2 = $hyoo_crus_land.make({ $, lord_ref: () => land1.lord_ref(), auth: () => auth1 });
             $mol_assert_equal(land1.delta_unit(), []);
             land1.post('', '', '11111111', new Uint8Array([1]));
             $mol_assert_equal(land1.delta_unit().length, 2);
@@ -4861,7 +4877,7 @@ var $;
         },
         'Self restriction for Add Rang'($) {
             const land1 = $hyoo_crus_land.make({ $ });
-            const land2 = $hyoo_crus_land.make({ $, lord_numb: () => land1.lord_numb(), auth: () => auth2 });
+            const land2 = $hyoo_crus_land.make({ $, lord_ref: () => land1.lord_ref(), auth: () => auth2 });
             $mol_assert_equal(land1.delta_unit(), []);
             land1.give(auth2.lord(), $hyoo_crus_rang.add);
             land2.apply_unit(land1.delta_unit());
@@ -4904,13 +4920,13 @@ var $;
             $mol_assert_equal(right.Root($hyoo_crus_list).items(), ['foo', 'zzz']);
             const both = base.fork();
             $mol_assert_equal(both.Root($hyoo_crus_list).items(), ['foo', 'xxx']);
-            both.cloves().items([right.guid()]);
+            both.inflow().items([right.ref()]);
             $mol_assert_equal(both.Root($hyoo_crus_list).items(), ['foo', 'zzz']);
-            both.cloves().items([left.guid()]);
+            both.inflow().items([left.ref()]);
             $mol_assert_equal(both.Root($hyoo_crus_list).items(), ['foo', 'yyy']);
-            both.cloves().items([right.guid(), left.guid()]);
+            both.inflow().items([right.ref(), left.ref()]);
             $mol_assert_equal(both.Root($hyoo_crus_list).items(), ['foo', 'yyy']);
-            both.cloves().items([left.guid(), right.guid()]);
+            both.inflow().items([left.ref(), right.ref()]);
             $mol_assert_equal(both.Root($hyoo_crus_list).items(), ['foo', 'zzz']);
         },
     });
@@ -5115,7 +5131,7 @@ var $;
                 new Uint8Array([]),
                 new Uint8Array([1, 2, 3]),
                 new Uint8Array([1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0]),
-                list.guid(),
+                list.ref(),
             ]);
             $mol_assert_equal(list.items(), [
                 false,
@@ -5130,7 +5146,7 @@ var $;
                 '1234567890123456789012345678901234567890',
                 new Uint8Array([1, 2, 3]),
                 new Uint8Array([1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0]),
-                list.guid(),
+                list.ref(),
             ]);
         },
         'List merge'($) {
@@ -5380,22 +5396,6 @@ var $;
     });
 })($ || ($ = {}));
 //mol/wire/field/field.test.ts
-;
-"use strict";
-var $;
-(function ($) {
-    $mol_test({
-        'fromJSON'() {
-            $mol_assert_equal($mol_tree2_from_json([]).toString(), '/\n');
-            $mol_assert_equal($mol_tree2_from_json([false, true]).toString(), '/\n\tfalse\n\ttrue\n');
-            $mol_assert_equal($mol_tree2_from_json([0, 1, 2.3]).toString(), '/\n\t0\n\t1\n\t2.3\n');
-            $mol_assert_equal($mol_tree2_from_json(new Uint16Array([1, 10, 256])).toString(), '\\\x01\x00\n\\\x00\x00\x01\n');
-            $mol_assert_equal($mol_tree2_from_json(['', 'foo', 'bar\nbaz']).toString(), '/\n\t\\\n\t\\foo\n\t\\\n\t\t\\bar\n\t\t\\baz\n');
-            $mol_assert_equal($mol_tree2_from_json({ 'foo': false, 'bar\nbaz': 'lol' }).toString(), '*\n\tfoo false\n\t\\\n\t\t\\bar\n\t\t\\baz\n\t\t\\lol\n');
-        },
-    });
-})($ || ($ = {}));
-//mol/tree2/from/json/json.test.ts
 ;
 "use strict";
 var $;
@@ -5677,6 +5677,17 @@ var $;
                 $mol_assert_equal(reg.value_bin(), null);
                 $mol_assert_equal(reg.value_str(), '');
             },
+            "Reference representation"($) {
+                const land = $hyoo_crus_land.make({ $ });
+                const reg = land.Node($hyoo_crus_reg).Item('12345678');
+                reg.value_ref(reg.ref());
+                $mol_assert_equal(reg.value_bool(), true);
+                $mol_assert_equal(reg.value_int(), 0n);
+                $mol_assert_equal(reg.value_real(), Number.NaN);
+                $mol_assert_equal(reg.value_bin(), new Uint8Array([213, 212, 219, 170, 109, 71, 174, 214, 197, 34, 45, 170, 0, 0, 0, 0, 0, 0, 215, 109, 248, 231, 174, 252]));
+                $mol_assert_equal(reg.value_str(), reg.ref().description);
+                $mol_assert_equal(reg.value_ref(), reg.ref());
+            },
             "Store custom types"($) {
                 const land = $hyoo_crus_land.make({ $ });
                 const reg = land.Node($hyoo_crus_reg).Item('');
@@ -5694,7 +5705,7 @@ var $;
                 const reg = land.Node($hyoo_crus_reg).Item('11111111');
                 const remote = reg.yoke(null).Root($hyoo_crus_reg);
                 $mol_assert_unique(reg.land(), remote.land());
-                $mol_assert_equal(reg.value_str(), remote.guid());
+                $mol_assert_equal(reg.value_ref(), remote.ref());
                 $mol_assert_equal(reg.yoke(null).Root($hyoo_crus_reg), remote);
             },
             "Narrow registers"($) {
@@ -5715,7 +5726,7 @@ var $;
                 const reg = land.Node($hyoo_crus_reg_ref(() => $hyoo_crus_reg)).Item('11111111');
                 $mol_assert_equal(reg.remote(), null);
                 reg.remote(reg);
-                $mol_assert_equal(reg.value_str(), reg.remote().guid(), reg.guid());
+                $mol_assert_equal(reg.value_ref(), reg.remote().ref(), reg.ref());
             },
         });
     })($$ = $_1.$$ || ($_1.$$ = {}));
@@ -5736,13 +5747,13 @@ var $;
             }
             remote(next) {
                 const realm = this.realm();
-                const ref = this.value_str(next?.guid());
-                if (!ref)
+                const ref = this.value_ref(next?.ref());
+                if (!ref.description)
                     return null;
                 return realm.Node(ref, Value());
             }
             remote_ensure() {
-                this.yoke(this.guid());
+                this.yoke(this.ref());
                 return this.remote();
             }
         }
@@ -5773,12 +5784,12 @@ var $;
             remote_list(next) {
                 const realm = this.realm();
                 const Node = Value();
-                return this.items(next?.map(item => item.guid()))
-                    .map(ref => realm.Node(ref, Node));
+                return this.items(next?.map(item => item.ref()))
+                    .map(ref => realm.Node($hyoo_crus_vary_cast_ref(ref), Node));
             }
             remote_make() {
                 const land = this.realm().home().Land_new(0);
-                this.splice([land.guid()]);
+                this.splice([land.ref()]);
                 return land.Node(Value()).Item('');
             }
         }
