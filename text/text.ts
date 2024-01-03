@@ -181,7 +181,7 @@ namespace $ {
 		}
 		
 		@ $mol_mem_key
-		selection( lord: string, next?: readonly[ number /*begin*/, number /*end*/ ] ) {
+		selection( lord: symbol, next?: readonly[ number /*begin*/, number /*end*/ ] ) {
 			
 			const base = this.realm()!.Lord( lord ).base()
 			
