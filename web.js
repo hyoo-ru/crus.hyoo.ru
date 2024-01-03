@@ -10715,6 +10715,9 @@ var $;
         Land_new(idea) {
             return this.Land(this.numb_make(idea || undefined));
         }
+        Profile(app, Node) {
+            return this.base().Profile(app).Root(Node);
+        }
         numb_make(idea = Math.floor(Math.random() * 2 ** 48)) {
             for (let i = 0; i < 4096; ++i) {
                 idea = (idea + 1) % 2 ** 48;
@@ -10765,9 +10768,6 @@ var $;
         }
         Node(guid, Node) {
             return this.Land(guid.slice(0, 24)).Node(Node).Item(guid.slice(24, 32));
-        }
-        Profile(app, Node) {
-            return this.home().base().Profile(app).Root(Node);
         }
     }
     __decorate([

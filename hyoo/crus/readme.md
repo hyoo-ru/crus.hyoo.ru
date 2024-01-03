@@ -163,7 +163,7 @@ export class $my_person extends $hyoo_crus_entity.of({
 	Heart: $my_organ, // embedded Model
 	Parent: $hyoo_crus_reg_ref( ()=> $my_person ), // reference to Model
 	Kids: $hyoo_crus_list_ref( ()=> $my_person ), // list of references to Models
-	/** @deprecated */ Father: $hyoo_crus_reg_ref( ()=> $my_person ),
+	/** @deprecated Use Parent */ Father: $hyoo_crus_reg_ref( ()=> $my_person ),
 }) {
 	
 	// override default implementation
@@ -195,7 +195,7 @@ export class $my_app extends $mol_object {
 	// current user profile for current application
 	@ $mol_mem
 	Profile() {
-		return this.Realm().Profile( '$my_app', $my_person )
+		return this.Realm().home().Profile( '$my_app', $my_person )
 	}
 	
 	// use existed entity by reference
@@ -215,7 +215,7 @@ export class $my_app extends $mol_object {
 		
 		// fill self fields
 		kid.title( name )
-		kid[ me.sex() === 'male' ? 'father' : 'mother' ]( me )
+		kid.parent( me )
 		
 		// fill embedded entities
 		const heart = kid.Heart

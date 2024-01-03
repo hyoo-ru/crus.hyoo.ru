@@ -3341,6 +3341,7 @@ declare namespace $ {
         toString(): string;
         Land(numb: string): $hyoo_crus_land;
         Land_new(idea: number): $hyoo_crus_land;
+        Profile<Node extends typeof $hyoo_crus_node>(app: string, Node: Node): InstanceType<Node>;
         numb_make(idea?: number): string;
     }
 }
@@ -3352,7 +3353,6 @@ declare namespace $ {
         Lord(numb: string): $hyoo_crus_lord;
         Land(guid: string): $hyoo_crus_land;
         Node<Node extends typeof $hyoo_crus_node>(guid: string, Node: Node): InstanceType<Node>;
-        Profile<Node extends typeof $hyoo_crus_node>(app: string, Node: Node): InstanceType<Node>;
     }
 }
 
