@@ -20,7 +20,7 @@ namespace $ {
 				const realm = this.realm()
 				const Node = ( Value as any )()
 				return this.items( next?.map( item => ( item as $hyoo_crus_node ).ref() ) )
-					.map( ref => realm!.Node( ref as string, Node ) )
+					.map( ref => realm!.Node( $hyoo_crus_vary_cast_ref( ref ), Node ) )
 			}
 			
 			@ $mol_action
