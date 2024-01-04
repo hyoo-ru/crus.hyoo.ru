@@ -3283,7 +3283,7 @@ declare namespace $ {
         has(key: $hyoo_crus_vary_type, next?: false): boolean;
         dive<Node extends typeof $hyoo_crus_node>(key: $hyoo_crus_vary_type, Node: Node): InstanceType<Node>;
         value(): this;
-        static of<This extends typeof $hyoo_crus_dict, Schema extends Record<string, typeof $hyoo_crus_node & {
+        static with<This extends typeof $hyoo_crus_dict, Schema extends Record<string, typeof $hyoo_crus_node & {
             new (): {
                 value: any;
             };

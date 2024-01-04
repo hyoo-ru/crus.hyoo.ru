@@ -9898,7 +9898,7 @@ var $;
         value() {
             return this;
         }
-        static of(schema) {
+        static with(schema) {
             const Entity = class Entity extends this {
             };
             for (const Field in schema) {
@@ -14992,7 +14992,7 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    class $hyoo_crus_entity extends $hyoo_crus_dict.of({
+    class $hyoo_crus_entity extends $hyoo_crus_dict.with({
         Title: $hyoo_crus_reg_str,
     }) {
     }

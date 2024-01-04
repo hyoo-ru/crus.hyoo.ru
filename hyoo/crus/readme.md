@@ -145,7 +145,7 @@
 
 ```ts
 /** Organ Model */
-export class $my_organ extends $hyoo_crus_entity.of({
+export class $my_organ extends $hyoo_crus_entity.with({
 	// Title: $hyoo_crus_reg_str, - inherited from $hyoo_crus_entity
 	Critical: $hyoo_crus_reg_bool, // atomic boolean
 	Count: $hyoo_crus_reg_int, // atomic big integer
@@ -156,7 +156,7 @@ export class $my_organ extends $hyoo_crus_entity.of({
 }) {}
 
 /** Person Model */
-export class $my_person extends $hyoo_crus_entity.of({
+export class $my_person extends $hyoo_crus_entity.with({
 	// Title: $hyoo_crus_reg_str, - inherited from $hyoo_crus_entity
 	Sex: $hyoo_crus_reg_str, // atomic short string
 	Birthday: $hyoo_crus_reg_time, // atomic time moment

@@ -5850,18 +5850,18 @@ var $;
             "Narrowed Dictionary with linked Dictionaries and others"($) {
                 const realm = $hyoo_crus_realm.make({ $ });
                 const land = realm.home().base().land();
-                class User extends $hyoo_crus_dict.of({
+                class User extends $hyoo_crus_dict.with({
                     Title: $hyoo_crus_reg_str,
                     Account: $hyoo_crus_reg_ref(() => Account),
                     Articles: $hyoo_crus_list_ref(() => Article),
                 }) {
                 }
-                class Account extends $hyoo_crus_dict.of({
+                class Account extends $hyoo_crus_dict.with({
                     Title: $hyoo_crus_reg_str,
                     User: $hyoo_crus_reg_ref(() => User),
                 }) {
                 }
-                class Article extends $hyoo_crus_dict.of({
+                class Article extends $hyoo_crus_dict.with({
                     Title: $hyoo_crus_reg_str,
                     Author: $hyoo_crus_reg_ref(() => User),
                 }) {
