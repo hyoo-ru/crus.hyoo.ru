@@ -4426,8 +4426,9 @@ declare namespace $ {
         value_str(next?: any): string;
         Value_str(): $$.$mol_textarea;
         unit_title(id: any): any;
-        unit_value(id: any): any;
+        unit_ref_arg(id: any): Record<string, any>;
         Unit_ref(id: any): $$.$mol_link;
+        unit_value(id: any): any;
         Unit_value(id: any): $$.$mol_dump_value;
         unit_tip(id: any, next?: any): string;
         Unit_tip(id: any): $$.$mol_select;
@@ -4485,6 +4486,9 @@ declare namespace $.$$ {
         unit_time(index: number): string;
         unit_value(index: number): $hyoo_crus_vary_type;
         unit_title(index: number): string | symbol;
+        unit_ref_arg(index: number): {
+            land: string;
+        };
         unit_ref_like(index: number): boolean;
         unit_wipe(index: number, event?: Event): void;
         node_inner(index: number): $hyoo_crus_node;

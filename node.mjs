@@ -14732,16 +14732,17 @@ var $;
         unit_title(id) {
             return null;
         }
-        unit_value(id) {
-            return null;
+        unit_ref_arg(id) {
+            return {};
         }
         Unit_ref(id) {
             const obj = new this.$.$mol_link();
             obj.title = () => this.unit_title(id);
-            obj.arg = () => ({
-                land: this.unit_value(id)
-            });
+            obj.arg = () => this.unit_ref_arg(id);
             return obj;
+        }
+        unit_value(id) {
+            return null;
         }
         Unit_value(id) {
             const obj = new this.$.$mol_dump_value();
@@ -15220,6 +15221,11 @@ var $;
             unit_title(index) {
                 const ref = this.unit_value(index);
                 return this.node().realm()?.Node(ref, $hyoo_crus_entity).title() || ref;
+            }
+            unit_ref_arg(index) {
+                return {
+                    land: $hyoo_crus_vary_cast_str(this.unit_value(index))
+                };
             }
             unit_ref_like(index) {
                 const val = this.unit_value(index);
