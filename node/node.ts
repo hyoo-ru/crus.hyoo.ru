@@ -42,7 +42,7 @@ namespace $ {
 			const land = this.land()
 			const map = {
 				term: land.Node( Node || $hyoo_crus_reg ),
-				head: land.Node( Node || $hyoo_crus_reg ),
+				solo: land.Node( Node || $hyoo_crus_reg ),
 				vals: land.Node( Node || $hyoo_crus_list ),
 				keys: land.Node( Node || $hyoo_crus_dict ),
 			}

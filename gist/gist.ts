@@ -4,7 +4,7 @@ namespace $ {
 		/** Itself value */
 		term = 0b00,
 		/** Value in first sub node */
-		head = 0b01,
+		solo = 0b01,
 		/** List of values */
 		vals = 0b10,
 		/** List of keys */

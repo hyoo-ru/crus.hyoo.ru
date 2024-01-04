@@ -3,7 +3,7 @@ namespace $ {
 
 	export class $hyoo_crus_reg extends $hyoo_crus_node {
 
-		static tag = $hyoo_crus_gist_tag[ $hyoo_crus_gist_tag.head ] as keyof typeof $hyoo_crus_gist_tag;
+		static tag = $hyoo_crus_gist_tag[ $hyoo_crus_gist_tag.solo ] as keyof typeof $hyoo_crus_gist_tag;
 
 		pick_unit() {
 			return this.units().at(0)

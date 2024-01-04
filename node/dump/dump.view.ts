@@ -97,7 +97,7 @@ namespace $.$$ {
 		
 		add_key( event: Event ) {
 			if( !this.expandable() ) this.expanded( true )
-			this.node().cast( $hyoo_crus_list ).has( this.key_new(), true, 'head' )
+			this.node().cast( $hyoo_crus_list ).has( this.key_new(), true, 'solo' )
 			this.key_new( '' )
 		}
 		
