@@ -25,7 +25,7 @@ namespace $ {
 			return this
 		}
 		
-		static of<
+		static with<
 			This extends typeof $hyoo_crus_dict,
 			Schema extends Record< string, typeof $hyoo_crus_node & { new(): { value: any } } >
 		>( this: This, schema: Schema ) {
