@@ -898,7 +898,7 @@ $hyoo_crus_node_dump $mol_expander
 						enabled <= can_change
 						dictionary *
 							term \💼term
-							head \1️⃣head
+							solo \1️⃣solo
 							vals \🎹vals
 							keys \🔑keys
 					<= Unit_time* $mol_view sub / <= unit_time* \

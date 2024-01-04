@@ -8477,7 +8477,7 @@ var $;
     let $hyoo_crus_gist_tag;
     (function ($hyoo_crus_gist_tag) {
         $hyoo_crus_gist_tag[$hyoo_crus_gist_tag["term"] = 0] = "term";
-        $hyoo_crus_gist_tag[$hyoo_crus_gist_tag["head"] = 1] = "head";
+        $hyoo_crus_gist_tag[$hyoo_crus_gist_tag["solo"] = 1] = "solo";
         $hyoo_crus_gist_tag[$hyoo_crus_gist_tag["vals"] = 2] = "vals";
         $hyoo_crus_gist_tag[$hyoo_crus_gist_tag["keys"] = 3] = "keys";
     })($hyoo_crus_gist_tag = $.$hyoo_crus_gist_tag || ($.$hyoo_crus_gist_tag = {}));
@@ -8770,7 +8770,7 @@ var $;
             const land = this.land();
             const map = {
                 term: land.Node(Node || $hyoo_crus_reg),
-                head: land.Node(Node || $hyoo_crus_reg),
+                solo: land.Node(Node || $hyoo_crus_reg),
                 vals: land.Node(Node || $hyoo_crus_list),
                 keys: land.Node(Node || $hyoo_crus_dict),
             };
@@ -9713,7 +9713,7 @@ var $;
 var $;
 (function ($) {
     class $hyoo_crus_reg extends $hyoo_crus_node {
-        static tag = $hyoo_crus_gist_tag[$hyoo_crus_gist_tag.head];
+        static tag = $hyoo_crus_gist_tag[$hyoo_crus_gist_tag.solo];
         pick_unit() {
             return this.units().at(0);
         }
@@ -9893,7 +9893,7 @@ var $;
             return this.cast($hyoo_crus_list).items();
         }
         has(key, next) {
-            return this.cast($hyoo_crus_list).has(key, next, 'head');
+            return this.cast($hyoo_crus_list).has(key, next, 'solo');
         }
         dive(key, Node) {
             this.cast($hyoo_crus_list).has(key, true, Node.tag);
@@ -14782,7 +14782,7 @@ var $;
             obj.enabled = () => this.can_change();
             obj.dictionary = () => ({
                 term: "💼term",
-                head: "1️⃣head",
+                solo: "1️⃣solo",
                 vals: "🎹vals",
                 keys: "🔑keys"
             });
@@ -15255,7 +15255,7 @@ var $;
             add_key(event) {
                 if (!this.expandable())
                     this.expanded(true);
-                this.node().cast($hyoo_crus_list).has(this.key_new(), true, 'head');
+                this.node().cast($hyoo_crus_list).has(this.key_new(), true, 'solo');
                 this.key_new('');
             }
             add_value(event) {
@@ -15277,7 +15277,7 @@ var $;
                         this.Add_value(),
                         this.Value_text(),
                     ] : [],
-                    ...this.tag() === 'head' ? [this.Value_str()] : [],
+                    ...this.tag() === 'solo' ? [this.Value_str()] : [],
                 ];
             }
         }

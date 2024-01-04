@@ -2444,18 +2444,18 @@ declare namespace $ {
 declare namespace $ {
     enum $hyoo_crus_gist_tag {
         term = 0,
-        head = 1,
+        solo = 1,
         vals = 2,
         keys = 3
     }
     class $hyoo_crus_gist extends $hyoo_crus_unit {
         _vary: $hyoo_crus_vary_type | undefined;
         _open: Uint8Array | undefined;
-        hint(tip?: "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "xml" | "tree", tag?: "keys" | "vals" | "head" | "term"): void;
+        hint(tip?: "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "xml" | "tree", tag?: "keys" | "vals" | "solo" | "term"): void;
         tip(): "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "xml" | "tree";
         pic(): boolean;
         utf(): boolean;
-        tag(): "keys" | "vals" | "head" | "term";
+        tag(): "keys" | "vals" | "solo" | "term";
         nil(): boolean;
         size(next?: number): number;
         time(next?: number): number;
@@ -2465,9 +2465,9 @@ declare namespace $ {
         head(next?: string): string;
         _lead: string;
         lead(next?: string): string;
-        hash(next?: Uint8Array, tip?: "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "xml" | "tree", tag?: "keys" | "vals" | "head" | "term"): Uint8Array;
+        hash(next?: Uint8Array, tip?: "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "xml" | "tree", tag?: "keys" | "vals" | "solo" | "term"): Uint8Array;
         meta(): Uint8Array;
-        data(next?: Uint8Array, tip?: "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "xml" | "tree", tag?: "keys" | "vals" | "head" | "term"): Uint8Array;
+        data(next?: Uint8Array, tip?: "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "xml" | "tree", tag?: "keys" | "vals" | "solo" | "term"): Uint8Array;
         idea(): number;
         static compare(left: $hyoo_crus_gist, right: $hyoo_crus_gist): number;
     }
@@ -2514,7 +2514,7 @@ declare namespace $ {
 
 declare namespace $ {
     class $hyoo_crus_node extends $mol_object {
-        static tag: "keys" | "vals" | "head" | "term";
+        static tag: "keys" | "vals" | "solo" | "term";
         land(): $hyoo_crus_land;
         head(): string;
         lord(): $hyoo_crus_lord | null;
@@ -2551,16 +2551,16 @@ declare namespace $ {
 
 declare namespace $ {
     class $hyoo_crus_list extends $hyoo_crus_node {
-        static tag: "keys" | "vals" | "head" | "term";
-        items(next?: readonly $hyoo_crus_vary_type[], tag?: "keys" | "vals" | "head" | "term"): readonly $hyoo_crus_vary_type[];
-        splice(next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: "keys" | "vals" | "head" | "term"): void;
+        static tag: "keys" | "vals" | "solo" | "term";
+        items(next?: readonly $hyoo_crus_vary_type[], tag?: "keys" | "vals" | "solo" | "term"): readonly $hyoo_crus_vary_type[];
+        splice(next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: "keys" | "vals" | "solo" | "term"): void;
         find(vary: $hyoo_crus_vary_type): $hyoo_crus_gist | null;
-        has(vary: $hyoo_crus_vary_type, next?: boolean, tag?: "keys" | "vals" | "head" | "term"): boolean;
-        add(vary: $hyoo_crus_vary_type, tag?: "keys" | "vals" | "head" | "term"): void;
+        has(vary: $hyoo_crus_vary_type, next?: boolean, tag?: "keys" | "vals" | "solo" | "term"): boolean;
+        add(vary: $hyoo_crus_vary_type, tag?: "keys" | "vals" | "solo" | "term"): void;
         cut(vary: $hyoo_crus_vary_type): void;
         move(from: number, to: number): void;
         wipe(seat: number): void;
-        node_make<Node extends typeof $hyoo_crus_node>(Node: Node, vary: $hyoo_crus_vary_type, tag?: "keys" | "vals" | "head" | "term"): InstanceType<Node>;
+        node_make<Node extends typeof $hyoo_crus_node>(Node: Node, vary: $hyoo_crus_vary_type, tag?: "keys" | "vals" | "solo" | "term"): InstanceType<Node>;
     }
 }
 
@@ -2807,7 +2807,7 @@ declare namespace $ {
 
 declare namespace $ {
     export class $hyoo_crus_reg extends $hyoo_crus_node {
-        static tag: "keys" | "vals" | "head" | "term";
+        static tag: "keys" | "vals" | "solo" | "term";
         pick_unit(): $hyoo_crus_gist | undefined;
         value_vary(next?: $hyoo_crus_vary_type): $hyoo_crus_vary_type;
         value_bool(next?: boolean): boolean;
@@ -2872,7 +2872,7 @@ declare namespace $ {
             [$mol_ambient_ref]: typeof $$;
         };
         tip: Tip;
-        tag: "keys" | "vals" | "head" | "term";
+        tag: "keys" | "vals" | "solo" | "term";
         make<Instance>(this: new () => Instance, config: Partial<Instance>): Instance;
         $: typeof $$;
         create<Instance_1>(this: new (init?: ((instance: any) => void) | undefined) => Instance_1, init?: ((instance: $mol_type_writable<Instance_1>) => void) | undefined): Instance_1;
@@ -2912,7 +2912,7 @@ declare namespace $ {
             [$mol_ambient_ref]: typeof $$;
         };
         tip: "bin";
-        tag: "keys" | "vals" | "head" | "term";
+        tag: "keys" | "vals" | "solo" | "term";
         make<Instance>(this: new () => Instance, config: Partial<Instance>): Instance;
         $: typeof $$;
         create<Instance_1>(this: new (init?: ((instance: any) => void) | undefined) => Instance_1, init?: ((instance: $mol_type_writable<Instance_1>) => void) | undefined): Instance_1;
@@ -2954,7 +2954,7 @@ declare namespace $ {
             [$mol_ambient_ref]: typeof $$;
         };
         tip: "bool";
-        tag: "keys" | "vals" | "head" | "term";
+        tag: "keys" | "vals" | "solo" | "term";
         make<Instance>(this: new () => Instance, config: Partial<Instance>): Instance;
         $: typeof $$;
         create<Instance_1>(this: new (init?: ((instance: any) => void) | undefined) => Instance_1, init?: ((instance: $mol_type_writable<Instance_1>) => void) | undefined): Instance_1;
@@ -2996,7 +2996,7 @@ declare namespace $ {
             [$mol_ambient_ref]: typeof $$;
         };
         tip: "int";
-        tag: "keys" | "vals" | "head" | "term";
+        tag: "keys" | "vals" | "solo" | "term";
         make<Instance>(this: new () => Instance, config: Partial<Instance>): Instance;
         $: typeof $$;
         create<Instance_1>(this: new (init?: ((instance: any) => void) | undefined) => Instance_1, init?: ((instance: $mol_type_writable<Instance_1>) => void) | undefined): Instance_1;
@@ -3038,7 +3038,7 @@ declare namespace $ {
             [$mol_ambient_ref]: typeof $$;
         };
         tip: "real";
-        tag: "keys" | "vals" | "head" | "term";
+        tag: "keys" | "vals" | "solo" | "term";
         make<Instance>(this: new () => Instance, config: Partial<Instance>): Instance;
         $: typeof $$;
         create<Instance_1>(this: new (init?: ((instance: any) => void) | undefined) => Instance_1, init?: ((instance: $mol_type_writable<Instance_1>) => void) | undefined): Instance_1;
@@ -3080,7 +3080,7 @@ declare namespace $ {
             [$mol_ambient_ref]: typeof $$;
         };
         tip: "str";
-        tag: "keys" | "vals" | "head" | "term";
+        tag: "keys" | "vals" | "solo" | "term";
         make<Instance>(this: new () => Instance, config: Partial<Instance>): Instance;
         $: typeof $$;
         create<Instance_1>(this: new (init?: ((instance: any) => void) | undefined) => Instance_1, init?: ((instance: $mol_type_writable<Instance_1>) => void) | undefined): Instance_1;
@@ -3122,7 +3122,7 @@ declare namespace $ {
             [$mol_ambient_ref]: typeof $$;
         };
         tip: "time";
-        tag: "keys" | "vals" | "head" | "term";
+        tag: "keys" | "vals" | "solo" | "term";
         make<Instance>(this: new () => Instance, config: Partial<Instance>): Instance;
         $: typeof $$;
         create<Instance_1>(this: new (init?: ((instance: any) => void) | undefined) => Instance_1, init?: ((instance: $mol_type_writable<Instance_1>) => void) | undefined): Instance_1;
@@ -3164,7 +3164,7 @@ declare namespace $ {
             [$mol_ambient_ref]: typeof $$;
         };
         tip: "json";
-        tag: "keys" | "vals" | "head" | "term";
+        tag: "keys" | "vals" | "solo" | "term";
         make<Instance>(this: new () => Instance, config: Partial<Instance>): Instance;
         $: typeof $$;
         create<Instance_1>(this: new (init?: ((instance: any) => void) | undefined) => Instance_1, init?: ((instance: $mol_type_writable<Instance_1>) => void) | undefined): Instance_1;
@@ -3206,7 +3206,7 @@ declare namespace $ {
             [$mol_ambient_ref]: typeof $$;
         };
         tip: "xml";
-        tag: "keys" | "vals" | "head" | "term";
+        tag: "keys" | "vals" | "solo" | "term";
         make<Instance>(this: new () => Instance, config: Partial<Instance>): Instance;
         $: typeof $$;
         create<Instance_1>(this: new (init?: ((instance: any) => void) | undefined) => Instance_1, init?: ((instance: $mol_type_writable<Instance_1>) => void) | undefined): Instance_1;
@@ -3248,7 +3248,7 @@ declare namespace $ {
             [$mol_ambient_ref]: typeof $$;
         };
         tip: "tree";
-        tag: "keys" | "vals" | "head" | "term";
+        tag: "keys" | "vals" | "solo" | "term";
         make<Instance>(this: new () => Instance, config: Partial<Instance>): Instance;
         $: typeof $$;
         create<Instance_1>(this: new (init?: ((instance: any) => void) | undefined) => Instance_1, init?: ((instance: $mol_type_writable<Instance_1>) => void) | undefined): Instance_1;
@@ -3268,7 +3268,7 @@ declare namespace $ {
 
 declare namespace $ {
     class $hyoo_crus_dict extends $hyoo_crus_node {
-        static tag: "keys" | "vals" | "head" | "term";
+        static tag: "keys" | "vals" | "solo" | "term";
         keys(): readonly $hyoo_crus_vary_type[];
         has(key: $hyoo_crus_vary_type, next?: false): boolean;
         dive<Node extends typeof $hyoo_crus_node>(key: $hyoo_crus_vary_type, Node: Node): InstanceType<Node>;
@@ -3312,7 +3312,7 @@ declare namespace $ {
         gists_ordered(head: string): $hyoo_crus_gist[];
         join(): $hyoo_crus_pass;
         give(dest: symbol, rang: $hyoo_crus_rang): $hyoo_crus_gift;
-        post(lead: string, head: string, self: string, vary: $hyoo_crus_vary_type, tag?: "keys" | "vals" | "head" | "term"): $hyoo_crus_gist;
+        post(lead: string, head: string, self: string, vary: $hyoo_crus_vary_type, tag?: "keys" | "vals" | "solo" | "term"): $hyoo_crus_gist;
         gist_move(gist: $hyoo_crus_gist, head: string, seat: number): void;
         gist_wipe(gist: $hyoo_crus_gist): void;
         sync(): void;
@@ -4432,7 +4432,7 @@ declare namespace $ {
 
 declare namespace $ {
     class $hyoo_crus_text extends $hyoo_crus_list {
-        static tag: "keys" | "vals" | "head" | "term";
+        static tag: "keys" | "vals" | "solo" | "term";
         value(next?: string): string;
         text(next?: string): string;
         str(next?: string): string;
@@ -4449,7 +4449,7 @@ declare namespace $.$$ {
         value(): $hyoo_crus_vary_type;
         items(): readonly $hyoo_crus_vary_type[];
         nodes(): $mol_view[];
-        unit_tag(index: number, next?: keyof typeof $hyoo_crus_gist_tag): "keys" | "vals" | "head" | "term";
+        unit_tag(index: number, next?: keyof typeof $hyoo_crus_gist_tag): "keys" | "vals" | "solo" | "term";
         unit_tip(index: number, next?: keyof typeof $hyoo_crus_vary_tip): "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "xml" | "tree";
         unit_time(index: number): string;
         unit_value(index: number): $hyoo_crus_vary_type;
