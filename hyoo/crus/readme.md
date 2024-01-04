@@ -166,13 +166,13 @@ export class $my_person extends $hyoo_crus_entity.with({
 	/** @deprecated Use Parent */ Father: $hyoo_crus_reg_ref( ()=> $my_person ),
 }) {
 	
-	// override default implementation
+	// Override default implementation
 	// Workaround for https://github.com/microsoft/TypeScript/issues/27689
 	get sex() {
 		return ( next?: string )=> super.sex( next ) ?? 'male'
 	}
 	
-	// fallack to old field
+	// Fallack to old field
 	get parent() {
 		return ( next?: $my_person | null )=> super.parent( next ) ?? super.father()
 	}
@@ -186,38 +186,39 @@ export class $my_person extends $hyoo_crus_entity.with({
 /** Application, component etc */
 export class $my_app extends $mol_object {
 
-	// whole database
+	// Whole database
 	@ $mol_mem
 	Realm() {
 		return new $hyoo_crus_realm
 	}
 	
-	// current user profile for current application
+	// Current user profile for current application
 	@ $mol_mem
 	Profile() {
 		return this.Realm().home().Profile( '$my_app', $my_person )
 	}
 	
-	// use existed entity by reference
+	// Use existed entity by reference
 	@ $mol_mem_key
 	Person( ref: string ) {
 		return this.Realm().Node( ref, $my_person )
 	}
 	
-	// add new linked entity
+	// Add new linked entity
 	@ $mol_action
 	kid_add( name: string ) {
 		
 		const me = this.Profile()
 		
-		// populate external entity
+		// Populate external entity
 		const kid = me.Kids.remote_make()
-		
-		// fill self fields
-		kid.title( name )
 		kid.parent( me )
 		
-		// fill embedded entities
+		// Fill self fields
+		kid.title( name )
+		kid.birthday( new $mol_time_moment( '1984-08-04' ) )
+		
+		// Fill embedded entities
 		const heart = kid.Heart
 		heart.critical( true )
 		heart.count( 1n )
