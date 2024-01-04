@@ -12,7 +12,7 @@ namespace $ {
 			key: $hyoo_crus_vary_type,
 			next?: false,
 		) {
-			return this.cast( $hyoo_crus_list ).has( key, next, 'head' )
+			return this.cast( $hyoo_crus_list ).has( key, next, 'solo' )
 		}
 		
 		dive< Node extends typeof $hyoo_crus_node >( key: $hyoo_crus_vary_type, Node: Node ) {

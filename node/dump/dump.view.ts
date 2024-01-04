@@ -123,7 +123,7 @@ namespace $.$$ {
 					this.Add_value(),
 					this.Value_text(),
 				] : [],
-				... this.tag() === 'head' ? [ this.Value_str() ] : [],
+				... this.tag() === 'solo' ? [ this.Value_str() ] : [],
 			]
 		}
 		
