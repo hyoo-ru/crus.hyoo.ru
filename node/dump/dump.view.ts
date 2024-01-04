@@ -61,6 +61,12 @@ namespace $.$$ {
 			return this.node().realm()?.Node( ref, $hyoo_crus_entity ).title() || ref
 		}
 		
+		unit_ref_arg( index: number ) {
+			return {
+				land: $hyoo_crus_vary_cast_str( this.unit_value( index ) )
+			}
+		}
+		
 		@ $mol_mem_key
 		unit_ref_like( index: number ) {
 			const val = this.unit_value( index )
