@@ -7475,13 +7475,14 @@ var $;
 (function ($) {
     let $hyoo_crus_part;
     (function ($hyoo_crus_part) {
-        $hyoo_crus_part[$hyoo_crus_part["land"] = 131] = "land";
-        $hyoo_crus_part[$hyoo_crus_part["face"] = 254] = "face";
+        $hyoo_crus_part[$hyoo_crus_part["land"] = 67] = "land";
+        $hyoo_crus_part[$hyoo_crus_part["face"] = 239] = "face";
         $hyoo_crus_part[$hyoo_crus_part["pass"] = 255] = "pass";
-        $hyoo_crus_part[$hyoo_crus_part["gift"] = 253] = "gift";
+        $hyoo_crus_part[$hyoo_crus_part["gift"] = 247] = "gift";
         $hyoo_crus_part[$hyoo_crus_part["gist"] = 0] = "gist";
-        $hyoo_crus_part[$hyoo_crus_part["rock"] = 132] = "rock";
-        $hyoo_crus_part[$hyoo_crus_part["buck"] = 135] = "buck";
+        $hyoo_crus_part[$hyoo_crus_part["hash"] = 253] = "hash";
+        $hyoo_crus_part[$hyoo_crus_part["rock"] = 237] = "rock";
+        $hyoo_crus_part[$hyoo_crus_part["buck"] = 1] = "buck";
     })($hyoo_crus_part = $.$hyoo_crus_part || ($.$hyoo_crus_part = {}));
 })($ || ($ = {}));
 //hyoo/crus/part/part.ts
@@ -7501,7 +7502,13 @@ var $;
             super(buffer, byteOffset, byteLength);
         }
         kind() {
-            return ($hyoo_crus_unit_kind[this.uint8(0)] ?? 'gist');
+            const val = this.uint8(0);
+            if ((val & 1) === 0)
+                return 'gist';
+            const kind = $hyoo_crus_unit_kind[val];
+            if (kind)
+                return kind;
+            $mol_fail(new Error(`Unknown unit kind (${val})`));
         }
         choose(ways) {
             const way = this.kind();
@@ -8485,19 +8492,16 @@ var $;
         _vary = undefined;
         _open = undefined;
         hint(tip = 'null', tag = 'term') {
-            this.uint8(0, ($hyoo_crus_gist_tag[tag]) | ($hyoo_crus_vary_tip[tip] << 2));
-        }
-        tip() {
-            return $hyoo_crus_vary_tip[this.uint8(0) >> 2];
-        }
-        pic() {
-            return Boolean(this.uint8(0) & 0b00100000);
-        }
-        utf() {
-            return Boolean(this.uint8(0) & 0b01000000);
+            this.uint8(0, ($hyoo_crus_gist_tag[tag] << 1) | ($hyoo_crus_vary_tip[tip] << 3));
         }
         tag() {
-            return $hyoo_crus_gist_tag[this.uint8(0) & 0b11];
+            return $hyoo_crus_gist_tag[(this.uint8(0) >> 1) & 0b11];
+        }
+        tip() {
+            return $hyoo_crus_vary_tip[this.uint8(0) >> 3];
+        }
+        utf() {
+            return Boolean(this.uint8(0) & 0b10000000);
         }
         nil() {
             return !this.uint16(0);

@@ -2100,20 +2100,21 @@ declare namespace $ {
 
 declare namespace $ {
     enum $hyoo_crus_part {
-        land = 131,
-        face = 254,
+        land = 67,
+        face = 239,
         pass = 255,
-        gift = 253,
+        gift = 247,
         gist = 0,
-        rock = 132,
-        buck = 135
+        hash = 253,
+        rock = 237,
+        buck = 1
     }
 }
 
 declare namespace $ {
     enum $hyoo_crus_unit_kind {
         pass = 255,
-        gift = 253,
+        gift = 247,
         gist = 0
     }
     class $hyoo_crus_unit extends $mol_buffer {
@@ -2461,10 +2462,9 @@ declare namespace $ {
         _vary: $hyoo_crus_vary_type | undefined;
         _open: Uint8Array | undefined;
         hint(tip?: "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "xml" | "tree", tag?: "keys" | "vals" | "solo" | "term"): void;
-        tip(): "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "xml" | "tree";
-        pic(): boolean;
-        utf(): boolean;
         tag(): "keys" | "vals" | "solo" | "term";
+        tip(): "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "xml" | "tree";
+        utf(): boolean;
         nil(): boolean;
         size(next?: number): number;
         time(next?: number): number;
