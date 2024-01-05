@@ -58,7 +58,7 @@ namespace $.$$ {
 		@ $mol_mem_key
 		unit_title( index: number ) {
 			const ref = this.unit_value( index ) as symbol
-			return this.node().realm()?.Node( ref, $hyoo_crus_entity ).title() || ref
+			return this.node().realm()?.Node( ref, $hyoo_crus_entity ).title() || ref.description
 		}
 		
 		unit_ref_arg( index: number ) {
