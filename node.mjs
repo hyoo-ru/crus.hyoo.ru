@@ -15230,7 +15230,7 @@ var $;
             }
             unit_title(index) {
                 const ref = this.unit_value(index);
-                return this.node().realm()?.Node(ref, $hyoo_crus_entity).title() || ref;
+                return this.node().realm()?.Node(ref, $hyoo_crus_entity).title() || ref.description;
             }
             unit_ref_arg(index) {
                 return {

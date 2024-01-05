@@ -4455,7 +4455,7 @@ declare namespace $.$$ {
         unit_tip(index: number, next?: keyof typeof $hyoo_crus_vary_tip): "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "xml" | "tree";
         unit_time(index: number): string;
         unit_value(index: number): $hyoo_crus_vary_type;
-        unit_title(index: number): string | symbol;
+        unit_title(index: number): string | undefined;
         unit_ref_arg(index: number): {
             land: string;
         };
