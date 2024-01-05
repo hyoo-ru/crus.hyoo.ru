@@ -242,31 +242,35 @@ export class $my_app extends $mol_object {
 
 ### LWW-Register
 
-![](https://i.imgur.com/LhrSabm.png)
+![](diagram/crus-reg.png)
 
 ### Ordered List
 
-![](https://i.imgur.com/IFMOFxc.png)
+![](diagram/crus-list.png)
 
 ### Ordered Dictionary
 
-![](https://i.imgur.com/GtOcjKL.png)
+![](diagram/crus-dict.png)
+
+### Tree
+
+![](diagram/crus-tree.png)
 
 ### Plain Text
 
-![](https://i.imgur.com/C2cWWf0.png)
+![](diagram/crus-text.png)
 
 ### DOM
 
-![](https://i.imgur.com/jN4G4JZ.png)
+![](diagram/crus-dom.png)
 
 ### JSON
 
-![](https://i.imgur.com/ayjS2KS.png)
+![](diagram/crus-json.png)
 
 ## Synchronization Protocol
 
-![](https://i.imgur.com/Jh7t5Uf.png)
+![](diagram/crus-sync.png)
 
 ### Pack
 

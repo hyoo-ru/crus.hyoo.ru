@@ -13258,6 +13258,9 @@ var $;
             uri_base() {
                 return $mol_dom_context.document.location.href;
             }
+            uri_base_abs() {
+                return new URL(this.uri_base(), $mol_dom_context.document.location.href);
+            }
             uri_resolve(uri) {
                 if (/^(\w+script+:)+/.test(uri))
                     return null;
@@ -13272,7 +13275,7 @@ var $;
                     return this.$.$mol_state_arg.link(params);
                 }
                 try {
-                    const url = new URL(uri, this.uri_base());
+                    const url = new URL(uri, this.uri_base_abs());
                     return url.toString();
                 }
                 catch (error) {
@@ -13405,6 +13408,9 @@ var $;
         __decorate([
             $mol_mem_key
         ], $mol_text.prototype, "grid_cell_text", null);
+        __decorate([
+            $mol_mem
+        ], $mol_text.prototype, "uri_base_abs", null);
         __decorate([
             $mol_mem_key
         ], $mol_text.prototype, "uri_resolve", null);
@@ -20036,6 +20042,7 @@ var $;
         }
         Intro_content() {
             const obj = new this.$.$mol_text();
+            obj.uri_base = () => "hyoo/crus/";
             obj.text = () => this.intro();
             return obj;
         }

@@ -1208,7 +1208,9 @@ $hyoo_crus_app $mol_book2_catalog
 			<= Intro $mol_page
 				title \💨 Intro
 				body /
-					<= Intro_content $mol_text text <= intro \
+					<= Intro_content $mol_text
+						uri_base \hyoo/crus/
+						text <= intro \
 		realm <= Realm $hyoo_crus_realm_book
 			realm <= realm
 			addon_tools /
