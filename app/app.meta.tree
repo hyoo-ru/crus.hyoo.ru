@@ -1,3 +1,11 @@
 deploy \/hyoo/crus/logo/logo.svg
 deploy \/hyoo/crus/logo/bg.webp
 deploy \/hyoo/crus/readme.md
+deploy \/hyoo/crus/diagram/crus-reg.png
+deploy \/hyoo/crus/diagram/crus-list.png
+deploy \/hyoo/crus/diagram/crus-dict.png
+deploy \/hyoo/crus/diagram/crus-tree.png
+deploy \/hyoo/crus/diagram/crus-text.png
+deploy \/hyoo/crus/diagram/crus-dom.png
+deploy \/hyoo/crus/diagram/crus-json.png
+deploy \/hyoo/crus/diagram/crus-sync.png
