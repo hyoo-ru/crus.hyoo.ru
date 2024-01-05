@@ -276,9 +276,9 @@ export class $my_app extends $mol_object {
 
 Пакет состоит из произволного числа частей разных типов. Пакет может передаваться как сообщениие другому пиру, может сохраняться в файл. И даже СУБД может хранить данные в том же самом формате.
 
-![](https://i.imgur.com/Rwc89Wg.png)
+![](diagram/crus-pack.png)
 
 ### Unit
 
-![](https://i.imgur.com/HiDBDEu.png)
+![](diagram/crus-units.png)
 

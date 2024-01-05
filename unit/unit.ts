@@ -26,7 +26,14 @@ namespace $ {
 		}
 		
 		kind() {
-			return ( $hyoo_crus_unit_kind[ this.uint8( 0 ) ] ?? 'gist' ) as keyof typeof $hyoo_crus_unit_kind
+			
+			const val = this.uint8( 0 )
+			if( ( val & 1 ) === 0 ) return 'gist'
+			
+			const kind = $hyoo_crus_unit_kind[ val ] as keyof typeof $hyoo_crus_unit_kind
+			if( kind ) return kind
+			
+			$mol_fail( new Error( `Unknown unit kind (${val})` ) )
 		}
 		
 		choose< Res >( ways: {

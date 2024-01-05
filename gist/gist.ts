@@ -20,23 +20,19 @@ namespace $ {
 			tip = 'null' as keyof typeof $hyoo_crus_vary_tip,
 			tag = 'term' as keyof typeof $hyoo_crus_gist_tag,
 		) {
-			this.uint8( 0, ( $hyoo_crus_gist_tag[ tag ] )|( $hyoo_crus_vary_tip[ tip ] << 2 ) )
-		}
-		
-		tip() {
-			return $hyoo_crus_vary_tip[ this.uint8( 0 ) >> 2 ] as keyof typeof $hyoo_crus_vary_tip
-		}
-		
-		pic() {
-			return Boolean( this.uint8( 0 ) & 0b00100000 )
-		}
-		
-		utf() {
-			return Boolean( this.uint8( 0 ) & 0b01000000 )
+			this.uint8( 0, ( $hyoo_crus_gist_tag[ tag ] << 1 )|( $hyoo_crus_vary_tip[ tip ] << 3 ) )
 		}
 		
 		tag() {
-			return $hyoo_crus_gist_tag[ this.uint8( 0 ) & 0b11 ] as keyof typeof $hyoo_crus_gist_tag
+			return $hyoo_crus_gist_tag[ ( this.uint8( 0 ) >> 1 ) & 0b11 ] as keyof typeof $hyoo_crus_gist_tag
+		}
+		
+		tip() {
+			return $hyoo_crus_vary_tip[ this.uint8( 0 ) >> 3 ] as keyof typeof $hyoo_crus_vary_tip
+		}
+		
+		utf() {
+			return Boolean( this.uint8( 0 ) & 0b10000000 )
 		}
 		
 		nil() {
