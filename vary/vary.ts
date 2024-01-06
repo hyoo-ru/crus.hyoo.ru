@@ -21,7 +21,7 @@ namespace $ {
 		range: $mol_time_interval,
 		json:  Object,
 		jsan:  Array,
-		xml:   $mol_dom_context.Element,
+		dom:   $mol_dom_context.Element,
 		tree:  $mol_tree2,
 		
 	}
@@ -48,7 +48,7 @@ namespace $ {
 		range = 0b10011, // iso8601 interval
 		json  = 0b10100, // json object
 		jsan  = 0b10101, // json array
-		xml   = 0b10110, // dom tree
+		dom   = 0b10110, // dom tree
 		tree  = 0b10111, // tree
 		
 	}
@@ -68,7 +68,7 @@ namespace $ {
 		range: ( vary: $mol_time_interval )=> any,
 		json:  ( vary: {} )=> any,
 		jsan:  ( vary: any[] )=> any,
-		xml:   ( vary: Element )=> any,
+		dom:   ( vary: Element )=> any,
 		tree:  ( vary: $mol_tree2 )=> any,
 		
 	} >(
@@ -96,7 +96,7 @@ namespace $ {
 			case $mol_tree2.prototype: return ways.tree( vary as $mol_tree2 )
 		}
 		
-		if( vary instanceof $mol_dom_context.Element ) return ways.xml( vary )
+		if( vary instanceof $mol_dom_context.Element ) return ways.dom( vary )
 		
 		return $mol_fail( new TypeError( `Unsupported vary type` ) )
 	}
@@ -117,7 +117,7 @@ namespace $ {
 			range: vary => ({ tip: 'range' as const, bin: $mol_charset_encode( String( vary ) ) }),
 			json:  vary => ({ tip: 'json' as const, bin: $mol_charset_encode( JSON.stringify( vary ) ) }),
 			jsan:  vary => ({ tip: 'jsan' as const, bin: $mol_charset_encode( JSON.stringify( vary ) ) }),
-			xml:   vary => ({ tip: 'xml' as const, bin: $mol_charset_encode( $mol_dom_serialize( vary as Node ) ) }),
+			dom:   vary => ({ tip: 'dom' as const, bin: $mol_charset_encode( $mol_dom_serialize( vary as Node ) ) }),
 			tree:  vary => ({ tip: 'tree' as const, bin: $mol_charset_encode( String( vary ) ) }),
 			
 		} )
@@ -139,7 +139,7 @@ namespace $ {
 			case 'range': return new $mol_time_interval( $mol_charset_decode( bin ) )
 			case 'json':  return JSON.parse( $mol_charset_decode( bin ) )
 			case 'jsan':  return JSON.parse( $mol_charset_decode( bin ) )
-			case 'xml':   return $mol_dom_parse( $mol_charset_decode( bin ) ).documentElement
+			case 'dom':   return $mol_dom_parse( $mol_charset_decode( bin ) ).documentElement
 			case 'tree':  return $$.$mol_tree2_from_string( $mol_charset_decode( bin ) )
 			
 		}

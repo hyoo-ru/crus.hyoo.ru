@@ -21,7 +21,7 @@ namespace $ {
 			range: vary => Boolean( vary.duration.valueOf() ),
 			json:  vary => Boolean( Reflect.ownKeys( vary ).length ),
 			jsan:  vary => Boolean( vary.length ),
-			xml:   vary => Boolean( vary.attributes.length + vary.childNodes.length ),
+			dom:   vary => Boolean( vary.attributes.length + vary.childNodes.length ),
 			tree:  vary => Boolean( vary.value || vary.kids.length ),
 			
 		})
@@ -51,7 +51,7 @@ namespace $ {
 			
 			json: vary => BigInt( Reflect.ownKeys( vary ).length ),
 			jsan: vary => BigInt( vary.length ),
-			xml: vary => BigInt( vary.attributes.length + vary.childNodes.length ),
+			dom: vary => BigInt( vary.attributes.length + vary.childNodes.length ),
 			
 			tree: vary => {
 				try {
@@ -81,7 +81,7 @@ namespace $ {
 			range: vary => vary.duration.valueOf(),
 			json:  vary => Reflect.ownKeys( vary ).length,
 			jsan:  vary => vary.length,
-			xml:   vary => Number( vary.attributes.length + vary.childNodes.length ),
+			dom:   vary => Number( vary.attributes.length + vary.childNodes.length ),
 			tree:  vary => Number( vary.value || vary.kids.length ),
 			
 		})
@@ -103,7 +103,7 @@ namespace $ {
 			range: vary => null,
 			json:  vary => null,
 			jsan:  vary => null,
-			xml:   vary => null,
+			dom:   vary => null,
 			tree:  vary => ( !vary.type || vary.type.length % 8 ) ? null :  Symbol.for( vary.type ),
 			
 		})
@@ -125,7 +125,7 @@ namespace $ {
 			range: vary => String( vary ),
 			json:  vary => JSON.stringify( vary ),
 			jsan:  vary => JSON.stringify( vary ),
-			xml:   vary => $mol_dom_serialize( vary ),
+			dom:   vary => $mol_dom_serialize( vary ),
 			tree:  vary => String( vary ),
 			
 		})
@@ -147,7 +147,7 @@ namespace $ {
 			range: vary => null,
 			json:  vary => new $mol_time_moment( vary as any ),
 			jsan:  vary => null,
-			xml:   vary => null,
+			dom:   vary => null,
 			tree:  vary => null,
 			
 		})
@@ -169,7 +169,7 @@ namespace $ {
 			range: vary => null,
 			json:  vary => new $mol_time_duration( vary as any ),
 			jsan:  vary => null,
-			xml:   vary => null,
+			dom:   vary => null,
 			tree:  vary => null,
 			
 		})
@@ -191,7 +191,7 @@ namespace $ {
 			range: vary => vary,
 			json:  vary => new $mol_time_moment( vary as any ),
 			jsan:  vary => null,
-			xml:   vary => null,
+			dom:   vary => null,
 			tree:  vary => null,
 			
 		})
@@ -213,7 +213,7 @@ namespace $ {
 			range: vary => ({ ... vary }),
 			json:  vary => vary,
 			jsan:  vary => Object( vary[0] ),
-			xml:   vary => { xml: $mol_dom_serialize( vary ) },
+			dom:   vary => { dom: $mol_dom_serialize( vary ) },
 			tree:  vary => { tree: vary.toString() },
 			
 		})
@@ -235,13 +235,13 @@ namespace $ {
 			range: vary => [ vary.toJSON() ],
 			json:  vary => [ vary ],
 			jsan:  vary => vary,
-			xml:   vary => [ $mol_dom_serialize( vary ) ],
+			dom:   vary => [ $mol_dom_serialize( vary ) ],
 			tree:  vary => [ vary.toString() ],
 			
 		})
 	}
 
-	export function $hyoo_crus_vary_cast_xml( vary: $hyoo_crus_vary_type ) {
+	export function $hyoo_crus_vary_cast_dom( vary: $hyoo_crus_vary_type ) {
 		return $hyoo_crus_vary_switch( vary, {
 			
 			nil:   vary => null,
@@ -257,7 +257,7 @@ namespace $ {
 			range: vary => <body>{ vary }</body>,
 			json:  vary => <body>{ JSON.stringify( vary ) }</body>,
 			jsan:  vary => <body>{ JSON.stringify( vary ) }</body>,
-			xml:   vary => vary,
+			dom:   vary => vary,
 			tree:  vary => <body>{ vary }</body>,
 			
 		})
@@ -279,7 +279,7 @@ namespace $ {
 			range: vary => $mol_tree2.struct( vary.toString() ),
 			json:  vary => $$.$mol_tree2_from_json( vary ),
 			jsan:  vary => $$.$mol_tree2_from_json( vary ),
-			xml:   vary => $$.$mol_tree2_xml_from_dom( vary ),
+			dom:   vary => $$.$mol_tree2_xml_from_dom( vary ),
 			tree:  vary => vary,
 			
 		})
@@ -300,7 +300,7 @@ namespace $ {
 		range: $hyoo_crus_vary_cast_range,
 		json: $hyoo_crus_vary_cast_json,
 		jsan: $hyoo_crus_vary_cast_jsan,
-		xml: $hyoo_crus_vary_cast_xml,
+		dom: $hyoo_crus_vary_cast_dom,
 		tree: $hyoo_crus_vary_cast_tree,
 		
 	} as const

@@ -188,7 +188,7 @@ namespace $ {
 	export class $hyoo_crus_reg_str extends $hyoo_crus_reg.of( 'str' ) {}
 	export class $hyoo_crus_reg_time extends $hyoo_crus_reg.of( 'time' ) {}
 	export class $hyoo_crus_reg_json extends $hyoo_crus_reg.of( 'json' ) {}
-	export class $hyoo_crus_reg_xml extends $hyoo_crus_reg.of( 'xml' ) {}
+	export class $hyoo_crus_reg_xml extends $hyoo_crus_reg.of( 'dom' ) {}
 	export class $hyoo_crus_reg_tree extends $hyoo_crus_reg.of( 'tree' ) {}
 
 }
