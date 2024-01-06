@@ -38,17 +38,17 @@ namespace $ {
 		}
 		
 		@ $mol_mem
-		value_int( next?: bigint ): bigint {
+		value_int( next?: bigint ): bigint | null {
 			return $hyoo_crus_vary_cast_int( this.value_vary( next ) )
 		}
 		
 		@ $mol_mem
-		value_real( next?: number ): number {
+		value_real( next?: number ): number | null {
 			return $hyoo_crus_vary_cast_real( this.value_vary( next ) )
 		}
 		
 		@ $mol_mem
-		value_str( next?: string ): string {
+		value_str( next?: string ): string | null {
 			return $hyoo_crus_vary_cast_str( this.value_vary( next ) )
 		}
 		
@@ -58,9 +58,8 @@ namespace $ {
 		}
 		
 		@ $mol_mem
-		value_ref( next?: symbol ): symbol {
-			const bin = this.value_vary( next )
-			return typeof bin === 'symbol' ? bin : Symbol.for( '' )
+		value_ref( next?: symbol ): symbol | null {
+			return $hyoo_crus_vary_cast_ref( this.value_vary( next ) )
 		}
 		
 		@ $mol_mem_key
@@ -91,7 +90,7 @@ namespace $ {
 			const realm = this.realm()
 			
 			const ref = this.value_ref()
-			if( ref.description ) return realm!.Land( ref )
+			if( ref ) return realm!.Land( ref )
 			
 			const hash = $mol_crypto_hash( $hyoo_crus_vary_encode( vary ).bin )
 			const numb = new Uint16Array( $mol_base64_decode( this.land().numb() ).buffer )
@@ -148,7 +147,7 @@ namespace $ {
 				remote( next?: null | Val ): null | Val {
 					const realm = this.realm()
 					const ref = this.value_ref( ( next as $hyoo_crus_node )?.ref() )
-					if( !ref.description ) return null
+					if( !ref ) return null
 					return realm!.Node( ref, ( Value as any )() )
 				}
 				
@@ -160,7 +159,7 @@ namespace $ {
 	
 				@ $mol_action
 				local_ensure() {
-					if( this.value_ref().description ) return this.remote()!
+					if( this.value_ref() ) return this.remote()!
 					const node = this.land().Node( ( Value as any )() ).Item( this.land().self_make() )
 					return this.remote( node )!
 				}

@@ -260,7 +260,9 @@ namespace $ {
 			
 			merge: if( this.numb() && ( head !== 'AAAAAAAB' ) ) {
 				
-				const inflow = this.inflow()!.items().slice().reverse().map( $hyoo_crus_vary_cast_ref )
+				const inflow = this.inflow()!.items().slice().reverse()
+					.map( $hyoo_crus_vary_cast_ref )
+					.filter( $mol_guard_defined )
 				if( !inflow.length ) break merge
 				
 				const exists = new Set([ ... this.gists.get( head )?.keys() ?? [] ])

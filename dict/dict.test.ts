@@ -74,7 +74,7 @@ namespace $.$$ {
 			const land = realm.home().base().land()
 			
 			const user = land.Node( User ).Item('11111111')
-			$mol_assert_equal( user.title() ?? '', user.Title.value(), '' )
+			$mol_assert_equal( user.title(), user.Title.value(), null )
 			$mol_assert_equal( user.account(), user.Account.remote(), null )
 			$mol_assert_equal( user.articles() ?? [], user.Articles.remote_list(), [] )
 			
@@ -101,7 +101,7 @@ namespace $.$$ {
 			$mol_assert_equal(
 				articles[1].Title.dive( 'ru' ).value(),
 				articles[1].title()?.dive( 'ru' ).value(),
-				'',
+				null,
 			)
 			
 			$mol_assert_unique( user.land(), account.land(), ... articles.map( article => article.land() ) )
