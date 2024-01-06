@@ -9327,6 +9327,11 @@ var $;
                     this.splice([land.ref()]);
                     return land.Node(Value()).Item('');
                 }
+                local_make() {
+                    const node = this.land().Node(Value()).Item(this.land().self_make());
+                    this.splice([node.ref()]);
+                    return node;
+                }
             }
             __decorate([
                 $mol_mem
@@ -9334,6 +9339,9 @@ var $;
             __decorate([
                 $mol_action
             ], Ref.prototype, "remote_make", null);
+            __decorate([
+                $mol_action
+            ], Ref.prototype, "local_make", null);
             return Ref;
         }
         ;
@@ -9838,6 +9846,12 @@ var $;
                     this.yoke(this.ref());
                     return this.remote();
                 }
+                local_ensure() {
+                    if (this.value_ref().description)
+                        return this.remote();
+                    const node = this.land().Node(Value()).Item(this.land().self_make());
+                    return this.remote(node);
+                }
             }
             __decorate([
                 $mol_mem
@@ -9845,6 +9859,9 @@ var $;
             __decorate([
                 $mol_action
             ], Ref.prototype, "remote_ensure", null);
+            __decorate([
+                $mol_action
+            ], Ref.prototype, "local_ensure", null);
             return Ref;
         }
         ;
@@ -9953,19 +9970,19 @@ var $;
         static tag = $hyoo_crus_gist_tag[$hyoo_crus_gist_tag.keys];
         Value = $hyoo_crus_node;
         keys() {
-            return this.cast($hyoo_crus_list).items();
-        }
-        has(key, next) {
-            return this.cast($hyoo_crus_list).has(key, next, 'solo');
+            return this.items();
         }
         dive(key, Node = this.Value) {
-            this.cast($hyoo_crus_list).has(key, true, Node.tag);
-            const unit = this.cast($hyoo_crus_list).find(key);
+            this.has(key, true, Node.tag);
+            const unit = this.find(key);
             return this.land().Node(Node).Item(unit.self());
         }
-        static of(Node) {
+        static of(Value) {
             return class Dict extends $hyoo_crus_dict {
-                Value = Node;
+                Value = Value;
+                static toJSON() {
+                    return '$hyoo_crus_dict.of(' + Value + ')';
+                }
             };
         }
         static with(schema) {
@@ -9992,9 +10009,6 @@ var $;
     __decorate([
         $mol_mem
     ], $hyoo_crus_dict.prototype, "keys", null);
-    __decorate([
-        $mol_mem_key
-    ], $hyoo_crus_dict, "of", null);
     $.$hyoo_crus_dict = $hyoo_crus_dict;
     class Pair {
         key;
@@ -15134,7 +15148,7 @@ var $;
                 const land = this.land();
                 for (const unit of this.units()) {
                     if (unit.tag() === 'term')
-                        str += String(land.gist_decode(unit) ?? '');
+                        str += $hyoo_crus_vary_cast_str(land.gist_decode(unit));
                     else
                         str += land.Node($hyoo_crus_text).Item(unit.self()).str();
                 }
@@ -15151,7 +15165,7 @@ var $;
             let from = str_from < 0 ? list.length : 0;
             let word = '';
             while (from < list.length) {
-                word = String(land.gist_decode(list[from]) ?? '');
+                word = $hyoo_crus_vary_cast_str(land.gist_decode(list[from]));
                 if (str_from <= word.length) {
                     next = word.slice(0, str_from) + next;
                     break;
@@ -15163,7 +15177,7 @@ var $;
             }
             let to = str_to < 0 ? list.length : from;
             while (to < list.length) {
-                word = String(land.gist_decode(list[to]) ?? '');
+                word = $hyoo_crus_vary_cast_str(land.gist_decode(list[to]));
                 to++;
                 if (str_to < word.length) {
                     next = next + word.slice(str_to);
@@ -15173,7 +15187,7 @@ var $;
             }
             if (from && from === list.length) {
                 --from;
-                next = String(land.gist_decode(list[from]) ?? '') + next;
+                next = $hyoo_crus_vary_cast_str(land.gist_decode(list[from])) + next;
             }
             const words = next.match($hyoo_crowd_tokenizer) ?? [];
             this.cast($hyoo_crus_list).splice(words, from, to);
@@ -15184,7 +15198,7 @@ var $;
             let off = offset;
             for (const unit of this.units()) {
                 if (unit.tag() === 'term') {
-                    const len = String(land.gist_decode(unit) ?? '').length;
+                    const len = $hyoo_crus_vary_cast_str(land.gist_decode(unit)).length;
                     if (off <= len)
                         return [unit.self(), off];
                     else
@@ -15205,7 +15219,7 @@ var $;
                 if (unit.self() === self)
                     return [self, offset];
                 if (unit.tag() === 'term') {
-                    offset += String(land.gist_decode(unit) ?? '').length;
+                    offset += $hyoo_crus_vary_cast_str(land.gist_decode(unit)).length;
                 }
                 else {
                     const found = land.Node($hyoo_crus_text).Item(unit.self()).offset_by_point([self, offset]);
@@ -25890,6 +25904,79 @@ var $;
                 $mol_assert_equal(articles[1].title()?.dive('ru').value(), undefined);
                 $mol_assert_equal(articles[1].Title.dive('ru').value(), articles[1].title()?.dive('ru').value(), '');
                 $mol_assert_unique(user.land(), account.land(), ...articles.map(article => article.land()));
+            },
+            async "Schemas"($) {
+                class Kind extends $hyoo_crus_dict.with({
+                    Kind: $hyoo_crus_reg.ref(() => Kind),
+                    Title: $hyoo_crus_reg_str,
+                    Props: $hyoo_crus_dict.of($hyoo_crus_reg.ref(() => Property)),
+                }) {
+                }
+                class Entity extends $hyoo_crus_dict.with({
+                    Kind: $hyoo_crus_reg.ref(() => Kind),
+                    Title: $hyoo_crus_reg_str,
+                }) {
+                }
+                class Property extends Entity.with({
+                    Type: $hyoo_crus_reg.ref(() => Type),
+                    Base: $hyoo_crus_reg,
+                    Enum: $hyoo_crus_reg.ref(() => $hyoo_crus_dict),
+                }) {
+                }
+                class Type extends Entity.with({}) {
+                }
+                class Domain extends $hyoo_crus_dict.with({
+                    Kinds: $hyoo_crus_dict.of(Kind),
+                    Props: $hyoo_crus_dict.of(Property),
+                    Types: $hyoo_crus_dict.of(Type),
+                }) {
+                }
+                const realm = $hyoo_crus_realm.make({ $ });
+                const land = realm.home().base().land();
+                const domain = land.Root(Domain);
+                await $mol_wire_async(land).sync();
+                const kind = domain.Kinds.dive('Kind');
+                const type = domain.Kinds.dive('Type');
+                const prop = domain.Kinds.dive('Prop');
+                const entity = domain.Kinds.dive('Entity');
+                kind.title('Kind');
+                type.title('Type');
+                prop.title('Property');
+                entity.title('Entity');
+                const reg = domain.Types.dive('Reg');
+                const str = domain.Types.dive('Str');
+                const ref = domain.Types.dive('Ref');
+                reg.title('Register');
+                str.title('String');
+                ref.title('Reference');
+                kind.kind(kind);
+                type.kind(kind);
+                prop.kind(kind);
+                entity.kind(kind);
+                const kind_kind = domain.Props.dive('kind.kind');
+                const prop_type = domain.Props.dive('prop.type');
+                const prop_enum = domain.Props.dive('prop.enum');
+                const prop_base = domain.Props.dive('prop.base');
+                kind_kind.title('Kind of entity');
+                prop_type.title('Property type');
+                prop_enum.title('Property value variants');
+                prop_base.title('Property base value');
+                kind.Props.dive('kind').remote(kind_kind);
+                type.Props.dive('kind').remote(kind_kind);
+                prop.Props.dive('kind').remote(kind_kind);
+                entity.Props.dive('kind').remote(kind_kind);
+                prop.Props.dive('type').remote(prop_type);
+                prop.Props.dive('enum').remote(prop_enum);
+                prop.Props.dive('base').remote(prop_base);
+                kind_kind.type(ref);
+                prop_type.type(ref);
+                prop_enum.type(ref);
+                prop_base.type(reg);
+                kind_kind.enum(domain.Kinds);
+                prop_type.enum(domain.Types);
+                prop_enum.enum(domain);
+                kind_kind.base(entity.ref());
+                prop_type.base(reg.ref());
             },
         });
     })($$ = $_1.$$ || ($_1.$$ = {}));

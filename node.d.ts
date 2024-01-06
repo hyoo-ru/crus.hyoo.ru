@@ -2644,6 +2644,7 @@ declare namespace $ {
                 value(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
                 remote_list(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
                 remote_make(): $mol_type_result<$mol_type_result<Value>>;
+                local_make(): $mol_type_result<$mol_type_result<Value>>;
                 [Symbol.toStringTag]: string;
                 [$mol_ambient_ref]: typeof $$;
                 toString: () => string;
@@ -2922,6 +2923,7 @@ declare namespace $ {
                     value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                     remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                     remote_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
+                    local_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
                     [Symbol.toStringTag]: string;
                     [$mol_ambient_ref]: typeof $$;
                     toString: () => string;
@@ -2974,6 +2976,7 @@ declare namespace $ {
                 value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                 remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                 remote_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
+                local_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
                 [Symbol.toStringTag]: string;
                 [$mol_ambient_ref]: typeof $$;
                 toString: () => string;
@@ -3106,6 +3109,7 @@ declare namespace $ {
                     value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                     remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                     remote_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
+                    local_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
                     [Symbol.toStringTag]: string;
                     [$mol_ambient_ref]: typeof $$;
                     toString: () => string;
@@ -3158,6 +3162,7 @@ declare namespace $ {
                 value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                 remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                 remote_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
+                local_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
                 [Symbol.toStringTag]: string;
                 [$mol_ambient_ref]: typeof $$;
                 toString: () => string;
@@ -3299,6 +3304,7 @@ declare namespace $ {
                     value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                     remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                     remote_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
+                    local_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
                     [Symbol.toStringTag]: string;
                     [$mol_ambient_ref]: typeof $$;
                     toString: () => string;
@@ -3351,6 +3357,7 @@ declare namespace $ {
                 value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                 remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                 remote_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
+                local_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
                 [Symbol.toStringTag]: string;
                 [$mol_ambient_ref]: typeof $$;
                 toString: () => string;
@@ -3492,6 +3499,7 @@ declare namespace $ {
                     value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                     remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                     remote_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
+                    local_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
                     [Symbol.toStringTag]: string;
                     [$mol_ambient_ref]: typeof $$;
                     toString: () => string;
@@ -3544,6 +3552,7 @@ declare namespace $ {
                 value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                 remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                 remote_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
+                local_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
                 [Symbol.toStringTag]: string;
                 [$mol_ambient_ref]: typeof $$;
                 toString: () => string;
@@ -3685,6 +3694,7 @@ declare namespace $ {
                     value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                     remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                     remote_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
+                    local_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
                     [Symbol.toStringTag]: string;
                     [$mol_ambient_ref]: typeof $$;
                     toString: () => string;
@@ -3737,6 +3747,7 @@ declare namespace $ {
                 value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                 remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                 remote_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
+                local_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
                 [Symbol.toStringTag]: string;
                 [$mol_ambient_ref]: typeof $$;
                 toString: () => string;
@@ -3878,6 +3889,7 @@ declare namespace $ {
                     value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                     remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                     remote_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
+                    local_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
                     [Symbol.toStringTag]: string;
                     [$mol_ambient_ref]: typeof $$;
                     toString: () => string;
@@ -3930,6 +3942,7 @@ declare namespace $ {
                 value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                 remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                 remote_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
+                local_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
                 [Symbol.toStringTag]: string;
                 [$mol_ambient_ref]: typeof $$;
                 toString: () => string;
@@ -4071,6 +4084,7 @@ declare namespace $ {
                     value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                     remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                     remote_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
+                    local_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
                     [Symbol.toStringTag]: string;
                     [$mol_ambient_ref]: typeof $$;
                     toString: () => string;
@@ -4123,6 +4137,7 @@ declare namespace $ {
                 value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                 remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                 remote_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
+                local_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
                 [Symbol.toStringTag]: string;
                 [$mol_ambient_ref]: typeof $$;
                 toString: () => string;
@@ -4264,6 +4279,7 @@ declare namespace $ {
                     value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                     remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                     remote_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
+                    local_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
                     [Symbol.toStringTag]: string;
                     [$mol_ambient_ref]: typeof $$;
                     toString: () => string;
@@ -4316,6 +4332,7 @@ declare namespace $ {
                 value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                 remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                 remote_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
+                local_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
                 [Symbol.toStringTag]: string;
                 [$mol_ambient_ref]: typeof $$;
                 toString: () => string;
@@ -4457,6 +4474,7 @@ declare namespace $ {
                     value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                     remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                     remote_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
+                    local_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
                     [Symbol.toStringTag]: string;
                     [$mol_ambient_ref]: typeof $$;
                     toString: () => string;
@@ -4509,6 +4527,7 @@ declare namespace $ {
                 value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                 remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                 remote_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
+                local_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
                 [Symbol.toStringTag]: string;
                 [$mol_ambient_ref]: typeof $$;
                 toString: () => string;
@@ -4650,6 +4669,7 @@ declare namespace $ {
                     value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                     remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                     remote_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
+                    local_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
                     [Symbol.toStringTag]: string;
                     [$mol_ambient_ref]: typeof $$;
                     toString: () => string;
@@ -4702,6 +4722,7 @@ declare namespace $ {
                 value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                 remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                 remote_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
+                local_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
                 [Symbol.toStringTag]: string;
                 [$mol_ambient_ref]: typeof $$;
                 toString: () => string;
@@ -4763,18 +4784,17 @@ declare namespace $ {
         static tag: "keys" | "vals" | "solo" | "term";
         Value: typeof $hyoo_crus_node;
         keys(): readonly $hyoo_crus_vary_type[];
-        has(key: $hyoo_crus_vary_type, next?: false): boolean;
         dive<Node extends typeof $hyoo_crus_node = typeof this['Value']>(key: $hyoo_crus_vary_type, Node?: Node): InstanceType<Node>;
-        static of<Node extends typeof $hyoo_crus_node>(Node: Node): {
+        static of<Value extends typeof $hyoo_crus_node>(Value: Value): {
             new (): {
-                Value: Node;
+                Value: Value;
                 keys(): readonly $hyoo_crus_vary_type[];
-                has(key: $hyoo_crus_vary_type, next?: false | undefined): boolean;
-                dive<Node_1 extends typeof $hyoo_crus_node = Node>(key: $hyoo_crus_vary_type, Node?: Node_1): InstanceType<Node_1>;
+                dive<Node_1 extends typeof $hyoo_crus_node = Value>(key: $hyoo_crus_vary_type, Node?: Node_1): InstanceType<Node_1>;
                 value(): any;
                 items(next?: readonly $hyoo_crus_vary_type[] | undefined, tag?: "keys" | "vals" | "solo" | "term"): readonly $hyoo_crus_vary_type[];
                 splice(next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: "keys" | "vals" | "solo" | "term"): void;
                 find(vary: $hyoo_crus_vary_type): $hyoo_crus_gist | null;
+                has(vary: $hyoo_crus_vary_type, next?: boolean | undefined, tag?: "keys" | "vals" | "solo" | "term"): boolean;
                 add(vary: $hyoo_crus_vary_type, tag?: "keys" | "vals" | "solo" | "term"): void;
                 cut(vary: $hyoo_crus_vary_type): void;
                 move(from: number, to: number): void;
@@ -4797,16 +4817,21 @@ declare namespace $ {
                 [Symbol.toStringTag]: string;
                 [$mol_ambient_ref]: typeof $$;
             };
+            toJSON(): string;
             tag: "keys" | "vals" | "solo" | "term";
-            of<Node_5 extends typeof $hyoo_crus_node>(Node: Node): any;
-            with<This extends typeof $hyoo_crus_dict, Schema extends Record<string, typeof $hyoo_crus_node & (new () => {
-                value: any;
-            })>>(this: This, schema: Schema): This & (new (...args: any[]) => InstanceType<This> & { [Key in keyof Schema]: InstanceType<Schema[Key]>; } & { readonly [Key_1 in keyof Schema as Uncapitalize<Extract<Key_1, string>>]: (next?: ReturnType<InstanceType<Schema[Key_1]>["value"]> | undefined) => ReturnType<InstanceType<Schema[Key_1]>["value"]> | null; });
-            ref<Value extends unknown>(Value: Value): {
+            of<Value extends typeof $hyoo_crus_node>(Value: Value): any;
+            with<This extends typeof $hyoo_crus_dict, Schema extends Record<string, {
+                new (): {
+                    value: any;
+                };
+                tag: "keys" | "vals" | "solo" | "term";
+            }>>(this: This, schema: Schema): This & (new (...args: any[]) => InstanceType<This> & { [Key in keyof Schema]: InstanceType<Schema[Key]>; } & { readonly [Key_1 in keyof Schema as Uncapitalize<Extract<Key_1, string>>]: (next?: ReturnType<InstanceType<Schema[Key_1]>["value"]> | undefined) => ReturnType<InstanceType<Schema[Key_1]>["value"]> | null; });
+            ref<Value_1 extends unknown>(Value: Value): {
                 new (): {
                     value(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
                     remote_list(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
                     remote_make(): $mol_type_result<$mol_type_result<Value>>;
+                    local_make(): $mol_type_result<$mol_type_result<Value>>;
                     [Symbol.toStringTag]: string;
                     [$mol_ambient_ref]: typeof $$;
                     toString: () => string;
@@ -4825,11 +4850,11 @@ declare namespace $ {
                     has: (vary: $hyoo_crus_vary_type, next?: boolean | undefined, tag?: "keys" | "vals" | "solo" | "term") => boolean;
                     cut: (vary: $hyoo_crus_vary_type) => void;
                     items: (next?: readonly $hyoo_crus_vary_type[] | undefined, tag?: "keys" | "vals" | "solo" | "term") => readonly $hyoo_crus_vary_type[];
-                    node_make: <Node_6 extends typeof $hyoo_crus_node>(Node: Node_6, vary: $hyoo_crus_vary_type, tag?: "keys" | "vals" | "solo" | "term") => InstanceType<Node_6>;
+                    node_make: <Node_5 extends typeof $hyoo_crus_node>(Node: Node_5, vary: $hyoo_crus_vary_type, tag?: "keys" | "vals" | "solo" | "term") => InstanceType<Node_5>;
                     lord: () => $hyoo_crus_lord | null;
                     lord_ref: () => symbol;
-                    cast: <Node_7 extends typeof $hyoo_crus_node>(Node: Node_7) => InstanceType<Node_7>;
-                    nodes: <Node_8 extends typeof $hyoo_crus_node>(Node: Node_8 | null) => readonly InstanceType<Node_8>[];
+                    cast: <Node_6 extends typeof $hyoo_crus_node>(Node: Node_6) => InstanceType<Node_6>;
+                    nodes: <Node_7 extends typeof $hyoo_crus_node>(Node: Node_7 | null) => readonly InstanceType<Node_7>[];
                     units: () => $hyoo_crus_gist[];
                     can_change: (lord?: symbol) => boolean;
                 };
@@ -4849,10 +4874,10 @@ declare namespace $ {
             create<Instance_1>(this: new (init?: ((instance: any) => void) | undefined) => Instance_1, init?: ((instance: $mol_type_writable<Instance_1>) => void) | undefined): Instance_1;
             toString(): string;
             destructor(): void;
-            toJSON(): any;
             [Symbol.toPrimitive](): string;
         };
-        static with<This extends typeof $hyoo_crus_dict, Schema extends Record<string, typeof $hyoo_crus_node & {
+        static with<This extends typeof $hyoo_crus_dict, Schema extends Record<string, {
+            tag: keyof typeof $hyoo_crus_gist_tag;
             new (): {
                 value: any;
             };

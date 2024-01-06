@@ -5814,6 +5814,79 @@ var $;
                 $mol_assert_equal(articles[1].Title.dive('ru').value(), articles[1].title()?.dive('ru').value(), '');
                 $mol_assert_unique(user.land(), account.land(), ...articles.map(article => article.land()));
             },
+            async "Schemas"($) {
+                class Kind extends $hyoo_crus_dict.with({
+                    Kind: $hyoo_crus_reg.ref(() => Kind),
+                    Title: $hyoo_crus_reg_str,
+                    Props: $hyoo_crus_dict.of($hyoo_crus_reg.ref(() => Property)),
+                }) {
+                }
+                class Entity extends $hyoo_crus_dict.with({
+                    Kind: $hyoo_crus_reg.ref(() => Kind),
+                    Title: $hyoo_crus_reg_str,
+                }) {
+                }
+                class Property extends Entity.with({
+                    Type: $hyoo_crus_reg.ref(() => Type),
+                    Base: $hyoo_crus_reg,
+                    Enum: $hyoo_crus_reg.ref(() => $hyoo_crus_dict),
+                }) {
+                }
+                class Type extends Entity.with({}) {
+                }
+                class Domain extends $hyoo_crus_dict.with({
+                    Kinds: $hyoo_crus_dict.of(Kind),
+                    Props: $hyoo_crus_dict.of(Property),
+                    Types: $hyoo_crus_dict.of(Type),
+                }) {
+                }
+                const realm = $hyoo_crus_realm.make({ $ });
+                const land = realm.home().base().land();
+                const domain = land.Root(Domain);
+                await $mol_wire_async(land).sync();
+                const kind = domain.Kinds.dive('Kind');
+                const type = domain.Kinds.dive('Type');
+                const prop = domain.Kinds.dive('Prop');
+                const entity = domain.Kinds.dive('Entity');
+                kind.title('Kind');
+                type.title('Type');
+                prop.title('Property');
+                entity.title('Entity');
+                const reg = domain.Types.dive('Reg');
+                const str = domain.Types.dive('Str');
+                const ref = domain.Types.dive('Ref');
+                reg.title('Register');
+                str.title('String');
+                ref.title('Reference');
+                kind.kind(kind);
+                type.kind(kind);
+                prop.kind(kind);
+                entity.kind(kind);
+                const kind_kind = domain.Props.dive('kind.kind');
+                const prop_type = domain.Props.dive('prop.type');
+                const prop_enum = domain.Props.dive('prop.enum');
+                const prop_base = domain.Props.dive('prop.base');
+                kind_kind.title('Kind of entity');
+                prop_type.title('Property type');
+                prop_enum.title('Property value variants');
+                prop_base.title('Property base value');
+                kind.Props.dive('kind').remote(kind_kind);
+                type.Props.dive('kind').remote(kind_kind);
+                prop.Props.dive('kind').remote(kind_kind);
+                entity.Props.dive('kind').remote(kind_kind);
+                prop.Props.dive('type').remote(prop_type);
+                prop.Props.dive('enum').remote(prop_enum);
+                prop.Props.dive('base').remote(prop_base);
+                kind_kind.type(ref);
+                prop_type.type(ref);
+                prop_enum.type(ref);
+                prop_base.type(reg);
+                kind_kind.enum(domain.Kinds);
+                prop_type.enum(domain.Types);
+                prop_enum.enum(domain);
+                kind_kind.base(entity.ref());
+                prop_type.base(reg.ref());
+            },
         });
     })($$ = $_1.$$ || ($_1.$$ = {}));
 })($ || ($ = {}));

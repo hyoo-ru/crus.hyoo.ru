@@ -9348,6 +9348,11 @@ var $;
                     this.splice([land.ref()]);
                     return land.Node(Value()).Item('');
                 }
+                local_make() {
+                    const node = this.land().Node(Value()).Item(this.land().self_make());
+                    this.splice([node.ref()]);
+                    return node;
+                }
             }
             __decorate([
                 $mol_mem
@@ -9355,6 +9360,9 @@ var $;
             __decorate([
                 $mol_action
             ], Ref.prototype, "remote_make", null);
+            __decorate([
+                $mol_action
+            ], Ref.prototype, "local_make", null);
             return Ref;
         }
         ;
@@ -9841,6 +9849,12 @@ var $;
                     this.yoke(this.ref());
                     return this.remote();
                 }
+                local_ensure() {
+                    if (this.value_ref().description)
+                        return this.remote();
+                    const node = this.land().Node(Value()).Item(this.land().self_make());
+                    return this.remote(node);
+                }
             }
             __decorate([
                 $mol_mem
@@ -9848,6 +9862,9 @@ var $;
             __decorate([
                 $mol_action
             ], Ref.prototype, "remote_ensure", null);
+            __decorate([
+                $mol_action
+            ], Ref.prototype, "local_ensure", null);
             return Ref;
         }
         ;
@@ -9956,19 +9973,19 @@ var $;
         static tag = $hyoo_crus_gist_tag[$hyoo_crus_gist_tag.keys];
         Value = $hyoo_crus_node;
         keys() {
-            return this.cast($hyoo_crus_list).items();
-        }
-        has(key, next) {
-            return this.cast($hyoo_crus_list).has(key, next, 'solo');
+            return this.items();
         }
         dive(key, Node = this.Value) {
-            this.cast($hyoo_crus_list).has(key, true, Node.tag);
-            const unit = this.cast($hyoo_crus_list).find(key);
+            this.has(key, true, Node.tag);
+            const unit = this.find(key);
             return this.land().Node(Node).Item(unit.self());
         }
-        static of(Node) {
+        static of(Value) {
             return class Dict extends $hyoo_crus_dict {
-                Value = Node;
+                Value = Value;
+                static toJSON() {
+                    return '$hyoo_crus_dict.of(' + Value + ')';
+                }
             };
         }
         static with(schema) {
@@ -9995,9 +10012,6 @@ var $;
     __decorate([
         $mol_mem
     ], $hyoo_crus_dict.prototype, "keys", null);
-    __decorate([
-        $mol_mem_key
-    ], $hyoo_crus_dict, "of", null);
     $.$hyoo_crus_dict = $hyoo_crus_dict;
     class Pair {
         key;
@@ -15199,7 +15213,7 @@ var $;
                 const land = this.land();
                 for (const unit of this.units()) {
                     if (unit.tag() === 'term')
-                        str += String(land.gist_decode(unit) ?? '');
+                        str += $hyoo_crus_vary_cast_str(land.gist_decode(unit));
                     else
                         str += land.Node($hyoo_crus_text).Item(unit.self()).str();
                 }
@@ -15216,7 +15230,7 @@ var $;
             let from = str_from < 0 ? list.length : 0;
             let word = '';
             while (from < list.length) {
-                word = String(land.gist_decode(list[from]) ?? '');
+                word = $hyoo_crus_vary_cast_str(land.gist_decode(list[from]));
                 if (str_from <= word.length) {
                     next = word.slice(0, str_from) + next;
                     break;
@@ -15228,7 +15242,7 @@ var $;
             }
             let to = str_to < 0 ? list.length : from;
             while (to < list.length) {
-                word = String(land.gist_decode(list[to]) ?? '');
+                word = $hyoo_crus_vary_cast_str(land.gist_decode(list[to]));
                 to++;
                 if (str_to < word.length) {
                     next = next + word.slice(str_to);
@@ -15238,7 +15252,7 @@ var $;
             }
             if (from && from === list.length) {
                 --from;
-                next = String(land.gist_decode(list[from]) ?? '') + next;
+                next = $hyoo_crus_vary_cast_str(land.gist_decode(list[from])) + next;
             }
             const words = next.match($hyoo_crowd_tokenizer) ?? [];
             this.cast($hyoo_crus_list).splice(words, from, to);
@@ -15249,7 +15263,7 @@ var $;
             let off = offset;
             for (const unit of this.units()) {
                 if (unit.tag() === 'term') {
-                    const len = String(land.gist_decode(unit) ?? '').length;
+                    const len = $hyoo_crus_vary_cast_str(land.gist_decode(unit)).length;
                     if (off <= len)
                         return [unit.self(), off];
                     else
@@ -15270,7 +15284,7 @@ var $;
                 if (unit.self() === self)
                     return [self, offset];
                 if (unit.tag() === 'term') {
-                    offset += String(land.gist_decode(unit) ?? '').length;
+                    offset += $hyoo_crus_vary_cast_str(land.gist_decode(unit)).length;
                 }
                 else {
                     const found = land.Node($hyoo_crus_text).Item(unit.self()).offset_by_point([self, offset]);
