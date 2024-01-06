@@ -152,7 +152,7 @@ export class $my_organ extends $hyoo_crus_entity.with({
 	Weight: $hyoo_crus_reg_real, // atomic double size float
 	Photo: $hyoo_crus_reg_bin, // atoic blob
 	Description: $hyoo_crus_text, // mergeable long text
-	Contains: $hyoo_crus_list_ref( ()=> $my_organ ), // reference to same Model
+	Contains: $hyoo_crus_list.ref( ()=> $my_organ ), // reference to same Model
 }) {}
 
 /** Person Model */
@@ -161,9 +161,9 @@ export class $my_person extends $hyoo_crus_entity.with({
 	Sex: $hyoo_crus_reg_str, // atomic short string
 	Birthday: $hyoo_crus_reg_time, // atomic time moment
 	Heart: $my_organ, // embedded Model
-	Parent: $hyoo_crus_reg_ref( ()=> $my_person ), // reference to Model
-	Kids: $hyoo_crus_list_ref( ()=> $my_person ), // list of references to Models
-	/** @deprecated Use Parent */ Father: $hyoo_crus_reg_ref( ()=> $my_person ),
+	Parent: $hyoo_crus_reg.ref( ()=> $my_person ), // reference to Model
+	Kids: $hyoo_crus_list.ref( ()=> $my_person ), // list of references to Models
+	/** @deprecated Use Parent */ Father: $hyoo_crus_reg.ref( ()=> $my_person ),
 }) {
 	
 	// Override default implementation

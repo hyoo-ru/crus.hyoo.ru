@@ -5723,7 +5723,8 @@ var $;
             "Register with linked nodes"($) {
                 const realm = $hyoo_crus_realm.make({ $ });
                 const land = realm.home().base().land();
-                const reg = land.Node($hyoo_crus_reg_ref(() => $hyoo_crus_reg)).Item('11111111');
+                const Reg = $hyoo_crus_reg.ref(() => Reg);
+                const reg = land.Node(Reg).Item('11111111');
                 $mol_assert_equal(reg.remote(), null);
                 reg.remote(reg);
                 $mol_assert_equal(reg.value_ref(), reg.remote().ref(), reg.ref());
@@ -5732,78 +5733,6 @@ var $;
     })($$ = $_1.$$ || ($_1.$$ = {}));
 })($ || ($ = {}));
 //hyoo/crus/reg/reg.test.ts
-;
-"use strict";
-var $;
-(function ($) {
-    function $hyoo_crus_reg_ref(Value) {
-        class Narrow extends $hyoo_crus_reg {
-            static Value = Value;
-            static toJSON() {
-                return '$hyoo_crus_reg_ref(()=>' + Value() + ')';
-            }
-            value(next) {
-                return this.remote(next);
-            }
-            remote(next) {
-                const realm = this.realm();
-                const ref = this.value_ref(next?.ref());
-                if (!ref.description)
-                    return null;
-                return realm.Node(ref, Value());
-            }
-            remote_ensure() {
-                this.yoke(this.ref());
-                return this.remote();
-            }
-        }
-        __decorate([
-            $mol_mem
-        ], Narrow.prototype, "remote", null);
-        __decorate([
-            $mol_action
-        ], Narrow.prototype, "remote_ensure", null);
-        return Narrow;
-    }
-    $.$hyoo_crus_reg_ref = $hyoo_crus_reg_ref;
-})($ || ($ = {}));
-//hyoo/crus/reg/ref/ref.ts
-;
-"use strict";
-var $;
-(function ($) {
-    function $hyoo_crus_list_ref(Value) {
-        class Narrow extends $hyoo_crus_list {
-            static Value = Value;
-            static toJSON() {
-                return '$hyoo_crus_list_ref(()=>' + Value() + ')';
-            }
-            value(next) {
-                return this.remote_list(next);
-            }
-            remote_list(next) {
-                const realm = this.realm();
-                const Node = Value();
-                return this.items(next?.map(item => item.ref()))
-                    .map(ref => realm.Node($hyoo_crus_vary_cast_ref(ref), Node));
-            }
-            remote_make() {
-                const land = this.realm().home().Land_new(0);
-                this.splice([land.ref()]);
-                return land.Node(Value()).Item('');
-            }
-        }
-        __decorate([
-            $mol_mem
-        ], Narrow.prototype, "remote_list", null);
-        __decorate([
-            $mol_action
-        ], Narrow.prototype, "remote_make", null);
-        return Narrow;
-    }
-    $.$hyoo_crus_list_ref = $hyoo_crus_list_ref;
-})($ || ($ = {}));
-//hyoo/crus/list/ref/ref.ts
 ;
 "use strict";
 var $;
@@ -5848,24 +5777,24 @@ var $;
                 $mol_assert_equal(dict1.dive('xxx', $hyoo_crus_list).items(), ['bar', 'foo']);
             },
             "Narrowed Dictionary with linked Dictionaries and others"($) {
-                const realm = $hyoo_crus_realm.make({ $ });
-                const land = realm.home().base().land();
                 class User extends $hyoo_crus_dict.with({
                     Title: $hyoo_crus_reg_str,
-                    Account: $hyoo_crus_reg_ref(() => Account),
-                    Articles: $hyoo_crus_list_ref(() => Article),
+                    Account: $hyoo_crus_reg.ref(() => Account),
+                    Articles: $hyoo_crus_list.ref(() => Article),
                 }) {
                 }
                 class Account extends $hyoo_crus_dict.with({
                     Title: $hyoo_crus_reg_str,
-                    User: $hyoo_crus_reg_ref(() => User),
+                    User: $hyoo_crus_reg.ref(() => User),
                 }) {
                 }
                 class Article extends $hyoo_crus_dict.with({
-                    Title: $hyoo_crus_reg_str,
-                    Author: $hyoo_crus_reg_ref(() => User),
+                    Title: $hyoo_crus_dict.of($hyoo_crus_reg_str),
+                    Author: $hyoo_crus_reg.ref(() => User),
                 }) {
                 }
+                const realm = $hyoo_crus_realm.make({ $ });
+                const land = realm.home().base().land();
                 const user = land.Node(User).Item('11111111');
                 $mol_assert_equal(user.title() ?? '', user.Title.value(), '');
                 $mol_assert_equal(user.account(), user.Account.remote(), null);
@@ -5879,6 +5808,10 @@ var $;
                 $mol_assert_equal(account.user(), account.User.remote(), user);
                 const articles = [user.Articles.remote_make(), user.Articles.remote_make()];
                 $mol_assert_equal(user.articles() ?? [], user.Articles.remote_list(), articles);
+                articles[0].Title.dive('en').value('Hello!');
+                $mol_assert_equal(articles[0].Title.dive('en').value(), articles[0].title()?.dive('en').value(), 'Hello!');
+                $mol_assert_equal(articles[1].title()?.dive('ru').value(), undefined);
+                $mol_assert_equal(articles[1].Title.dive('ru').value(), articles[1].title()?.dive('ru').value(), '');
                 $mol_assert_unique(user.land(), account.land(), ...articles.map(article => article.land()));
             },
         });
