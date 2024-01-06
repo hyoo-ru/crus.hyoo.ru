@@ -3,11 +3,11 @@
 > *💃 The elegant basis for reactive architecture.*
 
 - **C**onvergent: *CvRDT, Total Ordered, Interleaving Free, Weak Typed*
-- **R**ealtime: *Delta Replication, WebSocket/WebRTC, Inplace Updates, Reactive, In Memory with Persistance*
+- **R**ealtime: *Delta Replication, WebSocket/WebRTC, Inplace Updates, In Memory with Persistance*
 - **U**nbreakable: *High availability, Partition Tolerance, Auto Recovery, Long Offline, WAL Free, Backup Free*
 - **S**ecure: *Private Key Auth, Signed Changes, Encrypted Merge, Zero-Trust, Leakage Proof*
 - **D**ecentralized: *Local First, Oracle Free, Peer to Peer*
-- **B**rilliant: *Reactive Architecture, Graph Structure, First Class JSON/DOM/Tree*
+- **B**rilliant: *Reactive Architecture, Graph Structure, First Class ISO8601/JSON/DOM/Tree*
 
 ## Features
 
@@ -46,10 +46,6 @@
 #### Inplace Updates
 
 Все юниты данных имеют одинаковый неольшой размер, что позволяет их обновлять атомарно на месте, без перемещения.
-
-#### Reactive
-
-Состоение базы полностью определяет поведение, что позволяет перезапускать любые задачи в любой момент.
 
 #### In Memory with Persistance
 
@@ -129,7 +125,7 @@
 
 #### Reactive Architecture
 
-Вместо удалённых вызовов и распространения событий, тут есть только работа с локальной копией БД, реакции на её текущее состояние, и фоновая синхронизация её между пирами.
+Вместо удалённых вызовов и распространения событий, тут есть только работа с локальной копией БД, реакции на её текущее состояние, и фоновая синхронизация её между пирами. Состоение базы полностью определяет поведение, что позволяет спокойно перезапускать любые задачи в любой момент.
 
 #### Graph Structure
 
