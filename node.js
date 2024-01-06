@@ -8405,7 +8405,7 @@ var $;
         range: $mol_time_interval,
         json: Object,
         jsan: Array,
-        xml: $mol_dom_context.Element,
+        dom: $mol_dom_context.Element,
         tree: $mol_tree2,
     };
     let $hyoo_crus_vary_tip;
@@ -8422,7 +8422,7 @@ var $;
         $hyoo_crus_vary_tip[$hyoo_crus_vary_tip["range"] = 19] = "range";
         $hyoo_crus_vary_tip[$hyoo_crus_vary_tip["json"] = 20] = "json";
         $hyoo_crus_vary_tip[$hyoo_crus_vary_tip["jsan"] = 21] = "jsan";
-        $hyoo_crus_vary_tip[$hyoo_crus_vary_tip["xml"] = 22] = "xml";
+        $hyoo_crus_vary_tip[$hyoo_crus_vary_tip["dom"] = 22] = "dom";
         $hyoo_crus_vary_tip[$hyoo_crus_vary_tip["tree"] = 23] = "tree";
     })($hyoo_crus_vary_tip = $.$hyoo_crus_vary_tip || ($.$hyoo_crus_vary_tip = {}));
     function $hyoo_crus_vary_switch(vary, ways) {
@@ -8445,7 +8445,7 @@ var $;
             case $mol_tree2.prototype: return ways.tree(vary);
         }
         if (vary instanceof $mol_dom_context.Element)
-            return ways.xml(vary);
+            return ways.dom(vary);
         return $mol_fail(new TypeError(`Unsupported vary type`));
     }
     $.$hyoo_crus_vary_switch = $hyoo_crus_vary_switch;
@@ -8463,7 +8463,7 @@ var $;
             range: vary => ({ tip: 'range', bin: $mol_charset_encode(String(vary)) }),
             json: vary => ({ tip: 'json', bin: $mol_charset_encode(JSON.stringify(vary)) }),
             jsan: vary => ({ tip: 'jsan', bin: $mol_charset_encode(JSON.stringify(vary)) }),
-            xml: vary => ({ tip: 'xml', bin: $mol_charset_encode($mol_dom_serialize(vary)) }),
+            dom: vary => ({ tip: 'dom', bin: $mol_charset_encode($mol_dom_serialize(vary)) }),
             tree: vary => ({ tip: 'tree', bin: $mol_charset_encode(String(vary)) }),
         });
     }
@@ -8482,7 +8482,7 @@ var $;
             case 'range': return new $mol_time_interval($mol_charset_decode(bin));
             case 'json': return JSON.parse($mol_charset_decode(bin));
             case 'jsan': return JSON.parse($mol_charset_decode(bin));
-            case 'xml': return $mol_dom_parse($mol_charset_decode(bin)).documentElement;
+            case 'dom': return $mol_dom_parse($mol_charset_decode(bin)).documentElement;
             case 'tree': return $$.$mol_tree2_from_string($mol_charset_decode(bin));
         }
     }
@@ -9176,7 +9176,7 @@ var $;
             range: vary => Boolean(vary.duration.valueOf()),
             json: vary => Boolean(Reflect.ownKeys(vary).length),
             jsan: vary => Boolean(vary.length),
-            xml: vary => Boolean(vary.attributes.length + vary.childNodes.length),
+            dom: vary => Boolean(vary.attributes.length + vary.childNodes.length),
             tree: vary => Boolean(vary.value || vary.kids.length),
         });
     }
@@ -9202,7 +9202,7 @@ var $;
             range: vary => BigInt(vary.duration.valueOf()),
             json: vary => BigInt(Reflect.ownKeys(vary).length),
             jsan: vary => BigInt(vary.length),
-            xml: vary => BigInt(vary.attributes.length + vary.childNodes.length),
+            dom: vary => BigInt(vary.attributes.length + vary.childNodes.length),
             tree: vary => {
                 try {
                     return BigInt(vary.value);
@@ -9228,7 +9228,7 @@ var $;
             range: vary => vary.duration.valueOf(),
             json: vary => Reflect.ownKeys(vary).length,
             jsan: vary => vary.length,
-            xml: vary => Number(vary.attributes.length + vary.childNodes.length),
+            dom: vary => Number(vary.attributes.length + vary.childNodes.length),
             tree: vary => Number(vary.value || vary.kids.length),
         });
     }
@@ -9247,7 +9247,7 @@ var $;
             range: vary => null,
             json: vary => null,
             jsan: vary => null,
-            xml: vary => null,
+            dom: vary => null,
             tree: vary => (!vary.type || vary.type.length % 8) ? null : Symbol.for(vary.type),
         });
     }
@@ -9266,7 +9266,7 @@ var $;
             range: vary => String(vary),
             json: vary => JSON.stringify(vary),
             jsan: vary => JSON.stringify(vary),
-            xml: vary => $mol_dom_serialize(vary),
+            dom: vary => $mol_dom_serialize(vary),
             tree: vary => String(vary),
         });
     }
@@ -9285,7 +9285,7 @@ var $;
             range: vary => null,
             json: vary => new $mol_time_moment(vary),
             jsan: vary => null,
-            xml: vary => null,
+            dom: vary => null,
             tree: vary => null,
         });
     }
@@ -9304,7 +9304,7 @@ var $;
             range: vary => null,
             json: vary => new $mol_time_duration(vary),
             jsan: vary => null,
-            xml: vary => null,
+            dom: vary => null,
             tree: vary => null,
         });
     }
@@ -9323,7 +9323,7 @@ var $;
             range: vary => vary,
             json: vary => new $mol_time_moment(vary),
             jsan: vary => null,
-            xml: vary => null,
+            dom: vary => null,
             tree: vary => null,
         });
     }
@@ -9342,7 +9342,7 @@ var $;
             range: vary => ({ ...vary }),
             json: vary => vary,
             jsan: vary => Object(vary[0]),
-            xml: vary => { xml: $mol_dom_serialize(vary); },
+            dom: vary => { dom: $mol_dom_serialize(vary); },
             tree: vary => { tree: vary.toString(); },
         });
     }
@@ -9361,12 +9361,12 @@ var $;
             range: vary => [vary.toJSON()],
             json: vary => [vary],
             jsan: vary => vary,
-            xml: vary => [$mol_dom_serialize(vary)],
+            dom: vary => [$mol_dom_serialize(vary)],
             tree: vary => [vary.toString()],
         });
     }
     $.$hyoo_crus_vary_cast_jsan = $hyoo_crus_vary_cast_jsan;
-    function $hyoo_crus_vary_cast_xml(vary) {
+    function $hyoo_crus_vary_cast_dom(vary) {
         return $hyoo_crus_vary_switch(vary, {
             nil: vary => null,
             bin: vary => $mol_jsx("body", null, vary && $mol_base64_ae_encode(vary)),
@@ -9380,11 +9380,11 @@ var $;
             range: vary => $mol_jsx("body", null, vary),
             json: vary => $mol_jsx("body", null, JSON.stringify(vary)),
             jsan: vary => $mol_jsx("body", null, JSON.stringify(vary)),
-            xml: vary => vary,
+            dom: vary => vary,
             tree: vary => $mol_jsx("body", null, vary),
         });
     }
-    $.$hyoo_crus_vary_cast_xml = $hyoo_crus_vary_cast_xml;
+    $.$hyoo_crus_vary_cast_dom = $hyoo_crus_vary_cast_dom;
     function $hyoo_crus_vary_cast_tree(vary) {
         return $hyoo_crus_vary_switch(vary, {
             nil: vary => null,
@@ -9399,7 +9399,7 @@ var $;
             range: vary => $mol_tree2.struct(vary.toString()),
             json: vary => $$.$mol_tree2_from_json(vary),
             jsan: vary => $$.$mol_tree2_from_json(vary),
-            xml: vary => $$.$mol_tree2_xml_from_dom(vary),
+            dom: vary => $$.$mol_tree2_xml_from_dom(vary),
             tree: vary => vary,
         });
     }
@@ -9417,7 +9417,7 @@ var $;
         range: $hyoo_crus_vary_cast_range,
         json: $hyoo_crus_vary_cast_json,
         jsan: $hyoo_crus_vary_cast_jsan,
-        xml: $hyoo_crus_vary_cast_xml,
+        dom: $hyoo_crus_vary_cast_dom,
         tree: $hyoo_crus_vary_cast_tree,
     };
     function $hyoo_crus_vary_cast(tip, vary) {
@@ -10121,7 +10121,7 @@ var $;
     class $hyoo_crus_reg_json extends $hyoo_crus_reg.of('json') {
     }
     $.$hyoo_crus_reg_json = $hyoo_crus_reg_json;
-    class $hyoo_crus_reg_xml extends $hyoo_crus_reg.of('xml') {
+    class $hyoo_crus_reg_xml extends $hyoo_crus_reg.of('dom') {
     }
     $.$hyoo_crus_reg_xml = $hyoo_crus_reg_xml;
     class $hyoo_crus_reg_tree extends $hyoo_crus_reg.of('tree') {
