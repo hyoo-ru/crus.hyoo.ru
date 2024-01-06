@@ -1538,7 +1538,7 @@ var $;
             __decorate([
                 $mol_wire_solo
             ], App, "title", null);
-            $mol_assert_equal(`${App.title()}`, 'App.title()');
+            $mol_assert_equal(`${App.title()}`, 'App.title<>');
         },
         'Unsubscribe from temp pubs on complete'($) {
             class Random extends $mol_object2 {
@@ -1657,8 +1657,8 @@ var $;
             __decorate([
                 $mol_wire_plex
             ], App, "relation", null);
-            $mol_assert_equal(`${App.like(123)}`, 'App.like(123)');
-            $mol_assert_equal(`${App.relation([123, [456]])}`, 'App.relation([123,[456]])');
+            $mol_assert_equal(`${App.like(123)}`, 'App.like<123>');
+            $mol_assert_equal(`${App.relation([123, [456]])}`, 'App.relation<[123,[456]]>');
         },
         'Deep deps'($) {
             class Fib extends $mol_object2 {
@@ -2047,8 +2047,8 @@ var $;
                 $mol_mem_key
             ], $mol_view_test_block.prototype, "element", null);
             var x = $mol_view_test_block.Root(0);
-            $mol_assert_equal(x.dom_node().id, '$mol_view_test_block.Root(0)');
-            $mol_assert_equal(x.element(0).dom_node().id, '$mol_view_test_block.Root(0).element(0)');
+            $mol_assert_equal(x.dom_node().id, '$mol_view_test_block.Root<0>');
+            $mol_assert_equal(x.element(0).dom_node().id, '$mol_view_test_block.Root<0>.element<0>');
         },
         'caching ref to dom node'($) {
             var x = new class extends $mol_view {
@@ -4866,27 +4866,28 @@ var $;
             const land1 = $hyoo_crus_land.make({ $ });
             const land2 = $hyoo_crus_land.make({ $, lord_ref: () => land1.lord_ref(), auth: () => auth1 });
             $mol_assert_equal(land1.delta_unit(), []);
-            land1.post('', '', '11111111', new Uint8Array([1]));
+            land1.post('', '', 'AA111111', new Uint8Array([1]));
             $mol_assert_equal(land1.delta_unit().length, 2);
             const face = new $hyoo_crus_face(land1.face);
-            land1.post('11111111', '', '22222222', new Uint8Array([2]));
+            land1.post('AA111111', '', 'AA222222', new Uint8Array([2]));
             $mol_assert_equal(land1.delta_unit().length, 3);
             $mol_assert_equal(land1.delta_unit(face).length, 1);
             land2.apply_unit(land1.delta_unit());
-            $mol_assert_fail(() => land2.post('22222222', '', '33333333', new Uint8Array([3])), 'Need add rang to join');
+            $mol_assert_fail(() => land2.post('AA222222', '', 'AA333333', new Uint8Array([3])), 'Need add rang to join');
             $mol_assert_equal(land2.delta_unit().length, 3);
             $mol_assert_equal(land2.delta_unit(face).length, 1);
             land1.give(auth1.lord(), $hyoo_crus_rang.add);
             land2.apply_unit(land1.delta_unit());
-            $mol_assert_fail(() => land2.post('22222222', '', '33333333', new Uint8Array([3])), 'Need mod rang to post any data');
+            $mol_assert_fail(() => land2.post('AA222222', '', 'AA333333', new Uint8Array([3])), 'Need mod rang to post any data');
             $mol_assert_equal(land2.delta_unit().length, 5);
             $mol_assert_equal(land2.delta_unit(face).length, 3);
-            land2.post('22222222', '', auth1.peer(), new Uint8Array([4]));
+            land2.post('AA222222', '', $hyoo_crus_zone_to(auth1.peer(), 'root'), new Uint8Array([4]));
             $mol_assert_equal(land2.delta_unit().length, 6);
             $mol_assert_equal(land2.delta_unit(face).length, 4);
             land1.give(auth1.lord(), $hyoo_crus_rang.mod);
             land2.apply_unit(land1.delta_unit());
-            land2.post('22222222', '', '33333333', new Uint8Array([3]));
+            $mol_assert_fail(() => land2.post('AA222222', '', '33333333', new Uint8Array([3])), 'Need law rang to post to core zone');
+            land2.post('AA222222', '', 'AA333333', new Uint8Array([3]));
             $mol_assert_equal(land2.delta_unit().length, 7);
             $mol_assert_equal(land2.delta_unit(face).length, 5);
             land1.give(auth1.lord(), $hyoo_crus_rang.add);
@@ -4904,10 +4905,10 @@ var $;
             land2.apply_unit(land1.delta_unit());
             $mol_assert_equal(land2.delta_unit().length, 2);
             const gist1 = land2.post('', '', '', 'foo');
-            $mol_assert_equal(gist1.self(), auth2.peer());
+            $mol_assert_equal(gist1.self(), $hyoo_crus_zone_to(auth2.peer(), 'root'));
             $mol_assert_equal(land2.delta_unit().length, 4);
             const gist2 = land2.post('', '', '', 'bar');
-            $mol_assert_equal(gist2.self(), auth2.peer());
+            $mol_assert_equal(gist2.self(), $hyoo_crus_zone_to(auth2.peer(), 'root'));
             $mol_assert_equal(land2.delta_unit().length, 4);
         },
         'Home Land no encryption'($) {
@@ -4917,7 +4918,7 @@ var $;
             $mol_assert_equal(land.encrypted(), false);
         },
         async 'Land encryption'($) {
-            const land = $mol_wire_async($hyoo_crus_land.make({ $, numb: () => '11111111' }));
+            const land = $mol_wire_async($hyoo_crus_land.make({ $, numb: () => 'AA111111' }));
             $mol_assert_equal(await land.encrypted(), false);
             await land.encrypted(true);
             $mol_assert_equal(await land.encrypted(), true);
@@ -4941,13 +4942,13 @@ var $;
             $mol_assert_equal(right.Root($hyoo_crus_list).items(), ['foo', 'zzz']);
             const both = base.fork();
             $mol_assert_equal(both.Root($hyoo_crus_list).items(), ['foo', 'xxx']);
-            both.inflow().items([right.ref()]);
+            both.Core().inflow([right.ref()]);
             $mol_assert_equal(both.Root($hyoo_crus_list).items(), ['foo', 'zzz']);
-            both.inflow().items([left.ref()]);
+            both.Core().inflow([left.ref()]);
             $mol_assert_equal(both.Root($hyoo_crus_list).items(), ['foo', 'yyy']);
-            both.inflow().items([right.ref(), left.ref()]);
+            both.Core().inflow([right.ref(), left.ref()]);
             $mol_assert_equal(both.Root($hyoo_crus_list).items(), ['foo', 'yyy']);
-            both.inflow().items([left.ref(), right.ref()]);
+            both.Core().inflow([left.ref(), right.ref()]);
             $mol_assert_equal(both.Root($hyoo_crus_list).items(), ['foo', 'zzz']);
         },
     });
@@ -5828,7 +5829,7 @@ var $;
                 }) {
                 }
                 class Article extends $hyoo_crus_dict.with({
-                    Title: $hyoo_crus_dict.of($hyoo_crus_reg_str),
+                    Title: $hyoo_crus_dict.to($hyoo_crus_reg_str),
                     Author: $hyoo_crus_reg.ref(() => User),
                 }) {
                 }
@@ -5857,7 +5858,7 @@ var $;
                 class Kind extends $hyoo_crus_dict.with({
                     Kind: $hyoo_crus_reg.ref(() => Kind),
                     Title: $hyoo_crus_reg_str,
-                    Props: $hyoo_crus_dict.of($hyoo_crus_reg.ref(() => Property)),
+                    Props: $hyoo_crus_dict.to($hyoo_crus_reg.ref(() => Property)),
                 }) {
                 }
                 class Entity extends $hyoo_crus_dict.with({
@@ -5874,9 +5875,9 @@ var $;
                 class Type extends Entity.with({}) {
                 }
                 class Domain extends $hyoo_crus_dict.with({
-                    Kinds: $hyoo_crus_dict.of(Kind),
-                    Props: $hyoo_crus_dict.of(Property),
-                    Types: $hyoo_crus_dict.of(Type),
+                    Kinds: $hyoo_crus_dict.to(Kind),
+                    Props: $hyoo_crus_dict.to(Property),
+                    Types: $hyoo_crus_dict.to(Type),
                 }) {
                 }
                 const realm = $hyoo_crus_realm.make({ $ });
