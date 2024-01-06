@@ -33,7 +33,7 @@ namespace $ {
 		}
 		
 		@ $mol_mem
-		value_bool( next?: boolean ): boolean {
+		value_bool( next?: boolean ): boolean | null {
 			return $hyoo_crus_vary_cast_bool( this.value_vary( next ) )
 		}
 		
