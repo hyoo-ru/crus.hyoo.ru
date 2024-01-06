@@ -8292,6 +8292,75 @@ var $;
 //mol/time/moment/moment.ts
 ;
 "use strict";
+var $;
+(function ($) {
+    class $mol_time_interval extends $mol_time_base {
+        constructor(config) {
+            super();
+            if (typeof config === 'string') {
+                var chunks = config.split('/');
+                if (chunks[0]) {
+                    if (chunks[0][0].toUpperCase() === 'P') {
+                        this._duration = new $mol_time_duration(chunks[0]);
+                    }
+                    else {
+                        this._start = new $mol_time_moment(chunks[0]);
+                    }
+                }
+                else {
+                    this._start = new $mol_time_moment();
+                }
+                if (chunks[1]) {
+                    if (chunks[1][0].toUpperCase() === 'P') {
+                        this._duration = new $mol_time_duration(chunks[1]);
+                    }
+                    else {
+                        this._end = new $mol_time_moment(chunks[1]);
+                    }
+                }
+                else {
+                    this._end = new $mol_time_moment();
+                }
+                return;
+            }
+            if (config.start !== undefined)
+                this._start = new $mol_time_moment(config.start);
+            if (config.end !== undefined)
+                this._end = new $mol_time_moment(config.end);
+            if (config.duration !== undefined)
+                this._duration = new $mol_time_duration(config.duration);
+        }
+        _start;
+        get start() {
+            if (this._start)
+                return this._start;
+            return this._start = this._end.shift(this._duration.mult(-1));
+        }
+        _end;
+        get end() {
+            if (this._end)
+                return this._end;
+            return this._end = this._start.shift(this._duration);
+        }
+        _duration;
+        get duration() {
+            if (this._duration)
+                return this._duration;
+            return this._duration = new $mol_time_duration(this._end.valueOf() - this._start.valueOf());
+        }
+        toJSON() { return this.toString(); }
+        toString() {
+            return (this._start || this._duration || '').toString() + '/' + (this._end || this._duration || '').toString();
+        }
+        [Symbol.toPrimitive](mode) {
+            return this.toString();
+        }
+    }
+    $.$mol_time_interval = $mol_time_interval;
+})($ || ($ = {}));
+//mol/time/interval/interval.ts
+;
+"use strict";
 //mol/type/result/result.ts
 ;
 "use strict";
@@ -8324,6 +8393,7 @@ var $;
 var $;
 (function ($) {
     $.$hyoo_crus_vary_mapping = {
+        nil: null,
         bin: Uint8Array,
         bool: Boolean,
         int: BigInt,
@@ -8331,6 +8401,8 @@ var $;
         ref: Symbol,
         str: String,
         time: $mol_time_moment,
+        dur: $mol_time_duration,
+        range: $mol_time_interval,
         json: Object,
         jsan: Array,
         xml: $mol_dom_context.Element,
@@ -8338,13 +8410,16 @@ var $;
     };
     let $hyoo_crus_vary_tip;
     (function ($hyoo_crus_vary_tip) {
-        $hyoo_crus_vary_tip[$hyoo_crus_vary_tip["bin"] = 0] = "bin";
-        $hyoo_crus_vary_tip[$hyoo_crus_vary_tip["bool"] = 1] = "bool";
-        $hyoo_crus_vary_tip[$hyoo_crus_vary_tip["int"] = 2] = "int";
-        $hyoo_crus_vary_tip[$hyoo_crus_vary_tip["real"] = 3] = "real";
-        $hyoo_crus_vary_tip[$hyoo_crus_vary_tip["ref"] = 4] = "ref";
+        $hyoo_crus_vary_tip[$hyoo_crus_vary_tip["nil"] = 0] = "nil";
+        $hyoo_crus_vary_tip[$hyoo_crus_vary_tip["bin"] = 1] = "bin";
+        $hyoo_crus_vary_tip[$hyoo_crus_vary_tip["bool"] = 2] = "bool";
+        $hyoo_crus_vary_tip[$hyoo_crus_vary_tip["int"] = 3] = "int";
+        $hyoo_crus_vary_tip[$hyoo_crus_vary_tip["real"] = 4] = "real";
+        $hyoo_crus_vary_tip[$hyoo_crus_vary_tip["ref"] = 5] = "ref";
         $hyoo_crus_vary_tip[$hyoo_crus_vary_tip["str"] = 16] = "str";
         $hyoo_crus_vary_tip[$hyoo_crus_vary_tip["time"] = 17] = "time";
+        $hyoo_crus_vary_tip[$hyoo_crus_vary_tip["dur"] = 18] = "dur";
+        $hyoo_crus_vary_tip[$hyoo_crus_vary_tip["range"] = 19] = "range";
         $hyoo_crus_vary_tip[$hyoo_crus_vary_tip["json"] = 20] = "json";
         $hyoo_crus_vary_tip[$hyoo_crus_vary_tip["jsan"] = 21] = "jsan";
         $hyoo_crus_vary_tip[$hyoo_crus_vary_tip["xml"] = 22] = "xml";
@@ -8352,7 +8427,7 @@ var $;
     })($hyoo_crus_vary_tip = $.$hyoo_crus_vary_tip || ($.$hyoo_crus_vary_tip = {}));
     function $hyoo_crus_vary_switch(vary, ways) {
         if (vary === null)
-            return ways.bin(vary);
+            return ways.nil(vary);
         switch (typeof vary) {
             case "boolean": return ways.bool(vary);
             case "bigint": return ways.int(vary);
@@ -8360,30 +8435,32 @@ var $;
             case "string": return ways.str(vary);
             case 'symbol': return ways.ref(vary);
         }
-        if (vary instanceof Uint8Array)
-            return ways.bin(vary);
-        if (vary instanceof $mol_dom_context.Element)
-            return ways.xml(vary);
-        if (vary instanceof $mol_time_moment)
-            return ways.time(vary);
-        if (vary instanceof $mol_tree2)
-            return ways.tree(vary);
         switch (Reflect.getPrototypeOf(vary)) {
             case Object.prototype: return ways.json(vary);
             case Array.prototype: return ways.jsan(vary);
+            case Uint8Array.prototype: return ways.bin(vary);
+            case $mol_time_moment.prototype: return ways.time(vary);
+            case $mol_time_duration.prototype: return ways.dur(vary);
+            case $mol_time_interval.prototype: return ways.range(vary);
+            case $mol_tree2.prototype: return ways.tree(vary);
         }
+        if (vary instanceof $mol_dom_context.Element)
+            return ways.xml(vary);
         return $mol_fail(new TypeError(`Unsupported vary type`));
     }
     $.$hyoo_crus_vary_switch = $hyoo_crus_vary_switch;
     function $hyoo_crus_vary_encode(vary) {
         return $hyoo_crus_vary_switch(vary, {
-            bin: vary => ({ tip: 'bin', bin: vary ?? new Uint8Array([]) }),
+            nil: vary => ({ tip: 'nil', bin: new Uint8Array([]) }),
+            bin: vary => ({ tip: 'bin', bin: vary }),
             bool: vary => ({ tip: 'bool', bin: new Uint8Array([Number(vary)]) }),
             int: vary => ({ tip: 'int', bin: new Uint8Array(new BigInt64Array([vary]).buffer) }),
             real: vary => ({ tip: 'real', bin: new Uint8Array(new Float64Array([vary]).buffer) }),
             ref: vary => ({ tip: 'ref', bin: $mol_base64_ae_decode(vary.description) }),
             str: vary => ({ tip: 'str', bin: $mol_charset_encode(vary) }),
             time: vary => ({ tip: 'time', bin: $mol_charset_encode(String(vary)) }),
+            dur: vary => ({ tip: 'dur', bin: $mol_charset_encode(String(vary)) }),
+            range: vary => ({ tip: 'range', bin: $mol_charset_encode(String(vary)) }),
             json: vary => ({ tip: 'json', bin: $mol_charset_encode(JSON.stringify(vary)) }),
             jsan: vary => ({ tip: 'jsan', bin: $mol_charset_encode(JSON.stringify(vary)) }),
             xml: vary => ({ tip: 'xml', bin: $mol_charset_encode($mol_dom_serialize(vary)) }),
@@ -8393,13 +8470,16 @@ var $;
     $.$hyoo_crus_vary_encode = $hyoo_crus_vary_encode;
     function $hyoo_crus_vary_decode({ tip, bin }) {
         switch (tip) {
-            case 'bin': return bin.byteLength ? bin : null;
+            case 'nil': return null;
+            case 'bin': return bin;
             case 'bool': return Boolean(bin[0]);
             case 'int': return new BigInt64Array(bin.buffer, bin.byteOffset, bin.byteLength / 8)[0];
             case 'real': return new Float64Array(bin.buffer, bin.byteOffset, bin.byteLength / 8)[0];
             case 'ref': return Symbol.for($mol_base64_ae_encode(bin));
             case 'str': return $mol_charset_decode(bin);
             case 'time': return new $mol_time_moment($mol_charset_decode(bin));
+            case 'dur': return new $mol_time_duration($mol_charset_decode(bin));
+            case 'range': return new $mol_time_interval($mol_charset_decode(bin));
             case 'json': return JSON.parse($mol_charset_decode(bin));
             case 'jsan': return JSON.parse($mol_charset_decode(bin));
             case 'xml': return $mol_dom_parse($mol_charset_decode(bin)).documentElement;
@@ -9084,13 +9164,16 @@ var $;
     $.$hyoo_crus_vary_cast_bin = $hyoo_crus_vary_cast_bin;
     function $hyoo_crus_vary_cast_bool(vary) {
         return $hyoo_crus_vary_switch(vary, {
-            bin: vary => Boolean(vary?.length),
+            nil: vary => null,
+            bin: vary => Boolean(vary.length),
             bool: vary => vary,
             int: vary => Boolean(vary),
             real: vary => Boolean(vary),
             ref: vary => Boolean(vary.description),
             str: vary => Boolean(vary),
             time: vary => Boolean(vary.valueOf()),
+            dur: vary => Boolean(vary.valueOf()),
+            range: vary => Boolean(vary.duration.valueOf()),
             json: vary => Boolean(Reflect.ownKeys(vary).length),
             jsan: vary => Boolean(vary.length),
             xml: vary => Boolean(vary.attributes.length + vary.childNodes.length),
@@ -9100,20 +9183,23 @@ var $;
     $.$hyoo_crus_vary_cast_bool = $hyoo_crus_vary_cast_bool;
     function $hyoo_crus_vary_cast_int(vary) {
         return $hyoo_crus_vary_switch(vary, {
-            bin: vary => vary ? BigInt(vary.length) : 0n,
+            nil: vary => null,
+            bin: vary => BigInt(vary.length),
             bool: vary => BigInt(vary),
             int: vary => vary,
             real: vary => Number.isFinite(vary) ? BigInt(Math.trunc(vary)) : 0n,
-            ref: vary => 0n,
+            ref: vary => null,
             str: vary => {
                 try {
                     return BigInt(vary);
                 }
                 catch {
-                    return 0n;
+                    return null;
                 }
             },
             time: vary => BigInt(vary.valueOf()),
+            dur: vary => BigInt(vary.valueOf()),
+            range: vary => BigInt(vary.duration.valueOf()),
             json: vary => BigInt(Reflect.ownKeys(vary).length),
             jsan: vary => BigInt(vary.length),
             xml: vary => BigInt(vary.attributes.length + vary.childNodes.length),
@@ -9130,13 +9216,16 @@ var $;
     $.$hyoo_crus_vary_cast_int = $hyoo_crus_vary_cast_int;
     function $hyoo_crus_vary_cast_real(vary) {
         return $hyoo_crus_vary_switch(vary, {
-            bin: vary => vary?.length ?? Number.NaN,
+            nil: vary => null,
+            bin: vary => vary.length,
             bool: vary => Number(vary),
             int: vary => Number(vary),
             real: vary => vary,
-            ref: vary => Number.NaN,
-            str: vary => vary ? Number(vary) : Number.NaN,
+            ref: vary => null,
+            str: vary => vary ? Number(vary) : null,
             time: vary => vary.valueOf(),
+            dur: vary => vary.valueOf(),
+            range: vary => vary.duration.valueOf(),
             json: vary => Reflect.ownKeys(vary).length,
             jsan: vary => vary.length,
             xml: vary => Number(vary.attributes.length + vary.childNodes.length),
@@ -9146,29 +9235,35 @@ var $;
     $.$hyoo_crus_vary_cast_real = $hyoo_crus_vary_cast_real;
     function $hyoo_crus_vary_cast_ref(vary) {
         return $hyoo_crus_vary_switch(vary, {
-            bin: vary => Symbol.for(vary ? $mol_base64_ae_encode(vary) : ''),
-            bool: vary => Symbol.for(''),
-            int: vary => Symbol.for(''),
-            real: vary => Symbol.for(''),
+            nil: vary => null,
+            bin: vary => (!vary.length || vary.length % 6) ? null : Symbol.for($mol_base64_ae_encode(vary)),
+            bool: vary => null,
+            int: vary => null,
+            real: vary => null,
             ref: vary => vary,
-            str: vary => Symbol.for(vary),
-            time: vary => Symbol.for(''),
-            json: vary => Symbol.for(''),
-            jsan: vary => Symbol.for(''),
-            xml: vary => Symbol.for(''),
-            tree: vary => Symbol.for(vary.type),
+            str: vary => (!vary || vary.length % 8) ? null : Symbol.for(vary),
+            time: vary => null,
+            dur: vary => null,
+            range: vary => null,
+            json: vary => null,
+            jsan: vary => null,
+            xml: vary => null,
+            tree: vary => (!vary.type || vary.type.length % 8) ? null : Symbol.for(vary.type),
         });
     }
     $.$hyoo_crus_vary_cast_ref = $hyoo_crus_vary_cast_ref;
     function $hyoo_crus_vary_cast_str(vary) {
         return $hyoo_crus_vary_switch(vary, {
-            bin: vary => vary ? [...vary].map(n => n.toString(16).padStart(2, '0')).join('') : '',
+            nil: vary => null,
+            bin: vary => [...vary].map(n => n.toString(16).padStart(2, '0')).join(''),
             bool: vary => String(vary),
             int: vary => String(vary),
             real: vary => String(vary),
             ref: vary => vary.description,
             str: vary => vary,
             time: vary => String(vary),
+            dur: vary => String(vary),
+            range: vary => String(vary),
             json: vary => JSON.stringify(vary),
             jsan: vary => JSON.stringify(vary),
             xml: vary => $mol_dom_serialize(vary),
@@ -9178,31 +9273,75 @@ var $;
     $.$hyoo_crus_vary_cast_str = $hyoo_crus_vary_cast_str;
     function $hyoo_crus_vary_cast_time(vary) {
         return $hyoo_crus_vary_switch(vary, {
-            bin: vary => new $mol_time_moment(vary ? $mol_charset_decode(vary) : 0),
-            bool: vary => new $mol_time_moment(0),
+            nil: vary => null,
+            bin: vary => null,
+            bool: vary => null,
             int: vary => new $mol_time_moment(Number(vary & 0xffffffffffffn)),
             real: vary => new $mol_time_moment(vary),
-            ref: vary => new $mol_time_moment(0),
+            ref: vary => null,
             str: vary => new $mol_time_moment(vary),
             time: vary => vary,
+            dur: vary => null,
+            range: vary => null,
             json: vary => new $mol_time_moment(vary),
-            jsan: vary => new $mol_time_moment(0),
-            xml: vary => new $mol_time_moment(0),
-            tree: vary => new $mol_time_moment(0),
+            jsan: vary => null,
+            xml: vary => null,
+            tree: vary => null,
         });
     }
     $.$hyoo_crus_vary_cast_time = $hyoo_crus_vary_cast_time;
+    function $hyoo_crus_vary_cast_dur(vary) {
+        return $hyoo_crus_vary_switch(vary, {
+            nil: vary => null,
+            bin: vary => null,
+            bool: vary => null,
+            int: vary => new $mol_time_duration(Number(vary & 0xffffffffffffn)),
+            real: vary => new $mol_time_duration(vary),
+            ref: vary => null,
+            str: vary => new $mol_time_duration(vary),
+            time: vary => vary,
+            dur: vary => null,
+            range: vary => null,
+            json: vary => new $mol_time_duration(vary),
+            jsan: vary => null,
+            xml: vary => null,
+            tree: vary => null,
+        });
+    }
+    $.$hyoo_crus_vary_cast_dur = $hyoo_crus_vary_cast_dur;
+    function $hyoo_crus_vary_cast_range(vary) {
+        return $hyoo_crus_vary_switch(vary, {
+            nil: vary => null,
+            bin: vary => null,
+            bool: vary => null,
+            int: vary => null,
+            real: vary => null,
+            ref: vary => null,
+            str: vary => new $mol_time_interval(vary),
+            time: vary => new $mol_time_interval({ start: vary, duration: 0 }),
+            dur: vary => null,
+            range: vary => vary,
+            json: vary => new $mol_time_moment(vary),
+            jsan: vary => null,
+            xml: vary => null,
+            tree: vary => null,
+        });
+    }
+    $.$hyoo_crus_vary_cast_range = $hyoo_crus_vary_cast_range;
     function $hyoo_crus_vary_cast_json(vary) {
         return $hyoo_crus_vary_switch(vary, {
-            bin: vary => vary ? { val: [...vary] } : {},
-            bool: vary => vary ? { val: true } : {},
+            nil: vary => null,
+            bin: vary => { bin: [...vary]; },
+            bool: vary => { bool: vary; },
             int: vary => { int: Number(vary); },
             real: vary => { real: vary; },
             ref: vary => { ref: vary.description; },
-            str: vary => JSON.parse(vary) ?? {},
+            str: vary => Object(JSON.parse(vary)),
             time: vary => ({ ...vary }),
+            dur: vary => ({ ...vary }),
+            range: vary => ({ ...vary }),
             json: vary => vary,
-            jsan: vary => vary[0] ?? {},
+            jsan: vary => Object(vary[0]),
             xml: vary => { xml: $mol_dom_serialize(vary); },
             tree: vary => { tree: vary.toString(); },
         });
@@ -9210,13 +9349,16 @@ var $;
     $.$hyoo_crus_vary_cast_json = $hyoo_crus_vary_cast_json;
     function $hyoo_crus_vary_cast_jsan(vary) {
         return $hyoo_crus_vary_switch(vary, {
-            bin: vary => vary ? [...vary] : [],
+            nil: vary => null,
+            bin: vary => [...vary],
             bool: vary => [vary],
             int: vary => [vary.toString()],
             real: vary => [vary],
             ref: vary => [vary.description],
             str: vary => [].concat(JSON.parse(vary)),
             time: vary => [vary.toJSON()],
+            dur: vary => [vary.toJSON()],
+            range: vary => [vary.toJSON()],
             json: vary => [vary],
             jsan: vary => vary,
             xml: vary => [$mol_dom_serialize(vary)],
@@ -9226,6 +9368,7 @@ var $;
     $.$hyoo_crus_vary_cast_jsan = $hyoo_crus_vary_cast_jsan;
     function $hyoo_crus_vary_cast_xml(vary) {
         return $hyoo_crus_vary_switch(vary, {
+            nil: vary => null,
             bin: vary => $mol_jsx("body", null, vary && $mol_base64_ae_encode(vary)),
             bool: vary => $mol_jsx("body", null, vary),
             int: vary => $mol_jsx("body", null, vary),
@@ -9233,6 +9376,8 @@ var $;
             ref: vary => $mol_jsx("body", null, vary.description),
             str: vary => $mol_dom_parse(vary, 'application/xhtml+xml').documentElement,
             time: vary => $mol_jsx("body", null, vary),
+            dur: vary => $mol_jsx("body", null, vary),
+            range: vary => $mol_jsx("body", null, vary),
             json: vary => $mol_jsx("body", null, JSON.stringify(vary)),
             jsan: vary => $mol_jsx("body", null, JSON.stringify(vary)),
             xml: vary => vary,
@@ -9242,13 +9387,16 @@ var $;
     $.$hyoo_crus_vary_cast_xml = $hyoo_crus_vary_cast_xml;
     function $hyoo_crus_vary_cast_tree(vary) {
         return $hyoo_crus_vary_switch(vary, {
-            bin: vary => vary ? $mol_tree2_bin_from_bytes(vary) : $mol_tree2.list([]),
+            nil: vary => null,
+            bin: vary => $mol_tree2_bin_from_bytes(vary),
             bool: vary => $mol_tree2.struct(vary.toString()),
             int: vary => $mol_tree2.struct(vary.toString()),
             real: vary => $mol_tree2.struct(vary.toString()),
             ref: vary => $mol_tree2.struct(vary.description),
             str: vary => $$.$mol_tree2_from_string(vary),
             time: vary => $mol_tree2.struct(vary.toString()),
+            dur: vary => $mol_tree2.struct(vary.toString()),
+            range: vary => $mol_tree2.struct(vary.toString()),
             json: vary => $$.$mol_tree2_from_json(vary),
             jsan: vary => $$.$mol_tree2_from_json(vary),
             xml: vary => $$.$mol_tree2_xml_from_dom(vary),
@@ -9257,6 +9405,7 @@ var $;
     }
     $.$hyoo_crus_vary_cast_tree = $hyoo_crus_vary_cast_tree;
     $.$hyoo_crus_vary_cast_funcs = {
+        nil: () => null,
         bin: $hyoo_crus_vary_cast_bin,
         bool: $hyoo_crus_vary_cast_bool,
         int: $hyoo_crus_vary_cast_int,
@@ -9264,6 +9413,8 @@ var $;
         ref: $hyoo_crus_vary_cast_ref,
         str: $hyoo_crus_vary_cast_str,
         time: $hyoo_crus_vary_cast_time,
+        dur: $hyoo_crus_vary_cast_dur,
+        range: $hyoo_crus_vary_cast_range,
         json: $hyoo_crus_vary_cast_json,
         jsan: $hyoo_crus_vary_cast_jsan,
         xml: $hyoo_crus_vary_cast_xml,
@@ -9275,6 +9426,16 @@ var $;
     $.$hyoo_crus_vary_cast = $hyoo_crus_vary_cast;
 })($ || ($ = {}));
 //hyoo/crus/vary/cast/cast.tsx
+;
+"use strict";
+var $;
+(function ($) {
+    function $mol_guard_defined(value) {
+        return value !== null && value !== undefined;
+    }
+    $.$mol_guard_defined = $mol_guard_defined;
+})($ || ($ = {}));
+//mol/guard/defined.ts
 ;
 "use strict";
 var $;
@@ -9358,7 +9519,9 @@ var $;
                     const realm = this.realm();
                     const Node = Value();
                     return this.items(next?.map(item => item.ref()))
-                        .map(ref => realm.Node($hyoo_crus_vary_cast_ref(ref), Node));
+                        .map($hyoo_crus_vary_cast_ref)
+                        .filter($mol_guard_defined)
+                        .map(ref => realm.Node(ref, Node));
                 }
                 remote_make() {
                     const land = this.realm().home().Land_new(0);
@@ -9820,8 +9983,7 @@ var $;
             return $hyoo_crus_vary_cast_bin(this.value_vary(next));
         }
         value_ref(next) {
-            const bin = this.value_vary(next);
-            return typeof bin === 'symbol' ? bin : Symbol.for('');
+            return $hyoo_crus_vary_cast_ref(this.value_vary(next));
         }
         value_as(decode, next) {
             if (next === undefined) {
@@ -9843,7 +10005,7 @@ var $;
         yoke(vary) {
             const realm = this.realm();
             const ref = this.value_ref();
-            if (ref.description)
+            if (ref)
                 return realm.Land(ref);
             const hash = $mol_crypto_hash($hyoo_crus_vary_encode(vary).bin);
             const numb = new Uint16Array($mol_base64_decode(this.land().numb()).buffer);
@@ -9876,7 +10038,7 @@ var $;
                 remote(next) {
                     const realm = this.realm();
                     const ref = this.value_ref(next?.ref());
-                    if (!ref.description)
+                    if (!ref)
                         return null;
                     return realm.Node(ref, Value());
                 }
@@ -9885,7 +10047,7 @@ var $;
                     return this.remote();
                 }
                 local_ensure() {
-                    if (this.value_ref().description)
+                    if (this.value_ref())
                         return this.remote();
                     const node = this.land().Node(Value()).Item(this.land().self_make());
                     return this.remote(node);
@@ -10261,7 +10423,9 @@ var $;
             this.sync();
             const queue = [...this.gists.get(head)?.values() ?? []];
             merge: if (this.numb() && (head !== 'AAAAAAAB')) {
-                const inflow = this.inflow().items().slice().reverse().map($hyoo_crus_vary_cast_ref);
+                const inflow = this.inflow().items().slice().reverse()
+                    .map($hyoo_crus_vary_cast_ref)
+                    .filter($mol_guard_defined);
                 if (!inflow.length)
                     break merge;
                 const exists = new Set([...this.gists.get(head)?.keys() ?? []]);
@@ -15186,7 +15350,7 @@ var $;
                 const land = this.land();
                 for (const unit of this.units()) {
                     if (unit.tag() === 'term')
-                        str += $hyoo_crus_vary_cast_str(land.gist_decode(unit));
+                        str += $hyoo_crus_vary_cast_str(land.gist_decode(unit)) ?? '';
                     else
                         str += land.Node($hyoo_crus_text).Item(unit.self()).str();
                 }
@@ -15203,7 +15367,7 @@ var $;
             let from = str_from < 0 ? list.length : 0;
             let word = '';
             while (from < list.length) {
-                word = $hyoo_crus_vary_cast_str(land.gist_decode(list[from]));
+                word = $hyoo_crus_vary_cast_str(land.gist_decode(list[from])) ?? '';
                 if (str_from <= word.length) {
                     next = word.slice(0, str_from) + next;
                     break;
@@ -15215,7 +15379,7 @@ var $;
             }
             let to = str_to < 0 ? list.length : from;
             while (to < list.length) {
-                word = $hyoo_crus_vary_cast_str(land.gist_decode(list[to]));
+                word = $hyoo_crus_vary_cast_str(land.gist_decode(list[to])) ?? '';
                 to++;
                 if (str_to < word.length) {
                     next = next + word.slice(str_to);
@@ -15225,7 +15389,7 @@ var $;
             }
             if (from && from === list.length) {
                 --from;
-                next = $hyoo_crus_vary_cast_str(land.gist_decode(list[from])) + next;
+                next = ($hyoo_crus_vary_cast_str(land.gist_decode(list[from])) ?? '') + next;
             }
             const words = next.match($hyoo_crowd_tokenizer) ?? [];
             this.cast($hyoo_crus_list).splice(words, from, to);
@@ -15236,7 +15400,7 @@ var $;
             let off = offset;
             for (const unit of this.units()) {
                 if (unit.tag() === 'term') {
-                    const len = $hyoo_crus_vary_cast_str(land.gist_decode(unit)).length;
+                    const len = $hyoo_crus_vary_cast_str(land.gist_decode(unit))?.length ?? 0;
                     if (off <= len)
                         return [unit.self(), off];
                     else
@@ -15257,7 +15421,7 @@ var $;
                 if (unit.self() === self)
                     return [self, offset];
                 if (unit.tag() === 'term') {
-                    offset += $hyoo_crus_vary_cast_str(land.gist_decode(unit)).length;
+                    offset += $hyoo_crus_vary_cast_str(land.gist_decode(unit))?.length ?? 0;
                 }
                 else {
                     const found = land.Node($hyoo_crus_text).Item(unit.self()).offset_by_point([self, offset]);
@@ -15397,7 +15561,7 @@ var $;
                 this.value_new('');
             }
             value_str(next) {
-                return this.node().cast($hyoo_crus_reg).value_str(next);
+                return this.node().cast($hyoo_crus_reg).value_str(next) ?? '';
             }
             text(next) {
                 return this.node().cast($hyoo_crus_text).str(next);

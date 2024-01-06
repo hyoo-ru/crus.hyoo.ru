@@ -2373,6 +2373,26 @@ declare namespace $ {
 }
 
 declare namespace $ {
+    type $mol_time_interval_config = string | {
+        start?: $mol_time_moment_config;
+        end?: $mol_time_moment_config;
+        duration?: $mol_time_duration_config;
+    };
+    class $mol_time_interval extends $mol_time_base {
+        constructor(config: $mol_time_interval_config);
+        private _start;
+        get start(): $mol_time_moment;
+        private _end;
+        get end(): $mol_time_moment;
+        private _duration;
+        get duration(): $mol_time_duration;
+        toJSON(): string;
+        toString(): string;
+        [Symbol.toPrimitive](mode: 'default' | 'number' | 'string'): string;
+    }
+}
+
+declare namespace $ {
     type $mol_type_result<Func> = Func extends (...params: any) => infer Result ? Result : Func extends new (...params: any) => infer Result ? Result : never;
 }
 
@@ -2388,8 +2408,9 @@ declare namespace $ {
     type json = null | boolean | number | string | {
         [key in string]: json;
     } | readonly json[];
-    export type $hyoo_crus_vary_type = null | Uint8Array | bigint | symbol | $mol_time_moment | $mol_tree2 | json | Node;
+    export type $hyoo_crus_vary_type = Uint8Array | bigint | symbol | $mol_time_moment | $mol_time_duration | $mol_time_interval | $mol_tree2 | json | Node;
     export let $hyoo_crus_vary_mapping: {
+        nil: null;
         bin: Uint8ArrayConstructor;
         bool: BooleanConstructor;
         int: BigIntConstructor;
@@ -2397,6 +2418,8 @@ declare namespace $ {
         ref: SymbolConstructor;
         str: StringConstructor;
         time: typeof $mol_time_moment;
+        dur: typeof $mol_time_duration;
+        range: typeof $mol_time_interval;
         json: ObjectConstructor;
         jsan: ArrayConstructor;
         xml: {
@@ -2411,26 +2434,32 @@ declare namespace $ {
         bin: Uint8Array;
     };
     export enum $hyoo_crus_vary_tip {
-        bin = 0,
-        bool = 1,
-        int = 2,
-        real = 3,
-        ref = 4,
+        nil = 0,
+        bin = 1,
+        bool = 2,
+        int = 3,
+        real = 4,
+        ref = 5,
         str = 16,
         time = 17,
+        dur = 18,
+        range = 19,
         json = 20,
         jsan = 21,
         xml = 22,
         tree = 23
     }
     export function $hyoo_crus_vary_switch<Ways extends {
-        bin: (vary: null | Uint8Array) => any;
+        nil: (vary: null) => any;
+        bin: (vary: Uint8Array) => any;
         bool: (vary: boolean) => any;
         int: (vary: bigint) => any;
         real: (vary: number) => any;
         ref: (vary: symbol) => any;
         str: (vary: string) => any;
         time: (vary: $mol_time_moment) => any;
+        dur: (vary: $mol_time_duration) => any;
+        range: (vary: $mol_time_interval) => any;
         json: (vary: {}) => any;
         jsan: (vary: any[]) => any;
         xml: (vary: Element) => any;
@@ -2455,9 +2484,9 @@ declare namespace $ {
     class $hyoo_crus_gist extends $hyoo_crus_unit {
         _vary: $hyoo_crus_vary_type | undefined;
         _open: Uint8Array | undefined;
-        hint(tip?: "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "jsan" | "xml" | "tree", tag?: "keys" | "vals" | "solo" | "term"): void;
+        hint(tip?: "nil" | "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "dur" | "range" | "json" | "jsan" | "xml" | "tree", tag?: "keys" | "vals" | "solo" | "term"): void;
         tag(): "keys" | "vals" | "solo" | "term";
-        tip(): "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "jsan" | "xml" | "tree";
+        tip(): "nil" | "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "dur" | "range" | "json" | "jsan" | "xml" | "tree";
         utf(): boolean;
         nil(): boolean;
         size(next?: number): number;
@@ -2468,9 +2497,9 @@ declare namespace $ {
         head(next?: string): string;
         _lead: string;
         lead(next?: string): string;
-        hash(next?: Uint8Array, tip?: "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "jsan" | "xml" | "tree", tag?: "keys" | "vals" | "solo" | "term"): Uint8Array;
+        hash(next?: Uint8Array, tip?: "nil" | "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "dur" | "range" | "json" | "jsan" | "xml" | "tree", tag?: "keys" | "vals" | "solo" | "term"): Uint8Array;
         meta(): Uint8Array;
-        data(next?: Uint8Array, tip?: "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "jsan" | "xml" | "tree", tag?: "keys" | "vals" | "solo" | "term"): Uint8Array;
+        data(next?: Uint8Array, tip?: "nil" | "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "dur" | "range" | "json" | "jsan" | "xml" | "tree", tag?: "keys" | "vals" | "solo" | "term"): Uint8Array;
         idea(): number;
         static compare(left: $hyoo_crus_gist, right: $hyoo_crus_gist): number;
     }
@@ -2605,17 +2634,20 @@ declare namespace $ {
 
 declare namespace $ {
     function $hyoo_crus_vary_cast_bin(vary: $hyoo_crus_vary_type): Uint8Array | null;
-    function $hyoo_crus_vary_cast_bool(vary: $hyoo_crus_vary_type): boolean;
-    function $hyoo_crus_vary_cast_int(vary: $hyoo_crus_vary_type): bigint;
-    function $hyoo_crus_vary_cast_real(vary: $hyoo_crus_vary_type): number;
-    function $hyoo_crus_vary_cast_ref(vary: $hyoo_crus_vary_type): symbol;
-    function $hyoo_crus_vary_cast_str(vary: $hyoo_crus_vary_type): string;
-    function $hyoo_crus_vary_cast_time(vary: $hyoo_crus_vary_type): $mol_time_moment;
+    function $hyoo_crus_vary_cast_bool(vary: $hyoo_crus_vary_type): boolean | null;
+    function $hyoo_crus_vary_cast_int(vary: $hyoo_crus_vary_type): bigint | null;
+    function $hyoo_crus_vary_cast_real(vary: $hyoo_crus_vary_type): number | null;
+    function $hyoo_crus_vary_cast_ref(vary: $hyoo_crus_vary_type): symbol | null;
+    function $hyoo_crus_vary_cast_str(vary: $hyoo_crus_vary_type): string | null;
+    function $hyoo_crus_vary_cast_time(vary: $hyoo_crus_vary_type): $mol_time_moment | null;
+    function $hyoo_crus_vary_cast_dur(vary: $hyoo_crus_vary_type): $mol_time_moment | $mol_time_duration | null;
+    function $hyoo_crus_vary_cast_range(vary: $hyoo_crus_vary_type): $mol_time_moment | $mol_time_interval | null;
     function $hyoo_crus_vary_cast_json(vary: $hyoo_crus_vary_type): any;
-    function $hyoo_crus_vary_cast_jsan(vary: $hyoo_crus_vary_type): any[] | string[] | never[] | number[] | boolean[] | {}[];
-    function $hyoo_crus_vary_cast_xml(vary: $hyoo_crus_vary_type): Element | HTMLElement | $mol_jsx.JSX.Element;
-    function $hyoo_crus_vary_cast_tree(vary: $hyoo_crus_vary_type): $mol_tree2;
+    function $hyoo_crus_vary_cast_jsan(vary: $hyoo_crus_vary_type): any[] | string[] | never[] | number[] | boolean[] | {}[] | null;
+    function $hyoo_crus_vary_cast_xml(vary: $hyoo_crus_vary_type): Element | HTMLElement | $mol_jsx.JSX.Element | null;
+    function $hyoo_crus_vary_cast_tree(vary: $hyoo_crus_vary_type): $mol_tree2 | null;
     const $hyoo_crus_vary_cast_funcs: {
+        readonly nil: () => null;
         readonly bin: typeof $hyoo_crus_vary_cast_bin;
         readonly bool: typeof $hyoo_crus_vary_cast_bool;
         readonly int: typeof $hyoo_crus_vary_cast_int;
@@ -2623,12 +2655,18 @@ declare namespace $ {
         readonly ref: typeof $hyoo_crus_vary_cast_ref;
         readonly str: typeof $hyoo_crus_vary_cast_str;
         readonly time: typeof $hyoo_crus_vary_cast_time;
+        readonly dur: typeof $hyoo_crus_vary_cast_dur;
+        readonly range: typeof $hyoo_crus_vary_cast_range;
         readonly json: typeof $hyoo_crus_vary_cast_json;
         readonly jsan: typeof $hyoo_crus_vary_cast_jsan;
         readonly xml: typeof $hyoo_crus_vary_cast_xml;
         readonly tree: typeof $hyoo_crus_vary_cast_tree;
     };
     function $hyoo_crus_vary_cast<Tip extends keyof typeof $hyoo_crus_vary_tip>(tip: Tip, vary: $hyoo_crus_vary_type): any;
+}
+
+declare namespace $ {
+    function $mol_guard_defined<T>(value: T): value is NonNullable<T>;
 }
 
 declare namespace $ {
@@ -2860,17 +2898,18 @@ declare namespace $ {
         pick_unit(): $hyoo_crus_gist | undefined;
         value(next?: $hyoo_crus_vary_type): $hyoo_crus_vary_type;
         value_vary(next?: $hyoo_crus_vary_type): $hyoo_crus_vary_type;
-        value_bool(next?: boolean): boolean;
-        value_int(next?: bigint): bigint;
-        value_real(next?: number): number;
-        value_str(next?: string): string;
+        value_bool(next?: boolean): boolean | null;
+        value_int(next?: bigint): bigint | null;
+        value_real(next?: number): number | null;
+        value_str(next?: string): string | null;
         value_bin(next?: Uint8Array | null): Uint8Array | null;
-        value_ref(next?: symbol): symbol;
+        value_ref(next?: symbol): symbol | null;
         value_as<Decode extends $mol_data_value>(decode: Decode, next?: ReturnType<Decode>): any;
         yoke(vary: $hyoo_crus_vary_type): $hyoo_crus_land;
         static of<Tip extends keyof typeof $hyoo_crus_vary_tip>(tip: Tip): {
             new (): {
                 value(next?: ReturnType<{
+                    readonly nil: () => null;
                     readonly bin: typeof $hyoo_crus_vary_cast_bin;
                     readonly bool: typeof $hyoo_crus_vary_cast_bool;
                     readonly int: typeof $hyoo_crus_vary_cast_int;
@@ -2878,11 +2917,14 @@ declare namespace $ {
                     readonly ref: typeof $hyoo_crus_vary_cast_ref;
                     readonly str: typeof $hyoo_crus_vary_cast_str;
                     readonly time: typeof $hyoo_crus_vary_cast_time;
+                    readonly dur: typeof $hyoo_crus_vary_cast_dur;
+                    readonly range: typeof $hyoo_crus_vary_cast_range;
                     readonly json: typeof $hyoo_crus_vary_cast_json;
                     readonly jsan: typeof $hyoo_crus_vary_cast_jsan;
                     readonly xml: typeof $hyoo_crus_vary_cast_xml;
                     readonly tree: typeof $hyoo_crus_vary_cast_tree;
                 }[Tip]> | undefined): ReturnType<{
+                    readonly nil: () => null;
                     readonly bin: typeof $hyoo_crus_vary_cast_bin;
                     readonly bool: typeof $hyoo_crus_vary_cast_bool;
                     readonly int: typeof $hyoo_crus_vary_cast_int;
@@ -2890,6 +2932,8 @@ declare namespace $ {
                     readonly ref: typeof $hyoo_crus_vary_cast_ref;
                     readonly str: typeof $hyoo_crus_vary_cast_str;
                     readonly time: typeof $hyoo_crus_vary_cast_time;
+                    readonly dur: typeof $hyoo_crus_vary_cast_dur;
+                    readonly range: typeof $hyoo_crus_vary_cast_range;
                     readonly json: typeof $hyoo_crus_vary_cast_json;
                     readonly jsan: typeof $hyoo_crus_vary_cast_jsan;
                     readonly xml: typeof $hyoo_crus_vary_cast_xml;
@@ -2897,12 +2941,12 @@ declare namespace $ {
                 }[Tip]>;
                 pick_unit(): $hyoo_crus_gist | undefined;
                 value_vary(next?: $hyoo_crus_vary_type | undefined): $hyoo_crus_vary_type;
-                value_bool(next?: boolean | undefined): boolean;
-                value_int(next?: bigint | undefined): bigint;
-                value_real(next?: number | undefined): number;
-                value_str(next?: string | undefined): string;
+                value_bool(next?: boolean | undefined): boolean | null;
+                value_int(next?: bigint | undefined): bigint | null;
+                value_real(next?: number | undefined): number | null;
+                value_str(next?: string | undefined): string | null;
                 value_bin(next?: Uint8Array | null | undefined): Uint8Array | null;
-                value_ref(next?: symbol | undefined): symbol;
+                value_ref(next?: symbol | undefined): symbol | null;
                 value_as<Decode extends $mol_data_value<any, any>>(decode: Decode, next?: ReturnType<Decode> | undefined): any;
                 yoke(vary: $hyoo_crus_vary_type): $hyoo_crus_land;
                 land(): $hyoo_crus_land;
@@ -2924,7 +2968,7 @@ declare namespace $ {
             };
             tip: Tip;
             tag: "keys" | "vals" | "solo" | "term";
-            of<Tip extends "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "jsan" | "xml" | "tree">(tip: Tip): any;
+            of<Tip extends "nil" | "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "dur" | "range" | "json" | "jsan" | "xml" | "tree">(tip: Tip): any;
             ref<Value_1 extends unknown>(Value: Value): {
                 new (): {
                     value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
@@ -2949,12 +2993,12 @@ declare namespace $ {
                     can_change: (lord?: symbol) => boolean;
                     pick_unit: () => $hyoo_crus_gist | undefined;
                     value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
-                    value_bool: (next?: boolean | undefined) => boolean;
-                    value_int: (next?: bigint | undefined) => bigint;
-                    value_real: (next?: number | undefined) => number;
-                    value_str: (next?: string | undefined) => string;
+                    value_bool: (next?: boolean | undefined) => boolean | null;
+                    value_int: (next?: bigint | undefined) => bigint | null;
+                    value_real: (next?: number | undefined) => number | null;
+                    value_str: (next?: string | undefined) => string | null;
                     value_bin: (next?: Uint8Array | null | undefined) => Uint8Array | null;
-                    value_ref: (next?: symbol | undefined) => symbol;
+                    value_ref: (next?: symbol | undefined) => symbol | null;
                     value_as: <Decode_1 extends $mol_data_value<any, any>>(decode: Decode_1, next?: ReturnType<Decode_1> | undefined) => any;
                     yoke: (vary: $hyoo_crus_vary_type) => $hyoo_crus_land;
                 };
@@ -3002,12 +3046,12 @@ declare namespace $ {
                 can_change: (lord?: symbol) => boolean;
                 pick_unit: () => $hyoo_crus_gist | undefined;
                 value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
-                value_bool: (next?: boolean | undefined) => boolean;
-                value_int: (next?: bigint | undefined) => bigint;
-                value_real: (next?: number | undefined) => number;
-                value_str: (next?: string | undefined) => string;
+                value_bool: (next?: boolean | undefined) => boolean | null;
+                value_int: (next?: bigint | undefined) => bigint | null;
+                value_real: (next?: number | undefined) => number | null;
+                value_str: (next?: string | undefined) => string | null;
                 value_bin: (next?: Uint8Array | null | undefined) => Uint8Array | null;
-                value_ref: (next?: symbol | undefined) => symbol;
+                value_ref: (next?: symbol | undefined) => symbol | null;
                 value_as: <Decode extends $mol_data_value<any, any>>(decode: Decode, next?: ReturnType<Decode> | undefined) => any;
                 yoke: (vary: $hyoo_crus_vary_type) => $hyoo_crus_land;
             };
@@ -3029,12 +3073,12 @@ declare namespace $ {
             value(next?: Uint8Array | null | undefined): Uint8Array | null;
             pick_unit(): $hyoo_crus_gist | undefined;
             value_vary(next?: $hyoo_crus_vary_type | undefined): $hyoo_crus_vary_type;
-            value_bool(next?: boolean | undefined): boolean;
-            value_int(next?: bigint | undefined): bigint;
-            value_real(next?: number | undefined): number;
-            value_str(next?: string | undefined): string;
+            value_bool(next?: boolean | undefined): boolean | null;
+            value_int(next?: bigint | undefined): bigint | null;
+            value_real(next?: number | undefined): number | null;
+            value_str(next?: string | undefined): string | null;
             value_bin(next?: Uint8Array | null | undefined): Uint8Array | null;
-            value_ref(next?: symbol | undefined): symbol;
+            value_ref(next?: symbol | undefined): symbol | null;
             value_as<Decode extends $mol_data_value<any, any>>(decode: Decode, next?: ReturnType<Decode> | undefined): any;
             yoke(vary: $hyoo_crus_vary_type): $hyoo_crus_land;
             land(): $hyoo_crus_land;
@@ -3056,9 +3100,10 @@ declare namespace $ {
         };
         tip: "bin";
         tag: "keys" | "vals" | "solo" | "term";
-        of<Tip extends "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "jsan" | "xml" | "tree">(tip: Tip): {
+        of<Tip extends "nil" | "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "dur" | "range" | "json" | "jsan" | "xml" | "tree">(tip: Tip): {
             new (): {
                 value(next?: ReturnType<{
+                    readonly nil: () => null;
                     readonly bin: typeof $hyoo_crus_vary_cast_bin;
                     readonly bool: typeof $hyoo_crus_vary_cast_bool;
                     readonly int: typeof $hyoo_crus_vary_cast_int;
@@ -3066,11 +3111,14 @@ declare namespace $ {
                     readonly ref: typeof $hyoo_crus_vary_cast_ref;
                     readonly str: typeof $hyoo_crus_vary_cast_str;
                     readonly time: typeof $hyoo_crus_vary_cast_time;
+                    readonly dur: typeof $hyoo_crus_vary_cast_dur;
+                    readonly range: typeof $hyoo_crus_vary_cast_range;
                     readonly json: typeof $hyoo_crus_vary_cast_json;
                     readonly jsan: typeof $hyoo_crus_vary_cast_jsan;
                     readonly xml: typeof $hyoo_crus_vary_cast_xml;
                     readonly tree: typeof $hyoo_crus_vary_cast_tree;
                 }[Tip]> | undefined): ReturnType<{
+                    readonly nil: () => null;
                     readonly bin: typeof $hyoo_crus_vary_cast_bin;
                     readonly bool: typeof $hyoo_crus_vary_cast_bool;
                     readonly int: typeof $hyoo_crus_vary_cast_int;
@@ -3078,6 +3126,8 @@ declare namespace $ {
                     readonly ref: typeof $hyoo_crus_vary_cast_ref;
                     readonly str: typeof $hyoo_crus_vary_cast_str;
                     readonly time: typeof $hyoo_crus_vary_cast_time;
+                    readonly dur: typeof $hyoo_crus_vary_cast_dur;
+                    readonly range: typeof $hyoo_crus_vary_cast_range;
                     readonly json: typeof $hyoo_crus_vary_cast_json;
                     readonly jsan: typeof $hyoo_crus_vary_cast_jsan;
                     readonly xml: typeof $hyoo_crus_vary_cast_xml;
@@ -3085,12 +3135,12 @@ declare namespace $ {
                 }[Tip]>;
                 pick_unit(): $hyoo_crus_gist | undefined;
                 value_vary(next?: $hyoo_crus_vary_type | undefined): $hyoo_crus_vary_type;
-                value_bool(next?: boolean | undefined): boolean;
-                value_int(next?: bigint | undefined): bigint;
-                value_real(next?: number | undefined): number;
-                value_str(next?: string | undefined): string;
+                value_bool(next?: boolean | undefined): boolean | null;
+                value_int(next?: bigint | undefined): bigint | null;
+                value_real(next?: number | undefined): number | null;
+                value_str(next?: string | undefined): string | null;
                 value_bin(next?: Uint8Array | null | undefined): Uint8Array | null;
-                value_ref(next?: symbol | undefined): symbol;
+                value_ref(next?: symbol | undefined): symbol | null;
                 value_as<Decode_1 extends $mol_data_value<any, any>>(decode: Decode_1, next?: ReturnType<Decode_1> | undefined): any;
                 yoke(vary: $hyoo_crus_vary_type): $hyoo_crus_land;
                 land(): $hyoo_crus_land;
@@ -3112,7 +3162,7 @@ declare namespace $ {
             };
             tip: Tip;
             tag: "keys" | "vals" | "solo" | "term";
-            of<Tip extends "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "jsan" | "xml" | "tree">(tip: Tip): any;
+            of<Tip extends "nil" | "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "dur" | "range" | "json" | "jsan" | "xml" | "tree">(tip: Tip): any;
             ref<Value extends unknown>(Value: Value): {
                 new (): {
                     value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
@@ -3137,12 +3187,12 @@ declare namespace $ {
                     can_change: (lord?: symbol) => boolean;
                     pick_unit: () => $hyoo_crus_gist | undefined;
                     value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
-                    value_bool: (next?: boolean | undefined) => boolean;
-                    value_int: (next?: bigint | undefined) => bigint;
-                    value_real: (next?: number | undefined) => number;
-                    value_str: (next?: string | undefined) => string;
+                    value_bool: (next?: boolean | undefined) => boolean | null;
+                    value_int: (next?: bigint | undefined) => bigint | null;
+                    value_real: (next?: number | undefined) => number | null;
+                    value_str: (next?: string | undefined) => string | null;
                     value_bin: (next?: Uint8Array | null | undefined) => Uint8Array | null;
-                    value_ref: (next?: symbol | undefined) => symbol;
+                    value_ref: (next?: symbol | undefined) => symbol | null;
                     value_as: <Decode_2 extends $mol_data_value<any, any>>(decode: Decode_2, next?: ReturnType<Decode_2> | undefined) => any;
                     yoke: (vary: $hyoo_crus_vary_type) => $hyoo_crus_land;
                 };
@@ -3190,12 +3240,12 @@ declare namespace $ {
                 can_change: (lord?: symbol) => boolean;
                 pick_unit: () => $hyoo_crus_gist | undefined;
                 value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
-                value_bool: (next?: boolean | undefined) => boolean;
-                value_int: (next?: bigint | undefined) => bigint;
-                value_real: (next?: number | undefined) => number;
-                value_str: (next?: string | undefined) => string;
+                value_bool: (next?: boolean | undefined) => boolean | null;
+                value_int: (next?: bigint | undefined) => bigint | null;
+                value_real: (next?: number | undefined) => number | null;
+                value_str: (next?: string | undefined) => string | null;
                 value_bin: (next?: Uint8Array | null | undefined) => Uint8Array | null;
-                value_ref: (next?: symbol | undefined) => symbol;
+                value_ref: (next?: symbol | undefined) => symbol | null;
                 value_as: <Decode_2 extends $mol_data_value<any, any>>(decode: Decode_2, next?: ReturnType<Decode_2> | undefined) => any;
                 yoke: (vary: $hyoo_crus_vary_type) => $hyoo_crus_land;
             };
@@ -3223,15 +3273,15 @@ declare namespace $ {
     }
     const $hyoo_crus_reg_bool_base: {
         new (): {
-            value(next?: boolean | undefined): boolean;
+            value(next?: boolean | null | undefined): boolean | null;
             pick_unit(): $hyoo_crus_gist | undefined;
             value_vary(next?: $hyoo_crus_vary_type | undefined): $hyoo_crus_vary_type;
-            value_bool(next?: boolean | undefined): boolean;
-            value_int(next?: bigint | undefined): bigint;
-            value_real(next?: number | undefined): number;
-            value_str(next?: string | undefined): string;
+            value_bool(next?: boolean | undefined): boolean | null;
+            value_int(next?: bigint | undefined): bigint | null;
+            value_real(next?: number | undefined): number | null;
+            value_str(next?: string | undefined): string | null;
             value_bin(next?: Uint8Array | null | undefined): Uint8Array | null;
-            value_ref(next?: symbol | undefined): symbol;
+            value_ref(next?: symbol | undefined): symbol | null;
             value_as<Decode extends $mol_data_value<any, any>>(decode: Decode, next?: ReturnType<Decode> | undefined): any;
             yoke(vary: $hyoo_crus_vary_type): $hyoo_crus_land;
             land(): $hyoo_crus_land;
@@ -3253,9 +3303,10 @@ declare namespace $ {
         };
         tip: "bool";
         tag: "keys" | "vals" | "solo" | "term";
-        of<Tip extends "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "jsan" | "xml" | "tree">(tip: Tip): {
+        of<Tip extends "nil" | "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "dur" | "range" | "json" | "jsan" | "xml" | "tree">(tip: Tip): {
             new (): {
                 value(next?: ReturnType<{
+                    readonly nil: () => null;
                     readonly bin: typeof $hyoo_crus_vary_cast_bin;
                     readonly bool: typeof $hyoo_crus_vary_cast_bool;
                     readonly int: typeof $hyoo_crus_vary_cast_int;
@@ -3263,11 +3314,14 @@ declare namespace $ {
                     readonly ref: typeof $hyoo_crus_vary_cast_ref;
                     readonly str: typeof $hyoo_crus_vary_cast_str;
                     readonly time: typeof $hyoo_crus_vary_cast_time;
+                    readonly dur: typeof $hyoo_crus_vary_cast_dur;
+                    readonly range: typeof $hyoo_crus_vary_cast_range;
                     readonly json: typeof $hyoo_crus_vary_cast_json;
                     readonly jsan: typeof $hyoo_crus_vary_cast_jsan;
                     readonly xml: typeof $hyoo_crus_vary_cast_xml;
                     readonly tree: typeof $hyoo_crus_vary_cast_tree;
                 }[Tip]> | undefined): ReturnType<{
+                    readonly nil: () => null;
                     readonly bin: typeof $hyoo_crus_vary_cast_bin;
                     readonly bool: typeof $hyoo_crus_vary_cast_bool;
                     readonly int: typeof $hyoo_crus_vary_cast_int;
@@ -3275,6 +3329,8 @@ declare namespace $ {
                     readonly ref: typeof $hyoo_crus_vary_cast_ref;
                     readonly str: typeof $hyoo_crus_vary_cast_str;
                     readonly time: typeof $hyoo_crus_vary_cast_time;
+                    readonly dur: typeof $hyoo_crus_vary_cast_dur;
+                    readonly range: typeof $hyoo_crus_vary_cast_range;
                     readonly json: typeof $hyoo_crus_vary_cast_json;
                     readonly jsan: typeof $hyoo_crus_vary_cast_jsan;
                     readonly xml: typeof $hyoo_crus_vary_cast_xml;
@@ -3282,12 +3338,12 @@ declare namespace $ {
                 }[Tip]>;
                 pick_unit(): $hyoo_crus_gist | undefined;
                 value_vary(next?: $hyoo_crus_vary_type | undefined): $hyoo_crus_vary_type;
-                value_bool(next?: boolean | undefined): boolean;
-                value_int(next?: bigint | undefined): bigint;
-                value_real(next?: number | undefined): number;
-                value_str(next?: string | undefined): string;
+                value_bool(next?: boolean | undefined): boolean | null;
+                value_int(next?: bigint | undefined): bigint | null;
+                value_real(next?: number | undefined): number | null;
+                value_str(next?: string | undefined): string | null;
                 value_bin(next?: Uint8Array | null | undefined): Uint8Array | null;
-                value_ref(next?: symbol | undefined): symbol;
+                value_ref(next?: symbol | undefined): symbol | null;
                 value_as<Decode_1 extends $mol_data_value<any, any>>(decode: Decode_1, next?: ReturnType<Decode_1> | undefined): any;
                 yoke(vary: $hyoo_crus_vary_type): $hyoo_crus_land;
                 land(): $hyoo_crus_land;
@@ -3309,7 +3365,7 @@ declare namespace $ {
             };
             tip: Tip;
             tag: "keys" | "vals" | "solo" | "term";
-            of<Tip extends "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "jsan" | "xml" | "tree">(tip: Tip): any;
+            of<Tip extends "nil" | "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "dur" | "range" | "json" | "jsan" | "xml" | "tree">(tip: Tip): any;
             ref<Value extends unknown>(Value: Value): {
                 new (): {
                     value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
@@ -3334,12 +3390,12 @@ declare namespace $ {
                     can_change: (lord?: symbol) => boolean;
                     pick_unit: () => $hyoo_crus_gist | undefined;
                     value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
-                    value_bool: (next?: boolean | undefined) => boolean;
-                    value_int: (next?: bigint | undefined) => bigint;
-                    value_real: (next?: number | undefined) => number;
-                    value_str: (next?: string | undefined) => string;
+                    value_bool: (next?: boolean | undefined) => boolean | null;
+                    value_int: (next?: bigint | undefined) => bigint | null;
+                    value_real: (next?: number | undefined) => number | null;
+                    value_str: (next?: string | undefined) => string | null;
                     value_bin: (next?: Uint8Array | null | undefined) => Uint8Array | null;
-                    value_ref: (next?: symbol | undefined) => symbol;
+                    value_ref: (next?: symbol | undefined) => symbol | null;
                     value_as: <Decode_2 extends $mol_data_value<any, any>>(decode: Decode_2, next?: ReturnType<Decode_2> | undefined) => any;
                     yoke: (vary: $hyoo_crus_vary_type) => $hyoo_crus_land;
                 };
@@ -3387,12 +3443,12 @@ declare namespace $ {
                 can_change: (lord?: symbol) => boolean;
                 pick_unit: () => $hyoo_crus_gist | undefined;
                 value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
-                value_bool: (next?: boolean | undefined) => boolean;
-                value_int: (next?: bigint | undefined) => bigint;
-                value_real: (next?: number | undefined) => number;
-                value_str: (next?: string | undefined) => string;
+                value_bool: (next?: boolean | undefined) => boolean | null;
+                value_int: (next?: bigint | undefined) => bigint | null;
+                value_real: (next?: number | undefined) => number | null;
+                value_str: (next?: string | undefined) => string | null;
                 value_bin: (next?: Uint8Array | null | undefined) => Uint8Array | null;
-                value_ref: (next?: symbol | undefined) => symbol;
+                value_ref: (next?: symbol | undefined) => symbol | null;
                 value_as: <Decode_2 extends $mol_data_value<any, any>>(decode: Decode_2, next?: ReturnType<Decode_2> | undefined) => any;
                 yoke: (vary: $hyoo_crus_vary_type) => $hyoo_crus_land;
             };
@@ -3420,15 +3476,15 @@ declare namespace $ {
     }
     const $hyoo_crus_reg_int_base: {
         new (): {
-            value(next?: bigint | undefined): bigint;
+            value(next?: bigint | null | undefined): bigint | null;
             pick_unit(): $hyoo_crus_gist | undefined;
             value_vary(next?: $hyoo_crus_vary_type | undefined): $hyoo_crus_vary_type;
-            value_bool(next?: boolean | undefined): boolean;
-            value_int(next?: bigint | undefined): bigint;
-            value_real(next?: number | undefined): number;
-            value_str(next?: string | undefined): string;
+            value_bool(next?: boolean | undefined): boolean | null;
+            value_int(next?: bigint | undefined): bigint | null;
+            value_real(next?: number | undefined): number | null;
+            value_str(next?: string | undefined): string | null;
             value_bin(next?: Uint8Array | null | undefined): Uint8Array | null;
-            value_ref(next?: symbol | undefined): symbol;
+            value_ref(next?: symbol | undefined): symbol | null;
             value_as<Decode extends $mol_data_value<any, any>>(decode: Decode, next?: ReturnType<Decode> | undefined): any;
             yoke(vary: $hyoo_crus_vary_type): $hyoo_crus_land;
             land(): $hyoo_crus_land;
@@ -3450,9 +3506,10 @@ declare namespace $ {
         };
         tip: "int";
         tag: "keys" | "vals" | "solo" | "term";
-        of<Tip extends "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "jsan" | "xml" | "tree">(tip: Tip): {
+        of<Tip extends "nil" | "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "dur" | "range" | "json" | "jsan" | "xml" | "tree">(tip: Tip): {
             new (): {
                 value(next?: ReturnType<{
+                    readonly nil: () => null;
                     readonly bin: typeof $hyoo_crus_vary_cast_bin;
                     readonly bool: typeof $hyoo_crus_vary_cast_bool;
                     readonly int: typeof $hyoo_crus_vary_cast_int;
@@ -3460,11 +3517,14 @@ declare namespace $ {
                     readonly ref: typeof $hyoo_crus_vary_cast_ref;
                     readonly str: typeof $hyoo_crus_vary_cast_str;
                     readonly time: typeof $hyoo_crus_vary_cast_time;
+                    readonly dur: typeof $hyoo_crus_vary_cast_dur;
+                    readonly range: typeof $hyoo_crus_vary_cast_range;
                     readonly json: typeof $hyoo_crus_vary_cast_json;
                     readonly jsan: typeof $hyoo_crus_vary_cast_jsan;
                     readonly xml: typeof $hyoo_crus_vary_cast_xml;
                     readonly tree: typeof $hyoo_crus_vary_cast_tree;
                 }[Tip]> | undefined): ReturnType<{
+                    readonly nil: () => null;
                     readonly bin: typeof $hyoo_crus_vary_cast_bin;
                     readonly bool: typeof $hyoo_crus_vary_cast_bool;
                     readonly int: typeof $hyoo_crus_vary_cast_int;
@@ -3472,6 +3532,8 @@ declare namespace $ {
                     readonly ref: typeof $hyoo_crus_vary_cast_ref;
                     readonly str: typeof $hyoo_crus_vary_cast_str;
                     readonly time: typeof $hyoo_crus_vary_cast_time;
+                    readonly dur: typeof $hyoo_crus_vary_cast_dur;
+                    readonly range: typeof $hyoo_crus_vary_cast_range;
                     readonly json: typeof $hyoo_crus_vary_cast_json;
                     readonly jsan: typeof $hyoo_crus_vary_cast_jsan;
                     readonly xml: typeof $hyoo_crus_vary_cast_xml;
@@ -3479,12 +3541,12 @@ declare namespace $ {
                 }[Tip]>;
                 pick_unit(): $hyoo_crus_gist | undefined;
                 value_vary(next?: $hyoo_crus_vary_type | undefined): $hyoo_crus_vary_type;
-                value_bool(next?: boolean | undefined): boolean;
-                value_int(next?: bigint | undefined): bigint;
-                value_real(next?: number | undefined): number;
-                value_str(next?: string | undefined): string;
+                value_bool(next?: boolean | undefined): boolean | null;
+                value_int(next?: bigint | undefined): bigint | null;
+                value_real(next?: number | undefined): number | null;
+                value_str(next?: string | undefined): string | null;
                 value_bin(next?: Uint8Array | null | undefined): Uint8Array | null;
-                value_ref(next?: symbol | undefined): symbol;
+                value_ref(next?: symbol | undefined): symbol | null;
                 value_as<Decode_1 extends $mol_data_value<any, any>>(decode: Decode_1, next?: ReturnType<Decode_1> | undefined): any;
                 yoke(vary: $hyoo_crus_vary_type): $hyoo_crus_land;
                 land(): $hyoo_crus_land;
@@ -3506,7 +3568,7 @@ declare namespace $ {
             };
             tip: Tip;
             tag: "keys" | "vals" | "solo" | "term";
-            of<Tip extends "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "jsan" | "xml" | "tree">(tip: Tip): any;
+            of<Tip extends "nil" | "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "dur" | "range" | "json" | "jsan" | "xml" | "tree">(tip: Tip): any;
             ref<Value extends unknown>(Value: Value): {
                 new (): {
                     value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
@@ -3531,12 +3593,12 @@ declare namespace $ {
                     can_change: (lord?: symbol) => boolean;
                     pick_unit: () => $hyoo_crus_gist | undefined;
                     value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
-                    value_bool: (next?: boolean | undefined) => boolean;
-                    value_int: (next?: bigint | undefined) => bigint;
-                    value_real: (next?: number | undefined) => number;
-                    value_str: (next?: string | undefined) => string;
+                    value_bool: (next?: boolean | undefined) => boolean | null;
+                    value_int: (next?: bigint | undefined) => bigint | null;
+                    value_real: (next?: number | undefined) => number | null;
+                    value_str: (next?: string | undefined) => string | null;
                     value_bin: (next?: Uint8Array | null | undefined) => Uint8Array | null;
-                    value_ref: (next?: symbol | undefined) => symbol;
+                    value_ref: (next?: symbol | undefined) => symbol | null;
                     value_as: <Decode_2 extends $mol_data_value<any, any>>(decode: Decode_2, next?: ReturnType<Decode_2> | undefined) => any;
                     yoke: (vary: $hyoo_crus_vary_type) => $hyoo_crus_land;
                 };
@@ -3584,12 +3646,12 @@ declare namespace $ {
                 can_change: (lord?: symbol) => boolean;
                 pick_unit: () => $hyoo_crus_gist | undefined;
                 value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
-                value_bool: (next?: boolean | undefined) => boolean;
-                value_int: (next?: bigint | undefined) => bigint;
-                value_real: (next?: number | undefined) => number;
-                value_str: (next?: string | undefined) => string;
+                value_bool: (next?: boolean | undefined) => boolean | null;
+                value_int: (next?: bigint | undefined) => bigint | null;
+                value_real: (next?: number | undefined) => number | null;
+                value_str: (next?: string | undefined) => string | null;
                 value_bin: (next?: Uint8Array | null | undefined) => Uint8Array | null;
-                value_ref: (next?: symbol | undefined) => symbol;
+                value_ref: (next?: symbol | undefined) => symbol | null;
                 value_as: <Decode_2 extends $mol_data_value<any, any>>(decode: Decode_2, next?: ReturnType<Decode_2> | undefined) => any;
                 yoke: (vary: $hyoo_crus_vary_type) => $hyoo_crus_land;
             };
@@ -3617,15 +3679,15 @@ declare namespace $ {
     }
     const $hyoo_crus_reg_real_base: {
         new (): {
-            value(next?: number | undefined): number;
+            value(next?: number | null | undefined): number | null;
             pick_unit(): $hyoo_crus_gist | undefined;
             value_vary(next?: $hyoo_crus_vary_type | undefined): $hyoo_crus_vary_type;
-            value_bool(next?: boolean | undefined): boolean;
-            value_int(next?: bigint | undefined): bigint;
-            value_real(next?: number | undefined): number;
-            value_str(next?: string | undefined): string;
+            value_bool(next?: boolean | undefined): boolean | null;
+            value_int(next?: bigint | undefined): bigint | null;
+            value_real(next?: number | undefined): number | null;
+            value_str(next?: string | undefined): string | null;
             value_bin(next?: Uint8Array | null | undefined): Uint8Array | null;
-            value_ref(next?: symbol | undefined): symbol;
+            value_ref(next?: symbol | undefined): symbol | null;
             value_as<Decode extends $mol_data_value<any, any>>(decode: Decode, next?: ReturnType<Decode> | undefined): any;
             yoke(vary: $hyoo_crus_vary_type): $hyoo_crus_land;
             land(): $hyoo_crus_land;
@@ -3647,9 +3709,10 @@ declare namespace $ {
         };
         tip: "real";
         tag: "keys" | "vals" | "solo" | "term";
-        of<Tip extends "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "jsan" | "xml" | "tree">(tip: Tip): {
+        of<Tip extends "nil" | "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "dur" | "range" | "json" | "jsan" | "xml" | "tree">(tip: Tip): {
             new (): {
                 value(next?: ReturnType<{
+                    readonly nil: () => null;
                     readonly bin: typeof $hyoo_crus_vary_cast_bin;
                     readonly bool: typeof $hyoo_crus_vary_cast_bool;
                     readonly int: typeof $hyoo_crus_vary_cast_int;
@@ -3657,11 +3720,14 @@ declare namespace $ {
                     readonly ref: typeof $hyoo_crus_vary_cast_ref;
                     readonly str: typeof $hyoo_crus_vary_cast_str;
                     readonly time: typeof $hyoo_crus_vary_cast_time;
+                    readonly dur: typeof $hyoo_crus_vary_cast_dur;
+                    readonly range: typeof $hyoo_crus_vary_cast_range;
                     readonly json: typeof $hyoo_crus_vary_cast_json;
                     readonly jsan: typeof $hyoo_crus_vary_cast_jsan;
                     readonly xml: typeof $hyoo_crus_vary_cast_xml;
                     readonly tree: typeof $hyoo_crus_vary_cast_tree;
                 }[Tip]> | undefined): ReturnType<{
+                    readonly nil: () => null;
                     readonly bin: typeof $hyoo_crus_vary_cast_bin;
                     readonly bool: typeof $hyoo_crus_vary_cast_bool;
                     readonly int: typeof $hyoo_crus_vary_cast_int;
@@ -3669,6 +3735,8 @@ declare namespace $ {
                     readonly ref: typeof $hyoo_crus_vary_cast_ref;
                     readonly str: typeof $hyoo_crus_vary_cast_str;
                     readonly time: typeof $hyoo_crus_vary_cast_time;
+                    readonly dur: typeof $hyoo_crus_vary_cast_dur;
+                    readonly range: typeof $hyoo_crus_vary_cast_range;
                     readonly json: typeof $hyoo_crus_vary_cast_json;
                     readonly jsan: typeof $hyoo_crus_vary_cast_jsan;
                     readonly xml: typeof $hyoo_crus_vary_cast_xml;
@@ -3676,12 +3744,12 @@ declare namespace $ {
                 }[Tip]>;
                 pick_unit(): $hyoo_crus_gist | undefined;
                 value_vary(next?: $hyoo_crus_vary_type | undefined): $hyoo_crus_vary_type;
-                value_bool(next?: boolean | undefined): boolean;
-                value_int(next?: bigint | undefined): bigint;
-                value_real(next?: number | undefined): number;
-                value_str(next?: string | undefined): string;
+                value_bool(next?: boolean | undefined): boolean | null;
+                value_int(next?: bigint | undefined): bigint | null;
+                value_real(next?: number | undefined): number | null;
+                value_str(next?: string | undefined): string | null;
                 value_bin(next?: Uint8Array | null | undefined): Uint8Array | null;
-                value_ref(next?: symbol | undefined): symbol;
+                value_ref(next?: symbol | undefined): symbol | null;
                 value_as<Decode_1 extends $mol_data_value<any, any>>(decode: Decode_1, next?: ReturnType<Decode_1> | undefined): any;
                 yoke(vary: $hyoo_crus_vary_type): $hyoo_crus_land;
                 land(): $hyoo_crus_land;
@@ -3703,7 +3771,7 @@ declare namespace $ {
             };
             tip: Tip;
             tag: "keys" | "vals" | "solo" | "term";
-            of<Tip extends "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "jsan" | "xml" | "tree">(tip: Tip): any;
+            of<Tip extends "nil" | "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "dur" | "range" | "json" | "jsan" | "xml" | "tree">(tip: Tip): any;
             ref<Value extends unknown>(Value: Value): {
                 new (): {
                     value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
@@ -3728,12 +3796,12 @@ declare namespace $ {
                     can_change: (lord?: symbol) => boolean;
                     pick_unit: () => $hyoo_crus_gist | undefined;
                     value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
-                    value_bool: (next?: boolean | undefined) => boolean;
-                    value_int: (next?: bigint | undefined) => bigint;
-                    value_real: (next?: number | undefined) => number;
-                    value_str: (next?: string | undefined) => string;
+                    value_bool: (next?: boolean | undefined) => boolean | null;
+                    value_int: (next?: bigint | undefined) => bigint | null;
+                    value_real: (next?: number | undefined) => number | null;
+                    value_str: (next?: string | undefined) => string | null;
                     value_bin: (next?: Uint8Array | null | undefined) => Uint8Array | null;
-                    value_ref: (next?: symbol | undefined) => symbol;
+                    value_ref: (next?: symbol | undefined) => symbol | null;
                     value_as: <Decode_2 extends $mol_data_value<any, any>>(decode: Decode_2, next?: ReturnType<Decode_2> | undefined) => any;
                     yoke: (vary: $hyoo_crus_vary_type) => $hyoo_crus_land;
                 };
@@ -3781,12 +3849,12 @@ declare namespace $ {
                 can_change: (lord?: symbol) => boolean;
                 pick_unit: () => $hyoo_crus_gist | undefined;
                 value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
-                value_bool: (next?: boolean | undefined) => boolean;
-                value_int: (next?: bigint | undefined) => bigint;
-                value_real: (next?: number | undefined) => number;
-                value_str: (next?: string | undefined) => string;
+                value_bool: (next?: boolean | undefined) => boolean | null;
+                value_int: (next?: bigint | undefined) => bigint | null;
+                value_real: (next?: number | undefined) => number | null;
+                value_str: (next?: string | undefined) => string | null;
                 value_bin: (next?: Uint8Array | null | undefined) => Uint8Array | null;
-                value_ref: (next?: symbol | undefined) => symbol;
+                value_ref: (next?: symbol | undefined) => symbol | null;
                 value_as: <Decode_2 extends $mol_data_value<any, any>>(decode: Decode_2, next?: ReturnType<Decode_2> | undefined) => any;
                 yoke: (vary: $hyoo_crus_vary_type) => $hyoo_crus_land;
             };
@@ -3814,15 +3882,15 @@ declare namespace $ {
     }
     const $hyoo_crus_reg_str_base: {
         new (): {
-            value(next?: string | undefined): string;
+            value(next?: string | null | undefined): string | null;
             pick_unit(): $hyoo_crus_gist | undefined;
             value_vary(next?: $hyoo_crus_vary_type | undefined): $hyoo_crus_vary_type;
-            value_bool(next?: boolean | undefined): boolean;
-            value_int(next?: bigint | undefined): bigint;
-            value_real(next?: number | undefined): number;
-            value_str(next?: string | undefined): string;
+            value_bool(next?: boolean | undefined): boolean | null;
+            value_int(next?: bigint | undefined): bigint | null;
+            value_real(next?: number | undefined): number | null;
+            value_str(next?: string | undefined): string | null;
             value_bin(next?: Uint8Array | null | undefined): Uint8Array | null;
-            value_ref(next?: symbol | undefined): symbol;
+            value_ref(next?: symbol | undefined): symbol | null;
             value_as<Decode extends $mol_data_value<any, any>>(decode: Decode, next?: ReturnType<Decode> | undefined): any;
             yoke(vary: $hyoo_crus_vary_type): $hyoo_crus_land;
             land(): $hyoo_crus_land;
@@ -3844,9 +3912,10 @@ declare namespace $ {
         };
         tip: "str";
         tag: "keys" | "vals" | "solo" | "term";
-        of<Tip extends "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "jsan" | "xml" | "tree">(tip: Tip): {
+        of<Tip extends "nil" | "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "dur" | "range" | "json" | "jsan" | "xml" | "tree">(tip: Tip): {
             new (): {
                 value(next?: ReturnType<{
+                    readonly nil: () => null;
                     readonly bin: typeof $hyoo_crus_vary_cast_bin;
                     readonly bool: typeof $hyoo_crus_vary_cast_bool;
                     readonly int: typeof $hyoo_crus_vary_cast_int;
@@ -3854,11 +3923,14 @@ declare namespace $ {
                     readonly ref: typeof $hyoo_crus_vary_cast_ref;
                     readonly str: typeof $hyoo_crus_vary_cast_str;
                     readonly time: typeof $hyoo_crus_vary_cast_time;
+                    readonly dur: typeof $hyoo_crus_vary_cast_dur;
+                    readonly range: typeof $hyoo_crus_vary_cast_range;
                     readonly json: typeof $hyoo_crus_vary_cast_json;
                     readonly jsan: typeof $hyoo_crus_vary_cast_jsan;
                     readonly xml: typeof $hyoo_crus_vary_cast_xml;
                     readonly tree: typeof $hyoo_crus_vary_cast_tree;
                 }[Tip]> | undefined): ReturnType<{
+                    readonly nil: () => null;
                     readonly bin: typeof $hyoo_crus_vary_cast_bin;
                     readonly bool: typeof $hyoo_crus_vary_cast_bool;
                     readonly int: typeof $hyoo_crus_vary_cast_int;
@@ -3866,6 +3938,8 @@ declare namespace $ {
                     readonly ref: typeof $hyoo_crus_vary_cast_ref;
                     readonly str: typeof $hyoo_crus_vary_cast_str;
                     readonly time: typeof $hyoo_crus_vary_cast_time;
+                    readonly dur: typeof $hyoo_crus_vary_cast_dur;
+                    readonly range: typeof $hyoo_crus_vary_cast_range;
                     readonly json: typeof $hyoo_crus_vary_cast_json;
                     readonly jsan: typeof $hyoo_crus_vary_cast_jsan;
                     readonly xml: typeof $hyoo_crus_vary_cast_xml;
@@ -3873,12 +3947,12 @@ declare namespace $ {
                 }[Tip]>;
                 pick_unit(): $hyoo_crus_gist | undefined;
                 value_vary(next?: $hyoo_crus_vary_type | undefined): $hyoo_crus_vary_type;
-                value_bool(next?: boolean | undefined): boolean;
-                value_int(next?: bigint | undefined): bigint;
-                value_real(next?: number | undefined): number;
-                value_str(next?: string | undefined): string;
+                value_bool(next?: boolean | undefined): boolean | null;
+                value_int(next?: bigint | undefined): bigint | null;
+                value_real(next?: number | undefined): number | null;
+                value_str(next?: string | undefined): string | null;
                 value_bin(next?: Uint8Array | null | undefined): Uint8Array | null;
-                value_ref(next?: symbol | undefined): symbol;
+                value_ref(next?: symbol | undefined): symbol | null;
                 value_as<Decode_1 extends $mol_data_value<any, any>>(decode: Decode_1, next?: ReturnType<Decode_1> | undefined): any;
                 yoke(vary: $hyoo_crus_vary_type): $hyoo_crus_land;
                 land(): $hyoo_crus_land;
@@ -3900,7 +3974,7 @@ declare namespace $ {
             };
             tip: Tip;
             tag: "keys" | "vals" | "solo" | "term";
-            of<Tip extends "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "jsan" | "xml" | "tree">(tip: Tip): any;
+            of<Tip extends "nil" | "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "dur" | "range" | "json" | "jsan" | "xml" | "tree">(tip: Tip): any;
             ref<Value extends unknown>(Value: Value): {
                 new (): {
                     value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
@@ -3925,12 +3999,12 @@ declare namespace $ {
                     can_change: (lord?: symbol) => boolean;
                     pick_unit: () => $hyoo_crus_gist | undefined;
                     value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
-                    value_bool: (next?: boolean | undefined) => boolean;
-                    value_int: (next?: bigint | undefined) => bigint;
-                    value_real: (next?: number | undefined) => number;
-                    value_str: (next?: string | undefined) => string;
+                    value_bool: (next?: boolean | undefined) => boolean | null;
+                    value_int: (next?: bigint | undefined) => bigint | null;
+                    value_real: (next?: number | undefined) => number | null;
+                    value_str: (next?: string | undefined) => string | null;
                     value_bin: (next?: Uint8Array | null | undefined) => Uint8Array | null;
-                    value_ref: (next?: symbol | undefined) => symbol;
+                    value_ref: (next?: symbol | undefined) => symbol | null;
                     value_as: <Decode_2 extends $mol_data_value<any, any>>(decode: Decode_2, next?: ReturnType<Decode_2> | undefined) => any;
                     yoke: (vary: $hyoo_crus_vary_type) => $hyoo_crus_land;
                 };
@@ -3978,12 +4052,12 @@ declare namespace $ {
                 can_change: (lord?: symbol) => boolean;
                 pick_unit: () => $hyoo_crus_gist | undefined;
                 value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
-                value_bool: (next?: boolean | undefined) => boolean;
-                value_int: (next?: bigint | undefined) => bigint;
-                value_real: (next?: number | undefined) => number;
-                value_str: (next?: string | undefined) => string;
+                value_bool: (next?: boolean | undefined) => boolean | null;
+                value_int: (next?: bigint | undefined) => bigint | null;
+                value_real: (next?: number | undefined) => number | null;
+                value_str: (next?: string | undefined) => string | null;
                 value_bin: (next?: Uint8Array | null | undefined) => Uint8Array | null;
-                value_ref: (next?: symbol | undefined) => symbol;
+                value_ref: (next?: symbol | undefined) => symbol | null;
                 value_as: <Decode_2 extends $mol_data_value<any, any>>(decode: Decode_2, next?: ReturnType<Decode_2> | undefined) => any;
                 yoke: (vary: $hyoo_crus_vary_type) => $hyoo_crus_land;
             };
@@ -4011,15 +4085,15 @@ declare namespace $ {
     }
     const $hyoo_crus_reg_time_base: {
         new (): {
-            value(next?: $mol_time_moment | undefined): $mol_time_moment;
+            value(next?: $mol_time_moment | null | undefined): $mol_time_moment | null;
             pick_unit(): $hyoo_crus_gist | undefined;
             value_vary(next?: $hyoo_crus_vary_type | undefined): $hyoo_crus_vary_type;
-            value_bool(next?: boolean | undefined): boolean;
-            value_int(next?: bigint | undefined): bigint;
-            value_real(next?: number | undefined): number;
-            value_str(next?: string | undefined): string;
+            value_bool(next?: boolean | undefined): boolean | null;
+            value_int(next?: bigint | undefined): bigint | null;
+            value_real(next?: number | undefined): number | null;
+            value_str(next?: string | undefined): string | null;
             value_bin(next?: Uint8Array | null | undefined): Uint8Array | null;
-            value_ref(next?: symbol | undefined): symbol;
+            value_ref(next?: symbol | undefined): symbol | null;
             value_as<Decode extends $mol_data_value<any, any>>(decode: Decode, next?: ReturnType<Decode> | undefined): any;
             yoke(vary: $hyoo_crus_vary_type): $hyoo_crus_land;
             land(): $hyoo_crus_land;
@@ -4041,9 +4115,10 @@ declare namespace $ {
         };
         tip: "time";
         tag: "keys" | "vals" | "solo" | "term";
-        of<Tip extends "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "jsan" | "xml" | "tree">(tip: Tip): {
+        of<Tip extends "nil" | "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "dur" | "range" | "json" | "jsan" | "xml" | "tree">(tip: Tip): {
             new (): {
                 value(next?: ReturnType<{
+                    readonly nil: () => null;
                     readonly bin: typeof $hyoo_crus_vary_cast_bin;
                     readonly bool: typeof $hyoo_crus_vary_cast_bool;
                     readonly int: typeof $hyoo_crus_vary_cast_int;
@@ -4051,11 +4126,14 @@ declare namespace $ {
                     readonly ref: typeof $hyoo_crus_vary_cast_ref;
                     readonly str: typeof $hyoo_crus_vary_cast_str;
                     readonly time: typeof $hyoo_crus_vary_cast_time;
+                    readonly dur: typeof $hyoo_crus_vary_cast_dur;
+                    readonly range: typeof $hyoo_crus_vary_cast_range;
                     readonly json: typeof $hyoo_crus_vary_cast_json;
                     readonly jsan: typeof $hyoo_crus_vary_cast_jsan;
                     readonly xml: typeof $hyoo_crus_vary_cast_xml;
                     readonly tree: typeof $hyoo_crus_vary_cast_tree;
                 }[Tip]> | undefined): ReturnType<{
+                    readonly nil: () => null;
                     readonly bin: typeof $hyoo_crus_vary_cast_bin;
                     readonly bool: typeof $hyoo_crus_vary_cast_bool;
                     readonly int: typeof $hyoo_crus_vary_cast_int;
@@ -4063,6 +4141,8 @@ declare namespace $ {
                     readonly ref: typeof $hyoo_crus_vary_cast_ref;
                     readonly str: typeof $hyoo_crus_vary_cast_str;
                     readonly time: typeof $hyoo_crus_vary_cast_time;
+                    readonly dur: typeof $hyoo_crus_vary_cast_dur;
+                    readonly range: typeof $hyoo_crus_vary_cast_range;
                     readonly json: typeof $hyoo_crus_vary_cast_json;
                     readonly jsan: typeof $hyoo_crus_vary_cast_jsan;
                     readonly xml: typeof $hyoo_crus_vary_cast_xml;
@@ -4070,12 +4150,12 @@ declare namespace $ {
                 }[Tip]>;
                 pick_unit(): $hyoo_crus_gist | undefined;
                 value_vary(next?: $hyoo_crus_vary_type | undefined): $hyoo_crus_vary_type;
-                value_bool(next?: boolean | undefined): boolean;
-                value_int(next?: bigint | undefined): bigint;
-                value_real(next?: number | undefined): number;
-                value_str(next?: string | undefined): string;
+                value_bool(next?: boolean | undefined): boolean | null;
+                value_int(next?: bigint | undefined): bigint | null;
+                value_real(next?: number | undefined): number | null;
+                value_str(next?: string | undefined): string | null;
                 value_bin(next?: Uint8Array | null | undefined): Uint8Array | null;
-                value_ref(next?: symbol | undefined): symbol;
+                value_ref(next?: symbol | undefined): symbol | null;
                 value_as<Decode_1 extends $mol_data_value<any, any>>(decode: Decode_1, next?: ReturnType<Decode_1> | undefined): any;
                 yoke(vary: $hyoo_crus_vary_type): $hyoo_crus_land;
                 land(): $hyoo_crus_land;
@@ -4097,7 +4177,7 @@ declare namespace $ {
             };
             tip: Tip;
             tag: "keys" | "vals" | "solo" | "term";
-            of<Tip extends "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "jsan" | "xml" | "tree">(tip: Tip): any;
+            of<Tip extends "nil" | "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "dur" | "range" | "json" | "jsan" | "xml" | "tree">(tip: Tip): any;
             ref<Value extends unknown>(Value: Value): {
                 new (): {
                     value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
@@ -4122,12 +4202,12 @@ declare namespace $ {
                     can_change: (lord?: symbol) => boolean;
                     pick_unit: () => $hyoo_crus_gist | undefined;
                     value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
-                    value_bool: (next?: boolean | undefined) => boolean;
-                    value_int: (next?: bigint | undefined) => bigint;
-                    value_real: (next?: number | undefined) => number;
-                    value_str: (next?: string | undefined) => string;
+                    value_bool: (next?: boolean | undefined) => boolean | null;
+                    value_int: (next?: bigint | undefined) => bigint | null;
+                    value_real: (next?: number | undefined) => number | null;
+                    value_str: (next?: string | undefined) => string | null;
                     value_bin: (next?: Uint8Array | null | undefined) => Uint8Array | null;
-                    value_ref: (next?: symbol | undefined) => symbol;
+                    value_ref: (next?: symbol | undefined) => symbol | null;
                     value_as: <Decode_2 extends $mol_data_value<any, any>>(decode: Decode_2, next?: ReturnType<Decode_2> | undefined) => any;
                     yoke: (vary: $hyoo_crus_vary_type) => $hyoo_crus_land;
                 };
@@ -4175,12 +4255,12 @@ declare namespace $ {
                 can_change: (lord?: symbol) => boolean;
                 pick_unit: () => $hyoo_crus_gist | undefined;
                 value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
-                value_bool: (next?: boolean | undefined) => boolean;
-                value_int: (next?: bigint | undefined) => bigint;
-                value_real: (next?: number | undefined) => number;
-                value_str: (next?: string | undefined) => string;
+                value_bool: (next?: boolean | undefined) => boolean | null;
+                value_int: (next?: bigint | undefined) => bigint | null;
+                value_real: (next?: number | undefined) => number | null;
+                value_str: (next?: string | undefined) => string | null;
                 value_bin: (next?: Uint8Array | null | undefined) => Uint8Array | null;
-                value_ref: (next?: symbol | undefined) => symbol;
+                value_ref: (next?: symbol | undefined) => symbol | null;
                 value_as: <Decode_2 extends $mol_data_value<any, any>>(decode: Decode_2, next?: ReturnType<Decode_2> | undefined) => any;
                 yoke: (vary: $hyoo_crus_vary_type) => $hyoo_crus_land;
             };
@@ -4211,12 +4291,12 @@ declare namespace $ {
             value(next?: any): any;
             pick_unit(): $hyoo_crus_gist | undefined;
             value_vary(next?: $hyoo_crus_vary_type | undefined): $hyoo_crus_vary_type;
-            value_bool(next?: boolean | undefined): boolean;
-            value_int(next?: bigint | undefined): bigint;
-            value_real(next?: number | undefined): number;
-            value_str(next?: string | undefined): string;
+            value_bool(next?: boolean | undefined): boolean | null;
+            value_int(next?: bigint | undefined): bigint | null;
+            value_real(next?: number | undefined): number | null;
+            value_str(next?: string | undefined): string | null;
             value_bin(next?: Uint8Array | null | undefined): Uint8Array | null;
-            value_ref(next?: symbol | undefined): symbol;
+            value_ref(next?: symbol | undefined): symbol | null;
             value_as<Decode extends $mol_data_value<any, any>>(decode: Decode, next?: ReturnType<Decode> | undefined): any;
             yoke(vary: $hyoo_crus_vary_type): $hyoo_crus_land;
             land(): $hyoo_crus_land;
@@ -4238,9 +4318,10 @@ declare namespace $ {
         };
         tip: "json";
         tag: "keys" | "vals" | "solo" | "term";
-        of<Tip extends "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "jsan" | "xml" | "tree">(tip: Tip): {
+        of<Tip extends "nil" | "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "dur" | "range" | "json" | "jsan" | "xml" | "tree">(tip: Tip): {
             new (): {
                 value(next?: ReturnType<{
+                    readonly nil: () => null;
                     readonly bin: typeof $hyoo_crus_vary_cast_bin;
                     readonly bool: typeof $hyoo_crus_vary_cast_bool;
                     readonly int: typeof $hyoo_crus_vary_cast_int;
@@ -4248,11 +4329,14 @@ declare namespace $ {
                     readonly ref: typeof $hyoo_crus_vary_cast_ref;
                     readonly str: typeof $hyoo_crus_vary_cast_str;
                     readonly time: typeof $hyoo_crus_vary_cast_time;
+                    readonly dur: typeof $hyoo_crus_vary_cast_dur;
+                    readonly range: typeof $hyoo_crus_vary_cast_range;
                     readonly json: typeof $hyoo_crus_vary_cast_json;
                     readonly jsan: typeof $hyoo_crus_vary_cast_jsan;
                     readonly xml: typeof $hyoo_crus_vary_cast_xml;
                     readonly tree: typeof $hyoo_crus_vary_cast_tree;
                 }[Tip]> | undefined): ReturnType<{
+                    readonly nil: () => null;
                     readonly bin: typeof $hyoo_crus_vary_cast_bin;
                     readonly bool: typeof $hyoo_crus_vary_cast_bool;
                     readonly int: typeof $hyoo_crus_vary_cast_int;
@@ -4260,6 +4344,8 @@ declare namespace $ {
                     readonly ref: typeof $hyoo_crus_vary_cast_ref;
                     readonly str: typeof $hyoo_crus_vary_cast_str;
                     readonly time: typeof $hyoo_crus_vary_cast_time;
+                    readonly dur: typeof $hyoo_crus_vary_cast_dur;
+                    readonly range: typeof $hyoo_crus_vary_cast_range;
                     readonly json: typeof $hyoo_crus_vary_cast_json;
                     readonly jsan: typeof $hyoo_crus_vary_cast_jsan;
                     readonly xml: typeof $hyoo_crus_vary_cast_xml;
@@ -4267,12 +4353,12 @@ declare namespace $ {
                 }[Tip]>;
                 pick_unit(): $hyoo_crus_gist | undefined;
                 value_vary(next?: $hyoo_crus_vary_type | undefined): $hyoo_crus_vary_type;
-                value_bool(next?: boolean | undefined): boolean;
-                value_int(next?: bigint | undefined): bigint;
-                value_real(next?: number | undefined): number;
-                value_str(next?: string | undefined): string;
+                value_bool(next?: boolean | undefined): boolean | null;
+                value_int(next?: bigint | undefined): bigint | null;
+                value_real(next?: number | undefined): number | null;
+                value_str(next?: string | undefined): string | null;
                 value_bin(next?: Uint8Array | null | undefined): Uint8Array | null;
-                value_ref(next?: symbol | undefined): symbol;
+                value_ref(next?: symbol | undefined): symbol | null;
                 value_as<Decode_1 extends $mol_data_value<any, any>>(decode: Decode_1, next?: ReturnType<Decode_1> | undefined): any;
                 yoke(vary: $hyoo_crus_vary_type): $hyoo_crus_land;
                 land(): $hyoo_crus_land;
@@ -4294,7 +4380,7 @@ declare namespace $ {
             };
             tip: Tip;
             tag: "keys" | "vals" | "solo" | "term";
-            of<Tip extends "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "jsan" | "xml" | "tree">(tip: Tip): any;
+            of<Tip extends "nil" | "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "dur" | "range" | "json" | "jsan" | "xml" | "tree">(tip: Tip): any;
             ref<Value extends unknown>(Value: Value): {
                 new (): {
                     value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
@@ -4319,12 +4405,12 @@ declare namespace $ {
                     can_change: (lord?: symbol) => boolean;
                     pick_unit: () => $hyoo_crus_gist | undefined;
                     value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
-                    value_bool: (next?: boolean | undefined) => boolean;
-                    value_int: (next?: bigint | undefined) => bigint;
-                    value_real: (next?: number | undefined) => number;
-                    value_str: (next?: string | undefined) => string;
+                    value_bool: (next?: boolean | undefined) => boolean | null;
+                    value_int: (next?: bigint | undefined) => bigint | null;
+                    value_real: (next?: number | undefined) => number | null;
+                    value_str: (next?: string | undefined) => string | null;
                     value_bin: (next?: Uint8Array | null | undefined) => Uint8Array | null;
-                    value_ref: (next?: symbol | undefined) => symbol;
+                    value_ref: (next?: symbol | undefined) => symbol | null;
                     value_as: <Decode_2 extends $mol_data_value<any, any>>(decode: Decode_2, next?: ReturnType<Decode_2> | undefined) => any;
                     yoke: (vary: $hyoo_crus_vary_type) => $hyoo_crus_land;
                 };
@@ -4372,12 +4458,12 @@ declare namespace $ {
                 can_change: (lord?: symbol) => boolean;
                 pick_unit: () => $hyoo_crus_gist | undefined;
                 value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
-                value_bool: (next?: boolean | undefined) => boolean;
-                value_int: (next?: bigint | undefined) => bigint;
-                value_real: (next?: number | undefined) => number;
-                value_str: (next?: string | undefined) => string;
+                value_bool: (next?: boolean | undefined) => boolean | null;
+                value_int: (next?: bigint | undefined) => bigint | null;
+                value_real: (next?: number | undefined) => number | null;
+                value_str: (next?: string | undefined) => string | null;
                 value_bin: (next?: Uint8Array | null | undefined) => Uint8Array | null;
-                value_ref: (next?: symbol | undefined) => symbol;
+                value_ref: (next?: symbol | undefined) => symbol | null;
                 value_as: <Decode_2 extends $mol_data_value<any, any>>(decode: Decode_2, next?: ReturnType<Decode_2> | undefined) => any;
                 yoke: (vary: $hyoo_crus_vary_type) => $hyoo_crus_land;
             };
@@ -4405,15 +4491,15 @@ declare namespace $ {
     }
     const $hyoo_crus_reg_xml_base: {
         new (): {
-            value(next?: Element | HTMLElement | $mol_jsx.JSX.Element | undefined): Element | HTMLElement | $mol_jsx.JSX.Element;
+            value(next?: Element | HTMLElement | $mol_jsx.JSX.Element | null | undefined): Element | HTMLElement | $mol_jsx.JSX.Element | null;
             pick_unit(): $hyoo_crus_gist | undefined;
             value_vary(next?: $hyoo_crus_vary_type | undefined): $hyoo_crus_vary_type;
-            value_bool(next?: boolean | undefined): boolean;
-            value_int(next?: bigint | undefined): bigint;
-            value_real(next?: number | undefined): number;
-            value_str(next?: string | undefined): string;
+            value_bool(next?: boolean | undefined): boolean | null;
+            value_int(next?: bigint | undefined): bigint | null;
+            value_real(next?: number | undefined): number | null;
+            value_str(next?: string | undefined): string | null;
             value_bin(next?: Uint8Array | null | undefined): Uint8Array | null;
-            value_ref(next?: symbol | undefined): symbol;
+            value_ref(next?: symbol | undefined): symbol | null;
             value_as<Decode extends $mol_data_value<any, any>>(decode: Decode, next?: ReturnType<Decode> | undefined): any;
             yoke(vary: $hyoo_crus_vary_type): $hyoo_crus_land;
             land(): $hyoo_crus_land;
@@ -4435,9 +4521,10 @@ declare namespace $ {
         };
         tip: "xml";
         tag: "keys" | "vals" | "solo" | "term";
-        of<Tip extends "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "jsan" | "xml" | "tree">(tip: Tip): {
+        of<Tip extends "nil" | "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "dur" | "range" | "json" | "jsan" | "xml" | "tree">(tip: Tip): {
             new (): {
                 value(next?: ReturnType<{
+                    readonly nil: () => null;
                     readonly bin: typeof $hyoo_crus_vary_cast_bin;
                     readonly bool: typeof $hyoo_crus_vary_cast_bool;
                     readonly int: typeof $hyoo_crus_vary_cast_int;
@@ -4445,11 +4532,14 @@ declare namespace $ {
                     readonly ref: typeof $hyoo_crus_vary_cast_ref;
                     readonly str: typeof $hyoo_crus_vary_cast_str;
                     readonly time: typeof $hyoo_crus_vary_cast_time;
+                    readonly dur: typeof $hyoo_crus_vary_cast_dur;
+                    readonly range: typeof $hyoo_crus_vary_cast_range;
                     readonly json: typeof $hyoo_crus_vary_cast_json;
                     readonly jsan: typeof $hyoo_crus_vary_cast_jsan;
                     readonly xml: typeof $hyoo_crus_vary_cast_xml;
                     readonly tree: typeof $hyoo_crus_vary_cast_tree;
                 }[Tip]> | undefined): ReturnType<{
+                    readonly nil: () => null;
                     readonly bin: typeof $hyoo_crus_vary_cast_bin;
                     readonly bool: typeof $hyoo_crus_vary_cast_bool;
                     readonly int: typeof $hyoo_crus_vary_cast_int;
@@ -4457,6 +4547,8 @@ declare namespace $ {
                     readonly ref: typeof $hyoo_crus_vary_cast_ref;
                     readonly str: typeof $hyoo_crus_vary_cast_str;
                     readonly time: typeof $hyoo_crus_vary_cast_time;
+                    readonly dur: typeof $hyoo_crus_vary_cast_dur;
+                    readonly range: typeof $hyoo_crus_vary_cast_range;
                     readonly json: typeof $hyoo_crus_vary_cast_json;
                     readonly jsan: typeof $hyoo_crus_vary_cast_jsan;
                     readonly xml: typeof $hyoo_crus_vary_cast_xml;
@@ -4464,12 +4556,12 @@ declare namespace $ {
                 }[Tip]>;
                 pick_unit(): $hyoo_crus_gist | undefined;
                 value_vary(next?: $hyoo_crus_vary_type | undefined): $hyoo_crus_vary_type;
-                value_bool(next?: boolean | undefined): boolean;
-                value_int(next?: bigint | undefined): bigint;
-                value_real(next?: number | undefined): number;
-                value_str(next?: string | undefined): string;
+                value_bool(next?: boolean | undefined): boolean | null;
+                value_int(next?: bigint | undefined): bigint | null;
+                value_real(next?: number | undefined): number | null;
+                value_str(next?: string | undefined): string | null;
                 value_bin(next?: Uint8Array | null | undefined): Uint8Array | null;
-                value_ref(next?: symbol | undefined): symbol;
+                value_ref(next?: symbol | undefined): symbol | null;
                 value_as<Decode_1 extends $mol_data_value<any, any>>(decode: Decode_1, next?: ReturnType<Decode_1> | undefined): any;
                 yoke(vary: $hyoo_crus_vary_type): $hyoo_crus_land;
                 land(): $hyoo_crus_land;
@@ -4491,7 +4583,7 @@ declare namespace $ {
             };
             tip: Tip;
             tag: "keys" | "vals" | "solo" | "term";
-            of<Tip extends "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "jsan" | "xml" | "tree">(tip: Tip): any;
+            of<Tip extends "nil" | "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "dur" | "range" | "json" | "jsan" | "xml" | "tree">(tip: Tip): any;
             ref<Value extends unknown>(Value: Value): {
                 new (): {
                     value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
@@ -4516,12 +4608,12 @@ declare namespace $ {
                     can_change: (lord?: symbol) => boolean;
                     pick_unit: () => $hyoo_crus_gist | undefined;
                     value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
-                    value_bool: (next?: boolean | undefined) => boolean;
-                    value_int: (next?: bigint | undefined) => bigint;
-                    value_real: (next?: number | undefined) => number;
-                    value_str: (next?: string | undefined) => string;
+                    value_bool: (next?: boolean | undefined) => boolean | null;
+                    value_int: (next?: bigint | undefined) => bigint | null;
+                    value_real: (next?: number | undefined) => number | null;
+                    value_str: (next?: string | undefined) => string | null;
                     value_bin: (next?: Uint8Array | null | undefined) => Uint8Array | null;
-                    value_ref: (next?: symbol | undefined) => symbol;
+                    value_ref: (next?: symbol | undefined) => symbol | null;
                     value_as: <Decode_2 extends $mol_data_value<any, any>>(decode: Decode_2, next?: ReturnType<Decode_2> | undefined) => any;
                     yoke: (vary: $hyoo_crus_vary_type) => $hyoo_crus_land;
                 };
@@ -4569,12 +4661,12 @@ declare namespace $ {
                 can_change: (lord?: symbol) => boolean;
                 pick_unit: () => $hyoo_crus_gist | undefined;
                 value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
-                value_bool: (next?: boolean | undefined) => boolean;
-                value_int: (next?: bigint | undefined) => bigint;
-                value_real: (next?: number | undefined) => number;
-                value_str: (next?: string | undefined) => string;
+                value_bool: (next?: boolean | undefined) => boolean | null;
+                value_int: (next?: bigint | undefined) => bigint | null;
+                value_real: (next?: number | undefined) => number | null;
+                value_str: (next?: string | undefined) => string | null;
                 value_bin: (next?: Uint8Array | null | undefined) => Uint8Array | null;
-                value_ref: (next?: symbol | undefined) => symbol;
+                value_ref: (next?: symbol | undefined) => symbol | null;
                 value_as: <Decode_2 extends $mol_data_value<any, any>>(decode: Decode_2, next?: ReturnType<Decode_2> | undefined) => any;
                 yoke: (vary: $hyoo_crus_vary_type) => $hyoo_crus_land;
             };
@@ -4602,15 +4694,15 @@ declare namespace $ {
     }
     const $hyoo_crus_reg_tree_base: {
         new (): {
-            value(next?: $mol_tree2 | undefined): $mol_tree2;
+            value(next?: $mol_tree2 | null | undefined): $mol_tree2 | null;
             pick_unit(): $hyoo_crus_gist | undefined;
             value_vary(next?: $hyoo_crus_vary_type | undefined): $hyoo_crus_vary_type;
-            value_bool(next?: boolean | undefined): boolean;
-            value_int(next?: bigint | undefined): bigint;
-            value_real(next?: number | undefined): number;
-            value_str(next?: string | undefined): string;
+            value_bool(next?: boolean | undefined): boolean | null;
+            value_int(next?: bigint | undefined): bigint | null;
+            value_real(next?: number | undefined): number | null;
+            value_str(next?: string | undefined): string | null;
             value_bin(next?: Uint8Array | null | undefined): Uint8Array | null;
-            value_ref(next?: symbol | undefined): symbol;
+            value_ref(next?: symbol | undefined): symbol | null;
             value_as<Decode extends $mol_data_value<any, any>>(decode: Decode, next?: ReturnType<Decode> | undefined): any;
             yoke(vary: $hyoo_crus_vary_type): $hyoo_crus_land;
             land(): $hyoo_crus_land;
@@ -4632,9 +4724,10 @@ declare namespace $ {
         };
         tip: "tree";
         tag: "keys" | "vals" | "solo" | "term";
-        of<Tip extends "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "jsan" | "xml" | "tree">(tip: Tip): {
+        of<Tip extends "nil" | "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "dur" | "range" | "json" | "jsan" | "xml" | "tree">(tip: Tip): {
             new (): {
                 value(next?: ReturnType<{
+                    readonly nil: () => null;
                     readonly bin: typeof $hyoo_crus_vary_cast_bin;
                     readonly bool: typeof $hyoo_crus_vary_cast_bool;
                     readonly int: typeof $hyoo_crus_vary_cast_int;
@@ -4642,11 +4735,14 @@ declare namespace $ {
                     readonly ref: typeof $hyoo_crus_vary_cast_ref;
                     readonly str: typeof $hyoo_crus_vary_cast_str;
                     readonly time: typeof $hyoo_crus_vary_cast_time;
+                    readonly dur: typeof $hyoo_crus_vary_cast_dur;
+                    readonly range: typeof $hyoo_crus_vary_cast_range;
                     readonly json: typeof $hyoo_crus_vary_cast_json;
                     readonly jsan: typeof $hyoo_crus_vary_cast_jsan;
                     readonly xml: typeof $hyoo_crus_vary_cast_xml;
                     readonly tree: typeof $hyoo_crus_vary_cast_tree;
                 }[Tip]> | undefined): ReturnType<{
+                    readonly nil: () => null;
                     readonly bin: typeof $hyoo_crus_vary_cast_bin;
                     readonly bool: typeof $hyoo_crus_vary_cast_bool;
                     readonly int: typeof $hyoo_crus_vary_cast_int;
@@ -4654,6 +4750,8 @@ declare namespace $ {
                     readonly ref: typeof $hyoo_crus_vary_cast_ref;
                     readonly str: typeof $hyoo_crus_vary_cast_str;
                     readonly time: typeof $hyoo_crus_vary_cast_time;
+                    readonly dur: typeof $hyoo_crus_vary_cast_dur;
+                    readonly range: typeof $hyoo_crus_vary_cast_range;
                     readonly json: typeof $hyoo_crus_vary_cast_json;
                     readonly jsan: typeof $hyoo_crus_vary_cast_jsan;
                     readonly xml: typeof $hyoo_crus_vary_cast_xml;
@@ -4661,12 +4759,12 @@ declare namespace $ {
                 }[Tip]>;
                 pick_unit(): $hyoo_crus_gist | undefined;
                 value_vary(next?: $hyoo_crus_vary_type | undefined): $hyoo_crus_vary_type;
-                value_bool(next?: boolean | undefined): boolean;
-                value_int(next?: bigint | undefined): bigint;
-                value_real(next?: number | undefined): number;
-                value_str(next?: string | undefined): string;
+                value_bool(next?: boolean | undefined): boolean | null;
+                value_int(next?: bigint | undefined): bigint | null;
+                value_real(next?: number | undefined): number | null;
+                value_str(next?: string | undefined): string | null;
                 value_bin(next?: Uint8Array | null | undefined): Uint8Array | null;
-                value_ref(next?: symbol | undefined): symbol;
+                value_ref(next?: symbol | undefined): symbol | null;
                 value_as<Decode_1 extends $mol_data_value<any, any>>(decode: Decode_1, next?: ReturnType<Decode_1> | undefined): any;
                 yoke(vary: $hyoo_crus_vary_type): $hyoo_crus_land;
                 land(): $hyoo_crus_land;
@@ -4688,7 +4786,7 @@ declare namespace $ {
             };
             tip: Tip;
             tag: "keys" | "vals" | "solo" | "term";
-            of<Tip extends "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "jsan" | "xml" | "tree">(tip: Tip): any;
+            of<Tip extends "nil" | "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "dur" | "range" | "json" | "jsan" | "xml" | "tree">(tip: Tip): any;
             ref<Value extends unknown>(Value: Value): {
                 new (): {
                     value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
@@ -4713,12 +4811,12 @@ declare namespace $ {
                     can_change: (lord?: symbol) => boolean;
                     pick_unit: () => $hyoo_crus_gist | undefined;
                     value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
-                    value_bool: (next?: boolean | undefined) => boolean;
-                    value_int: (next?: bigint | undefined) => bigint;
-                    value_real: (next?: number | undefined) => number;
-                    value_str: (next?: string | undefined) => string;
+                    value_bool: (next?: boolean | undefined) => boolean | null;
+                    value_int: (next?: bigint | undefined) => bigint | null;
+                    value_real: (next?: number | undefined) => number | null;
+                    value_str: (next?: string | undefined) => string | null;
                     value_bin: (next?: Uint8Array | null | undefined) => Uint8Array | null;
-                    value_ref: (next?: symbol | undefined) => symbol;
+                    value_ref: (next?: symbol | undefined) => symbol | null;
                     value_as: <Decode_2 extends $mol_data_value<any, any>>(decode: Decode_2, next?: ReturnType<Decode_2> | undefined) => any;
                     yoke: (vary: $hyoo_crus_vary_type) => $hyoo_crus_land;
                 };
@@ -4766,12 +4864,12 @@ declare namespace $ {
                 can_change: (lord?: symbol) => boolean;
                 pick_unit: () => $hyoo_crus_gist | undefined;
                 value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
-                value_bool: (next?: boolean | undefined) => boolean;
-                value_int: (next?: bigint | undefined) => bigint;
-                value_real: (next?: number | undefined) => number;
-                value_str: (next?: string | undefined) => string;
+                value_bool: (next?: boolean | undefined) => boolean | null;
+                value_int: (next?: bigint | undefined) => bigint | null;
+                value_real: (next?: number | undefined) => number | null;
+                value_str: (next?: string | undefined) => string | null;
                 value_bin: (next?: Uint8Array | null | undefined) => Uint8Array | null;
-                value_ref: (next?: symbol | undefined) => symbol;
+                value_ref: (next?: symbol | undefined) => symbol | null;
                 value_as: <Decode_2 extends $mol_data_value<any, any>>(decode: Decode_2, next?: ReturnType<Decode_2> | undefined) => any;
                 yoke: (vary: $hyoo_crus_vary_type) => $hyoo_crus_land;
             };
@@ -4963,7 +5061,7 @@ declare namespace $ {
 
 declare namespace $ {
     class $hyoo_crus_base extends $hyoo_crus_dict {
-        title(next?: string): string;
+        title(next?: string): string | null;
         selection(next?: string): string;
         profiles(): readonly $hyoo_crus_vary_type[];
         Profile(app: string): $hyoo_crus_land;
@@ -6050,7 +6148,7 @@ declare namespace $ {
     const $hyoo_crus_entity_base: typeof $hyoo_crus_dict & (new (...args: any[]) => $hyoo_crus_dict & {
         Title: $hyoo_crus_reg_str;
     } & {
-        readonly title: (next?: string | undefined) => string | null;
+        readonly title: (next?: string | null | undefined) => string | null;
     });
     export class $hyoo_crus_entity extends $hyoo_crus_entity_base {
     }
@@ -6081,12 +6179,12 @@ declare namespace $.$$ {
         items(): readonly $hyoo_crus_vary_type[];
         nodes(): $mol_view[];
         unit_tag(index: number, next?: keyof typeof $hyoo_crus_gist_tag): "keys" | "vals" | "solo" | "term";
-        unit_tip(index: number, next?: keyof typeof $hyoo_crus_vary_tip): "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "jsan" | "xml" | "tree";
+        unit_tip(index: number, next?: keyof typeof $hyoo_crus_vary_tip): "nil" | "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "dur" | "range" | "json" | "jsan" | "xml" | "tree";
         unit_time(index: number): string;
         unit_value(index: number): $hyoo_crus_vary_type;
         unit_title(index: number): string | undefined;
         unit_ref_arg(index: number): {
-            land: string;
+            land: string | null;
         };
         unit_ref_like(index: number): boolean;
         unit_wipe(index: number, event?: Event): void;

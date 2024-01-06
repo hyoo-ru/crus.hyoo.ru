@@ -652,6 +652,10 @@ var $;
     const print = (val) => {
         if (!val)
             return val;
+        if (typeof val === 'bigint')
+            return String(val) + 'n';
+        if (typeof val === 'symbol')
+            return `Symbol(${val.description})`;
         if (typeof val !== 'object')
             return val;
         if ('outerHTML' in val)
@@ -4234,6 +4238,23 @@ var $;
 ;
 "use strict";
 var $;
+(function ($) {
+    $mol_test({
+        'triplets'() {
+            $mol_assert_equal(new $mol_time_interval('2015-01-01/P1M').end.toString(), '2015-02-01');
+            $mol_assert_equal(new $mol_time_interval('P1M/2015-02-01').start.toString(), '2015-01-01');
+            $mol_assert_equal(new $mol_time_interval('2015-01-01/2015-02-01').duration.toString(), 'PT2678400S');
+        },
+        'comparison'() {
+            const iso = '2021-01-02/2022-03-04';
+            $mol_assert_like(new $mol_time_interval(iso), new $mol_time_interval(iso));
+        },
+    });
+})($ || ($ = {}));
+//mol/time/interval/interval.test.ts
+;
+"use strict";
+var $;
 (function ($_1) {
     $mol_test({
         'span for same uri'($) {
@@ -5144,6 +5165,7 @@ var $;
                 Number.NEGATIVE_INFINITY,
                 '',
                 '1234567890123456789012345678901234567890',
+                new Uint8Array([]),
                 new Uint8Array([1, 2, 3]),
                 new Uint8Array([1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0]),
                 list.ref(),
@@ -5550,11 +5572,19 @@ var $;
             "Empty representation"($) {
                 const land = $hyoo_crus_land.make({ $ });
                 const reg = land.Node($hyoo_crus_reg).Item('');
-                $mol_assert_equal(reg.value_bool(), false);
-                $mol_assert_equal(reg.value_int(), 0n);
-                $mol_assert_equal(reg.value_real(), Number.NaN);
+                $mol_assert_equal(reg.value_bool(), null);
+                $mol_assert_equal(reg.value_int(), null);
+                $mol_assert_equal(reg.value_real(), null);
                 $mol_assert_equal(reg.value_bin(), null);
-                $mol_assert_equal(reg.value_str(), '');
+                $mol_assert_equal(reg.value_str(), null);
+                $mol_assert_equal(reg.value_ref(), null);
+                reg.value_bin(null);
+                $mol_assert_equal(reg.value_bool(), null);
+                $mol_assert_equal(reg.value_int(), null);
+                $mol_assert_equal(reg.value_real(), null);
+                $mol_assert_equal(reg.value_bin(), null);
+                $mol_assert_equal(reg.value_str(), null);
+                $mol_assert_equal(reg.value_ref(), null);
             },
             "Bool representation"($) {
                 const land = $hyoo_crus_land.make({ $ });
@@ -5565,12 +5595,14 @@ var $;
                 $mol_assert_equal(reg.value_real(), 1);
                 $mol_assert_equal(reg.value_bin(), new Uint8Array([1]));
                 $mol_assert_equal(reg.value_str(), 'true');
+                $mol_assert_equal(reg.value_ref(), null);
                 reg.value_bool(false);
                 $mol_assert_equal(reg.value_bool(), false);
                 $mol_assert_equal(reg.value_int(), 0n);
                 $mol_assert_equal(reg.value_real(), 0);
                 $mol_assert_equal(reg.value_bin(), new Uint8Array([0]));
                 $mol_assert_equal(reg.value_str(), 'false');
+                $mol_assert_equal(reg.value_ref(), null);
             },
             "Int representation"($) {
                 const land = $hyoo_crus_land.make({ $ });
@@ -5581,12 +5613,14 @@ var $;
                 $mol_assert_equal(reg.value_real(), 4611686018427388000);
                 $mol_assert_equal(reg.value_bin(), new Uint8Array([0, 0, 0, 0, 0, 0, 0, 0x40]));
                 $mol_assert_equal(reg.value_str(), '4611686018427387904');
+                $mol_assert_equal(reg.value_ref(), null);
                 reg.value_int(0n);
                 $mol_assert_equal(reg.value_bool(), false);
                 $mol_assert_equal(reg.value_int(), 0n);
                 $mol_assert_equal(reg.value_real(), 0);
                 $mol_assert_equal(reg.value_bin(), new Uint8Array([0, 0, 0, 0, 0, 0, 0, 0]));
                 $mol_assert_equal(reg.value_str(), '0');
+                $mol_assert_equal(reg.value_ref(), null);
             },
             "Real representation"($) {
                 const land = $hyoo_crus_land.make({ $ });
@@ -5597,36 +5631,42 @@ var $;
                 $mol_assert_equal(reg.value_real(), Math.PI);
                 $mol_assert_equal(reg.value_bin(), new Uint8Array([24, 45, 68, 84, 251, 33, 9, 64]));
                 $mol_assert_equal(reg.value_str(), '3.141592653589793');
+                $mol_assert_equal(reg.value_ref(), null);
                 reg.value_real(0);
                 $mol_assert_equal(reg.value_bool(), false);
                 $mol_assert_equal(reg.value_int(), 0n);
                 $mol_assert_equal(reg.value_real(), 0);
                 $mol_assert_equal(reg.value_bin(), new Uint8Array([0, 0, 0, 0, 0, 0, 0, 0]));
                 $mol_assert_equal(reg.value_str(), '0');
+                $mol_assert_equal(reg.value_ref(), null);
                 reg.value_real(-Math.PI);
                 $mol_assert_equal(reg.value_bool(), true);
                 $mol_assert_equal(reg.value_int(), -3n);
                 $mol_assert_equal(reg.value_real(), -Math.PI);
                 $mol_assert_equal(reg.value_bin(), new Uint8Array([24, 45, 68, 84, 251, 33, 9, 192]));
                 $mol_assert_equal(reg.value_str(), '-3.141592653589793');
+                $mol_assert_equal(reg.value_ref(), null);
                 reg.value_real(Number.NaN);
                 $mol_assert_equal(reg.value_bool(), false);
                 $mol_assert_equal(reg.value_int(), 0n);
                 $mol_assert_equal(reg.value_real(), Number.NaN);
                 $mol_assert_equal(reg.value_bin(), new Uint8Array([0, 0, 0, 0, 0, 0, 248, 127]));
                 $mol_assert_equal(reg.value_str(), 'NaN');
+                $mol_assert_equal(reg.value_ref(), null);
                 reg.value_real(Number.POSITIVE_INFINITY);
                 $mol_assert_equal(reg.value_bool(), true);
                 $mol_assert_equal(reg.value_int(), 0n);
                 $mol_assert_equal(reg.value_real(), Number.POSITIVE_INFINITY);
                 $mol_assert_equal(reg.value_bin(), new Uint8Array([0, 0, 0, 0, 0, 0, 240, 127]));
                 $mol_assert_equal(reg.value_str(), 'Infinity');
+                $mol_assert_equal(reg.value_ref(), null);
                 reg.value_real(Number.NEGATIVE_INFINITY);
                 $mol_assert_equal(reg.value_bool(), true);
                 $mol_assert_equal(reg.value_int(), 0n);
                 $mol_assert_equal(reg.value_real(), Number.NEGATIVE_INFINITY);
                 $mol_assert_equal(reg.value_bin(), new Uint8Array([0, 0, 0, 0, 0, 0, 240, 255]));
                 $mol_assert_equal(reg.value_str(), '-Infinity');
+                $mol_assert_equal(reg.value_ref(), null);
             },
             "Bin representation"($) {
                 const land = $hyoo_crus_land.make({ $ });
@@ -5637,53 +5677,52 @@ var $;
                 $mol_assert_equal(reg.value_real(), 3);
                 $mol_assert_equal(reg.value_bin(), new Uint8Array([1, 2, 3]));
                 $mol_assert_equal(reg.value_str(), '010203');
+                $mol_assert_equal(reg.value_ref(), null);
                 reg.value_bin(new Uint8Array([1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0]));
                 $mol_assert_equal(reg.value_bool(), true);
                 $mol_assert_equal(reg.value_int(), 40n);
                 $mol_assert_equal(reg.value_real(), 40);
                 $mol_assert_equal(reg.value_bin(), new Uint8Array([1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0]));
                 $mol_assert_equal(reg.value_str(), '01020304050607080900010203040506070809000102030405060708090001020304050607080900');
-                reg.value_bin(null);
-                $mol_assert_equal(reg.value_bool(), false);
-                $mol_assert_equal(reg.value_int(), 0n);
-                $mol_assert_equal(reg.value_real(), Number.NaN);
-                $mol_assert_equal(reg.value_bin(), null);
-                $mol_assert_equal(reg.value_str(), '');
+                $mol_assert_equal(reg.value_ref(), null);
             },
             "String representation"($) {
                 const land = $hyoo_crus_land.make({ $ });
                 const reg = land.Node($hyoo_crus_reg).Item('');
                 reg.value_str('foo');
                 $mol_assert_equal(reg.value_bool(), true);
-                $mol_assert_equal(reg.value_int(), 0n);
+                $mol_assert_equal(reg.value_int(), null);
                 $mol_assert_equal(reg.value_real(), Number.NaN);
                 $mol_assert_equal(reg.value_bin(), new Uint8Array([102, 111, 111]));
                 $mol_assert_equal(reg.value_str(), 'foo');
-                reg.value_str('1234567890123456789012345678901234567890');
+                $mol_assert_equal(reg.value_ref(), null);
+                reg.value_str('123456789012345678901234567890123456789');
                 $mol_assert_equal(reg.value_bool(), true);
-                $mol_assert_equal(reg.value_int(), 1234567890123456789012345678901234567890n);
-                $mol_assert_equal(reg.value_real(), 1.2345678901234568e+39);
+                $mol_assert_equal(reg.value_int(), 123456789012345678901234567890123456789n);
+                $mol_assert_equal(reg.value_real(), 1.2345678901234568e+38);
                 $mol_assert_equal(reg.value_bin(), new Uint8Array([
                     49, 50, 51, 52, 53, 54, 55, 56, 57, 48,
                     49, 50, 51, 52, 53, 54, 55, 56, 57, 48,
                     49, 50, 51, 52, 53, 54, 55, 56, 57, 48,
-                    49, 50, 51, 52, 53, 54, 55, 56, 57, 48,
+                    49, 50, 51, 52, 53, 54, 55, 56, 57,
                 ]));
-                $mol_assert_equal(reg.value_str(), '1234567890123456789012345678901234567890');
+                $mol_assert_equal(reg.value_str(), '123456789012345678901234567890123456789');
+                $mol_assert_equal(reg.value_ref(), null);
                 reg.value_str('');
                 $mol_assert_equal(reg.value_bool(), false);
                 $mol_assert_equal(reg.value_int(), 0n);
-                $mol_assert_equal(reg.value_real(), Number.NaN);
+                $mol_assert_equal(reg.value_real(), null);
                 $mol_assert_equal(reg.value_bin(), null);
                 $mol_assert_equal(reg.value_str(), '');
+                $mol_assert_equal(reg.value_ref(), null);
             },
             "Reference representation"($) {
                 const land = $hyoo_crus_land.make({ $ });
                 const reg = land.Node($hyoo_crus_reg).Item('12345678');
                 reg.value_ref(reg.ref());
                 $mol_assert_equal(reg.value_bool(), true);
-                $mol_assert_equal(reg.value_int(), 0n);
-                $mol_assert_equal(reg.value_real(), Number.NaN);
+                $mol_assert_equal(reg.value_int(), null);
+                $mol_assert_equal(reg.value_real(), null);
                 $mol_assert_equal(reg.value_bin(), new Uint8Array([213, 212, 219, 170, 109, 71, 174, 214, 197, 34, 45, 170, 0, 0, 0, 0, 0, 0, 215, 109, 248, 231, 174, 252]));
                 $mol_assert_equal(reg.value_str(), reg.ref().description);
                 $mol_assert_equal(reg.value_ref(), reg.ref());
@@ -5716,7 +5755,7 @@ var $;
                 bin.value(new Uint8Array([1, 2, 3]));
                 $mol_assert_equal(bin.value(), new Uint8Array([1, 2, 3]));
                 const str = land.Node($hyoo_crus_reg_str).Item('22222222');
-                $mol_assert_equal(str.value(), '');
+                $mol_assert_equal(str.value(), null);
                 str.value('foo');
                 $mol_assert_equal(str.value(), 'foo');
             },
@@ -5796,7 +5835,7 @@ var $;
                 const realm = $hyoo_crus_realm.make({ $ });
                 const land = realm.home().base().land();
                 const user = land.Node(User).Item('11111111');
-                $mol_assert_equal(user.title() ?? '', user.Title.value(), '');
+                $mol_assert_equal(user.title(), user.Title.value(), null);
                 $mol_assert_equal(user.account(), user.Account.remote(), null);
                 $mol_assert_equal(user.articles() ?? [], user.Articles.remote_list(), []);
                 user.title('Jin');
@@ -5811,7 +5850,7 @@ var $;
                 articles[0].Title.dive('en').value('Hello!');
                 $mol_assert_equal(articles[0].Title.dive('en').value(), articles[0].title()?.dive('en').value(), 'Hello!');
                 $mol_assert_equal(articles[1].title()?.dive('ru').value(), undefined);
-                $mol_assert_equal(articles[1].Title.dive('ru').value(), articles[1].title()?.dive('ru').value(), '');
+                $mol_assert_equal(articles[1].Title.dive('ru').value(), articles[1].title()?.dive('ru').value(), null);
                 $mol_assert_unique(user.land(), account.land(), ...articles.map(article => article.land()));
             },
             async "Schemas"($) {
