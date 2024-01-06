@@ -8324,6 +8324,7 @@ var $;
         str: String,
         time: $mol_time_moment,
         json: Object,
+        jsan: Array,
         xml: $mol_dom_context.Element,
         tree: $mol_tree2,
     };
@@ -8336,9 +8337,10 @@ var $;
         $hyoo_crus_vary_tip[$hyoo_crus_vary_tip["ref"] = 4] = "ref";
         $hyoo_crus_vary_tip[$hyoo_crus_vary_tip["str"] = 16] = "str";
         $hyoo_crus_vary_tip[$hyoo_crus_vary_tip["time"] = 17] = "time";
-        $hyoo_crus_vary_tip[$hyoo_crus_vary_tip["json"] = 18] = "json";
-        $hyoo_crus_vary_tip[$hyoo_crus_vary_tip["xml"] = 19] = "xml";
-        $hyoo_crus_vary_tip[$hyoo_crus_vary_tip["tree"] = 20] = "tree";
+        $hyoo_crus_vary_tip[$hyoo_crus_vary_tip["json"] = 20] = "json";
+        $hyoo_crus_vary_tip[$hyoo_crus_vary_tip["jsan"] = 21] = "jsan";
+        $hyoo_crus_vary_tip[$hyoo_crus_vary_tip["xml"] = 22] = "xml";
+        $hyoo_crus_vary_tip[$hyoo_crus_vary_tip["tree"] = 23] = "tree";
     })($hyoo_crus_vary_tip = $.$hyoo_crus_vary_tip || ($.$hyoo_crus_vary_tip = {}));
     function $hyoo_crus_vary_switch(vary, ways) {
         if (vary === null)
@@ -8360,7 +8362,7 @@ var $;
             return ways.tree(vary);
         switch (Reflect.getPrototypeOf(vary)) {
             case Object.prototype: return ways.json(vary);
-            case Array.prototype: return ways.json(vary);
+            case Array.prototype: return ways.jsan(vary);
         }
         return $mol_fail(new TypeError(`Unsupported vary type`));
     }
@@ -8375,6 +8377,7 @@ var $;
             str: vary => ({ tip: 'str', bin: $mol_charset_encode(vary) }),
             time: vary => ({ tip: 'time', bin: $mol_charset_encode(String(vary)) }),
             json: vary => ({ tip: 'json', bin: $mol_charset_encode(JSON.stringify(vary)) }),
+            jsan: vary => ({ tip: 'jsan', bin: $mol_charset_encode(JSON.stringify(vary)) }),
             xml: vary => ({ tip: 'xml', bin: $mol_charset_encode($mol_dom_serialize(vary)) }),
             tree: vary => ({ tip: 'tree', bin: $mol_charset_encode(String(vary)) }),
         });
@@ -8390,6 +8393,7 @@ var $;
             case 'str': return $mol_charset_decode(bin);
             case 'time': return new $mol_time_moment($mol_charset_decode(bin));
             case 'json': return JSON.parse($mol_charset_decode(bin));
+            case 'jsan': return JSON.parse($mol_charset_decode(bin));
             case 'xml': return $mol_dom_parse($mol_charset_decode(bin)).documentElement;
             case 'tree': return $$.$mol_tree2_from_string($mol_charset_decode(bin));
         }
@@ -9079,7 +9083,8 @@ var $;
             ref: vary => Boolean(vary.description),
             str: vary => Boolean(vary),
             time: vary => Boolean(vary.valueOf()),
-            json: vary => Boolean(vary instanceof Array ? vary.length : Reflect.ownKeys(vary).length),
+            json: vary => Boolean(Reflect.ownKeys(vary).length),
+            jsan: vary => Boolean(vary.length),
             xml: vary => Boolean(vary.attributes.length + vary.childNodes.length),
             tree: vary => Boolean(vary.value || vary.kids.length),
         });
@@ -9101,7 +9106,8 @@ var $;
                 }
             },
             time: vary => BigInt(vary.valueOf()),
-            json: vary => BigInt(vary instanceof Array ? vary.length : Reflect.ownKeys(vary).length),
+            json: vary => BigInt(Reflect.ownKeys(vary).length),
+            jsan: vary => BigInt(vary.length),
             xml: vary => BigInt(vary.attributes.length + vary.childNodes.length),
             tree: vary => {
                 try {
@@ -9123,7 +9129,8 @@ var $;
             ref: vary => Number.NaN,
             str: vary => vary ? Number(vary) : Number.NaN,
             time: vary => vary.valueOf(),
-            json: vary => vary instanceof Array ? vary.length : Reflect.ownKeys(vary).length,
+            json: vary => Reflect.ownKeys(vary).length,
+            jsan: vary => vary.length,
             xml: vary => Number(vary.attributes.length + vary.childNodes.length),
             tree: vary => Number(vary.value || vary.kids.length),
         });
@@ -9139,6 +9146,7 @@ var $;
             str: vary => Symbol.for(vary),
             time: vary => Symbol.for(''),
             json: vary => Symbol.for(''),
+            jsan: vary => Symbol.for(''),
             xml: vary => Symbol.for(''),
             tree: vary => Symbol.for(vary.type),
         });
@@ -9154,6 +9162,7 @@ var $;
             str: vary => vary,
             time: vary => String(vary),
             json: vary => JSON.stringify(vary),
+            jsan: vary => JSON.stringify(vary),
             xml: vary => $mol_dom_serialize(vary),
             tree: vary => String(vary),
         });
@@ -9169,6 +9178,7 @@ var $;
             str: vary => new $mol_time_moment(vary),
             time: vary => vary,
             json: vary => new $mol_time_moment(vary),
+            jsan: vary => new $mol_time_moment(0),
             xml: vary => new $mol_time_moment(0),
             tree: vary => new $mol_time_moment(0),
         });
@@ -9176,19 +9186,36 @@ var $;
     $.$hyoo_crus_vary_cast_time = $hyoo_crus_vary_cast_time;
     function $hyoo_crus_vary_cast_json(vary) {
         return $hyoo_crus_vary_switch(vary, {
-            bin: vary => vary && [...vary],
+            bin: vary => vary ? { val: [...vary] } : {},
+            bool: vary => vary ? { val: true } : {},
+            int: vary => { int: Number(vary); },
+            real: vary => { real: vary; },
+            ref: vary => { ref: vary.description; },
+            str: vary => JSON.parse(vary) ?? {},
+            time: vary => ({ ...vary }),
+            json: vary => vary,
+            jsan: vary => vary[0] ?? {},
+            xml: vary => { xml: $mol_dom_serialize(vary); },
+            tree: vary => { tree: vary.toString(); },
+        });
+    }
+    $.$hyoo_crus_vary_cast_json = $hyoo_crus_vary_cast_json;
+    function $hyoo_crus_vary_cast_jsan(vary) {
+        return $hyoo_crus_vary_switch(vary, {
+            bin: vary => vary ? [...vary] : [],
             bool: vary => [vary],
             int: vary => [vary.toString()],
             real: vary => [vary],
             ref: vary => [vary.description],
-            str: vary => JSON.parse(vary),
+            str: vary => [].concat(JSON.parse(vary)),
             time: vary => [vary.toJSON()],
-            json: vary => vary,
+            json: vary => [vary],
+            jsan: vary => vary,
             xml: vary => [$mol_dom_serialize(vary)],
             tree: vary => [vary.toString()],
         });
     }
-    $.$hyoo_crus_vary_cast_json = $hyoo_crus_vary_cast_json;
+    $.$hyoo_crus_vary_cast_jsan = $hyoo_crus_vary_cast_jsan;
     function $hyoo_crus_vary_cast_xml(vary) {
         return $hyoo_crus_vary_switch(vary, {
             bin: vary => $mol_jsx("body", null, vary && $mol_base64_ae_encode(vary)),
@@ -9199,6 +9226,7 @@ var $;
             str: vary => $mol_dom_parse(vary, 'application/xhtml+xml').documentElement,
             time: vary => $mol_jsx("body", null, vary),
             json: vary => $mol_jsx("body", null, JSON.stringify(vary)),
+            jsan: vary => $mol_jsx("body", null, JSON.stringify(vary)),
             xml: vary => vary,
             tree: vary => $mol_jsx("body", null, vary),
         });
@@ -9214,6 +9242,7 @@ var $;
             str: vary => $$.$mol_tree2_from_string(vary),
             time: vary => $mol_tree2.struct(vary.toString()),
             json: vary => $$.$mol_tree2_from_json(vary),
+            jsan: vary => $$.$mol_tree2_from_json(vary),
             xml: vary => $$.$mol_tree2_xml_from_dom(vary),
             tree: vary => vary,
         });
@@ -9228,6 +9257,7 @@ var $;
         str: $hyoo_crus_vary_cast_str,
         time: $hyoo_crus_vary_cast_time,
         json: $hyoo_crus_vary_cast_json,
+        jsan: $hyoo_crus_vary_cast_jsan,
         xml: $hyoo_crus_vary_cast_xml,
         tree: $hyoo_crus_vary_cast_tree,
     };

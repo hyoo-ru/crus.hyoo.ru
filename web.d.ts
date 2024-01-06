@@ -2407,6 +2407,7 @@ declare namespace $ {
         str: StringConstructor;
         time: typeof $mol_time_moment;
         json: ObjectConstructor;
+        jsan: ArrayConstructor;
         xml: {
             new (): Element;
             prototype: Element;
@@ -2426,9 +2427,10 @@ declare namespace $ {
         ref = 4,
         str = 16,
         time = 17,
-        json = 18,
-        xml = 19,
-        tree = 20
+        json = 20,
+        jsan = 21,
+        xml = 22,
+        tree = 23
     }
     export function $hyoo_crus_vary_switch<Ways extends {
         bin: (vary: null | Uint8Array) => any;
@@ -2438,7 +2440,8 @@ declare namespace $ {
         ref: (vary: symbol) => any;
         str: (vary: string) => any;
         time: (vary: $mol_time_moment) => any;
-        json: (vary: {} | any[]) => any;
+        json: (vary: {}) => any;
+        jsan: (vary: any[]) => any;
         xml: (vary: Element) => any;
         tree: (vary: $mol_tree2) => any;
     }>(vary: $hyoo_crus_vary_type, ways: Ways): $mol_type_result<Ways[keyof Ways]>;
@@ -2461,9 +2464,9 @@ declare namespace $ {
     class $hyoo_crus_gist extends $hyoo_crus_unit {
         _vary: $hyoo_crus_vary_type | undefined;
         _open: Uint8Array | undefined;
-        hint(tip?: "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "xml" | "tree", tag?: "keys" | "vals" | "solo" | "term"): void;
+        hint(tip?: "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "jsan" | "xml" | "tree", tag?: "keys" | "vals" | "solo" | "term"): void;
         tag(): "keys" | "vals" | "solo" | "term";
-        tip(): "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "xml" | "tree";
+        tip(): "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "jsan" | "xml" | "tree";
         utf(): boolean;
         nil(): boolean;
         size(next?: number): number;
@@ -2474,9 +2477,9 @@ declare namespace $ {
         head(next?: string): string;
         _lead: string;
         lead(next?: string): string;
-        hash(next?: Uint8Array, tip?: "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "xml" | "tree", tag?: "keys" | "vals" | "solo" | "term"): Uint8Array;
+        hash(next?: Uint8Array, tip?: "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "jsan" | "xml" | "tree", tag?: "keys" | "vals" | "solo" | "term"): Uint8Array;
         meta(): Uint8Array;
-        data(next?: Uint8Array, tip?: "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "xml" | "tree", tag?: "keys" | "vals" | "solo" | "term"): Uint8Array;
+        data(next?: Uint8Array, tip?: "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "jsan" | "xml" | "tree", tag?: "keys" | "vals" | "solo" | "term"): Uint8Array;
         idea(): number;
         static compare(left: $hyoo_crus_gist, right: $hyoo_crus_gist): number;
     }
@@ -2621,7 +2624,8 @@ declare namespace $ {
     function $hyoo_crus_vary_cast_ref(vary: $hyoo_crus_vary_type): symbol;
     function $hyoo_crus_vary_cast_str(vary: $hyoo_crus_vary_type): string;
     function $hyoo_crus_vary_cast_time(vary: $hyoo_crus_vary_type): $mol_time_moment;
-    function $hyoo_crus_vary_cast_json(vary: $hyoo_crus_vary_type): {} | any[] | string[] | number[] | boolean[] | null;
+    function $hyoo_crus_vary_cast_json(vary: $hyoo_crus_vary_type): any;
+    function $hyoo_crus_vary_cast_jsan(vary: $hyoo_crus_vary_type): any[] | string[] | never[] | number[] | boolean[] | {}[];
     function $hyoo_crus_vary_cast_xml(vary: $hyoo_crus_vary_type): Element | HTMLElement | $mol_jsx.JSX.Element;
     function $hyoo_crus_vary_cast_tree(vary: $hyoo_crus_vary_type): $mol_tree2;
     const $hyoo_crus_vary_cast_funcs: {
@@ -2633,10 +2637,11 @@ declare namespace $ {
         readonly str: typeof $hyoo_crus_vary_cast_str;
         readonly time: typeof $hyoo_crus_vary_cast_time;
         readonly json: typeof $hyoo_crus_vary_cast_json;
+        readonly jsan: typeof $hyoo_crus_vary_cast_jsan;
         readonly xml: typeof $hyoo_crus_vary_cast_xml;
         readonly tree: typeof $hyoo_crus_vary_cast_tree;
     };
-    function $hyoo_crus_vary_cast<Tip extends keyof typeof $hyoo_crus_vary_tip>(tip: Tip, vary: $hyoo_crus_vary_type): {} | null;
+    function $hyoo_crus_vary_cast<Tip extends keyof typeof $hyoo_crus_vary_tip>(tip: Tip, vary: $hyoo_crus_vary_type): any;
 }
 
 declare namespace $ {
@@ -2884,6 +2889,7 @@ declare namespace $ {
                     readonly str: typeof $hyoo_crus_vary_cast_str;
                     readonly time: typeof $hyoo_crus_vary_cast_time;
                     readonly json: typeof $hyoo_crus_vary_cast_json;
+                    readonly jsan: typeof $hyoo_crus_vary_cast_jsan;
                     readonly xml: typeof $hyoo_crus_vary_cast_xml;
                     readonly tree: typeof $hyoo_crus_vary_cast_tree;
                 }[Tip]> | undefined): ReturnType<{
@@ -2895,6 +2901,7 @@ declare namespace $ {
                     readonly str: typeof $hyoo_crus_vary_cast_str;
                     readonly time: typeof $hyoo_crus_vary_cast_time;
                     readonly json: typeof $hyoo_crus_vary_cast_json;
+                    readonly jsan: typeof $hyoo_crus_vary_cast_jsan;
                     readonly xml: typeof $hyoo_crus_vary_cast_xml;
                     readonly tree: typeof $hyoo_crus_vary_cast_tree;
                 }[Tip]>;
@@ -2927,7 +2934,7 @@ declare namespace $ {
             };
             tip: Tip;
             tag: "keys" | "vals" | "solo" | "term";
-            of<Tip extends "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "xml" | "tree">(tip: Tip): any;
+            of<Tip extends "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "jsan" | "xml" | "tree">(tip: Tip): any;
             ref<Value_1 extends unknown>(Value: Value): {
                 new (): {
                     value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
@@ -3059,7 +3066,7 @@ declare namespace $ {
         };
         tip: "bin";
         tag: "keys" | "vals" | "solo" | "term";
-        of<Tip extends "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "xml" | "tree">(tip: Tip): {
+        of<Tip extends "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "jsan" | "xml" | "tree">(tip: Tip): {
             new (): {
                 value(next?: ReturnType<{
                     readonly bin: typeof $hyoo_crus_vary_cast_bin;
@@ -3070,6 +3077,7 @@ declare namespace $ {
                     readonly str: typeof $hyoo_crus_vary_cast_str;
                     readonly time: typeof $hyoo_crus_vary_cast_time;
                     readonly json: typeof $hyoo_crus_vary_cast_json;
+                    readonly jsan: typeof $hyoo_crus_vary_cast_jsan;
                     readonly xml: typeof $hyoo_crus_vary_cast_xml;
                     readonly tree: typeof $hyoo_crus_vary_cast_tree;
                 }[Tip]> | undefined): ReturnType<{
@@ -3081,6 +3089,7 @@ declare namespace $ {
                     readonly str: typeof $hyoo_crus_vary_cast_str;
                     readonly time: typeof $hyoo_crus_vary_cast_time;
                     readonly json: typeof $hyoo_crus_vary_cast_json;
+                    readonly jsan: typeof $hyoo_crus_vary_cast_jsan;
                     readonly xml: typeof $hyoo_crus_vary_cast_xml;
                     readonly tree: typeof $hyoo_crus_vary_cast_tree;
                 }[Tip]>;
@@ -3113,7 +3122,7 @@ declare namespace $ {
             };
             tip: Tip;
             tag: "keys" | "vals" | "solo" | "term";
-            of<Tip extends "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "xml" | "tree">(tip: Tip): any;
+            of<Tip extends "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "jsan" | "xml" | "tree">(tip: Tip): any;
             ref<Value extends unknown>(Value: Value): {
                 new (): {
                     value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
@@ -3254,7 +3263,7 @@ declare namespace $ {
         };
         tip: "bool";
         tag: "keys" | "vals" | "solo" | "term";
-        of<Tip extends "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "xml" | "tree">(tip: Tip): {
+        of<Tip extends "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "jsan" | "xml" | "tree">(tip: Tip): {
             new (): {
                 value(next?: ReturnType<{
                     readonly bin: typeof $hyoo_crus_vary_cast_bin;
@@ -3265,6 +3274,7 @@ declare namespace $ {
                     readonly str: typeof $hyoo_crus_vary_cast_str;
                     readonly time: typeof $hyoo_crus_vary_cast_time;
                     readonly json: typeof $hyoo_crus_vary_cast_json;
+                    readonly jsan: typeof $hyoo_crus_vary_cast_jsan;
                     readonly xml: typeof $hyoo_crus_vary_cast_xml;
                     readonly tree: typeof $hyoo_crus_vary_cast_tree;
                 }[Tip]> | undefined): ReturnType<{
@@ -3276,6 +3286,7 @@ declare namespace $ {
                     readonly str: typeof $hyoo_crus_vary_cast_str;
                     readonly time: typeof $hyoo_crus_vary_cast_time;
                     readonly json: typeof $hyoo_crus_vary_cast_json;
+                    readonly jsan: typeof $hyoo_crus_vary_cast_jsan;
                     readonly xml: typeof $hyoo_crus_vary_cast_xml;
                     readonly tree: typeof $hyoo_crus_vary_cast_tree;
                 }[Tip]>;
@@ -3308,7 +3319,7 @@ declare namespace $ {
             };
             tip: Tip;
             tag: "keys" | "vals" | "solo" | "term";
-            of<Tip extends "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "xml" | "tree">(tip: Tip): any;
+            of<Tip extends "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "jsan" | "xml" | "tree">(tip: Tip): any;
             ref<Value extends unknown>(Value: Value): {
                 new (): {
                     value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
@@ -3449,7 +3460,7 @@ declare namespace $ {
         };
         tip: "int";
         tag: "keys" | "vals" | "solo" | "term";
-        of<Tip extends "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "xml" | "tree">(tip: Tip): {
+        of<Tip extends "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "jsan" | "xml" | "tree">(tip: Tip): {
             new (): {
                 value(next?: ReturnType<{
                     readonly bin: typeof $hyoo_crus_vary_cast_bin;
@@ -3460,6 +3471,7 @@ declare namespace $ {
                     readonly str: typeof $hyoo_crus_vary_cast_str;
                     readonly time: typeof $hyoo_crus_vary_cast_time;
                     readonly json: typeof $hyoo_crus_vary_cast_json;
+                    readonly jsan: typeof $hyoo_crus_vary_cast_jsan;
                     readonly xml: typeof $hyoo_crus_vary_cast_xml;
                     readonly tree: typeof $hyoo_crus_vary_cast_tree;
                 }[Tip]> | undefined): ReturnType<{
@@ -3471,6 +3483,7 @@ declare namespace $ {
                     readonly str: typeof $hyoo_crus_vary_cast_str;
                     readonly time: typeof $hyoo_crus_vary_cast_time;
                     readonly json: typeof $hyoo_crus_vary_cast_json;
+                    readonly jsan: typeof $hyoo_crus_vary_cast_jsan;
                     readonly xml: typeof $hyoo_crus_vary_cast_xml;
                     readonly tree: typeof $hyoo_crus_vary_cast_tree;
                 }[Tip]>;
@@ -3503,7 +3516,7 @@ declare namespace $ {
             };
             tip: Tip;
             tag: "keys" | "vals" | "solo" | "term";
-            of<Tip extends "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "xml" | "tree">(tip: Tip): any;
+            of<Tip extends "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "jsan" | "xml" | "tree">(tip: Tip): any;
             ref<Value extends unknown>(Value: Value): {
                 new (): {
                     value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
@@ -3644,7 +3657,7 @@ declare namespace $ {
         };
         tip: "real";
         tag: "keys" | "vals" | "solo" | "term";
-        of<Tip extends "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "xml" | "tree">(tip: Tip): {
+        of<Tip extends "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "jsan" | "xml" | "tree">(tip: Tip): {
             new (): {
                 value(next?: ReturnType<{
                     readonly bin: typeof $hyoo_crus_vary_cast_bin;
@@ -3655,6 +3668,7 @@ declare namespace $ {
                     readonly str: typeof $hyoo_crus_vary_cast_str;
                     readonly time: typeof $hyoo_crus_vary_cast_time;
                     readonly json: typeof $hyoo_crus_vary_cast_json;
+                    readonly jsan: typeof $hyoo_crus_vary_cast_jsan;
                     readonly xml: typeof $hyoo_crus_vary_cast_xml;
                     readonly tree: typeof $hyoo_crus_vary_cast_tree;
                 }[Tip]> | undefined): ReturnType<{
@@ -3666,6 +3680,7 @@ declare namespace $ {
                     readonly str: typeof $hyoo_crus_vary_cast_str;
                     readonly time: typeof $hyoo_crus_vary_cast_time;
                     readonly json: typeof $hyoo_crus_vary_cast_json;
+                    readonly jsan: typeof $hyoo_crus_vary_cast_jsan;
                     readonly xml: typeof $hyoo_crus_vary_cast_xml;
                     readonly tree: typeof $hyoo_crus_vary_cast_tree;
                 }[Tip]>;
@@ -3698,7 +3713,7 @@ declare namespace $ {
             };
             tip: Tip;
             tag: "keys" | "vals" | "solo" | "term";
-            of<Tip extends "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "xml" | "tree">(tip: Tip): any;
+            of<Tip extends "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "jsan" | "xml" | "tree">(tip: Tip): any;
             ref<Value extends unknown>(Value: Value): {
                 new (): {
                     value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
@@ -3839,7 +3854,7 @@ declare namespace $ {
         };
         tip: "str";
         tag: "keys" | "vals" | "solo" | "term";
-        of<Tip extends "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "xml" | "tree">(tip: Tip): {
+        of<Tip extends "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "jsan" | "xml" | "tree">(tip: Tip): {
             new (): {
                 value(next?: ReturnType<{
                     readonly bin: typeof $hyoo_crus_vary_cast_bin;
@@ -3850,6 +3865,7 @@ declare namespace $ {
                     readonly str: typeof $hyoo_crus_vary_cast_str;
                     readonly time: typeof $hyoo_crus_vary_cast_time;
                     readonly json: typeof $hyoo_crus_vary_cast_json;
+                    readonly jsan: typeof $hyoo_crus_vary_cast_jsan;
                     readonly xml: typeof $hyoo_crus_vary_cast_xml;
                     readonly tree: typeof $hyoo_crus_vary_cast_tree;
                 }[Tip]> | undefined): ReturnType<{
@@ -3861,6 +3877,7 @@ declare namespace $ {
                     readonly str: typeof $hyoo_crus_vary_cast_str;
                     readonly time: typeof $hyoo_crus_vary_cast_time;
                     readonly json: typeof $hyoo_crus_vary_cast_json;
+                    readonly jsan: typeof $hyoo_crus_vary_cast_jsan;
                     readonly xml: typeof $hyoo_crus_vary_cast_xml;
                     readonly tree: typeof $hyoo_crus_vary_cast_tree;
                 }[Tip]>;
@@ -3893,7 +3910,7 @@ declare namespace $ {
             };
             tip: Tip;
             tag: "keys" | "vals" | "solo" | "term";
-            of<Tip extends "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "xml" | "tree">(tip: Tip): any;
+            of<Tip extends "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "jsan" | "xml" | "tree">(tip: Tip): any;
             ref<Value extends unknown>(Value: Value): {
                 new (): {
                     value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
@@ -4034,7 +4051,7 @@ declare namespace $ {
         };
         tip: "time";
         tag: "keys" | "vals" | "solo" | "term";
-        of<Tip extends "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "xml" | "tree">(tip: Tip): {
+        of<Tip extends "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "jsan" | "xml" | "tree">(tip: Tip): {
             new (): {
                 value(next?: ReturnType<{
                     readonly bin: typeof $hyoo_crus_vary_cast_bin;
@@ -4045,6 +4062,7 @@ declare namespace $ {
                     readonly str: typeof $hyoo_crus_vary_cast_str;
                     readonly time: typeof $hyoo_crus_vary_cast_time;
                     readonly json: typeof $hyoo_crus_vary_cast_json;
+                    readonly jsan: typeof $hyoo_crus_vary_cast_jsan;
                     readonly xml: typeof $hyoo_crus_vary_cast_xml;
                     readonly tree: typeof $hyoo_crus_vary_cast_tree;
                 }[Tip]> | undefined): ReturnType<{
@@ -4056,6 +4074,7 @@ declare namespace $ {
                     readonly str: typeof $hyoo_crus_vary_cast_str;
                     readonly time: typeof $hyoo_crus_vary_cast_time;
                     readonly json: typeof $hyoo_crus_vary_cast_json;
+                    readonly jsan: typeof $hyoo_crus_vary_cast_jsan;
                     readonly xml: typeof $hyoo_crus_vary_cast_xml;
                     readonly tree: typeof $hyoo_crus_vary_cast_tree;
                 }[Tip]>;
@@ -4088,7 +4107,7 @@ declare namespace $ {
             };
             tip: Tip;
             tag: "keys" | "vals" | "solo" | "term";
-            of<Tip extends "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "xml" | "tree">(tip: Tip): any;
+            of<Tip extends "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "jsan" | "xml" | "tree">(tip: Tip): any;
             ref<Value extends unknown>(Value: Value): {
                 new (): {
                     value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
@@ -4199,7 +4218,7 @@ declare namespace $ {
     }
     const $hyoo_crus_reg_json_base: {
         new (): {
-            value(next?: {} | any[] | string[] | number[] | boolean[] | null | undefined): {} | any[] | string[] | number[] | boolean[] | null;
+            value(next?: any): any;
             pick_unit(): $hyoo_crus_gist | undefined;
             value_vary(next?: $hyoo_crus_vary_type | undefined): $hyoo_crus_vary_type;
             value_bool(next?: boolean | undefined): boolean;
@@ -4229,7 +4248,7 @@ declare namespace $ {
         };
         tip: "json";
         tag: "keys" | "vals" | "solo" | "term";
-        of<Tip extends "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "xml" | "tree">(tip: Tip): {
+        of<Tip extends "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "jsan" | "xml" | "tree">(tip: Tip): {
             new (): {
                 value(next?: ReturnType<{
                     readonly bin: typeof $hyoo_crus_vary_cast_bin;
@@ -4240,6 +4259,7 @@ declare namespace $ {
                     readonly str: typeof $hyoo_crus_vary_cast_str;
                     readonly time: typeof $hyoo_crus_vary_cast_time;
                     readonly json: typeof $hyoo_crus_vary_cast_json;
+                    readonly jsan: typeof $hyoo_crus_vary_cast_jsan;
                     readonly xml: typeof $hyoo_crus_vary_cast_xml;
                     readonly tree: typeof $hyoo_crus_vary_cast_tree;
                 }[Tip]> | undefined): ReturnType<{
@@ -4251,6 +4271,7 @@ declare namespace $ {
                     readonly str: typeof $hyoo_crus_vary_cast_str;
                     readonly time: typeof $hyoo_crus_vary_cast_time;
                     readonly json: typeof $hyoo_crus_vary_cast_json;
+                    readonly jsan: typeof $hyoo_crus_vary_cast_jsan;
                     readonly xml: typeof $hyoo_crus_vary_cast_xml;
                     readonly tree: typeof $hyoo_crus_vary_cast_tree;
                 }[Tip]>;
@@ -4283,7 +4304,7 @@ declare namespace $ {
             };
             tip: Tip;
             tag: "keys" | "vals" | "solo" | "term";
-            of<Tip extends "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "xml" | "tree">(tip: Tip): any;
+            of<Tip extends "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "jsan" | "xml" | "tree">(tip: Tip): any;
             ref<Value extends unknown>(Value: Value): {
                 new (): {
                     value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
@@ -4424,7 +4445,7 @@ declare namespace $ {
         };
         tip: "xml";
         tag: "keys" | "vals" | "solo" | "term";
-        of<Tip extends "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "xml" | "tree">(tip: Tip): {
+        of<Tip extends "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "jsan" | "xml" | "tree">(tip: Tip): {
             new (): {
                 value(next?: ReturnType<{
                     readonly bin: typeof $hyoo_crus_vary_cast_bin;
@@ -4435,6 +4456,7 @@ declare namespace $ {
                     readonly str: typeof $hyoo_crus_vary_cast_str;
                     readonly time: typeof $hyoo_crus_vary_cast_time;
                     readonly json: typeof $hyoo_crus_vary_cast_json;
+                    readonly jsan: typeof $hyoo_crus_vary_cast_jsan;
                     readonly xml: typeof $hyoo_crus_vary_cast_xml;
                     readonly tree: typeof $hyoo_crus_vary_cast_tree;
                 }[Tip]> | undefined): ReturnType<{
@@ -4446,6 +4468,7 @@ declare namespace $ {
                     readonly str: typeof $hyoo_crus_vary_cast_str;
                     readonly time: typeof $hyoo_crus_vary_cast_time;
                     readonly json: typeof $hyoo_crus_vary_cast_json;
+                    readonly jsan: typeof $hyoo_crus_vary_cast_jsan;
                     readonly xml: typeof $hyoo_crus_vary_cast_xml;
                     readonly tree: typeof $hyoo_crus_vary_cast_tree;
                 }[Tip]>;
@@ -4478,7 +4501,7 @@ declare namespace $ {
             };
             tip: Tip;
             tag: "keys" | "vals" | "solo" | "term";
-            of<Tip extends "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "xml" | "tree">(tip: Tip): any;
+            of<Tip extends "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "jsan" | "xml" | "tree">(tip: Tip): any;
             ref<Value extends unknown>(Value: Value): {
                 new (): {
                     value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
@@ -4619,7 +4642,7 @@ declare namespace $ {
         };
         tip: "tree";
         tag: "keys" | "vals" | "solo" | "term";
-        of<Tip extends "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "xml" | "tree">(tip: Tip): {
+        of<Tip extends "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "jsan" | "xml" | "tree">(tip: Tip): {
             new (): {
                 value(next?: ReturnType<{
                     readonly bin: typeof $hyoo_crus_vary_cast_bin;
@@ -4630,6 +4653,7 @@ declare namespace $ {
                     readonly str: typeof $hyoo_crus_vary_cast_str;
                     readonly time: typeof $hyoo_crus_vary_cast_time;
                     readonly json: typeof $hyoo_crus_vary_cast_json;
+                    readonly jsan: typeof $hyoo_crus_vary_cast_jsan;
                     readonly xml: typeof $hyoo_crus_vary_cast_xml;
                     readonly tree: typeof $hyoo_crus_vary_cast_tree;
                 }[Tip]> | undefined): ReturnType<{
@@ -4641,6 +4665,7 @@ declare namespace $ {
                     readonly str: typeof $hyoo_crus_vary_cast_str;
                     readonly time: typeof $hyoo_crus_vary_cast_time;
                     readonly json: typeof $hyoo_crus_vary_cast_json;
+                    readonly jsan: typeof $hyoo_crus_vary_cast_jsan;
                     readonly xml: typeof $hyoo_crus_vary_cast_xml;
                     readonly tree: typeof $hyoo_crus_vary_cast_tree;
                 }[Tip]>;
@@ -4673,7 +4698,7 @@ declare namespace $ {
             };
             tip: Tip;
             tag: "keys" | "vals" | "solo" | "term";
-            of<Tip extends "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "xml" | "tree">(tip: Tip): any;
+            of<Tip extends "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "jsan" | "xml" | "tree">(tip: Tip): any;
             ref<Value extends unknown>(Value: Value): {
                 new (): {
                     value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
@@ -6087,7 +6112,7 @@ declare namespace $.$$ {
         items(): readonly $hyoo_crus_vary_type[];
         nodes(): $mol_view[];
         unit_tag(index: number, next?: keyof typeof $hyoo_crus_gist_tag): "keys" | "vals" | "solo" | "term";
-        unit_tip(index: number, next?: keyof typeof $hyoo_crus_vary_tip): "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "xml" | "tree";
+        unit_tip(index: number, next?: keyof typeof $hyoo_crus_vary_tip): "bin" | "bool" | "int" | "real" | "ref" | "str" | "time" | "json" | "jsan" | "xml" | "tree";
         unit_time(index: number): string;
         unit_value(index: number): $hyoo_crus_vary_type;
         unit_title(index: number): string | undefined;
