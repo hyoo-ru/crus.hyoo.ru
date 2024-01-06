@@ -1,7 +1,8 @@
 namespace $ {
-	export class $hyoo_crus_dict extends $hyoo_crus_node {
+	export class $hyoo_crus_dict extends $hyoo_crus_list {
 		
 		static tag = $hyoo_crus_gist_tag[ $hyoo_crus_gist_tag.keys ] as keyof typeof $hyoo_crus_gist_tag
+		Value = $hyoo_crus_node
 		
 		@ $mol_mem
 		keys(): readonly $hyoo_crus_vary_type[] {
@@ -15,14 +16,23 @@ namespace $ {
 			return this.cast( $hyoo_crus_list ).has( key, next, 'solo' )
 		}
 		
-		dive< Node extends typeof $hyoo_crus_node >( key: $hyoo_crus_vary_type, Node: Node ) {
+		dive< Node extends typeof $hyoo_crus_node = typeof this['Value'] >(
+			key: $hyoo_crus_vary_type, Node = this.Value as Node
+		) {
 			this.cast( $hyoo_crus_list ).has( key, true, Node.tag )
 			const unit = this.cast( $hyoo_crus_list ).find( key )!
 			return this.land().Node( Node ).Item( unit.self() )
 		}
 		
-		value() {
-			return this
+		@ $mol_mem_key
+		static of<
+			Node extends typeof $hyoo_crus_node
+		>( Node: Node ) {
+			
+			return class Dict extends $hyoo_crus_dict {
+				Value = Node
+			}
+			
 		}
 		
 		static with<
@@ -31,7 +41,7 @@ namespace $ {
 		>( this: This, schema: Schema ) {
 			
 			const Entity = class Entity extends ( this as any ) {} as This & {
-				new(...args:any[]): InstanceType< This > & {
+				new( ...args: any[] ): InstanceType< This > & {
 					[ Key in keyof Schema ]: InstanceType< Schema[ Key ] >
 				} & {
 					readonly [ Key in keyof Schema as Uncapitalize< Extract< Key, string > > ]:

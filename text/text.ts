@@ -1,5 +1,5 @@
 namespace $ {
-	export class $hyoo_crus_text extends $hyoo_crus_list {
+	export class $hyoo_crus_text extends $hyoo_crus_node {
 		
 		static tag = $hyoo_crus_gist_tag[ $hyoo_crus_gist_tag.vals ] as keyof typeof $hyoo_crus_gist_tag
 				
@@ -119,7 +119,7 @@ namespace $ {
 			}
 			
 			const words = next.match( $hyoo_crowd_tokenizer ) ?? []
-			this.splice( words, from, to )
+			this.cast( $hyoo_crus_list ).splice( words, from, to )
 			
 			return this
 		}

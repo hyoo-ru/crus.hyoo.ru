@@ -253,7 +253,8 @@ namespace $.$$ {
 			const realm = $hyoo_crus_realm.make({ $ })
 			const land = realm.home().base().land()
 			
-			const reg = land.Node( $hyoo_crus_reg_ref( ()=> $hyoo_crus_reg ) ).Item('11111111')
+			const Reg = $hyoo_crus_reg.ref( ()=> Reg )
+			const reg = land.Node( Reg ).Item('11111111')
 			$mol_assert_equal( reg.remote(), null )
 			
 			reg.remote( reg )

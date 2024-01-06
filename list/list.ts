@@ -3,6 +3,10 @@ namespace $ {
 		
 		static tag = $hyoo_crus_gist_tag[ $hyoo_crus_gist_tag.vals ] as keyof typeof $hyoo_crus_gist_tag
 		
+		value() {
+			return this
+		}
+		
 		/** Data list representation. */
 		@ $mol_mem
 		items(
@@ -99,6 +103,46 @@ namespace $ {
 		) {
 			this.splice( [ vary ], undefined, undefined, tag )
 			return this.land().Node( Node ).Item( this.units().at(-1)!.self() )
+		}
+		
+		static ref< Value extends any >( Value: Value ) {
+			
+			type Vals = $mol_type_result< $mol_type_result< Value > >[]
+			
+			class Ref extends (
+				$hyoo_crus_list as Omit< typeof $hyoo_crus_list, 'prototype' > & {
+					new(): Omit< $hyoo_crus_list, 'value' >
+				}
+			) {
+				
+				static Value = Value
+				
+				static toJSON() {
+					return '$hyoo_crus_list.ref(()=>' + ( Value as any )() + ')'
+				}
+				
+				value( next?: Vals ): Vals {
+					return this.remote_list( next )
+				}
+				
+				@ $mol_mem
+				remote_list( next?: Vals ): Vals {
+					const realm = this.realm()
+					const Node = ( Value as any )()
+					return this.items( next?.map( item => ( item as $hyoo_crus_node ).ref() ) )
+						.map( ref => realm!.Node( $hyoo_crus_vary_cast_ref( ref ), Node ) )
+				}
+				
+				@ $mol_action
+				remote_make(): Vals[number] {
+					const land = this.realm()!.home().Land_new( 0 )
+					this.splice([ land.ref() ])
+					return land.Node( ( Value as any )() ).Item('')
+				}
+				
+			}
+			
+			return Ref
 		}
 		
 		;[ $mol_dev_format_head ]() {

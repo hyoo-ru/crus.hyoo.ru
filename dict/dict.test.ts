@@ -54,24 +54,24 @@ namespace $.$$ {
 		
 		"Narrowed Dictionary with linked Dictionaries and others"( $ ) {
 			
-			const realm = $hyoo_crus_realm.make({ $ })
-			const land = realm.home().base().land()
-			
 			class User extends $hyoo_crus_dict.with({
 				Title: $hyoo_crus_reg_str,
-				Account: $hyoo_crus_reg_ref( ()=> Account ),
-				Articles: $hyoo_crus_list_ref( ()=> Article ),
+				Account: $hyoo_crus_reg.ref( ()=> Account ),
+				Articles: $hyoo_crus_list.ref( ()=> Article ),
 			}) {}
 			
 			class Account extends $hyoo_crus_dict.with({
 				Title: $hyoo_crus_reg_str,
-				User: $hyoo_crus_reg_ref( ()=> User ),
+				User: $hyoo_crus_reg.ref( ()=> User ),
 			}) {}
 			
 			class Article extends $hyoo_crus_dict.with({
-				Title: $hyoo_crus_reg_str,
-				Author: $hyoo_crus_reg_ref( ()=> User ),
+				Title: $hyoo_crus_dict.of( $hyoo_crus_reg_str ),
+				Author: $hyoo_crus_reg.ref( ()=> User ),
 			}) {}
+			
+			const realm = $hyoo_crus_realm.make({ $ })
+			const land = realm.home().base().land()
 			
 			const user = land.Node( User ).Item('11111111')
 			$mol_assert_equal( user.title() ?? '', user.Title.value(), '' )
@@ -90,6 +90,19 @@ namespace $.$$ {
 			
 			const articles = [ user.Articles.remote_make(), user.Articles.remote_make() ]
 			$mol_assert_equal( user.articles() ?? [], user.Articles.remote_list(), articles )
+			
+			articles[0].Title.dive( 'en' ).value( 'Hello!' )
+			$mol_assert_equal(
+				articles[0].Title.dive( 'en' ).value(),
+				articles[0].title()?.dive( 'en' ).value(),
+				'Hello!',
+			)
+			$mol_assert_equal( articles[1].title()?.dive( 'ru' ).value(), undefined )
+			$mol_assert_equal(
+				articles[1].Title.dive( 'ru' ).value(),
+				articles[1].title()?.dive( 'ru' ).value(),
+				'',
+			)
 			
 			$mol_assert_unique( user.land(), account.land(), ... articles.map( article => article.land() ) )
 			
