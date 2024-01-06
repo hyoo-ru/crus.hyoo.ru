@@ -114,7 +114,7 @@ namespace $.$$ {
 		}
 		
 		value_str( next?: string ) {
-			return this.node().cast( $hyoo_crus_reg ).value_str( next )
+			return this.node().cast( $hyoo_crus_reg ).value_str( next ) ?? ''
 		}
 		
 		text( next?: string ) {
