@@ -97,14 +97,14 @@ namespace $ {
 			real:  vary => null,
 			ref:   vary => vary,
 			
-			str:   vary => ( !vary || vary.length % 8 ) ? null :  Symbol.for( vary ),
+			str:   vary => ( !vary || vary.length % 8 ) ? null : Symbol.for( vary ),
 			time:  vary => null,
 			dur:   vary => null,
 			range: vary => null,
 			json:  vary => null,
 			jsan:  vary => null,
 			dom:   vary => null,
-			tree:  vary => ( !vary.type || vary.type.length % 8 ) ? null :  Symbol.for( vary.type ),
+			tree:  vary => ( !vary.type || vary.type.length % 8 ) ? null : Symbol.for( vary.type ),
 			
 		})
 	}

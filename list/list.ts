@@ -3,8 +3,11 @@ namespace $ {
 		
 		static tag = $hyoo_crus_gist_tag[ $hyoo_crus_gist_tag.vals ] as keyof typeof $hyoo_crus_gist_tag
 		
-		value() {
-			return this
+		value(
+			next?: readonly $hyoo_crus_vary_type[],
+			tag = 'term' as keyof typeof $hyoo_crus_gist_tag,
+		) {
+			return this.items( next, tag )
 		}
 		
 		/** Data list representation. */
@@ -36,7 +39,7 @@ namespace $ {
 				next,
 				equal: ( next, prev )=> $mol_compare_deep( this.land().gist_decode( prev ), next ),
 				drop: ( prev, lead )=> this.land().post( lead?.self() ?? '', prev.head(), prev.self(), null ),
-				insert: ( next, lead )=> this.land().post( lead?.self() ?? '', this.head(), land.self_make(), next, tag ),
+				insert: ( next, lead )=> this.land().post( lead?.self() ?? '', this.head(), land.self_make( $hyoo_crus_zone_of( this.head() ) ), next, tag ),
 				update: ( next, prev, lead )=> this.land().post( lead?.self() ?? '', prev.head(), prev.self(), next, prev.tag() ),
 			})
 		}
@@ -105,14 +108,33 @@ namespace $ {
 			return this.land().Node( Node ).Item( this.units().at(-1)!.self() )
 		}
 		
+		@ $mol_memo.method
+		static of<
+			Tip extends keyof typeof $hyoo_crus_vary_tip
+		>( tip: Tip ) {
+
+			type Value = ReturnType<typeof $hyoo_crus_vary_cast_funcs[ Tip ]>
+
+			class Narrow extends $hyoo_crus_list {
+
+				static tip = tip;
+
+				@ $mol_mem
+				value( next?: readonly Value[] ): readonly Value[] {
+					return this.items( next ).map( $hyoo_crus_vary_cast_funcs[ tip ] )
+				}
+
+			}
+
+			return Narrow
+		}
+
 		static ref< Value extends any >( Value: Value ) {
 			
 			type Vals = $mol_type_result< $mol_type_result< Value > >[]
 			
 			class Ref extends (
-				$hyoo_crus_list as Omit< typeof $hyoo_crus_list, 'prototype' > & {
-					new(): Omit< $hyoo_crus_list, 'value' >
-				}
+				$hyoo_crus_list as $mol_type_erase< typeof $hyoo_crus_list, 'value' >
 			) {
 				
 				static Value = Value
@@ -144,7 +166,7 @@ namespace $ {
 				
 				@ $mol_action
 				local_make(): Vals[number] {
-					const node = this.land().Node( ( Value as any )() ).Item( this.land().self_make() )
+					const node = this.land().Node( ( Value as any )() ).Item( this.land().self_make( $hyoo_crus_zone_of( this.head() ) ) )
 					this.splice([ node.ref() ])
 					return node
 				}

@@ -1,8 +1,14 @@
 namespace $ {
-	export class $hyoo_crus_dict extends $hyoo_crus_list {
+	export class $hyoo_crus_dict extends (
+		$hyoo_crus_list as $mol_type_erase< typeof $hyoo_crus_list, 'value' >
+	) {
 		
 		static tag = $hyoo_crus_gist_tag[ $hyoo_crus_gist_tag.keys ] as keyof typeof $hyoo_crus_gist_tag
 		Value = $hyoo_crus_node
+		
+		value() {
+			return this
+		}
 		
 		@ $mol_mem
 		keys(): readonly $hyoo_crus_vary_type[] {
@@ -18,7 +24,7 @@ namespace $ {
 		}
 		
 		// @ $mol_mem_key
-		static of<
+		static to<
 			Value extends typeof $hyoo_crus_node
 		>( Value: Value ) {
 			

@@ -28,7 +28,7 @@ namespace $ {
 					},
 					drop: ( prev, lead )=> this.land().post( lead?.self() ?? '', prev.head(), prev.self(), null ),
 					insert: ( next, lead )=> {
-						const gist = this.land().post( lead?.self() ?? '', this.head(), land.self_make(), 'p', 'vals' )
+						const gist = this.land().post( lead?.self() ?? '', this.head(), land.self_make( $hyoo_crus_zone_of( this.head() ) ), 'p', 'vals' )
 						land.Node( $hyoo_crus_text ).Item( gist.self() ).str( next )
 						return gist
 					},

@@ -66,7 +66,7 @@ namespace $.$$ {
 			}) {}
 			
 			class Article extends $hyoo_crus_dict.with({
-				Title: $hyoo_crus_dict.of( $hyoo_crus_reg_str ),
+				Title: $hyoo_crus_dict.to( $hyoo_crus_reg_str ),
 				Author: $hyoo_crus_reg.ref( ()=> User ),
 			}) {}
 			
@@ -113,7 +113,7 @@ namespace $.$$ {
 			class Kind extends $hyoo_crus_dict.with({
 				Kind: $hyoo_crus_reg.ref( ()=> Kind ),
 				Title: $hyoo_crus_reg_str,
-				Props: $hyoo_crus_dict.of( $hyoo_crus_reg.ref( ()=> Property ) ),
+				Props: $hyoo_crus_dict.to( $hyoo_crus_reg.ref( ()=> Property ) ),
 			}) {}
 			
 			class Entity extends $hyoo_crus_dict.with({
@@ -131,9 +131,9 @@ namespace $.$$ {
 			}) {}
 			
 			class Domain extends $hyoo_crus_dict.with({
-				Kinds: $hyoo_crus_dict.of( Kind ),
-				Props: $hyoo_crus_dict.of( Property ),
-				Types: $hyoo_crus_dict.of( Type ),
+				Kinds: $hyoo_crus_dict.to( Kind ),
+				Props: $hyoo_crus_dict.to( Property ),
+				Types: $hyoo_crus_dict.to( Type ),
 			}) { }
 			
 			

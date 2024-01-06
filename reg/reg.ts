@@ -128,9 +128,7 @@ namespace $ {
 			type Val = $mol_type_result< $mol_type_result< Value > >
 	
 			class Ref extends (
-				$hyoo_crus_reg as Omit< typeof $hyoo_crus_reg, 'prototype' > & {
-					new(): Omit< $hyoo_crus_reg, 'value' >
-				}
+				$hyoo_crus_reg as $mol_type_erase< typeof $hyoo_crus_reg, 'value' >
 			) {
 	
 				static Value = Value;
@@ -160,7 +158,7 @@ namespace $ {
 				@ $mol_action
 				local_ensure() {
 					if( this.value_ref() ) return this.remote()!
-					const node = this.land().Node( ( Value as any )() ).Item( this.land().self_make() )
+					const node = this.land().Node( ( Value as any )() ).Item( this.land().self_make( $hyoo_crus_zone_of( this.head() ) ) )
 					return this.remote( node )!
 				}
 	

@@ -7,7 +7,7 @@ namespace $.$$ {
 		
 		override node_title( head: string ) {
 			const id = this.node( head ).head()
-			if( id === 'AAAAAAAB' ) return 'Inflow'
+			if( id === 'AQAAAAAA' ) return 'Core'
 			return id || 'Root'
 		}
 		
@@ -29,7 +29,7 @@ namespace $.$$ {
 		override body() {
 			return [
 				this.Node( '' ),
-				this.Node( 'AAAAAAAB' ),
+				this.Node( 'AQAAAAAA' ),
 			]
 		}
 		
