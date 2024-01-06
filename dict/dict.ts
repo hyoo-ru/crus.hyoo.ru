@@ -6,38 +6,37 @@ namespace $ {
 		
 		@ $mol_mem
 		keys(): readonly $hyoo_crus_vary_type[] {
-			return this.cast( $hyoo_crus_list ).items()
-		}
-		
-		has(
-			key: $hyoo_crus_vary_type,
-			next?: false,
-		) {
-			return this.cast( $hyoo_crus_list ).has( key, next, 'solo' )
+			return this.items()
 		}
 		
 		dive< Node extends typeof $hyoo_crus_node = typeof this['Value'] >(
 			key: $hyoo_crus_vary_type, Node = this.Value as Node
 		) {
-			this.cast( $hyoo_crus_list ).has( key, true, Node.tag )
-			const unit = this.cast( $hyoo_crus_list ).find( key )!
+			this.has( key, true, Node.tag )
+			const unit = this.find( key )!
 			return this.land().Node( Node ).Item( unit.self() )
 		}
 		
-		@ $mol_mem_key
+		// @ $mol_mem_key
 		static of<
-			Node extends typeof $hyoo_crus_node
-		>( Node: Node ) {
+			Value extends typeof $hyoo_crus_node
+		>( Value: Value ) {
 			
 			return class Dict extends $hyoo_crus_dict {
-				Value = Node
+				
+				Value = Value
+				
+				static toJSON() {
+					return '$hyoo_crus_dict.of(' + Value + ')'
+				}
+				
 			}
 			
 		}
 		
 		static with<
 			This extends typeof $hyoo_crus_dict,
-			Schema extends Record< string, typeof $hyoo_crus_node & { new(): { value: any } } >
+			Schema extends Record< string, { tag: keyof typeof $hyoo_crus_gist_tag, new(): { value: any } } >
 		>( this: This, schema: Schema ) {
 			
 			const Entity = class Entity extends ( this as any ) {} as This & {
@@ -54,7 +53,7 @@ namespace $ {
 				const field = Field[0].toLowerCase() + Field.slice(1)
 				
 				Object.defineProperty( Entity.prototype, Field, { get: function() {
-					return ( this as any as $hyoo_crus_dict ).dive( field, schema[ Field ] )
+					return ( this as any as $hyoo_crus_dict ).dive( field, schema[ Field ] as any )
 				} } )
 				
 				Object.defineProperty( Entity.prototype, field, {

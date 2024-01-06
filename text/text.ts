@@ -53,7 +53,7 @@ namespace $ {
 				const land = this.land()
 				
 				for( const unit of this.units() ) {
-					if( unit.tag() === 'term' ) str += String( land.gist_decode( unit ) ?? '' )
+					if( unit.tag() === 'term' ) str += $hyoo_crus_vary_cast_str( land.gist_decode( unit ) )
 					else str += land.Node( $hyoo_crus_text ).Item( unit.self() ).str()
 				}
 				
@@ -83,7 +83,7 @@ namespace $ {
 			
 			while( from < list.length ) {
 				
-				word = String( land.gist_decode( list[ from ] ) ?? '' )
+				word = $hyoo_crus_vary_cast_str( land.gist_decode( list[ from ] ) )
 				
 				if( str_from <= word.length ) {
 					next = word.slice( 0, str_from ) + next
@@ -101,7 +101,7 @@ namespace $ {
 			
 			while( to < list.length ) {
 				
-				word = String( land.gist_decode( list[ to ] ) ?? '' )
+				word = $hyoo_crus_vary_cast_str( land.gist_decode( list[ to ] ) )
 				to ++
 				
 				if( str_to < word.length ) {
@@ -115,7 +115,7 @@ namespace $ {
 			
 			if( from && from === list.length ) {
 				-- from
-				next = String( land.gist_decode( list[ from ] ) ?? '' ) + next
+				next = $hyoo_crus_vary_cast_str( land.gist_decode( list[ from ] ) ) + next
 			}
 			
 			const words = next.match( $hyoo_crowd_tokenizer ) ?? []
@@ -134,7 +134,7 @@ namespace $ {
 				
 				if( unit.tag() === 'term' ) {
 					
-					const len = String( land.gist_decode( unit ) ?? '' ).length
+					const len = $hyoo_crus_vary_cast_str( land.gist_decode( unit ) ).length
 					
 					if( off <= len ) return [ unit.self(), off ]
 					else off -= len
@@ -164,7 +164,7 @@ namespace $ {
 				
 				if( unit.tag() === 'term' ) {
 					
-					offset += String( land.gist_decode( unit ) ?? '' ).length
+					offset += $hyoo_crus_vary_cast_str( land.gist_decode( unit ) ).length
 					
 				} else {
 					

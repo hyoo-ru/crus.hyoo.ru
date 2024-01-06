@@ -158,6 +158,13 @@ namespace $ {
 					return this.remote()!
 				}
 	
+				@ $mol_action
+				local_ensure() {
+					if( this.value_ref().description ) return this.remote()!
+					const node = this.land().Node( ( Value as any )() ).Item( this.land().self_make() )
+					return this.remote( node )!
+				}
+	
 			}
 	
 			return Ref

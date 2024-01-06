@@ -140,6 +140,13 @@ namespace $ {
 					return land.Node( ( Value as any )() ).Item('')
 				}
 				
+				@ $mol_action
+				local_make(): Vals[number] {
+					const node = this.land().Node( ( Value as any )() ).Item( this.land().self_make() )
+					this.splice([ node.ref() ])
+					return node
+				}
+				
 			}
 			
 			return Ref
