@@ -12,6 +12,7 @@ namespace $ {
 		str: String,
 		time: $mol_time_moment,
 		json: Object,
+		jsan: Array,
 		xml: $mol_dom_context.Element,
 		tree: $mol_tree2,
 	}
@@ -25,17 +26,20 @@ namespace $ {
 	
 	export enum $hyoo_crus_vary_tip {
 		
-		bin  = 0b00000, // 0
-		bool = 0b00001, // 1b * 32 * 8
-		int  = 0b00010, // 8B * 4
-		real = 0b00011, // 8B * 4
-		ref  = 0b00100, // 12B + 6B + 6B = 24B
+		bin   = 0b00000, // 0
+		bool  = 0b00001, // 1b * 32 * 8
+		int   = 0b00010, // 8B * 4
+		real  = 0b00011, // 8B * 4
+		ref   = 0b00100, // 12B + 6B + 6B = 24B
 		
-		str  = 0b10000,
-		time = 0b10001, // iso8601
-		json = 0b10010, // array or object only
-		xml  = 0b10011, //
-		tree = 0b10100,
+		str   = 0b10000,
+		time  = 0b10001, // iso8601 moment
+		// dur   = 0b10010, // iso8501 duration
+		// range = 0b10011, // iso8501 interval
+		json  = 0b10100, // json object
+		jsan  = 0b10101, // json array
+		xml   = 0b10110, // dom tree
+		tree  = 0b10111, // tree
 		
 	}
 	
@@ -49,7 +53,8 @@ namespace $ {
 		
 		str: ( vary: string )=> any,
 		time: ( vary: $mol_time_moment )=> any,
-		json: ( vary: {} | any[] )=> any,
+		json: ( vary: {} )=> any,
+		jsan: ( vary: any[] )=> any,
 		xml: ( vary: Element )=> any,
 		tree: ( vary: $mol_tree2 )=> any,
 		
@@ -75,7 +80,7 @@ namespace $ {
 		
 		switch( Reflect.getPrototypeOf( vary ) ) {
 			case Object.prototype: return ways.json( vary )
-			case Array.prototype: return ways.json( vary )
+			case Array.prototype: return ways.jsan( vary as any[] )
 		}
 		
 		return $mol_fail( new TypeError( `Unsupported vary type` ) )
@@ -93,6 +98,7 @@ namespace $ {
 			str: vary => ({ tip: 'str' as const, bin: $mol_charset_encode( vary as string ) }),
 			time: vary => ({ tip: 'time' as const, bin: $mol_charset_encode( String( vary ) ) }),
 			json: vary => ({ tip: 'json' as const, bin: $mol_charset_encode( JSON.stringify( vary ) ) }),
+			jsan: vary => ({ tip: 'jsan' as const, bin: $mol_charset_encode( JSON.stringify( vary ) ) }),
 			xml: vary => ({ tip: 'xml' as const, bin: $mol_charset_encode( $mol_dom_serialize( vary as Node ) ) }),
 			tree: vary => ({ tip: 'tree' as const, bin: $mol_charset_encode( String( vary ) ) }),
 			
@@ -109,6 +115,7 @@ namespace $ {
 			case 'str': return $mol_charset_decode( bin )
 			case 'time': return new $mol_time_moment( $mol_charset_decode( bin ) )
 			case 'json': return JSON.parse( $mol_charset_decode( bin ) )
+			case 'jsan': return JSON.parse( $mol_charset_decode( bin ) )
 			case 'xml': return $mol_dom_parse( $mol_charset_decode( bin ) ).documentElement
 			case 'tree': return $$.$mol_tree2_from_string( $mol_charset_decode( bin ) )
 		}

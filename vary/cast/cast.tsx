@@ -16,7 +16,8 @@ namespace $ {
 			
 			str: vary => Boolean( vary ),
 			time: vary => Boolean( vary.valueOf() ),
-			json: vary => Boolean( vary instanceof Array ? vary.length : Reflect.ownKeys( vary ).length ),
+			json: vary => Boolean( Reflect.ownKeys( vary ).length ),
+			jsan: vary => Boolean( vary.length ),
 			xml: vary => Boolean( vary.attributes.length + vary.childNodes.length ),
 			tree: vary => Boolean( vary.value || vary.kids.length ),
 			
@@ -41,7 +42,8 @@ namespace $ {
 			},
 			
 			time: vary => BigInt( vary.valueOf() ),
-			json: vary => BigInt( vary instanceof Array ? vary.length : Reflect.ownKeys( vary ).length ),
+			json: vary => BigInt( Reflect.ownKeys( vary ).length ),
+			jsan: vary => BigInt( vary.length ),
 			xml: vary => BigInt( vary.attributes.length + vary.childNodes.length ),
 			
 			tree: vary => {
@@ -67,7 +69,8 @@ namespace $ {
 			
 			str: vary => vary ? Number( vary ) : Number.NaN,
 			time: vary => vary.valueOf(),
-			json: vary => vary instanceof Array ? vary.length : Reflect.ownKeys( vary ).length,
+			json: vary => Reflect.ownKeys( vary ).length,
+			jsan: vary => vary.length,
 			xml: vary => Number( vary.attributes.length + vary.childNodes.length ),
 			tree: vary => Number( vary.value || vary.kids.length ),
 			
@@ -86,6 +89,7 @@ namespace $ {
 			str: vary => Symbol.for( vary ),
 			time: vary => Symbol.for( '' ),
 			json: vary => Symbol.for( '' ),
+			jsan: vary => Symbol.for( '' ),
 			xml: vary => Symbol.for( '' ),
 			tree: vary => Symbol.for( vary.type ),
 			
@@ -104,6 +108,7 @@ namespace $ {
 			str: vary => vary,
 			time: vary => String( vary ),
 			json: vary => JSON.stringify( vary ),
+			jsan: vary => JSON.stringify( vary ),
 			xml: vary => $mol_dom_serialize( vary ),
 			tree: vary => String( vary ),
 			
@@ -122,6 +127,7 @@ namespace $ {
 			str: vary => new $mol_time_moment( vary ),
 			time: vary => vary,
 			json: vary => new $mol_time_moment( vary as any ),
+			jsan: vary => new $mol_time_moment( 0 ),
 			xml: vary => new $mol_time_moment( 0 ),
 			tree: vary => new $mol_time_moment( 0 ),
 			
@@ -131,15 +137,35 @@ namespace $ {
 	export function $hyoo_crus_vary_cast_json( vary: $hyoo_crus_vary_type ) {
 		return $hyoo_crus_vary_switch( vary, {
 			
-			bin: vary => vary && [ ... vary ],
+			bin: vary => vary ? { val: [ ... vary ] } : {},
+			bool: vary => vary ? { val: true } : {},
+			int: vary => { int: Number( vary ) },
+			real: vary => { real: vary },
+			ref: vary => { ref: vary.description! },
+			
+			str: vary => JSON.parse( vary ) ?? {},
+			time: vary => ({ ... vary }),
+			json: vary => vary,
+			jsan: vary => vary[0] ?? {},
+			xml: vary => { xml: $mol_dom_serialize( vary ) },
+			tree: vary => { tree: vary.toString() },
+			
+		})
+	}
+
+	export function $hyoo_crus_vary_cast_jsan( vary: $hyoo_crus_vary_type ) {
+		return $hyoo_crus_vary_switch( vary, {
+			
+			bin: vary => vary ? [ ... vary ] : [],
 			bool: vary => [ vary ],
 			int: vary => [ vary.toString() ],
 			real: vary => [ vary ],
 			ref: vary => [ vary.description! ],
 			
-			str: vary => JSON.parse( vary ) as {} | any[],
+			str: vary => [].concat( JSON.parse( vary ) ),
 			time: vary => [ vary.toJSON() ],
-			json: vary => vary,
+			json: vary => [ vary ],
+			jsan: vary => vary,
 			xml: vary => [ $mol_dom_serialize( vary ) ],
 			tree: vary => [ vary.toString() ],
 			
@@ -158,6 +184,7 @@ namespace $ {
 			str: vary => $mol_dom_parse( vary, 'application/xhtml+xml' ).documentElement,
 			time: vary => <body>{ vary }</body>,
 			json: vary => <body>{ JSON.stringify( vary ) }</body>,
+			jsan: vary => <body>{ JSON.stringify( vary ) }</body>,
 			xml: vary => vary,
 			tree: vary => <body>{ vary }</body>,
 			
@@ -176,6 +203,7 @@ namespace $ {
 			str: vary => $$.$mol_tree2_from_string( vary ),
 			time: vary => $mol_tree2.struct( vary.toString() ),
 			json: vary => $$.$mol_tree2_from_json( vary ),
+			jsan: vary => $$.$mol_tree2_from_json( vary ),
 			xml: vary => $$.$mol_tree2_xml_from_dom( vary ),
 			tree: vary => vary,
 			
@@ -193,6 +221,7 @@ namespace $ {
 		str: $hyoo_crus_vary_cast_str,
 		time: $hyoo_crus_vary_cast_time,
 		json: $hyoo_crus_vary_cast_json,
+		jsan: $hyoo_crus_vary_cast_jsan,
 		xml: $hyoo_crus_vary_cast_xml,
 		tree: $hyoo_crus_vary_cast_tree,
 		
