@@ -912,26 +912,6 @@ $mol_icon_lock $mol_icon path \M12,17C13.1,17 14,16.1 14,15C14,13.89 13.1,13 12,
 
 $mol_check_icon $mol_check
 
-$mol_icon_upload $mol_icon path \M9,16V10H5L12,3L19,10H15V16H9M5,20V18H19V20H5Z
-
-$mol_button_open $mol_button_minor
-	sub /
-		<= Icon $mol_icon_upload
-		<= Native $mol_button_open_native
-			files?next <=> files?next /
-			accept <= accept \
-			multiple <= multiple true
-
-$mol_button_open_native $mol_view
-	dom_name \input
-	files?next /
-	attr *
-		type \file
-		accept <= accept \
-		multiple <= multiple true
-	event *
-		change?next <=> picked?next null
-
 $mol_icon_download $mol_icon path \M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z
 
 $mol_button_download $mol_button_minor
@@ -961,15 +941,32 @@ $hyoo_crus_land_page $mol_page
 			checked? <=> encrypted? false
 			enabled <= encryptable true
 		<= Dumping $mol_view sub /
-			<= Update $mol_button_open
-				hint \Upload dump
-				files? <=> update? /
 			<= Dump $mol_button_download
 				hint \Download dump
 				blob <= dump $mol_blob
 				file_name <= dump_name \AAAAAAAAAAAAAAAAAAAAAAAA.land
 
 $mol_icon_plus $mol_icon path \M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z
+
+$mol_icon_upload $mol_icon path \M9,16V10H5L12,3L19,10H15V16H9M5,20V18H19V20H5Z
+
+$mol_button_open $mol_button_minor
+	sub /
+		<= Icon $mol_icon_upload
+		<= Native $mol_button_open_native
+			files?next <=> files?next /
+			accept <= accept \
+			multiple <= multiple true
+
+$mol_button_open_native $mol_view
+	dom_name \input
+	files?next /
+	attr *
+		type \file
+		accept <= accept \
+		multiple <= multiple true
+	event *
+		change?next <=> picked?next null
 
 $mol_icon_delete $mol_icon path \M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19C6,20.1 6.9,21 8,21H16C17.1,21 18,20.1 18,19V7H6V19Z
 
@@ -988,6 +985,9 @@ $hyoo_crus_realm_book $mol_book2_catalog
 			hint \Grab new Land
 			sub / <= Land_new_icon $mol_icon_plus
 			click? <=> land_new? null
+		<= Update $mol_button_open
+			hint \Upload dump
+			files? <=> update? /
 		<= Wipe $mol_button_minor
 			hint \Wipe database
 			click? <=> wipe? null

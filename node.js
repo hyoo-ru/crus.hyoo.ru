@@ -7473,6 +7473,7 @@ var $;
 "use strict";
 var $;
 (function ($) {
+    $.$hyoo_crus_part_crus = $mol_charset_encode('CRUS');
     let $hyoo_crus_part;
     (function ($hyoo_crus_part) {
         $hyoo_crus_part[$hyoo_crus_part["land"] = 67] = "land";
@@ -7481,7 +7482,7 @@ var $;
         $hyoo_crus_part[$hyoo_crus_part["gift"] = 247] = "gift";
         $hyoo_crus_part[$hyoo_crus_part["gist"] = 0] = "gist";
         $hyoo_crus_part[$hyoo_crus_part["hash"] = 253] = "hash";
-        $hyoo_crus_part[$hyoo_crus_part["rock"] = 237] = "rock";
+        $hyoo_crus_part[$hyoo_crus_part["rock"] = 245] = "rock";
         $hyoo_crus_part[$hyoo_crus_part["buck"] = 1] = "buck";
     })($hyoo_crus_part = $.$hyoo_crus_part || ($.$hyoo_crus_part = {}));
 })($ || ($ = {}));
@@ -10408,7 +10409,7 @@ var $;
                         const peer = next.peer();
                         const exists = this.passes.get(peer);
                         if (exists)
-                            return 'Already joined';
+                            return '';
                         this.passes.set(peer, next);
                         this.face.see_peer(next.peer(), 0);
                     },
@@ -10416,7 +10417,7 @@ var $;
                         const dest = next.dest();
                         const prev = this.gifts.get(dest);
                         if (prev && $hyoo_crus_gift.compare(prev, next) <= 0)
-                            return 'Unit too old';
+                            return '';
                         this.gifts.set(dest, next);
                         this.face.see_peer(dest.description.slice(0, 8), next.time());
                         if ((prev?.rang() ?? $hyoo_crus_rang.get) > next.rang())
@@ -10430,7 +10431,7 @@ var $;
                             this.gists.set(head, units = new $mol_wire_dict);
                         const prev = units.get(self);
                         if (prev && $hyoo_crus_gist.compare(prev, next) <= 0)
-                            return 'Unit too old';
+                            return '';
                         units.set(self, next);
                         this.self_all.add(self);
                         this.face.see_peer(next.peer(), next.time());
@@ -10812,7 +10813,6 @@ var $;
         dump() {
             const units = [];
             const rocks = [];
-            let rocks_size = 0;
             for (const pass of this.passes.values())
                 units.push(pass);
             for (const gift of this.gifts.values())
@@ -10825,55 +10825,13 @@ var $;
                     const rock = this.$.$hyoo_crus_mine.rock(gist.hash());
                     if (!rock)
                         continue;
-                    rocks.push(gist.hash(), rock);
-                    rocks_size += rock.byteLength + 20 + 4;
+                    rocks.push([gist.hash(), rock]);
                 }
             }
-            const dump = new Uint8Array(24 + units.length * $hyoo_crus_unit.size + rocks_size);
-            const buf = new $mol_buffer(dump.buffer);
-            buf.uint8(0, 2);
-            buf.uint32(2, units.length);
-            dump.set($mol_base64_ae_decode(this.numb() || 'AAAAAAAA'), 6);
-            dump.set($mol_base64_ae_decode(this.lord().ref().description), 12);
-            let offset = 24;
-            for (let unit of units) {
-                dump.set(unit.asArray(), offset);
-                offset += unit.byteLength;
-            }
-            for (let i = 0; i < rocks.length; i += 2) {
-                const hash = rocks[0];
-                const rock = rocks[1];
-                dump.set(hash, offset);
-                buf.uint32(offset + 20, rock.byteLength);
-                dump.set(rock, offset + 24);
-                offset += 24 + rock.byteLength;
-            }
-            return dump;
-        }
-        apply_dump(dump) {
-            const buf = new $mol_buffer(dump.buffer);
-            const type = buf.uint8(0);
-            if (type !== 2)
-                $mol_fail(new Error('Wrong type'));
-            const units_count = buf.uint32(2);
-            const units = [];
-            let offset = 24;
-            for (let i = 0; i < units_count; ++i) {
-                const bin = dump.slice(offset, offset + $hyoo_crus_unit.size).buffer;
-                const unit = new $hyoo_crus_unit(bin);
-                units.push(unit.narrow());
-                offset += $hyoo_crus_unit.size;
-            }
-            this.apply_unit(units);
-            while (offset < dump.byteLength) {
-                const hash = dump.slice(offset, offset += 20);
-                const size = buf.uint32(offset);
-                const rock = dump.slice(offset += 4, offset += size);
-                if (!$mol_compare_deep(hash, this.$.$hyoo_crus_mine.hash(rock))) {
-                    $mol_fail(new Error('Wrong hash'));
-                }
-                this.$.$hyoo_crus_mine.rock(hash, rock);
-            }
+            return {
+                land: this.ref(),
+                units, rocks,
+            };
         }
         ;
         [$mol_dev_format_head]() {
@@ -10964,9 +10922,6 @@ var $;
     __decorate([
         $mol_action
     ], $hyoo_crus_land.prototype, "dump", null);
-    __decorate([
-        $mol_action
-    ], $hyoo_crus_land.prototype, "apply_dump", null);
     $.$hyoo_crus_land = $hyoo_crus_land;
 })($ || ($ = {}));
 //hyoo/crus/land/land.ts
@@ -11083,6 +11038,138 @@ var $;
 "use strict";
 var $;
 (function ($) {
+    class $hyoo_crus_pack extends $mol_buffer {
+        toBlob() {
+            return new Blob([this], { type: 'application/x-crus-pack' });
+        }
+        parts() {
+            const faces = {};
+            const units = {};
+            const rocks = [];
+            const buff = this.asArray();
+            let land = null;
+            for (let offset = 0; offset < this.byteLength;) {
+                const kind = this.uint8(offset);
+                if (kind % 2) {
+                    switch (kind) {
+                        case $hyoo_crus_part.land: {
+                            if (!$mol_compare_deep($hyoo_crus_part_crus, buff.slice(offset, offset += 4))) {
+                                $mol_fail(new Error('Wrong 4CC code'));
+                            }
+                            land = Symbol.for($mol_base64_ae_encode(buff.slice(offset, offset += 18)));
+                            offset += 2;
+                            continue;
+                        }
+                        case $hyoo_crus_part.face: {
+                            if (!land)
+                                $mol_fail(new Error('Land is undefined'));
+                            const peer = $mol_base64_ae_encode(buff.slice(offset += 4, offset += 6));
+                            const time = this.uint48(offset += 6);
+                            faces[land] ||= new $hyoo_crus_face;
+                            faces[land].see_peer(peer, time);
+                            continue;
+                        }
+                        case $hyoo_crus_part.pass: {
+                            if (!land)
+                                $mol_fail(new Error('Land is undefined'));
+                            const unit = new $hyoo_crus_pass(buff.slice(offset, offset += $hyoo_crus_unit.size).buffer);
+                            units[land] ||= [];
+                            units[land].push(unit);
+                            continue;
+                        }
+                        case $hyoo_crus_part.gift: {
+                            if (!land)
+                                $mol_fail(new Error('Land is undefined'));
+                            const unit = new $hyoo_crus_gift(buff.slice(offset, offset += $hyoo_crus_unit.size).buffer);
+                            units[land] ||= [];
+                            units[land].push(unit);
+                            continue;
+                        }
+                        case $hyoo_crus_part.hash: {
+                            const hash = buff.slice(offset += 4, offset += 20);
+                            rocks.push([hash, null]);
+                            continue;
+                        }
+                        case $hyoo_crus_part.rock: {
+                            const size = this.uint32(offset) >> 8;
+                            const hash = buff.slice(offset += 4, offset += 20);
+                            const rock = buff.slice(offset, offset += size);
+                            rocks.push([hash, rock]);
+                            continue;
+                        }
+                        case $hyoo_crus_part.buck: continue;
+                        default: $$.$mol_log3_warn({
+                            place: '$hyoo_crus_pack..parts()',
+                            message: `Unknown CRUS Pack Part (${kind.toString(2)})`,
+                            hint: `Try to update app`
+                        });
+                    }
+                }
+                else {
+                    if (!land)
+                        $mol_fail(new Error('Land is undefined'));
+                    units[land] ||= [];
+                    units[land].push(new $hyoo_crus_gist(buff.slice(offset, offset += $hyoo_crus_unit.size).buffer));
+                    continue;
+                }
+            }
+            return { faces, units, rocks };
+        }
+        static make(faces, units, rocks) {
+            let size = 0;
+            for (const land of Reflect.ownKeys(faces)) {
+                size += 24 + faces[land].size * 16;
+            }
+            for (const land of Reflect.ownKeys(units)) {
+                size += 24 + units[land].length * $hyoo_crus_unit.size;
+            }
+            for (const [hash, rock] of rocks) {
+                size += 24 + (rock?.length ?? 0);
+            }
+            if (size === 0)
+                return null;
+            const buff = new Uint8Array(size);
+            const pack = new $hyoo_crus_pack(buff.buffer);
+            let offset = 0;
+            const open_land = (land) => {
+                buff.set($hyoo_crus_part_crus, offset);
+                buff.set($mol_base64_ae_decode(land.description.padEnd(24, 'A')), offset + 4);
+                offset += 24;
+            };
+            for (const land of Reflect.ownKeys(faces)) {
+                open_land(land);
+                for (const [peer, time] of faces[land]) {
+                    pack.uint32(offset, $hyoo_crus_part.face);
+                    buff.set($mol_base64_ae_decode(peer), offset + 4);
+                    pack.uint48(offset + 10, time);
+                    offset += 16;
+                }
+            }
+            for (const land of Reflect.ownKeys(units)) {
+                open_land(land);
+                for (const unit of units[land]) {
+                    buff.set(unit.asArray(), offset);
+                    offset += unit.byteLength;
+                }
+            }
+            for (const [hash, rock] of rocks) {
+                const len = rock?.length ?? 0;
+                pack.uint32(offset, len ? (len << 8) + $hyoo_crus_part.hash : $hyoo_crus_part.rock);
+                buff.set(hash, offset + 4);
+                if (rock)
+                    buff.set(rock, offset + 24);
+                offset += 24 + len;
+            }
+            return pack;
+        }
+    }
+    $.$hyoo_crus_pack = $hyoo_crus_pack;
+})($ || ($ = {}));
+//hyoo/crus/pack/pack.ts
+;
+"use strict";
+var $;
+(function ($) {
     class $hyoo_crus_realm extends $mol_object {
         lords = new $mol_wire_dict();
         home() {
@@ -11107,10 +11194,30 @@ var $;
             const land = this.Land(Symbol.for(ref.description.slice(0, 24)));
             return land.Node(Node).Item(ref.description.slice(24, 32));
         }
+        apply_pack(pack) {
+            const { faces, units, rocks } = pack.parts();
+            for (const land of Reflect.ownKeys(units)) {
+                const errors = this.Land(land).apply_unit(units[land]).filter(Boolean);
+                for (const error of errors)
+                    this.$.$mol_log3_warn({
+                        place: `${this}.apply_pack()`,
+                        message: error,
+                        hint: 'Send it to developer',
+                    });
+            }
+            for (const [hash, rock] of rocks) {
+                if (!rock)
+                    continue;
+                this.$.$hyoo_crus_mine.save(rock);
+            }
+        }
     }
     __decorate([
         $mol_mem_key
     ], $hyoo_crus_realm.prototype, "Lord", null);
+    __decorate([
+        $mol_action
+    ], $hyoo_crus_realm.prototype, "apply_pack", null);
     $.$hyoo_crus_realm = $hyoo_crus_realm;
 })($ || ($ = {}));
 //hyoo/crus/realm/realm.ts
@@ -15793,6 +15900,270 @@ var $;
 "use strict";
 var $;
 (function ($) {
+    class $mol_icon_download extends $mol_icon {
+        path() {
+            return "M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z";
+        }
+    }
+    $.$mol_icon_download = $mol_icon_download;
+})($ || ($ = {}));
+//mol/icon/download/-view.tree/download.view.tree.ts
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_button_download extends $mol_button_minor {
+        blob() {
+            return null;
+        }
+        uri() {
+            return "";
+        }
+        file_name() {
+            return "blob.bin";
+        }
+        sub() {
+            return [
+                this.Icon(),
+                this.title()
+            ];
+        }
+        Icon() {
+            const obj = new this.$.$mol_icon_download();
+            return obj;
+        }
+        title() {
+            return "";
+        }
+    }
+    __decorate([
+        $mol_mem
+    ], $mol_button_download.prototype, "Icon", null);
+    $.$mol_button_download = $mol_button_download;
+})($ || ($ = {}));
+//mol/button/download/-view.tree/download.view.tree.ts
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $mol_button_download extends $.$mol_button_download {
+            uri() {
+                return URL.createObjectURL(this.blob());
+            }
+            click() {
+                const a = $mol_jsx("a", { href: this.uri(), download: this.file_name() });
+                a.click();
+            }
+        }
+        __decorate([
+            $mol_mem
+        ], $mol_button_download.prototype, "uri", null);
+        $$.$mol_button_download = $mol_button_download;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+//mol/button/download/download.view.tsx
+;
+"use strict";
+var $;
+(function ($) {
+    class $hyoo_crus_land_page extends $mol_page {
+        land() {
+            const obj = new this.$.$hyoo_crus_land();
+            return obj;
+        }
+        tools() {
+            return [];
+        }
+        body() {
+            return [
+                this.Node("AAAAAAAA")
+            ];
+        }
+        foot() {
+            return [
+                this.Encrypted(),
+                this.Dumping()
+            ];
+        }
+        node_title(id) {
+            return "";
+        }
+        node(id) {
+            const obj = new this.$.$hyoo_crus_node();
+            return obj;
+        }
+        Node(id) {
+            const obj = new this.$.$hyoo_crus_node_dump();
+            obj.title = () => this.node_title(id);
+            obj.node = () => this.node(id);
+            return obj;
+        }
+        Encrypted_icon() {
+            const obj = new this.$.$mol_icon_lock();
+            return obj;
+        }
+        encrypted(next) {
+            if (next !== undefined)
+                return next;
+            return false;
+        }
+        encryptable() {
+            return true;
+        }
+        Encrypted() {
+            const obj = new this.$.$mol_check_icon();
+            obj.hint = () => "Encrypt forever";
+            obj.Icon = () => this.Encrypted_icon();
+            obj.checked = (next) => this.encrypted(next);
+            obj.enabled = () => this.encryptable();
+            return obj;
+        }
+        dump() {
+            const obj = new this.$.$mol_blob();
+            return obj;
+        }
+        dump_name() {
+            return "AAAAAAAAAAAAAAAAAAAAAAAA.land";
+        }
+        Dump() {
+            const obj = new this.$.$mol_button_download();
+            obj.hint = () => "Download dump";
+            obj.blob = () => this.dump();
+            obj.file_name = () => this.dump_name();
+            return obj;
+        }
+        Dumping() {
+            const obj = new this.$.$mol_view();
+            obj.sub = () => [
+                this.Dump()
+            ];
+            return obj;
+        }
+    }
+    __decorate([
+        $mol_mem
+    ], $hyoo_crus_land_page.prototype, "land", null);
+    __decorate([
+        $mol_mem_key
+    ], $hyoo_crus_land_page.prototype, "node", null);
+    __decorate([
+        $mol_mem_key
+    ], $hyoo_crus_land_page.prototype, "Node", null);
+    __decorate([
+        $mol_mem
+    ], $hyoo_crus_land_page.prototype, "Encrypted_icon", null);
+    __decorate([
+        $mol_mem
+    ], $hyoo_crus_land_page.prototype, "encrypted", null);
+    __decorate([
+        $mol_mem
+    ], $hyoo_crus_land_page.prototype, "Encrypted", null);
+    __decorate([
+        $mol_mem
+    ], $hyoo_crus_land_page.prototype, "dump", null);
+    __decorate([
+        $mol_mem
+    ], $hyoo_crus_land_page.prototype, "Dump", null);
+    __decorate([
+        $mol_mem
+    ], $hyoo_crus_land_page.prototype, "Dumping", null);
+    $.$hyoo_crus_land_page = $hyoo_crus_land_page;
+})($ || ($ = {}));
+//hyoo/crus/land/page/-view.tree/page.view.tree.ts
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $hyoo_crus_land_page extends $.$hyoo_crus_land_page {
+            title() {
+                return '🌍 ' + this.land().ref().description;
+            }
+            node_title(head) {
+                const id = this.node(head).head();
+                if (id === 'AQAAAAAA')
+                    return 'Core';
+                return id || 'Root';
+            }
+            node(head) {
+                return this.land().Node($hyoo_crus_node).Item(head);
+            }
+            encryptable() {
+                return this.land().encrypted() || this.land().encryptable();
+            }
+            encrypted(next) {
+                return this.land().encrypted(next);
+            }
+            body() {
+                return [
+                    this.Node(''),
+                    this.Node('AQAAAAAA'),
+                ];
+            }
+            dump() {
+                const dump = this.land().dump();
+                const pack = $hyoo_crus_pack.make({}, { [dump.land]: dump.units }, dump.rocks);
+                return pack.toBlob();
+            }
+            dump_name() {
+                return `${this.land().ref().description}.crus`;
+            }
+        }
+        __decorate([
+            $mol_mem
+        ], $hyoo_crus_land_page.prototype, "encryptable", null);
+        __decorate([
+            $mol_mem
+        ], $hyoo_crus_land_page.prototype, "encrypted", null);
+        __decorate([
+            $mol_mem
+        ], $hyoo_crus_land_page.prototype, "body", null);
+        __decorate([
+            $mol_action
+        ], $hyoo_crus_land_page.prototype, "dump", null);
+        $$.$hyoo_crus_land_page = $hyoo_crus_land_page;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+//hyoo/crus/land/page/page.view.ts
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        $mol_style_define($hyoo_crus_land_page, {
+            flex: {
+                basis: `60rem`,
+                grow: 1,
+            },
+            Title: {
+                font: {
+                    family: 'monospace',
+                }
+            },
+        });
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+//hyoo/crus/land/page/page.view.css.ts
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_icon_plus extends $mol_icon {
+        path() {
+            return "M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z";
+        }
+    }
+    $.$mol_icon_plus = $mol_icon_plus;
+})($ || ($ = {}));
+//mol/icon/plus/-view.tree/plus.view.tree.ts
+;
+"use strict";
+var $;
+(function ($) {
     class $mol_icon_upload extends $mol_icon {
         path() {
             return "M9,16V10H5L12,3L19,10H15V16H9M5,20V18H19V20H5Z";
@@ -15919,296 +16290,6 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    class $mol_icon_download extends $mol_icon {
-        path() {
-            return "M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z";
-        }
-    }
-    $.$mol_icon_download = $mol_icon_download;
-})($ || ($ = {}));
-//mol/icon/download/-view.tree/download.view.tree.ts
-;
-"use strict";
-var $;
-(function ($) {
-    class $mol_button_download extends $mol_button_minor {
-        blob() {
-            return null;
-        }
-        uri() {
-            return "";
-        }
-        file_name() {
-            return "blob.bin";
-        }
-        sub() {
-            return [
-                this.Icon(),
-                this.title()
-            ];
-        }
-        Icon() {
-            const obj = new this.$.$mol_icon_download();
-            return obj;
-        }
-        title() {
-            return "";
-        }
-    }
-    __decorate([
-        $mol_mem
-    ], $mol_button_download.prototype, "Icon", null);
-    $.$mol_button_download = $mol_button_download;
-})($ || ($ = {}));
-//mol/button/download/-view.tree/download.view.tree.ts
-;
-"use strict";
-var $;
-(function ($) {
-    var $$;
-    (function ($$) {
-        class $mol_button_download extends $.$mol_button_download {
-            uri() {
-                return URL.createObjectURL(this.blob());
-            }
-            click() {
-                const a = $mol_jsx("a", { href: this.uri(), download: this.file_name() });
-                a.click();
-            }
-        }
-        __decorate([
-            $mol_mem
-        ], $mol_button_download.prototype, "uri", null);
-        $$.$mol_button_download = $mol_button_download;
-    })($$ = $.$$ || ($.$$ = {}));
-})($ || ($ = {}));
-//mol/button/download/download.view.tsx
-;
-"use strict";
-var $;
-(function ($) {
-    class $hyoo_crus_land_page extends $mol_page {
-        land() {
-            const obj = new this.$.$hyoo_crus_land();
-            return obj;
-        }
-        tools() {
-            return [];
-        }
-        body() {
-            return [
-                this.Node("AAAAAAAA")
-            ];
-        }
-        foot() {
-            return [
-                this.Encrypted(),
-                this.Dumping()
-            ];
-        }
-        node_title(id) {
-            return "";
-        }
-        node(id) {
-            const obj = new this.$.$hyoo_crus_node();
-            return obj;
-        }
-        Node(id) {
-            const obj = new this.$.$hyoo_crus_node_dump();
-            obj.title = () => this.node_title(id);
-            obj.node = () => this.node(id);
-            return obj;
-        }
-        Encrypted_icon() {
-            const obj = new this.$.$mol_icon_lock();
-            return obj;
-        }
-        encrypted(next) {
-            if (next !== undefined)
-                return next;
-            return false;
-        }
-        encryptable() {
-            return true;
-        }
-        Encrypted() {
-            const obj = new this.$.$mol_check_icon();
-            obj.hint = () => "Encrypt forever";
-            obj.Icon = () => this.Encrypted_icon();
-            obj.checked = (next) => this.encrypted(next);
-            obj.enabled = () => this.encryptable();
-            return obj;
-        }
-        update(next) {
-            if (next !== undefined)
-                return next;
-            return [];
-        }
-        Update() {
-            const obj = new this.$.$mol_button_open();
-            obj.hint = () => "Upload dump";
-            obj.files = (next) => this.update(next);
-            return obj;
-        }
-        dump() {
-            const obj = new this.$.$mol_blob();
-            return obj;
-        }
-        dump_name() {
-            return "AAAAAAAAAAAAAAAAAAAAAAAA.land";
-        }
-        Dump() {
-            const obj = new this.$.$mol_button_download();
-            obj.hint = () => "Download dump";
-            obj.blob = () => this.dump();
-            obj.file_name = () => this.dump_name();
-            return obj;
-        }
-        Dumping() {
-            const obj = new this.$.$mol_view();
-            obj.sub = () => [
-                this.Update(),
-                this.Dump()
-            ];
-            return obj;
-        }
-    }
-    __decorate([
-        $mol_mem
-    ], $hyoo_crus_land_page.prototype, "land", null);
-    __decorate([
-        $mol_mem_key
-    ], $hyoo_crus_land_page.prototype, "node", null);
-    __decorate([
-        $mol_mem_key
-    ], $hyoo_crus_land_page.prototype, "Node", null);
-    __decorate([
-        $mol_mem
-    ], $hyoo_crus_land_page.prototype, "Encrypted_icon", null);
-    __decorate([
-        $mol_mem
-    ], $hyoo_crus_land_page.prototype, "encrypted", null);
-    __decorate([
-        $mol_mem
-    ], $hyoo_crus_land_page.prototype, "Encrypted", null);
-    __decorate([
-        $mol_mem
-    ], $hyoo_crus_land_page.prototype, "update", null);
-    __decorate([
-        $mol_mem
-    ], $hyoo_crus_land_page.prototype, "Update", null);
-    __decorate([
-        $mol_mem
-    ], $hyoo_crus_land_page.prototype, "dump", null);
-    __decorate([
-        $mol_mem
-    ], $hyoo_crus_land_page.prototype, "Dump", null);
-    __decorate([
-        $mol_mem
-    ], $hyoo_crus_land_page.prototype, "Dumping", null);
-    $.$hyoo_crus_land_page = $hyoo_crus_land_page;
-})($ || ($ = {}));
-//hyoo/crus/land/page/-view.tree/page.view.tree.ts
-;
-"use strict";
-var $;
-(function ($) {
-    var $$;
-    (function ($$) {
-        class $hyoo_crus_land_page extends $.$hyoo_crus_land_page {
-            title() {
-                return '🌍 ' + this.land().ref().description;
-            }
-            node_title(head) {
-                const id = this.node(head).head();
-                if (id === 'AQAAAAAA')
-                    return 'Core';
-                return id || 'Root';
-            }
-            node(head) {
-                return this.land().Node($hyoo_crus_node).Item(head);
-            }
-            encryptable() {
-                return this.land().encrypted() || this.land().encryptable();
-            }
-            encrypted(next) {
-                return this.land().encrypted(next);
-            }
-            body() {
-                return [
-                    this.Node(''),
-                    this.Node('AQAAAAAA'),
-                ];
-            }
-            dump() {
-                return new Blob([this.land().dump()], { type: 'application/x-crus-land' });
-            }
-            dump_name() {
-                return `${this.land().ref().description}.land`;
-            }
-            update(files) {
-                for (const file of files) {
-                    const dump = $mol_wire_sync(file).arrayBuffer();
-                    this.land().apply_dump(new Uint8Array(dump));
-                }
-                return [];
-            }
-        }
-        __decorate([
-            $mol_mem
-        ], $hyoo_crus_land_page.prototype, "encryptable", null);
-        __decorate([
-            $mol_mem
-        ], $hyoo_crus_land_page.prototype, "encrypted", null);
-        __decorate([
-            $mol_mem
-        ], $hyoo_crus_land_page.prototype, "body", null);
-        __decorate([
-            $mol_action
-        ], $hyoo_crus_land_page.prototype, "dump", null);
-        __decorate([
-            $mol_action
-        ], $hyoo_crus_land_page.prototype, "update", null);
-        $$.$hyoo_crus_land_page = $hyoo_crus_land_page;
-    })($$ = $.$$ || ($.$$ = {}));
-})($ || ($ = {}));
-//hyoo/crus/land/page/page.view.ts
-;
-"use strict";
-var $;
-(function ($) {
-    var $$;
-    (function ($$) {
-        $mol_style_define($hyoo_crus_land_page, {
-            flex: {
-                basis: `60rem`,
-                grow: 1,
-            },
-            Title: {
-                font: {
-                    family: 'monospace',
-                }
-            },
-        });
-    })($$ = $.$$ || ($.$$ = {}));
-})($ || ($ = {}));
-//hyoo/crus/land/page/page.view.css.ts
-;
-"use strict";
-var $;
-(function ($) {
-    class $mol_icon_plus extends $mol_icon {
-        path() {
-            return "M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z";
-        }
-    }
-    $.$mol_icon_plus = $mol_icon_plus;
-})($ || ($ = {}));
-//mol/icon/plus/-view.tree/plus.view.tree.ts
-;
-"use strict";
-var $;
-(function ($) {
     class $mol_icon_delete extends $mol_icon {
         path() {
             return "M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19C6,20.1 6.9,21 8,21H16C17.1,21 18,20.1 18,19V7H6V19Z";
@@ -16250,6 +16331,7 @@ var $;
         menu_foot() {
             return [
                 this.Land_new(),
+                this.Update(),
                 this.Wipe()
             ];
         }
@@ -16281,6 +16363,17 @@ var $;
                 this.Land_new_icon()
             ];
             obj.click = (next) => this.land_new(next);
+            return obj;
+        }
+        update(next) {
+            if (next !== undefined)
+                return next;
+            return [];
+        }
+        Update() {
+            const obj = new this.$.$mol_button_open();
+            obj.hint = () => "Upload dump";
+            obj.files = (next) => this.update(next);
             return obj;
         }
         wipe(next) {
@@ -16322,6 +16415,12 @@ var $;
     ], $hyoo_crus_realm_book.prototype, "Land_new", null);
     __decorate([
         $mol_mem
+    ], $hyoo_crus_realm_book.prototype, "update", null);
+    __decorate([
+        $mol_mem
+    ], $hyoo_crus_realm_book.prototype, "Update", null);
+    __decorate([
+        $mol_mem
     ], $hyoo_crus_realm_book.prototype, "wipe", null);
     __decorate([
         $mol_mem
@@ -16353,6 +16452,15 @@ var $;
             land_new() {
                 this.spread(this.realm().home().Land_new(0).ref().description);
             }
+            update(files) {
+                const realm = this.realm();
+                for (const file of files) {
+                    const dump = $mol_wire_sync(file).arrayBuffer();
+                    const pack = new $hyoo_crus_pack(dump);
+                    realm.apply_pack(pack);
+                }
+                return [];
+            }
             async wipe() {
                 const yard = await this.$.$mol_db('$hyoo_crus_yard');
                 const mine = await this.$.$mol_db('$hyoo_crus_mine');
@@ -16364,6 +16472,9 @@ var $;
         __decorate([
             $mol_mem
         ], $hyoo_crus_realm_book.prototype, "spread_ids", null);
+        __decorate([
+            $mol_action
+        ], $hyoo_crus_realm_book.prototype, "update", null);
         $$.$hyoo_crus_realm_book = $hyoo_crus_realm_book;
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));

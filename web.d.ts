@@ -2099,6 +2099,7 @@ declare namespace $ {
 }
 
 declare namespace $ {
+    const $hyoo_crus_part_crus: Uint8Array;
     enum $hyoo_crus_part {
         land = 67,
         face = 239,
@@ -2106,7 +2107,7 @@ declare namespace $ {
         gift = 247,
         gist = 0,
         hash = 253,
-        rock = 237,
+        rock = 245,
         buck = 1
     }
 }
@@ -5196,8 +5197,11 @@ declare namespace $ {
         encryptable(): boolean;
         encrypted(next?: boolean): boolean;
         secret(): $mol_crypto_secret | null;
-        dump(): Uint8Array;
-        apply_dump(dump: Uint8Array): void;
+        dump(): {
+            land: symbol;
+            units: $hyoo_crus_unit[];
+            rocks: [Uint8Array, Uint8Array][];
+        };
     }
 }
 
@@ -5258,12 +5262,25 @@ declare namespace $ {
 }
 
 declare namespace $ {
+    class $hyoo_crus_pack extends $mol_buffer {
+        toBlob(): Blob;
+        parts(): {
+            faces: Record<symbol, $hyoo_crus_face>;
+            units: Record<symbol, $hyoo_crus_unit[]>;
+            rocks: [Uint8Array, Uint8Array | null][];
+        };
+        static make(faces: Record<symbol, $hyoo_crus_face>, units: Record<symbol, readonly $hyoo_crus_unit[]>, rocks: readonly [Uint8Array, null | Uint8Array][]): $hyoo_crus_pack;
+    }
+}
+
+declare namespace $ {
     class $hyoo_crus_realm extends $mol_object {
         lords: $mol_wire_dict<symbol, $hyoo_crus_lord>;
         home(): $hyoo_crus_lord;
         Lord(numb: symbol): $hyoo_crus_lord;
         Land(ref: symbol): $hyoo_crus_land;
         Node<Node extends typeof $hyoo_crus_node>(ref: symbol, Node: Node): InstanceType<Node>;
+        apply_pack(pack: $hyoo_crus_pack): void;
     }
 }
 
@@ -6379,42 +6396,6 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    class $mol_icon_upload extends $mol_icon {
-        path(): string;
-    }
-}
-
-declare namespace $ {
-    class $mol_button_open extends $mol_button_minor {
-        sub(): readonly any[];
-        Icon(): $mol_icon_upload;
-        files(next?: any): readonly any[];
-        accept(): string;
-        multiple(): boolean;
-        Native(): $$.$mol_button_open_native;
-    }
-    class $mol_button_open_native extends $mol_view {
-        dom_name(): string;
-        files(next?: any): readonly any[];
-        attr(): Record<string, any>;
-        event(): Record<string, any>;
-        accept(): string;
-        multiple(): boolean;
-        picked(next?: any): any;
-    }
-}
-
-declare namespace $.$$ {
-    class $mol_button_open_native extends $.$mol_button_open_native {
-        dom_node(): HTMLInputElement;
-        picked(): void;
-    }
-}
-
-declare namespace $ {
-}
-
-declare namespace $ {
     class $mol_icon_download extends $mol_icon {
         path(): string;
     }
@@ -6451,8 +6432,6 @@ declare namespace $ {
         encrypted(next?: any): boolean;
         encryptable(): boolean;
         Encrypted(): $mol_check_icon;
-        update(next?: any): readonly any[];
-        Update(): $mol_button_open;
         dump(): Blob;
         dump_name(): string;
         Dump(): $$.$mol_button_download;
@@ -6470,7 +6449,6 @@ declare namespace $.$$ {
         body(): $hyoo_crus_node_dump[];
         dump(): Blob;
         dump_name(): string;
-        update(files: File[]): never[];
     }
 }
 
@@ -6481,6 +6459,42 @@ declare namespace $ {
     class $mol_icon_plus extends $mol_icon {
         path(): string;
     }
+}
+
+declare namespace $ {
+    class $mol_icon_upload extends $mol_icon {
+        path(): string;
+    }
+}
+
+declare namespace $ {
+    class $mol_button_open extends $mol_button_minor {
+        sub(): readonly any[];
+        Icon(): $mol_icon_upload;
+        files(next?: any): readonly any[];
+        accept(): string;
+        multiple(): boolean;
+        Native(): $$.$mol_button_open_native;
+    }
+    class $mol_button_open_native extends $mol_view {
+        dom_name(): string;
+        files(next?: any): readonly any[];
+        attr(): Record<string, any>;
+        event(): Record<string, any>;
+        accept(): string;
+        multiple(): boolean;
+        picked(next?: any): any;
+    }
+}
+
+declare namespace $.$$ {
+    class $mol_button_open_native extends $.$mol_button_open_native {
+        dom_node(): HTMLInputElement;
+        picked(): void;
+    }
+}
+
+declare namespace $ {
 }
 
 declare namespace $ {
@@ -6507,6 +6521,8 @@ declare namespace $ {
         Land_new_icon(): $mol_icon_plus;
         land_new(next?: any): any;
         Land_new(): $mol_button_minor;
+        update(next?: any): readonly any[];
+        Update(): $mol_button_open;
         wipe(next?: any): any;
         Wipe_icon(): $mol_icon_delete_forever;
         Wipe(): $mol_button_minor;
@@ -6519,6 +6535,7 @@ declare namespace $.$$ {
         land(id: string): $hyoo_crus_land;
         spread_title(id: string): string;
         land_new(): void;
+        update(files: File[]): never[];
         wipe(): Promise<void>;
     }
 }
