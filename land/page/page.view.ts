@@ -35,20 +35,13 @@ namespace $.$$ {
 		
 		@ $mol_action
 		override dump() {
-			return new Blob( [ this.land().dump() ], { type: 'application/x-crus-land' } )
+			const dump = this.land().dump()
+			const pack = $hyoo_crus_pack.make( {}, { [ dump.land ]: dump.units }, dump.rocks )
+			return pack.toBlob()
 		}
 		
 		override dump_name() {
-			return `${ this.land().ref().description }.land`
-		}
-		
-		@ $mol_action
-		override update( files: File[] ) {
-			for( const file of files ) {
-				const dump = $mol_wire_sync( file ).arrayBuffer()
-				this.land().apply_dump( new Uint8Array( dump ) )
-			}
-			return []
+			return `${ this.land().ref().description }.crus`
 		}
 		
 		// override text( next?: string ) {

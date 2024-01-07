@@ -163,7 +163,7 @@ namespace $ {
 						const peer = next.peer()
 						
 						const exists = this.passes.get( peer )
-						if( exists ) return 'Already joined'
+						if( exists ) return ''
 						
 						this.passes.set( peer, next )
 						this.face.see_peer( next.peer(), 0 )
@@ -175,7 +175,7 @@ namespace $ {
 						const dest = next.dest()
 						
 						const prev = this.gifts.get( dest )
-						if( prev && $hyoo_crus_gift.compare( prev, next ) <= 0 ) return 'Unit too old'
+						if( prev && $hyoo_crus_gift.compare( prev, next ) <= 0 ) return ''
 						
 						this.gifts.set( dest, next )
 						this.face.see_peer( dest.description!.slice( 0, 8 ), next.time() )
@@ -193,7 +193,7 @@ namespace $ {
 						if( !units ) this.gists.set( head, units = new $mol_wire_dict )
 							
 						const prev = units.get( self )
-						if( prev && $hyoo_crus_gist.compare( prev, next ) <= 0 ) return 'Unit too old'
+						if( prev && $hyoo_crus_gist.compare( prev, next ) <= 0 ) return ''
 						
 						units.set( self, next )
 						this.self_all.add( self )
@@ -579,6 +579,7 @@ namespace $ {
 			
 			const key = $mol_wire_sync( this.auth() )
 			const mixin = $mol_base64_ae_decode( this.ref().description! )
+			
 			unit.mix( mixin )
 			try {
 				const sign = new Uint8Array( key.sign( unit.sens() ) )
@@ -586,6 +587,7 @@ namespace $ {
 			} finally {
 				unit.mix( mixin )
 			}
+			
 		}
 		
 		@ $mol_mem_key
@@ -723,8 +725,7 @@ namespace $ {
 		dump() {
 			
 			const units = [] as $hyoo_crus_unit[]
-			const rocks = [] as Uint8Array[]
-			let rocks_size = 0
+			const rocks = [] as [ Uint8Array, Uint8Array ][]
 			
 			for( const pass of this.passes.values() ) units.push( pass )
 			for( const gift of this.gifts.values() ) units.push( gift )
@@ -735,67 +736,13 @@ namespace $ {
 					if( gist.size() <= 32 ) continue
 					const rock = this.$.$hyoo_crus_mine.rock( gist.hash() )
 					if( !rock ) continue
-					rocks.push( gist.hash(), rock )
-					rocks_size += rock.byteLength + 20 + 4
+					rocks.push([ gist.hash(), rock ])
 				}
 			}
 			
-			const dump = new Uint8Array( 24 + units.length * $hyoo_crus_unit.size + rocks_size )
-			const buf = new $mol_buffer( dump.buffer )
-			
-			buf.uint8( 0, 2 )
-			buf.uint32( 2, units.length )
-			
-			dump.set( $mol_base64_ae_decode( this.numb() || 'AAAAAAAA' ), 6 )
-			dump.set( $mol_base64_ae_decode( this.lord()!.ref().description! ), 12 )
-			
-			let offset = 24
-			for( let unit of units ) {
-				dump.set( unit.asArray(), offset )
-				offset += unit.byteLength
-			}
-			
-			for( let i = 0; i < rocks.length; i += 2 ) {
-				const hash = rocks[0]
-				const rock = rocks[1]
-				dump.set( hash, offset )
-				buf.uint32( offset + 20, rock.byteLength )
-				dump.set( rock, offset + 24 )
-				offset += 24 + rock.byteLength
-			}
-			
-			return dump
-		}
-		
-		@ $mol_action
-		apply_dump( dump: Uint8Array ) {
-			
-			const buf = new $mol_buffer( dump.buffer )
-			
-			const type = buf.uint8( 0 )
-			
-			if( type !== 2 ) $mol_fail( new Error( 'Wrong type' ) )
-			const units_count = buf.uint32( 2 )
-		
-			const units = [] as $hyoo_crus_unit[]
-			
-			let offset = 24
-			for( let i = 0; i < units_count; ++i ) {
-				const bin = dump.slice( offset, offset + $hyoo_crus_unit.size ).buffer
-				const unit = new $hyoo_crus_unit( bin )
-				units.push( unit.narrow() )
-				offset += $hyoo_crus_unit.size
-			}
-			this.apply_unit( units )
-
-			while( offset < dump.byteLength ) {
-				const hash = dump.slice( offset, offset += 20 )
-				const size = buf.uint32( offset )
-				const rock = dump.slice( offset += 4, offset += size )
-				if( !$mol_compare_deep( hash, this.$.$hyoo_crus_mine.hash( rock ) ) ) {
-					$mol_fail( new Error( 'Wrong hash' ) )
-				}
-				this.$.$hyoo_crus_mine.rock( hash, rock )
+			return {
+				land: this.ref(),
+				units, rocks,
 			}
 			
 		}

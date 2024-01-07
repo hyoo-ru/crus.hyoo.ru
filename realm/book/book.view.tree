@@ -11,6 +11,9 @@ $hyoo_crus_realm_book $mol_book2_catalog
 			hint \Grab new Land
 			sub / <= Land_new_icon $mol_icon_plus
 			click? <=> land_new? null
+		<= Update $mol_button_open
+			hint \Upload dump
+			files? <=> update? /
 		<= Wipe $mol_button_minor
 			hint \Wipe database
 			click? <=> wipe? null

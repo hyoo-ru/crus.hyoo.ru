@@ -22,6 +22,17 @@ namespace $.$$ {
 			this.spread( this.realm().home().Land_new( 0 ).ref().description )
 		}
 		
+		@ $mol_action
+		override update( files: File[] ) {
+			const realm = this.realm()
+			for( const file of files ) {
+				const dump = $mol_wire_sync( file ).arrayBuffer()
+				const pack = new $hyoo_crus_pack( dump )
+				realm.apply_pack( pack )
+			}
+			return []
+		}
+		
 		override async wipe() {
 			const yard = await this.$.$mol_db( '$hyoo_crus_yard' )
 			const mine = await this.$.$mol_db( '$hyoo_crus_mine' )
