@@ -802,6 +802,7 @@ $mol_pick $mol_pop
 		minimal_height 40
 		enabled <= trigger_enabled true
 		checked? <=> showed?
+		clicks? <=> clicks? null
 		sub <= trigger_content /$mol_view_content
 			<= title
 		hint <= hint \
@@ -988,11 +989,14 @@ $hyoo_crus_realm_book $mol_book2_catalog
 		<= Update $mol_button_open
 			hint \Upload dump
 			files? <=> update? /
-		<= Wipe $mol_button_minor
+		<= Wipe_pick $mol_pick
 			hint \Wipe database
-			click? <=> wipe? null
-			sub /
+			clicks? <=> wipe? null
+			align_hor \left
+			trigger_content /
 				<= Wipe_icon $mol_icon_delete_forever
+			bubble_content /
+				\Double to wipe database
 
 $mol_string_button $mol_string
 

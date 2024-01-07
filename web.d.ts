@@ -6208,6 +6208,7 @@ declare namespace $ {
         Anchor(): $$.$mol_check;
         keydown(event?: any): any;
         trigger_enabled(): boolean;
+        clicks(next?: any): any;
         trigger_content(): readonly $mol_view_content[];
         hint(): string;
         Trigger(): $$.$mol_check;
@@ -6525,7 +6526,7 @@ declare namespace $ {
         Update(): $mol_button_open;
         wipe(next?: any): any;
         Wipe_icon(): $mol_icon_delete_forever;
-        Wipe(): $mol_button_minor;
+        Wipe_pick(): $$.$mol_pick;
     }
 }
 

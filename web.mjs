@@ -14795,6 +14795,11 @@ var $;
         trigger_enabled() {
             return true;
         }
+        clicks(next) {
+            if (next !== undefined)
+                return next;
+            return null;
+        }
         trigger_content() {
             return [
                 this.title()
@@ -14809,6 +14814,7 @@ var $;
             obj.minimal_height = () => 40;
             obj.enabled = () => this.trigger_enabled();
             obj.checked = (next) => this.showed(next);
+            obj.clicks = (next) => this.clicks(next);
             obj.sub = () => this.trigger_content();
             obj.hint = () => this.hint();
             return obj;
@@ -14817,6 +14823,9 @@ var $;
     __decorate([
         $mol_mem
     ], $mol_pick.prototype, "keydown", null);
+    __decorate([
+        $mol_mem
+    ], $mol_pick.prototype, "clicks", null);
     __decorate([
         $mol_mem
     ], $mol_pick.prototype, "Trigger", null);
@@ -16389,7 +16398,7 @@ var $;
             return [
                 this.Land_new(),
                 this.Update(),
-                this.Wipe()
+                this.Wipe_pick()
             ];
         }
         land(id) {
@@ -16442,12 +16451,16 @@ var $;
             const obj = new this.$.$mol_icon_delete_forever();
             return obj;
         }
-        Wipe() {
-            const obj = new this.$.$mol_button_minor();
+        Wipe_pick() {
+            const obj = new this.$.$mol_pick();
             obj.hint = () => "Wipe database";
-            obj.click = (next) => this.wipe(next);
-            obj.sub = () => [
+            obj.clicks = (next) => this.wipe(next);
+            obj.align_hor = () => "left";
+            obj.trigger_content = () => [
                 this.Wipe_icon()
+            ];
+            obj.bubble_content = () => [
+                "Double to wipe database"
             ];
             return obj;
         }
@@ -16484,7 +16497,7 @@ var $;
     ], $hyoo_crus_realm_book.prototype, "Wipe_icon", null);
     __decorate([
         $mol_mem
-    ], $hyoo_crus_realm_book.prototype, "Wipe", null);
+    ], $hyoo_crus_realm_book.prototype, "Wipe_pick", null);
     $.$hyoo_crus_realm_book = $hyoo_crus_realm_book;
 })($ || ($ = {}));
 //hyoo/crus/realm/book/-view.tree/book.view.tree.ts
