@@ -105,7 +105,7 @@ namespace $ {
 			const list2 = land2.Node( $hyoo_crus_list ).Item('')
 
 			list1.items([ 'foo', 'xxx' ])
-			land2.face.tick( land2.auth().peer() )
+			land2.face.tick()
 			list2.items([ 'foo', 'yyy' ])
 			land1.apply_unit( land2.delta_unit() )
 			$mol_assert_equal( list1.items(), [ 'foo', 'yyy', 'foo', 'xxx' ] )

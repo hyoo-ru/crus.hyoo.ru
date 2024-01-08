@@ -63,7 +63,7 @@ namespace $ {
 			land1.post( '', '', 'AA111111', new Uint8Array([ 1 ]) )
 			$mol_assert_equal( land1.delta_unit().length, 2 )
 			
-			const face = new $hyoo_crus_face( land1.face )
+			const face = new $hyoo_crus_face_map( land1.face )
 			
 			land1.post( 'AA111111', '', 'AA222222', new Uint8Array([ 2 ]) )
 			$mol_assert_equal( land1.delta_unit().length, 3 )

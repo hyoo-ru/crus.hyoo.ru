@@ -39,13 +39,13 @@ namespace $.$$ {
 			const dict2 = land2.Node( $hyoo_crus_dict ).Item('')
 
 			dict1.dive( 123, $hyoo_crus_reg ).value_vary( 666 )
-			land2.face.tick( land2.auth().peer() )
+			land2.face.tick()
 			dict2.dive( 123, $hyoo_crus_reg ).value_vary( 777 )
 			land1.apply_unit( land2.delta_unit() )
 			$mol_assert_equal( dict1.dive( 123, $hyoo_crus_reg ).value_vary(), 777 )
 			
 			dict1.dive( 'xxx', $hyoo_crus_list ).items([ 'foo' ])
-			land2.face.tick( land2.auth().peer() )
+			land2.face.tick()
 			dict2.dive( 'xxx', $hyoo_crus_list ).items([ 'bar' ])
 			land1.apply_unit( land2.delta_unit() )
 			$mol_assert_equal( dict1.dive( 'xxx', $hyoo_crus_list ).items(), [ 'bar', 'foo' ] )

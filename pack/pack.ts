@@ -8,7 +8,7 @@ namespace $ {
 		
 		parts() {
 			
-			const faces = {} as Record< symbol, $hyoo_crus_face >
+			const faces = {} as Record< symbol, $hyoo_crus_face_map >
 			const units = {} as Record< symbol, $hyoo_crus_unit[] >
 			const rocks = [] as [ Uint8Array, null | Uint8Array ][]
 			
@@ -38,11 +38,13 @@ namespace $ {
 							
 							if( !land ) $mol_fail( new Error( 'Land is undefined' ) )
 							
+							const count = this.uint32( offset ) >> 8
 							const peer = $mol_base64_ae_encode( buff.slice( offset += 4, offset += 6 ) )
 							const time = this.uint48( offset += 6 )
 							
-							faces[ land ] ||= new $hyoo_crus_face
-							faces[ land ].see_peer( peer, time )
+							faces[ land ] ||= new $hyoo_crus_face_map
+							faces[ land ].time_max( peer, time )
+							faces[ land ].count_shift( peer, count )
 							
 							continue
 						}
@@ -89,13 +91,12 @@ namespace $ {
 							continue
 						}
 						
-						case $hyoo_crus_part.buck: continue
+						case $hyoo_crus_part.buck: {
+							offset += 128
+							continue
+						}
 						
-						default: $$.$mol_log3_warn({
-							place: '$hyoo_crus_pack..parts()',
-							message: `Unknown CRUS Pack Part (${ kind.toString(2) })`,
-							hint: `Try to update app`
-						})
+						default: $mol_fail( new Error( `Unknown CRUS Pack Part (${ kind.toString(2) }) as (${ offset.toString(16) })` ) )
 						
 					}
 					
@@ -116,7 +117,7 @@ namespace $ {
 		}
 	
 		static make(
-			faces: Record< symbol, $hyoo_crus_face >,
+			faces: Record< symbol, $hyoo_crus_face_map >,
 			units: Record< symbol, readonly $hyoo_crus_unit[] >,
 			rocks: readonly [ Uint8Array, null | Uint8Array ][],
 		) {
@@ -152,10 +153,10 @@ namespace $ {
 				
 				open_land( land )
 				
-				for( const [ peer, time ] of faces[ land ] ) {
-					pack.uint32( offset, $hyoo_crus_part.face )
+				for( const peer of faces[ land ].keys() ) {
+					pack.uint32( offset, ( faces[ land ].count << 8 ) | $hyoo_crus_part.face )
 					buff.set( $mol_base64_ae_decode( peer ), offset + 4 )
-					pack.uint48( offset + 10, time )
+					pack.uint48( offset + 10, faces[ land ].time( peer ) )
 					offset += 16
 				}
 				
@@ -174,7 +175,7 @@ namespace $ {
 			
 			for( const [ hash, rock ] of rocks ) {
 				const len = rock?.length ?? 0
-				pack.uint32( offset, len ? ( len << 8 ) + $hyoo_crus_part.hash : $hyoo_crus_part.rock )
+				pack.uint32( offset, rock ? ( len << 8 ) + $hyoo_crus_part.rock : $hyoo_crus_part.hash )
 				buff.set( hash, offset + 4 )
 				if( rock ) buff.set( rock, offset + 24 )
 				offset += 24 + len

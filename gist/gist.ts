@@ -125,7 +125,7 @@ namespace $ {
 				' ',
 				this.peer(),
 				' ',
-				$mol_dev_format_shade( new Date( this.time() ) ),
+				$mol_dev_format_shade( new $mol_time_moment( this.time() ).toString( 'YYYY-MM-DD hh:mm:ss.sss' ) ),
 				' ',
 				this.lead(),
 				$mol_dev_format_shade( '\\' ),

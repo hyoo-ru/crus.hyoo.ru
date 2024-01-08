@@ -1,118 +1,84 @@
 namespace $ {
 	
-	export type $hyoo_crus_face_data = Iterable< readonly [ string /*peer*/, number /* timestamp */ ] >
+	export type $hyoo_crus_face_data = Iterable< readonly [ peer: string, face: $hyoo_crus_face ] >
 	
-	// export class $hyoo_crus_face_lord {
-		
-	// 	constructor(
-	// 		readonly rang: $hyoo_crus_rang,
-	// 		readonly time: number,
-	// 	) {}
-		
-	// 	/* Merge peer faces using max values. */
-	// 	static max( left: $hyoo_crus_face_lord, right: $hyoo_crus_face_lord ) {
-	// 		return new $hyoo_crus_face_lord(
-	// 			Math.max( left.rang, right.rang ),
-	// 			Math.max( left.time, right.time ),
-	// 		)
-	// 	}
-		
-	// 	[ $mol_dev_format_head ]() {
-	// 		return $mol_dev_format_span( {} ,
-	// 			$mol_dev_format_native( this ) ,
-	// 			$mol_dev_format_accent( ' ' + $hyoo_crus_rang[ this.rang ] + ' ' ) ,
-	// 			... this.time ? [ new Date( this.time ) ] : [] ,
-	// 		)
-	// 	}
-		
-	// }
+	export type $hyoo_crus_face = {
+		stamp: number // unix timestamp
+		milli: number // milliseconds
+		count: number // unit count
+	}
 	
-	export class $hyoo_crus_face extends Map< string /*peer*/, number /* timestamp */ > {
+	export class $hyoo_crus_face_map extends Map< string, $hyoo_crus_face > {
 		
 		/** Maximum time for all peers. */
 		last = 0
 		
+		/** Total unit count. */
+		count = 0
+		
 		constructor(
 			entries?: $hyoo_crus_face_data
 		) {
-			
-			super( entries )
-			if( !entries ) return
-			
-			for( const [ peer, time ] of entries ) {
-				this.see_time( time )
-			}
-			
+			super()
+			if( entries ) this.sync( entries )
 		}
 		
 		/** Synchronize this clock with another. */
 		sync( right: $hyoo_crus_face_data ) {
-			for( const [ peer, time ] of right ) {
-				this.see_peer( peer, time )
+			for( const [ peer, face ] of right ) {
+				this.time_max( peer, face.stamp * 1000 + face.milli )
+				this.count_shift( peer, face.count )
 			}
 		}
 		
-		/** Increase `last` to latest. */
-		see_time( time: number ) {
-			if( time < this.last ) return
-			this.last = time
+		/** Change unit cout for peer. */
+		count_shift(
+			peer: string,
+			count: number,
+		) {
+			
+			this.count += count
+			
+			let face = this.get( peer )
+			if( !face ) this.set( peer, face = { stamp: 0, milli: 0, count: 0 } )
+			
+			face.count += count
+			
+			return face.count
 		}
 		
-		/** Merge new `face` for `peer` and increase `last`. */
-		see_peer(
+		/** Update last time for peer. */
+		time_max(
 			peer: string,
 			time: number,
 		) {
 			
-			const exists = this.get( peer )
-			if( exists ) time = Math.max( exists, time )
+			if( this.last < time ) this.last = time
 			
-			this.set( peer, time )
-			this.see_time( time )
+			let face = this.get( peer )
+			if( !face ) this.set( peer, face = { stamp: 0, milli: 0, count: 0 } )
+			
+			time = Math.max( face.stamp * 1000 + face.milli, time )
+			
+			face.stamp = Math.floor( time / 1000 )
+			face.milli = time % 1000
+			
+			return time
+		}
+		
+		time( peer: string ) {
+			
+			const face = this.get( peer )
+			if( !face ) return 0
+			
+			return face.stamp * 1000 + face.milli
 			
 		}
 		
-		// see_bin( bin: $hyoo_crus_clock_bin ) {
-			
-		// 	for( let cursor = 16; cursor < bin.byteLength; cursor += 12 ) {
-				
-		// 		this.see_peer(
-		// 			bin.uint48( cursor ),
-		// 			bin.uint48( cursor + 6 ),
-		// 		)
-				
-		// 	}
-
-		// }
-		
-		// /** Checks if time from future. */
-		// fresh(
-		// 	peer: number,
-		// 	time: number,
-		// ) {
-		// 	return time > ( this.get( peer )?.time ?? 0 )
-		// }
-		
-		// /** Checks if this clock from future of another. */
-		// ahead( clock: $hyoo_crus_face ) {
-			
-		// 	for( const [ peer, time ] of this ) {
-		// 		if( clock.fresh( peer, time ) ) return true
-		// 	}
-			
-		// 	return false
-		// }
-		
 		/** Gererates new time for peer that greater then other seen. */
 		@ $mol_action
-		tick( peer: string ) {
-			
-			let time = Date.now()
-			if( time <= this.last ) time = this.last + 1
-			
-			this.see_peer( peer, time )
-			return time
-			
+		tick() {
+			return this.last = Math.max( this.last + 1, Date.now() )
 		}
 		
 		[ $mol_dev_format_head ]() {
@@ -123,54 +89,5 @@ namespace $ {
 		}
 		
 	}
-	
-	// export class $hyoo_crus_clock_bin extends $mol_buffer {
-		
-	// 	static from(
-	// 		land_id: $mol_int62_string,
-	// 		clock: $hyoo_crowd_clock,
-	// 		rangs: Map< string /*peer*/, $hyoo_crus_unit_gift >,
-	// 		count: number,
-	// 	) {
-			
-	// 		const size = offset.clocks + clocks[0].size * 16
-	// 		const mem = new Uint8Array( size )
-	// 		const bin = new $hyoo_crowd_clock_bin( mem.buffer )
-			
-	// 		const land = $mol_int62_from_string( land_id )!
-	// 		bin.setInt32( offset.land_lo, land.lo ^ ( 1 << 31 ), true )
-	// 		bin.setInt32( offset.land_hi, land.hi, true )
-			
-	// 		bin.setInt32( offset.count, count, true )
-			
-	// 		let cursor = offset.clocks
-	// 		for( const [ peer_id, time ] of clocks[0] ) {
-				
-	// 			const peer = $mol_int62_from_string( peer_id )!
-				
-	// 			bin.setInt32( cursor + 0, peer.lo, true )
-	// 			bin.setInt32( cursor + 4, peer.hi, true )
-				
-	// 			bin.setInt32( cursor + 8, time, true )
-	// 			bin.setInt32( cursor + 12, clocks[1].get( peer_id ) ?? $hyoo_crowd_clock.begin, true )
-				
-	// 			cursor += 16
-	// 		}
-			
-	// 		return bin
-	// 	}
-		
-	// 	land() {
-	// 		return $mol_int62_to_string({
-	// 			lo: this.getInt32( offset.land_lo, true ) << 1 >> 1,
-	// 			hi: this.getInt32( offset.land_hi, true ) << 1 >> 1,
-	// 		})
-	// 	}
-		
-	// 	count() {
-	// 		return this.getInt32( offset.count, true )
-	// 	}
-		
-	// }
 	
 }

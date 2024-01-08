@@ -26,7 +26,7 @@ namespace $ {
 			return Symbol.for( this.lord_ref().description + this.numb() )
 		}
 		
-		face = new $hyoo_crus_face
+		face = new $hyoo_crus_face_map
 		
 		passes = new $mol_wire_dict< string /*peer*/, $hyoo_crus_pass >()
 		gifts = new $mol_wire_dict< symbol /*lord*/, $hyoo_crus_gift >()
@@ -108,7 +108,7 @@ namespace $ {
 		}
 		
 		/** Picks units between Face and current state. */
-		delta_unit( face = new $hyoo_crus_face ) {
+		delta_unit( face = new $hyoo_crus_face_map ) {
 			
 			const delta = [] as $hyoo_crus_unit[]
 			
@@ -118,13 +118,13 @@ namespace $ {
 			}
 			
 			for( const [ lord, unit ] of this.gifts ) {
-				const time = face.get( lord.description!.slice( 0, 8 ) )
+				const time = face.time( unit.peer() )
 				if( !time || time < unit.time() ) delta.push( unit )
 			}
 			
 			for( const kids of this.gists.values() ) {
 				for( const unit of kids.values() ) {
-					const time = face.get( unit.peer() )
+					const time = face.time( unit.peer() )
 					if( !time || time < unit.time() ) delta.push( unit )
 				}
 			}
@@ -134,7 +134,7 @@ namespace $ {
 		}
 		
 		/** Makes binary Delta between Face and current state. */
-		delta_buffer( face = new $hyoo_crus_face ) {
+		delta_buffer( face = new $hyoo_crus_face_map ) {
 			
 			const delta = this.delta_unit( face )
 			const bytes = new Uint8Array( delta.length * $hyoo_crus_unit.size )
@@ -166,7 +166,7 @@ namespace $ {
 						if( exists ) return ''
 						
 						this.passes.set( peer, next )
-						this.face.see_peer( next.peer(), 0 )
+						this.face.count_shift( next.peer(), 1 )
 						
 					},
 					
@@ -178,7 +178,8 @@ namespace $ {
 						if( prev && $hyoo_crus_gift.compare( prev, next ) <= 0 ) return ''
 						
 						this.gifts.set( dest, next )
-						this.face.see_peer( dest.description!.slice( 0, 8 ), next.time() )
+						this.face.time_max( next.peer(), next.time() )
+						this.face.count_shift( next.peer(), 1 )
 						
 						if( ( prev?.rang() ?? $hyoo_crus_rang.get ) > next.rang() ) need_recheck = true
 						
@@ -197,7 +198,8 @@ namespace $ {
 						
 						units.set( self, next )
 						this.self_all.add( self )
-						this.face.see_peer( next.peer(), next.time() )
+						this.face.time_max( next.peer(), next.time() )
+						this.face.count_shift( next.peer(), 1 )
 						
 					},
 					
@@ -216,16 +218,22 @@ namespace $ {
 		recheck() {
 			
 			for( const [ peer, pass ] of this.passes ) {
-				if( this.check_unit( pass ) ) this.passes.delete( peer )
+				if( !this.check_unit( pass ) ) continue
+				this.passes.delete( peer )
+				this.face.count_shift( peer, -1 )
 			}
 			
 			for( const [ lord, gift ] of this.gifts ) {
-				if( this.check_unit( gift ) ) this.gifts.delete( lord )
+				if( !this.check_unit( gift ) ) continue
+				this.gifts.delete( lord )
+				this.face.count_shift( gift.peer(), -1 )
 			}
 			
 			for( const [ head, units ] of this.gists ) {
 				for( const [ self, gist ] of units ) {
-					if( this.check_unit( gist ) ) units.delete( self )
+					if( !this.check_unit( gist ) ) continue
+					units.delete( self )
+					this.face.count_shift( gist.peer(), -1 )
 				}
 			}
 			
@@ -378,7 +386,7 @@ namespace $ {
 			const unit = new $hyoo_crus_gift
 			
 			unit.rang( rang )
-			unit.time( this.face.tick( auth.peer() ) )
+			unit.time( this.face.tick() )
 			unit.peer( auth.peer() )
 			unit.dest( dest )
 			
@@ -403,7 +411,7 @@ namespace $ {
 			const auth = this.auth()
 			const unit = new $hyoo_crus_gist
 			
-			unit.time( this.face.tick( auth.peer() ) )
+			unit.time( this.face.tick() )
 			unit.peer( auth.peer() )
 			unit.lead( lead )
 			unit.head( head )
@@ -688,7 +696,7 @@ namespace $ {
 			const unit = new $hyoo_crus_gift
 			
 			unit.rang( $hyoo_crus_rang.law )
-			unit.time( this.face.tick( auth.peer() ) )
+			unit.time( this.face.tick() )
 			unit.peer( auth.peer() )
 			unit.dest( auth.lord() )
 			
