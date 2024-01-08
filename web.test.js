@@ -4925,6 +4925,9 @@ var $;
             const gist = await land.post('', '', '', new Uint8Array([1, 2, 3]));
             $mol_assert_equal((await land.gist_encode(gist)).data().length, 7);
             $mol_assert_equal(await land.gist_decode(gist), new Uint8Array([1, 2, 3]));
+            $mol_assert_equal((await land.gists_ordered('')).length, 1);
+            await land.post('', '', gist.self(), null);
+            $mol_assert_equal((await land.gists_ordered('')).length, 0);
         },
         'Land fork & merge'($) {
             const realm = $hyoo_crus_realm.make({ $ });

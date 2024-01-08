@@ -10429,6 +10429,8 @@ var $;
                             return '';
                         this.gifts.set(dest, next);
                         this.face.time_max(next.peer(), next.time());
+                        if (prev)
+                            this.face.count_shift(prev.peer(), -1);
                         this.face.count_shift(next.peer(), 1);
                         if ((prev?.rang() ?? $hyoo_crus_rang.get) > next.rang())
                             need_recheck = true;
@@ -10445,6 +10447,8 @@ var $;
                         units.set(self, next);
                         this.self_all.add(self);
                         this.face.time_max(next.peer(), next.time());
+                        if (prev)
+                            this.face.count_shift(prev.peer(), -1);
                         this.face.count_shift(next.peer(), 1);
                     },
                 });
@@ -10603,7 +10607,7 @@ var $;
             unit._vary = vary;
             let { tip, bin } = $hyoo_crus_vary_encode(vary);
             unit._open = bin;
-            if (this.encrypted()) {
+            if (vary !== null && this.encrypted()) {
                 unit.hash($mol_crypto_hash(bin), tip, tag);
             }
             else {
@@ -10728,11 +10732,12 @@ var $;
         gist_encode(gist) {
             if (gist._open === undefined)
                 return gist;
+            if (gist.nil())
+                return gist;
             let bin = gist._open;
             const secret = this.secret();
-            if (secret) {
+            if (secret)
                 bin = new Uint8Array($mol_wire_sync(secret).encrypt(bin, gist.salt()));
-            }
             if (bin.byteLength > 32)
                 gist.hash(this.$.$hyoo_crus_mine.save(bin), gist.tip(), gist.tag());
             else
@@ -10753,7 +10758,7 @@ var $;
             if (gist._open !== undefined)
                 return gist._vary = $hyoo_crus_vary_decode({ tip: gist.tip(), bin: gist._open });
             let bin = gist.size() > 32 ? this.$.$hyoo_crus_mine.rock(gist.hash()) : gist.data();
-            if (bin && this.secret()) {
+            if (bin && !gist.nil() && this.secret()) {
                 try {
                     bin = new Uint8Array($mol_wire_sync(this.secret()).decrypt(bin, gist.salt()));
                 }
@@ -14337,6 +14342,7 @@ var $;
                         : this.symbols_alt()[$mol_keyboard_code[event.keyCode]];
                 if (!symbol)
                     return;
+                event.preventDefault();
                 document.execCommand('insertText', false, symbol);
             }
             clickable(next) {
@@ -14361,8 +14367,8 @@ var $;
                             break;
                         default: return;
                     }
+                    event.preventDefault();
                 }
-                event.preventDefault();
             }
             row_numb(index) {
                 return index;
