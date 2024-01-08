@@ -13,7 +13,7 @@ namespace $.$$ {
 		}
 		
 		override spread_title( id: string ) {
-			const title = this.land( id ).Root( $hyoo_crus_entity ).title()
+			const title = this.land( id ).Data( $hyoo_crus_entity ).title()
 			const suffix = title || ( id.length > 16 ? id.slice( 16 ) : id )
 			return ( id.length > 16 ? '   🌍 ' : '👑 ' ) + suffix
 		}

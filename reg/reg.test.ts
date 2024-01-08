@@ -223,11 +223,11 @@ namespace $.$$ {
 			const land = realm.home().base().land()
 			
 			const reg = land.Node( $hyoo_crus_reg ).Item('11111111')
-			const remote = reg.yoke( null )!.Root( $hyoo_crus_reg )
+			const remote = reg.yoke( null )!.Data( $hyoo_crus_reg )
 			
 			$mol_assert_unique( reg.land(), remote.land() )
 			$mol_assert_equal( reg.value_ref(), remote.ref() )
-			$mol_assert_equal( reg.yoke( null )!.Root( $hyoo_crus_reg ), remote )
+			$mol_assert_equal( reg.yoke( null )!.Data( $hyoo_crus_reg ), remote )
 			
 		},
 		

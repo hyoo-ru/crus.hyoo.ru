@@ -162,18 +162,18 @@ namespace $ {
 		'Insert after moved right'( $ ) {
 			
 			const base = $hyoo_crus_land.make({ $ })
-			base.Root( $hyoo_crus_list ).items([ 1, 2, 3, 4 ])
+			base.Data( $hyoo_crus_list ).items([ 1, 2, 3, 4 ])
 			
 			const left = fork( base )
-			left.Root( $hyoo_crus_list ).items([ 1, 7, 2, 3, 4 ])
+			left.Data( $hyoo_crus_list ).items([ 1, 7, 2, 3, 4 ])
 			
 			const right = fork( base )
-			right.Root( $hyoo_crus_list ).move( 0, 2 )
+			right.Data( $hyoo_crus_list ).move( 0, 2 )
 			
 			sync( left, right )
 			$mol_assert_equal(
-				left.Root( $hyoo_crus_list ).items(),
-				right.Root( $hyoo_crus_list ).items(),
+				left.Data( $hyoo_crus_list ).items(),
+				right.Data( $hyoo_crus_list ).items(),
 				[ 2, 1, 7, 3, 4 ],
 			)
 			
@@ -182,19 +182,19 @@ namespace $ {
 		'Insert before moved left'( $ ) {
 			
 			const base = $hyoo_crus_land.make({ $ })
-			base.Root( $hyoo_crus_list ).items([ 1, 2, 3, 4 ])
+			base.Data( $hyoo_crus_list ).items([ 1, 2, 3, 4 ])
 			
 			const left = fork( base )
-			left.Root( $hyoo_crus_list ).move( 1, 0 )
+			left.Data( $hyoo_crus_list ).move( 1, 0 )
 			
 			const right = fork( base )
 			right.face.sync( left.face )
-			right.Root( $hyoo_crus_list ).items([ 1, 7, 2, 3, 4 ])
+			right.Data( $hyoo_crus_list ).items([ 1, 7, 2, 3, 4 ])
 			
 			sync( left, right )
 			$mol_assert_equal(
-				left.Root( $hyoo_crus_list ).items(),
-				right.Root( $hyoo_crus_list ).items(),
+				left.Data( $hyoo_crus_list ).items(),
+				right.Data( $hyoo_crus_list ).items(),
 				[ 2, 1, 7, 3, 4 ],
 			)
 			
@@ -203,19 +203,19 @@ namespace $ {
 		'Move left after inserted'( $ ) {
 			
 			const base = $hyoo_crus_land.make({ $ })
-			base.Root( $hyoo_crus_list ).items([ 1, 2, 3, 4 ])
+			base.Data( $hyoo_crus_list ).items([ 1, 2, 3, 4 ])
 			
 			const left = fork( base )
-			left.Root( $hyoo_crus_list ).items([ 1, 7, 2, 3, 4 ])
+			left.Data( $hyoo_crus_list ).items([ 1, 7, 2, 3, 4 ])
 			
 			const right = fork( base )
 			right.face.sync( left.face )
-			right.Root( $hyoo_crus_list ).move( 1, 0 )
+			right.Data( $hyoo_crus_list ).move( 1, 0 )
 			
 			sync( left, right )
 			$mol_assert_equal(
-				left.Root( $hyoo_crus_list ).items(),
-				right.Root( $hyoo_crus_list ).items(),
+				left.Data( $hyoo_crus_list ).items(),
+				right.Data( $hyoo_crus_list ).items(),
 				[ 2, 1, 3, 7, 4 ], // extra change (3) => unexpected result (7 after 3)
 			)
 			
@@ -224,19 +224,19 @@ namespace $ {
 		'Insert before moved right'( $ ) {
 			
 			const base = $hyoo_crus_land.make({ $ })
-			base.Root( $hyoo_crus_list ).items([ 1, 2, 3, 4 ])
+			base.Data( $hyoo_crus_list ).items([ 1, 2, 3, 4 ])
 			
 			const left = fork( base )
-			left.Root( $hyoo_crus_list ).move( 1, 4 )
+			left.Data( $hyoo_crus_list ).move( 1, 4 )
 			
 			const right = fork( base )
 			right.face.sync( left.face )
-			right.Root( $hyoo_crus_list ).items([ 1, 7, 2, 3, 4 ])
+			right.Data( $hyoo_crus_list ).items([ 1, 7, 2, 3, 4 ])
 			
 			sync( left, right )
 			$mol_assert_equal(
-				left.Root( $hyoo_crus_list ).items(),
-				right.Root( $hyoo_crus_list ).items(),
+				left.Data( $hyoo_crus_list ).items(),
+				right.Data( $hyoo_crus_list ).items(),
 				[ 1, 7, 3, 4, 2 ],
 			)
 			
@@ -245,19 +245,19 @@ namespace $ {
 		'Move right after inserted'( $ ) {
 			
 			const base = $hyoo_crus_land.make({ $ })
-			base.Root( $hyoo_crus_list ).items([ 1, 2, 3, 4 ])
+			base.Data( $hyoo_crus_list ).items([ 1, 2, 3, 4 ])
 			
 			const left = fork( base )
-			left.Root( $hyoo_crus_list ).items([ 1, 7, 2, 3, 4 ])
+			left.Data( $hyoo_crus_list ).items([ 1, 7, 2, 3, 4 ])
 			
 			const right = fork( base )
 			right.face.sync( left.face )
-			right.Root( $hyoo_crus_list ).move( 1, 4 )
+			right.Data( $hyoo_crus_list ).move( 1, 4 )
 			
 			sync( left, right )
 			$mol_assert_equal(
-				left.Root( $hyoo_crus_list ).items(),
-				right.Root( $hyoo_crus_list ).items(),
+				left.Data( $hyoo_crus_list ).items(),
+				right.Data( $hyoo_crus_list ).items(),
 				[ 1, 3, 7, 4, 2 ], // extra change (3) => unexpected result (7 after 3)
 			)
 			
@@ -266,19 +266,19 @@ namespace $ {
 		'Insert after wiped'( $ ) {
 			
 			const base = $hyoo_crus_land.make({ $ })
-			base.Root( $hyoo_crus_list ).items([ 1, 2, 3, 4 ])
+			base.Data( $hyoo_crus_list ).items([ 1, 2, 3, 4 ])
 			
 			const left = fork( base )
-			left.Root( $hyoo_crus_list ).items([ 1, 3, 4 ])
+			left.Data( $hyoo_crus_list ).items([ 1, 3, 4 ])
 			
 			const right = fork( base )
 			right.face.sync( left.face )
-			right.Root( $hyoo_crus_list ).items([ 1, 2, 7, 3, 4 ])
+			right.Data( $hyoo_crus_list ).items([ 1, 2, 7, 3, 4 ])
 			
 			sync( left, right )
 			$mol_assert_equal(
-				left.Root( $hyoo_crus_list ).items(),
-				right.Root( $hyoo_crus_list ).items(),
+				left.Data( $hyoo_crus_list ).items(),
+				right.Data( $hyoo_crus_list ).items(),
 				[ 1, 7, 3, 4 ],
 			)
 			
@@ -287,19 +287,19 @@ namespace $ {
 		'Wiped before inserted'( $ ) {
 			
 			const base = $hyoo_crus_land.make({ $ })
-			base.Root( $hyoo_crus_list ).items([ 1, 2, 3, 4 ])
+			base.Data( $hyoo_crus_list ).items([ 1, 2, 3, 4 ])
 			
 			const left = fork( base )
-			left.Root( $hyoo_crus_list ).items([ 1, 2, 7, 3, 4 ])
+			left.Data( $hyoo_crus_list ).items([ 1, 2, 7, 3, 4 ])
 			
 			const right = fork( base )
 			right.face.sync( left.face )
-			right.Root( $hyoo_crus_list ).items([ 1, 3, 4 ])
+			right.Data( $hyoo_crus_list ).items([ 1, 3, 4 ])
 			
 			sync( left, right )
 			$mol_assert_equal(
-				left.Root( $hyoo_crus_list ).items(),
-				right.Root( $hyoo_crus_list ).items(),
+				left.Data( $hyoo_crus_list ).items(),
+				right.Data( $hyoo_crus_list ).items(),
 				[ 1, 7, 3, 4 ],
 			)
 			
@@ -308,19 +308,19 @@ namespace $ {
 		'Insert before wiped'( $ ) {
 			
 			const base = $hyoo_crus_land.make({ $ })
-			base.Root( $hyoo_crus_list ).items([ 1, 2, 3, 4 ])
+			base.Data( $hyoo_crus_list ).items([ 1, 2, 3, 4 ])
 			
 			const left = fork( base )
-			left.Root( $hyoo_crus_list ).wipe( 2 )
+			left.Data( $hyoo_crus_list ).wipe( 2 )
 			
 			const right = fork( base )
 			right.face.sync( left.face )
-			right.Root( $hyoo_crus_list ).items([ 1, 2, 7, 3, 4 ])
+			right.Data( $hyoo_crus_list ).items([ 1, 2, 7, 3, 4 ])
 			
 			sync( left, right )
 			$mol_assert_equal(
-				left.Root( $hyoo_crus_list ).items(),
-				right.Root( $hyoo_crus_list ).items(),
+				left.Data( $hyoo_crus_list ).items(),
+				right.Data( $hyoo_crus_list ).items(),
 				[ 1, 2, 7, 4 ],
 			)
 			
@@ -329,19 +329,19 @@ namespace $ {
 		'Wiped after inserted'( $ ) {
 			
 			const base = $hyoo_crus_land.make({ $ })
-			base.Root( $hyoo_crus_list ).items([ 1, 2, 3, 4 ])
+			base.Data( $hyoo_crus_list ).items([ 1, 2, 3, 4 ])
 			
 			const left = fork( base )
-			left.Root( $hyoo_crus_list ).items([ 1, 2, 7, 3, 4 ])
+			left.Data( $hyoo_crus_list ).items([ 1, 2, 7, 3, 4 ])
 			
 			const right = fork( base )
 			right.face.sync( left.face )
-			right.Root( $hyoo_crus_list ).wipe( 2 )
+			right.Data( $hyoo_crus_list ).wipe( 2 )
 			
 			sync( left, right )
 			$mol_assert_equal(
-				left.Root( $hyoo_crus_list ).items(),
-				right.Root( $hyoo_crus_list ).items(),
+				left.Data( $hyoo_crus_list ).items(),
+				right.Data( $hyoo_crus_list ).items(),
 				[ 1, 2, 7, 4 ],
 			)
 			
@@ -350,19 +350,19 @@ namespace $ {
 		'Insert after moved out'( $ ) {
 			
 			const base = $hyoo_crus_land.make({ $ })
-			base.Root( $hyoo_crus_list ).items([ 1, 2, 3, 4 ])
+			base.Data( $hyoo_crus_list ).items([ 1, 2, 3, 4 ])
 			
 			const left = fork( base )
-			left.gist_move( left.Root( $hyoo_crus_list ).units()[1], '11111111', 0 )
+			left.gist_move( left.Data( $hyoo_crus_list ).units()[1], '11111111', 0 )
 			
 			const right = fork( base )
 			right.face.sync( left.face )
-			right.Root( $hyoo_crus_list ).items([ 1, 2, 7, 3, 4 ])
+			right.Data( $hyoo_crus_list ).items([ 1, 2, 7, 3, 4 ])
 			
 			sync( left, right )
 			$mol_assert_equal(
-				left.Root( $hyoo_crus_list ).items(),
-				right.Root( $hyoo_crus_list ).items(),
+				left.Data( $hyoo_crus_list ).items(),
+				right.Data( $hyoo_crus_list ).items(),
 				[ 1, 7, 3, 4 ],
 			)
 			$mol_assert_equal(
@@ -376,19 +376,19 @@ namespace $ {
 		'Move out before inserted'( $ ) {
 			
 			const base = $hyoo_crus_land.make({ $ })
-			base.Root( $hyoo_crus_list ).items([ 1, 2, 3, 4 ])
+			base.Data( $hyoo_crus_list ).items([ 1, 2, 3, 4 ])
 			
 			const left = fork( base )
-			left.Root( $hyoo_crus_list ).items([ 1, 2, 7, 3, 4 ])
+			left.Data( $hyoo_crus_list ).items([ 1, 2, 7, 3, 4 ])
 			
 			const right = fork( base )
 			right.face.sync( left.face )
-			right.gist_move( right.Root( $hyoo_crus_list ).units()[1], '11111111', 0 )
+			right.gist_move( right.Data( $hyoo_crus_list ).units()[1], '11111111', 0 )
 			
 			sync( left, right )
 			$mol_assert_equal(
-				left.Root( $hyoo_crus_list ).items(),
-				right.Root( $hyoo_crus_list ).items(),
+				left.Data( $hyoo_crus_list ).items(),
+				right.Data( $hyoo_crus_list ).items(),
 				[ 1, 7, 3, 4 ],
 			)
 			$mol_assert_equal(
@@ -402,19 +402,19 @@ namespace $ {
 		'Insert before changed'( $ ) {
 			
 			const base = $hyoo_crus_land.make({ $ })
-			base.Root( $hyoo_crus_list ).items([ 1, 2, 3, 4 ])
+			base.Data( $hyoo_crus_list ).items([ 1, 2, 3, 4 ])
 			
 			const left = fork( base )
-			left.Root( $hyoo_crus_list ).items([ 1, 2, 7, 4 ])
+			left.Data( $hyoo_crus_list ).items([ 1, 2, 7, 4 ])
 			
 			const right = fork( base )
 			right.face.sync( left.face )
-			right.Root( $hyoo_crus_list ).items([ 1, 2, 13, 3, 4 ])
+			right.Data( $hyoo_crus_list ).items([ 1, 2, 13, 3, 4 ])
 			
 			sync( left, right )
 			$mol_assert_equal(
-				left.Root( $hyoo_crus_list ).items(),
-				right.Root( $hyoo_crus_list ).items(),
+				left.Data( $hyoo_crus_list ).items(),
+				right.Data( $hyoo_crus_list ).items(),
 				[ 1, 2, 13, 7, 4 ],
 			)
 			
@@ -423,19 +423,19 @@ namespace $ {
 		'Change after inserted'( $ ) {
 			
 			const base = $hyoo_crus_land.make({ $ })
-			base.Root( $hyoo_crus_list ).items([ 1, 2, 3, 4 ])
+			base.Data( $hyoo_crus_list ).items([ 1, 2, 3, 4 ])
 			
 			const left = fork( base )
-			left.Root( $hyoo_crus_list ).items([ 1, 2, 13, 3, 4 ])
+			left.Data( $hyoo_crus_list ).items([ 1, 2, 13, 3, 4 ])
 			
 			const right = fork( base )
 			right.face.sync( left.face )
-			right.Root( $hyoo_crus_list ).items([ 1, 2, 7, 4 ])
+			right.Data( $hyoo_crus_list ).items([ 1, 2, 7, 4 ])
 			
 			sync( left, right )
 			$mol_assert_equal(
-				left.Root( $hyoo_crus_list ).items(),
-				right.Root( $hyoo_crus_list ).items(),
+				left.Data( $hyoo_crus_list ).items(),
+				right.Data( $hyoo_crus_list ).items(),
 				[ 1, 2, 7, 13, 4 ],
 			)
 			
@@ -444,20 +444,20 @@ namespace $ {
 		'Insert between moved'( $ ) {
 			
 			const base = $hyoo_crus_land.make({ $ })
-			base.Root( $hyoo_crus_list ).items([ 1, 2, 3, 4, 5, 6 ])
+			base.Data( $hyoo_crus_list ).items([ 1, 2, 3, 4, 5, 6 ])
 			
 			const left = fork( base )
-			left.Root( $hyoo_crus_list ).move( 1, 5 )
-			left.Root( $hyoo_crus_list ).move( 1, 5 )
+			left.Data( $hyoo_crus_list ).move( 1, 5 )
+			left.Data( $hyoo_crus_list ).move( 1, 5 )
 			
 			const right = fork( base )
 			right.face.sync( left.face )
-			right.Root( $hyoo_crus_list ).items([ 1, 2, 7, 3, 4, 5, 6 ])
+			right.Data( $hyoo_crus_list ).items([ 1, 2, 7, 3, 4, 5, 6 ])
 			
 			sync( left, right )
 			$mol_assert_equal(
-				left.Root( $hyoo_crus_list ).items(),
-				right.Root( $hyoo_crus_list ).items(),
+				left.Data( $hyoo_crus_list ).items(),
+				right.Data( $hyoo_crus_list ).items(),
 				[ 1, 4, 5, 2, 7, 3, 6 ],
 			)
 			
@@ -466,20 +466,20 @@ namespace $ {
 		'Move near inserted'( $ ) {
 			
 			const base = $hyoo_crus_land.make({ $ })
-			base.Root( $hyoo_crus_list ).items([ 1, 2, 3, 4, 5, 6 ])
+			base.Data( $hyoo_crus_list ).items([ 1, 2, 3, 4, 5, 6 ])
 			
 			const left = fork( base )
-			left.Root( $hyoo_crus_list ).items([ 1, 2, 7, 3, 4, 5, 6 ])
+			left.Data( $hyoo_crus_list ).items([ 1, 2, 7, 3, 4, 5, 6 ])
 			
 			const right = fork( base )
 			right.face.sync( left.face )
-			right.Root( $hyoo_crus_list ).move( 1, 5 )
-			right.Root( $hyoo_crus_list ).move( 1, 5 )
+			right.Data( $hyoo_crus_list ).move( 1, 5 )
+			right.Data( $hyoo_crus_list ).move( 1, 5 )
 			
 			sync( left, right )
 			$mol_assert_equal(
-				left.Root( $hyoo_crus_list ).items(),
-				right.Root( $hyoo_crus_list ).items(),
+				left.Data( $hyoo_crus_list ).items(),
+				right.Data( $hyoo_crus_list ).items(),
 				[ 1, 4, 5, 2, 3, 7, 6 ],
 			)
 			

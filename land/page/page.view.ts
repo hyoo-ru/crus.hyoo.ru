@@ -7,8 +7,8 @@ namespace $.$$ {
 		
 		override node_title( head: string ) {
 			const id = this.node( head ).head()
-			if( id === 'AQAAAAAA' ) return 'Core'
-			return id || 'Root'
+			if( id === 'AQAAAAAA' ) return 'Meta'
+			return id || 'Data'
 		}
 		
 		override node( head: string ) {

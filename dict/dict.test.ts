@@ -140,7 +140,7 @@ namespace $.$$ {
 			const realm = $hyoo_crus_realm.make({ $ })
 			const land = realm.home().base().land()
 			
-			const domain = land.Root( Domain )
+			const domain = land.Data( Domain )
 			await $mol_wire_async( land ).sync()
 			
 			const kind = domain.Kinds.dive( 'Kind' )

@@ -13,7 +13,7 @@ namespace $ {
 		lands = new $mol_wire_dict< string /*numb*/, $hyoo_crus_land >()
 		
 		base() {
-			return this.Land( '' ).Root( $hyoo_crus_base )
+			return this.Land( '' ).Data( $hyoo_crus_base )
 		}
 		
 		toString() {
@@ -44,7 +44,7 @@ namespace $ {
 		}
 		
 		Profile< Node extends typeof $hyoo_crus_node >( app: string, Node: Node ) {
-			return this.base().Profile( app ).Root( Node )
+			return this.base().Profile( app ).Data( Node )
 		}
 		
 		@ $mol_action

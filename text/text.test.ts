@@ -4,8 +4,8 @@ namespace $ {
 		'Change sequences'( $ ) {
 			
 			const land = $hyoo_crus_land.make({ $ })
-			const text = land.Root( $hyoo_crus_text )
-			const list = land.Root( $hyoo_crus_list )
+			const text = land.Data( $hyoo_crus_text )
+			const list = land.Data( $hyoo_crus_list )
 			$mol_assert_equal( text.str(), '' )
 			$mol_assert_equal( list.items(), [] )
 			
@@ -42,7 +42,7 @@ namespace $ {
 		async 'str: Offset <=> Point'( $ ) {
 			
 			const land = $hyoo_crus_land.make({ $ })
-			const text = land.Root( $hyoo_crus_text )
+			const text = land.Data( $hyoo_crus_text )
 			
 			text.str( 'fooBar' )
 			const [ first, second ] = text.units()
@@ -68,7 +68,7 @@ namespace $ {
 		async 'text: Offset <=> Point'( $ ) {
 			
 			const land = $hyoo_crus_land.make({ $ })
-			const text = land.Root( $hyoo_crus_text )
+			const text = land.Data( $hyoo_crus_text )
 			
 			text.text( 'foo bar\n666 777' )
 			const [ first, second ] = text.nodes( $hyoo_crus_text )
@@ -110,18 +110,18 @@ namespace $ {
 		async 'Merge same insertions with different changes to same place'( $ ) {
 			
 			const base = $hyoo_crus_land.make({ $ })
-			base.Root( $hyoo_crus_text ).str( '( )' )
+			base.Data( $hyoo_crus_text ).str( '( )' )
 			
 			const left = $hyoo_crus_land.make({ $ })
 			left.apply_unit_trust( base.delta_unit() )
-			left.Root( $hyoo_crus_text ).str( '( [ f ] )' )
-			left.Root( $hyoo_crus_text ).str( '( [ foo ] )' )
+			left.Data( $hyoo_crus_text ).str( '( [ f ] )' )
+			left.Data( $hyoo_crus_text ).str( '( [ foo ] )' )
 			
 			const right = $hyoo_crus_land.make({ $ })
 			right.apply_unit_trust( base.delta_unit() )
 			right.face.sync( left.face )
-			right.Root( $hyoo_crus_text ).str( '( [ f ] )' )
-			right.Root( $hyoo_crus_text ).str( '( [ fu ] )' )
+			right.Data( $hyoo_crus_text ).str( '( [ f ] )' )
+			right.Data( $hyoo_crus_text ).str( '( [ fu ] )' )
 			
 			const left_delta = left.delta_unit( base.face )
 			const right_delta = right.delta_unit( base.face )
@@ -130,8 +130,8 @@ namespace $ {
 			right.apply_unit_trust( left_delta )
 	
 			$mol_assert_equal(
-				left.Root( $hyoo_crus_text ).str(),
-				right.Root( $hyoo_crus_text ).str(),
+				left.Data( $hyoo_crus_text ).str(),
+				right.Data( $hyoo_crus_text ).str(),
 				'( [ fu ] [ foo ] )',
 			)
 			

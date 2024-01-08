@@ -35,12 +35,12 @@ namespace $ {
 		self_all = new $mol_wire_set< string >()
 		
 		@ $mol_action
-		self_make( zone: keyof typeof $hyoo_crus_zone, idea = Math.floor( Math.random() * 2**48 ) ) {
+		self_make( area: keyof typeof $hyoo_crus_area, idea = Math.floor( Math.random() * 2**48 ) ) {
 			
 			const auth = this.auth()
 			const rang = this.lord_rang( auth.lord() )
 			
-			if( rang === $hyoo_crus_rang.add ) return $hyoo_crus_zone_to( auth.peer(), 'root' )
+			if( rang === $hyoo_crus_rang.add ) return $hyoo_crus_area_to( auth.peer(), 'data' )
 			if( rang === $hyoo_crus_rang.nil ) $mol_fail( new Error( 'Rang too low (nil)' ) )
 			
 			const numb = this.numb()
@@ -48,7 +48,7 @@ namespace $ {
 				
 				idea = ( idea + 1 ) % 2**48
 				if( !idea ) continue
-				if( $hyoo_crus_zone[ idea % 2 ] !== zone ) continue
+				if( $hyoo_crus_area[ idea % 2 ] !== area ) continue
 				
 				const idea_str = $mol_base64_ae_encode( new Uint8Array( new BigUint64Array([ BigInt( idea ) ]).buffer, 0, 6 ) )
 				if( idea_str === numb ) continue
@@ -63,13 +63,13 @@ namespace $ {
 		}
 		
 		@ $mol_mem_key
-		Root< Node extends typeof $hyoo_crus_node >( Node: Node ) {
+		Data< Node extends typeof $hyoo_crus_node >( Node: Node ) {
 			return this.Node( Node ).Item( '' )
 		} 
 		
 		@ $mol_mem
-		Core() {
-			return this.Node( $hyoo_crus_core ).Item( 'AQAAAAAA' )
+		Meta() {
+			return this.Node( $hyoo_crus_meta ).Item( 'AQAAAAAA' )
 		} 
 		
 		@ $mol_mem_key
@@ -284,14 +284,14 @@ namespace $ {
 				gift: next => this.peer_rang( next.peer() ) < $hyoo_crus_rang.law ? 'Need law rang to change rang': '',
 				
 				gist: next => {
-					if( $hyoo_crus_zone_of( next.self() ) !== $hyoo_crus_zone_of( next.self() ) ) return 'Need same zone'
-					if( $hyoo_crus_zone_to( next.peer(), 'root' ) === next.self() ) {
+					if( $hyoo_crus_area_of( next.self() ) !== $hyoo_crus_area_of( next.self() ) ) return 'Need same area'
+					if( $hyoo_crus_area_to( next.peer(), 'data' ) === next.self() ) {
 						return this.peer_rang( next.peer() ) < $hyoo_crus_rang.add ? 'Need add rang to post self data' : ''
 					} else {
-						if( $hyoo_crus_zone_of( next.self() ) === 'root' ) {
+						if( $hyoo_crus_area_of( next.self() ) === 'data' ) {
 							return this.peer_rang( next.peer() ) < $hyoo_crus_rang.mod ? 'Need mod rang to post any data' : ''
 						} else {
-							return this.peer_rang( next.peer() ) < $hyoo_crus_rang.law ? 'Need law rang to post to core zone' : ''
+							return this.peer_rang( next.peer() ) < $hyoo_crus_rang.law ? 'Need law rang to post to meta area' : ''
 						}
 					}
 				},
@@ -302,7 +302,7 @@ namespace $ {
 		@ $mol_action
 		fork() {
 			const land = this.realm()!.home().Land_new(0)
-			land.Core().Inflow.items([ this.ref() ])
+			land.Meta().Inflow.items([ this.ref() ])
 			return land
 		}
 		
@@ -313,9 +313,9 @@ namespace $ {
 			
 			const queue = [ ... this.gists.get( head )?.values() ?? [] ]
 			
-			merge: if( this.numb() && $hyoo_crus_zone_of( head ) === 'root' ) {
+			merge: if( this.numb() && $hyoo_crus_area_of( head ) === 'data' ) {
 				
-				const inflow = ( this.Core().inflow()?.slice().reverse() ?? [] )
+				const inflow = ( this.Meta().inflow()?.slice().reverse() ?? [] )
 					.map( $hyoo_crus_vary_cast_ref )
 					.filter( $mol_guard_defined )
 				if( !inflow.length ) break merge
@@ -464,7 +464,7 @@ namespace $ {
 				else unit.data( bin, tip, tag )
 			}
 		
-			unit.self( self || this.self_make( $hyoo_crus_zone_of( head ), unit.idea() ) )
+			unit.self( self || this.self_make( $hyoo_crus_area_of( head ), unit.idea() ) )
 			
 			const error = this.apply_unit_trust([ unit ])[0]
 			if( error ) $mol_fail( new Error( error ) )
@@ -654,7 +654,7 @@ namespace $ {
 		gist_decode( gist: $hyoo_crus_gist ): $hyoo_crus_vary_type {
 			
 			if( this.gists.get( gist.head() )?.get( gist.self() ) !== gist ) {
-				for( const id of this.Core().inflow() ?? [] ) {
+				for( const id of this.Meta().inflow() ?? [] ) {
 					const vary = this.realm()?.Land( id as symbol ).gist_decode( gist )
 					if( vary !== undefined ) return vary
 				}

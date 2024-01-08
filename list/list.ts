@@ -39,7 +39,7 @@ namespace $ {
 				next,
 				equal: ( next, prev )=> $mol_compare_deep( this.land().gist_decode( prev ), next ),
 				drop: ( prev, lead )=> this.land().post( lead?.self() ?? '', prev.head(), prev.self(), null ),
-				insert: ( next, lead )=> this.land().post( lead?.self() ?? '', this.head(), land.self_make( $hyoo_crus_zone_of( this.head() ) ), next, tag ),
+				insert: ( next, lead )=> this.land().post( lead?.self() ?? '', this.head(), land.self_make( $hyoo_crus_area_of( this.head() ) ), next, tag ),
 				update: ( next, prev, lead )=> this.land().post( lead?.self() ?? '', prev.head(), prev.self(), next, prev.tag() ),
 			})
 		}
@@ -166,7 +166,7 @@ namespace $ {
 				
 				@ $mol_action
 				local_make(): Vals[number] {
-					const node = this.land().Node( ( Value as any )() ).Item( this.land().self_make( $hyoo_crus_zone_of( this.head() ) ) )
+					const node = this.land().Node( ( Value as any )() ).Item( this.land().self_make( $hyoo_crus_area_of( this.head() ) ) )
 					this.splice([ node.ref() ])
 					return node
 				}

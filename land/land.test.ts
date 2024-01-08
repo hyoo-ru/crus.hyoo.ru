@@ -81,13 +81,13 @@ namespace $ {
 			$mol_assert_equal( land2.delta_unit().length, 5 )
 			$mol_assert_equal( land2.delta_unit( face ).length, 3 )
 			
-			land2.post( 'AA222222', '', $hyoo_crus_zone_to( auth1.peer(), 'root' ), new Uint8Array([ 4 ]) )
+			land2.post( 'AA222222', '', $hyoo_crus_area_to( auth1.peer(), 'data' ), new Uint8Array([ 4 ]) )
 			$mol_assert_equal( land2.delta_unit().length, 6 )
 			$mol_assert_equal( land2.delta_unit( face ).length, 4 )
 			
 			land1.give( auth1.lord(), $hyoo_crus_rang.mod )
 			land2.apply_unit_trust( land1.delta_unit() )
-			$mol_assert_fail( ()=> land2.post( 'AA222222', '', '33333333', new Uint8Array([ 3 ]) ), 'Need law rang to post to core zone' )
+			$mol_assert_fail( ()=> land2.post( 'AA222222', '', '33333333', new Uint8Array([ 3 ]) ), 'Need law rang to post to meta area' )
 			land2.post( 'AA222222', '', 'AA333333', new Uint8Array([ 3 ]) )
 			$mol_assert_equal( land2.delta_unit().length, 7 )
 			$mol_assert_equal( land2.delta_unit( face ).length, 5 )
@@ -114,11 +114,11 @@ namespace $ {
 			$mol_assert_equal( land2.delta_unit().length, 2 )
 			
 			const gist1 = land2.post( '', '', '', 'foo' )
-			$mol_assert_equal( gist1.self(), $hyoo_crus_zone_to( auth2.peer(), 'root' ) )
+			$mol_assert_equal( gist1.self(), $hyoo_crus_area_to( auth2.peer(), 'data' ) )
 			$mol_assert_equal( land2.delta_unit().length, 4 )
 			
 			const gist2 = land2.post( '', '', '', 'bar' )
-			$mol_assert_equal( gist2.self(), $hyoo_crus_zone_to( auth2.peer(), 'root' ) )
+			$mol_assert_equal( gist2.self(), $hyoo_crus_area_to( auth2.peer(), 'data' ) )
 			$mol_assert_equal( land2.delta_unit().length, 4 )
 			
 		},
@@ -160,33 +160,33 @@ namespace $ {
 			const base = realm.home().base().land()
 			const left = base.fork()
 			
-			base.Root( $hyoo_crus_list ).items([ 'foo', 'xxx' ])
-			$mol_assert_equal( base.Root( $hyoo_crus_list ).items(), [ 'foo', 'xxx' ] )
-			$mol_assert_equal( left.Root( $hyoo_crus_list ).items(), [ 'foo', 'xxx' ] )
+			base.Data( $hyoo_crus_list ).items([ 'foo', 'xxx' ])
+			$mol_assert_equal( base.Data( $hyoo_crus_list ).items(), [ 'foo', 'xxx' ] )
+			$mol_assert_equal( left.Data( $hyoo_crus_list ).items(), [ 'foo', 'xxx' ] )
 			
 			left.face.sync( base.face )
-			left.Root( $hyoo_crus_list ).items([ 'foo', 'yyy' ])
-			$mol_assert_equal( left.Root( $hyoo_crus_list ).items(), [ 'foo', 'yyy' ] )
+			left.Data( $hyoo_crus_list ).items([ 'foo', 'yyy' ])
+			$mol_assert_equal( left.Data( $hyoo_crus_list ).items(), [ 'foo', 'yyy' ] )
 			
 			const right = base.fork()
 			right.face.sync( left.face )
-			right.Root( $hyoo_crus_list ).items([ 'foo', 'zzz' ])
-			$mol_assert_equal( right.Root( $hyoo_crus_list ).items(), [ 'foo', 'zzz' ] )
+			right.Data( $hyoo_crus_list ).items([ 'foo', 'zzz' ])
+			$mol_assert_equal( right.Data( $hyoo_crus_list ).items(), [ 'foo', 'zzz' ] )
 			
 			const both = base.fork()
-			$mol_assert_equal( both.Root( $hyoo_crus_list ).items(), [ 'foo', 'xxx' ] )
+			$mol_assert_equal( both.Data( $hyoo_crus_list ).items(), [ 'foo', 'xxx' ] )
 			
-			both.Core().inflow([ right.ref() ])
-			$mol_assert_equal( both.Root( $hyoo_crus_list ).items(), [ 'foo', 'zzz' ] )
+			both.Meta().inflow([ right.ref() ])
+			$mol_assert_equal( both.Data( $hyoo_crus_list ).items(), [ 'foo', 'zzz' ] )
 			
-			both.Core().inflow([ left.ref() ])
-			$mol_assert_equal( both.Root( $hyoo_crus_list ).items(), [ 'foo', 'yyy' ] )
+			both.Meta().inflow([ left.ref() ])
+			$mol_assert_equal( both.Data( $hyoo_crus_list ).items(), [ 'foo', 'yyy' ] )
 			
-			both.Core().inflow([ right.ref(), left.ref() ])
-			$mol_assert_equal( both.Root( $hyoo_crus_list ).items(), [ 'foo', 'yyy' ] )
+			both.Meta().inflow([ right.ref(), left.ref() ])
+			$mol_assert_equal( both.Data( $hyoo_crus_list ).items(), [ 'foo', 'yyy' ] )
 			
-			both.Core().inflow([ left.ref(), right.ref() ])
-			$mol_assert_equal( both.Root( $hyoo_crus_list ).items(), [ 'foo', 'zzz' ] )
+			both.Meta().inflow([ left.ref(), right.ref() ])
+			$mol_assert_equal( both.Data( $hyoo_crus_list ).items(), [ 'foo', 'zzz' ] )
 			
 		},
 		

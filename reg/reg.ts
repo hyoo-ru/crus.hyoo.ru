@@ -158,7 +158,7 @@ namespace $ {
 				@ $mol_action
 				local_ensure() {
 					if( this.value_ref() ) return this.remote()!
-					const node = this.land().Node( ( Value as any )() ).Item( this.land().self_make( $hyoo_crus_zone_of( this.head() ) ) )
+					const node = this.land().Node( ( Value as any )() ).Item( this.land().self_make( $hyoo_crus_area_of( this.head() ) ) )
 					return this.remote( node )!
 				}
 	
