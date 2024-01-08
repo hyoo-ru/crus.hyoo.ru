@@ -147,9 +147,42 @@ namespace $ {
 			return bytes
 		}
 		
-		/** Applies Delta to current state. */
+		/** Applies Delta to current state with verify. */
 		@ $mol_action
 		apply_unit( delta: readonly $hyoo_crus_unit[] ) {
+			
+			const passes = delta.filter( unit => unit.kind() === 'pass' ) as $hyoo_crus_pass[]
+			const auth = new Map( passes.map( ( unit: $hyoo_crus_pass )=> [ unit.peer(), unit.auth() ] ) )
+			
+			const mixin = $mol_base64_ae_decode( this.ref().description! )
+			
+			const errors = delta.map( unit => {
+				
+				let key_public = this.key_public( unit.peer() )
+				if( !key_public ) {
+					
+					const key_serial = auth.get( unit.peer() )
+					if( !key_serial ) return `No public key for peer (${unit.peer()})`
+					
+					key_public = $mol_wire_sync( $mol_crypto_key_public ).from( key_serial ) as $mol_crypto_key_public
+					
+				}
+				
+				const sens = unit.sens().slice()
+				for( let i = 0; i < mixin.length; ++i ) sens[i+14] ^= mixin[i+14]
+				
+				return $mol_wire_sync( key_public ).verify( sens, unit.sign() ) ? '' : `Wrong unit sign`
+	
+			} )
+			
+			if( errors.some( v => v ) ) return errors
+			
+			return this.apply_unit_trust( delta )
+		}
+		
+		/** Applies Delta to current state without verifying. */
+		@ $mol_action
+		apply_unit_trust( delta: readonly $hyoo_crus_unit[] ) {
 			return delta.map( unit => {
 				
 				const error = this.check_unit( unit )
@@ -216,7 +249,7 @@ namespace $ {
 		}
 		
 		apply_land( land: $hyoo_crus_land ) {
-			return this.apply_unit( land.delta_unit() )
+			return this.apply_unit_trust( land.delta_unit() )
 		}
 		
 		recheck() {
@@ -371,7 +404,7 @@ namespace $ {
 			const next = new $hyoo_crus_pass
 			next.auth( auth.public().asArray() )
 			
-			const error = this.apply_unit([ next ])[0]
+			const error = this.apply_unit_trust([ next ])[0]
 			if( error ) $mol_fail( new Error( error ) )
 			
 			return next
@@ -394,7 +427,7 @@ namespace $ {
 			unit.peer( auth.peer() )
 			unit.dest( dest )
 			
-			const error = this.apply_unit([ unit ])[0]
+			const error = this.apply_unit_trust([ unit ])[0]
 			if( error ) $mol_fail( new Error( error ) )
 			
 			return unit
@@ -433,7 +466,7 @@ namespace $ {
 		
 			unit.self( self || this.self_make( $hyoo_crus_zone_of( head ), unit.idea() ) )
 			
-			const error = this.apply_unit([ unit ])[0]
+			const error = this.apply_unit_trust([ unit ])[0]
 			if( error ) $mol_fail( new Error( error ) )
 			
 			return unit
@@ -523,7 +556,7 @@ namespace $ {
 		bus() {
 			return new this.$.$mol_bus< ArrayBuffer[] >( `$hyoo_crus_land:${ this.ref().description }`, $mol_wire_async( bins => {
 				const yard = this.$.$hyoo_crus_yard
-				this.apply_unit( bins.map( bin => {
+				this.apply_unit_trust( bins.map( bin => {
 					const unit = new $hyoo_crus_unit( bin ).narrow()
 					yard.persisted.add( unit )
 					return unit
@@ -592,13 +625,11 @@ namespace $ {
 			const key = $mol_wire_sync( this.auth() )
 			const mixin = $mol_base64_ae_decode( this.ref().description! )
 			
-			unit.mix( mixin )
-			try {
-				const sign = new Uint8Array( key.sign( unit.sens() ) )
-				unit.sign( sign )
-			} finally {
-				unit.mix( mixin )
-			}
+			const sens = unit.sens().slice()
+			for( let i = 0; i < mixin.length; ++i ) sens[i+14] ^= mixin[i+14]
+			
+			const sign = new Uint8Array( key.sign( sens ) )
+			unit.sign( sign )
 			
 		}
 		
@@ -706,7 +737,7 @@ namespace $ {
 			const secret_closed = $mol_wire_sync( secret_mutual ).encrypt( secret_land, unit.salt() )
 			unit.bill().set( new Uint8Array( secret_closed ) )
 			
-			const error = this.apply_unit([ unit ])[0]
+			const error = this.apply_unit_trust([ unit ])[0]
 			if( error ) $mol_fail( new Error( error ) )
 			
 			return next

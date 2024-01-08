@@ -48,7 +48,7 @@ namespace $ {
 			land1.give( auth1.lord(), $hyoo_crus_rang.mod )
 			$mol_assert_equal( land1.lord_rang( auth1.lord() ), $hyoo_crus_rang.mod )
 			
-			land2.apply_unit( land1.delta_unit() )
+			land2.apply_unit_trust( land1.delta_unit() )
 			$mol_assert_fail( ()=> land2.give( auth2.lord(), $hyoo_crus_rang.add ), 'Need law rang to change rang' )
 			
 		},
@@ -69,14 +69,14 @@ namespace $ {
 			$mol_assert_equal( land1.delta_unit().length, 3 )
 			$mol_assert_equal( land1.delta_unit( face ).length, 1 )
 			
-			land2.apply_unit( land1.delta_unit() )
+			land2.apply_unit_trust( land1.delta_unit() )
 			
 			$mol_assert_fail( ()=> land2.post( 'AA222222', '', 'AA333333', new Uint8Array([ 3 ]) ), 'Need add rang to join' )
 			$mol_assert_equal( land2.delta_unit().length, 3 )
 			$mol_assert_equal( land2.delta_unit( face ).length, 1 )
 			
 			land1.give( auth1.lord(), $hyoo_crus_rang.add )
-			land2.apply_unit( land1.delta_unit() )
+			land2.apply_unit_trust( land1.delta_unit() )
 			$mol_assert_fail( ()=> land2.post( 'AA222222', '', 'AA333333', new Uint8Array([ 3 ]) ), 'Need mod rang to post any data' )
 			$mol_assert_equal( land2.delta_unit().length, 5 )
 			$mol_assert_equal( land2.delta_unit( face ).length, 3 )
@@ -86,18 +86,18 @@ namespace $ {
 			$mol_assert_equal( land2.delta_unit( face ).length, 4 )
 			
 			land1.give( auth1.lord(), $hyoo_crus_rang.mod )
-			land2.apply_unit( land1.delta_unit() )
+			land2.apply_unit_trust( land1.delta_unit() )
 			$mol_assert_fail( ()=> land2.post( 'AA222222', '', '33333333', new Uint8Array([ 3 ]) ), 'Need law rang to post to core zone' )
 			land2.post( 'AA222222', '', 'AA333333', new Uint8Array([ 3 ]) )
 			$mol_assert_equal( land2.delta_unit().length, 7 )
 			$mol_assert_equal( land2.delta_unit( face ).length, 5 )
 			
 			land1.give( auth1.lord(), $hyoo_crus_rang.add )
-			land2.apply_unit( land1.delta_unit() )
+			land2.apply_unit_trust( land1.delta_unit() )
 			$mol_assert_equal( land2.delta_unit().length, 6 )
 			
 			land1.give( auth1.lord(), $hyoo_crus_rang.get )
-			land2.apply_unit( land1.delta_unit() )
+			land2.apply_unit_trust( land1.delta_unit() )
 			$mol_assert_equal( land2.delta_unit().length, 4 )
 			
 		},
@@ -110,7 +110,7 @@ namespace $ {
 			$mol_assert_equal( land1.delta_unit(), [] )
 			
 			land1.give( auth2.lord(), $hyoo_crus_rang.add )
-			land2.apply_unit( land1.delta_unit() )
+			land2.apply_unit_trust( land1.delta_unit() )
 			$mol_assert_equal( land2.delta_unit().length, 2 )
 			
 			const gist1 = land2.post( '', '', '', 'foo' )

@@ -107,7 +107,7 @@ namespace $ {
 			list1.items([ 'foo', 'xxx' ])
 			land2.face.tick()
 			list2.items([ 'foo', 'yyy' ])
-			land1.apply_unit( land2.delta_unit() )
+			land1.apply_unit_trust( land2.delta_unit() )
 			$mol_assert_equal( list1.items(), [ 'foo', 'yyy', 'foo', 'xxx' ] )
 
 		},
