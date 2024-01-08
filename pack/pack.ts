@@ -85,8 +85,10 @@ namespace $ {
 							
 							const size = this.uint32( offset ) >> 8
 							const hash = buff.slice( offset += 4, offset += 20 )
-							const rock = buff.slice( offset, offset += size )
+							const rock = buff.slice( offset, offset + size )
+							
 							rocks.push([ hash, rock ])
+							offset += Math.ceil( size / 8 ) * 8
 							
 							continue
 						}
@@ -133,7 +135,7 @@ namespace $ {
 			}
 			
 			for( const [ hash, rock ] of rocks ) {
-				size += 24 + ( rock?.length ?? 0 )
+				size += 24 + ( rock ? Math.ceil( rock.length / 8 ) * 8 : 0 )
 			}
 			
 			if( size === 0 ) return null!
@@ -178,7 +180,7 @@ namespace $ {
 				pack.uint32( offset, rock ? ( len << 8 ) + $hyoo_crus_part.rock : $hyoo_crus_part.hash )
 				buff.set( hash, offset + 4 )
 				if( rock ) buff.set( rock, offset + 24 )
-				offset += 24 + len
+				offset += 24 + Math.ceil( len / 8 ) * 8
 			}
 			
 			return pack

@@ -1,6 +1,8 @@
 $hyoo_crus_land_page $mol_page
 	land $hyoo_crus_land
 	tools /
+		<= Size $mol_view sub / <= size \0 KB
+		<= Close null
 	body /
 		<= Node*AAAAAAAA $hyoo_crus_node_dump
 			title <= node_title* \

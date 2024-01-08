@@ -13,6 +13,10 @@ namespace $.$$ {
 			}
 		},
 		
+		Size: {
+			padding: $mol_gap.text,
+		},
+		
 	} )
 	
 }

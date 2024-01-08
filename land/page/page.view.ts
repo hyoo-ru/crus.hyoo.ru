@@ -33,11 +33,20 @@ namespace $.$$ {
 			]
 		}
 		
-		@ $mol_action
-		override dump() {
+		@ $mol_mem
+		pack() {
+			this.$.$mol_wait_rest()
 			const dump = this.land().dump()
-			const pack = $hyoo_crus_pack.make( {}, { [ dump.land ]: dump.units }, dump.rocks )
-			return pack.toBlob()
+			return $hyoo_crus_pack.make( {}, { [ dump.land ]: dump.units }, dump.rocks )
+		}
+		
+		@ $mol_mem
+		override size() {
+			return $mol_si_short( this.pack().byteLength, 'B' )
+		}
+		
+		override dump() {
+			return this.pack().toBlob()
 		}
 		
 		override dump_name() {

@@ -729,7 +729,6 @@ namespace $ {
 			
 		}
 		
-		@ $mol_action
 		dump() {
 			
 			const units = [] as $hyoo_crus_unit[]
