@@ -395,8 +395,6 @@ var $;
     function $mol_dev_format_native(obj) {
         if (typeof obj === 'undefined')
             return $.$mol_dev_format_shade('undefined');
-        if (typeof obj !== 'object' && typeof obj !== 'function')
-            return obj;
         return [
             'object',
             {
@@ -7666,7 +7664,7 @@ var $;
             return prev;
         }
         [$mol_dev_format_head]() {
-            return $mol_dev_format_span({}, $mol_dev_format_native(this), ' ', this.peer(), ' 🔑 ', this.lord());
+            return $mol_dev_format_span({}, $mol_dev_format_native(this), ' ', this.peer(), ' 🔑 ', $mol_dev_format_native(this.lord()));
         }
     }
     $.$hyoo_crus_pass = $hyoo_crus_pass;
@@ -8061,6 +8059,9 @@ var $;
         }
         [Symbol.toPrimitive](mode) {
             return mode === 'number' ? this.valueOf() : this.toString();
+        }
+        [$mol_dev_format_head]() {
+            return $mol_dev_format_span({}, $mol_dev_format_native(this), ' ', $mol_dev_format_accent(this.toString('YYYY-MM-DD hh:mm:ss.sss Z')));
         }
         static patterns = {
             'YYYY': (moment) => {
@@ -8652,7 +8653,7 @@ var $;
             return (right.time() - left.time()) || (right.peer() > left.peer() ? 1 : right.peer() < left.peer() ? -1 : 0);
         }
         [$mol_dev_format_head]() {
-            return $mol_dev_format_span({}, $mol_dev_format_native(this), ' ', this.peer(), ' ', $mol_dev_format_shade(new Date(this.time())), ' ', this.lead(), $mol_dev_format_shade('\\'), $mol_dev_format_accent(this.head()), $mol_dev_format_shade('/'), this.self(), ' ', $mol_dev_format_shade(this.tag(), ' ', this.tip()), ' ', $mol_dev_format_native(this._vary));
+            return $mol_dev_format_span({}, $mol_dev_format_native(this), ' ', this.peer(), ' ', $mol_dev_format_shade(new $mol_time_moment(this.time()).toString('YYYY-MM-DD hh:mm:ss.sss')), ' ', this.lead(), $mol_dev_format_shade('\\'), $mol_dev_format_accent(this.head()), $mol_dev_format_shade('/'), this.self(), ' ', $mol_dev_format_shade(this.tag(), ' ', this.tip()), ' ', $mol_dev_format_native(this._vary));
         }
     }
     $.$hyoo_crus_gist = $hyoo_crus_gist;
@@ -8710,39 +8711,47 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    class $hyoo_crus_face extends Map {
+    class $hyoo_crus_face_map extends Map {
         last = 0;
+        count = 0;
         constructor(entries) {
-            super(entries);
-            if (!entries)
-                return;
-            for (const [peer, time] of entries) {
-                this.see_time(time);
-            }
+            super();
+            if (entries)
+                this.sync(entries);
         }
         sync(right) {
-            for (const [peer, time] of right) {
-                this.see_peer(peer, time);
+            for (const [peer, face] of right) {
+                this.time_max(peer, face.stamp * 1000 + face.milli);
+                this.count_shift(peer, face.count);
             }
         }
-        see_time(time) {
-            if (time < this.last)
-                return;
-            this.last = time;
+        count_shift(peer, count) {
+            this.count += count;
+            let face = this.get(peer);
+            if (!face)
+                this.set(peer, face = { stamp: 0, milli: 0, count: 0 });
+            face.count += count;
+            return face.count;
         }
-        see_peer(peer, time) {
-            const exists = this.get(peer);
-            if (exists)
-                time = Math.max(exists, time);
-            this.set(peer, time);
-            this.see_time(time);
-        }
-        tick(peer) {
-            let time = Date.now();
-            if (time <= this.last)
-                time = this.last + 1;
-            this.see_peer(peer, time);
+        time_max(peer, time) {
+            if (this.last < time)
+                this.last = time;
+            let face = this.get(peer);
+            if (!face)
+                this.set(peer, face = { stamp: 0, milli: 0, count: 0 });
+            time = Math.max(face.stamp * 1000 + face.milli, time);
+            face.stamp = Math.floor(time / 1000);
+            face.milli = time % 1000;
             return time;
+        }
+        time(peer) {
+            const face = this.get(peer);
+            if (!face)
+                return 0;
+            return face.stamp * 1000 + face.milli;
+        }
+        tick() {
+            return this.last = Math.max(this.last + 1, Date.now());
         }
         [$mol_dev_format_head]() {
             return $mol_dev_format_span({}, $mol_dev_format_native(this), $mol_dev_format_shade(' ', new Date(this.last)));
@@ -8750,8 +8759,8 @@ var $;
     }
     __decorate([
         $mol_action
-    ], $hyoo_crus_face.prototype, "tick", null);
-    $.$hyoo_crus_face = $hyoo_crus_face;
+    ], $hyoo_crus_face_map.prototype, "tick", null);
+    $.$hyoo_crus_face_map = $hyoo_crus_face_map;
 })($ || ($ = {}));
 //hyoo/crus/face/face.ts
 ;
@@ -10295,7 +10304,7 @@ var $;
         ref() {
             return Symbol.for(this.lord_ref().description + this.numb());
         }
-        face = new $hyoo_crus_face;
+        face = new $hyoo_crus_face_map;
         passes = new $mol_wire_dict();
         gifts = new $mol_wire_dict();
         gists = new $mol_wire_dict();
@@ -10360,7 +10369,7 @@ var $;
                 return $hyoo_crus_rang.get;
             return this.lord_rang(auth.lord());
         }
-        delta_unit(face = new $hyoo_crus_face) {
+        delta_unit(face = new $hyoo_crus_face_map) {
             const delta = [];
             for (const unit of this.passes.values()) {
                 if (face.get(unit.peer()))
@@ -10368,20 +10377,20 @@ var $;
                 delta.push(unit);
             }
             for (const [lord, unit] of this.gifts) {
-                const time = face.get(lord.description.slice(0, 8));
+                const time = face.time(unit.peer());
                 if (!time || time < unit.time())
                     delta.push(unit);
             }
             for (const kids of this.gists.values()) {
                 for (const unit of kids.values()) {
-                    const time = face.get(unit.peer());
+                    const time = face.time(unit.peer());
                     if (!time || time < unit.time())
                         delta.push(unit);
                 }
             }
             return delta;
         }
-        delta_buffer(face = new $hyoo_crus_face) {
+        delta_buffer(face = new $hyoo_crus_face_map) {
             const delta = this.delta_unit(face);
             const bytes = new Uint8Array(delta.length * $hyoo_crus_unit.size);
             for (let i = 0; i < delta.length; ++i) {
@@ -10403,7 +10412,7 @@ var $;
                         if (exists)
                             return '';
                         this.passes.set(peer, next);
-                        this.face.see_peer(next.peer(), 0);
+                        this.face.count_shift(next.peer(), 1);
                     },
                     gift: next => {
                         const dest = next.dest();
@@ -10411,7 +10420,8 @@ var $;
                         if (prev && $hyoo_crus_gift.compare(prev, next) <= 0)
                             return '';
                         this.gifts.set(dest, next);
-                        this.face.see_peer(dest.description.slice(0, 8), next.time());
+                        this.face.time_max(next.peer(), next.time());
+                        this.face.count_shift(next.peer(), 1);
                         if ((prev?.rang() ?? $hyoo_crus_rang.get) > next.rang())
                             need_recheck = true;
                     },
@@ -10426,7 +10436,8 @@ var $;
                             return '';
                         units.set(self, next);
                         this.self_all.add(self);
-                        this.face.see_peer(next.peer(), next.time());
+                        this.face.time_max(next.peer(), next.time());
+                        this.face.count_shift(next.peer(), 1);
                     },
                 });
                 if (need_recheck)
@@ -10439,17 +10450,23 @@ var $;
         }
         recheck() {
             for (const [peer, pass] of this.passes) {
-                if (this.check_unit(pass))
-                    this.passes.delete(peer);
+                if (!this.check_unit(pass))
+                    continue;
+                this.passes.delete(peer);
+                this.face.count_shift(peer, -1);
             }
             for (const [lord, gift] of this.gifts) {
-                if (this.check_unit(gift))
-                    this.gifts.delete(lord);
+                if (!this.check_unit(gift))
+                    continue;
+                this.gifts.delete(lord);
+                this.face.count_shift(gift.peer(), -1);
             }
             for (const [head, units] of this.gists) {
                 for (const [self, gist] of units) {
-                    if (this.check_unit(gist))
-                        units.delete(self);
+                    if (!this.check_unit(gist))
+                        continue;
+                    units.delete(self);
+                    this.face.count_shift(gist.peer(), -1);
                 }
             }
         }
@@ -10559,7 +10576,7 @@ var $;
             const auth = this.auth();
             const unit = new $hyoo_crus_gift;
             unit.rang(rang);
-            unit.time(this.face.tick(auth.peer()));
+            unit.time(this.face.tick());
             unit.peer(auth.peer());
             unit.dest(dest);
             const error = this.apply_unit([unit])[0];
@@ -10571,7 +10588,7 @@ var $;
             this.join();
             const auth = this.auth();
             const unit = new $hyoo_crus_gist;
-            unit.time(this.face.tick(auth.peer()));
+            unit.time(this.face.tick());
             unit.peer(auth.peer());
             unit.lead(lead);
             unit.head(head);
@@ -10776,7 +10793,7 @@ var $;
             const secret_mutual = auth.secret_mutual(auth.public().toString());
             const unit = new $hyoo_crus_gift;
             unit.rang($hyoo_crus_rang.law);
-            unit.time(this.face.tick(auth.peer()));
+            unit.time(this.face.tick());
             unit.peer(auth.peer());
             unit.dest(auth.lord());
             const secret_closed = $mol_wire_sync(secret_mutual).encrypt(secret_land, unit.salt());
@@ -11055,10 +11072,12 @@ var $;
                         case $hyoo_crus_part.face: {
                             if (!land)
                                 $mol_fail(new Error('Land is undefined'));
+                            const count = this.uint32(offset) >> 8;
                             const peer = $mol_base64_ae_encode(buff.slice(offset += 4, offset += 6));
                             const time = this.uint48(offset += 6);
-                            faces[land] ||= new $hyoo_crus_face;
-                            faces[land].see_peer(peer, time);
+                            faces[land] ||= new $hyoo_crus_face_map;
+                            faces[land].time_max(peer, time);
+                            faces[land].count_shift(peer, count);
                             continue;
                         }
                         case $hyoo_crus_part.pass: {
@@ -11089,12 +11108,11 @@ var $;
                             rocks.push([hash, rock]);
                             continue;
                         }
-                        case $hyoo_crus_part.buck: continue;
-                        default: $$.$mol_log3_warn({
-                            place: '$hyoo_crus_pack..parts()',
-                            message: `Unknown CRUS Pack Part (${kind.toString(2)})`,
-                            hint: `Try to update app`
-                        });
+                        case $hyoo_crus_part.buck: {
+                            offset += 128;
+                            continue;
+                        }
+                        default: $mol_fail(new Error(`Unknown CRUS Pack Part (${kind.toString(2)}) as (${offset.toString(16)})`));
                     }
                 }
                 else {
@@ -11130,10 +11148,10 @@ var $;
             };
             for (const land of Reflect.ownKeys(faces)) {
                 open_land(land);
-                for (const [peer, time] of faces[land]) {
-                    pack.uint32(offset, $hyoo_crus_part.face);
+                for (const peer of faces[land].keys()) {
+                    pack.uint32(offset, (faces[land].count << 8) | $hyoo_crus_part.face);
                     buff.set($mol_base64_ae_decode(peer), offset + 4);
-                    pack.uint48(offset + 10, time);
+                    pack.uint48(offset + 10, faces[land].time(peer));
                     offset += 16;
                 }
             }
@@ -11146,7 +11164,7 @@ var $;
             }
             for (const [hash, rock] of rocks) {
                 const len = rock?.length ?? 0;
-                pack.uint32(offset, len ? (len << 8) + $hyoo_crus_part.hash : $hyoo_crus_part.rock);
+                pack.uint32(offset, rock ? (len << 8) + $hyoo_crus_part.rock : $hyoo_crus_part.hash);
                 buff.set(hash, offset + 4);
                 if (rock)
                     buff.set(rock, offset + 24);
@@ -25347,7 +25365,7 @@ var $;
             $mol_assert_equal(land1.delta_unit(), []);
             land1.post('', '', 'AA111111', new Uint8Array([1]));
             $mol_assert_equal(land1.delta_unit().length, 2);
-            const face = new $hyoo_crus_face(land1.face);
+            const face = new $hyoo_crus_face_map(land1.face);
             land1.post('AA111111', '', 'AA222222', new Uint8Array([2]));
             $mol_assert_equal(land1.delta_unit().length, 3);
             $mol_assert_equal(land1.delta_unit(face).length, 1);
@@ -25657,7 +25675,7 @@ var $;
             const list1 = land1.Node($hyoo_crus_list).Item('');
             const list2 = land2.Node($hyoo_crus_list).Item('');
             list1.items(['foo', 'xxx']);
-            land2.face.tick(land2.auth().peer());
+            land2.face.tick();
             list2.items(['foo', 'yyy']);
             land1.apply_unit(land2.delta_unit());
             $mol_assert_equal(list1.items(), ['foo', 'yyy', 'foo', 'xxx']);
@@ -26285,12 +26303,12 @@ var $;
                 const dict1 = land1.Node($hyoo_crus_dict).Item('');
                 const dict2 = land2.Node($hyoo_crus_dict).Item('');
                 dict1.dive(123, $hyoo_crus_reg).value_vary(666);
-                land2.face.tick(land2.auth().peer());
+                land2.face.tick();
                 dict2.dive(123, $hyoo_crus_reg).value_vary(777);
                 land1.apply_unit(land2.delta_unit());
                 $mol_assert_equal(dict1.dive(123, $hyoo_crus_reg).value_vary(), 777);
                 dict1.dive('xxx', $hyoo_crus_list).items(['foo']);
-                land2.face.tick(land2.auth().peer());
+                land2.face.tick();
                 dict2.dive('xxx', $hyoo_crus_list).items(['bar']);
                 land1.apply_unit(land2.delta_unit());
                 $mol_assert_equal(dict1.dive('xxx', $hyoo_crus_list).items(), ['bar', 'foo']);
