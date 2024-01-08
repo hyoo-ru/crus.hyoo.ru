@@ -10401,6 +10401,27 @@ var $;
             return bytes;
         }
         apply_unit(delta) {
+            const passes = delta.filter(unit => unit.kind() === 'pass');
+            const auth = new Map(passes.map((unit) => [unit.peer(), unit.auth()]));
+            const mixin = $mol_base64_ae_decode(this.ref().description);
+            const errors = delta.map(unit => {
+                let key_public = this.key_public(unit.peer());
+                if (!key_public) {
+                    const key_serial = auth.get(unit.peer());
+                    if (!key_serial)
+                        return `No public key for peer (${unit.peer()})`;
+                    key_public = $mol_wire_sync($mol_crypto_key_public).from(key_serial);
+                }
+                const sens = unit.sens().slice();
+                for (let i = 0; i < mixin.length; ++i)
+                    sens[i + 14] ^= mixin[i + 14];
+                return $mol_wire_sync(key_public).verify(sens, unit.sign()) ? '' : `Wrong unit sign`;
+            });
+            if (errors.some(v => v))
+                return errors;
+            return this.apply_unit_trust(delta);
+        }
+        apply_unit_trust(delta) {
             return delta.map(unit => {
                 const error = this.check_unit(unit);
                 if (error)
@@ -10451,7 +10472,7 @@ var $;
             });
         }
         apply_land(land) {
-            return this.apply_unit(land.delta_unit());
+            return this.apply_unit_trust(land.delta_unit());
         }
         recheck() {
             for (const [peer, pass] of this.passes) {
@@ -10571,7 +10592,7 @@ var $;
                 return prev;
             const next = new $hyoo_crus_pass;
             next.auth(auth.public().asArray());
-            const error = this.apply_unit([next])[0];
+            const error = this.apply_unit_trust([next])[0];
             if (error)
                 $mol_fail(new Error(error));
             return next;
@@ -10584,7 +10605,7 @@ var $;
             unit.time(this.face.tick());
             unit.peer(auth.peer());
             unit.dest(dest);
-            const error = this.apply_unit([unit])[0];
+            const error = this.apply_unit_trust([unit])[0];
             if (error)
                 $mol_fail(new Error(error));
             return unit;
@@ -10610,7 +10631,7 @@ var $;
                     unit.data(bin, tip, tag);
             }
             unit.self(self || this.self_make($hyoo_crus_zone_of(head), unit.idea()));
-            const error = this.apply_unit([unit])[0];
+            const error = this.apply_unit_trust([unit])[0];
             if (error)
                 $mol_fail(new Error(error));
             return unit;
@@ -10657,7 +10678,7 @@ var $;
         bus() {
             return new this.$.$mol_bus(`$hyoo_crus_land:${this.ref().description}`, $mol_wire_async(bins => {
                 const yard = this.$.$hyoo_crus_yard;
-                this.apply_unit(bins.map(bin => {
+                this.apply_unit_trust(bins.map(bin => {
                     const unit = new $hyoo_crus_unit(bin).narrow();
                     yard.persisted.add(unit);
                     return unit;
@@ -10713,14 +10734,11 @@ var $;
                 return;
             const key = $mol_wire_sync(this.auth());
             const mixin = $mol_base64_ae_decode(this.ref().description);
-            unit.mix(mixin);
-            try {
-                const sign = new Uint8Array(key.sign(unit.sens()));
-                unit.sign(sign);
-            }
-            finally {
-                unit.mix(mixin);
-            }
+            const sens = unit.sens().slice();
+            for (let i = 0; i < mixin.length; ++i)
+                sens[i + 14] ^= mixin[i + 14];
+            const sign = new Uint8Array(key.sign(sens));
+            unit.sign(sign);
         }
         gist_encode(gist) {
             if (gist._open === undefined)
@@ -10804,7 +10822,7 @@ var $;
             unit.dest(auth.lord());
             const secret_closed = $mol_wire_sync(secret_mutual).encrypt(secret_land, unit.salt());
             unit.bill().set(new Uint8Array(secret_closed));
-            const error = this.apply_unit([unit])[0];
+            const error = this.apply_unit_trust([unit])[0];
             if (error)
                 $mol_fail(new Error(error));
             return next;
@@ -10878,6 +10896,9 @@ var $;
     __decorate([
         $mol_action
     ], $hyoo_crus_land.prototype, "apply_unit", null);
+    __decorate([
+        $mol_action
+    ], $hyoo_crus_land.prototype, "apply_unit_trust", null);
     __decorate([
         $mol_action
     ], $hyoo_crus_land.prototype, "fork", null);
@@ -25484,7 +25505,7 @@ var $;
             $mol_assert_equal(land1.lord_rang(auth1.lord()), $hyoo_crus_rang.law);
             land1.give(auth1.lord(), $hyoo_crus_rang.mod);
             $mol_assert_equal(land1.lord_rang(auth1.lord()), $hyoo_crus_rang.mod);
-            land2.apply_unit(land1.delta_unit());
+            land2.apply_unit_trust(land1.delta_unit());
             $mol_assert_fail(() => land2.give(auth2.lord(), $hyoo_crus_rang.add), 'Need law rang to change rang');
         },
         'Post Data and pick Delta'($) {
@@ -25497,12 +25518,12 @@ var $;
             land1.post('AA111111', '', 'AA222222', new Uint8Array([2]));
             $mol_assert_equal(land1.delta_unit().length, 3);
             $mol_assert_equal(land1.delta_unit(face).length, 1);
-            land2.apply_unit(land1.delta_unit());
+            land2.apply_unit_trust(land1.delta_unit());
             $mol_assert_fail(() => land2.post('AA222222', '', 'AA333333', new Uint8Array([3])), 'Need add rang to join');
             $mol_assert_equal(land2.delta_unit().length, 3);
             $mol_assert_equal(land2.delta_unit(face).length, 1);
             land1.give(auth1.lord(), $hyoo_crus_rang.add);
-            land2.apply_unit(land1.delta_unit());
+            land2.apply_unit_trust(land1.delta_unit());
             $mol_assert_fail(() => land2.post('AA222222', '', 'AA333333', new Uint8Array([3])), 'Need mod rang to post any data');
             $mol_assert_equal(land2.delta_unit().length, 5);
             $mol_assert_equal(land2.delta_unit(face).length, 3);
@@ -25510,16 +25531,16 @@ var $;
             $mol_assert_equal(land2.delta_unit().length, 6);
             $mol_assert_equal(land2.delta_unit(face).length, 4);
             land1.give(auth1.lord(), $hyoo_crus_rang.mod);
-            land2.apply_unit(land1.delta_unit());
+            land2.apply_unit_trust(land1.delta_unit());
             $mol_assert_fail(() => land2.post('AA222222', '', '33333333', new Uint8Array([3])), 'Need law rang to post to core zone');
             land2.post('AA222222', '', 'AA333333', new Uint8Array([3]));
             $mol_assert_equal(land2.delta_unit().length, 7);
             $mol_assert_equal(land2.delta_unit(face).length, 5);
             land1.give(auth1.lord(), $hyoo_crus_rang.add);
-            land2.apply_unit(land1.delta_unit());
+            land2.apply_unit_trust(land1.delta_unit());
             $mol_assert_equal(land2.delta_unit().length, 6);
             land1.give(auth1.lord(), $hyoo_crus_rang.get);
-            land2.apply_unit(land1.delta_unit());
+            land2.apply_unit_trust(land1.delta_unit());
             $mol_assert_equal(land2.delta_unit().length, 4);
         },
         'Self restriction for Add Rang'($) {
@@ -25527,7 +25548,7 @@ var $;
             const land2 = $hyoo_crus_land.make({ $, lord_ref: () => land1.lord_ref(), auth: () => auth2 });
             $mol_assert_equal(land1.delta_unit(), []);
             land1.give(auth2.lord(), $hyoo_crus_rang.add);
-            land2.apply_unit(land1.delta_unit());
+            land2.apply_unit_trust(land1.delta_unit());
             $mol_assert_equal(land2.delta_unit().length, 2);
             const gist1 = land2.post('', '', '', 'foo');
             $mol_assert_equal(gist1.self(), $hyoo_crus_zone_to(auth2.peer(), 'root'));
@@ -25808,7 +25829,7 @@ var $;
             list1.items(['foo', 'xxx']);
             land2.face.tick();
             list2.items(['foo', 'yyy']);
-            land1.apply_unit(land2.delta_unit());
+            land1.apply_unit_trust(land2.delta_unit());
             $mol_assert_equal(list1.items(), ['foo', 'yyy', 'foo', 'xxx']);
         },
         'Insert before removed before changed'($) {
@@ -26436,12 +26457,12 @@ var $;
                 dict1.dive(123, $hyoo_crus_reg).value_vary(666);
                 land2.face.tick();
                 dict2.dive(123, $hyoo_crus_reg).value_vary(777);
-                land1.apply_unit(land2.delta_unit());
+                land1.apply_unit_trust(land2.delta_unit());
                 $mol_assert_equal(dict1.dive(123, $hyoo_crus_reg).value_vary(), 777);
                 dict1.dive('xxx', $hyoo_crus_list).items(['foo']);
                 land2.face.tick();
                 dict2.dive('xxx', $hyoo_crus_list).items(['bar']);
-                land1.apply_unit(land2.delta_unit());
+                land1.apply_unit_trust(land2.delta_unit());
                 $mol_assert_equal(dict1.dive('xxx', $hyoo_crus_list).items(), ['bar', 'foo']);
             },
             "Narrowed Dictionary with linked Dictionaries and others"($) {
@@ -26780,26 +26801,26 @@ var $;
             text2.str('xxx yyy.');
             const delta1 = land1.delta_unit();
             const delta2 = land2.delta_unit();
-            land1.apply_unit(delta2);
-            land2.apply_unit(delta1);
+            land1.apply_unit_trust(delta2);
+            land2.apply_unit_trust(delta1);
             $mol_assert_equal(text1.str(), text2.str(), 'xxx yyy.foo bar.');
         },
         async 'Merge same insertions with different changes to same place'($) {
             const base = $hyoo_crus_land.make({ $ });
             base.Root($hyoo_crus_text).str('( )');
             const left = $hyoo_crus_land.make({ $ });
-            left.apply_unit(base.delta_unit());
+            left.apply_unit_trust(base.delta_unit());
             left.Root($hyoo_crus_text).str('( [ f ] )');
             left.Root($hyoo_crus_text).str('( [ foo ] )');
             const right = $hyoo_crus_land.make({ $ });
-            right.apply_unit(base.delta_unit());
+            right.apply_unit_trust(base.delta_unit());
             right.face.sync(left.face);
             right.Root($hyoo_crus_text).str('( [ f ] )');
             right.Root($hyoo_crus_text).str('( [ fu ] )');
             const left_delta = left.delta_unit(base.face);
             const right_delta = right.delta_unit(base.face);
-            left.apply_unit(right_delta);
-            right.apply_unit(left_delta);
+            left.apply_unit_trust(right_delta);
+            right.apply_unit_trust(left_delta);
             $mol_assert_equal(left.Root($hyoo_crus_text).str(), right.Root($hyoo_crus_text).str(), '( [ fu ] [ foo ] )');
         },
     });

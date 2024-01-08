@@ -10404,6 +10404,27 @@ var $;
             return bytes;
         }
         apply_unit(delta) {
+            const passes = delta.filter(unit => unit.kind() === 'pass');
+            const auth = new Map(passes.map((unit) => [unit.peer(), unit.auth()]));
+            const mixin = $mol_base64_ae_decode(this.ref().description);
+            const errors = delta.map(unit => {
+                let key_public = this.key_public(unit.peer());
+                if (!key_public) {
+                    const key_serial = auth.get(unit.peer());
+                    if (!key_serial)
+                        return `No public key for peer (${unit.peer()})`;
+                    key_public = $mol_wire_sync($mol_crypto_key_public).from(key_serial);
+                }
+                const sens = unit.sens().slice();
+                for (let i = 0; i < mixin.length; ++i)
+                    sens[i + 14] ^= mixin[i + 14];
+                return $mol_wire_sync(key_public).verify(sens, unit.sign()) ? '' : `Wrong unit sign`;
+            });
+            if (errors.some(v => v))
+                return errors;
+            return this.apply_unit_trust(delta);
+        }
+        apply_unit_trust(delta) {
             return delta.map(unit => {
                 const error = this.check_unit(unit);
                 if (error)
@@ -10454,7 +10475,7 @@ var $;
             });
         }
         apply_land(land) {
-            return this.apply_unit(land.delta_unit());
+            return this.apply_unit_trust(land.delta_unit());
         }
         recheck() {
             for (const [peer, pass] of this.passes) {
@@ -10574,7 +10595,7 @@ var $;
                 return prev;
             const next = new $hyoo_crus_pass;
             next.auth(auth.public().asArray());
-            const error = this.apply_unit([next])[0];
+            const error = this.apply_unit_trust([next])[0];
             if (error)
                 $mol_fail(new Error(error));
             return next;
@@ -10587,7 +10608,7 @@ var $;
             unit.time(this.face.tick());
             unit.peer(auth.peer());
             unit.dest(dest);
-            const error = this.apply_unit([unit])[0];
+            const error = this.apply_unit_trust([unit])[0];
             if (error)
                 $mol_fail(new Error(error));
             return unit;
@@ -10613,7 +10634,7 @@ var $;
                     unit.data(bin, tip, tag);
             }
             unit.self(self || this.self_make($hyoo_crus_zone_of(head), unit.idea()));
-            const error = this.apply_unit([unit])[0];
+            const error = this.apply_unit_trust([unit])[0];
             if (error)
                 $mol_fail(new Error(error));
             return unit;
@@ -10660,7 +10681,7 @@ var $;
         bus() {
             return new this.$.$mol_bus(`$hyoo_crus_land:${this.ref().description}`, $mol_wire_async(bins => {
                 const yard = this.$.$hyoo_crus_yard;
-                this.apply_unit(bins.map(bin => {
+                this.apply_unit_trust(bins.map(bin => {
                     const unit = new $hyoo_crus_unit(bin).narrow();
                     yard.persisted.add(unit);
                     return unit;
@@ -10716,14 +10737,11 @@ var $;
                 return;
             const key = $mol_wire_sync(this.auth());
             const mixin = $mol_base64_ae_decode(this.ref().description);
-            unit.mix(mixin);
-            try {
-                const sign = new Uint8Array(key.sign(unit.sens()));
-                unit.sign(sign);
-            }
-            finally {
-                unit.mix(mixin);
-            }
+            const sens = unit.sens().slice();
+            for (let i = 0; i < mixin.length; ++i)
+                sens[i + 14] ^= mixin[i + 14];
+            const sign = new Uint8Array(key.sign(sens));
+            unit.sign(sign);
         }
         gist_encode(gist) {
             if (gist._open === undefined)
@@ -10807,7 +10825,7 @@ var $;
             unit.dest(auth.lord());
             const secret_closed = $mol_wire_sync(secret_mutual).encrypt(secret_land, unit.salt());
             unit.bill().set(new Uint8Array(secret_closed));
-            const error = this.apply_unit([unit])[0];
+            const error = this.apply_unit_trust([unit])[0];
             if (error)
                 $mol_fail(new Error(error));
             return next;
@@ -10881,6 +10899,9 @@ var $;
     __decorate([
         $mol_action
     ], $hyoo_crus_land.prototype, "apply_unit", null);
+    __decorate([
+        $mol_action
+    ], $hyoo_crus_land.prototype, "apply_unit_trust", null);
     __decorate([
         $mol_action
     ], $hyoo_crus_land.prototype, "fork", null);
