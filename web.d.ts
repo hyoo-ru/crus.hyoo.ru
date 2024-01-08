@@ -2179,19 +2179,6 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    class $hyoo_crus_gift extends $hyoo_crus_unit {
-        rang(next?: $hyoo_crus_rang): $hyoo_crus_rang;
-        time(next?: number): number;
-        free(): Uint8Array;
-        _dest: symbol;
-        dest(next?: symbol): symbol;
-        bill(): Uint8Array;
-        tail(): Uint8Array;
-        static compare(left: $hyoo_crus_gift, right: $hyoo_crus_gift): number;
-    }
-}
-
-declare namespace $ {
     class $mol_time_base {
         static patterns: Record<string, (arg: any) => string>;
         static formatter(pattern: string): (arg: any) => string;
@@ -2306,6 +2293,19 @@ declare namespace $ {
             sss: (moment: $mol_time_moment) => string;
             Z: (moment: $mol_time_moment) => string;
         };
+    }
+}
+
+declare namespace $ {
+    class $hyoo_crus_gift extends $hyoo_crus_unit {
+        rang(next?: $hyoo_crus_rang): $hyoo_crus_rang;
+        time(next?: number): number;
+        free(): Uint8Array;
+        _dest: symbol;
+        dest(next?: symbol): symbol;
+        bill(): Uint8Array;
+        tail(): Uint8Array;
+        static compare(left: $hyoo_crus_gift, right: $hyoo_crus_gift): number;
     }
 }
 
