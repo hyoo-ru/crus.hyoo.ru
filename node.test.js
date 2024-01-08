@@ -1012,11 +1012,11 @@ var $;
         return true;
     }
     function compare_buffer(left, right) {
-        if (left instanceof DataView)
-            return compare_buffer(new Uint8Array(left.buffer, left.byteOffset, left.byteLength), new Uint8Array(right.buffer, left.byteOffset, left.byteLength));
         const len = left.byteLength;
         if (len !== right.byteLength)
             return false;
+        if (left instanceof DataView)
+            return compare_buffer(new Uint8Array(left.buffer, left.byteOffset, left.byteLength), new Uint8Array(right.buffer, left.byteOffset, left.byteLength));
         for (let i = 0; i < len; ++i) {
             if (left[i] !== right[i])
                 return false;
@@ -10928,9 +10928,6 @@ var $;
     __decorate([
         $mol_mem
     ], $hyoo_crus_land.prototype, "secret", null);
-    __decorate([
-        $mol_action
-    ], $hyoo_crus_land.prototype, "dump", null);
     $.$hyoo_crus_land = $hyoo_crus_land;
 })($ || ($ = {}));
 //hyoo/crus/land/land.ts
@@ -11104,8 +11101,9 @@ var $;
                         case $hyoo_crus_part.rock: {
                             const size = this.uint32(offset) >> 8;
                             const hash = buff.slice(offset += 4, offset += 20);
-                            const rock = buff.slice(offset, offset += size);
+                            const rock = buff.slice(offset, offset + size);
                             rocks.push([hash, rock]);
+                            offset += Math.ceil(size / 8) * 8;
                             continue;
                         }
                         case $hyoo_crus_part.buck: {
@@ -11134,7 +11132,7 @@ var $;
                 size += 24 + units[land].length * $hyoo_crus_unit.size;
             }
             for (const [hash, rock] of rocks) {
-                size += 24 + (rock?.length ?? 0);
+                size += 24 + (rock ? Math.ceil(rock.length / 8) * 8 : 0);
             }
             if (size === 0)
                 return null;
@@ -11168,7 +11166,7 @@ var $;
                 buff.set(hash, offset + 4);
                 if (rock)
                     buff.set(rock, offset + 24);
-                offset += 24 + len;
+                offset += 24 + Math.ceil(len / 8) * 8;
             }
             return pack;
         }
@@ -15993,7 +15991,10 @@ var $;
             return obj;
         }
         tools() {
-            return [];
+            return [
+                this.Size(),
+                this.Close()
+            ];
         }
         body() {
             return [
@@ -16005,6 +16006,19 @@ var $;
                 this.Encrypted(),
                 this.Dumping()
             ];
+        }
+        size() {
+            return "0 KB";
+        }
+        Size() {
+            const obj = new this.$.$mol_view();
+            obj.sub = () => [
+                this.size()
+            ];
+            return obj;
+        }
+        Close() {
+            return null;
         }
         node_title(id) {
             return "";
@@ -16065,6 +16079,9 @@ var $;
         $mol_mem
     ], $hyoo_crus_land_page.prototype, "land", null);
     __decorate([
+        $mol_mem
+    ], $hyoo_crus_land_page.prototype, "Size", null);
+    __decorate([
         $mol_mem_key
     ], $hyoo_crus_land_page.prototype, "node", null);
     __decorate([
@@ -16091,6 +16108,99 @@ var $;
     $.$hyoo_crus_land_page = $hyoo_crus_land_page;
 })($ || ($ = {}));
 //hyoo/crus/land/page/-view.tree/page.view.tree.ts
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_after_work extends $mol_object2 {
+        delay;
+        task;
+        id;
+        constructor(delay, task) {
+            super();
+            this.delay = delay;
+            this.task = task;
+            this.id = requestIdleCallback(task, { timeout: delay });
+        }
+        destructor() {
+            cancelIdleCallback(this.id);
+        }
+    }
+    $.$mol_after_work = $mol_after_work;
+    if (typeof requestIdleCallback !== 'function') {
+        $.$mol_after_work = $mol_after_timeout;
+    }
+})($ || ($ = {}));
+//mol/after/work/work.ts
+;
+"use strict";
+var $;
+(function ($) {
+    function $mol_wait_rest_async() {
+        return new Promise(done => {
+            new this.$mol_after_work(16, () => done(null));
+        });
+    }
+    $.$mol_wait_rest_async = $mol_wait_rest_async;
+    function $mol_wait_rest() {
+        return this.$mol_wire_sync(this).$mol_wait_rest_async();
+    }
+    $.$mol_wait_rest = $mol_wait_rest;
+})($ || ($ = {}));
+//mol/wait/rest/rest.ts
+;
+"use strict";
+var $;
+(function ($) {
+    let $mol_si_prefix;
+    (function ($mol_si_prefix) {
+        $mol_si_prefix[$mol_si_prefix["y"] = -8] = "y";
+        $mol_si_prefix[$mol_si_prefix["z"] = -7] = "z";
+        $mol_si_prefix[$mol_si_prefix["a"] = -6] = "a";
+        $mol_si_prefix[$mol_si_prefix["f"] = -5] = "f";
+        $mol_si_prefix[$mol_si_prefix["p"] = -4] = "p";
+        $mol_si_prefix[$mol_si_prefix["n"] = -3] = "n";
+        $mol_si_prefix[$mol_si_prefix["\u00B5"] = -2] = "\u00B5";
+        $mol_si_prefix[$mol_si_prefix["m"] = -1] = "m";
+        $mol_si_prefix[$mol_si_prefix[""] = 0] = "";
+        $mol_si_prefix[$mol_si_prefix["k"] = 1] = "k";
+        $mol_si_prefix[$mol_si_prefix["M"] = 2] = "M";
+        $mol_si_prefix[$mol_si_prefix["G"] = 3] = "G";
+        $mol_si_prefix[$mol_si_prefix["T"] = 4] = "T";
+        $mol_si_prefix[$mol_si_prefix["P"] = 5] = "P";
+        $mol_si_prefix[$mol_si_prefix["E"] = 6] = "E";
+        $mol_si_prefix[$mol_si_prefix["Z"] = 7] = "Z";
+        $mol_si_prefix[$mol_si_prefix["Y"] = 8] = "Y";
+    })($mol_si_prefix = $.$mol_si_prefix || ($.$mol_si_prefix = {}));
+})($ || ($ = {}));
+//mol/si/prefix.ts
+;
+"use strict";
+var $;
+(function ($) {
+    function $mol_si_short(numb, unit = '') {
+        let magnitude = Math.floor(Math.log10(Math.abs(numb)) / 3);
+        if (!Number.isFinite(magnitude)) {
+            const prefix = isNaN(numb) ? `∅` : numb.toLocaleString();
+            const suffix = unit ? ' ' + unit : '';
+            return prefix + suffix;
+        }
+        let normal = numb / 10 ** (3 * magnitude);
+        if (Math.round(Math.abs(normal)) === 1000) {
+            normal /= 1000;
+            ++magnitude;
+        }
+        const prefix = normal.toPrecision(3);
+        if (unit) {
+            return prefix + ' ' + $mol_si_prefix[magnitude] + unit;
+        }
+        else {
+            return prefix + $mol_si_prefix[magnitude];
+        }
+    }
+    $.$mol_si_short = $mol_si_short;
+})($ || ($ = {}));
+//mol/si/short/short.ts
 ;
 "use strict";
 var $;
@@ -16122,10 +16232,16 @@ var $;
                     this.Node('AQAAAAAA'),
                 ];
             }
-            dump() {
+            pack() {
+                this.$.$mol_wait_rest();
                 const dump = this.land().dump();
-                const pack = $hyoo_crus_pack.make({}, { [dump.land]: dump.units }, dump.rocks);
-                return pack.toBlob();
+                return $hyoo_crus_pack.make({}, { [dump.land]: dump.units }, dump.rocks);
+            }
+            size() {
+                return $mol_si_short(this.pack().byteLength, 'B');
+            }
+            dump() {
+                return this.pack().toBlob();
             }
             dump_name() {
                 return `${this.land().ref().description}.crus`;
@@ -16141,8 +16257,11 @@ var $;
             $mol_mem
         ], $hyoo_crus_land_page.prototype, "body", null);
         __decorate([
-            $mol_action
-        ], $hyoo_crus_land_page.prototype, "dump", null);
+            $mol_mem
+        ], $hyoo_crus_land_page.prototype, "pack", null);
+        __decorate([
+            $mol_mem
+        ], $hyoo_crus_land_page.prototype, "size", null);
         $$.$hyoo_crus_land_page = $hyoo_crus_land_page;
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));
@@ -16162,6 +16281,9 @@ var $;
                 font: {
                     family: 'monospace',
                 }
+            },
+            Size: {
+                padding: $mol_gap.text,
             },
         });
     })($$ = $.$$ || ($.$$ = {}));
@@ -16361,9 +16483,7 @@ var $;
         Land(id) {
             const obj = new this.$.$hyoo_crus_land_page();
             obj.land = () => this.land(id);
-            obj.tools = () => [
-                this.Spread_close()
-            ];
+            obj.Close = () => this.Spread_close();
             return obj;
         }
         Land_new_icon() {
@@ -26674,6 +26794,67 @@ var $;
     });
 })($ || ($ = {}));
 //hyoo/crus/text/text.test.ts
+;
+"use strict";
+var $;
+(function ($_1) {
+    $mol_test_mocks.push($ => {
+        $.$mol_after_work = $mol_after_mock_timeout;
+    });
+})($ || ($ = {}));
+//mol/after/work/work.test.ts
+;
+"use strict";
+var $;
+(function ($) {
+    $mol_test({
+        'Special'() {
+            $mol_assert_equal($mol_si_short(0), '0');
+            $mol_assert_equal($mol_si_short(1 / 0), '∞');
+            $mol_assert_equal($mol_si_short(-1 / 0), '-∞');
+            $mol_assert_equal($mol_si_short(0 / 0), '∅');
+        },
+        'M'() {
+            $mol_assert_equal($mol_si_short(0), '0');
+            $mol_assert_equal($mol_si_short(0.999500), '1.00');
+            $mol_assert_equal($mol_si_short(-0.999600), '-1.00');
+            $mol_assert_equal($mol_si_short(999.4), '999');
+            $mol_assert_equal($mol_si_short(-999.4), '-999');
+        },
+        'L'() {
+            $mol_assert_equal($mol_si_short(999.5), '1.00k');
+            $mol_assert_equal($mol_si_short(-999.5), '-1.00k');
+            $mol_assert_equal($mol_si_short(999_400), '999k');
+            $mol_assert_equal($mol_si_short(-999_400), '-999k');
+        },
+        'XL'() {
+            $mol_assert_equal($mol_si_short(999_500), '1.00M');
+            $mol_assert_equal($mol_si_short(-999_600), '-1.00M');
+            $mol_assert_equal($mol_si_short(999_400_000), '999M');
+            $mol_assert_equal($mol_si_short(-999_400_000), '-999M');
+        },
+        'S'() {
+            $mol_assert_equal($mol_si_short(0.999400), '999m');
+            $mol_assert_equal($mol_si_short(-0.999400), '-999m');
+            $mol_assert_equal($mol_si_short(0.000_999_500), '1.00m');
+            $mol_assert_equal($mol_si_short(-0.000_999_500), '-1.00m');
+        },
+        'XS'() {
+            $mol_assert_equal($mol_si_short(0.000_999_400), '999µ');
+            $mol_assert_equal($mol_si_short(-0.000_999_400), '-999µ');
+            $mol_assert_equal($mol_si_short(0.000_000_999_600), '1.00µ');
+            $mol_assert_equal($mol_si_short(-0.000_000_999_600), '-1.00µ');
+        },
+        'With unit'() {
+            $mol_assert_equal($mol_si_short(0, 's'), '0 s');
+            $mol_assert_equal($mol_si_short(1 / 0, 's'), '∞ s');
+            $mol_assert_equal($mol_si_short(0 / 0, 's'), '∅ s');
+            $mol_assert_equal($mol_si_short(123, 'Hz'), '123 Hz');
+            $mol_assert_equal($mol_si_short(1234, 'g'), '1.23 kg');
+        },
+    });
+})($ || ($ = {}));
+//mol/si/short/short.test.ts
 ;
 "use strict";
 var $;

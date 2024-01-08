@@ -926,6 +926,8 @@ $mol_button_download $mol_button_minor
 $hyoo_crus_land_page $mol_page
 	land $hyoo_crus_land
 	tools /
+		<= Size $mol_view sub / <= size \0 KB
+		<= Close null
 	body /
 		<= Node*AAAAAAAA $hyoo_crus_node_dump
 			title <= node_title* \
@@ -979,8 +981,7 @@ $hyoo_crus_realm_book $mol_book2_catalog
 	realm $hyoo_crus_realm
 	Spread* <= Land* $hyoo_crus_land_page
 		land <= land* $hyoo_crus_land
-		tools /
-			<= Spread_close
+		Close <= Spread_close
 	menu_foot /
 		<= Land_new $mol_button_minor
 			hint \Grab new Land

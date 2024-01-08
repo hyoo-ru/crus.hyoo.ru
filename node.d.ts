@@ -6402,6 +6402,9 @@ declare namespace $ {
         tools(): readonly any[];
         body(): readonly any[];
         foot(): readonly any[];
+        size(): string;
+        Size(): $mol_view;
+        Close(): any;
         node_title(id: any): string;
         node(id: any): $hyoo_crus_node;
         Node(id: any): $$.$hyoo_crus_node_dump;
@@ -6416,6 +6419,47 @@ declare namespace $ {
     }
 }
 
+declare namespace $ {
+    class $mol_after_work extends $mol_object2 {
+        delay: number;
+        task: () => void;
+        id: any;
+        constructor(delay: number, task: () => void);
+        destructor(): void;
+    }
+}
+
+declare namespace $ {
+    function $mol_wait_rest_async(this: $): Promise<unknown>;
+    function $mol_wait_rest(this: $): unknown;
+}
+
+declare namespace $ {
+    enum $mol_si_prefix {
+        y = -8,
+        z = -7,
+        a = -6,
+        f = -5,
+        p = -4,
+        n = -3,
+        µ = -2,
+        m = -1,
+        '' = 0,
+        k = 1,
+        M = 2,
+        G = 3,
+        T = 4,
+        P = 5,
+        E = 6,
+        Z = 7,
+        Y = 8
+    }
+}
+
+declare namespace $ {
+    function $mol_si_short(numb: number, unit?: string): string;
+}
+
 declare namespace $.$$ {
     class $hyoo_crus_land_page extends $.$hyoo_crus_land_page {
         title(): string;
@@ -6424,6 +6468,8 @@ declare namespace $.$$ {
         encryptable(): boolean;
         encrypted(next?: boolean): boolean;
         body(): $hyoo_crus_node_dump[];
+        pack(): $hyoo_crus_pack;
+        size(): string;
         dump(): Blob;
         dump_name(): string;
     }
