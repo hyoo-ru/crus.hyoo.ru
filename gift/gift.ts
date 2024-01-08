@@ -25,15 +25,11 @@ namespace $ {
 		_dest!: symbol
 		dest( next?: symbol ) {
 			if( next === undefined && this._dest !== undefined ) return this._dest
-			else return this._dest = Symbol.for( this.id12( 56, next?.description ) )
+			else return this._dest = Symbol.for( this.id12( 52, next?.description ) )
 		}
 		
 		bill() {
 			return new Uint8Array( this.buffer, this.byteOffset + 32, 20 )
-		}
-		
-		tail() {
-			return new Uint8Array( this.buffer, this.byteOffset + 42, 4 )
 		}
 		
 		static compare(

@@ -734,6 +734,8 @@ namespace $ {
 		
 		dump() {
 			
+			this.saving()
+			
 			const units = [] as $hyoo_crus_unit[]
 			const rocks = [] as [ Uint8Array, Uint8Array ][]
 			
