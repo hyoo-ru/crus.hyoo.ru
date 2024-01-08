@@ -87,7 +87,7 @@ namespace $ {
 		}
 		
 		salt() {
-			return new Uint8Array( this.buffer, this.byteOffset + 2, 12 )
+			return new Uint8Array( this.buffer, this.byteOffset + 2, 16 )
 		}
 		
 		sens( next?: ArrayLike< number > ) {

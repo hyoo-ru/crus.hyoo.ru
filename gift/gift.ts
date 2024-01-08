@@ -19,17 +19,17 @@ namespace $ {
 		}
 		
 		free() {
-			return new Uint8Array( this.buffer, this.byteOffset + 14, 18 )
+			return new Uint8Array( this.buffer, this.byteOffset + 26, 6 )
 		}
 		
 		_dest!: symbol
 		dest( next?: symbol ) {
 			if( next === undefined && this._dest !== undefined ) return this._dest
-			else return this._dest = Symbol.for( this.id12( 52, next?.description ) )
+			else return this._dest = Symbol.for( this.id12( 14, next?.description ) )
 		}
 		
 		bill() {
-			return new Uint8Array( this.buffer, this.byteOffset + 32, 20 )
+			return new Uint8Array( this.buffer, this.byteOffset + 32, 32 )
 		}
 		
 		static compare(

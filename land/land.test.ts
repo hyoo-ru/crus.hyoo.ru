@@ -143,7 +143,7 @@ namespace $ {
 			
 			const gist = await land.post( '', '', '', new Uint8Array([ 1, 2, 3 ]) )
 			
-			$mol_assert_equal( ( await land.gist_encode( gist ) ).data().length, 7 )
+			$mol_assert_equal( ( await land.gist_encode( gist ) ).data().length, 16 )
 			$mol_assert_equal(
 				await land.gist_decode( gist ),
 				new Uint8Array([ 1, 2, 3 ]),
