@@ -2368,7 +2368,6 @@ declare namespace $ {
         _dest: symbol;
         dest(next?: symbol): symbol;
         bill(): Uint8Array;
-        tail(): Uint8Array;
         static compare(left: $hyoo_crus_gift, right: $hyoo_crus_gift): number;
     }
 }

@@ -8274,13 +8274,10 @@ var $;
             if (next === undefined && this._dest !== undefined)
                 return this._dest;
             else
-                return this._dest = Symbol.for(this.id12(56, next?.description));
+                return this._dest = Symbol.for(this.id12(52, next?.description));
         }
         bill() {
             return new Uint8Array(this.buffer, this.byteOffset + 32, 20);
-        }
-        tail() {
-            return new Uint8Array(this.buffer, this.byteOffset + 42, 4);
         }
         static compare(left, right) {
             return (right.time() - left.time()) || (right.peer() > left.peer() ? 1 : right.peer() < left.peer() ? -1 : 0);
@@ -10838,6 +10835,7 @@ var $;
             return $mol_wire_sync($mol_crypto_secret).from(secret_land);
         }
         dump() {
+            this.saving();
             const units = [];
             const rocks = [];
             for (const pass of this.passes.values())
