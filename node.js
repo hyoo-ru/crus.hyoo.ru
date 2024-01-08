@@ -7556,7 +7556,7 @@ var $;
                 return this._peer = this.id6(2, next);
         }
         salt() {
-            return new Uint8Array(this.buffer, this.byteOffset + 2, 12);
+            return new Uint8Array(this.buffer, this.byteOffset + 2, 16);
         }
         sens(next) {
             const prev = new Uint8Array(this.buffer, this.byteOffset, 64);
@@ -7587,14 +7587,13 @@ var $;
 var $;
 (function ($) {
     const algorithm = {
-        name: 'AES-GCM',
+        name: 'AES-CBC',
         length: 128,
         tagLength: 32,
     };
     class $mol_crypto_secret extends Object {
         native;
         static size = 16;
-        static extra = 4;
         constructor(native) {
             super();
             this.native = native;
@@ -8267,17 +8266,17 @@ var $;
             return this.uint48(8, next);
         }
         free() {
-            return new Uint8Array(this.buffer, this.byteOffset + 14, 18);
+            return new Uint8Array(this.buffer, this.byteOffset + 26, 6);
         }
         _dest;
         dest(next) {
             if (next === undefined && this._dest !== undefined)
                 return this._dest;
             else
-                return this._dest = Symbol.for(this.id12(52, next?.description));
+                return this._dest = Symbol.for(this.id12(14, next?.description));
         }
         bill() {
-            return new Uint8Array(this.buffer, this.byteOffset + 32, 20);
+            return new Uint8Array(this.buffer, this.byteOffset + 32, 32);
         }
         static compare(left, right) {
             return (right.time() - left.time()) || (right.peer() > left.peer() ? 1 : right.peer() < left.peer() ? -1 : 0);

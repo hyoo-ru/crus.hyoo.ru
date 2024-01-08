@@ -7548,7 +7548,7 @@ var $;
                 return this._peer = this.id6(2, next);
         }
         salt() {
-            return new Uint8Array(this.buffer, this.byteOffset + 2, 12);
+            return new Uint8Array(this.buffer, this.byteOffset + 2, 16);
         }
         sens(next) {
             const prev = new Uint8Array(this.buffer, this.byteOffset, 64);
@@ -7579,14 +7579,13 @@ var $;
 var $;
 (function ($) {
     const algorithm = {
-        name: 'AES-GCM',
+        name: 'AES-CBC',
         length: 128,
         tagLength: 32,
     };
     class $mol_crypto_secret extends Object {
         native;
         static size = 16;
-        static extra = 4;
         constructor(native) {
             super();
             this.native = native;
@@ -8259,17 +8258,17 @@ var $;
             return this.uint48(8, next);
         }
         free() {
-            return new Uint8Array(this.buffer, this.byteOffset + 14, 18);
+            return new Uint8Array(this.buffer, this.byteOffset + 26, 6);
         }
         _dest;
         dest(next) {
             if (next === undefined && this._dest !== undefined)
                 return this._dest;
             else
-                return this._dest = Symbol.for(this.id12(52, next?.description));
+                return this._dest = Symbol.for(this.id12(14, next?.description));
         }
         bill() {
-            return new Uint8Array(this.buffer, this.byteOffset + 32, 20);
+            return new Uint8Array(this.buffer, this.byteOffset + 32, 32);
         }
         static compare(left, right) {
             return (right.time() - left.time()) || (right.peer() > left.peer() ? 1 : right.peer() < left.peer() ? -1 : 0);
@@ -24912,7 +24911,7 @@ var $;
 var $;
 (function ($) {
     function $mol_crypto_salt() {
-        return $mol_crypto_native.getRandomValues(new Uint8Array(12));
+        return $mol_crypto_native.getRandomValues(new Uint8Array(16));
     }
     $.$mol_crypto_salt = $mol_crypto_salt;
 })($ || ($ = {}));
@@ -24929,7 +24928,7 @@ var $;
             const data = new Uint8Array([1, 2, 3]);
             const salt = $mol_crypto_salt();
             const closed = await cipher.encrypt(data, salt);
-            $mol_assert_equal(closed.byteLength, data.byteLength + $mol_crypto_secret.extra);
+            $mol_assert_equal(closed.byteLength, 16);
         },
         async 'decrypt self encrypted with auto generated key'() {
             const cipher = await $mol_crypto_secret.generate();
@@ -25549,7 +25548,7 @@ var $;
             await land.encrypted(true);
             $mol_assert_equal(await land.encrypted(), true);
             const gist = await land.post('', '', '', new Uint8Array([1, 2, 3]));
-            $mol_assert_equal((await land.gist_encode(gist)).data().length, 7);
+            $mol_assert_equal((await land.gist_encode(gist)).data().length, 16);
             $mol_assert_equal(await land.gist_decode(gist), new Uint8Array([1, 2, 3]));
             $mol_assert_equal((await land.gists_ordered('')).length, 1);
             await land.post('', '', gist.self(), null);
