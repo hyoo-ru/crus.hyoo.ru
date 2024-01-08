@@ -179,6 +179,8 @@ namespace $ {
 						
 						this.gifts.set( dest, next )
 						this.face.time_max( next.peer(), next.time() )
+						
+						if( prev ) this.face.count_shift( prev.peer(), -1 )
 						this.face.count_shift( next.peer(), 1 )
 						
 						if( ( prev?.rang() ?? $hyoo_crus_rang.get ) > next.rang() ) need_recheck = true
@@ -199,6 +201,8 @@ namespace $ {
 						units.set( self, next )
 						this.self_all.add( self )
 						this.face.time_max( next.peer(), next.time() )
+						
+						if( prev ) this.face.count_shift( prev.peer(), -1 )
 						this.face.count_shift( next.peer(), 1 )
 						
 					},
@@ -420,7 +424,7 @@ namespace $ {
 			let { tip, bin } = $hyoo_crus_vary_encode( vary )
 			unit._open = bin
 			
-			if( this.encrypted() ) {
+			if( vary !== null && this.encrypted() ) {
 				unit.hash( $mol_crypto_hash( bin ), tip, tag )
 			} else {
 				if( bin.byteLength > 32 ) unit.hash( this.$.$hyoo_crus_mine.hash( bin ), tip, tag )
@@ -602,13 +606,12 @@ namespace $ {
 		gist_encode( gist: $hyoo_crus_gist ) {
 			
 			if( gist._open === undefined ) return gist
+			if( gist.nil() ) return gist
 			
 			let bin = gist._open
 			const secret = this.secret()!
 			
-			if( secret ) {
-				bin = new Uint8Array( $mol_wire_sync( secret ).encrypt( bin, gist.salt() ) )
-			}
+			if( secret ) bin = new Uint8Array( $mol_wire_sync( secret ).encrypt( bin, gist.salt() ) )
 			
 			if( bin.byteLength > 32 ) gist.hash( this.$.$hyoo_crus_mine.save( bin ), gist.tip(), gist.tag() )
 			else gist.data( bin, gist.tip(), gist.tag() )
@@ -631,7 +634,7 @@ namespace $ {
 			if( gist._open !== undefined ) return gist._vary = $hyoo_crus_vary_decode({ tip: gist.tip(), bin: gist._open })
 			
 			let bin = gist.size() > 32 ? this.$.$hyoo_crus_mine.rock( gist.hash() ) : gist.data()
-			if( bin && this.secret() ) {
+			if( bin && !gist.nil() && this.secret() ) {
 				try {
 					bin = new Uint8Array( $mol_wire_sync( this.secret()! ).decrypt( bin, gist.salt() ) )
 				} catch( error: any ) {
