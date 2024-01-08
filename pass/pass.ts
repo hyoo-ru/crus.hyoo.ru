@@ -24,7 +24,7 @@ namespace $ {
 				' ',
 				this.peer(),
 				' 🔑 ',
-				$mol_dev_format_native( this.lord() ),
+				$mol_dev_format_span( {}, this.lord().description ),
 			)
 		}
 		

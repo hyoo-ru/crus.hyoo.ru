@@ -49,11 +49,11 @@ namespace $ {
 				' ',
 				this.peer(),
 				' 🏅 ',
-				$mol_dev_format_accent( $hyoo_crus_rang[ this.rang() ] ) ,
+				$mol_dev_format_span( {}, this.dest().description ),
+				this.bill().some( v => v ) ? ' 🔐' : ' 📢',
+				$hyoo_crus_rang[ this.rang() ],
 				' ',
-				this.dest(),
-				' ',
-				$mol_dev_format_shade( new Date( this.time() ) ) ,
+				$mol_dev_format_shade( new $mol_time_moment( this.time() ).toString( 'YYYY-MM-DD hh:mm:ss.sss' ) ),
 			)
 		}
 		
