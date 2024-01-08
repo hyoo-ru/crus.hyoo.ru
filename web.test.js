@@ -4881,12 +4881,12 @@ var $;
             $mol_assert_fail(() => land2.post('AA222222', '', 'AA333333', new Uint8Array([3])), 'Need mod rang to post any data');
             $mol_assert_equal(land2.delta_unit().length, 5);
             $mol_assert_equal(land2.delta_unit(face).length, 3);
-            land2.post('AA222222', '', $hyoo_crus_zone_to(auth1.peer(), 'root'), new Uint8Array([4]));
+            land2.post('AA222222', '', $hyoo_crus_area_to(auth1.peer(), 'data'), new Uint8Array([4]));
             $mol_assert_equal(land2.delta_unit().length, 6);
             $mol_assert_equal(land2.delta_unit(face).length, 4);
             land1.give(auth1.lord(), $hyoo_crus_rang.mod);
             land2.apply_unit_trust(land1.delta_unit());
-            $mol_assert_fail(() => land2.post('AA222222', '', '33333333', new Uint8Array([3])), 'Need law rang to post to core zone');
+            $mol_assert_fail(() => land2.post('AA222222', '', '33333333', new Uint8Array([3])), 'Need law rang to post to meta area');
             land2.post('AA222222', '', 'AA333333', new Uint8Array([3]));
             $mol_assert_equal(land2.delta_unit().length, 7);
             $mol_assert_equal(land2.delta_unit(face).length, 5);
@@ -4905,10 +4905,10 @@ var $;
             land2.apply_unit_trust(land1.delta_unit());
             $mol_assert_equal(land2.delta_unit().length, 2);
             const gist1 = land2.post('', '', '', 'foo');
-            $mol_assert_equal(gist1.self(), $hyoo_crus_zone_to(auth2.peer(), 'root'));
+            $mol_assert_equal(gist1.self(), $hyoo_crus_area_to(auth2.peer(), 'data'));
             $mol_assert_equal(land2.delta_unit().length, 4);
             const gist2 = land2.post('', '', '', 'bar');
-            $mol_assert_equal(gist2.self(), $hyoo_crus_zone_to(auth2.peer(), 'root'));
+            $mol_assert_equal(gist2.self(), $hyoo_crus_area_to(auth2.peer(), 'data'));
             $mol_assert_equal(land2.delta_unit().length, 4);
         },
         'Home Land no encryption'($) {
@@ -4933,26 +4933,26 @@ var $;
             const realm = $hyoo_crus_realm.make({ $ });
             const base = realm.home().base().land();
             const left = base.fork();
-            base.Root($hyoo_crus_list).items(['foo', 'xxx']);
-            $mol_assert_equal(base.Root($hyoo_crus_list).items(), ['foo', 'xxx']);
-            $mol_assert_equal(left.Root($hyoo_crus_list).items(), ['foo', 'xxx']);
+            base.Data($hyoo_crus_list).items(['foo', 'xxx']);
+            $mol_assert_equal(base.Data($hyoo_crus_list).items(), ['foo', 'xxx']);
+            $mol_assert_equal(left.Data($hyoo_crus_list).items(), ['foo', 'xxx']);
             left.face.sync(base.face);
-            left.Root($hyoo_crus_list).items(['foo', 'yyy']);
-            $mol_assert_equal(left.Root($hyoo_crus_list).items(), ['foo', 'yyy']);
+            left.Data($hyoo_crus_list).items(['foo', 'yyy']);
+            $mol_assert_equal(left.Data($hyoo_crus_list).items(), ['foo', 'yyy']);
             const right = base.fork();
             right.face.sync(left.face);
-            right.Root($hyoo_crus_list).items(['foo', 'zzz']);
-            $mol_assert_equal(right.Root($hyoo_crus_list).items(), ['foo', 'zzz']);
+            right.Data($hyoo_crus_list).items(['foo', 'zzz']);
+            $mol_assert_equal(right.Data($hyoo_crus_list).items(), ['foo', 'zzz']);
             const both = base.fork();
-            $mol_assert_equal(both.Root($hyoo_crus_list).items(), ['foo', 'xxx']);
-            both.Core().inflow([right.ref()]);
-            $mol_assert_equal(both.Root($hyoo_crus_list).items(), ['foo', 'zzz']);
-            both.Core().inflow([left.ref()]);
-            $mol_assert_equal(both.Root($hyoo_crus_list).items(), ['foo', 'yyy']);
-            both.Core().inflow([right.ref(), left.ref()]);
-            $mol_assert_equal(both.Root($hyoo_crus_list).items(), ['foo', 'yyy']);
-            both.Core().inflow([left.ref(), right.ref()]);
-            $mol_assert_equal(both.Root($hyoo_crus_list).items(), ['foo', 'zzz']);
+            $mol_assert_equal(both.Data($hyoo_crus_list).items(), ['foo', 'xxx']);
+            both.Meta().inflow([right.ref()]);
+            $mol_assert_equal(both.Data($hyoo_crus_list).items(), ['foo', 'zzz']);
+            both.Meta().inflow([left.ref()]);
+            $mol_assert_equal(both.Data($hyoo_crus_list).items(), ['foo', 'yyy']);
+            both.Meta().inflow([right.ref(), left.ref()]);
+            $mol_assert_equal(both.Data($hyoo_crus_list).items(), ['foo', 'yyy']);
+            both.Meta().inflow([left.ref(), right.ref()]);
+            $mol_assert_equal(both.Data($hyoo_crus_list).items(), ['foo', 'zzz']);
         },
     });
 })($ || ($ = {}));
@@ -5218,171 +5218,171 @@ var $;
         },
         'Insert after moved right'($) {
             const base = $hyoo_crus_land.make({ $ });
-            base.Root($hyoo_crus_list).items([1, 2, 3, 4]);
+            base.Data($hyoo_crus_list).items([1, 2, 3, 4]);
             const left = fork(base);
-            left.Root($hyoo_crus_list).items([1, 7, 2, 3, 4]);
+            left.Data($hyoo_crus_list).items([1, 7, 2, 3, 4]);
             const right = fork(base);
-            right.Root($hyoo_crus_list).move(0, 2);
+            right.Data($hyoo_crus_list).move(0, 2);
             sync(left, right);
-            $mol_assert_equal(left.Root($hyoo_crus_list).items(), right.Root($hyoo_crus_list).items(), [2, 1, 7, 3, 4]);
+            $mol_assert_equal(left.Data($hyoo_crus_list).items(), right.Data($hyoo_crus_list).items(), [2, 1, 7, 3, 4]);
         },
         'Insert before moved left'($) {
             const base = $hyoo_crus_land.make({ $ });
-            base.Root($hyoo_crus_list).items([1, 2, 3, 4]);
+            base.Data($hyoo_crus_list).items([1, 2, 3, 4]);
             const left = fork(base);
-            left.Root($hyoo_crus_list).move(1, 0);
+            left.Data($hyoo_crus_list).move(1, 0);
             const right = fork(base);
             right.face.sync(left.face);
-            right.Root($hyoo_crus_list).items([1, 7, 2, 3, 4]);
+            right.Data($hyoo_crus_list).items([1, 7, 2, 3, 4]);
             sync(left, right);
-            $mol_assert_equal(left.Root($hyoo_crus_list).items(), right.Root($hyoo_crus_list).items(), [2, 1, 7, 3, 4]);
+            $mol_assert_equal(left.Data($hyoo_crus_list).items(), right.Data($hyoo_crus_list).items(), [2, 1, 7, 3, 4]);
         },
         'Move left after inserted'($) {
             const base = $hyoo_crus_land.make({ $ });
-            base.Root($hyoo_crus_list).items([1, 2, 3, 4]);
+            base.Data($hyoo_crus_list).items([1, 2, 3, 4]);
             const left = fork(base);
-            left.Root($hyoo_crus_list).items([1, 7, 2, 3, 4]);
+            left.Data($hyoo_crus_list).items([1, 7, 2, 3, 4]);
             const right = fork(base);
             right.face.sync(left.face);
-            right.Root($hyoo_crus_list).move(1, 0);
+            right.Data($hyoo_crus_list).move(1, 0);
             sync(left, right);
-            $mol_assert_equal(left.Root($hyoo_crus_list).items(), right.Root($hyoo_crus_list).items(), [2, 1, 3, 7, 4]);
+            $mol_assert_equal(left.Data($hyoo_crus_list).items(), right.Data($hyoo_crus_list).items(), [2, 1, 3, 7, 4]);
         },
         'Insert before moved right'($) {
             const base = $hyoo_crus_land.make({ $ });
-            base.Root($hyoo_crus_list).items([1, 2, 3, 4]);
+            base.Data($hyoo_crus_list).items([1, 2, 3, 4]);
             const left = fork(base);
-            left.Root($hyoo_crus_list).move(1, 4);
+            left.Data($hyoo_crus_list).move(1, 4);
             const right = fork(base);
             right.face.sync(left.face);
-            right.Root($hyoo_crus_list).items([1, 7, 2, 3, 4]);
+            right.Data($hyoo_crus_list).items([1, 7, 2, 3, 4]);
             sync(left, right);
-            $mol_assert_equal(left.Root($hyoo_crus_list).items(), right.Root($hyoo_crus_list).items(), [1, 7, 3, 4, 2]);
+            $mol_assert_equal(left.Data($hyoo_crus_list).items(), right.Data($hyoo_crus_list).items(), [1, 7, 3, 4, 2]);
         },
         'Move right after inserted'($) {
             const base = $hyoo_crus_land.make({ $ });
-            base.Root($hyoo_crus_list).items([1, 2, 3, 4]);
+            base.Data($hyoo_crus_list).items([1, 2, 3, 4]);
             const left = fork(base);
-            left.Root($hyoo_crus_list).items([1, 7, 2, 3, 4]);
+            left.Data($hyoo_crus_list).items([1, 7, 2, 3, 4]);
             const right = fork(base);
             right.face.sync(left.face);
-            right.Root($hyoo_crus_list).move(1, 4);
+            right.Data($hyoo_crus_list).move(1, 4);
             sync(left, right);
-            $mol_assert_equal(left.Root($hyoo_crus_list).items(), right.Root($hyoo_crus_list).items(), [1, 3, 7, 4, 2]);
+            $mol_assert_equal(left.Data($hyoo_crus_list).items(), right.Data($hyoo_crus_list).items(), [1, 3, 7, 4, 2]);
         },
         'Insert after wiped'($) {
             const base = $hyoo_crus_land.make({ $ });
-            base.Root($hyoo_crus_list).items([1, 2, 3, 4]);
+            base.Data($hyoo_crus_list).items([1, 2, 3, 4]);
             const left = fork(base);
-            left.Root($hyoo_crus_list).items([1, 3, 4]);
+            left.Data($hyoo_crus_list).items([1, 3, 4]);
             const right = fork(base);
             right.face.sync(left.face);
-            right.Root($hyoo_crus_list).items([1, 2, 7, 3, 4]);
+            right.Data($hyoo_crus_list).items([1, 2, 7, 3, 4]);
             sync(left, right);
-            $mol_assert_equal(left.Root($hyoo_crus_list).items(), right.Root($hyoo_crus_list).items(), [1, 7, 3, 4]);
+            $mol_assert_equal(left.Data($hyoo_crus_list).items(), right.Data($hyoo_crus_list).items(), [1, 7, 3, 4]);
         },
         'Wiped before inserted'($) {
             const base = $hyoo_crus_land.make({ $ });
-            base.Root($hyoo_crus_list).items([1, 2, 3, 4]);
+            base.Data($hyoo_crus_list).items([1, 2, 3, 4]);
             const left = fork(base);
-            left.Root($hyoo_crus_list).items([1, 2, 7, 3, 4]);
+            left.Data($hyoo_crus_list).items([1, 2, 7, 3, 4]);
             const right = fork(base);
             right.face.sync(left.face);
-            right.Root($hyoo_crus_list).items([1, 3, 4]);
+            right.Data($hyoo_crus_list).items([1, 3, 4]);
             sync(left, right);
-            $mol_assert_equal(left.Root($hyoo_crus_list).items(), right.Root($hyoo_crus_list).items(), [1, 7, 3, 4]);
+            $mol_assert_equal(left.Data($hyoo_crus_list).items(), right.Data($hyoo_crus_list).items(), [1, 7, 3, 4]);
         },
         'Insert before wiped'($) {
             const base = $hyoo_crus_land.make({ $ });
-            base.Root($hyoo_crus_list).items([1, 2, 3, 4]);
+            base.Data($hyoo_crus_list).items([1, 2, 3, 4]);
             const left = fork(base);
-            left.Root($hyoo_crus_list).wipe(2);
+            left.Data($hyoo_crus_list).wipe(2);
             const right = fork(base);
             right.face.sync(left.face);
-            right.Root($hyoo_crus_list).items([1, 2, 7, 3, 4]);
+            right.Data($hyoo_crus_list).items([1, 2, 7, 3, 4]);
             sync(left, right);
-            $mol_assert_equal(left.Root($hyoo_crus_list).items(), right.Root($hyoo_crus_list).items(), [1, 2, 7, 4]);
+            $mol_assert_equal(left.Data($hyoo_crus_list).items(), right.Data($hyoo_crus_list).items(), [1, 2, 7, 4]);
         },
         'Wiped after inserted'($) {
             const base = $hyoo_crus_land.make({ $ });
-            base.Root($hyoo_crus_list).items([1, 2, 3, 4]);
+            base.Data($hyoo_crus_list).items([1, 2, 3, 4]);
             const left = fork(base);
-            left.Root($hyoo_crus_list).items([1, 2, 7, 3, 4]);
+            left.Data($hyoo_crus_list).items([1, 2, 7, 3, 4]);
             const right = fork(base);
             right.face.sync(left.face);
-            right.Root($hyoo_crus_list).wipe(2);
+            right.Data($hyoo_crus_list).wipe(2);
             sync(left, right);
-            $mol_assert_equal(left.Root($hyoo_crus_list).items(), right.Root($hyoo_crus_list).items(), [1, 2, 7, 4]);
+            $mol_assert_equal(left.Data($hyoo_crus_list).items(), right.Data($hyoo_crus_list).items(), [1, 2, 7, 4]);
         },
         'Insert after moved out'($) {
             const base = $hyoo_crus_land.make({ $ });
-            base.Root($hyoo_crus_list).items([1, 2, 3, 4]);
+            base.Data($hyoo_crus_list).items([1, 2, 3, 4]);
             const left = fork(base);
-            left.gist_move(left.Root($hyoo_crus_list).units()[1], '11111111', 0);
+            left.gist_move(left.Data($hyoo_crus_list).units()[1], '11111111', 0);
             const right = fork(base);
             right.face.sync(left.face);
-            right.Root($hyoo_crus_list).items([1, 2, 7, 3, 4]);
+            right.Data($hyoo_crus_list).items([1, 2, 7, 3, 4]);
             sync(left, right);
-            $mol_assert_equal(left.Root($hyoo_crus_list).items(), right.Root($hyoo_crus_list).items(), [1, 7, 3, 4]);
+            $mol_assert_equal(left.Data($hyoo_crus_list).items(), right.Data($hyoo_crus_list).items(), [1, 7, 3, 4]);
             $mol_assert_equal(left.Node($hyoo_crus_list).Item('11111111').items(), right.Node($hyoo_crus_list).Item('11111111').items(), [2]);
         },
         'Move out before inserted'($) {
             const base = $hyoo_crus_land.make({ $ });
-            base.Root($hyoo_crus_list).items([1, 2, 3, 4]);
+            base.Data($hyoo_crus_list).items([1, 2, 3, 4]);
             const left = fork(base);
-            left.Root($hyoo_crus_list).items([1, 2, 7, 3, 4]);
+            left.Data($hyoo_crus_list).items([1, 2, 7, 3, 4]);
             const right = fork(base);
             right.face.sync(left.face);
-            right.gist_move(right.Root($hyoo_crus_list).units()[1], '11111111', 0);
+            right.gist_move(right.Data($hyoo_crus_list).units()[1], '11111111', 0);
             sync(left, right);
-            $mol_assert_equal(left.Root($hyoo_crus_list).items(), right.Root($hyoo_crus_list).items(), [1, 7, 3, 4]);
+            $mol_assert_equal(left.Data($hyoo_crus_list).items(), right.Data($hyoo_crus_list).items(), [1, 7, 3, 4]);
             $mol_assert_equal(left.Node($hyoo_crus_list).Item('11111111').items(), right.Node($hyoo_crus_list).Item('11111111').items(), [2]);
         },
         'Insert before changed'($) {
             const base = $hyoo_crus_land.make({ $ });
-            base.Root($hyoo_crus_list).items([1, 2, 3, 4]);
+            base.Data($hyoo_crus_list).items([1, 2, 3, 4]);
             const left = fork(base);
-            left.Root($hyoo_crus_list).items([1, 2, 7, 4]);
+            left.Data($hyoo_crus_list).items([1, 2, 7, 4]);
             const right = fork(base);
             right.face.sync(left.face);
-            right.Root($hyoo_crus_list).items([1, 2, 13, 3, 4]);
+            right.Data($hyoo_crus_list).items([1, 2, 13, 3, 4]);
             sync(left, right);
-            $mol_assert_equal(left.Root($hyoo_crus_list).items(), right.Root($hyoo_crus_list).items(), [1, 2, 13, 7, 4]);
+            $mol_assert_equal(left.Data($hyoo_crus_list).items(), right.Data($hyoo_crus_list).items(), [1, 2, 13, 7, 4]);
         },
         'Change after inserted'($) {
             const base = $hyoo_crus_land.make({ $ });
-            base.Root($hyoo_crus_list).items([1, 2, 3, 4]);
+            base.Data($hyoo_crus_list).items([1, 2, 3, 4]);
             const left = fork(base);
-            left.Root($hyoo_crus_list).items([1, 2, 13, 3, 4]);
+            left.Data($hyoo_crus_list).items([1, 2, 13, 3, 4]);
             const right = fork(base);
             right.face.sync(left.face);
-            right.Root($hyoo_crus_list).items([1, 2, 7, 4]);
+            right.Data($hyoo_crus_list).items([1, 2, 7, 4]);
             sync(left, right);
-            $mol_assert_equal(left.Root($hyoo_crus_list).items(), right.Root($hyoo_crus_list).items(), [1, 2, 7, 13, 4]);
+            $mol_assert_equal(left.Data($hyoo_crus_list).items(), right.Data($hyoo_crus_list).items(), [1, 2, 7, 13, 4]);
         },
         'Insert between moved'($) {
             const base = $hyoo_crus_land.make({ $ });
-            base.Root($hyoo_crus_list).items([1, 2, 3, 4, 5, 6]);
+            base.Data($hyoo_crus_list).items([1, 2, 3, 4, 5, 6]);
             const left = fork(base);
-            left.Root($hyoo_crus_list).move(1, 5);
-            left.Root($hyoo_crus_list).move(1, 5);
+            left.Data($hyoo_crus_list).move(1, 5);
+            left.Data($hyoo_crus_list).move(1, 5);
             const right = fork(base);
             right.face.sync(left.face);
-            right.Root($hyoo_crus_list).items([1, 2, 7, 3, 4, 5, 6]);
+            right.Data($hyoo_crus_list).items([1, 2, 7, 3, 4, 5, 6]);
             sync(left, right);
-            $mol_assert_equal(left.Root($hyoo_crus_list).items(), right.Root($hyoo_crus_list).items(), [1, 4, 5, 2, 7, 3, 6]);
+            $mol_assert_equal(left.Data($hyoo_crus_list).items(), right.Data($hyoo_crus_list).items(), [1, 4, 5, 2, 7, 3, 6]);
         },
         'Move near inserted'($) {
             const base = $hyoo_crus_land.make({ $ });
-            base.Root($hyoo_crus_list).items([1, 2, 3, 4, 5, 6]);
+            base.Data($hyoo_crus_list).items([1, 2, 3, 4, 5, 6]);
             const left = fork(base);
-            left.Root($hyoo_crus_list).items([1, 2, 7, 3, 4, 5, 6]);
+            left.Data($hyoo_crus_list).items([1, 2, 7, 3, 4, 5, 6]);
             const right = fork(base);
             right.face.sync(left.face);
-            right.Root($hyoo_crus_list).move(1, 5);
-            right.Root($hyoo_crus_list).move(1, 5);
+            right.Data($hyoo_crus_list).move(1, 5);
+            right.Data($hyoo_crus_list).move(1, 5);
             sync(left, right);
-            $mol_assert_equal(left.Root($hyoo_crus_list).items(), right.Root($hyoo_crus_list).items(), [1, 4, 5, 2, 3, 7, 6]);
+            $mol_assert_equal(left.Data($hyoo_crus_list).items(), right.Data($hyoo_crus_list).items(), [1, 4, 5, 2, 3, 7, 6]);
         },
     });
 })($ || ($ = {}));
@@ -5746,10 +5746,10 @@ var $;
                 const realm = $hyoo_crus_realm.make({ $ });
                 const land = realm.home().base().land();
                 const reg = land.Node($hyoo_crus_reg).Item('11111111');
-                const remote = reg.yoke(null).Root($hyoo_crus_reg);
+                const remote = reg.yoke(null).Data($hyoo_crus_reg);
                 $mol_assert_unique(reg.land(), remote.land());
                 $mol_assert_equal(reg.value_ref(), remote.ref());
-                $mol_assert_equal(reg.yoke(null).Root($hyoo_crus_reg), remote);
+                $mol_assert_equal(reg.yoke(null).Data($hyoo_crus_reg), remote);
             },
             "Narrow registers"($) {
                 const realm = $hyoo_crus_realm.make({ $ });
@@ -5885,7 +5885,7 @@ var $;
                 }
                 const realm = $hyoo_crus_realm.make({ $ });
                 const land = realm.home().base().land();
-                const domain = land.Root(Domain);
+                const domain = land.Data(Domain);
                 await $mol_wire_async(land).sync();
                 const kind = domain.Kinds.dive('Kind');
                 const type = domain.Kinds.dive('Type');
@@ -6076,8 +6076,8 @@ var $;
     $mol_test({
         'Change sequences'($) {
             const land = $hyoo_crus_land.make({ $ });
-            const text = land.Root($hyoo_crus_text);
-            const list = land.Root($hyoo_crus_list);
+            const text = land.Data($hyoo_crus_text);
+            const list = land.Data($hyoo_crus_list);
             $mol_assert_equal(text.str(), '');
             $mol_assert_equal(list.items(), []);
             text.str('foo');
@@ -6104,7 +6104,7 @@ var $;
         },
         async 'str: Offset <=> Point'($) {
             const land = $hyoo_crus_land.make({ $ });
-            const text = land.Root($hyoo_crus_text);
+            const text = land.Data($hyoo_crus_text);
             text.str('fooBar');
             const [first, second] = text.units();
             $mol_assert_equal(text.point_by_offset(0), [first.self(), 0]);
@@ -6121,7 +6121,7 @@ var $;
         },
         async 'text: Offset <=> Point'($) {
             const land = $hyoo_crus_land.make({ $ });
-            const text = land.Root($hyoo_crus_text);
+            const text = land.Data($hyoo_crus_text);
             text.text('foo bar\n666 777');
             const [first, second] = text.nodes($hyoo_crus_text);
             $mol_assert_equal(text.point_by_offset(0), [first.units()[0].self(), 0]);
@@ -6145,21 +6145,21 @@ var $;
         },
         async 'Merge same insertions with different changes to same place'($) {
             const base = $hyoo_crus_land.make({ $ });
-            base.Root($hyoo_crus_text).str('( )');
+            base.Data($hyoo_crus_text).str('( )');
             const left = $hyoo_crus_land.make({ $ });
             left.apply_unit_trust(base.delta_unit());
-            left.Root($hyoo_crus_text).str('( [ f ] )');
-            left.Root($hyoo_crus_text).str('( [ foo ] )');
+            left.Data($hyoo_crus_text).str('( [ f ] )');
+            left.Data($hyoo_crus_text).str('( [ foo ] )');
             const right = $hyoo_crus_land.make({ $ });
             right.apply_unit_trust(base.delta_unit());
             right.face.sync(left.face);
-            right.Root($hyoo_crus_text).str('( [ f ] )');
-            right.Root($hyoo_crus_text).str('( [ fu ] )');
+            right.Data($hyoo_crus_text).str('( [ f ] )');
+            right.Data($hyoo_crus_text).str('( [ fu ] )');
             const left_delta = left.delta_unit(base.face);
             const right_delta = right.delta_unit(base.face);
             left.apply_unit_trust(right_delta);
             right.apply_unit_trust(left_delta);
-            $mol_assert_equal(left.Root($hyoo_crus_text).str(), right.Root($hyoo_crus_text).str(), '( [ fu ] [ foo ] )');
+            $mol_assert_equal(left.Data($hyoo_crus_text).str(), right.Data($hyoo_crus_text).str(), '( [ fu ] [ foo ] )');
         },
     });
 })($ || ($ = {}));

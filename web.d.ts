@@ -2560,12 +2560,12 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    enum $hyoo_crus_zone {
-        root = 0,
-        core = 1
+    enum $hyoo_crus_area {
+        data = 0,
+        meta = 1
     }
-    function $hyoo_crus_zone_of(numb: string): "root" | "core";
-    function $hyoo_crus_zone_to(numb: string, zone: keyof typeof $hyoo_crus_zone): string;
+    function $hyoo_crus_area_of(numb: string): "data" | "meta";
+    function $hyoo_crus_area_to(numb: string, area: keyof typeof $hyoo_crus_area): string;
 }
 
 declare namespace $ {
@@ -2944,7 +2944,7 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    const $hyoo_crus_core_base: typeof $hyoo_crus_dict & (new (...args: any[]) => $hyoo_crus_dict & {
+    const $hyoo_crus_meta_base: typeof $hyoo_crus_dict & (new (...args: any[]) => $hyoo_crus_dict & {
         Inflow: {
             value(next?: readonly (symbol | null)[] | undefined): readonly (symbol | null)[];
             items(next?: readonly $hyoo_crus_vary_type[] | undefined, tag?: "keys" | "vals" | "solo" | "term"): readonly $hyoo_crus_vary_type[];
@@ -2976,7 +2976,7 @@ declare namespace $ {
     } & {
         readonly inflow: (next?: readonly (symbol | null)[] | undefined) => readonly (symbol | null)[] | null;
     });
-    export class $hyoo_crus_core extends $hyoo_crus_core_base {
+    export class $hyoo_crus_meta extends $hyoo_crus_meta_base {
     }
     export {};
 }
@@ -5169,9 +5169,9 @@ declare namespace $ {
         gifts: $mol_wire_dict<symbol, $hyoo_crus_gift>;
         gists: $mol_wire_dict<string, $mol_wire_dict<string, $hyoo_crus_gist>>;
         self_all: $mol_wire_set<string>;
-        self_make(zone: keyof typeof $hyoo_crus_zone, idea?: number): string;
-        Root<Node extends typeof $hyoo_crus_node>(Node: Node): InstanceType<Node>;
-        Core(): $hyoo_crus_core;
+        self_make(area: keyof typeof $hyoo_crus_area, idea?: number): string;
+        Data<Node extends typeof $hyoo_crus_node>(Node: Node): InstanceType<Node>;
+        Meta(): $hyoo_crus_meta;
         Node<Node extends typeof $hyoo_crus_node>(Node: Node): $hyoo_crus_fund<string, InstanceType<Node>>;
         total(): number;
         joined_list(): symbol[];
