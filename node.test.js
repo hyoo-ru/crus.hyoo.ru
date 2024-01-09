@@ -16051,7 +16051,6 @@ var $;
         }
         tools() {
             return [
-                this.Size(),
                 this.Close()
             ];
         }
@@ -16065,16 +16064,6 @@ var $;
                 this.Encrypted(),
                 this.Dumping()
             ];
-        }
-        size() {
-            return "0 KB";
-        }
-        Size() {
-            const obj = new this.$.$mol_view();
-            obj.sub = () => [
-                this.size()
-            ];
-            return obj;
         }
         Close() {
             return null;
@@ -16112,6 +16101,16 @@ var $;
             obj.enabled = () => this.encryptable();
             return obj;
         }
+        size() {
+            return "0 KB";
+        }
+        Size() {
+            const obj = new this.$.$mol_view();
+            obj.sub = () => [
+                this.size()
+            ];
+            return obj;
+        }
         dump() {
             const obj = new this.$.$mol_blob();
             return obj;
@@ -16129,6 +16128,7 @@ var $;
         Dumping() {
             const obj = new this.$.$mol_view();
             obj.sub = () => [
+                this.Size(),
                 this.Dump()
             ];
             return obj;
@@ -16137,9 +16137,6 @@ var $;
     __decorate([
         $mol_mem
     ], $hyoo_crus_land_page.prototype, "land", null);
-    __decorate([
-        $mol_mem
-    ], $hyoo_crus_land_page.prototype, "Size", null);
     __decorate([
         $mol_mem_key
     ], $hyoo_crus_land_page.prototype, "node", null);
@@ -16155,6 +16152,9 @@ var $;
     __decorate([
         $mol_mem
     ], $hyoo_crus_land_page.prototype, "Encrypted", null);
+    __decorate([
+        $mol_mem
+    ], $hyoo_crus_land_page.prototype, "Size", null);
     __decorate([
         $mol_mem
     ], $hyoo_crus_land_page.prototype, "dump", null);

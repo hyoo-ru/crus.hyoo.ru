@@ -926,7 +926,6 @@ $mol_button_download $mol_button_minor
 $hyoo_crus_land_page $mol_page
 	land $hyoo_crus_land
 	tools /
-		<= Size $mol_view sub / <= size \0 KB
 		<= Close null
 	body /
 		<= Node*AAAAAAAA $hyoo_crus_node_dump
@@ -944,6 +943,7 @@ $hyoo_crus_land_page $mol_page
 			checked? <=> encrypted? false
 			enabled <= encryptable true
 		<= Dumping $mol_view sub /
+			<= Size $mol_view sub / <= size \0 KB
 			<= Dump $mol_button_download
 				hint \Download dump
 				blob <= dump $mol_blob

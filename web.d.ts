@@ -8305,8 +8305,6 @@ declare namespace $ {
         tools(): readonly any[];
         body(): readonly any[];
         foot(): readonly any[];
-        size(): string;
-        Size(): $mol_view;
         Close(): any;
         node_title(id: any): string;
         node(id: any): $hyoo_crus_node;
@@ -8315,6 +8313,8 @@ declare namespace $ {
         encrypted(next?: any): boolean;
         encryptable(): boolean;
         Encrypted(): $mol_check_icon;
+        size(): string;
+        Size(): $mol_view;
         dump(): Blob;
         dump_name(): string;
         Dump(): $$.$mol_button_download;
