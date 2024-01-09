@@ -8867,6 +8867,9 @@ var $;
         units() {
             return this.land().gists_ordered(this.head());
         }
+        filled() {
+            return this.units().length > 0;
+        }
         can_change(lord = this.land().auth().lord()) {
             return this.land().lord_rang(lord) >= $hyoo_crus_rang.add;
         }
@@ -20077,9 +20080,12 @@ var $;
                         statusText: 'Blocked'
                     }));
                 }
-                if (request.method !== 'GET' || !/^https?:/.test(request.url)) {
-                    return event.respondWith(fetch(request));
-                }
+                if (request.method !== 'GET')
+                    return;
+                if (!/^https?:/.test(request.url))
+                    return;
+                if (/\?/.test(request.url))
+                    return;
                 const fresh = fetch(event.request).then(response => {
                     event.waitUntil(caches.open('$mol_offline').then(cache => cache.put(event.request, response)));
                     return response.clone();

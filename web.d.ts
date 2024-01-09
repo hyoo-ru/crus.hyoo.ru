@@ -2580,6 +2580,7 @@ declare namespace $ {
         cast<Node extends typeof $hyoo_crus_node>(Node: Node): InstanceType<Node>;
         nodes<Node extends typeof $hyoo_crus_node>(Node: Node | null): readonly InstanceType<Node>[];
         units(): $hyoo_crus_gist[];
+        filled(): boolean;
         can_change(lord?: symbol): boolean;
     }
 }
@@ -2761,6 +2762,7 @@ declare namespace $ {
                 cast<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2): InstanceType<Node_2>;
                 nodes<Node_3 extends typeof $hyoo_crus_node>(Node: Node_3 | null): readonly InstanceType<Node_3>[];
                 units(): $hyoo_crus_gist[];
+                filled(): boolean;
                 can_change(lord?: symbol): boolean;
                 $: typeof $$;
                 destructor(): void;
@@ -2802,6 +2804,7 @@ declare namespace $ {
                     cast: <Node_5 extends typeof $hyoo_crus_node>(Node: Node_5) => InstanceType<Node_5>;
                     nodes: <Node_6 extends typeof $hyoo_crus_node>(Node: Node_6 | null) => readonly InstanceType<Node_6>[];
                     units: () => $hyoo_crus_gist[];
+                    filled: () => boolean;
                     can_change: (lord?: symbol) => boolean;
                 };
                 Value: Value;
@@ -2854,6 +2857,7 @@ declare namespace $ {
                 cast: <Node_2 extends typeof $hyoo_crus_node>(Node: Node_2) => InstanceType<Node_2>;
                 nodes: <Node_3 extends typeof $hyoo_crus_node>(Node: Node_3 | null) => readonly InstanceType<Node_3>[];
                 units: () => $hyoo_crus_gist[];
+                filled: () => boolean;
                 can_change: (lord?: symbol) => boolean;
             };
             Value: Value;
@@ -2890,6 +2894,7 @@ declare namespace $ {
             cast<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2): InstanceType<Node_2>;
             nodes<Node_3 extends typeof $hyoo_crus_node>(Node: Node_3 | null): readonly InstanceType<Node_3>[];
             units(): $hyoo_crus_gist[];
+            filled(): boolean;
             can_change(lord?: symbol): boolean;
             $: typeof $$;
             destructor(): void;
@@ -2951,6 +2956,7 @@ declare namespace $ {
                 cast<Node_5 extends typeof $hyoo_crus_node>(Node: Node_5): InstanceType<Node_5>;
                 nodes<Node_6 extends typeof $hyoo_crus_node>(Node: Node_6 | null): readonly InstanceType<Node_6>[];
                 units(): $hyoo_crus_gist[];
+                filled(): boolean;
                 can_change(lord?: symbol): boolean;
                 $: typeof $$;
                 destructor(): void;
@@ -2992,6 +2998,7 @@ declare namespace $ {
                     cast: <Node_8 extends typeof $hyoo_crus_node>(Node: Node_8) => InstanceType<Node_8>;
                     nodes: <Node_9 extends typeof $hyoo_crus_node>(Node: Node_9 | null) => readonly InstanceType<Node_9>[];
                     units: () => $hyoo_crus_gist[];
+                    filled: () => boolean;
                     can_change: (lord?: symbol) => boolean;
                 };
                 Value: Value;
@@ -3044,6 +3051,7 @@ declare namespace $ {
                 cast: <Node_8 extends typeof $hyoo_crus_node>(Node: Node_8) => InstanceType<Node_8>;
                 nodes: <Node_9 extends typeof $hyoo_crus_node>(Node: Node_9 | null) => readonly InstanceType<Node_9>[];
                 units: () => $hyoo_crus_gist[];
+                filled: () => boolean;
                 can_change: (lord?: symbol) => boolean;
             };
             Value: Value;
@@ -3089,6 +3097,7 @@ declare namespace $ {
             cast<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2): InstanceType<Node_2>;
             nodes<Node_3 extends typeof $hyoo_crus_node>(Node: Node_3 | null): readonly InstanceType<Node_3>[];
             units(): $hyoo_crus_gist[];
+            filled(): boolean;
             can_change(lord?: symbol): boolean;
             $: typeof $$;
             destructor(): void;
@@ -3150,6 +3159,7 @@ declare namespace $ {
                 cast<Node_5 extends typeof $hyoo_crus_node>(Node: Node_5): InstanceType<Node_5>;
                 nodes<Node_6 extends typeof $hyoo_crus_node>(Node: Node_6 | null): readonly InstanceType<Node_6>[];
                 units(): $hyoo_crus_gist[];
+                filled(): boolean;
                 can_change(lord?: symbol): boolean;
                 $: typeof $$;
                 destructor(): void;
@@ -3191,6 +3201,7 @@ declare namespace $ {
                     cast: <Node_8 extends typeof $hyoo_crus_node>(Node: Node_8) => InstanceType<Node_8>;
                     nodes: <Node_9 extends typeof $hyoo_crus_node>(Node: Node_9 | null) => readonly InstanceType<Node_9>[];
                     units: () => $hyoo_crus_gist[];
+                    filled: () => boolean;
                     can_change: (lord?: symbol) => boolean;
                 };
                 Value: Value;
@@ -3243,6 +3254,7 @@ declare namespace $ {
                 cast: <Node_8 extends typeof $hyoo_crus_node>(Node: Node_8) => InstanceType<Node_8>;
                 nodes: <Node_9 extends typeof $hyoo_crus_node>(Node: Node_9 | null) => readonly InstanceType<Node_9>[];
                 units: () => $hyoo_crus_gist[];
+                filled: () => boolean;
                 can_change: (lord?: symbol) => boolean;
             };
             Value: Value;
@@ -3288,6 +3300,7 @@ declare namespace $ {
             cast<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2): InstanceType<Node_2>;
             nodes<Node_3 extends typeof $hyoo_crus_node>(Node: Node_3 | null): readonly InstanceType<Node_3>[];
             units(): $hyoo_crus_gist[];
+            filled(): boolean;
             can_change(lord?: symbol): boolean;
             $: typeof $$;
             destructor(): void;
@@ -3349,6 +3362,7 @@ declare namespace $ {
                 cast<Node_5 extends typeof $hyoo_crus_node>(Node: Node_5): InstanceType<Node_5>;
                 nodes<Node_6 extends typeof $hyoo_crus_node>(Node: Node_6 | null): readonly InstanceType<Node_6>[];
                 units(): $hyoo_crus_gist[];
+                filled(): boolean;
                 can_change(lord?: symbol): boolean;
                 $: typeof $$;
                 destructor(): void;
@@ -3390,6 +3404,7 @@ declare namespace $ {
                     cast: <Node_8 extends typeof $hyoo_crus_node>(Node: Node_8) => InstanceType<Node_8>;
                     nodes: <Node_9 extends typeof $hyoo_crus_node>(Node: Node_9 | null) => readonly InstanceType<Node_9>[];
                     units: () => $hyoo_crus_gist[];
+                    filled: () => boolean;
                     can_change: (lord?: symbol) => boolean;
                 };
                 Value: Value;
@@ -3442,6 +3457,7 @@ declare namespace $ {
                 cast: <Node_8 extends typeof $hyoo_crus_node>(Node: Node_8) => InstanceType<Node_8>;
                 nodes: <Node_9 extends typeof $hyoo_crus_node>(Node: Node_9 | null) => readonly InstanceType<Node_9>[];
                 units: () => $hyoo_crus_gist[];
+                filled: () => boolean;
                 can_change: (lord?: symbol) => boolean;
             };
             Value: Value;
@@ -3487,6 +3503,7 @@ declare namespace $ {
             cast<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2): InstanceType<Node_2>;
             nodes<Node_3 extends typeof $hyoo_crus_node>(Node: Node_3 | null): readonly InstanceType<Node_3>[];
             units(): $hyoo_crus_gist[];
+            filled(): boolean;
             can_change(lord?: symbol): boolean;
             $: typeof $$;
             destructor(): void;
@@ -3548,6 +3565,7 @@ declare namespace $ {
                 cast<Node_5 extends typeof $hyoo_crus_node>(Node: Node_5): InstanceType<Node_5>;
                 nodes<Node_6 extends typeof $hyoo_crus_node>(Node: Node_6 | null): readonly InstanceType<Node_6>[];
                 units(): $hyoo_crus_gist[];
+                filled(): boolean;
                 can_change(lord?: symbol): boolean;
                 $: typeof $$;
                 destructor(): void;
@@ -3589,6 +3607,7 @@ declare namespace $ {
                     cast: <Node_8 extends typeof $hyoo_crus_node>(Node: Node_8) => InstanceType<Node_8>;
                     nodes: <Node_9 extends typeof $hyoo_crus_node>(Node: Node_9 | null) => readonly InstanceType<Node_9>[];
                     units: () => $hyoo_crus_gist[];
+                    filled: () => boolean;
                     can_change: (lord?: symbol) => boolean;
                 };
                 Value: Value;
@@ -3641,6 +3660,7 @@ declare namespace $ {
                 cast: <Node_8 extends typeof $hyoo_crus_node>(Node: Node_8) => InstanceType<Node_8>;
                 nodes: <Node_9 extends typeof $hyoo_crus_node>(Node: Node_9 | null) => readonly InstanceType<Node_9>[];
                 units: () => $hyoo_crus_gist[];
+                filled: () => boolean;
                 can_change: (lord?: symbol) => boolean;
             };
             Value: Value;
@@ -3686,6 +3706,7 @@ declare namespace $ {
             cast<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2): InstanceType<Node_2>;
             nodes<Node_3 extends typeof $hyoo_crus_node>(Node: Node_3 | null): readonly InstanceType<Node_3>[];
             units(): $hyoo_crus_gist[];
+            filled(): boolean;
             can_change(lord?: symbol): boolean;
             $: typeof $$;
             destructor(): void;
@@ -3747,6 +3768,7 @@ declare namespace $ {
                 cast<Node_5 extends typeof $hyoo_crus_node>(Node: Node_5): InstanceType<Node_5>;
                 nodes<Node_6 extends typeof $hyoo_crus_node>(Node: Node_6 | null): readonly InstanceType<Node_6>[];
                 units(): $hyoo_crus_gist[];
+                filled(): boolean;
                 can_change(lord?: symbol): boolean;
                 $: typeof $$;
                 destructor(): void;
@@ -3788,6 +3810,7 @@ declare namespace $ {
                     cast: <Node_8 extends typeof $hyoo_crus_node>(Node: Node_8) => InstanceType<Node_8>;
                     nodes: <Node_9 extends typeof $hyoo_crus_node>(Node: Node_9 | null) => readonly InstanceType<Node_9>[];
                     units: () => $hyoo_crus_gist[];
+                    filled: () => boolean;
                     can_change: (lord?: symbol) => boolean;
                 };
                 Value: Value;
@@ -3840,6 +3863,7 @@ declare namespace $ {
                 cast: <Node_8 extends typeof $hyoo_crus_node>(Node: Node_8) => InstanceType<Node_8>;
                 nodes: <Node_9 extends typeof $hyoo_crus_node>(Node: Node_9 | null) => readonly InstanceType<Node_9>[];
                 units: () => $hyoo_crus_gist[];
+                filled: () => boolean;
                 can_change: (lord?: symbol) => boolean;
             };
             Value: Value;
@@ -3885,6 +3909,7 @@ declare namespace $ {
             cast<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2): InstanceType<Node_2>;
             nodes<Node_3 extends typeof $hyoo_crus_node>(Node: Node_3 | null): readonly InstanceType<Node_3>[];
             units(): $hyoo_crus_gist[];
+            filled(): boolean;
             can_change(lord?: symbol): boolean;
             $: typeof $$;
             destructor(): void;
@@ -3946,6 +3971,7 @@ declare namespace $ {
                 cast<Node_5 extends typeof $hyoo_crus_node>(Node: Node_5): InstanceType<Node_5>;
                 nodes<Node_6 extends typeof $hyoo_crus_node>(Node: Node_6 | null): readonly InstanceType<Node_6>[];
                 units(): $hyoo_crus_gist[];
+                filled(): boolean;
                 can_change(lord?: symbol): boolean;
                 $: typeof $$;
                 destructor(): void;
@@ -3987,6 +4013,7 @@ declare namespace $ {
                     cast: <Node_8 extends typeof $hyoo_crus_node>(Node: Node_8) => InstanceType<Node_8>;
                     nodes: <Node_9 extends typeof $hyoo_crus_node>(Node: Node_9 | null) => readonly InstanceType<Node_9>[];
                     units: () => $hyoo_crus_gist[];
+                    filled: () => boolean;
                     can_change: (lord?: symbol) => boolean;
                 };
                 Value: Value;
@@ -4039,6 +4066,7 @@ declare namespace $ {
                 cast: <Node_8 extends typeof $hyoo_crus_node>(Node: Node_8) => InstanceType<Node_8>;
                 nodes: <Node_9 extends typeof $hyoo_crus_node>(Node: Node_9 | null) => readonly InstanceType<Node_9>[];
                 units: () => $hyoo_crus_gist[];
+                filled: () => boolean;
                 can_change: (lord?: symbol) => boolean;
             };
             Value: Value;
@@ -4084,6 +4112,7 @@ declare namespace $ {
             cast<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2): InstanceType<Node_2>;
             nodes<Node_3 extends typeof $hyoo_crus_node>(Node: Node_3 | null): readonly InstanceType<Node_3>[];
             units(): $hyoo_crus_gist[];
+            filled(): boolean;
             can_change(lord?: symbol): boolean;
             $: typeof $$;
             destructor(): void;
@@ -4145,6 +4174,7 @@ declare namespace $ {
                 cast<Node_5 extends typeof $hyoo_crus_node>(Node: Node_5): InstanceType<Node_5>;
                 nodes<Node_6 extends typeof $hyoo_crus_node>(Node: Node_6 | null): readonly InstanceType<Node_6>[];
                 units(): $hyoo_crus_gist[];
+                filled(): boolean;
                 can_change(lord?: symbol): boolean;
                 $: typeof $$;
                 destructor(): void;
@@ -4186,6 +4216,7 @@ declare namespace $ {
                     cast: <Node_8 extends typeof $hyoo_crus_node>(Node: Node_8) => InstanceType<Node_8>;
                     nodes: <Node_9 extends typeof $hyoo_crus_node>(Node: Node_9 | null) => readonly InstanceType<Node_9>[];
                     units: () => $hyoo_crus_gist[];
+                    filled: () => boolean;
                     can_change: (lord?: symbol) => boolean;
                 };
                 Value: Value;
@@ -4238,6 +4269,7 @@ declare namespace $ {
                 cast: <Node_8 extends typeof $hyoo_crus_node>(Node: Node_8) => InstanceType<Node_8>;
                 nodes: <Node_9 extends typeof $hyoo_crus_node>(Node: Node_9 | null) => readonly InstanceType<Node_9>[];
                 units: () => $hyoo_crus_gist[];
+                filled: () => boolean;
                 can_change: (lord?: symbol) => boolean;
             };
             Value: Value;
@@ -4283,6 +4315,7 @@ declare namespace $ {
             cast<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2): InstanceType<Node_2>;
             nodes<Node_3 extends typeof $hyoo_crus_node>(Node: Node_3 | null): readonly InstanceType<Node_3>[];
             units(): $hyoo_crus_gist[];
+            filled(): boolean;
             can_change(lord?: symbol): boolean;
             $: typeof $$;
             destructor(): void;
@@ -4344,6 +4377,7 @@ declare namespace $ {
                 cast<Node_5 extends typeof $hyoo_crus_node>(Node: Node_5): InstanceType<Node_5>;
                 nodes<Node_6 extends typeof $hyoo_crus_node>(Node: Node_6 | null): readonly InstanceType<Node_6>[];
                 units(): $hyoo_crus_gist[];
+                filled(): boolean;
                 can_change(lord?: symbol): boolean;
                 $: typeof $$;
                 destructor(): void;
@@ -4385,6 +4419,7 @@ declare namespace $ {
                     cast: <Node_8 extends typeof $hyoo_crus_node>(Node: Node_8) => InstanceType<Node_8>;
                     nodes: <Node_9 extends typeof $hyoo_crus_node>(Node: Node_9 | null) => readonly InstanceType<Node_9>[];
                     units: () => $hyoo_crus_gist[];
+                    filled: () => boolean;
                     can_change: (lord?: symbol) => boolean;
                 };
                 Value: Value;
@@ -4437,6 +4472,7 @@ declare namespace $ {
                 cast: <Node_8 extends typeof $hyoo_crus_node>(Node: Node_8) => InstanceType<Node_8>;
                 nodes: <Node_9 extends typeof $hyoo_crus_node>(Node: Node_9 | null) => readonly InstanceType<Node_9>[];
                 units: () => $hyoo_crus_gist[];
+                filled: () => boolean;
                 can_change: (lord?: symbol) => boolean;
             };
             Value: Value;
@@ -4482,6 +4518,7 @@ declare namespace $ {
             cast<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2): InstanceType<Node_2>;
             nodes<Node_3 extends typeof $hyoo_crus_node>(Node: Node_3 | null): readonly InstanceType<Node_3>[];
             units(): $hyoo_crus_gist[];
+            filled(): boolean;
             can_change(lord?: symbol): boolean;
             $: typeof $$;
             destructor(): void;
@@ -4543,6 +4580,7 @@ declare namespace $ {
                 cast<Node_5 extends typeof $hyoo_crus_node>(Node: Node_5): InstanceType<Node_5>;
                 nodes<Node_6 extends typeof $hyoo_crus_node>(Node: Node_6 | null): readonly InstanceType<Node_6>[];
                 units(): $hyoo_crus_gist[];
+                filled(): boolean;
                 can_change(lord?: symbol): boolean;
                 $: typeof $$;
                 destructor(): void;
@@ -4584,6 +4622,7 @@ declare namespace $ {
                     cast: <Node_8 extends typeof $hyoo_crus_node>(Node: Node_8) => InstanceType<Node_8>;
                     nodes: <Node_9 extends typeof $hyoo_crus_node>(Node: Node_9 | null) => readonly InstanceType<Node_9>[];
                     units: () => $hyoo_crus_gist[];
+                    filled: () => boolean;
                     can_change: (lord?: symbol) => boolean;
                 };
                 Value: Value;
@@ -4636,6 +4675,7 @@ declare namespace $ {
                 cast: <Node_8 extends typeof $hyoo_crus_node>(Node: Node_8) => InstanceType<Node_8>;
                 nodes: <Node_9 extends typeof $hyoo_crus_node>(Node: Node_9 | null) => readonly InstanceType<Node_9>[];
                 units: () => $hyoo_crus_gist[];
+                filled: () => boolean;
                 can_change: (lord?: symbol) => boolean;
             };
             Value: Value;
@@ -4705,6 +4745,7 @@ declare namespace $ {
                 cast: <Node_3 extends typeof $hyoo_crus_node>(Node: Node_3) => InstanceType<Node_3>;
                 nodes: <Node_4 extends typeof $hyoo_crus_node>(Node: Node_4 | null) => readonly InstanceType<Node_4>[];
                 units: () => $hyoo_crus_gist[];
+                filled: () => boolean;
                 can_change: (lord?: symbol) => boolean;
             };
             toJSON(): string;
@@ -4757,6 +4798,7 @@ declare namespace $ {
             cast<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2): InstanceType<Node_2>;
             nodes<Node_3 extends typeof $hyoo_crus_node>(Node: Node_3 | null): readonly InstanceType<Node_3>[];
             units(): $hyoo_crus_gist[];
+            filled(): boolean;
             can_change(lord?: symbol): boolean;
             $: typeof $$;
             destructor(): void;
@@ -5008,6 +5050,7 @@ declare namespace $ {
                 cast<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1): InstanceType<Node_1>;
                 nodes<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2 | null): readonly InstanceType<Node_2>[];
                 units(): $hyoo_crus_gist[];
+                filled(): boolean;
                 can_change(lord?: symbol): boolean;
                 $: typeof $$;
                 destructor(): void;
@@ -5040,6 +5083,7 @@ declare namespace $ {
                     cast: <Node_3 extends typeof $hyoo_crus_node>(Node: Node_3) => InstanceType<Node_3>;
                     nodes: <Node_4 extends typeof $hyoo_crus_node>(Node: Node_4 | null) => readonly InstanceType<Node_4>[];
                     units: () => $hyoo_crus_gist[];
+                    filled: () => boolean;
                     can_change: (lord?: symbol) => boolean;
                     pick_unit: () => $hyoo_crus_gist | undefined;
                     value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
@@ -5093,6 +5137,7 @@ declare namespace $ {
                 cast: <Node_1 extends typeof $hyoo_crus_node>(Node: Node_1) => InstanceType<Node_1>;
                 nodes: <Node_2 extends typeof $hyoo_crus_node>(Node: Node_2 | null) => readonly InstanceType<Node_2>[];
                 units: () => $hyoo_crus_gist[];
+                filled: () => boolean;
                 can_change: (lord?: symbol) => boolean;
                 pick_unit: () => $hyoo_crus_gist | undefined;
                 value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
@@ -5140,6 +5185,7 @@ declare namespace $ {
             cast<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1): InstanceType<Node_1>;
             nodes<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2 | null): readonly InstanceType<Node_2>[];
             units(): $hyoo_crus_gist[];
+            filled(): boolean;
             can_change(lord?: symbol): boolean;
             $: typeof $$;
             destructor(): void;
@@ -5202,6 +5248,7 @@ declare namespace $ {
                 cast<Node_3 extends typeof $hyoo_crus_node>(Node: Node_3): InstanceType<Node_3>;
                 nodes<Node_4 extends typeof $hyoo_crus_node>(Node: Node_4 | null): readonly InstanceType<Node_4>[];
                 units(): $hyoo_crus_gist[];
+                filled(): boolean;
                 can_change(lord?: symbol): boolean;
                 $: typeof $$;
                 destructor(): void;
@@ -5234,6 +5281,7 @@ declare namespace $ {
                     cast: <Node_5 extends typeof $hyoo_crus_node>(Node: Node_5) => InstanceType<Node_5>;
                     nodes: <Node_6 extends typeof $hyoo_crus_node>(Node: Node_6 | null) => readonly InstanceType<Node_6>[];
                     units: () => $hyoo_crus_gist[];
+                    filled: () => boolean;
                     can_change: (lord?: symbol) => boolean;
                     pick_unit: () => $hyoo_crus_gist | undefined;
                     value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
@@ -5287,6 +5335,7 @@ declare namespace $ {
                 cast: <Node_5 extends typeof $hyoo_crus_node>(Node: Node_5) => InstanceType<Node_5>;
                 nodes: <Node_6 extends typeof $hyoo_crus_node>(Node: Node_6 | null) => readonly InstanceType<Node_6>[];
                 units: () => $hyoo_crus_gist[];
+                filled: () => boolean;
                 can_change: (lord?: symbol) => boolean;
                 pick_unit: () => $hyoo_crus_gist | undefined;
                 value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
@@ -5343,6 +5392,7 @@ declare namespace $ {
             cast<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1): InstanceType<Node_1>;
             nodes<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2 | null): readonly InstanceType<Node_2>[];
             units(): $hyoo_crus_gist[];
+            filled(): boolean;
             can_change(lord?: symbol): boolean;
             $: typeof $$;
             destructor(): void;
@@ -5405,6 +5455,7 @@ declare namespace $ {
                 cast<Node_3 extends typeof $hyoo_crus_node>(Node: Node_3): InstanceType<Node_3>;
                 nodes<Node_4 extends typeof $hyoo_crus_node>(Node: Node_4 | null): readonly InstanceType<Node_4>[];
                 units(): $hyoo_crus_gist[];
+                filled(): boolean;
                 can_change(lord?: symbol): boolean;
                 $: typeof $$;
                 destructor(): void;
@@ -5437,6 +5488,7 @@ declare namespace $ {
                     cast: <Node_5 extends typeof $hyoo_crus_node>(Node: Node_5) => InstanceType<Node_5>;
                     nodes: <Node_6 extends typeof $hyoo_crus_node>(Node: Node_6 | null) => readonly InstanceType<Node_6>[];
                     units: () => $hyoo_crus_gist[];
+                    filled: () => boolean;
                     can_change: (lord?: symbol) => boolean;
                     pick_unit: () => $hyoo_crus_gist | undefined;
                     value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
@@ -5490,6 +5542,7 @@ declare namespace $ {
                 cast: <Node_5 extends typeof $hyoo_crus_node>(Node: Node_5) => InstanceType<Node_5>;
                 nodes: <Node_6 extends typeof $hyoo_crus_node>(Node: Node_6 | null) => readonly InstanceType<Node_6>[];
                 units: () => $hyoo_crus_gist[];
+                filled: () => boolean;
                 can_change: (lord?: symbol) => boolean;
                 pick_unit: () => $hyoo_crus_gist | undefined;
                 value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
@@ -5546,6 +5599,7 @@ declare namespace $ {
             cast<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1): InstanceType<Node_1>;
             nodes<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2 | null): readonly InstanceType<Node_2>[];
             units(): $hyoo_crus_gist[];
+            filled(): boolean;
             can_change(lord?: symbol): boolean;
             $: typeof $$;
             destructor(): void;
@@ -5608,6 +5662,7 @@ declare namespace $ {
                 cast<Node_3 extends typeof $hyoo_crus_node>(Node: Node_3): InstanceType<Node_3>;
                 nodes<Node_4 extends typeof $hyoo_crus_node>(Node: Node_4 | null): readonly InstanceType<Node_4>[];
                 units(): $hyoo_crus_gist[];
+                filled(): boolean;
                 can_change(lord?: symbol): boolean;
                 $: typeof $$;
                 destructor(): void;
@@ -5640,6 +5695,7 @@ declare namespace $ {
                     cast: <Node_5 extends typeof $hyoo_crus_node>(Node: Node_5) => InstanceType<Node_5>;
                     nodes: <Node_6 extends typeof $hyoo_crus_node>(Node: Node_6 | null) => readonly InstanceType<Node_6>[];
                     units: () => $hyoo_crus_gist[];
+                    filled: () => boolean;
                     can_change: (lord?: symbol) => boolean;
                     pick_unit: () => $hyoo_crus_gist | undefined;
                     value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
@@ -5693,6 +5749,7 @@ declare namespace $ {
                 cast: <Node_5 extends typeof $hyoo_crus_node>(Node: Node_5) => InstanceType<Node_5>;
                 nodes: <Node_6 extends typeof $hyoo_crus_node>(Node: Node_6 | null) => readonly InstanceType<Node_6>[];
                 units: () => $hyoo_crus_gist[];
+                filled: () => boolean;
                 can_change: (lord?: symbol) => boolean;
                 pick_unit: () => $hyoo_crus_gist | undefined;
                 value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
@@ -5749,6 +5806,7 @@ declare namespace $ {
             cast<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1): InstanceType<Node_1>;
             nodes<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2 | null): readonly InstanceType<Node_2>[];
             units(): $hyoo_crus_gist[];
+            filled(): boolean;
             can_change(lord?: symbol): boolean;
             $: typeof $$;
             destructor(): void;
@@ -5811,6 +5869,7 @@ declare namespace $ {
                 cast<Node_3 extends typeof $hyoo_crus_node>(Node: Node_3): InstanceType<Node_3>;
                 nodes<Node_4 extends typeof $hyoo_crus_node>(Node: Node_4 | null): readonly InstanceType<Node_4>[];
                 units(): $hyoo_crus_gist[];
+                filled(): boolean;
                 can_change(lord?: symbol): boolean;
                 $: typeof $$;
                 destructor(): void;
@@ -5843,6 +5902,7 @@ declare namespace $ {
                     cast: <Node_5 extends typeof $hyoo_crus_node>(Node: Node_5) => InstanceType<Node_5>;
                     nodes: <Node_6 extends typeof $hyoo_crus_node>(Node: Node_6 | null) => readonly InstanceType<Node_6>[];
                     units: () => $hyoo_crus_gist[];
+                    filled: () => boolean;
                     can_change: (lord?: symbol) => boolean;
                     pick_unit: () => $hyoo_crus_gist | undefined;
                     value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
@@ -5896,6 +5956,7 @@ declare namespace $ {
                 cast: <Node_5 extends typeof $hyoo_crus_node>(Node: Node_5) => InstanceType<Node_5>;
                 nodes: <Node_6 extends typeof $hyoo_crus_node>(Node: Node_6 | null) => readonly InstanceType<Node_6>[];
                 units: () => $hyoo_crus_gist[];
+                filled: () => boolean;
                 can_change: (lord?: symbol) => boolean;
                 pick_unit: () => $hyoo_crus_gist | undefined;
                 value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
@@ -5952,6 +6013,7 @@ declare namespace $ {
             cast<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1): InstanceType<Node_1>;
             nodes<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2 | null): readonly InstanceType<Node_2>[];
             units(): $hyoo_crus_gist[];
+            filled(): boolean;
             can_change(lord?: symbol): boolean;
             $: typeof $$;
             destructor(): void;
@@ -6014,6 +6076,7 @@ declare namespace $ {
                 cast<Node_3 extends typeof $hyoo_crus_node>(Node: Node_3): InstanceType<Node_3>;
                 nodes<Node_4 extends typeof $hyoo_crus_node>(Node: Node_4 | null): readonly InstanceType<Node_4>[];
                 units(): $hyoo_crus_gist[];
+                filled(): boolean;
                 can_change(lord?: symbol): boolean;
                 $: typeof $$;
                 destructor(): void;
@@ -6046,6 +6109,7 @@ declare namespace $ {
                     cast: <Node_5 extends typeof $hyoo_crus_node>(Node: Node_5) => InstanceType<Node_5>;
                     nodes: <Node_6 extends typeof $hyoo_crus_node>(Node: Node_6 | null) => readonly InstanceType<Node_6>[];
                     units: () => $hyoo_crus_gist[];
+                    filled: () => boolean;
                     can_change: (lord?: symbol) => boolean;
                     pick_unit: () => $hyoo_crus_gist | undefined;
                     value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
@@ -6099,6 +6163,7 @@ declare namespace $ {
                 cast: <Node_5 extends typeof $hyoo_crus_node>(Node: Node_5) => InstanceType<Node_5>;
                 nodes: <Node_6 extends typeof $hyoo_crus_node>(Node: Node_6 | null) => readonly InstanceType<Node_6>[];
                 units: () => $hyoo_crus_gist[];
+                filled: () => boolean;
                 can_change: (lord?: symbol) => boolean;
                 pick_unit: () => $hyoo_crus_gist | undefined;
                 value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
@@ -6155,6 +6220,7 @@ declare namespace $ {
             cast<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1): InstanceType<Node_1>;
             nodes<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2 | null): readonly InstanceType<Node_2>[];
             units(): $hyoo_crus_gist[];
+            filled(): boolean;
             can_change(lord?: symbol): boolean;
             $: typeof $$;
             destructor(): void;
@@ -6217,6 +6283,7 @@ declare namespace $ {
                 cast<Node_3 extends typeof $hyoo_crus_node>(Node: Node_3): InstanceType<Node_3>;
                 nodes<Node_4 extends typeof $hyoo_crus_node>(Node: Node_4 | null): readonly InstanceType<Node_4>[];
                 units(): $hyoo_crus_gist[];
+                filled(): boolean;
                 can_change(lord?: symbol): boolean;
                 $: typeof $$;
                 destructor(): void;
@@ -6249,6 +6316,7 @@ declare namespace $ {
                     cast: <Node_5 extends typeof $hyoo_crus_node>(Node: Node_5) => InstanceType<Node_5>;
                     nodes: <Node_6 extends typeof $hyoo_crus_node>(Node: Node_6 | null) => readonly InstanceType<Node_6>[];
                     units: () => $hyoo_crus_gist[];
+                    filled: () => boolean;
                     can_change: (lord?: symbol) => boolean;
                     pick_unit: () => $hyoo_crus_gist | undefined;
                     value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
@@ -6302,6 +6370,7 @@ declare namespace $ {
                 cast: <Node_5 extends typeof $hyoo_crus_node>(Node: Node_5) => InstanceType<Node_5>;
                 nodes: <Node_6 extends typeof $hyoo_crus_node>(Node: Node_6 | null) => readonly InstanceType<Node_6>[];
                 units: () => $hyoo_crus_gist[];
+                filled: () => boolean;
                 can_change: (lord?: symbol) => boolean;
                 pick_unit: () => $hyoo_crus_gist | undefined;
                 value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
@@ -6358,6 +6427,7 @@ declare namespace $ {
             cast<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1): InstanceType<Node_1>;
             nodes<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2 | null): readonly InstanceType<Node_2>[];
             units(): $hyoo_crus_gist[];
+            filled(): boolean;
             can_change(lord?: symbol): boolean;
             $: typeof $$;
             destructor(): void;
@@ -6420,6 +6490,7 @@ declare namespace $ {
                 cast<Node_3 extends typeof $hyoo_crus_node>(Node: Node_3): InstanceType<Node_3>;
                 nodes<Node_4 extends typeof $hyoo_crus_node>(Node: Node_4 | null): readonly InstanceType<Node_4>[];
                 units(): $hyoo_crus_gist[];
+                filled(): boolean;
                 can_change(lord?: symbol): boolean;
                 $: typeof $$;
                 destructor(): void;
@@ -6452,6 +6523,7 @@ declare namespace $ {
                     cast: <Node_5 extends typeof $hyoo_crus_node>(Node: Node_5) => InstanceType<Node_5>;
                     nodes: <Node_6 extends typeof $hyoo_crus_node>(Node: Node_6 | null) => readonly InstanceType<Node_6>[];
                     units: () => $hyoo_crus_gist[];
+                    filled: () => boolean;
                     can_change: (lord?: symbol) => boolean;
                     pick_unit: () => $hyoo_crus_gist | undefined;
                     value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
@@ -6505,6 +6577,7 @@ declare namespace $ {
                 cast: <Node_5 extends typeof $hyoo_crus_node>(Node: Node_5) => InstanceType<Node_5>;
                 nodes: <Node_6 extends typeof $hyoo_crus_node>(Node: Node_6 | null) => readonly InstanceType<Node_6>[];
                 units: () => $hyoo_crus_gist[];
+                filled: () => boolean;
                 can_change: (lord?: symbol) => boolean;
                 pick_unit: () => $hyoo_crus_gist | undefined;
                 value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
@@ -6561,6 +6634,7 @@ declare namespace $ {
             cast<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1): InstanceType<Node_1>;
             nodes<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2 | null): readonly InstanceType<Node_2>[];
             units(): $hyoo_crus_gist[];
+            filled(): boolean;
             can_change(lord?: symbol): boolean;
             $: typeof $$;
             destructor(): void;
@@ -6623,6 +6697,7 @@ declare namespace $ {
                 cast<Node_3 extends typeof $hyoo_crus_node>(Node: Node_3): InstanceType<Node_3>;
                 nodes<Node_4 extends typeof $hyoo_crus_node>(Node: Node_4 | null): readonly InstanceType<Node_4>[];
                 units(): $hyoo_crus_gist[];
+                filled(): boolean;
                 can_change(lord?: symbol): boolean;
                 $: typeof $$;
                 destructor(): void;
@@ -6655,6 +6730,7 @@ declare namespace $ {
                     cast: <Node_5 extends typeof $hyoo_crus_node>(Node: Node_5) => InstanceType<Node_5>;
                     nodes: <Node_6 extends typeof $hyoo_crus_node>(Node: Node_6 | null) => readonly InstanceType<Node_6>[];
                     units: () => $hyoo_crus_gist[];
+                    filled: () => boolean;
                     can_change: (lord?: symbol) => boolean;
                     pick_unit: () => $hyoo_crus_gist | undefined;
                     value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
@@ -6708,6 +6784,7 @@ declare namespace $ {
                 cast: <Node_5 extends typeof $hyoo_crus_node>(Node: Node_5) => InstanceType<Node_5>;
                 nodes: <Node_6 extends typeof $hyoo_crus_node>(Node: Node_6 | null) => readonly InstanceType<Node_6>[];
                 units: () => $hyoo_crus_gist[];
+                filled: () => boolean;
                 can_change: (lord?: symbol) => boolean;
                 pick_unit: () => $hyoo_crus_gist | undefined;
                 value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
@@ -6764,6 +6841,7 @@ declare namespace $ {
             cast<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1): InstanceType<Node_1>;
             nodes<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2 | null): readonly InstanceType<Node_2>[];
             units(): $hyoo_crus_gist[];
+            filled(): boolean;
             can_change(lord?: symbol): boolean;
             $: typeof $$;
             destructor(): void;
@@ -6826,6 +6904,7 @@ declare namespace $ {
                 cast<Node_3 extends typeof $hyoo_crus_node>(Node: Node_3): InstanceType<Node_3>;
                 nodes<Node_4 extends typeof $hyoo_crus_node>(Node: Node_4 | null): readonly InstanceType<Node_4>[];
                 units(): $hyoo_crus_gist[];
+                filled(): boolean;
                 can_change(lord?: symbol): boolean;
                 $: typeof $$;
                 destructor(): void;
@@ -6858,6 +6937,7 @@ declare namespace $ {
                     cast: <Node_5 extends typeof $hyoo_crus_node>(Node: Node_5) => InstanceType<Node_5>;
                     nodes: <Node_6 extends typeof $hyoo_crus_node>(Node: Node_6 | null) => readonly InstanceType<Node_6>[];
                     units: () => $hyoo_crus_gist[];
+                    filled: () => boolean;
                     can_change: (lord?: symbol) => boolean;
                     pick_unit: () => $hyoo_crus_gist | undefined;
                     value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
@@ -6911,6 +6991,7 @@ declare namespace $ {
                 cast: <Node_5 extends typeof $hyoo_crus_node>(Node: Node_5) => InstanceType<Node_5>;
                 nodes: <Node_6 extends typeof $hyoo_crus_node>(Node: Node_6 | null) => readonly InstanceType<Node_6>[];
                 units: () => $hyoo_crus_gist[];
+                filled: () => boolean;
                 can_change: (lord?: symbol) => boolean;
                 pick_unit: () => $hyoo_crus_gist | undefined;
                 value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
