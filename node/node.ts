@@ -54,6 +54,10 @@ namespace $ {
 			return this.land().gists_ordered( this.head() )
 		}
 		
+		filled() {
+			return this.units().length > 0
+		}
+		
 		can_change( lord = this.land().auth().lord() ) {
 			return this.land().lord_rang( lord ) >= $hyoo_crus_rang.add
 		}

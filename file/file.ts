@@ -1,25 +1,27 @@
 namespace $ {
-	export class $hyoo_crus_file extends $hyoo_crus_dict {
+	export class $hyoo_crus_file extends $hyoo_crus_dict.with({
+		Name: $hyoo_crus_reg_str,
+		Type: $hyoo_crus_reg_str,
+		Chunks: $hyoo_crus_list_bin,
+	}) {
 		
 		/** Persistent URI to file content */
 		uri() {
-			return `?CRUS:file=${ this.ref().description }=;${ this.name() }`
+			return `?CRUS:file=${ this.ref().description };name=${ this.name() }`
 		}
 		
 		/** File name */
-		@ $mol_mem
-		name( next?: string ) {
+		get name() {
 			const ext = {
 				'text/plain': 'txt',
 				'application/json': 'json',
 			}[ this.type() ] ?? 'bin'
-			return this.dive( 'name', $hyoo_crus_reg_str ).value( next ) ?? `${ this.ref().description }.${ ext }`
+			return ( next?: string | null )=> super.name( next ) ?? `${ this.ref().description }.${ ext }`
 		}
 		
 		/** Mime type */
-		@ $mol_mem
-		type( next?: string ) {
-			return this.dive( 'type', $hyoo_crus_reg_str ).value( next ) ?? 'application/octet-stream'
+		get type() {
+			return ( next?: string | null )=> super.type( next ) ?? 'application/octet-stream'
 		}
 		
 		/** Blob, File etc. */
@@ -44,7 +46,7 @@ namespace $ {
 				const chunks = [] as Uint8Array[]
 				
 				for( let offset = 0; offset < next.byteLength; ) {
-					chunks.push( next.slice( offset, offset += 2**15 ) )
+					chunks.push( next.slice( offset, offset += 2**16 ) ) // split by 64 KB
 				}
 				
 				this.chunks( chunks )
@@ -69,8 +71,8 @@ namespace $ {
 			
 		}
 		
-		chunks( next?: readonly Uint8Array[] ) {
-			return this.dive( 'chunks', $hyoo_crus_list_bin ).value( next ).filter( $mol_guard_defined )
+		get chunks() {
+			return ( next?: readonly ( Uint8Array | null )[] )=> super.chunks( next )?.filter( $mol_guard_defined ) ?? []
 		}
 		
 		str( next?: string, type = 'text/plain' ) {
