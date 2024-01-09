@@ -1,4 +1,5 @@
 namespace $ {
+
 	export class $hyoo_crus_list extends $hyoo_crus_node {
 		
 		static tag = $hyoo_crus_gist_tag[ $hyoo_crus_gist_tag.vals ] as keyof typeof $hyoo_crus_gist_tag
@@ -187,4 +188,15 @@ namespace $ {
 		}
 		
 	}
+
+	export class $hyoo_crus_list_bin extends $hyoo_crus_list.of( 'bin' ) {}
+	export class $hyoo_crus_list_bool extends $hyoo_crus_list.of( 'bool' ) {}
+	export class $hyoo_crus_list_int extends $hyoo_crus_list.of( 'int' ) {}
+	export class $hyoo_crus_list_real extends $hyoo_crus_list.of( 'real' ) {}
+	export class $hyoo_crus_list_str extends $hyoo_crus_list.of( 'str' ) {}
+	export class $hyoo_crus_list_time extends $hyoo_crus_list.of( 'time' ) {}
+	export class $hyoo_crus_list_json extends $hyoo_crus_list.of( 'json' ) {}
+	export class $hyoo_crus_list_xml extends $hyoo_crus_list.of( 'dom' ) {}
+	export class $hyoo_crus_list_tree extends $hyoo_crus_list.of( 'tree' ) {}
+
 }
