@@ -23,21 +23,16 @@ namespace $ {
 			const ref = Symbol.for( id )
 			const file = realm.Node( ref, $hyoo_crus_file )
 			
-			event.waitUntil( $mol_wire_async( file.land() ).sync().then( ()=> {
+			return event.respondWith( $mol_wire_async( file ).blob().then( blob => {
 				
-				event.respondWith(
-					new Response(
-						file.blob(),
-						{
-							status: file.filled() ? 200 : 404,
-							statusText: file.filled() ? 'OK' : 'Not Filled',
-							headers: {
-								'Content-Type': file.type(),
-								'X-Powered-By': '$hyoo_crus_file',
-							},
-						},
-					)
-				)
+				return new Response( blob, {
+					status: file.filled() ? 200 : 404,
+					statusText: file.filled() ? 'OK' : 'Not Filled',
+					headers: {
+						'Content-Type': file.type(),
+						'X-Powered-By': '$hyoo_crus_file',
+					},
+				} )
 				
 			} ) )
 			
