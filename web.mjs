@@ -9599,6 +9599,33 @@ var $;
         $mol_memo.method
     ], $hyoo_crus_list, "of", null);
     $.$hyoo_crus_list = $hyoo_crus_list;
+    class $hyoo_crus_list_bin extends $hyoo_crus_list.of('bin') {
+    }
+    $.$hyoo_crus_list_bin = $hyoo_crus_list_bin;
+    class $hyoo_crus_list_bool extends $hyoo_crus_list.of('bool') {
+    }
+    $.$hyoo_crus_list_bool = $hyoo_crus_list_bool;
+    class $hyoo_crus_list_int extends $hyoo_crus_list.of('int') {
+    }
+    $.$hyoo_crus_list_int = $hyoo_crus_list_int;
+    class $hyoo_crus_list_real extends $hyoo_crus_list.of('real') {
+    }
+    $.$hyoo_crus_list_real = $hyoo_crus_list_real;
+    class $hyoo_crus_list_str extends $hyoo_crus_list.of('str') {
+    }
+    $.$hyoo_crus_list_str = $hyoo_crus_list_str;
+    class $hyoo_crus_list_time extends $hyoo_crus_list.of('time') {
+    }
+    $.$hyoo_crus_list_time = $hyoo_crus_list_time;
+    class $hyoo_crus_list_json extends $hyoo_crus_list.of('json') {
+    }
+    $.$hyoo_crus_list_json = $hyoo_crus_list_json;
+    class $hyoo_crus_list_xml extends $hyoo_crus_list.of('dom') {
+    }
+    $.$hyoo_crus_list_xml = $hyoo_crus_list_xml;
+    class $hyoo_crus_list_tree extends $hyoo_crus_list.of('tree') {
+    }
+    $.$hyoo_crus_list_tree = $hyoo_crus_list_tree;
 })($ || ($ = {}));
 //hyoo/crus/list/list.ts
 ;
