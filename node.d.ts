@@ -7043,6 +7043,7 @@ declare namespace $ {
         delta_unit(face?: $hyoo_crus_face_map): $hyoo_crus_unit[];
         delta_buffer(face?: $hyoo_crus_face_map): Uint8Array;
         apply_unit(delta: readonly $hyoo_crus_unit[]): string[];
+        units_verify(delta: readonly $hyoo_crus_unit[]): Promise<string[]>;
         apply_unit_trust(delta: readonly $hyoo_crus_unit[]): string[];
         apply_land(land: $hyoo_crus_land): string[];
         recheck(): void;

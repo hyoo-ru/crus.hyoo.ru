@@ -10439,25 +10439,30 @@ var $;
             return bytes;
         }
         apply_unit(delta) {
+            if (!delta.length)
+                return [];
+            const errors = $mol_wire_sync(this).units_verify(delta);
+            if (errors.some(v => v))
+                return errors;
+            return this.apply_unit_trust(delta);
+        }
+        async units_verify(delta) {
             const passes = delta.filter(unit => unit.kind() === 'pass');
             const auth = new Map(passes.map((unit) => [unit.peer(), unit.auth()]));
             const mixin = $mol_base64_ae_decode(this.ref().description);
-            const errors = delta.map(unit => {
+            return await Promise.all(delta.map(async (unit) => {
                 let key_public = this.key_public(unit.peer());
                 if (!key_public) {
                     const key_serial = auth.get(unit.peer());
                     if (!key_serial)
                         return `No public key for peer (${unit.peer()})`;
-                    key_public = $mol_wire_sync($mol_crypto_key_public).from(key_serial);
+                    key_public = $mol_crypto_key_public.from(key_serial);
                 }
                 const sens = unit.sens().slice();
                 for (let i = 0; i < mixin.length; ++i)
                     sens[i + 14] ^= mixin[i + 14];
-                return $mol_wire_sync(key_public).verify(sens, unit.sign()) ? '' : `Wrong unit sign`;
-            });
-            if (errors.some(v => v))
-                return errors;
-            return this.apply_unit_trust(delta);
+                return await key_public.verify(sens, unit.sign()) ? '' : `Wrong unit sign`;
+            }));
         }
         apply_unit_trust(delta) {
             return delta.map(unit => {
