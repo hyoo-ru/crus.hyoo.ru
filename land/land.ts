@@ -151,12 +151,22 @@ namespace $ {
 		@ $mol_action
 		apply_unit( delta: readonly $hyoo_crus_unit[] ) {
 			
+			if( !delta.length ) return []
+			
+			const errors = $mol_wire_sync( this ).units_verify( delta )
+			if( errors.some( v => v ) ) return errors
+			
+			return this.apply_unit_trust( delta )
+		}
+		
+		async units_verify( delta: readonly $hyoo_crus_unit[] ) {
+			
 			const passes = delta.filter( unit => unit.kind() === 'pass' ) as $hyoo_crus_pass[]
 			const auth = new Map( passes.map( ( unit: $hyoo_crus_pass )=> [ unit.peer(), unit.auth() ] ) )
 			
 			const mixin = $mol_base64_ae_decode( this.ref().description! )
 			
-			const errors = delta.map( unit => {
+			return await Promise.all( delta.map( async unit => {
 				
 				let key_public = this.key_public( unit.peer() )
 				if( !key_public ) {
@@ -164,20 +174,17 @@ namespace $ {
 					const key_serial = auth.get( unit.peer() )
 					if( !key_serial ) return `No public key for peer (${unit.peer()})`
 					
-					key_public = $mol_wire_sync( $mol_crypto_key_public ).from( key_serial ) as $mol_crypto_key_public
+					key_public = $mol_crypto_key_public.from( key_serial )
 					
 				}
 				
 				const sens = unit.sens().slice()
 				for( let i = 0; i < mixin.length; ++i ) sens[i+14] ^= mixin[i+14]
 				
-				return $mol_wire_sync( key_public ).verify( sens, unit.sign() ) ? '' : `Wrong unit sign`
+				return await key_public.verify( sens, unit.sign() ) ? '' : `Wrong unit sign`
 	
-			} )
+			} ) )
 			
-			if( errors.some( v => v ) ) return errors
-			
-			return this.apply_unit_trust( delta )
 		}
 		
 		/** Applies Delta to current state without verifying. */
@@ -554,14 +561,20 @@ namespace $ {
 		
 		@ $mol_mem
 		bus() {
-			return new this.$.$mol_bus< ArrayBuffer[] >( `$hyoo_crus_land:${ this.ref().description }`, $mol_wire_async( bins => {
-				const yard = this.$.$hyoo_crus_yard
-				this.apply_unit_trust( bins.map( bin => {
-					const unit = new $hyoo_crus_unit( bin ).narrow()
-					yard.persisted.add( unit )
-					return unit
-				} ) )
-			} ) )
+			return new this.$.$mol_bus< ArrayBuffer[] >(
+				`$hyoo_crus_land:${ this.ref().description }`,
+				$mol_wire_async( bins => {
+					
+					const yard = this.$.$hyoo_crus_yard
+					
+					this.apply_unit_trust( bins.map( bin => {
+						const unit = new $hyoo_crus_unit( bin ).narrow()
+						yard.persisted.add( unit )
+						return unit
+					} ) )
+					
+				} ),
+			)
 		}
 		
 		@ $mol_mem
