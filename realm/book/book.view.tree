@@ -1,9 +1,10 @@
 $hyoo_crus_realm_book $mol_book2_catalog
 	menu_title \🌌 Realm
-	param \land
+	param \ref
 	realm $hyoo_crus_realm
 	Spread* <= Land* $hyoo_crus_land_page
 		land <= land* $hyoo_crus_land
+		node <= node* $hyoo_crus_node
 		Close <= Spread_close
 	menu_foot /
 		<= Land_new $mol_button_minor

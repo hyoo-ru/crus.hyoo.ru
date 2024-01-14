@@ -12,3 +12,4 @@ include \/hyoo/crus/vary/cast
 include \/hyoo/crus/cast
 include \/hyoo/crus/mine
 include \/hyoo/crus/yard
+include \/hyoo/crus/flex

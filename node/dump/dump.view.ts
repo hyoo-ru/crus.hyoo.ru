@@ -63,7 +63,7 @@ namespace $.$$ {
 		
 		unit_ref_arg( index: number ) {
 			return {
-				land: $hyoo_crus_vary_cast_str( this.unit_value( index ) )
+				ref: $hyoo_crus_vary_cast_str( this.unit_value( index ) )
 			}
 		}
 		
@@ -91,10 +91,10 @@ namespace $.$$ {
 		@ $mol_mem_key
 		node_addons( index: number ) {
 			return [
+				this.Unit_tip( index ),
 				... this.unit_ref_like( index )
 					? [ this.Unit_ref( index ) ]
 					: [ this.Unit_value( index ) ],
-				this.Unit_tip( index ),
 				this.Unit_tag( index ),
 				this.Unit_time( index ),
 				this.Unit_wipe( index ),
@@ -127,7 +127,7 @@ namespace $.$$ {
 				... this.tag() === 'keys' ? [ this.Add_key() ] : [],
 				... this.tag() === 'vals' ? [
 					this.Add_value(),
-					this.Value_text(),
+					// this.Value_text(),
 				] : [],
 				... this.tag() === 'solo' ? [ this.Value_str() ] : [],
 			]

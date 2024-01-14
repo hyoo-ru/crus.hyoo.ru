@@ -3,23 +3,33 @@ namespace $.$$ {
 		
 		@ $mol_mem
 		override spread_ids() {
-			return [ ... this.realm().lords.values() ].flatMap(
-				lord => [ ... lord.lands.values() ].map( land => land.ref().description || 'AAAAAAAA' )
-			)
+			const spread = this.spread()
+			return [ ... this.realm().lords.values() ].flatMap( lord => {
+				return [ ... lord.lands.values() ].flatMap( land => {
+					const ref = land.ref().description || 'AAAAAAAA'
+					return spread.startsWith( ref ) ? [ ref, spread ] : [ ref ]
+				} )
+			} )
 		}
 		
 		override land( id: string ) {
-			return this.realm().Land( Symbol.for( id ) )
+			return this.realm().Land( Symbol.for( id.slice( 0, 24 ) ) )
+		}
+		
+		override node( id: string ) {
+			return this.realm().Node( Symbol.for( id ), $hyoo_crus_node )
 		}
 		
 		override spread_title( id: string ) {
-			const title = this.land( id ).Data( $hyoo_crus_entity ).title()
-			const suffix = title || ( id.length > 16 ? id.slice( 16 ) : id )
-			return ( id.length > 16 ? '   🌍 ' : '👑 ' ) + suffix
+			const title = this.realm().Node( Symbol.for( id ), $hyoo_crus_entity ).title()
+			const suffix = title || ( id.length > 24 ? id.slice( 24 ) : id.length > 16 ? id.slice( 16 ) : id )
+			return ( id.length > 24 ? '      🧩 ' : id.length > 16 ? '   🌍 ' : '👑 ' ) + suffix
 		}
 		
 		override land_new() {
-			this.spread( this.realm().home().Land_new( 0 ).ref().description )
+			this.$.$mol_dom_context.location.href = this.$.$mol_state_arg.link({
+				[ this.param() ]: this.realm().home().Land_new( 0 ).ref().description!
+			})
 		}
 		
 		@ $mol_action

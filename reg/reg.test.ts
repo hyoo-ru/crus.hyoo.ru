@@ -253,12 +253,12 @@ namespace $.$$ {
 			const realm = $hyoo_crus_realm.make({ $ })
 			const land = realm.home().base().land()
 			
-			const Reg = $hyoo_crus_reg.ref( ()=> Reg )
-			const reg = land.Node( Reg ).Item('11111111')
-			$mol_assert_equal( reg.remote(), null )
+			const str = land.Node( $hyoo_crus_reg_str ).Item('11111111')
+			const ref = land.Node( $hyoo_crus_reg.ref( ()=> $hyoo_crus_reg_str ) ).Item('11111111')
+			$mol_assert_equal( ref.remote(), null )
 			
-			reg.remote( reg )
-			$mol_assert_equal( reg.value_ref(), reg.remote()!.ref(), reg.ref() )
+			ref.remote( str )
+			$mol_assert_equal( ref.value_ref(), ref.remote()!.ref(), str.ref() )
 			
 		},
 		

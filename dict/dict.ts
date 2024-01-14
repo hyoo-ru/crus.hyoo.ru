@@ -4,7 +4,6 @@ namespace $ {
 	) {
 		
 		static tag = $hyoo_crus_gist_tag[ $hyoo_crus_gist_tag.keys ] as keyof typeof $hyoo_crus_gist_tag
-		Value = $hyoo_crus_node
 		
 		value() {
 			return this
@@ -15,8 +14,9 @@ namespace $ {
 			return this.items()
 		}
 		
-		dive< Node extends typeof $hyoo_crus_node = typeof this['Value'] >(
-			key: $hyoo_crus_vary_type, Node = this.Value as Node
+		dive< Node extends typeof $hyoo_crus_node >(
+			key: $hyoo_crus_vary_type,
+			Node: Node,
 		) {
 			this.has( key, true, Node.tag )
 			const unit = this.find( key )!
@@ -25,15 +25,21 @@ namespace $ {
 		
 		// @ $mol_mem_key
 		static to<
-			Value extends typeof $hyoo_crus_node
+			Value extends { tag: keyof typeof $hyoo_crus_gist_tag, new(): { value: any } }
 		>( Value: Value ) {
 			
 			return class Dict extends $hyoo_crus_dict {
 				
 				Value = Value
 				
-				static toJSON() {
-					return '$hyoo_crus_dict.of(' + Value + ')'
+				key( key: $hyoo_crus_vary_type ) {
+					this.has( key, true, Value.tag )
+					const unit = this.find( key )!
+					return this.land().Node( this.Value as any as typeof $hyoo_crus_node ).Item( unit.self() ) as InstanceType< Value >
+				}
+				
+				static toString() {
+					return '$hyoo_crus_dict.to(' + Value + ')'
 				}
 				
 			}

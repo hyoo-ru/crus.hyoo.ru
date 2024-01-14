@@ -133,7 +133,7 @@ namespace $ {
 	
 				static Value = Value;
 	
-				static toJSON() {
+				static toString() {
 					return '$hyoo_crus_reg.ref(()=>' + ( Value as any )() + ')'
 				}
 				
@@ -183,6 +183,7 @@ namespace $ {
 	export class $hyoo_crus_reg_bool extends $hyoo_crus_reg.of( 'bool' ) {}
 	export class $hyoo_crus_reg_int extends $hyoo_crus_reg.of( 'int' ) {}
 	export class $hyoo_crus_reg_real extends $hyoo_crus_reg.of( 'real' ) {}
+	export class $hyoo_crus_reg_ref extends $hyoo_crus_reg.of( 'ref' ) {}
 	export class $hyoo_crus_reg_str extends $hyoo_crus_reg.of( 'str' ) {}
 	export class $hyoo_crus_reg_time extends $hyoo_crus_reg.of( 'time' ) {}
 	export class $hyoo_crus_reg_json extends $hyoo_crus_reg.of( 'json' ) {}

@@ -166,8 +166,10 @@ namespace $ {
 				}
 				
 				@ $mol_action
-				local_make(): Vals[number] {
-					const node = this.land().Node( ( Value as any )() ).Item( this.land().self_make( $hyoo_crus_area_of( this.head() ) ) )
+				local_make( idea?: number ): Vals[number] {
+					const area = $hyoo_crus_area_of( this.head() )
+					const self = this.land().self_make( area, idea )
+					const node = this.land().Node( ( Value as any )() ).Item( self )
 					this.splice([ node.ref() ])
 					return node
 				}
@@ -193,6 +195,7 @@ namespace $ {
 	export class $hyoo_crus_list_bool extends $hyoo_crus_list.of( 'bool' ) {}
 	export class $hyoo_crus_list_int extends $hyoo_crus_list.of( 'int' ) {}
 	export class $hyoo_crus_list_real extends $hyoo_crus_list.of( 'real' ) {}
+	export class $hyoo_crus_list_ref extends $hyoo_crus_list.of( 'ref' ) {}
 	export class $hyoo_crus_list_str extends $hyoo_crus_list.of( 'str' ) {}
 	export class $hyoo_crus_list_time extends $hyoo_crus_list.of( 'time' ) {}
 	export class $hyoo_crus_list_json extends $hyoo_crus_list.of( 'json' ) {}

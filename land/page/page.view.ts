@@ -6,12 +6,12 @@ namespace $.$$ {
 		}
 		
 		override node_title( head: string ) {
-			const id = this.node( head ).head()
+			const id = this.node_dump( head ).head()
 			if( id === 'AQAAAAAA' ) return 'Meta'
 			return id || 'Data'
 		}
 		
-		override node( head: string ) {
+		override node_dump( head: string ) {
 			return this.land().Node( $hyoo_crus_node ).Item( head )
 		}
 		
@@ -28,9 +28,16 @@ namespace $.$$ {
 		@ $mol_mem
 		override body() {
 			return [
-				this.Node( '' ),
-				this.Node( 'AQAAAAAA' ),
+				this.Flex(),
+				this.Node_dump( this.node().head() ),
+				this.Node_dump( 'AQAAAAAA' ),
 			]
+		}
+		
+		override fork() {
+			this.$.$mol_dom_context.location.href = this.$.$mol_state_arg.link({
+				ref: this.land().fork().ref().description!
+			})
 		}
 		
 		@ $mol_mem

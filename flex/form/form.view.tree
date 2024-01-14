@@ -1,0 +1,9 @@
+$hyoo_crus_flex_form $mol_list
+	node $hyoo_crus_node
+	kind $hyoo_crus_flex_kind
+	rows <= fields /
+		<= Field*0 $mol_form_field
+			name <= field_name* \xxx
+			control <= Field_control* $hyoo_crus_flex_field
+				node <= field_node* $hyoo_crus_node
+				prop <= field_prop* $hyoo_crus_flex_prop

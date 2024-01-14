@@ -1,0 +1,19 @@
+$hyoo_crus_flex_field $mol_ghost
+	node $hyoo_crus_node
+	prop $hyoo_crus_flex_prop
+	Str $mol_textarea
+		value? <=> str? \
+	Ref $mol_select
+		value? <=> ref? null
+		options <= ref_options /
+		option_label* <= ref_label* \
+	List $mol_list
+		rows <= rows /
+			<= Row_add $mol_button_minor
+				click? <=> row_add? null
+				title \+
+			<= Row*0 $mol_dump_value
+				value <= row_value* null
+			<= Row_ref*0 $mol_link
+				arg <= row_arg* *
+				title <= row_title* \

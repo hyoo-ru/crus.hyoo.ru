@@ -1,11 +1,14 @@
 $hyoo_crus_land_page $mol_page
 	land $hyoo_crus_land
+	node $hyoo_crus_node
 	tools /
 		<= Close null
 	body /
-		<= Node*AAAAAAAA $hyoo_crus_node_dump
+		<= Flex $hyoo_crus_flex_form
+			node <= node
+		<= Node_dump*AAAAAAAA $hyoo_crus_node_dump
 			title <= node_title* \
-			node <= node* $hyoo_crus_node
+			node <= node_dump* $hyoo_crus_node
 		- <= Text $mol_textarea
 			value? <=> text? \
 			selection? <=> selection? /
@@ -17,6 +20,10 @@ $hyoo_crus_land_page $mol_page
 			Icon <= Encrypted_icon $mol_icon_lock
 			checked? <=> encrypted? false
 			enabled <= encryptable true
+		<= Fork $mol_button_minor
+			hint \Fork this land
+			sub / <= Fork_icon $mol_icon_source_fork
+			click? <=> fork? null
 		<= Dumping $mol_view sub /
 			<= Size $mol_view sub / <= size \0 KB
 			<= Dump $mol_button_download
