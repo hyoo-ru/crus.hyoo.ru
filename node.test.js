@@ -9553,8 +9553,10 @@ var $;
                     this.splice([land.ref()]);
                     return land.Node(Value()).Item('');
                 }
-                local_make() {
-                    const node = this.land().Node(Value()).Item(this.land().self_make($hyoo_crus_area_of(this.head())));
+                local_make(idea) {
+                    const area = $hyoo_crus_area_of(this.head());
+                    const self = this.land().self_make(area, idea);
+                    const node = this.land().Node(Value()).Item(self);
                     this.splice([node.ref()]);
                     return node;
                 }
@@ -9594,6 +9596,9 @@ var $;
     class $hyoo_crus_list_real extends $hyoo_crus_list.of('real') {
     }
     $.$hyoo_crus_list_real = $hyoo_crus_list_real;
+    class $hyoo_crus_list_ref extends $hyoo_crus_list.of('ref') {
+    }
+    $.$hyoo_crus_list_ref = $hyoo_crus_list_ref;
     class $hyoo_crus_list_str extends $hyoo_crus_list.of('str') {
     }
     $.$hyoo_crus_list_str = $hyoo_crus_list_str;
@@ -9650,14 +9655,13 @@ var $;
 (function ($) {
     class $hyoo_crus_dict extends $hyoo_crus_list {
         static tag = $hyoo_crus_gist_tag[$hyoo_crus_gist_tag.keys];
-        Value = $hyoo_crus_node;
         value() {
             return this;
         }
         keys() {
             return this.items();
         }
-        dive(key, Node = this.Value) {
+        dive(key, Node) {
             this.has(key, true, Node.tag);
             const unit = this.find(key);
             return this.land().Node(Node).Item(unit.self());
@@ -9665,8 +9669,13 @@ var $;
         static to(Value) {
             return class Dict extends $hyoo_crus_dict {
                 Value = Value;
-                static toJSON() {
-                    return '$hyoo_crus_dict.of(' + Value + ')';
+                key(key) {
+                    this.has(key, true, Value.tag);
+                    const unit = this.find(key);
+                    return this.land().Node(this.Value).Item(unit.self());
+                }
+                static toString() {
+                    return '$hyoo_crus_dict.to(' + Value + ')';
                 }
             };
         }
@@ -10213,7 +10222,7 @@ var $;
         static ref(Value) {
             class Ref extends $hyoo_crus_reg {
                 static Value = Value;
-                static toJSON() {
+                static toString() {
                     return '$hyoo_crus_reg.ref(()=>' + Value() + ')';
                 }
                 value(next) {
@@ -10296,6 +10305,9 @@ var $;
     class $hyoo_crus_reg_real extends $hyoo_crus_reg.of('real') {
     }
     $.$hyoo_crus_reg_real = $hyoo_crus_reg_real;
+    class $hyoo_crus_reg_ref extends $hyoo_crus_reg.of('ref') {
+    }
+    $.$hyoo_crus_reg_ref = $hyoo_crus_reg_ref;
     class $hyoo_crus_reg_str extends $hyoo_crus_reg.of('str') {
     }
     $.$hyoo_crus_reg_str = $hyoo_crus_reg_str;
@@ -10647,6 +10659,9 @@ var $;
             return unit;
         }
         post(lead, head, self, vary, tag = 'term') {
+            if (typeof vary === 'symbol' && vary.description.startsWith(this.ref().description.padEnd(24, 'A'))) {
+                vary = Symbol.for('AAAAAAAAAAAAAAAAAAAAAAAA' + vary.description.slice(24));
+            }
             this.join();
             const auth = this.auth();
             const unit = new $hyoo_crus_gist;
@@ -10792,9 +10807,16 @@ var $;
             return gist;
         }
         gist_decode(gist) {
+            let vary = this.gist_decode_raw(gist);
+            if (typeof vary === 'symbol' && vary.description.startsWith('AAAAAAAAAAAAAAAAAAAAAAAA')) {
+                vary = Symbol.for(this.ref().description.padEnd(24, 'A') + vary.description.slice(24));
+            }
+            return vary;
+        }
+        gist_decode_raw(gist) {
             if (this.gists.get(gist.head())?.get(gist.self()) !== gist) {
                 for (const id of this.Meta().inflow() ?? []) {
-                    const vary = this.realm()?.Land(id).gist_decode(gist);
+                    const vary = this.realm()?.Land(id).gist_decode_raw(gist);
                     if (vary !== undefined)
                         return vary;
                 }
@@ -10977,6 +10999,9 @@ var $;
     __decorate([
         $mol_mem_key
     ], $hyoo_crus_land.prototype, "gist_decode", null);
+    __decorate([
+        $mol_mem_key
+    ], $hyoo_crus_land.prototype, "gist_decode_raw", null);
     __decorate([
         $mol_mem_key
     ], $hyoo_crus_land.prototype, "key_public", null);
@@ -14003,99 +14028,212 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    class $mol_expander extends $mol_list {
-        rows() {
-            return [
-                this.Label(),
-                this.Content()
-            ];
+    class $hyoo_crus_flex_thing extends $hyoo_crus_dict.with({
+        Kind: $hyoo_crus_reg.ref(() => $hyoo_crus_flex_kind),
+        Title: $hyoo_crus_reg_str,
+    }) {
+    }
+    $.$hyoo_crus_flex_thing = $hyoo_crus_flex_thing;
+    class $hyoo_crus_flex_kind extends $hyoo_crus_flex_thing.with({
+        Props: $hyoo_crus_list.ref(() => $hyoo_crus_flex_prop),
+    }) {
+    }
+    $.$hyoo_crus_flex_kind = $hyoo_crus_flex_kind;
+    class $hyoo_crus_flex_prop extends $hyoo_crus_flex_thing.with({
+        Key: $hyoo_crus_reg_str,
+        Type: $hyoo_crus_reg_str,
+        Target: $hyoo_crus_reg.ref(() => $hyoo_crus_flex_kind),
+        Enum: $hyoo_crus_reg.ref(() => $hyoo_crus_list),
+        Base: $hyoo_crus_reg,
+    }) {
+    }
+    $.$hyoo_crus_flex_prop = $hyoo_crus_flex_prop;
+    class $hyoo_crus_flex_domain extends $hyoo_crus_flex_thing.with({
+        Kinds: $hyoo_crus_list.ref(() => $hyoo_crus_flex_kind),
+        Props: $hyoo_crus_list.ref(() => $hyoo_crus_flex_prop),
+        Types: $hyoo_crus_list_str,
+    }) {
+        static ensure(land) {
+            const domain = land.Data(this);
+            if (domain.units().length)
+                return domain;
+            domain.title('Base Domain');
+            domain.types(['reg', 'str', 'ref', 'list', 'dict']);
+            const Kind = domain.Kinds.local_make();
+            const Prop = domain.Kinds.local_make();
+            const Thing = domain.Kinds.local_make();
+            const Domain = domain.Kinds.local_make();
+            Kind.title('Kind');
+            Prop.title('Property');
+            Thing.title('Thing');
+            Domain.title('Domain');
+            Kind.kind(Kind);
+            Prop.kind(Kind);
+            Thing.kind(Kind);
+            Domain.kind(Kind);
+            domain.kind(Domain);
+            const thing_kind = domain.Props.local_make();
+            const thing_title = domain.Props.local_make();
+            const kind_props = domain.Props.local_make();
+            const prop_key = domain.Props.local_make();
+            const prop_type = domain.Props.local_make();
+            const prop_target = domain.Props.local_make();
+            const prop_enum = domain.Props.local_make();
+            const prop_base = domain.Props.local_make();
+            const domain_kinds = domain.Props.local_make();
+            const domain_props = domain.Props.local_make();
+            const domain_types = domain.Props.local_make();
+            thing_kind.key('kind');
+            thing_title.key('title');
+            kind_props.key('props');
+            prop_key.key('key');
+            prop_type.key('type');
+            prop_target.key('target');
+            prop_enum.key('enum');
+            prop_base.key('base');
+            domain_kinds.key('kinds');
+            domain_props.key('props');
+            domain_types.key('types');
+            thing_kind.title('Kind');
+            thing_title.title('Title');
+            kind_props.title('Props');
+            prop_key.title('Key');
+            prop_type.title('Type');
+            prop_target.title('Target kind');
+            prop_enum.title('Variants');
+            prop_base.title('Default');
+            domain_kinds.title('Kinds');
+            domain_props.title('Props');
+            domain_types.title('Types');
+            thing_kind.kind(Prop);
+            thing_title.kind(Prop);
+            kind_props.kind(Prop);
+            prop_key.kind(Prop);
+            prop_type.kind(Prop);
+            prop_target.kind(Prop);
+            prop_enum.kind(Prop);
+            prop_base.kind(Prop);
+            domain_kinds.kind(Prop);
+            domain_props.kind(Prop);
+            domain_types.kind(Prop);
+            Kind.Props.add(thing_kind.ref());
+            Prop.Props.add(thing_kind.ref());
+            Thing.Props.add(thing_kind.ref());
+            Domain.Props.add(thing_kind.ref());
+            Kind.Props.add(thing_title.ref());
+            Prop.Props.add(thing_title.ref());
+            Thing.Props.add(thing_title.ref());
+            Domain.Props.add(thing_title.ref());
+            Kind.Props.add(kind_props.ref());
+            Prop.Props.add(prop_key.ref());
+            Prop.Props.add(prop_type.ref());
+            Prop.Props.add(prop_target.ref());
+            Prop.Props.add(prop_enum.ref());
+            Prop.Props.add(prop_base.ref());
+            Domain.Props.add(domain_kinds.ref());
+            Domain.Props.add(domain_props.ref());
+            Domain.Props.add(domain_types.ref());
+            thing_kind.type('ref');
+            thing_title.type('str');
+            kind_props.type('list');
+            prop_key.type('str');
+            prop_type.type('str');
+            prop_target.type('ref');
+            prop_enum.type('ref');
+            prop_base.type('reg');
+            domain_kinds.type('list');
+            domain_props.type('list');
+            domain_types.type('list');
+            thing_kind.target(Thing);
+            kind_props.target(Prop);
+            prop_target.target(Kind);
+            prop_enum.target(Thing);
+            prop_base.target(Thing);
+            domain_kinds.target(Kind);
+            domain_props.target(Prop);
+            thing_kind.Enum.value_ref(domain.Kinds.ref());
+            prop_type.Enum.value_ref(domain.Types.ref());
+            prop_target.Enum.value_ref(domain.Kinds.ref());
+            prop_enum.Enum.value_ref(domain.ref());
+            thing_title.base('');
+            thing_kind.base(Thing.ref());
+            prop_type.base('reg');
+            prop_target.base(Thing.ref());
+            return domain;
         }
-        expanded(next) {
-            if (next !== undefined)
-                return next;
-            return false;
-        }
-        expandable() {
-            return true;
-        }
-        label() {
-            return [
-                this.title()
-            ];
-        }
-        Trigger() {
-            const obj = new this.$.$mol_check_expand();
-            obj.checked = (next) => this.expanded(next);
-            obj.expandable = () => this.expandable();
-            obj.label = () => this.label();
-            return obj;
-        }
-        Tools() {
-            return null;
-        }
-        Label() {
+    }
+    __decorate([
+        $mol_action
+    ], $hyoo_crus_flex_domain, "ensure", null);
+    $.$hyoo_crus_flex_domain = $hyoo_crus_flex_domain;
+})($ || ($ = {}));
+//hyoo/crus/flex/flex.ts
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_ghost extends $mol_view {
+        Sub() {
             const obj = new this.$.$mol_view();
-            obj.sub = () => [
-                this.Trigger(),
-                this.Tools()
-            ];
-            return obj;
-        }
-        content() {
-            return [];
-        }
-        Content() {
-            const obj = new this.$.$mol_list();
-            obj.rows = () => this.content();
             return obj;
         }
     }
     __decorate([
         $mol_mem
-    ], $mol_expander.prototype, "expanded", null);
-    __decorate([
-        $mol_mem
-    ], $mol_expander.prototype, "Trigger", null);
-    __decorate([
-        $mol_mem
-    ], $mol_expander.prototype, "Label", null);
-    __decorate([
-        $mol_mem
-    ], $mol_expander.prototype, "Content", null);
-    $.$mol_expander = $mol_expander;
+    ], $mol_ghost.prototype, "Sub", null);
+    $.$mol_ghost = $mol_ghost;
 })($ || ($ = {}));
-//mol/expander/-view.tree/expander.view.tree.ts
+//mol/ghost/-view.tree/ghost.view.tree.ts
 ;
 "use strict";
 var $;
 (function ($) {
     var $$;
     (function ($$) {
-        class $mol_expander extends $.$mol_expander {
-            rows() {
-                return [
-                    this.Label(),
-                    ...this.expanded() ? [this.Content()] : []
-                ];
+        class $mol_ghost extends $.$mol_ghost {
+            dom_node_external(next) {
+                return this.Sub().dom_node(next);
             }
-            expandable() {
-                return this.content().length > 0;
+            dom_node_actual() {
+                this.dom_node();
+                const node = this.Sub().dom_node_actual();
+                const attr = this.attr();
+                const style = this.style();
+                const fields = this.field();
+                $mol_dom_render_attributes(node, attr);
+                $mol_dom_render_styles(node, style);
+                $mol_dom_render_fields(node, fields);
+                return node;
+            }
+            dom_tree() {
+                const Sub = this.Sub();
+                const node = Sub.dom_tree();
+                try {
+                    this.dom_node_actual();
+                    this.auto();
+                }
+                catch (error) {
+                    $mol_fail_log(error);
+                }
+                return node;
+            }
+            title() {
+                return this.Sub().title();
+            }
+            minimal_width() {
+                return this.Sub().minimal_width();
+            }
+            minimal_height() {
+                return this.Sub().minimal_height();
             }
         }
         __decorate([
             $mol_mem
-        ], $mol_expander.prototype, "rows", null);
-        $$.$mol_expander = $mol_expander;
+        ], $mol_ghost.prototype, "dom_node_actual", null);
+        $$.$mol_ghost = $mol_ghost;
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));
-//mol/expander/expander.view.ts
-;
-"use strict";
-var $;
-(function ($) {
-    $mol_style_attach("mol/expander/expander.view.css", "[mol_expander] {\n\tflex-direction: column;\n}\n\n[mol_expander_label] {\n\tdisplay: flex;\n\tflex-wrap: wrap;\n\tborder-radius: var(--mol_gap_round);\n}\n\n[mol_expander_trigger] {\n\tflex: auto;\n\tposition: relative;\n}\n");
-})($ || ($ = {}));
-//mol/expander/-css/expander.view.css.ts
+//mol/ghost/ghost.view.ts
 ;
 "use strict";
 var $;
@@ -14389,406 +14527,6 @@ var $;
     $mol_style_attach("mol/textarea/textarea.view.css", "[mol_textarea] {\n\tflex: 1 0 auto;\n\tflex-direction: column;\n\tvertical-align: top;\n\tmin-height: max-content;\n\twhite-space: pre-wrap;\n\tword-break: break-word;\n\tborder-radius: var(--mol_gap_round);\n\tfont-family: monospace;\n\tposition: relative;\n\ttab-size: 4;\n}\n\n[mol_textarea_view] {\n\tpointer-events: none;\n\twhite-space: inherit;\n\tfont-family: inherit;\n\ttab-size: inherit;\n}\n\n[mol_textarea_view_copy] {\n\tpointer-events: all;\n}\n\n[mol_textarea_clickable] > [mol_textarea_view] {\n\tpointer-events: all;\n}\n\n[mol_textarea_edit] {\n\tfont-family: inherit;\n\tpadding: var(--mol_gap_text);\n\tcolor: transparent !important;\n\tcaret-color: var(--mol_theme_text);\n\tresize: none;\n\ttext-align: inherit;\n\twhite-space: inherit;\n\tborder-radius: inherit;\n\toverflow-anchor: none;\n\tposition: absolute;\n\theight: 100%;\n\twidth: 100%;\n\ttab-size: inherit;\n}\n\n[mol_textarea_sidebar_showed] [mol_textarea_edit] {\n\tleft: 1.75rem;\n\twidth: calc( 100% - 1.75rem );\n}\n\n[mol_textarea_edit]:hover + [mol_textarea_view] {\n\tz-index: var(--mol_layer_hover);\n}\n\n[mol_textarea_edit]:focus + [mol_textarea_view] {\n\tz-index: var(--mol_layer_focus);\n}\n");
 })($ || ($ = {}));
 //mol/textarea/-css/textarea.view.css.ts
-;
-"use strict";
-var $;
-(function ($) {
-    class $mol_dump_list extends $mol_view {
-        values() {
-            return [];
-        }
-        sub() {
-            return [
-                this.Dump("0")
-            ];
-        }
-        dump_value(id) {
-            return null;
-        }
-        dump_expanded(id, next) {
-            if (next !== undefined)
-                return next;
-            return false;
-        }
-        prototypes() {
-            return false;
-        }
-        preview_show() {
-            return true;
-        }
-        Dump(id) {
-            const obj = new this.$.$mol_dump_value();
-            obj.value = () => this.dump_value(id);
-            obj.expanded = (next) => this.dump_expanded(id, next);
-            obj.prototypes = () => this.prototypes();
-            obj.preview_show = () => this.preview_show();
-            return obj;
-        }
-    }
-    __decorate([
-        $mol_mem_key
-    ], $mol_dump_list.prototype, "dump_expanded", null);
-    __decorate([
-        $mol_mem_key
-    ], $mol_dump_list.prototype, "Dump", null);
-    $.$mol_dump_list = $mol_dump_list;
-})($ || ($ = {}));
-//mol/dump/list/-view.tree/list.view.tree.ts
-;
-"use strict";
-var $;
-(function ($) {
-    var $$;
-    (function ($$) {
-        class $mol_dump_list extends $.$mol_dump_list {
-            sub() {
-                return this.values().map((_, index) => this.Dump(index));
-            }
-            dump_value(index) {
-                return this.values()[index];
-            }
-            expand_all(event) {
-                this.Dump(1).expanded(true);
-            }
-        }
-        __decorate([
-            $mol_mem
-        ], $mol_dump_list.prototype, "sub", null);
-        $$.$mol_dump_list = $mol_dump_list;
-    })($$ = $.$$ || ($.$$ = {}));
-})($ || ($ = {}));
-//mol/dump/list/list.view.ts
-;
-"use strict";
-var $;
-(function ($) {
-    $mol_style_attach("mol/dump/list/list.view.css", "[mol_dump_list] {\n\talign-items: flex-start;\n\tgap: var(--mol_gap_space);\n}\n\n[mol_dump_list_dump]:first-child {\n\tposition: sticky;\n\ttop: 0;\n}\n");
-})($ || ($ = {}));
-//mol/dump/list/-css/list.view.css.ts
-;
-"use strict";
-var $;
-(function ($) {
-    class $mol_dump_value extends $mol_view {
-        value(next) {
-            if (next !== undefined)
-                return next;
-            return null;
-        }
-        preview_show(next) {
-            if (next !== undefined)
-                return next;
-            return true;
-        }
-        sub() {
-            return [
-                this.Simple(),
-                this.Expand()
-            ];
-        }
-        simple() {
-            return "";
-        }
-        Simple() {
-            const obj = new this.$.$mol_text_code();
-            obj.text = () => this.simple();
-            return obj;
-        }
-        expanded(next) {
-            if (next !== undefined)
-                return next;
-            return false;
-        }
-        expandable() {
-            return true;
-        }
-        expand_all(next) {
-            if (next !== undefined)
-                return next;
-            return null;
-        }
-        expand_title() {
-            return "";
-        }
-        Expand_title() {
-            const obj = new this.$.$mol_text_code();
-            obj.text = () => this.expand_title();
-            return obj;
-        }
-        Expand_head() {
-            const obj = new this.$.$mol_check_expand();
-            obj.minimal_height = () => 24;
-            obj.minimal_width = () => 24;
-            obj.expanded = (next) => this.expanded(next);
-            obj.expandable = () => this.expandable();
-            obj.clicks = (next) => this.expand_all(next);
-            obj.label = () => [
-                this.Expand_title()
-            ];
-            return obj;
-        }
-        preview_dom() {
-            return null;
-        }
-        preview() {
-            return null;
-        }
-        Preview_dom() {
-            const obj = new this.$.$mol_view();
-            obj.dom_node = () => this.preview_dom();
-            obj.render = () => this.preview();
-            return obj;
-        }
-        Preview() {
-            const obj = new this.$.$mol_view();
-            obj.sub = () => [
-                this.Preview_dom()
-            ];
-            return obj;
-        }
-        row_values(id) {
-            return [];
-        }
-        prototypes() {
-            return false;
-        }
-        Row(id) {
-            const obj = new this.$.$mol_dump_list();
-            obj.values = () => this.row_values(id);
-            obj.prototypes = () => this.prototypes();
-            obj.preview_show = () => this.preview_show();
-            return obj;
-        }
-        expand_content() {
-            return [
-                this.Preview(),
-                this.Row("0")
-            ];
-        }
-        Expand() {
-            const obj = new this.$.$mol_expander();
-            obj.expanded = (next) => this.expanded(next);
-            obj.Trigger = () => this.Expand_head();
-            obj.content = () => this.expand_content();
-            return obj;
-        }
-    }
-    __decorate([
-        $mol_mem
-    ], $mol_dump_value.prototype, "value", null);
-    __decorate([
-        $mol_mem
-    ], $mol_dump_value.prototype, "preview_show", null);
-    __decorate([
-        $mol_mem
-    ], $mol_dump_value.prototype, "Simple", null);
-    __decorate([
-        $mol_mem
-    ], $mol_dump_value.prototype, "expanded", null);
-    __decorate([
-        $mol_mem
-    ], $mol_dump_value.prototype, "expand_all", null);
-    __decorate([
-        $mol_mem
-    ], $mol_dump_value.prototype, "Expand_title", null);
-    __decorate([
-        $mol_mem
-    ], $mol_dump_value.prototype, "Expand_head", null);
-    __decorate([
-        $mol_mem
-    ], $mol_dump_value.prototype, "Preview_dom", null);
-    __decorate([
-        $mol_mem
-    ], $mol_dump_value.prototype, "Preview", null);
-    __decorate([
-        $mol_mem_key
-    ], $mol_dump_value.prototype, "Row", null);
-    __decorate([
-        $mol_mem
-    ], $mol_dump_value.prototype, "Expand", null);
-    $.$mol_dump_value = $mol_dump_value;
-})($ || ($ = {}));
-//mol/dump/value/-view.tree/value.view.tree.ts
-;
-"use strict";
-var $;
-(function ($) {
-    function $mol_try(handler) {
-        try {
-            return handler();
-        }
-        catch (error) {
-            return error;
-        }
-    }
-    $.$mol_try = $mol_try;
-})($ || ($ = {}));
-//mol/try/try.node.ts
-;
-"use strict";
-var $;
-(function ($) {
-    var $$;
-    (function ($$) {
-        class $mol_dump_value extends $.$mol_dump_value {
-            sub() {
-                const value = this.value();
-                if (!value)
-                    return [this.Simple()];
-                if (typeof value === 'object')
-                    return [this.Expand()];
-                if (typeof value === 'function')
-                    return [this.Expand()];
-                return [this.Simple()];
-            }
-            simple() {
-                const value = this.value();
-                return value ? String(value) : JSON.stringify(value) ?? 'undefined';
-            }
-            expand_title() {
-                const value = this.value();
-                if (typeof value === 'function') {
-                    const name = Reflect.getOwnPropertyDescriptor(value, 'name')?.value;
-                    const source = Function.prototype.toString.call(value);
-                    const args = source.match(/^[^{=>]*?\(([\s\S]*?)\)/)?.[1] ?? source.match(/^([$\w]+)\s+=>/)?.[1] ?? '';
-                    if (name)
-                        return name + '(' + args + ')';
-                }
-                if (value instanceof RegExp)
-                    return String(value);
-                if (value instanceof Date)
-                    return value.toISOString();
-                const kind = Reflect.getOwnPropertyDescriptor(value, Symbol.toStringTag)?.value
-                    ?? value.constructor.name
-                    ?? 'Object';
-                if (value instanceof Node) {
-                    try {
-                        switch (value.nodeType) {
-                            case value.TEXT_NODE: return kind + ' ' + value.nodeValue?.trim();
-                            case value.ELEMENT_NODE: return `<${value.localName}> ${value.id}`;
-                            case value.DOCUMENT_NODE: return kind + ' ' + value.baseURI;
-                        }
-                    }
-                    catch { }
-                }
-                return kind;
-            }
-            rows_values() {
-                let value = this.value();
-                const res = [];
-                if (value instanceof Map) {
-                    for (const [key, val] of value) {
-                        res.push([key, '▶', val]);
-                    }
-                }
-                if (value instanceof Set) {
-                    for (const val of value) {
-                        res.push([val]);
-                    }
-                }
-                if (value instanceof Function) {
-                    let source = Function.prototype.toString.call(value)
-                        .replace(/^.*?\{\r?\n?/, '')
-                        .replace(/}$/, '')
-                        .trimEnd();
-                    const indent = source.match(/^\s*/)[0];
-                    source = source.replace(new RegExp(`^${indent}`, 'gm'), '\t');
-                    res.push([source]);
-                }
-                if (value instanceof Element) {
-                    try {
-                        for (const kid of value.childNodes) {
-                            res.push([kid]);
-                        }
-                        for (const attr of value.attributes) {
-                            if (attr.nodeName === 'id')
-                                continue;
-                            res.push([attr.nodeName, '=', attr.nodeValue]);
-                        }
-                    }
-                    catch { }
-                }
-                if (value && (typeof value === 'object' || typeof value === 'function')) {
-                    for (const key of Reflect.ownKeys(value)) {
-                        const prefix = String(key) + '∶';
-                        const descr = Reflect.getOwnPropertyDescriptor(value, key);
-                        if ('value' in descr) {
-                            const line = [prefix, descr.value];
-                            res.push(line);
-                        }
-                        else {
-                            res.push([prefix, descr.get, descr.set]);
-                        }
-                    }
-                    if (this.prototypes()) {
-                        res.push(['__proto__:', Reflect.getPrototypeOf(value)]);
-                    }
-                }
-                return res;
-            }
-            preview_dom() {
-                const value = this.value();
-                if (value instanceof Element) {
-                    if ($mol_try(() => value.localName) instanceof Error)
-                        return null;
-                    if (value.isConnected)
-                        return null;
-                    return value;
-                }
-                return null;
-            }
-            expand_content() {
-                return [
-                    ...this.preview_show() && this.preview_dom() ? [this.Preview()] : [],
-                    ...this.rows_values().map((_, index) => this.Row(index)),
-                ];
-            }
-            expandable() {
-                return this.expand_content().length > 0;
-            }
-            row_values(index) {
-                return this.rows_values()[index];
-            }
-            expand_all(event) {
-                this.expanded(true);
-                for (const row of this.expand_content()) {
-                    if (!(row instanceof $mol_dump_list))
-                        continue;
-                    if (row.values()[0] === '__proto__:')
-                        continue;
-                    row.expand_all(event);
-                }
-            }
-        }
-        __decorate([
-            $mol_mem
-        ], $mol_dump_value.prototype, "sub", null);
-        __decorate([
-            $mol_mem
-        ], $mol_dump_value.prototype, "simple", null);
-        __decorate([
-            $mol_mem
-        ], $mol_dump_value.prototype, "expand_title", null);
-        __decorate([
-            $mol_mem
-        ], $mol_dump_value.prototype, "rows_values", null);
-        __decorate([
-            $mol_mem
-        ], $mol_dump_value.prototype, "preview_dom", null);
-        __decorate([
-            $mol_mem
-        ], $mol_dump_value.prototype, "expand_content", null);
-        $$.$mol_dump_value = $mol_dump_value;
-    })($$ = $.$$ || ($.$$ = {}));
-})($ || ($ = {}));
-//mol/dump/value/value.view.ts
-;
-"use strict";
-var $;
-(function ($) {
-    $mol_style_attach("mol/dump/value/value.view.css", "[mol_dump_value] {\n\tmin-height: 2.5rem;\n\tmin-width: 2.5rem;\n}\n\n[mol_dump_value_simple] {\n\tpadding: 0;\n}\n\n[mol_dump_value_expand_content] {\n\tpadding-left: 1.5rem;\n\talign-items: flex-start;\n}\n\n[mol_dump_value_expand_title_rows],\n[mol_dump_value_simple_rows],\n[mol_dump_value_expand_head] {\n\tpadding: 0;\n\tgap: 0;\n}\n");
-})($ || ($ = {}));
-//mol/dump/value/-css/value.view.css.ts
 ;
 "use strict";
 var $;
@@ -15168,6 +14906,1060 @@ var $;
     $mol_style_attach("mol/select/select.view.css", "[mol_select] {\n\tdisplay: flex;\n\tword-break: normal;\n\talign-self: flex-start;\n}\n\n[mol_select_option_row] {\n\tmin-width: 100%;\n\tpadding: 0;\n\tjustify-content: flex-start;\n}\n\n[mol_select_bubble] {\n\tmin-width: 100%;\n}\n\n[mol_select_filter] {\n\tflex: 1 0 auto;\n\talign-self: stretch;\n}\n\n[mol_select_option_label] {\n\tpadding: var(--mol_gap_text);\n\ttext-align: left;\n\tmin-height: 1.5em;\n\tdisplay: block;\n\twhite-space: nowrap;\n}\n\n[mol_select_clear_option_content] {\n\tpadding: .5em 1rem .5rem 0;\n\ttext-align: left;\n\tbox-shadow: var(--mol_theme_line);\n\tflex: 1 0 auto;\n}\n\n[mol_select_no_options] {\n\tpadding: var(--mol_gap_text);\n\ttext-align: left;\n\tdisplay: block;\n\tcolor: var(--mol_theme_shade);\n}\n\n[mol_select_trigger] {\n\tpadding: 0;\n\tflex: 1 1 auto;\n\tdisplay: flex;\n}\n\n[mol_select_trigger] > * {\n\tmargin-right: -1rem;\n}\n\n[mol_select_trigger] > *:last-child {\n\tmargin-right: 0;\n}\n\n[mol_select_menu] {\n\tdisplay: flex;\n\tflex-direction: column;\n}\n\n");
 })($ || ($ = {}));
 //mol/select/-css/select.view.css.ts
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_dump_list extends $mol_view {
+        values() {
+            return [];
+        }
+        sub() {
+            return [
+                this.Dump("0")
+            ];
+        }
+        dump_value(id) {
+            return null;
+        }
+        dump_expanded(id, next) {
+            if (next !== undefined)
+                return next;
+            return false;
+        }
+        prototypes() {
+            return false;
+        }
+        preview_show() {
+            return true;
+        }
+        Dump(id) {
+            const obj = new this.$.$mol_dump_value();
+            obj.value = () => this.dump_value(id);
+            obj.expanded = (next) => this.dump_expanded(id, next);
+            obj.prototypes = () => this.prototypes();
+            obj.preview_show = () => this.preview_show();
+            return obj;
+        }
+    }
+    __decorate([
+        $mol_mem_key
+    ], $mol_dump_list.prototype, "dump_expanded", null);
+    __decorate([
+        $mol_mem_key
+    ], $mol_dump_list.prototype, "Dump", null);
+    $.$mol_dump_list = $mol_dump_list;
+})($ || ($ = {}));
+//mol/dump/list/-view.tree/list.view.tree.ts
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $mol_dump_list extends $.$mol_dump_list {
+            sub() {
+                return this.values().map((_, index) => this.Dump(index));
+            }
+            dump_value(index) {
+                return this.values()[index];
+            }
+            expand_all(event) {
+                this.Dump(1).expanded(true);
+            }
+        }
+        __decorate([
+            $mol_mem
+        ], $mol_dump_list.prototype, "sub", null);
+        $$.$mol_dump_list = $mol_dump_list;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+//mol/dump/list/list.view.ts
+;
+"use strict";
+var $;
+(function ($) {
+    $mol_style_attach("mol/dump/list/list.view.css", "[mol_dump_list] {\n\talign-items: flex-start;\n\tgap: var(--mol_gap_space);\n}\n\n[mol_dump_list_dump]:first-child {\n\tposition: sticky;\n\ttop: 0;\n}\n");
+})($ || ($ = {}));
+//mol/dump/list/-css/list.view.css.ts
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_expander extends $mol_list {
+        rows() {
+            return [
+                this.Label(),
+                this.Content()
+            ];
+        }
+        expanded(next) {
+            if (next !== undefined)
+                return next;
+            return false;
+        }
+        expandable() {
+            return true;
+        }
+        label() {
+            return [
+                this.title()
+            ];
+        }
+        Trigger() {
+            const obj = new this.$.$mol_check_expand();
+            obj.checked = (next) => this.expanded(next);
+            obj.expandable = () => this.expandable();
+            obj.label = () => this.label();
+            return obj;
+        }
+        Tools() {
+            return null;
+        }
+        Label() {
+            const obj = new this.$.$mol_view();
+            obj.sub = () => [
+                this.Trigger(),
+                this.Tools()
+            ];
+            return obj;
+        }
+        content() {
+            return [];
+        }
+        Content() {
+            const obj = new this.$.$mol_list();
+            obj.rows = () => this.content();
+            return obj;
+        }
+    }
+    __decorate([
+        $mol_mem
+    ], $mol_expander.prototype, "expanded", null);
+    __decorate([
+        $mol_mem
+    ], $mol_expander.prototype, "Trigger", null);
+    __decorate([
+        $mol_mem
+    ], $mol_expander.prototype, "Label", null);
+    __decorate([
+        $mol_mem
+    ], $mol_expander.prototype, "Content", null);
+    $.$mol_expander = $mol_expander;
+})($ || ($ = {}));
+//mol/expander/-view.tree/expander.view.tree.ts
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $mol_expander extends $.$mol_expander {
+            rows() {
+                return [
+                    this.Label(),
+                    ...this.expanded() ? [this.Content()] : []
+                ];
+            }
+            expandable() {
+                return this.content().length > 0;
+            }
+        }
+        __decorate([
+            $mol_mem
+        ], $mol_expander.prototype, "rows", null);
+        $$.$mol_expander = $mol_expander;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+//mol/expander/expander.view.ts
+;
+"use strict";
+var $;
+(function ($) {
+    $mol_style_attach("mol/expander/expander.view.css", "[mol_expander] {\n\tflex-direction: column;\n}\n\n[mol_expander_label] {\n\tdisplay: flex;\n\tflex-wrap: wrap;\n\tborder-radius: var(--mol_gap_round);\n}\n\n[mol_expander_trigger] {\n\tflex: auto;\n\tposition: relative;\n}\n");
+})($ || ($ = {}));
+//mol/expander/-css/expander.view.css.ts
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_dump_value extends $mol_view {
+        value(next) {
+            if (next !== undefined)
+                return next;
+            return null;
+        }
+        preview_show(next) {
+            if (next !== undefined)
+                return next;
+            return true;
+        }
+        sub() {
+            return [
+                this.Simple(),
+                this.Expand()
+            ];
+        }
+        simple() {
+            return "";
+        }
+        Simple() {
+            const obj = new this.$.$mol_text_code();
+            obj.text = () => this.simple();
+            return obj;
+        }
+        expanded(next) {
+            if (next !== undefined)
+                return next;
+            return false;
+        }
+        expandable() {
+            return true;
+        }
+        expand_all(next) {
+            if (next !== undefined)
+                return next;
+            return null;
+        }
+        expand_title() {
+            return "";
+        }
+        Expand_title() {
+            const obj = new this.$.$mol_text_code();
+            obj.text = () => this.expand_title();
+            return obj;
+        }
+        Expand_head() {
+            const obj = new this.$.$mol_check_expand();
+            obj.minimal_height = () => 24;
+            obj.minimal_width = () => 24;
+            obj.expanded = (next) => this.expanded(next);
+            obj.expandable = () => this.expandable();
+            obj.clicks = (next) => this.expand_all(next);
+            obj.label = () => [
+                this.Expand_title()
+            ];
+            return obj;
+        }
+        preview_dom() {
+            return null;
+        }
+        preview() {
+            return null;
+        }
+        Preview_dom() {
+            const obj = new this.$.$mol_view();
+            obj.dom_node = () => this.preview_dom();
+            obj.render = () => this.preview();
+            return obj;
+        }
+        Preview() {
+            const obj = new this.$.$mol_view();
+            obj.sub = () => [
+                this.Preview_dom()
+            ];
+            return obj;
+        }
+        row_values(id) {
+            return [];
+        }
+        prototypes() {
+            return false;
+        }
+        Row(id) {
+            const obj = new this.$.$mol_dump_list();
+            obj.values = () => this.row_values(id);
+            obj.prototypes = () => this.prototypes();
+            obj.preview_show = () => this.preview_show();
+            return obj;
+        }
+        expand_content() {
+            return [
+                this.Preview(),
+                this.Row("0")
+            ];
+        }
+        Expand() {
+            const obj = new this.$.$mol_expander();
+            obj.expanded = (next) => this.expanded(next);
+            obj.Trigger = () => this.Expand_head();
+            obj.content = () => this.expand_content();
+            return obj;
+        }
+    }
+    __decorate([
+        $mol_mem
+    ], $mol_dump_value.prototype, "value", null);
+    __decorate([
+        $mol_mem
+    ], $mol_dump_value.prototype, "preview_show", null);
+    __decorate([
+        $mol_mem
+    ], $mol_dump_value.prototype, "Simple", null);
+    __decorate([
+        $mol_mem
+    ], $mol_dump_value.prototype, "expanded", null);
+    __decorate([
+        $mol_mem
+    ], $mol_dump_value.prototype, "expand_all", null);
+    __decorate([
+        $mol_mem
+    ], $mol_dump_value.prototype, "Expand_title", null);
+    __decorate([
+        $mol_mem
+    ], $mol_dump_value.prototype, "Expand_head", null);
+    __decorate([
+        $mol_mem
+    ], $mol_dump_value.prototype, "Preview_dom", null);
+    __decorate([
+        $mol_mem
+    ], $mol_dump_value.prototype, "Preview", null);
+    __decorate([
+        $mol_mem_key
+    ], $mol_dump_value.prototype, "Row", null);
+    __decorate([
+        $mol_mem
+    ], $mol_dump_value.prototype, "Expand", null);
+    $.$mol_dump_value = $mol_dump_value;
+})($ || ($ = {}));
+//mol/dump/value/-view.tree/value.view.tree.ts
+;
+"use strict";
+var $;
+(function ($) {
+    function $mol_try(handler) {
+        try {
+            return handler();
+        }
+        catch (error) {
+            return error;
+        }
+    }
+    $.$mol_try = $mol_try;
+})($ || ($ = {}));
+//mol/try/try.node.ts
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $mol_dump_value extends $.$mol_dump_value {
+            sub() {
+                const value = this.value();
+                if (!value)
+                    return [this.Simple()];
+                if (typeof value === 'object')
+                    return [this.Expand()];
+                if (typeof value === 'function')
+                    return [this.Expand()];
+                return [this.Simple()];
+            }
+            simple() {
+                const value = this.value();
+                return value ? String(value) : JSON.stringify(value) ?? 'undefined';
+            }
+            expand_title() {
+                const value = this.value();
+                if (typeof value === 'function') {
+                    const name = Reflect.getOwnPropertyDescriptor(value, 'name')?.value;
+                    const source = Function.prototype.toString.call(value);
+                    const args = source.match(/^[^{=>]*?\(([\s\S]*?)\)/)?.[1] ?? source.match(/^([$\w]+)\s+=>/)?.[1] ?? '';
+                    if (name)
+                        return name + '(' + args + ')';
+                }
+                if (value instanceof RegExp)
+                    return String(value);
+                if (value instanceof Date)
+                    return value.toISOString();
+                const kind = Reflect.getOwnPropertyDescriptor(value, Symbol.toStringTag)?.value
+                    ?? value.constructor.name
+                    ?? 'Object';
+                if (value instanceof Node) {
+                    try {
+                        switch (value.nodeType) {
+                            case value.TEXT_NODE: return kind + ' ' + value.nodeValue?.trim();
+                            case value.ELEMENT_NODE: return `<${value.localName}> ${value.id}`;
+                            case value.DOCUMENT_NODE: return kind + ' ' + value.baseURI;
+                        }
+                    }
+                    catch { }
+                }
+                return kind;
+            }
+            rows_values() {
+                let value = this.value();
+                const res = [];
+                if (value instanceof Map) {
+                    for (const [key, val] of value) {
+                        res.push([key, '▶', val]);
+                    }
+                }
+                if (value instanceof Set) {
+                    for (const val of value) {
+                        res.push([val]);
+                    }
+                }
+                if (value instanceof Function) {
+                    let source = Function.prototype.toString.call(value)
+                        .replace(/^.*?\{\r?\n?/, '')
+                        .replace(/}$/, '')
+                        .trimEnd();
+                    const indent = source.match(/^\s*/)[0];
+                    source = source.replace(new RegExp(`^${indent}`, 'gm'), '\t');
+                    res.push([source]);
+                }
+                if (value instanceof Element) {
+                    try {
+                        for (const kid of value.childNodes) {
+                            res.push([kid]);
+                        }
+                        for (const attr of value.attributes) {
+                            if (attr.nodeName === 'id')
+                                continue;
+                            res.push([attr.nodeName, '=', attr.nodeValue]);
+                        }
+                    }
+                    catch { }
+                }
+                if (value && (typeof value === 'object' || typeof value === 'function')) {
+                    for (const key of Reflect.ownKeys(value)) {
+                        const prefix = String(key) + '∶';
+                        const descr = Reflect.getOwnPropertyDescriptor(value, key);
+                        if ('value' in descr) {
+                            const line = [prefix, descr.value];
+                            res.push(line);
+                        }
+                        else {
+                            res.push([prefix, descr.get, descr.set]);
+                        }
+                    }
+                    if (this.prototypes()) {
+                        res.push(['__proto__:', Reflect.getPrototypeOf(value)]);
+                    }
+                }
+                return res;
+            }
+            preview_dom() {
+                const value = this.value();
+                if (value instanceof Element) {
+                    if ($mol_try(() => value.localName) instanceof Error)
+                        return null;
+                    if (value.isConnected)
+                        return null;
+                    return value;
+                }
+                return null;
+            }
+            expand_content() {
+                return [
+                    ...this.preview_show() && this.preview_dom() ? [this.Preview()] : [],
+                    ...this.rows_values().map((_, index) => this.Row(index)),
+                ];
+            }
+            expandable() {
+                return this.expand_content().length > 0;
+            }
+            row_values(index) {
+                return this.rows_values()[index];
+            }
+            expand_all(event) {
+                this.expanded(true);
+                for (const row of this.expand_content()) {
+                    if (!(row instanceof $mol_dump_list))
+                        continue;
+                    if (row.values()[0] === '__proto__:')
+                        continue;
+                    row.expand_all(event);
+                }
+            }
+        }
+        __decorate([
+            $mol_mem
+        ], $mol_dump_value.prototype, "sub", null);
+        __decorate([
+            $mol_mem
+        ], $mol_dump_value.prototype, "simple", null);
+        __decorate([
+            $mol_mem
+        ], $mol_dump_value.prototype, "expand_title", null);
+        __decorate([
+            $mol_mem
+        ], $mol_dump_value.prototype, "rows_values", null);
+        __decorate([
+            $mol_mem
+        ], $mol_dump_value.prototype, "preview_dom", null);
+        __decorate([
+            $mol_mem
+        ], $mol_dump_value.prototype, "expand_content", null);
+        $$.$mol_dump_value = $mol_dump_value;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+//mol/dump/value/value.view.ts
+;
+"use strict";
+var $;
+(function ($) {
+    $mol_style_attach("mol/dump/value/value.view.css", "[mol_dump_value] {\n\tmin-height: 2.5rem;\n\tmin-width: 2.5rem;\n}\n\n[mol_dump_value_simple] {\n\tpadding: 0;\n}\n\n[mol_dump_value_expand_content] {\n\tpadding-left: 1.5rem;\n\talign-items: flex-start;\n}\n\n[mol_dump_value_expand_title_rows],\n[mol_dump_value_simple_rows],\n[mol_dump_value_expand_head] {\n\tpadding: 0;\n\tgap: 0;\n}\n");
+})($ || ($ = {}));
+//mol/dump/value/-css/value.view.css.ts
+;
+"use strict";
+var $;
+(function ($) {
+    class $hyoo_crus_flex_field extends $mol_ghost {
+        node() {
+            const obj = new this.$.$hyoo_crus_node();
+            return obj;
+        }
+        prop() {
+            const obj = new this.$.$hyoo_crus_flex_prop();
+            return obj;
+        }
+        Str() {
+            const obj = new this.$.$mol_textarea();
+            obj.value = (next) => this.str(next);
+            return obj;
+        }
+        Ref() {
+            const obj = new this.$.$mol_select();
+            obj.value = (next) => this.ref(next);
+            obj.options = () => this.ref_options();
+            obj.option_label = (id) => this.ref_label(id);
+            return obj;
+        }
+        List() {
+            const obj = new this.$.$mol_list();
+            obj.rows = () => this.rows();
+            return obj;
+        }
+        str(next) {
+            if (next !== undefined)
+                return next;
+            return "";
+        }
+        ref(next) {
+            if (next !== undefined)
+                return next;
+            return null;
+        }
+        ref_options() {
+            return [];
+        }
+        ref_label(id) {
+            return "";
+        }
+        row_add(next) {
+            if (next !== undefined)
+                return next;
+            return null;
+        }
+        Row_add() {
+            const obj = new this.$.$mol_button_minor();
+            obj.click = (next) => this.row_add(next);
+            obj.title = () => "+";
+            return obj;
+        }
+        row_value(id) {
+            return null;
+        }
+        Row(id) {
+            const obj = new this.$.$mol_dump_value();
+            obj.value = () => this.row_value(id);
+            return obj;
+        }
+        row_arg(id) {
+            return {};
+        }
+        row_title(id) {
+            return "";
+        }
+        Row_ref(id) {
+            const obj = new this.$.$mol_link();
+            obj.arg = () => this.row_arg(id);
+            obj.title = () => this.row_title(id);
+            return obj;
+        }
+        rows() {
+            return [
+                this.Row_add(),
+                this.Row("0"),
+                this.Row_ref("0")
+            ];
+        }
+    }
+    __decorate([
+        $mol_mem
+    ], $hyoo_crus_flex_field.prototype, "node", null);
+    __decorate([
+        $mol_mem
+    ], $hyoo_crus_flex_field.prototype, "prop", null);
+    __decorate([
+        $mol_mem
+    ], $hyoo_crus_flex_field.prototype, "Str", null);
+    __decorate([
+        $mol_mem
+    ], $hyoo_crus_flex_field.prototype, "Ref", null);
+    __decorate([
+        $mol_mem
+    ], $hyoo_crus_flex_field.prototype, "List", null);
+    __decorate([
+        $mol_mem
+    ], $hyoo_crus_flex_field.prototype, "str", null);
+    __decorate([
+        $mol_mem
+    ], $hyoo_crus_flex_field.prototype, "ref", null);
+    __decorate([
+        $mol_mem
+    ], $hyoo_crus_flex_field.prototype, "row_add", null);
+    __decorate([
+        $mol_mem
+    ], $hyoo_crus_flex_field.prototype, "Row_add", null);
+    __decorate([
+        $mol_mem_key
+    ], $hyoo_crus_flex_field.prototype, "Row", null);
+    __decorate([
+        $mol_mem_key
+    ], $hyoo_crus_flex_field.prototype, "Row_ref", null);
+    $.$hyoo_crus_flex_field = $hyoo_crus_flex_field;
+})($ || ($ = {}));
+//hyoo/crus/flex/field/-view.tree/field.view.tree.ts
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $hyoo_crus_flex_field extends $.$hyoo_crus_flex_field {
+            Sub() {
+                switch (this.prop().type()) {
+                    case 'str': return this.Str();
+                    case 'ref': return this.Ref();
+                    case 'list': return this.List();
+                }
+                return new $mol_view;
+            }
+            str(next) {
+                return this.node().cast($hyoo_crus_reg_str).value(next) ?? '';
+            }
+            ref(next) {
+                return this.node().cast($hyoo_crus_reg).value(next);
+            }
+            ref_options() {
+                return this.prop().enum()?.items() ?? [];
+            }
+            ref_label(ref) {
+                if (!ref)
+                    return '';
+                if (typeof ref === 'symbol')
+                    return this.node().realm().Node(ref, $hyoo_crus_flex_thing).title() ?? ref.description;
+                return $hyoo_crus_vary_cast_str(ref) ?? '';
+            }
+            rows() {
+                return [
+                    this.Row_add(),
+                    ...this.node().cast($hyoo_crus_list).items().map((vary, i) => {
+                        return typeof vary === 'symbol' ? this.Row_ref(i) : this.Row(i);
+                    }),
+                ];
+            }
+            row_add() {
+                const target = this.node().cast($hyoo_crus_list.ref(() => $hyoo_crus_flex_thing)).local_make();
+                target.kind(this.prop().target());
+                this.$.$mol_state_arg.href(this.$.$mol_state_arg.link({
+                    ref: target.ref().description
+                }));
+            }
+            row_value(index) {
+                return this.node().cast($hyoo_crus_list).items()[index];
+            }
+            row_title(index) {
+                const ref = this.row_value(index);
+                return this.node().realm().Node(ref, $hyoo_crus_flex_thing).title() || ref?.description;
+            }
+            row_arg(index) {
+                const ref = this.row_value(index).description;
+                return { ref };
+            }
+        }
+        __decorate([
+            $mol_mem
+        ], $hyoo_crus_flex_field.prototype, "Sub", null);
+        __decorate([
+            $mol_mem
+        ], $hyoo_crus_flex_field.prototype, "rows", null);
+        __decorate([
+            $mol_mem
+        ], $hyoo_crus_flex_field.prototype, "row_add", null);
+        __decorate([
+            $mol_mem_key
+        ], $hyoo_crus_flex_field.prototype, "row_value", null);
+        __decorate([
+            $mol_mem_key
+        ], $hyoo_crus_flex_field.prototype, "row_title", null);
+        __decorate([
+            $mol_mem_key
+        ], $hyoo_crus_flex_field.prototype, "row_arg", null);
+        $$.$hyoo_crus_flex_field = $hyoo_crus_flex_field;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+//hyoo/crus/flex/field/field.view.ts
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        $mol_style_define($hyoo_crus_flex_field, {
+            Row: {
+                padding: $mol_gap.text,
+            },
+        });
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+//hyoo/crus/flex/field/field.view.css.ts
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_labeler extends $mol_list {
+        rows() {
+            return [
+                this.Label(),
+                this.Content()
+            ];
+        }
+        label() {
+            return [
+                this.title()
+            ];
+        }
+        Label() {
+            const obj = new this.$.$mol_view();
+            obj.minimal_height = () => 32;
+            obj.sub = () => this.label();
+            return obj;
+        }
+        content() {
+            return [];
+        }
+        Content() {
+            const obj = new this.$.$mol_view();
+            obj.minimal_height = () => 24;
+            obj.sub = () => this.content();
+            return obj;
+        }
+    }
+    __decorate([
+        $mol_mem
+    ], $mol_labeler.prototype, "Label", null);
+    __decorate([
+        $mol_mem
+    ], $mol_labeler.prototype, "Content", null);
+    $.$mol_labeler = $mol_labeler;
+})($ || ($ = {}));
+//mol/labeler/-view.tree/labeler.view.tree.ts
+;
+"use strict";
+var $;
+(function ($) {
+    $mol_style_attach("mol/labeler/labeler.view.css", "[mol_labeler] {\n\tdisplay: flex;\n\tflex-direction: column;\n\talign-items: stretch;\n\tcursor: inherit;\n}\n\n[mol_labeler_label] {\n\tmin-height: 2rem;\n\tcolor: var(--mol_theme_shade);\n\tpadding: .5rem .75rem 0;\n\tgap: 0 var(--mol_gap_block);\n\tflex-wrap: wrap;\n}\n\n[mol_labeler_content] {\n\tdisplay: flex;\n\tpadding: var(--mol_gap_text);\n}\n");
+})($ || ($ = {}));
+//mol/labeler/-css/labeler.view.css.ts
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_form_field extends $mol_labeler {
+        bids() {
+            return [];
+        }
+        label() {
+            return [
+                this.name(),
+                this.Bid()
+            ];
+        }
+        content() {
+            return [
+                this.control()
+            ];
+        }
+        name() {
+            return "";
+        }
+        bid() {
+            return "";
+        }
+        Bid() {
+            const obj = new this.$.$mol_view();
+            obj.sub = () => [
+                this.bid()
+            ];
+            return obj;
+        }
+        control() {
+            return null;
+        }
+    }
+    __decorate([
+        $mol_mem
+    ], $mol_form_field.prototype, "Bid", null);
+    $.$mol_form_field = $mol_form_field;
+})($ || ($ = {}));
+//mol/form/field/-view.tree/field.view.tree.ts
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $mol_form_field extends $.$mol_form_field {
+            bid() {
+                return this.bids().filter(Boolean)[0] ?? '';
+            }
+        }
+        __decorate([
+            $mol_mem
+        ], $mol_form_field.prototype, "bid", null);
+        $$.$mol_form_field = $mol_form_field;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+//mol/form/field/field.view.ts
+;
+"use strict";
+var $;
+(function ($) {
+    $mol_style_attach("mol/form/field/field.view.css", "[mol_form_field] {\n\talign-items: stretch;\n}\n\n[mol_form_field_bid] {\n\tcolor: var(--mol_theme_focus);\n\tdisplay: inline-block;\n\ttext-shadow: 0 0;\n}\n\n[mol_form_field_content] {\n\tborder-radius: var(--mol_gap_round);\n}\n");
+})($ || ($ = {}));
+//mol/form/field/-css/field.view.css.ts
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_row extends $mol_view {
+    }
+    $.$mol_row = $mol_row;
+})($ || ($ = {}));
+//mol/row/-view.tree/row.view.tree.ts
+;
+"use strict";
+var $;
+(function ($) {
+    $mol_style_attach("mol/row/row.view.css", "[mol_row] {\n\tdisplay: flex;\n\tflex-wrap: wrap;\n\talign-items: flex-start;\n\talign-content: flex-start;\n\tjustify-content: flex-start;\n\tpadding: var(--mol_gap_block);\n\tgap: var(--mol_gap_block);\n\tflex: 0 0 auto;\n\tbox-sizing: border-box;\n\tmax-width: 100%;\n}\n\n[mol_row] > * {\n\tmax-width: 100%;\n}\n");
+})($ || ($ = {}));
+//mol/row/-css/row.view.css.ts
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_form extends $mol_list {
+        submit_allowed() {
+            return true;
+        }
+        submit_blocked() {
+            return false;
+        }
+        event() {
+            return {
+                ...super.event(),
+                keydown: (event) => this.keydown(event)
+            };
+        }
+        submit(event) {
+            if (event !== undefined)
+                return event;
+            return null;
+        }
+        rows() {
+            return [
+                this.Body(),
+                this.Foot()
+            ];
+        }
+        keydown(event) {
+            if (event !== undefined)
+                return event;
+            return null;
+        }
+        form_fields() {
+            return [];
+        }
+        body() {
+            return this.form_fields();
+        }
+        Body() {
+            const obj = new this.$.$mol_list();
+            obj.sub = () => this.body();
+            return obj;
+        }
+        buttons() {
+            return [];
+        }
+        foot() {
+            return this.buttons();
+        }
+        Foot() {
+            const obj = new this.$.$mol_row();
+            obj.sub = () => this.foot();
+            return obj;
+        }
+    }
+    __decorate([
+        $mol_mem
+    ], $mol_form.prototype, "submit", null);
+    __decorate([
+        $mol_mem
+    ], $mol_form.prototype, "keydown", null);
+    __decorate([
+        $mol_mem
+    ], $mol_form.prototype, "Body", null);
+    __decorate([
+        $mol_mem
+    ], $mol_form.prototype, "Foot", null);
+    $.$mol_form = $mol_form;
+})($ || ($ = {}));
+//mol/form/-view.tree/form.view.tree.ts
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $mol_form extends $.$mol_form {
+            form_fields() {
+                return [...this.view_find(view => view instanceof $mol_form_field)]
+                    .map(path => path[path.length - 1]);
+            }
+            submit_allowed() {
+                return this.form_fields().every(field => !field.bid());
+            }
+            submit_blocked() {
+                return !this.submit_allowed();
+            }
+            keydown(next) {
+                if (next.ctrlKey && next.keyCode === $mol_keyboard_code.enter && !this.submit_blocked())
+                    this.submit(event);
+            }
+        }
+        __decorate([
+            $mol_mem
+        ], $mol_form.prototype, "form_fields", null);
+        __decorate([
+            $mol_mem
+        ], $mol_form.prototype, "submit_allowed", null);
+        $$.$mol_form = $mol_form;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+//mol/form/form.view.ts
+;
+"use strict";
+var $;
+(function ($) {
+    $mol_style_attach("mol/form/form.view.css", "[mol_form] {\r\n\tgap: var(--mol_gap_block);\r\n}\r\n\r\n[mol_form_body] {\r\n\tgap: var(--mol_gap_block);\r\n}");
+})($ || ($ = {}));
+//mol/form/-css/form.view.css.ts
+;
+"use strict";
+var $;
+(function ($) {
+    class $hyoo_crus_flex_form extends $mol_list {
+        node() {
+            const obj = new this.$.$hyoo_crus_node();
+            return obj;
+        }
+        kind() {
+            const obj = new this.$.$hyoo_crus_flex_kind();
+            return obj;
+        }
+        rows() {
+            return this.fields();
+        }
+        field_name(id) {
+            return "xxx";
+        }
+        field_node(id) {
+            const obj = new this.$.$hyoo_crus_node();
+            return obj;
+        }
+        field_prop(id) {
+            const obj = new this.$.$hyoo_crus_flex_prop();
+            return obj;
+        }
+        Field_control(id) {
+            const obj = new this.$.$hyoo_crus_flex_field();
+            obj.node = () => this.field_node(id);
+            obj.prop = () => this.field_prop(id);
+            return obj;
+        }
+        Field(id) {
+            const obj = new this.$.$mol_form_field();
+            obj.name = () => this.field_name(id);
+            obj.control = () => this.Field_control(id);
+            return obj;
+        }
+        fields() {
+            return [
+                this.Field("0")
+            ];
+        }
+    }
+    __decorate([
+        $mol_mem
+    ], $hyoo_crus_flex_form.prototype, "node", null);
+    __decorate([
+        $mol_mem
+    ], $hyoo_crus_flex_form.prototype, "kind", null);
+    __decorate([
+        $mol_mem_key
+    ], $hyoo_crus_flex_form.prototype, "field_node", null);
+    __decorate([
+        $mol_mem_key
+    ], $hyoo_crus_flex_form.prototype, "field_prop", null);
+    __decorate([
+        $mol_mem_key
+    ], $hyoo_crus_flex_form.prototype, "Field_control", null);
+    __decorate([
+        $mol_mem_key
+    ], $hyoo_crus_flex_form.prototype, "Field", null);
+    $.$hyoo_crus_flex_form = $hyoo_crus_flex_form;
+})($ || ($ = {}));
+//hyoo/crus/flex/form/-view.tree/form.view.tree.ts
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $hyoo_crus_flex_form extends $.$hyoo_crus_flex_form {
+            kind() {
+                const land = this.node().realm().home().Land('Universe');
+                const domain = $hyoo_crus_flex_domain.ensure(land);
+                return this.node().cast($hyoo_crus_flex_thing).kind() ?? domain.kinds()[2];
+            }
+            fields() {
+                return this.kind()?.props()?.slice().reverse().map(key => this.Field(key)) ?? [];
+            }
+            field_name(prop) {
+                return prop.title() ?? prop.ref().description;
+            }
+            field_node(prop) {
+                return this.node().cast($hyoo_crus_dict).dive(prop.key() ?? prop.ref(), $hyoo_crus_node);
+            }
+            field_prop(prop) {
+                return prop;
+            }
+        }
+        __decorate([
+            $mol_mem
+        ], $hyoo_crus_flex_form.prototype, "kind", null);
+        __decorate([
+            $mol_mem
+        ], $hyoo_crus_flex_form.prototype, "fields", null);
+        $$.$hyoo_crus_flex_form = $hyoo_crus_flex_form;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+//hyoo/crus/flex/form/form.view.ts
 ;
 "use strict";
 var $;
@@ -15773,7 +16565,7 @@ var $;
             }
             unit_ref_arg(index) {
                 return {
-                    land: $hyoo_crus_vary_cast_str(this.unit_value(index))
+                    ref: $hyoo_crus_vary_cast_str(this.unit_value(index))
                 };
             }
             unit_ref_like(index) {
@@ -15798,10 +16590,10 @@ var $;
             }
             node_addons(index) {
                 return [
+                    this.Unit_tip(index),
                     ...this.unit_ref_like(index)
                         ? [this.Unit_ref(index)]
                         : [this.Unit_value(index)],
-                    this.Unit_tip(index),
                     this.Unit_tag(index),
                     this.Unit_time(index),
                     this.Unit_wipe(index),
@@ -15830,7 +16622,6 @@ var $;
                     ...this.tag() === 'keys' ? [this.Add_key()] : [],
                     ...this.tag() === 'vals' ? [
                         this.Add_value(),
-                        this.Value_text(),
                     ] : [],
                     ...this.tag() === 'solo' ? [this.Value_str()] : [],
                 ];
@@ -15982,6 +16773,30 @@ var $;
 "use strict";
 var $;
 (function ($) {
+    class $mol_icon_source extends $mol_icon {
+        path() {
+            return "M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z";
+        }
+    }
+    $.$mol_icon_source = $mol_icon_source;
+})($ || ($ = {}));
+//mol/icon/source/-view.tree/source.view.tree.ts
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_icon_source_fork extends $mol_icon {
+        path() {
+            return "M6,2C7.66,2 9,3.34 9,5C9,6.28 8.19,7.38 7.06,7.81C7.15,8.27 7.39,8.83 8,9.63C9,10.92 11,12.83 12,14.17C13,12.83 15,10.92 16,9.63C16.61,8.83 16.85,8.27 16.94,7.81C15.81,7.38 15,6.28 15,5C15,3.34 16.34,2 18,2C19.66,2 21,3.34 21,5C21,6.32 20.14,7.45 18.95,7.85C18.87,8.37 18.64,9 18,9.83C17,11.17 15,13.08 14,14.38C13.39,15.17 13.15,15.73 13.06,16.19C14.19,16.62 15,17.72 15,19C15,20.66 13.66,22 12,22C10.34,22 9,20.66 9,19C9,17.72 9.81,16.62 10.94,16.19C10.85,15.73 10.61,15.17 10,14.38C9,13.08 7,11.17 6,9.83C5.36,9 5.13,8.37 5.05,7.85C3.86,7.45 3,6.32 3,5C3,3.34 4.34,2 6,2M6,4C5.45,4 5,4.45 5,5C5,5.55 5.45,6 6,6C6.55,6 7,5.55 7,5C7,4.45 6.55,4 6,4M18,4C17.45,4 17,4.45 17,5C17,5.55 17.45,6 18,6C18.55,6 19,5.55 19,5C19,4.45 18.55,4 18,4M12,18C11.45,18 11,18.45 11,19C11,19.55 11.45,20 12,20C12.55,20 13,19.55 13,19C13,18.45 12.55,18 12,18Z";
+        }
+    }
+    $.$mol_icon_source_fork = $mol_icon_source_fork;
+})($ || ($ = {}));
+//mol/icon/source/fork/-view.tree/fork.view.tree.ts
+;
+"use strict";
+var $;
+(function ($) {
     class $mol_icon_download extends $mol_icon {
         path() {
             return "M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z";
@@ -16055,6 +16870,10 @@ var $;
             const obj = new this.$.$hyoo_crus_land();
             return obj;
         }
+        node() {
+            const obj = new this.$.$hyoo_crus_node();
+            return obj;
+        }
         tools() {
             return [
                 this.Close()
@@ -16062,29 +16881,36 @@ var $;
         }
         body() {
             return [
-                this.Node("AAAAAAAA")
+                this.Flex(),
+                this.Node_dump("AAAAAAAA")
             ];
         }
         foot() {
             return [
                 this.Encrypted(),
+                this.Fork(),
                 this.Dumping()
             ];
         }
         Close() {
             return null;
         }
+        Flex() {
+            const obj = new this.$.$hyoo_crus_flex_form();
+            obj.node = () => this.node();
+            return obj;
+        }
         node_title(id) {
             return "";
         }
-        node(id) {
+        node_dump(id) {
             const obj = new this.$.$hyoo_crus_node();
             return obj;
         }
-        Node(id) {
+        Node_dump(id) {
             const obj = new this.$.$hyoo_crus_node_dump();
             obj.title = () => this.node_title(id);
-            obj.node = () => this.node(id);
+            obj.node = () => this.node_dump(id);
             return obj;
         }
         Encrypted_icon() {
@@ -16105,6 +16931,24 @@ var $;
             obj.Icon = () => this.Encrypted_icon();
             obj.checked = (next) => this.encrypted(next);
             obj.enabled = () => this.encryptable();
+            return obj;
+        }
+        Fork_icon() {
+            const obj = new this.$.$mol_icon_source_fork();
+            return obj;
+        }
+        fork(next) {
+            if (next !== undefined)
+                return next;
+            return null;
+        }
+        Fork() {
+            const obj = new this.$.$mol_button_minor();
+            obj.hint = () => "Fork this land";
+            obj.sub = () => [
+                this.Fork_icon()
+            ];
+            obj.click = (next) => this.fork(next);
             return obj;
         }
         size() {
@@ -16144,11 +16988,17 @@ var $;
         $mol_mem
     ], $hyoo_crus_land_page.prototype, "land", null);
     __decorate([
-        $mol_mem_key
+        $mol_mem
     ], $hyoo_crus_land_page.prototype, "node", null);
     __decorate([
+        $mol_mem
+    ], $hyoo_crus_land_page.prototype, "Flex", null);
+    __decorate([
         $mol_mem_key
-    ], $hyoo_crus_land_page.prototype, "Node", null);
+    ], $hyoo_crus_land_page.prototype, "node_dump", null);
+    __decorate([
+        $mol_mem_key
+    ], $hyoo_crus_land_page.prototype, "Node_dump", null);
     __decorate([
         $mol_mem
     ], $hyoo_crus_land_page.prototype, "Encrypted_icon", null);
@@ -16158,6 +17008,15 @@ var $;
     __decorate([
         $mol_mem
     ], $hyoo_crus_land_page.prototype, "Encrypted", null);
+    __decorate([
+        $mol_mem
+    ], $hyoo_crus_land_page.prototype, "Fork_icon", null);
+    __decorate([
+        $mol_mem
+    ], $hyoo_crus_land_page.prototype, "fork", null);
+    __decorate([
+        $mol_mem
+    ], $hyoo_crus_land_page.prototype, "Fork", null);
     __decorate([
         $mol_mem
     ], $hyoo_crus_land_page.prototype, "Size", null);
@@ -16277,12 +17136,12 @@ var $;
                 return '🌍 ' + this.land().ref().description;
             }
             node_title(head) {
-                const id = this.node(head).head();
+                const id = this.node_dump(head).head();
                 if (id === 'AQAAAAAA')
                     return 'Meta';
                 return id || 'Data';
             }
-            node(head) {
+            node_dump(head) {
                 return this.land().Node($hyoo_crus_node).Item(head);
             }
             encryptable() {
@@ -16293,9 +17152,15 @@ var $;
             }
             body() {
                 return [
-                    this.Node(''),
-                    this.Node('AQAAAAAA'),
+                    this.Flex(),
+                    this.Node_dump(this.node().head()),
+                    this.Node_dump('AQAAAAAA'),
                 ];
+            }
+            fork() {
+                this.$.$mol_dom_context.location.href = this.$.$mol_state_arg.link({
+                    ref: this.land().fork().ref().description
+                });
             }
             pack() {
                 this.$.$mol_wait_rest();
@@ -16525,7 +17390,7 @@ var $;
             return "🌌 Realm";
         }
         param() {
-            return "land";
+            return "ref";
         }
         realm() {
             const obj = new this.$.$hyoo_crus_realm();
@@ -16545,9 +17410,14 @@ var $;
             const obj = new this.$.$hyoo_crus_land();
             return obj;
         }
+        node(id) {
+            const obj = new this.$.$hyoo_crus_node();
+            return obj;
+        }
         Land(id) {
             const obj = new this.$.$hyoo_crus_land_page();
             obj.land = () => this.land(id);
+            obj.node = () => this.node(id);
             obj.Close = () => this.Spread_close();
             return obj;
         }
@@ -16611,6 +17481,9 @@ var $;
     ], $hyoo_crus_realm_book.prototype, "land", null);
     __decorate([
         $mol_mem_key
+    ], $hyoo_crus_realm_book.prototype, "node", null);
+    __decorate([
+        $mol_mem_key
     ], $hyoo_crus_realm_book.prototype, "Land", null);
     __decorate([
         $mol_mem
@@ -16647,18 +17520,29 @@ var $;
     (function ($$) {
         class $hyoo_crus_realm_book extends $.$hyoo_crus_realm_book {
             spread_ids() {
-                return [...this.realm().lords.values()].flatMap(lord => [...lord.lands.values()].map(land => land.ref().description || 'AAAAAAAA'));
+                const spread = this.spread();
+                return [...this.realm().lords.values()].flatMap(lord => {
+                    return [...lord.lands.values()].flatMap(land => {
+                        const ref = land.ref().description || 'AAAAAAAA';
+                        return spread.startsWith(ref) ? [ref, spread] : [ref];
+                    });
+                });
             }
             land(id) {
-                return this.realm().Land(Symbol.for(id));
+                return this.realm().Land(Symbol.for(id.slice(0, 24)));
+            }
+            node(id) {
+                return this.realm().Node(Symbol.for(id), $hyoo_crus_node);
             }
             spread_title(id) {
-                const title = this.land(id).Data($hyoo_crus_entity).title();
-                const suffix = title || (id.length > 16 ? id.slice(16) : id);
-                return (id.length > 16 ? '   🌍 ' : '👑 ') + suffix;
+                const title = this.realm().Node(Symbol.for(id), $hyoo_crus_entity).title();
+                const suffix = title || (id.length > 24 ? id.slice(24) : id.length > 16 ? id.slice(16) : id);
+                return (id.length > 24 ? '      🧩 ' : id.length > 16 ? '   🌍 ' : '👑 ') + suffix;
             }
             land_new() {
-                this.spread(this.realm().home().Land_new(0).ref().description);
+                this.$.$mol_dom_context.location.href = this.$.$mol_state_arg.link({
+                    [this.param()]: this.realm().home().Land_new(0).ref().description
+                });
             }
             update(files) {
                 const realm = this.realm();
@@ -25636,6 +26520,21 @@ var $;
             both.Meta().inflow([left.ref(), right.ref()]);
             $mol_assert_equal(both.Data($hyoo_crus_list).items(), ['foo', 'zzz']);
         },
+        'Inner refs is relative to land'($) {
+            const realm = $hyoo_crus_realm.make({ $ });
+            const Alice = realm.home().base().land();
+            const Bella = Alice.fork();
+            const alice_val = Alice.Node($hyoo_crus_reg_str).Item('qwertyui');
+            const bella_val = Bella.Node($hyoo_crus_reg_str).Item('qwertyui');
+            alice_val.value('Alice');
+            bella_val.value('Bella');
+            const alice_ref = Alice.Node($hyoo_crus_reg_ref).Item('asdfghjk');
+            const bella_ref = Bella.Node($hyoo_crus_reg_ref).Item('asdfghjk');
+            alice_ref.value(alice_val.ref());
+            $mol_assert_equal(alice_ref.value(), alice_val.ref());
+            $mol_assert_unique(alice_ref.value(), bella_ref.value());
+            $mol_assert_equal(bella_ref.value(), bella_val.ref());
+        },
     });
 })($ || ($ = {}));
 //hyoo/crus/land/land.test.ts
@@ -26448,11 +27347,11 @@ var $;
             "Register with linked nodes"($) {
                 const realm = $hyoo_crus_realm.make({ $ });
                 const land = realm.home().base().land();
-                const Reg = $hyoo_crus_reg.ref(() => Reg);
-                const reg = land.Node(Reg).Item('11111111');
-                $mol_assert_equal(reg.remote(), null);
-                reg.remote(reg);
-                $mol_assert_equal(reg.value_ref(), reg.remote().ref(), reg.ref());
+                const str = land.Node($hyoo_crus_reg_str).Item('11111111');
+                const ref = land.Node($hyoo_crus_reg.ref(() => $hyoo_crus_reg_str)).Item('11111111');
+                $mol_assert_equal(ref.remote(), null);
+                ref.remote(str);
+                $mol_assert_equal(ref.value_ref(), ref.remote().ref(), str.ref());
             },
         });
     })($$ = $_1.$$ || ($_1.$$ = {}));
@@ -26533,84 +27432,11 @@ var $;
                 $mol_assert_equal(account.user(), account.User.remote(), user);
                 const articles = [user.Articles.remote_make(), user.Articles.remote_make()];
                 $mol_assert_equal(user.articles() ?? [], user.Articles.remote_list(), articles);
-                articles[0].Title.dive('en').value('Hello!');
-                $mol_assert_equal(articles[0].Title.dive('en').value(), articles[0].title()?.dive('en').value(), 'Hello!');
-                $mol_assert_equal(articles[1].title()?.dive('ru').value(), undefined);
-                $mol_assert_equal(articles[1].Title.dive('ru').value(), articles[1].title()?.dive('ru').value(), null);
+                articles[0].Title.key('en').value('Hello!');
+                $mol_assert_equal(articles[0].Title.key('en').value(), articles[0].title()?.key('en').value(), 'Hello!');
+                $mol_assert_equal(articles[1].title()?.key('ru').value(), undefined);
+                $mol_assert_equal(articles[1].Title.key('ru').value(), articles[1].title()?.key('ru').value(), null);
                 $mol_assert_unique(user.land(), account.land(), ...articles.map(article => article.land()));
-            },
-            async "Schemas"($) {
-                class Kind extends $hyoo_crus_dict.with({
-                    Kind: $hyoo_crus_reg.ref(() => Kind),
-                    Title: $hyoo_crus_reg_str,
-                    Props: $hyoo_crus_dict.to($hyoo_crus_reg.ref(() => Property)),
-                }) {
-                }
-                class Entity extends $hyoo_crus_dict.with({
-                    Kind: $hyoo_crus_reg.ref(() => Kind),
-                    Title: $hyoo_crus_reg_str,
-                }) {
-                }
-                class Property extends Entity.with({
-                    Type: $hyoo_crus_reg.ref(() => Type),
-                    Base: $hyoo_crus_reg,
-                    Enum: $hyoo_crus_reg.ref(() => $hyoo_crus_dict),
-                }) {
-                }
-                class Type extends Entity.with({}) {
-                }
-                class Domain extends $hyoo_crus_dict.with({
-                    Kinds: $hyoo_crus_dict.to(Kind),
-                    Props: $hyoo_crus_dict.to(Property),
-                    Types: $hyoo_crus_dict.to(Type),
-                }) {
-                }
-                const realm = $hyoo_crus_realm.make({ $ });
-                const land = realm.home().base().land();
-                const domain = land.Data(Domain);
-                await $mol_wire_async(land).sync();
-                const kind = domain.Kinds.dive('Kind');
-                const type = domain.Kinds.dive('Type');
-                const prop = domain.Kinds.dive('Prop');
-                const entity = domain.Kinds.dive('Entity');
-                kind.title('Kind');
-                type.title('Type');
-                prop.title('Property');
-                entity.title('Entity');
-                const reg = domain.Types.dive('Reg');
-                const str = domain.Types.dive('Str');
-                const ref = domain.Types.dive('Ref');
-                reg.title('Register');
-                str.title('String');
-                ref.title('Reference');
-                kind.kind(kind);
-                type.kind(kind);
-                prop.kind(kind);
-                entity.kind(kind);
-                const kind_kind = domain.Props.dive('kind.kind');
-                const prop_type = domain.Props.dive('prop.type');
-                const prop_enum = domain.Props.dive('prop.enum');
-                const prop_base = domain.Props.dive('prop.base');
-                kind_kind.title('Kind of entity');
-                prop_type.title('Property type');
-                prop_enum.title('Property value variants');
-                prop_base.title('Property base value');
-                kind.Props.dive('kind').remote(kind_kind);
-                type.Props.dive('kind').remote(kind_kind);
-                prop.Props.dive('kind').remote(kind_kind);
-                entity.Props.dive('kind').remote(kind_kind);
-                prop.Props.dive('type').remote(prop_type);
-                prop.Props.dive('enum').remote(prop_enum);
-                prop.Props.dive('base').remote(prop_base);
-                kind_kind.type(ref);
-                prop_type.type(ref);
-                prop_enum.type(ref);
-                prop_base.type(reg);
-                kind_kind.enum(domain.Kinds);
-                prop_type.enum(domain.Types);
-                prop_enum.enum(domain);
-                kind_kind.base(entity.ref());
-                prop_type.base(reg.ref());
             },
         });
     })($$ = $_1.$$ || ($_1.$$ = {}));

@@ -670,18 +670,8 @@ $mol_text_span $mol_paragraph
 		^
 		mol_text_type <= type \
 
-$mol_expander $mol_list
-	rows /
-		<= Label $mol_view
-			sub /
-				<= Trigger $mol_check_expand
-					checked? <=> expanded? false
-					expandable <= expandable true
-					label <= label /
-						<= title
-				<= Tools null
-		<= Content $mol_list
-			rows <= content /
+$mol_ghost $mol_view
+	Sub $mol_view
 
 $mol_textarea $mol_stack
 	attr *
@@ -757,42 +747,6 @@ $mol_textarea_edit $mol_string
 		^
 		scrollTop 0
 
-$mol_dump_list $mol_view
-	values /
-	sub /
-		<= Dump*0 $mol_dump_value
-			value <= dump_value* null
-			expanded? <=> dump_expanded*? false
-			prototypes <= prototypes false
-			preview_show <= preview_show true
-
-$mol_dump_value $mol_view
-	value? null
-	preview_show? true
-	sub /
-		<= Simple $mol_text_code
-			text <= simple \
-		<= Expand $mol_expander
-			expanded? <=> expanded? false
-			Trigger <= Expand_head $mol_check_expand
-				minimal_height 24
-				minimal_width 24
-				expanded? <=> expanded? false
-				expandable <= expandable true
-				clicks? <=> expand_all? null
-				label /
-					<= Expand_title $mol_text_code
-						text <= expand_title \
-			content <= expand_content /
-				<= Preview $mol_view sub /
-					<= Preview_dom $mol_view
-						dom_node <= preview_dom null
-						render <= preview null
-				<= Row*0 $mol_dump_list
-					values <= row_values* /
-					prototypes <= prototypes false
-					preview_show <= preview_show
-
 $mol_pick $mol_pop
 	event *
 		^
@@ -842,6 +796,118 @@ $mol_select $mol_pick
 		submit?event <=> submit?event null
 		enabled <= enabled true
 	Trigger_icon $mol_icon_dots_vertical
+
+$mol_dump_list $mol_view
+	values /
+	sub /
+		<= Dump*0 $mol_dump_value
+			value <= dump_value* null
+			expanded? <=> dump_expanded*? false
+			prototypes <= prototypes false
+			preview_show <= preview_show true
+
+$mol_expander $mol_list
+	rows /
+		<= Label $mol_view
+			sub /
+				<= Trigger $mol_check_expand
+					checked? <=> expanded? false
+					expandable <= expandable true
+					label <= label /
+						<= title
+				<= Tools null
+		<= Content $mol_list
+			rows <= content /
+
+$mol_dump_value $mol_view
+	value? null
+	preview_show? true
+	sub /
+		<= Simple $mol_text_code
+			text <= simple \
+		<= Expand $mol_expander
+			expanded? <=> expanded? false
+			Trigger <= Expand_head $mol_check_expand
+				minimal_height 24
+				minimal_width 24
+				expanded? <=> expanded? false
+				expandable <= expandable true
+				clicks? <=> expand_all? null
+				label /
+					<= Expand_title $mol_text_code
+						text <= expand_title \
+			content <= expand_content /
+				<= Preview $mol_view sub /
+					<= Preview_dom $mol_view
+						dom_node <= preview_dom null
+						render <= preview null
+				<= Row*0 $mol_dump_list
+					values <= row_values* /
+					prototypes <= prototypes false
+					preview_show <= preview_show
+
+$hyoo_crus_flex_field $mol_ghost
+	node $hyoo_crus_node
+	prop $hyoo_crus_flex_prop
+	Str $mol_textarea
+		value? <=> str? \
+	Ref $mol_select
+		value? <=> ref? null
+		options <= ref_options /
+		option_label* <= ref_label* \
+	List $mol_list
+		rows <= rows /
+			<= Row_add $mol_button_minor
+				click? <=> row_add? null
+				title \+
+			<= Row*0 $mol_dump_value
+				value <= row_value* null
+			<= Row_ref*0 $mol_link
+				arg <= row_arg* *
+				title <= row_title* \
+
+$mol_labeler $mol_list
+	rows /
+		<= Label $mol_view
+			minimal_height 32
+			sub <= label /$mol_view_content
+				<= title
+		<= Content $mol_view
+			minimal_height 24
+			sub <= content /
+
+$mol_form_field $mol_labeler
+	bids /string
+	label /
+		<= name \
+		<= Bid $mol_view
+			sub / <= bid \
+	content / <= control null
+
+$mol_row $mol_view
+
+$mol_form $mol_list
+	submit_allowed true
+	submit_blocked false
+	event *
+		^
+		keydown?event <=> keydown?event null
+	submit?event null
+	rows /
+		<= Body $mol_list
+			sub <= body <= form_fields /$mol_form_field
+		<= Foot $mol_row
+			sub <= foot <= buttons /$mol_view
+
+$hyoo_crus_flex_form $mol_list
+	node $hyoo_crus_node
+	kind $hyoo_crus_flex_kind
+	rows <= fields /
+		<= Field*0 $mol_form_field
+			name <= field_name* \xxx
+			control <= Field_control* $hyoo_crus_flex_field
+				node <= field_node* $hyoo_crus_node
+				prop <= field_prop* $hyoo_crus_flex_prop
 
 $hyoo_crus_node_dump $mol_expander
 	node $hyoo_crus_node
@@ -913,6 +979,10 @@ $mol_icon_lock $mol_icon path \M12,17C13.1,17 14,16.1 14,15C14,13.89 13.1,13 12,
 
 $mol_check_icon $mol_check
 
+$mol_icon_source $mol_icon path \M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z
+
+$mol_icon_source_fork $mol_icon path \M6,2C7.66,2 9,3.34 9,5C9,6.28 8.19,7.38 7.06,7.81C7.15,8.27 7.39,8.83 8,9.63C9,10.92 11,12.83 12,14.17C13,12.83 15,10.92 16,9.63C16.61,8.83 16.85,8.27 16.94,7.81C15.81,7.38 15,6.28 15,5C15,3.34 16.34,2 18,2C19.66,2 21,3.34 21,5C21,6.32 20.14,7.45 18.95,7.85C18.87,8.37 18.64,9 18,9.83C17,11.17 15,13.08 14,14.38C13.39,15.17 13.15,15.73 13.06,16.19C14.19,16.62 15,17.72 15,19C15,20.66 13.66,22 12,22C10.34,22 9,20.66 9,19C9,17.72 9.81,16.62 10.94,16.19C10.85,15.73 10.61,15.17 10,14.38C9,13.08 7,11.17 6,9.83C5.36,9 5.13,8.37 5.05,7.85C3.86,7.45 3,6.32 3,5C3,3.34 4.34,2 6,2M6,4C5.45,4 5,4.45 5,5C5,5.55 5.45,6 6,6C6.55,6 7,5.55 7,5C7,4.45 6.55,4 6,4M18,4C17.45,4 17,4.45 17,5C17,5.55 17.45,6 18,6C18.55,6 19,5.55 19,5C19,4.45 18.55,4 18,4M12,18C11.45,18 11,18.45 11,19C11,19.55 11.45,20 12,20C12.55,20 13,19.55 13,19C13,18.45 12.55,18 12,18Z
+
 $mol_icon_download $mol_icon path \M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z
 
 $mol_button_download $mol_button_minor
@@ -925,12 +995,15 @@ $mol_button_download $mol_button_minor
 
 $hyoo_crus_land_page $mol_page
 	land $hyoo_crus_land
+	node $hyoo_crus_node
 	tools /
 		<= Close null
 	body /
-		<= Node*AAAAAAAA $hyoo_crus_node_dump
+		<= Flex $hyoo_crus_flex_form
+			node <= node
+		<= Node_dump*AAAAAAAA $hyoo_crus_node_dump
 			title <= node_title* \
-			node <= node* $hyoo_crus_node
+			node <= node_dump* $hyoo_crus_node
 		- <= Text $mol_textarea
 			value? <=> text? \
 			selection? <=> selection? /
@@ -942,6 +1015,10 @@ $hyoo_crus_land_page $mol_page
 			Icon <= Encrypted_icon $mol_icon_lock
 			checked? <=> encrypted? false
 			enabled <= encryptable true
+		<= Fork $mol_button_minor
+			hint \Fork this land
+			sub / <= Fork_icon $mol_icon_source_fork
+			click? <=> fork? null
 		<= Dumping $mol_view sub /
 			<= Size $mol_view sub / <= size \0 KB
 			<= Dump $mol_button_download
@@ -977,10 +1054,11 @@ $mol_icon_delete_forever $mol_icon path \M6,19C6,20.1 6.9,21 8,21H16C17.1,21 18,
 
 $hyoo_crus_realm_book $mol_book2_catalog
 	menu_title \🌌 Realm
-	param \land
+	param \ref
 	realm $hyoo_crus_realm
 	Spread* <= Land* $hyoo_crus_land_page
 		land <= land* $hyoo_crus_land
+		node <= node* $hyoo_crus_node
 		Close <= Spread_close
 	menu_foot /
 		<= Land_new $mol_button_minor

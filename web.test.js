@@ -4954,6 +4954,21 @@ var $;
             both.Meta().inflow([left.ref(), right.ref()]);
             $mol_assert_equal(both.Data($hyoo_crus_list).items(), ['foo', 'zzz']);
         },
+        'Inner refs is relative to land'($) {
+            const realm = $hyoo_crus_realm.make({ $ });
+            const Alice = realm.home().base().land();
+            const Bella = Alice.fork();
+            const alice_val = Alice.Node($hyoo_crus_reg_str).Item('qwertyui');
+            const bella_val = Bella.Node($hyoo_crus_reg_str).Item('qwertyui');
+            alice_val.value('Alice');
+            bella_val.value('Bella');
+            const alice_ref = Alice.Node($hyoo_crus_reg_ref).Item('asdfghjk');
+            const bella_ref = Bella.Node($hyoo_crus_reg_ref).Item('asdfghjk');
+            alice_ref.value(alice_val.ref());
+            $mol_assert_equal(alice_ref.value(), alice_val.ref());
+            $mol_assert_unique(alice_ref.value(), bella_ref.value());
+            $mol_assert_equal(bella_ref.value(), bella_val.ref());
+        },
     });
 })($ || ($ = {}));
 //hyoo/crus/land/land.test.ts
@@ -5766,11 +5781,11 @@ var $;
             "Register with linked nodes"($) {
                 const realm = $hyoo_crus_realm.make({ $ });
                 const land = realm.home().base().land();
-                const Reg = $hyoo_crus_reg.ref(() => Reg);
-                const reg = land.Node(Reg).Item('11111111');
-                $mol_assert_equal(reg.remote(), null);
-                reg.remote(reg);
-                $mol_assert_equal(reg.value_ref(), reg.remote().ref(), reg.ref());
+                const str = land.Node($hyoo_crus_reg_str).Item('11111111');
+                const ref = land.Node($hyoo_crus_reg.ref(() => $hyoo_crus_reg_str)).Item('11111111');
+                $mol_assert_equal(ref.remote(), null);
+                ref.remote(str);
+                $mol_assert_equal(ref.value_ref(), ref.remote().ref(), str.ref());
             },
         });
     })($$ = $_1.$$ || ($_1.$$ = {}));
@@ -5851,84 +5866,11 @@ var $;
                 $mol_assert_equal(account.user(), account.User.remote(), user);
                 const articles = [user.Articles.remote_make(), user.Articles.remote_make()];
                 $mol_assert_equal(user.articles() ?? [], user.Articles.remote_list(), articles);
-                articles[0].Title.dive('en').value('Hello!');
-                $mol_assert_equal(articles[0].Title.dive('en').value(), articles[0].title()?.dive('en').value(), 'Hello!');
-                $mol_assert_equal(articles[1].title()?.dive('ru').value(), undefined);
-                $mol_assert_equal(articles[1].Title.dive('ru').value(), articles[1].title()?.dive('ru').value(), null);
+                articles[0].Title.key('en').value('Hello!');
+                $mol_assert_equal(articles[0].Title.key('en').value(), articles[0].title()?.key('en').value(), 'Hello!');
+                $mol_assert_equal(articles[1].title()?.key('ru').value(), undefined);
+                $mol_assert_equal(articles[1].Title.key('ru').value(), articles[1].title()?.key('ru').value(), null);
                 $mol_assert_unique(user.land(), account.land(), ...articles.map(article => article.land()));
-            },
-            async "Schemas"($) {
-                class Kind extends $hyoo_crus_dict.with({
-                    Kind: $hyoo_crus_reg.ref(() => Kind),
-                    Title: $hyoo_crus_reg_str,
-                    Props: $hyoo_crus_dict.to($hyoo_crus_reg.ref(() => Property)),
-                }) {
-                }
-                class Entity extends $hyoo_crus_dict.with({
-                    Kind: $hyoo_crus_reg.ref(() => Kind),
-                    Title: $hyoo_crus_reg_str,
-                }) {
-                }
-                class Property extends Entity.with({
-                    Type: $hyoo_crus_reg.ref(() => Type),
-                    Base: $hyoo_crus_reg,
-                    Enum: $hyoo_crus_reg.ref(() => $hyoo_crus_dict),
-                }) {
-                }
-                class Type extends Entity.with({}) {
-                }
-                class Domain extends $hyoo_crus_dict.with({
-                    Kinds: $hyoo_crus_dict.to(Kind),
-                    Props: $hyoo_crus_dict.to(Property),
-                    Types: $hyoo_crus_dict.to(Type),
-                }) {
-                }
-                const realm = $hyoo_crus_realm.make({ $ });
-                const land = realm.home().base().land();
-                const domain = land.Data(Domain);
-                await $mol_wire_async(land).sync();
-                const kind = domain.Kinds.dive('Kind');
-                const type = domain.Kinds.dive('Type');
-                const prop = domain.Kinds.dive('Prop');
-                const entity = domain.Kinds.dive('Entity');
-                kind.title('Kind');
-                type.title('Type');
-                prop.title('Property');
-                entity.title('Entity');
-                const reg = domain.Types.dive('Reg');
-                const str = domain.Types.dive('Str');
-                const ref = domain.Types.dive('Ref');
-                reg.title('Register');
-                str.title('String');
-                ref.title('Reference');
-                kind.kind(kind);
-                type.kind(kind);
-                prop.kind(kind);
-                entity.kind(kind);
-                const kind_kind = domain.Props.dive('kind.kind');
-                const prop_type = domain.Props.dive('prop.type');
-                const prop_enum = domain.Props.dive('prop.enum');
-                const prop_base = domain.Props.dive('prop.base');
-                kind_kind.title('Kind of entity');
-                prop_type.title('Property type');
-                prop_enum.title('Property value variants');
-                prop_base.title('Property base value');
-                kind.Props.dive('kind').remote(kind_kind);
-                type.Props.dive('kind').remote(kind_kind);
-                prop.Props.dive('kind').remote(kind_kind);
-                entity.Props.dive('kind').remote(kind_kind);
-                prop.Props.dive('type').remote(prop_type);
-                prop.Props.dive('enum').remote(prop_enum);
-                prop.Props.dive('base').remote(prop_base);
-                kind_kind.type(ref);
-                prop_type.type(ref);
-                prop_enum.type(ref);
-                prop_base.type(reg);
-                kind_kind.enum(domain.Kinds);
-                prop_type.enum(domain.Types);
-                prop_enum.enum(domain);
-                kind_kind.base(entity.ref());
-                prop_type.base(reg.ref());
             },
         });
     })($$ = $_1.$$ || ($_1.$$ = {}));
