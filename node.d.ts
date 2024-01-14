@@ -64,12 +64,12 @@ declare namespace $ {
         get $(): $;
         set $(next: $);
         static create<Instance>(this: new (init?: (instance: any) => void) => Instance, init?: (instance: $mol_type_writable<Instance>) => void): Instance;
-        static [Symbol.toPrimitive](): string;
-        static toString(): string;
+        static [Symbol.toPrimitive](): any;
+        static toString(): any;
+        static toJSON(): any;
         destructor(): void;
         static destructor(): void;
         toString(): string;
-        static toJSON(): any;
         toJSON(): any;
     }
 }
@@ -2809,10 +2809,10 @@ declare namespace $ {
             make<Instance>(this: new () => Instance, config: Partial<Instance>): Instance;
             $: typeof $$;
             create<Instance_1>(this: new (init?: ((instance: any) => void) | undefined) => Instance_1, init?: ((instance: $mol_type_writable<Instance_1>) => void) | undefined): Instance_1;
-            toString(): string;
-            destructor(): void;
+            toString(): any;
             toJSON(): any;
-            [Symbol.toPrimitive](): string;
+            destructor(): void;
+            [Symbol.toPrimitive](): any;
         };
         static ref<Value extends any>(Value: Value): {
             new (): {
@@ -3003,10 +3003,10 @@ declare namespace $ {
             make<Instance>(this: new () => Instance, config: Partial<Instance>): Instance;
             $: typeof $$;
             create<Instance_1>(this: new (init?: ((instance: any) => void) | undefined) => Instance_1, init?: ((instance: $mol_type_writable<Instance_1>) => void) | undefined): Instance_1;
-            toString(): string;
-            destructor(): void;
+            toString(): any;
             toJSON(): any;
-            [Symbol.toPrimitive](): string;
+            destructor(): void;
+            [Symbol.toPrimitive](): any;
         };
         ref<Value extends unknown>(Value: Value): {
             new (): {
@@ -3056,10 +3056,10 @@ declare namespace $ {
         make<Instance>(this: new () => Instance, config: Partial<Instance>): Instance;
         $: typeof $$;
         create<Instance_1>(this: new (init?: ((instance: any) => void) | undefined) => Instance_1, init?: ((instance: $mol_type_writable<Instance_1>) => void) | undefined): Instance_1;
-        toString(): string;
-        destructor(): void;
+        toString(): any;
         toJSON(): any;
-        [Symbol.toPrimitive](): string;
+        destructor(): void;
+        [Symbol.toPrimitive](): any;
     };
     export class $hyoo_crus_list_bin extends $hyoo_crus_list_bin_base {
     }
@@ -3206,10 +3206,10 @@ declare namespace $ {
             make<Instance>(this: new () => Instance, config: Partial<Instance>): Instance;
             $: typeof $$;
             create<Instance_1>(this: new (init?: ((instance: any) => void) | undefined) => Instance_1, init?: ((instance: $mol_type_writable<Instance_1>) => void) | undefined): Instance_1;
-            toString(): string;
-            destructor(): void;
+            toString(): any;
             toJSON(): any;
-            [Symbol.toPrimitive](): string;
+            destructor(): void;
+            [Symbol.toPrimitive](): any;
         };
         ref<Value extends unknown>(Value: Value): {
             new (): {
@@ -3259,10 +3259,10 @@ declare namespace $ {
         make<Instance>(this: new () => Instance, config: Partial<Instance>): Instance;
         $: typeof $$;
         create<Instance_1>(this: new (init?: ((instance: any) => void) | undefined) => Instance_1, init?: ((instance: $mol_type_writable<Instance_1>) => void) | undefined): Instance_1;
-        toString(): string;
-        destructor(): void;
+        toString(): any;
         toJSON(): any;
-        [Symbol.toPrimitive](): string;
+        destructor(): void;
+        [Symbol.toPrimitive](): any;
     };
     export class $hyoo_crus_list_bool extends $hyoo_crus_list_bool_base {
     }
@@ -3409,10 +3409,10 @@ declare namespace $ {
             make<Instance>(this: new () => Instance, config: Partial<Instance>): Instance;
             $: typeof $$;
             create<Instance_1>(this: new (init?: ((instance: any) => void) | undefined) => Instance_1, init?: ((instance: $mol_type_writable<Instance_1>) => void) | undefined): Instance_1;
-            toString(): string;
-            destructor(): void;
+            toString(): any;
             toJSON(): any;
-            [Symbol.toPrimitive](): string;
+            destructor(): void;
+            [Symbol.toPrimitive](): any;
         };
         ref<Value extends unknown>(Value: Value): {
             new (): {
@@ -3462,10 +3462,10 @@ declare namespace $ {
         make<Instance>(this: new () => Instance, config: Partial<Instance>): Instance;
         $: typeof $$;
         create<Instance_1>(this: new (init?: ((instance: any) => void) | undefined) => Instance_1, init?: ((instance: $mol_type_writable<Instance_1>) => void) | undefined): Instance_1;
-        toString(): string;
-        destructor(): void;
+        toString(): any;
         toJSON(): any;
-        [Symbol.toPrimitive](): string;
+        destructor(): void;
+        [Symbol.toPrimitive](): any;
     };
     export class $hyoo_crus_list_int extends $hyoo_crus_list_int_base {
     }
@@ -3612,10 +3612,10 @@ declare namespace $ {
             make<Instance>(this: new () => Instance, config: Partial<Instance>): Instance;
             $: typeof $$;
             create<Instance_1>(this: new (init?: ((instance: any) => void) | undefined) => Instance_1, init?: ((instance: $mol_type_writable<Instance_1>) => void) | undefined): Instance_1;
-            toString(): string;
-            destructor(): void;
+            toString(): any;
             toJSON(): any;
-            [Symbol.toPrimitive](): string;
+            destructor(): void;
+            [Symbol.toPrimitive](): any;
         };
         ref<Value extends unknown>(Value: Value): {
             new (): {
@@ -3665,10 +3665,10 @@ declare namespace $ {
         make<Instance>(this: new () => Instance, config: Partial<Instance>): Instance;
         $: typeof $$;
         create<Instance_1>(this: new (init?: ((instance: any) => void) | undefined) => Instance_1, init?: ((instance: $mol_type_writable<Instance_1>) => void) | undefined): Instance_1;
-        toString(): string;
-        destructor(): void;
+        toString(): any;
         toJSON(): any;
-        [Symbol.toPrimitive](): string;
+        destructor(): void;
+        [Symbol.toPrimitive](): any;
     };
     export class $hyoo_crus_list_real extends $hyoo_crus_list_real_base {
     }
@@ -3815,10 +3815,10 @@ declare namespace $ {
             make<Instance>(this: new () => Instance, config: Partial<Instance>): Instance;
             $: typeof $$;
             create<Instance_1>(this: new (init?: ((instance: any) => void) | undefined) => Instance_1, init?: ((instance: $mol_type_writable<Instance_1>) => void) | undefined): Instance_1;
-            toString(): string;
-            destructor(): void;
+            toString(): any;
             toJSON(): any;
-            [Symbol.toPrimitive](): string;
+            destructor(): void;
+            [Symbol.toPrimitive](): any;
         };
         ref<Value extends unknown>(Value: Value): {
             new (): {
@@ -3868,10 +3868,10 @@ declare namespace $ {
         make<Instance>(this: new () => Instance, config: Partial<Instance>): Instance;
         $: typeof $$;
         create<Instance_1>(this: new (init?: ((instance: any) => void) | undefined) => Instance_1, init?: ((instance: $mol_type_writable<Instance_1>) => void) | undefined): Instance_1;
-        toString(): string;
-        destructor(): void;
+        toString(): any;
         toJSON(): any;
-        [Symbol.toPrimitive](): string;
+        destructor(): void;
+        [Symbol.toPrimitive](): any;
     };
     export class $hyoo_crus_list_str extends $hyoo_crus_list_str_base {
     }
@@ -4018,10 +4018,10 @@ declare namespace $ {
             make<Instance>(this: new () => Instance, config: Partial<Instance>): Instance;
             $: typeof $$;
             create<Instance_1>(this: new (init?: ((instance: any) => void) | undefined) => Instance_1, init?: ((instance: $mol_type_writable<Instance_1>) => void) | undefined): Instance_1;
-            toString(): string;
-            destructor(): void;
+            toString(): any;
             toJSON(): any;
-            [Symbol.toPrimitive](): string;
+            destructor(): void;
+            [Symbol.toPrimitive](): any;
         };
         ref<Value extends unknown>(Value: Value): {
             new (): {
@@ -4071,10 +4071,10 @@ declare namespace $ {
         make<Instance>(this: new () => Instance, config: Partial<Instance>): Instance;
         $: typeof $$;
         create<Instance_1>(this: new (init?: ((instance: any) => void) | undefined) => Instance_1, init?: ((instance: $mol_type_writable<Instance_1>) => void) | undefined): Instance_1;
-        toString(): string;
-        destructor(): void;
+        toString(): any;
         toJSON(): any;
-        [Symbol.toPrimitive](): string;
+        destructor(): void;
+        [Symbol.toPrimitive](): any;
     };
     export class $hyoo_crus_list_time extends $hyoo_crus_list_time_base {
     }
@@ -4221,10 +4221,10 @@ declare namespace $ {
             make<Instance>(this: new () => Instance, config: Partial<Instance>): Instance;
             $: typeof $$;
             create<Instance_1>(this: new (init?: ((instance: any) => void) | undefined) => Instance_1, init?: ((instance: $mol_type_writable<Instance_1>) => void) | undefined): Instance_1;
-            toString(): string;
-            destructor(): void;
+            toString(): any;
             toJSON(): any;
-            [Symbol.toPrimitive](): string;
+            destructor(): void;
+            [Symbol.toPrimitive](): any;
         };
         ref<Value extends unknown>(Value: Value): {
             new (): {
@@ -4274,10 +4274,10 @@ declare namespace $ {
         make<Instance>(this: new () => Instance, config: Partial<Instance>): Instance;
         $: typeof $$;
         create<Instance_1>(this: new (init?: ((instance: any) => void) | undefined) => Instance_1, init?: ((instance: $mol_type_writable<Instance_1>) => void) | undefined): Instance_1;
-        toString(): string;
-        destructor(): void;
+        toString(): any;
         toJSON(): any;
-        [Symbol.toPrimitive](): string;
+        destructor(): void;
+        [Symbol.toPrimitive](): any;
     };
     export class $hyoo_crus_list_json extends $hyoo_crus_list_json_base {
     }
@@ -4424,10 +4424,10 @@ declare namespace $ {
             make<Instance>(this: new () => Instance, config: Partial<Instance>): Instance;
             $: typeof $$;
             create<Instance_1>(this: new (init?: ((instance: any) => void) | undefined) => Instance_1, init?: ((instance: $mol_type_writable<Instance_1>) => void) | undefined): Instance_1;
-            toString(): string;
-            destructor(): void;
+            toString(): any;
             toJSON(): any;
-            [Symbol.toPrimitive](): string;
+            destructor(): void;
+            [Symbol.toPrimitive](): any;
         };
         ref<Value extends unknown>(Value: Value): {
             new (): {
@@ -4477,10 +4477,10 @@ declare namespace $ {
         make<Instance>(this: new () => Instance, config: Partial<Instance>): Instance;
         $: typeof $$;
         create<Instance_1>(this: new (init?: ((instance: any) => void) | undefined) => Instance_1, init?: ((instance: $mol_type_writable<Instance_1>) => void) | undefined): Instance_1;
-        toString(): string;
-        destructor(): void;
+        toString(): any;
         toJSON(): any;
-        [Symbol.toPrimitive](): string;
+        destructor(): void;
+        [Symbol.toPrimitive](): any;
     };
     export class $hyoo_crus_list_xml extends $hyoo_crus_list_xml_base {
     }
@@ -4627,10 +4627,10 @@ declare namespace $ {
             make<Instance>(this: new () => Instance, config: Partial<Instance>): Instance;
             $: typeof $$;
             create<Instance_1>(this: new (init?: ((instance: any) => void) | undefined) => Instance_1, init?: ((instance: $mol_type_writable<Instance_1>) => void) | undefined): Instance_1;
-            toString(): string;
-            destructor(): void;
+            toString(): any;
             toJSON(): any;
-            [Symbol.toPrimitive](): string;
+            destructor(): void;
+            [Symbol.toPrimitive](): any;
         };
         ref<Value extends unknown>(Value: Value): {
             new (): {
@@ -4680,10 +4680,10 @@ declare namespace $ {
         make<Instance>(this: new () => Instance, config: Partial<Instance>): Instance;
         $: typeof $$;
         create<Instance_1>(this: new (init?: ((instance: any) => void) | undefined) => Instance_1, init?: ((instance: $mol_type_writable<Instance_1>) => void) | undefined): Instance_1;
-        toString(): string;
-        destructor(): void;
+        toString(): any;
         toJSON(): any;
-        [Symbol.toPrimitive](): string;
+        destructor(): void;
+        [Symbol.toPrimitive](): any;
     };
     export class $hyoo_crus_list_tree extends $hyoo_crus_list_tree_base {
     }
@@ -5101,10 +5101,10 @@ declare namespace $ {
             make<Instance>(this: new () => Instance, config: Partial<Instance>): Instance;
             $: typeof $$;
             create<Instance_1>(this: new (init?: ((instance: any) => void) | undefined) => Instance_1, init?: ((instance: $mol_type_writable<Instance_1>) => void) | undefined): Instance_1;
-            toString(): string;
-            destructor(): void;
+            toString(): any;
             toJSON(): any;
-            [Symbol.toPrimitive](): string;
+            destructor(): void;
+            [Symbol.toPrimitive](): any;
         };
         static ref<Value extends any>(Value: Value): {
             new (): {
@@ -5299,10 +5299,10 @@ declare namespace $ {
             make<Instance>(this: new () => Instance, config: Partial<Instance>): Instance;
             $: typeof $$;
             create<Instance_1>(this: new (init?: ((instance: any) => void) | undefined) => Instance_1, init?: ((instance: $mol_type_writable<Instance_1>) => void) | undefined): Instance_1;
-            toString(): string;
-            destructor(): void;
+            toString(): any;
             toJSON(): any;
-            [Symbol.toPrimitive](): string;
+            destructor(): void;
+            [Symbol.toPrimitive](): any;
         };
         ref<Value extends unknown>(Value: Value): {
             new (): {
@@ -5353,10 +5353,10 @@ declare namespace $ {
         make<Instance>(this: new () => Instance, config: Partial<Instance>): Instance;
         $: typeof $$;
         create<Instance_1>(this: new (init?: ((instance: any) => void) | undefined) => Instance_1, init?: ((instance: $mol_type_writable<Instance_1>) => void) | undefined): Instance_1;
-        toString(): string;
-        destructor(): void;
+        toString(): any;
         toJSON(): any;
-        [Symbol.toPrimitive](): string;
+        destructor(): void;
+        [Symbol.toPrimitive](): any;
     };
     export class $hyoo_crus_reg_bin extends $hyoo_crus_reg_bin_base {
     }
@@ -5506,10 +5506,10 @@ declare namespace $ {
             make<Instance>(this: new () => Instance, config: Partial<Instance>): Instance;
             $: typeof $$;
             create<Instance_1>(this: new (init?: ((instance: any) => void) | undefined) => Instance_1, init?: ((instance: $mol_type_writable<Instance_1>) => void) | undefined): Instance_1;
-            toString(): string;
-            destructor(): void;
+            toString(): any;
             toJSON(): any;
-            [Symbol.toPrimitive](): string;
+            destructor(): void;
+            [Symbol.toPrimitive](): any;
         };
         ref<Value extends unknown>(Value: Value): {
             new (): {
@@ -5560,10 +5560,10 @@ declare namespace $ {
         make<Instance>(this: new () => Instance, config: Partial<Instance>): Instance;
         $: typeof $$;
         create<Instance_1>(this: new (init?: ((instance: any) => void) | undefined) => Instance_1, init?: ((instance: $mol_type_writable<Instance_1>) => void) | undefined): Instance_1;
-        toString(): string;
-        destructor(): void;
+        toString(): any;
         toJSON(): any;
-        [Symbol.toPrimitive](): string;
+        destructor(): void;
+        [Symbol.toPrimitive](): any;
     };
     export class $hyoo_crus_reg_bool extends $hyoo_crus_reg_bool_base {
     }
@@ -5713,10 +5713,10 @@ declare namespace $ {
             make<Instance>(this: new () => Instance, config: Partial<Instance>): Instance;
             $: typeof $$;
             create<Instance_1>(this: new (init?: ((instance: any) => void) | undefined) => Instance_1, init?: ((instance: $mol_type_writable<Instance_1>) => void) | undefined): Instance_1;
-            toString(): string;
-            destructor(): void;
+            toString(): any;
             toJSON(): any;
-            [Symbol.toPrimitive](): string;
+            destructor(): void;
+            [Symbol.toPrimitive](): any;
         };
         ref<Value extends unknown>(Value: Value): {
             new (): {
@@ -5767,10 +5767,10 @@ declare namespace $ {
         make<Instance>(this: new () => Instance, config: Partial<Instance>): Instance;
         $: typeof $$;
         create<Instance_1>(this: new (init?: ((instance: any) => void) | undefined) => Instance_1, init?: ((instance: $mol_type_writable<Instance_1>) => void) | undefined): Instance_1;
-        toString(): string;
-        destructor(): void;
+        toString(): any;
         toJSON(): any;
-        [Symbol.toPrimitive](): string;
+        destructor(): void;
+        [Symbol.toPrimitive](): any;
     };
     export class $hyoo_crus_reg_int extends $hyoo_crus_reg_int_base {
     }
@@ -5920,10 +5920,10 @@ declare namespace $ {
             make<Instance>(this: new () => Instance, config: Partial<Instance>): Instance;
             $: typeof $$;
             create<Instance_1>(this: new (init?: ((instance: any) => void) | undefined) => Instance_1, init?: ((instance: $mol_type_writable<Instance_1>) => void) | undefined): Instance_1;
-            toString(): string;
-            destructor(): void;
+            toString(): any;
             toJSON(): any;
-            [Symbol.toPrimitive](): string;
+            destructor(): void;
+            [Symbol.toPrimitive](): any;
         };
         ref<Value extends unknown>(Value: Value): {
             new (): {
@@ -5974,10 +5974,10 @@ declare namespace $ {
         make<Instance>(this: new () => Instance, config: Partial<Instance>): Instance;
         $: typeof $$;
         create<Instance_1>(this: new (init?: ((instance: any) => void) | undefined) => Instance_1, init?: ((instance: $mol_type_writable<Instance_1>) => void) | undefined): Instance_1;
-        toString(): string;
-        destructor(): void;
+        toString(): any;
         toJSON(): any;
-        [Symbol.toPrimitive](): string;
+        destructor(): void;
+        [Symbol.toPrimitive](): any;
     };
     export class $hyoo_crus_reg_real extends $hyoo_crus_reg_real_base {
     }
@@ -6127,10 +6127,10 @@ declare namespace $ {
             make<Instance>(this: new () => Instance, config: Partial<Instance>): Instance;
             $: typeof $$;
             create<Instance_1>(this: new (init?: ((instance: any) => void) | undefined) => Instance_1, init?: ((instance: $mol_type_writable<Instance_1>) => void) | undefined): Instance_1;
-            toString(): string;
-            destructor(): void;
+            toString(): any;
             toJSON(): any;
-            [Symbol.toPrimitive](): string;
+            destructor(): void;
+            [Symbol.toPrimitive](): any;
         };
         ref<Value extends unknown>(Value: Value): {
             new (): {
@@ -6181,10 +6181,10 @@ declare namespace $ {
         make<Instance>(this: new () => Instance, config: Partial<Instance>): Instance;
         $: typeof $$;
         create<Instance_1>(this: new (init?: ((instance: any) => void) | undefined) => Instance_1, init?: ((instance: $mol_type_writable<Instance_1>) => void) | undefined): Instance_1;
-        toString(): string;
-        destructor(): void;
+        toString(): any;
         toJSON(): any;
-        [Symbol.toPrimitive](): string;
+        destructor(): void;
+        [Symbol.toPrimitive](): any;
     };
     export class $hyoo_crus_reg_str extends $hyoo_crus_reg_str_base {
     }
@@ -6334,10 +6334,10 @@ declare namespace $ {
             make<Instance>(this: new () => Instance, config: Partial<Instance>): Instance;
             $: typeof $$;
             create<Instance_1>(this: new (init?: ((instance: any) => void) | undefined) => Instance_1, init?: ((instance: $mol_type_writable<Instance_1>) => void) | undefined): Instance_1;
-            toString(): string;
-            destructor(): void;
+            toString(): any;
             toJSON(): any;
-            [Symbol.toPrimitive](): string;
+            destructor(): void;
+            [Symbol.toPrimitive](): any;
         };
         ref<Value extends unknown>(Value: Value): {
             new (): {
@@ -6388,10 +6388,10 @@ declare namespace $ {
         make<Instance>(this: new () => Instance, config: Partial<Instance>): Instance;
         $: typeof $$;
         create<Instance_1>(this: new (init?: ((instance: any) => void) | undefined) => Instance_1, init?: ((instance: $mol_type_writable<Instance_1>) => void) | undefined): Instance_1;
-        toString(): string;
-        destructor(): void;
+        toString(): any;
         toJSON(): any;
-        [Symbol.toPrimitive](): string;
+        destructor(): void;
+        [Symbol.toPrimitive](): any;
     };
     export class $hyoo_crus_reg_time extends $hyoo_crus_reg_time_base {
     }
@@ -6541,10 +6541,10 @@ declare namespace $ {
             make<Instance>(this: new () => Instance, config: Partial<Instance>): Instance;
             $: typeof $$;
             create<Instance_1>(this: new (init?: ((instance: any) => void) | undefined) => Instance_1, init?: ((instance: $mol_type_writable<Instance_1>) => void) | undefined): Instance_1;
-            toString(): string;
-            destructor(): void;
+            toString(): any;
             toJSON(): any;
-            [Symbol.toPrimitive](): string;
+            destructor(): void;
+            [Symbol.toPrimitive](): any;
         };
         ref<Value extends unknown>(Value: Value): {
             new (): {
@@ -6595,10 +6595,10 @@ declare namespace $ {
         make<Instance>(this: new () => Instance, config: Partial<Instance>): Instance;
         $: typeof $$;
         create<Instance_1>(this: new (init?: ((instance: any) => void) | undefined) => Instance_1, init?: ((instance: $mol_type_writable<Instance_1>) => void) | undefined): Instance_1;
-        toString(): string;
-        destructor(): void;
+        toString(): any;
         toJSON(): any;
-        [Symbol.toPrimitive](): string;
+        destructor(): void;
+        [Symbol.toPrimitive](): any;
     };
     export class $hyoo_crus_reg_json extends $hyoo_crus_reg_json_base {
     }
@@ -6748,10 +6748,10 @@ declare namespace $ {
             make<Instance>(this: new () => Instance, config: Partial<Instance>): Instance;
             $: typeof $$;
             create<Instance_1>(this: new (init?: ((instance: any) => void) | undefined) => Instance_1, init?: ((instance: $mol_type_writable<Instance_1>) => void) | undefined): Instance_1;
-            toString(): string;
-            destructor(): void;
+            toString(): any;
             toJSON(): any;
-            [Symbol.toPrimitive](): string;
+            destructor(): void;
+            [Symbol.toPrimitive](): any;
         };
         ref<Value extends unknown>(Value: Value): {
             new (): {
@@ -6802,10 +6802,10 @@ declare namespace $ {
         make<Instance>(this: new () => Instance, config: Partial<Instance>): Instance;
         $: typeof $$;
         create<Instance_1>(this: new (init?: ((instance: any) => void) | undefined) => Instance_1, init?: ((instance: $mol_type_writable<Instance_1>) => void) | undefined): Instance_1;
-        toString(): string;
-        destructor(): void;
+        toString(): any;
         toJSON(): any;
-        [Symbol.toPrimitive](): string;
+        destructor(): void;
+        [Symbol.toPrimitive](): any;
     };
     export class $hyoo_crus_reg_xml extends $hyoo_crus_reg_xml_base {
     }
@@ -6955,10 +6955,10 @@ declare namespace $ {
             make<Instance>(this: new () => Instance, config: Partial<Instance>): Instance;
             $: typeof $$;
             create<Instance_1>(this: new (init?: ((instance: any) => void) | undefined) => Instance_1, init?: ((instance: $mol_type_writable<Instance_1>) => void) | undefined): Instance_1;
-            toString(): string;
-            destructor(): void;
+            toString(): any;
             toJSON(): any;
-            [Symbol.toPrimitive](): string;
+            destructor(): void;
+            [Symbol.toPrimitive](): any;
         };
         ref<Value extends unknown>(Value: Value): {
             new (): {
@@ -7009,10 +7009,10 @@ declare namespace $ {
         make<Instance>(this: new () => Instance, config: Partial<Instance>): Instance;
         $: typeof $$;
         create<Instance_1>(this: new (init?: ((instance: any) => void) | undefined) => Instance_1, init?: ((instance: $mol_type_writable<Instance_1>) => void) | undefined): Instance_1;
-        toString(): string;
-        destructor(): void;
+        toString(): any;
         toJSON(): any;
-        [Symbol.toPrimitive](): string;
+        destructor(): void;
+        [Symbol.toPrimitive](): any;
     };
     export class $hyoo_crus_reg_tree extends $hyoo_crus_reg_tree_base {
     }
