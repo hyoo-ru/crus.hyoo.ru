@@ -450,6 +450,11 @@ namespace $ {
 			tag = 'term' as keyof typeof $hyoo_crus_gist_tag,
 		) {
 			
+			// localize refs
+			if( typeof vary === 'symbol' && vary.description!.startsWith( this.ref().description!.padEnd( 24, 'A' ) ) ) {
+				vary = Symbol.for( 'AAAAAAAAAAAAAAAAAAAAAAAA' + vary.description!.slice( 24 ) )
+			}
+			
 			this.join()
 			
 			const auth = this.auth()
@@ -666,9 +671,22 @@ namespace $ {
 		@ $mol_mem_key
 		gist_decode( gist: $hyoo_crus_gist ): $hyoo_crus_vary_type {
 			
+			let vary = this.gist_decode_raw( gist )
+			
+			// globalize ref
+			if( typeof vary === 'symbol' && vary.description!.startsWith( 'AAAAAAAAAAAAAAAAAAAAAAAA' ) ) {
+				vary = Symbol.for( this.ref().description!.padEnd( 24, 'A' ) + vary.description!.slice( 24 ) )
+			}
+			
+			return vary
+		}
+		
+		@ $mol_mem_key
+		gist_decode_raw( gist: $hyoo_crus_gist ): $hyoo_crus_vary_type {
+			
 			if( this.gists.get( gist.head() )?.get( gist.self() ) !== gist ) {
 				for( const id of this.Meta().inflow() ?? [] ) {
-					const vary = this.realm()?.Land( id as symbol ).gist_decode( gist )
+					const vary = this.realm()?.Land( id as symbol ).gist_decode_raw( gist )
 					if( vary !== undefined ) return vary
 				}
 				return undefined!

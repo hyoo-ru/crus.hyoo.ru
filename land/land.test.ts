@@ -190,6 +190,28 @@ namespace $ {
 			
 		},
 		
+		'Inner refs is relative to land'( $ ) {
+			
+			const realm = $hyoo_crus_realm.make({ $ })
+			const Alice = realm.home().base().land()
+			const Bella = Alice.fork()
+			
+			const alice_val = Alice.Node( $hyoo_crus_reg_str ).Item( 'qwertyui' )
+			const bella_val = Bella.Node( $hyoo_crus_reg_str ).Item( 'qwertyui' )
+			
+			alice_val.value( 'Alice' )
+			bella_val.value( 'Bella' )
+			
+			const alice_ref = Alice.Node( $hyoo_crus_reg_ref ).Item( 'asdfghjk' )
+			const bella_ref = Bella.Node( $hyoo_crus_reg_ref ).Item( 'asdfghjk' )
+			
+			alice_ref.value( alice_val.ref() )
+			$mol_assert_equal( alice_ref.value(), alice_val.ref() )
+			$mol_assert_unique( alice_ref.value(), bella_ref.value() )
+			$mol_assert_equal( bella_ref.value(), bella_val.ref() )
+			
+		},
+		
 		// async 'Merge text changes'() {
 			
 		// 	const base = new $hyoo_crus_land( 1n, 1 )
