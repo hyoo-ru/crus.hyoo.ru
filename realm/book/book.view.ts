@@ -4,26 +4,35 @@ namespace $.$$ {
 		@ $mol_mem
 		override spread_ids() {
 			const spread = this.spread()
+			const spread_land = $hyoo_crus_ref_root( $hyoo_crus_ref( spread ) )
 			return [ ... this.realm().lords.values() ].flatMap( lord => {
 				return [ ... lord.lands.values() ].flatMap( land => {
-					const ref = land.ref().description || 'AAAAAAAA'
-					return spread.startsWith( ref ) ? [ ref, spread ] : [ ref ]
+					return land.ref() === spread_land ? [ land.ref().description!, spread ] : [ land.ref().description! ]
 				} )
 			} )
 		}
 		
 		override land( id: string ) {
-			return this.realm().Land( Symbol.for( id.slice( 0, 24 ) ) )
+			return this.realm().Land( $hyoo_crus_ref_root( $hyoo_crus_ref( id ) ) )
 		}
 		
 		override node( id: string ) {
-			return this.realm().Node( Symbol.for( id ), $hyoo_crus_node )
+			return this.realm().Node( $hyoo_crus_ref( id ), $hyoo_crus_node )
 		}
 		
 		override spread_title( id: string ) {
-			const title = this.realm().Node( Symbol.for( id ), $hyoo_crus_entity ).title()
-			const suffix = title || ( id.length > 24 ? id.slice( 24 ) : id.length > 16 ? id.slice( 16 ) : id )
-			return ( id.length > 24 ? '      🧩 ' : id.length > 16 ? '   🌍 ' : '👑 ' ) + suffix
+			const ref = $hyoo_crus_ref( id )
+			const title = this.realm().Node( ref, $hyoo_crus_entity ).title()
+			const chunks = id.split( '_' )
+			const suffix = title || ( chunks.length >= 4 ? $hyoo_crus_ref_head( ref ) : chunks.length >= 3 ? $hyoo_crus_ref_land( ref ) : id )
+			const prefix = [
+				'',
+				'',
+				'👑 ',
+				'   🌍 ',
+				'      🧩 ',
+			][ chunks.length ]
+			return prefix + suffix
 		}
 		
 		override land_new() {

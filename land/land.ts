@@ -23,13 +23,13 @@ namespace $ {
 		}
 		
 		ref() {
-			return Symbol.for( this.lord_ref().description + this.numb() )
+			return $hyoo_crus_ref( this.lord_ref().description + '_' + this.numb() )
 		}
 		
 		face = new $hyoo_crus_face_map
 		
 		passes = new $mol_wire_dict< string /*peer*/, $hyoo_crus_pass >()
-		gifts = new $mol_wire_dict< symbol /*lord*/, $hyoo_crus_gift >()
+		gifts = new $mol_wire_dict< typeof $hyoo_crus_ref.Value /*lord*/, $hyoo_crus_gift >()
 		gists = new $mol_wire_dict< string /*head*/, $mol_wire_dict< string /*self*/, $hyoo_crus_gist > >()
 		
 		self_all = new $mol_wire_set< string >()
@@ -96,7 +96,7 @@ namespace $ {
 		}
 		
 		@ $mol_mem_key
-		lord_rang( lord: symbol ) {
+		lord_rang( lord: typeof $hyoo_crus_ref.Value ) {
 			if( lord === this.lord_ref() ) return $hyoo_crus_rang.law
 			return this.gifts.get( lord )?.rang() ?? $hyoo_crus_rang.get
 		}
@@ -164,7 +164,7 @@ namespace $ {
 			const passes = delta.filter( unit => unit.kind() === 'pass' ) as $hyoo_crus_pass[]
 			const auth = new Map( passes.map( ( unit: $hyoo_crus_pass )=> [ unit.peer(), unit.auth() ] ) )
 			
-			const mixin = $mol_base64_ae_decode( this.ref().description! )
+			const mixin = $hyoo_crus_ref_encode( this.ref() )
 			
 			return await Promise.all( delta.map( async unit => {
 				
@@ -420,7 +420,7 @@ namespace $ {
 		/** Places data to tree. */
 		@ $mol_action
 		give(
-			dest: symbol,
+			dest: typeof $hyoo_crus_ref.Value,
 			rang: $hyoo_crus_rang,
 		) {
 				
@@ -450,10 +450,7 @@ namespace $ {
 			tag = 'term' as keyof typeof $hyoo_crus_gist_tag,
 		) {
 			
-			// localize refs
-			if( typeof vary === 'symbol' && vary.description!.startsWith( this.ref().description!.padEnd( 24, 'A' ) ) ) {
-				vary = Symbol.for( 'AAAAAAAAAAAAAAAAAAAAAAAA' + vary.description!.slice( 24 ) )
-			}
+			if( typeof vary === 'symbol' ) vary = $hyoo_crus_ref_relate( this.ref(), vary )
 			
 			this.join()
 			
@@ -641,7 +638,7 @@ namespace $ {
 			if( unit.signed() ) return
 			
 			const key = $mol_wire_sync( this.auth() )
-			const mixin = $mol_base64_ae_decode( this.ref().description! )
+			const mixin = $hyoo_crus_ref_encode( this.ref() )
 			
 			const sens = unit.sens().slice()
 			for( let i = 0; i < mixin.length; ++i ) sens[i+14] ^= mixin[i+14]
@@ -670,14 +667,8 @@ namespace $ {
 		
 		@ $mol_mem_key
 		gist_decode( gist: $hyoo_crus_gist ): $hyoo_crus_vary_type {
-			
 			let vary = this.gist_decode_raw( gist )
-			
-			// globalize ref
-			if( typeof vary === 'symbol' && vary.description!.startsWith( 'AAAAAAAAAAAAAAAAAAAAAAAA' ) ) {
-				vary = Symbol.for( this.ref().description!.padEnd( 24, 'A' ) + vary.description!.slice( 24 ) )
-			}
-			
+			if( typeof vary === 'symbol' ) vary = $hyoo_crus_ref_resolve( this.ref(), vary )
 			return vary
 		}
 		
@@ -686,7 +677,7 @@ namespace $ {
 			
 			if( this.gists.get( gist.head() )?.get( gist.self() ) !== gist ) {
 				for( const id of this.Meta().inflow() ?? [] ) {
-					const vary = this.realm()?.Land( id as symbol ).gist_decode_raw( gist )
+					const vary = this.realm()?.Land( id! ).gist_decode_raw( gist )
 					if( vary !== undefined ) return vary
 				}
 				return undefined!

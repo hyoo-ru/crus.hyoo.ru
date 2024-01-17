@@ -70,12 +70,11 @@ namespace $ {
 			}
 		}
 		
-		id12( offset: number, next?: string ) {
+		id12( offset: number, next?: typeof $hyoo_crus_ref.Value ) {
 			if( next === undefined ) {
-				const str = $mol_base64_ae_encode( new Uint8Array( this.buffer, offset, 12 ) )
-				return str === 'AAAAAAAAAAAAAAAA' ? '' : str
+				return $hyoo_crus_ref_decode( new Uint8Array( this.buffer, offset, 12 ) )
 			} else {
-				this.asArray().set( $mol_base64_ae_decode( next || 'AAAAAAAAAAAAAAAA' ), offset )
+				this.asArray().set( $hyoo_crus_ref_encode( next ), offset )
 				return next
 			}
 		}

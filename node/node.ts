@@ -27,7 +27,7 @@ namespace $ {
 		
 		@ $mol_memo.method
 		ref() {
-			return Symbol.for( this.lord_ref().description + ( this.land().numb() || 'AAAAAAAA' ) + this.head() )
+			return $hyoo_crus_ref( this.lord_ref().description + '_' + ( this.land().numb() || '' ) + '_' + this.head() )
 		}
 		
 		/** Returns another representation of this node. */

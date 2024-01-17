@@ -22,10 +22,10 @@ namespace $ {
 			return new Uint8Array( this.buffer, this.byteOffset + 26, 6 )
 		}
 		
-		_dest!: symbol
-		dest( next?: symbol ) {
+		_dest!: typeof $hyoo_crus_ref.Value
+		dest( next?: typeof $hyoo_crus_ref.Value ) {
 			if( next === undefined && this._dest !== undefined ) return this._dest
-			else return this._dest = Symbol.for( this.id12( 14, next?.description ) )
+			else return this._dest = this.id12( 14, next )
 		}
 		
 		bill() {

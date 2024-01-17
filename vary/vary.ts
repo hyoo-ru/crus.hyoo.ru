@@ -2,7 +2,7 @@ namespace $ {
 	
 	type json = null | boolean | number | string | { [ key in string ]: json } | readonly json[]
 	export type $hyoo_crus_vary_type =
-	| Uint8Array | bigint | symbol
+	| Uint8Array | bigint | typeof $hyoo_crus_ref.Value
 	| $mol_time_moment | $mol_time_duration | $mol_time_interval
 	| $mol_tree2 | json | Node
 	
@@ -60,7 +60,7 @@ namespace $ {
 		bool:  ( vary: boolean )=> any,
 		int:   ( vary: bigint )=> any,
 		real:  ( vary: number )=> any,
-		ref:   ( vary: symbol )=> any,
+		ref:   ( vary: typeof $hyoo_crus_ref.Value )=> any,
 		
 		str:   ( vary: string )=> any,
 		time:  ( vary: $mol_time_moment )=> any,
@@ -109,7 +109,7 @@ namespace $ {
 			bool:  vary => ({ tip: 'bool' as const, bin: new Uint8Array([ Number( vary ) ]) }),
 			int:   vary => ({ tip: 'int' as const, bin: new Uint8Array( new BigInt64Array([ vary as bigint ]).buffer ) }),
 			real:  vary => ({ tip: 'real' as const, bin: new Uint8Array( new Float64Array([ vary as number ]).buffer ) }),
-			ref:   vary => ({ tip: 'ref' as const, bin: $mol_base64_ae_decode( ( vary as symbol ).description! ) }),
+			ref:   vary => ({ tip: 'ref' as const, bin: $hyoo_crus_ref_encode( vary ) }),
 			
 			str:   vary => ({ tip: 'str' as const, bin: $mol_charset_encode( vary as string ) }),
 			time:  vary => ({ tip: 'time' as const, bin: $mol_charset_encode( String( vary ) ) }),
@@ -131,7 +131,7 @@ namespace $ {
 			case 'bool':  return Boolean( bin[0] )
 			case 'int':   return new BigInt64Array( bin.buffer, bin.byteOffset, bin.byteLength / 8 )[0]
 			case 'real':  return new Float64Array( bin.buffer, bin.byteOffset, bin.byteLength / 8 )[0]
-			case 'ref':   return Symbol.for( $mol_base64_ae_encode( bin ) )
+			case 'ref':   return $hyoo_crus_ref_decode( bin )
 			
 			case 'str':   return $mol_charset_decode( bin )
 			case 'time':  return new $mol_time_moment( $mol_charset_decode( bin ) )

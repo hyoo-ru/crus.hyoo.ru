@@ -7,8 +7,8 @@ $hyoo_crus_flex_field $mol_ghost
 		value? <=> ref? null
 		options <= ref_options /
 		option_label* <= ref_label* \
-	List $mol_list
-		rows <= rows /
+	Items $mol_view
+		sub <= rows /
 			<= Row_add $mol_button_minor
 				click? <=> row_add? null
 				title \+

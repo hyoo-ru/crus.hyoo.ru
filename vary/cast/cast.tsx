@@ -91,20 +91,20 @@ namespace $ {
 		return $hyoo_crus_vary_switch( vary, {
 			
 			nil:   vary => null,
-			bin:   vary => ( !vary.length || vary.length % 6 ) ? null : Symbol.for( $mol_base64_ae_encode( vary ) ),
+			bin:   vary => ( !vary.length || vary.length % 6 ) ? null : $hyoo_crus_ref_decode( vary ),
 			bool:  vary => null,
 			int:   vary => null,
 			real:  vary => null,
 			ref:   vary => vary,
 			
-			str:   vary => ( !vary || vary.length % 8 ) ? null : Symbol.for( vary ),
+			str:   vary => ( !vary || vary.length % 8 ) ? null : $hyoo_crus_ref( vary ),
 			time:  vary => null,
 			dur:   vary => null,
 			range: vary => null,
 			json:  vary => null,
 			jsan:  vary => null,
 			dom:   vary => null,
-			tree:  vary => ( !vary.type || vary.type.length % 8 ) ? null : Symbol.for( vary.type ),
+			tree:  vary => ( !vary.type || vary.type.length % 8 ) ? null : $hyoo_crus_ref( vary.type ),
 			
 		})
 	}

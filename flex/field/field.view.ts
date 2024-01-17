@@ -6,7 +6,7 @@ namespace $.$$ {
 			switch( this.prop().type() ) {
 				case 'str': return this.Str()
 				case 'ref': return this.Ref()
-				case 'list': return this.List()
+				case 'list': return this.Items()
 			}
 			return new $mol_view
 		}
@@ -15,7 +15,7 @@ namespace $.$$ {
 			return this.node().cast( $hyoo_crus_reg_str ).value( next ) ?? ''
 		}
 		
-		ref( next?: symbol ) {
+		ref( next?: typeof $hyoo_crus_ref.Value ) {
 			return this.node().cast( $hyoo_crus_reg ).value( next )
 		}
 		
@@ -32,10 +32,10 @@ namespace $.$$ {
 		@ $mol_mem
 		rows() {
 			return [
-				this.Row_add(),
 				... this.node().cast( $hyoo_crus_list ).items().map( ( vary, i )=> {
 					return typeof vary === 'symbol' ? this.Row_ref( i ) : this.Row( i )
 				} ),
+				this.Row_add(),
 			]
 		}
 		
@@ -55,13 +55,13 @@ namespace $.$$ {
 		
 		@ $mol_mem_key
 		row_title( index: number ) {
-			const ref = this.row_value( index ) as symbol
+			const ref = this.row_value( index ) as typeof $hyoo_crus_ref.Value
 			return this.node().realm()!.Node( ref , $hyoo_crus_flex_thing ).title() || ref?.description!
 		}
 		
 		@ $mol_mem_key
 		row_arg( index: number ) {
-			const ref = ( this.row_value( index ) as symbol ).description!
+			const ref = ( this.row_value( index ) as typeof $hyoo_crus_ref.Value ).description!
 			return { ref }
 		}
 		

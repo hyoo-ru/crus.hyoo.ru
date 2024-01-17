@@ -57,7 +57,7 @@ namespace $.$$ {
 		
 		@ $mol_mem_key
 		unit_title( index: number ) {
-			const ref = this.unit_value( index ) as symbol
+			const ref = this.unit_value( index ) as typeof $hyoo_crus_ref.Value
 			return this.node().realm()?.Node( ref, $hyoo_crus_entity ).title() || ref.description
 		}
 		
@@ -71,9 +71,8 @@ namespace $.$$ {
 		unit_ref_like( index: number ) {
 			const val = this.unit_value( index )
 			if( typeof val !== 'symbol' ) return false
-			if( ![ 16, 24, 32 ].includes( val.description!.length ) ) return false
 			try {
-				$mol_base64_ae_decode( val.description! )
+				$hyoo_crus_ref_encode( val )
 				return true
 			} catch {
 				return false

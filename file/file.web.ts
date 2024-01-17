@@ -20,7 +20,7 @@ namespace $ {
 			const id = query.file['=']?.[0][0]
 			if( !id ) return
 			
-			const ref = Symbol.for( id )
+			const ref = $hyoo_crus_ref( id )
 			const file = realm.Node( ref, $hyoo_crus_file )
 			
 			return event.respondWith( $mol_wire_async( file ).blob().then( blob => {
