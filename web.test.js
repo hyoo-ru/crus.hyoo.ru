@@ -3893,6 +3893,122 @@ var $;
 "use strict";
 var $;
 (function ($) {
+    $mol_test({
+        'equal paths'() {
+            const diff = $mol_diff_path([1, 2, 3, 4], [1, 2, 3, 4], [1, 2, 3, 4]);
+            $mol_assert_like(diff, {
+                prefix: [1, 2, 3, 4],
+                suffix: [[], [], []],
+            });
+        },
+        'different suffix'() {
+            const diff = $mol_diff_path([1, 2, 3, 4], [1, 2, 3, 5], [1, 2, 5, 4]);
+            $mol_assert_like(diff, {
+                prefix: [1, 2],
+                suffix: [[3, 4], [3, 5], [5, 4]],
+            });
+        },
+        'one contains other'() {
+            const diff = $mol_diff_path([1, 2, 3, 4], [1, 2], [1, 2, 3]);
+            $mol_assert_like(diff, {
+                prefix: [1, 2],
+                suffix: [[3, 4], [], [3]],
+            });
+        },
+        'fully different'() {
+            const diff = $mol_diff_path([1, 2], [3, 4], [5, 6]);
+            $mol_assert_like(diff, {
+                prefix: [],
+                suffix: [[1, 2], [3, 4], [5, 6]],
+            });
+        },
+    });
+})($ || ($ = {}));
+//mol/diff/path/path.test.ts
+;
+"use strict";
+var $;
+(function ($) {
+    $.$mol_data_number = (val) => {
+        if (typeof val === 'number')
+            return val;
+        return $mol_fail(new $mol_data_error(`${val} is not a number`));
+    };
+})($ || ($ = {}));
+//mol/data/number/number.ts
+;
+"use strict";
+var $;
+(function ($) {
+    $mol_test({
+        'Is number'() {
+            $mol_data_number(0);
+        },
+        'Is not number'() {
+            $mol_assert_fail(() => {
+                $mol_data_number('x');
+            }, 'x is not a number');
+        },
+        'Is object number'() {
+            $mol_assert_fail(() => {
+                $mol_data_number(new Number(''));
+            }, '0 is not a number');
+        },
+    });
+})($ || ($ = {}));
+//mol/data/number/number.test.ts
+;
+"use strict";
+var $;
+(function ($) {
+    function $mol_data_integer(val) {
+        const val2 = $mol_data_number(val);
+        if (Math.floor(val2) === val2)
+            return val2;
+        return $mol_fail(new $mol_data_error(`${val} is not an integer`));
+    }
+    $.$mol_data_integer = $mol_data_integer;
+})($ || ($ = {}));
+//mol/data/integer/integer.ts
+;
+"use strict";
+var $;
+(function ($) {
+    $mol_test({
+        'Is integer'() {
+            $mol_data_integer(0);
+        },
+        'Is float'() {
+            $mol_assert_fail(() => {
+                $mol_data_integer(1.1);
+            }, '1.1 is not an integer');
+        },
+    });
+})($ || ($ = {}));
+//mol/data/integer/integer.test.ts
+;
+"use strict";
+var $;
+(function ($) {
+    $mol_test({
+        'tagged typing'() {
+            const { Weight, Length } = $mol_data_tagged({
+                Weight: $mol_data_integer,
+                Length: $mol_data_integer,
+            });
+            Length(20);
+            let len = Length(10);
+            len = 20;
+            let num = len;
+            len = Length(Weight(20));
+        },
+    });
+})($ || ($ = {}));
+//mol/data/tagged/tagged.test.ts
+;
+"use strict";
+var $;
+(function ($) {
     const png = new Uint8Array([0x1a, 0x0a, 0x00, 0x49, 0x48, 0x78, 0xda]);
     $mol_test({
         'base64 encode string'() {
@@ -3919,6 +4035,60 @@ var $;
     });
 })($ || ($ = {}));
 //mol/base64/decode/decode.test.ts
+;
+"use strict";
+var $;
+(function ($_1) {
+    var $$;
+    (function ($$) {
+        $mol_test({
+            "Ref validation"($) {
+                $mol_assert_fail(() => $hyoo_crus_ref('qwertyui_asdfghjk123'), 'Wrong ref (qwertyui_asdfghjk123)');
+            },
+            "Pick ref home only"($) {
+                $mol_assert_equal($hyoo_crus_ref_home($hyoo_crus_ref('qwertyui_asdfghjk_zxcvbnm0_12345678')), $hyoo_crus_ref_home($hyoo_crus_ref('qwertyui_asdfghjk_zxcvbnm0')), $hyoo_crus_ref_home($hyoo_crus_ref('qwertyui_asdfghjk')), $hyoo_crus_ref('qwertyui_asdfghjk'));
+            },
+            "Pick ref root only"($) {
+                $mol_assert_equal($hyoo_crus_ref_root($hyoo_crus_ref('qwertyui_asdfghjk_zxcvbnm0_12345678')), $hyoo_crus_ref_root($hyoo_crus_ref('qwertyui_asdfghjk_zxcvbnm0')), $hyoo_crus_ref('qwertyui_asdfghjk_zxcvbnm0'));
+                $mol_assert_equal($hyoo_crus_ref_root($hyoo_crus_ref('qwertyui_asdfghjk')), $hyoo_crus_ref('qwertyui_asdfghjk'));
+            },
+            "Pick ref head only"($) {
+                $mol_assert_equal($hyoo_crus_ref_head($hyoo_crus_ref('qwertyui_asdfghjk_zxcvbnm0_12345678')), '12345678');
+                $mol_assert_equal($hyoo_crus_ref_head($hyoo_crus_ref('qwertyui_asdfghjk_zxcvbnm0')), $hyoo_crus_ref_head($hyoo_crus_ref('qwertyui_asdfghjk')), '');
+            },
+            "Ref encoding"($) {
+                const full = $hyoo_crus_ref_encode($hyoo_crus_ref('qwertyui_asdfghjk_zxcvbnm0_12345678'));
+                const root = $hyoo_crus_ref_encode($hyoo_crus_ref('qwertyui_asdfghjk_zxcvbnm0'));
+                const home = $hyoo_crus_ref_encode($hyoo_crus_ref('qwertyui_asdfghjk'));
+                const rel_full = $hyoo_crus_ref_encode($hyoo_crus_ref('___12345678'));
+                const rel_root = $hyoo_crus_ref_encode($hyoo_crus_ref('___'));
+                $mol_assert_equal(full.length, 24);
+                $mol_assert_equal(root.length, 18);
+                $mol_assert_equal(home.length, 12);
+                $mol_assert_equal(rel_full.length, 24);
+                $mol_assert_equal($hyoo_crus_ref_decode(full), $hyoo_crus_ref('qwertyui_asdfghjk_zxcvbnm0_12345678'));
+                $mol_assert_equal($hyoo_crus_ref_decode(root), $hyoo_crus_ref('qwertyui_asdfghjk_zxcvbnm0'));
+                $mol_assert_equal($hyoo_crus_ref_decode(home), $hyoo_crus_ref('qwertyui_asdfghjk'));
+                $mol_assert_equal($hyoo_crus_ref_decode(rel_full), $hyoo_crus_ref('___12345678'));
+                $mol_assert_equal($hyoo_crus_ref_decode(rel_root), $hyoo_crus_ref(''));
+            },
+            "Relate ref to base"($) {
+                $mol_assert_equal($hyoo_crus_ref_relate($hyoo_crus_ref('QWERTYUI_ASDFGHJK_ZXCVBNM0'), $hyoo_crus_ref('qwertyui_asdfghjk_zxcvbnm0_12345678')), $hyoo_crus_ref_relate($hyoo_crus_ref('QWERTYUI_ASDFGHJK_zxcvbnm0'), $hyoo_crus_ref('qwertyui_asdfghjk_zxcvbnm0_12345678')), $hyoo_crus_ref_relate($hyoo_crus_ref('QWERTYUI_ASDFGHJK'), $hyoo_crus_ref('qwertyui_asdfghjk_zxcvbnm0_12345678')), $hyoo_crus_ref_relate($hyoo_crus_ref('qwertyui_asdfghjk_ZXCVBNM0'), $hyoo_crus_ref('qwertyui_asdfghjk_zxcvbnm0_12345678')), $hyoo_crus_ref_relate($hyoo_crus_ref('qwertyui_asdfghjk'), $hyoo_crus_ref('qwertyui_asdfghjk_zxcvbnm0_12345678')), $hyoo_crus_ref('qwertyui_asdfghjk_zxcvbnm0_12345678'));
+                $mol_assert_equal($hyoo_crus_ref_relate($hyoo_crus_ref('qwertyui_asdfghjk_zxcvbnm0'), $hyoo_crus_ref('qwertyui_asdfghjk_zxcvbnm0_12345678')), $hyoo_crus_ref('___12345678'));
+                $mol_assert_equal($hyoo_crus_ref_relate($hyoo_crus_ref('qwertyui_asdfghjk'), $hyoo_crus_ref('qwertyui_asdfghjk__12345678')), $hyoo_crus_ref('___12345678'));
+                $mol_assert_equal($hyoo_crus_ref_relate($hyoo_crus_ref('qwertyui_asdfghjk_zxcvbnm0'), $hyoo_crus_ref('qwertyui_asdfghjk_zxcvbnm0')), $hyoo_crus_ref_relate($hyoo_crus_ref('qwertyui_asdfghjk'), $hyoo_crus_ref('qwertyui_asdfghjk')), $hyoo_crus_ref(''));
+            },
+            "Resolve ref from base"($) {
+                $mol_assert_equal($hyoo_crus_ref_resolve($hyoo_crus_ref('QWERTYUI_ASDFGHJK_ZXCVBNM0'), $hyoo_crus_ref('qwertyui_asdfghjk_zxcvbnm0_12345678')), $hyoo_crus_ref_resolve($hyoo_crus_ref('QWERTYUI_ASDFGHJK_zxcvbnm0'), $hyoo_crus_ref('qwertyui_asdfghjk_zxcvbnm0_12345678')), $hyoo_crus_ref_resolve($hyoo_crus_ref('QWERTYUI_ASDFGHJK'), $hyoo_crus_ref('qwertyui_asdfghjk_zxcvbnm0_12345678')), $hyoo_crus_ref_resolve($hyoo_crus_ref('qwertyui_asdfghjk_ZXCVBNM0'), $hyoo_crus_ref('qwertyui_asdfghjk_zxcvbnm0_12345678')), $hyoo_crus_ref_resolve($hyoo_crus_ref('qwertyui_asdfghjk'), $hyoo_crus_ref('qwertyui_asdfghjk_zxcvbnm0_12345678')), $hyoo_crus_ref('qwertyui_asdfghjk_zxcvbnm0_12345678'));
+                $mol_assert_equal($hyoo_crus_ref_resolve($hyoo_crus_ref('qwertyui_asdfghjk_zxcvbnm0'), $hyoo_crus_ref('___12345678')), $hyoo_crus_ref('qwertyui_asdfghjk_zxcvbnm0_12345678'));
+                $mol_assert_equal($hyoo_crus_ref_resolve($hyoo_crus_ref('qwertyui_asdfghjk'), $hyoo_crus_ref('___12345678')), $hyoo_crus_ref('qwertyui_asdfghjk__12345678'));
+                $mol_assert_equal($hyoo_crus_ref_resolve($hyoo_crus_ref('qwertyui_asdfghjk_zxcvbnm0'), $hyoo_crus_ref('')), $hyoo_crus_ref('qwertyui_asdfghjk_zxcvbnm0'));
+                $mol_assert_equal($hyoo_crus_ref_resolve($hyoo_crus_ref('qwertyui_asdfghjk'), $hyoo_crus_ref('')), $hyoo_crus_ref('qwertyui_asdfghjk'));
+            },
+        });
+    })($$ = $_1.$$ || ($_1.$$ = {}));
+})($ || ($ = {}));
+//hyoo/crus/ref/ref.test.ts
 ;
 "use strict";
 var $;
@@ -4044,7 +4214,7 @@ var $;
             const auth = new $hyoo_crus_pass;
             auth.auth([0xFF, 0, 0xFC, 0xFB, 0xFA, 0xF9, 0xF8, 0xF7, 0xF6, 0xF5, 0xF4, 0xF3, 0xF2, 0xF1]);
             $mol_assert_equal(auth.kind(), 'pass');
-            $mol_assert_equal(auth.lord(), Symbol.for('ÆPv6æfj39vX08ÆLx'));
+            $mol_assert_equal(auth.lord(), $hyoo_crus_ref('ÆPv6æfj3_9vX08ÆLx'));
             $mol_assert_equal(auth.peer(), 'ÆPv6æfj3');
         },
         'gift unit type'() {
@@ -4069,11 +4239,11 @@ var $;
         'gift unit fields'() {
             const unit = new $hyoo_crus_gift;
             $mol_assert_equal(unit.time(), 0);
-            $mol_assert_equal(unit.dest(), Symbol.for(''));
+            $mol_assert_equal(unit.dest(), $hyoo_crus_ref(''));
             unit.time(0xd1d2d3d4d5d6);
-            unit.dest(Symbol.for('ÆPv6æfj39vX08ÆLx'));
+            unit.dest($hyoo_crus_ref('ÆPv6æfj3_9vX08ÆLx'));
             $mol_assert_equal(unit.time(), 0xd1d2d3d4d5d6);
-            $mol_assert_equal(unit.dest(), Symbol.for('ÆPv6æfj39vX08ÆLx'));
+            $mol_assert_equal(unit.dest(), $hyoo_crus_ref('ÆPv6æfj3_9vX08ÆLx'));
         },
         'data unit fields'() {
             const unit = new $hyoo_crus_gist;
@@ -5449,42 +5619,6 @@ var $;
     });
 })($ || ($ = {}));
 //mol/data/setup/setup.test.ts
-;
-"use strict";
-var $;
-(function ($) {
-    $mol_test({
-        'equal paths'() {
-            const diff = $mol_diff_path([1, 2, 3, 4], [1, 2, 3, 4], [1, 2, 3, 4]);
-            $mol_assert_like(diff, {
-                prefix: [1, 2, 3, 4],
-                suffix: [[], [], []],
-            });
-        },
-        'different suffix'() {
-            const diff = $mol_diff_path([1, 2, 3, 4], [1, 2, 3, 5], [1, 2, 5, 4]);
-            $mol_assert_like(diff, {
-                prefix: [1, 2],
-                suffix: [[3, 4], [3, 5], [5, 4]],
-            });
-        },
-        'one contains other'() {
-            const diff = $mol_diff_path([1, 2, 3, 4], [1, 2], [1, 2, 3]);
-            $mol_assert_like(diff, {
-                prefix: [1, 2],
-                suffix: [[3, 4], [], [3]],
-            });
-        },
-        'fully different'() {
-            const diff = $mol_diff_path([1, 2], [3, 4], [5, 6]);
-            $mol_assert_like(diff, {
-                prefix: [],
-                suffix: [[1, 2], [3, 4], [5, 6]],
-            });
-        },
-    });
-})($ || ($ = {}));
-//mol/diff/path/path.test.ts
 ;
 "use strict";
 var $;
