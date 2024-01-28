@@ -2156,7 +2156,7 @@ declare namespace $ {
 
 declare namespace $ {
     class $mol_buffer extends DataView {
-        static from<This extends typeof $mol_buffer>(this: This, array: string | Uint8Array): InstanceType<This>;
+        static from<This extends typeof $mol_buffer>(this: This, array: number | string | ArrayBufferView): InstanceType<This>;
         static toString(): string;
         getUint48(offset: number, LE?: boolean): number;
         setUint48(offset: number, value: number, LE?: boolean): void;
@@ -2187,7 +2187,7 @@ declare namespace $ {
 
 declare namespace $ {
     class $mol_crypto_key extends $mol_buffer {
-        static from<This extends typeof $mol_crypto_key>(this: This, serial: string | ArrayBufferView): InstanceType<This>;
+        static from<This extends typeof $mol_crypto_key>(this: This, serial: number | string | ArrayBufferView): InstanceType<This>;
         asArray(): Uint8Array;
         toString(): string;
     }

@@ -6930,6 +6930,8 @@ var $;
 (function ($) {
     class $mol_buffer extends DataView {
         static from(array) {
+            if (typeof array === 'number')
+                array = new Uint8Array(array);
             if (typeof array === 'string')
                 array = $mol_base64_ae_decode(array);
             return new this(array.buffer, array.byteOffset, array.byteLength);
@@ -7077,7 +7079,7 @@ var $;
                     ...$mol_base64_url_decode(serial.slice(86, 129)),
                 ]);
             }
-            return new this(serial.buffer, serial.byteOffset, serial.byteLength);
+            return super.from(serial);
         }
         asArray() {
             return new Uint8Array(this.buffer, this.byteOffset, this.byteLength);
