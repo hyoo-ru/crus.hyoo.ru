@@ -318,8 +318,6 @@
     "$mol_data_setup",
     "$mol_data_error",
     "$mol_error_mix",
-    "$mol_diff_path",
-    "$mol_diff",
     "$hyoo_crowd_peer",
     "$mol_crypto_auditor",
     "$hyoo_sync_peer",
