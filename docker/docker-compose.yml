@@ -1,0 +1,38 @@
+version: '3'
+services:
+  server:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+       - db
+    networks:
+        network:
+            ipv4_address: 172.28.1.1
+  db:
+    image: postgres:14.1-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=docker
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=crus
+    ports:
+      - '5432:5432'
+    volumes:
+      - db:/var/lib/postgresql/data
+    networks:
+        network:
+            ipv4_address: 172.28.1.2
+
+volumes:
+  db:
+    driver: local
+
+networks:
+    network:
+        ipam:
+            driver: default
+            config:
+            - subnet: 172.28.0.0/16
