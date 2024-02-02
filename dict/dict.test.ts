@@ -16,14 +16,14 @@ namespace $.$$ {
 			$mol_assert_equal( dict.has( 123 ), true )
 			$mol_assert_equal( dict.has( 'xxx' ), true )
 			$mol_assert_equal( dict.has( 'yyy' ), false )
-			$mol_assert_equal( dict.dive( 123, $hyoo_crus_reg ).value_vary(), null )
-			$mol_assert_equal( dict.dive( 'xxx', $hyoo_crus_reg ).value_vary(), null )
+			$mol_assert_equal( dict.dive( 123, $hyoo_crus_reg )!.value_vary(), null )
+			$mol_assert_equal( dict.dive( 'xxx', $hyoo_crus_reg )!.value_vary(), null )
 			
-			dict.dive( 123, $hyoo_crus_reg ).value_vary( 777 )
-			$mol_assert_equal( dict.dive( 123, $hyoo_crus_reg ).value_vary(), 777 )
+			dict.dive( 123, $hyoo_crus_reg )!.value_vary( 777 )
+			$mol_assert_equal( dict.dive( 123, $hyoo_crus_reg )!.value_vary(), 777 )
 
-			dict.dive( 'xxx', $hyoo_crus_list ).items([ 'foo', 'bar' ])
-			$mol_assert_equal( dict.dive( 'xxx', $hyoo_crus_list ).items(), [ 'foo', 'bar' ] )
+			dict.dive( 'xxx', $hyoo_crus_list )!.items([ 'foo', 'bar' ])
+			$mol_assert_equal( dict.dive( 'xxx', $hyoo_crus_list )!.items(), [ 'foo', 'bar' ] )
 			
 			dict.has( 123, false )
 			$mol_assert_equal( dict.keys(), [ 'xxx' ] )
@@ -38,17 +38,17 @@ namespace $.$$ {
 			const dict1 = land1.Node( $hyoo_crus_dict ).Item('')
 			const dict2 = land2.Node( $hyoo_crus_dict ).Item('')
 
-			dict1.dive( 123, $hyoo_crus_reg ).value_vary( 666 )
+			dict1.dive( 123, $hyoo_crus_reg )!.value_vary( 666 )
 			land2.face.tick()
-			dict2.dive( 123, $hyoo_crus_reg ).value_vary( 777 )
+			dict2.dive( 123, $hyoo_crus_reg )!.value_vary( 777 )
 			land1.apply_unit_trust( land2.delta_unit() )
-			$mol_assert_equal( dict1.dive( 123, $hyoo_crus_reg ).value_vary(), 777 )
+			$mol_assert_equal( dict1.dive( 123, $hyoo_crus_reg )!.value_vary(), 777 )
 			
-			dict1.dive( 'xxx', $hyoo_crus_list ).items([ 'foo' ])
+			dict1.dive( 'xxx', $hyoo_crus_list )!.items([ 'foo' ])
 			land2.face.tick()
-			dict2.dive( 'xxx', $hyoo_crus_list ).items([ 'bar' ])
+			dict2.dive( 'xxx', $hyoo_crus_list )!.items([ 'bar' ])
 			land1.apply_unit_trust( land2.delta_unit() )
-			$mol_assert_equal( dict1.dive( 'xxx', $hyoo_crus_list ).items(), [ 'bar', 'foo' ] )
+			$mol_assert_equal( dict1.dive( 'xxx', $hyoo_crus_list )!.items(), [ 'bar', 'foo' ] )
 
 		},
 		

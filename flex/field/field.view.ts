@@ -12,11 +12,11 @@ namespace $.$$ {
 		}
 		
 		str( next?: string ) {
-			return this.node().cast( $hyoo_crus_reg_str ).value( next ) ?? ''
+			return this.node()?.cast( $hyoo_crus_reg_str ).value( next ) ?? ''
 		}
 		
 		ref( next?: typeof $hyoo_crus_ref.Value ) {
-			return this.node().cast( $hyoo_crus_reg ).value( next )
+			return this.node()?.cast( $hyoo_crus_reg ).value( next ) ?? null
 		}
 		
 		ref_options() {
@@ -25,16 +25,16 @@ namespace $.$$ {
 		
 		ref_label( ref: $hyoo_crus_vary_type ) {
 			if( !ref ) return ''
-			if( typeof ref === 'symbol' ) return this.node().realm()!.Node( ref, $hyoo_crus_flex_thing ).title() ?? ref.description!
+			if( typeof ref === 'symbol' ) return this.node()?.realm()!.Node( ref, $hyoo_crus_flex_thing ).title() ?? ref.description!
 			return $hyoo_crus_vary_cast_str( ref ) ?? ''
 		}
 		
 		@ $mol_mem
 		rows() {
 			return [
-				... this.node().cast( $hyoo_crus_list ).items().map( ( vary, i )=> {
+				... this.node()?.cast( $hyoo_crus_list ).items().map( ( vary, i )=> {
 					return typeof vary === 'symbol' ? this.Row_ref( i ) : this.Row( i )
-				} ),
+				} ) ?? [],
 				this.Row_add(),
 			]
 		}
@@ -63,6 +63,10 @@ namespace $.$$ {
 		row_arg( index: number ) {
 			const ref = ( this.row_value( index ) as typeof $hyoo_crus_ref.Value ).description!
 			return { ref }
+		}
+		
+		enabled() {
+			return this.node()?.can_change() ?? false
 		}
 		
 	}

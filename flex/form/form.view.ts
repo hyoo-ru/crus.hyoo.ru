@@ -20,7 +20,7 @@ namespace $.$$ {
 		}
 		
 		field_node( prop: $hyoo_crus_flex_prop ) {
-			return this.node().cast( $hyoo_crus_dict ).dive( prop.key() ?? prop.ref(), $hyoo_crus_node )
+			return this.node().cast( $hyoo_crus_dict ).dive( prop.key() ?? prop.ref(), $hyoo_crus_node )!
 		}
 		
 		field_prop( prop: $hyoo_crus_flex_prop ) {

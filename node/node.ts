@@ -30,6 +30,10 @@ namespace $ {
 			return $hyoo_crus_ref( this.lord_ref().description + '_' + ( this.land().numb() || '' ) + '_' + this.head() )
 		}
 		
+		toJSON() {
+			return this.ref().description
+		}
+		
 		/** Returns another representation of this node. */
 		@ $mol_mem_key
 		cast< Node extends typeof $hyoo_crus_node >( Node: Node ): InstanceType< Node > {

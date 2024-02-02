@@ -76,7 +76,7 @@ namespace $ {
 		Node< Node extends typeof $hyoo_crus_node >( Node: Node ): $hyoo_crus_fund< string, InstanceType< Node > > {
 			return new $hyoo_crus_fund( ( head: string )=> {
 				if( head === 'AAAAAAAA' ) return this.Node( Node ).Item( '' )
-				return Node.make({
+				return ( Node as typeof $hyoo_crus_node ).make({
 					land: $mol_const( this ),
 					head: $mol_const( head ),
 				}) as InstanceType< Node >
@@ -134,17 +134,34 @@ namespace $ {
 		}
 		
 		/** Makes binary Delta between Face and current state. */
-		delta_buffer( face = new $hyoo_crus_face_map ) {
+		delta_pack( face = new $hyoo_crus_face_map ) {
 			
 			const delta = this.delta_unit( face )
-			const bytes = new Uint8Array( delta.length * $hyoo_crus_unit.size )
+			if( !delta.length ) return null
 			
-			for( let i = 0; i < delta.length; ++ i ) {
-				const unit = delta[ i ]
-				bytes.set( unit.asArray(), i * $hyoo_crus_unit.size )
+			const rocks = [] as [ Uint8Array, null | Uint8Array ][]
+			for( const unit of delta ) {
+				
+				if( unit.kind() !== 'gist' ) continue
+				
+				const gist = unit.narrow() as $hyoo_crus_gist
+				if( gist.size() <= 32 ) continue
+				
+				const rock = this.$.$hyoo_crus_mine.rock( gist.hash() ) ?? null
+				rocks.push([ gist.hash(), rock ])
+				
 			}
 			
-			return bytes
+			const pack = $hyoo_crus_pack.make( {}, { [ this.ref() ]: delta }, rocks )
+			return pack
+			
+		}
+		
+		faces_pack() {
+			const pack = $hyoo_crus_pack.make( {
+				[ this.ref() ]: this.face,
+			}, {}, [] )
+			return pack
 		}
 		
 		/** Applies Delta to current state with verify. */
@@ -308,8 +325,13 @@ namespace $ {
 		
 		@ $mol_action
 		fork() {
-			const land = this.realm()!.home().Land_new(0)
+			const realm = this.realm()
+			
+			if( !realm ) $mol_fail( new Error( 'Realm is required to fork' ) )
+			
+			const land = realm.home().Land_new(0)
 			land.Meta().Inflow.items([ this.ref() ])
+			
 			return land
 		}
 		
@@ -329,8 +351,8 @@ namespace $ {
 				
 				const exists = new Set([ ... this.gists.get( head )?.keys() ?? [] ])
 				
-				const realm  = this.realm()!
-				for( const ref of inflow ) {
+				const realm  = this.realm()
+				if( realm ) for( const ref of inflow ) {
 					
 					const land = realm.Land( ref )
 					for( const gist of land.gists_ordered( head ) ) {
@@ -553,11 +575,11 @@ namespace $ {
 			
 			try {
 				this.saving()
+				this.bus()
+				this.realm()?.yard().sync_land( this )
 			} catch( error ) {
 				$mol_fail_log( error )
 			}
-			
-			this.bus()
 			
 		}
 		
@@ -567,7 +589,7 @@ namespace $ {
 				`$hyoo_crus_land:${ this.ref().description }`,
 				$mol_wire_async( bins => {
 					
-					const yard = this.$.$hyoo_crus_yard
+					const yard = this.realm()!.yard()
 					
 					this.apply_unit_trust( bins.map( bin => {
 						const unit = new $hyoo_crus_unit( bin ).narrow()
@@ -584,7 +606,7 @@ namespace $ {
 			
 			$mol_wire_solid()
 			
-			const units = this.$.$hyoo_crus_yard.load( this )
+			const units = this.realm()?.yard().load( this ) ?? []
 			const errors = this.apply_unit( units ).filter( Boolean )
 			
 			if( errors.length ) this.$.$mol_log3_fail({
@@ -599,7 +621,8 @@ namespace $ {
 			
 			this.$.$mol_wait_timeout(250)
 			
-			const yard = this.$.$hyoo_crus_yard
+			const yard = this.realm()?.yard()
+			if( !yard ) return
 			
 			const encoding = [] as $hyoo_crus_gist[]
 			const signing = [] as $hyoo_crus_unit[]

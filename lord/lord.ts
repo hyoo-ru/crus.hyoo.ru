@@ -44,7 +44,7 @@ namespace $ {
 		}
 		
 		Profile< Node extends typeof $hyoo_crus_node >( app: string, Node: Node ) {
-			return this.base().Profile( app ).Data( Node )
+			return this.base().Profile( app )?.Data( Node ) ?? null
 		}
 		
 		@ $mol_action

@@ -4,6 +4,13 @@ namespace $ {
 		
 		lords = new $mol_wire_dict< typeof $hyoo_crus_ref.Value, $hyoo_crus_lord >()
 		
+		@ $mol_mem
+		yard() {
+			return this.$.$hyoo_crus_yard.make({
+				realm: $mol_const( this ),
+			})
+		}
+		
 		home() {
 			return this.Lord( this.$.$hyoo_crus_auth.current().lord() )
 		}

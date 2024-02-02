@@ -18,9 +18,9 @@ namespace $ {
 			key: $hyoo_crus_vary_type,
 			Node: Node,
 		) {
-			this.has( key, true, Node.tag )
-			const unit = this.find( key )!
-			return this.land().Node( Node ).Item( unit.self() )
+			if( this.can_change() ) this.has( key, true, Node.tag )
+			const unit = this.find( key )
+			return unit ? this.land().Node( Node ).Item( unit.self() ) : null
 		}
 		
 		// @ $mol_mem_key

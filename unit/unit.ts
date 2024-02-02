@@ -15,7 +15,7 @@ namespace $ {
 	
 	export class $hyoo_crus_unit extends $mol_buffer {
 		
-		static size = 128
+		static size = 128 as const
 				
 		constructor(
 			buffer = new ArrayBuffer( $hyoo_crus_unit.size ),

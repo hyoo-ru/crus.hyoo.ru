@@ -1,7 +1,11 @@
 namespace $.$$ {
 	export class $hyoo_crus_yard extends $.$hyoo_crus_yard {
 		
-		static async save( land: $hyoo_crus_land, units: readonly $hyoo_crus_unit[] ) {
+		static masters = [
+			'https://crus.hyoo.ru/'
+		]
+		
+		async save( land: $hyoo_crus_land, units: readonly $hyoo_crus_unit[] ) {
 			
 			const db = await this.db()
 			const change = db.change( 'Pass', 'Gift', 'Gist' )
@@ -27,7 +31,7 @@ namespace $.$$ {
 		}
 		
 		@ $mol_action
-		static load( land: $hyoo_crus_land ) {
+		load( land: $hyoo_crus_land ) {
 			
 			const lord_ref = land.lord()!.ref().description
 			const land_numb = land.numb() || 'AAAAAAAA'
@@ -47,14 +51,14 @@ namespace $.$$ {
 			return units
 		}
 		
-		static async query( key: IDBKeyRange ) {
+		async query( key: IDBKeyRange ) {
 			const db = await this.db()
 			const { Pass, Gift, Gist } = db.read( 'Pass', 'Gift', 'Gist' )
 			return Promise.all([ Pass.select( key ), Gift.select( key ), Gist.select( key ) ])
 		}
 		
 		@ $mol_memo.method
-		static async db() {
+		async db() {
 			
 			return await this.$.$mol_db<{
 				Pass: {
@@ -82,6 +86,80 @@ namespace $.$$ {
 					mig.store_make( 'Gist' )
 				},
 			)
+			
+		}
+		
+		@ $mol_mem
+		master() {
+			
+			this.reconnects()
+			
+			const link = this.master_current()
+			const socket = new $mol_dom_context.WebSocket( link.replace( /^https?:/, 'ws:' )+'sync/' )
+			socket.binaryType = 'arraybuffer'
+			const port = $mol_rest_port_ws_web.make({ socket })
+			
+			socket.onmessage = async( event )=> {
+				
+				if( event.data instanceof ArrayBuffer ) {
+					if( !event.data.byteLength ) return
+					await $mol_wire_async( this ).port_income( port, new Uint8Array( event.data ) )
+				} else {
+					
+					this.$.$mol_log3_fail({	
+						place: this,
+						message: 'Wrong data',
+						data: event.data
+					})
+					
+				}
+				
+			}
+			
+			let interval: any
+
+			socket.onclose = ()=> {
+				clearInterval( interval )
+				setTimeout( ()=> this.reconnects( null ), 1000 )
+			}
+			
+			Object.assign( socket, {
+				destructor: ()=> {
+					socket.onclose = ()=> {}
+					clearInterval( interval )
+					socket.close()
+				}
+			} )
+			
+			return new Promise< $mol_rest_port >( ( done, fail )=> {
+				
+				socket.onopen = ()=> {
+					
+					this.$.$mol_log3_come({
+						place: this,
+						message: 'Connected to Master',
+						port: $mol_key( socket ),
+						server: link,
+					})
+					
+					interval = setInterval( ()=> socket.send( new Uint8Array ), 30000 )
+		
+					done( port )
+				}
+				
+				socket.onerror = ()=> {
+					
+					socket.onclose = event => {
+						fail( new Error( `Master is unavailable (${ event.code })` ) )
+					}
+					
+					clearInterval( interval )
+					
+					this.master_next()
+					
+				}
+				
+			} ) as any as $mol_rest_port
 			
 		}
 		
