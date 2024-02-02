@@ -1,7 +1,7 @@
 namespace $ {
 
 	@ $mol_rest_server.start
-	export class $hyoo_crus_server extends $mol_rest_resource {
+	export class $hyoo_crus_app extends $mol_rest_resource_fs {
 		
 		@ $mol_mem
 		static() {
@@ -11,13 +11,13 @@ namespace $ {
 		@ $mol_mem
 		sync() {
 			$mol_wire_solid()
-			return $hyoo_crus_server_sync.make({})
+			return $hyoo_crus_app_sync.make({})
 		}
 		
 	}
 	
 	@ $mol_rest_server.start
-	export class $hyoo_crus_server_sync extends $mol_rest_resource {
+	export class $hyoo_crus_app_sync extends $mol_rest_resource {
 		
 		_realm = new $hyoo_crus_realm
 		
