@@ -4,11 +4,6 @@ namespace $ {
 	export class $hyoo_crus_app extends $mol_rest_resource_fs {
 		
 		@ $mol_mem
-		static() {
-			return $mol_rest_resource.make({})
-		}
-		
-		@ $mol_mem
 		sync() {
 			$mol_wire_solid()
 			return $hyoo_crus_app_sync.make({})
