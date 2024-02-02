@@ -11737,7 +11737,7 @@ var $;
             master() {
                 this.reconnects();
                 const link = this.master_current();
-                const socket = new $mol_dom_context.WebSocket(link.replace(/^https?:/, 'ws:') + 'sync/');
+                const socket = new $mol_dom_context.WebSocket(link.replace(/^https?:/, 'wss:') + 'sync/');
                 socket.binaryType = 'arraybuffer';
                 const port = $mol_rest_port_ws_web.make({ socket });
                 socket.onmessage = async (event) => {
@@ -22135,7 +22135,7 @@ var $;
     ], $hyoo_crus_app.prototype, "Casting", null);
     $.$hyoo_crus_app = $hyoo_crus_app;
 })($ || ($ = {}));
-//hyoo/crus/app/-view.tree/app.view.tree.ts
+//hyoo/crus/app/-view.tree/app.web.view.tree.ts
 ;
 "use strict";
 var $;
@@ -22161,7 +22161,7 @@ var $;
         $$.$hyoo_crus_app = $hyoo_crus_app;
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));
-//hyoo/crus/app/app.view.ts
+//hyoo/crus/app/app.web.view.ts
 ;
 "use strict";
 var $;
@@ -22194,6 +22194,6 @@ var $;
         });
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));
-//hyoo/crus/app/app.view.css.ts
+//hyoo/crus/app/app.web.view.css.ts
 
 //# sourceMappingURL=web.js.map
