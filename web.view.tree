@@ -850,14 +850,17 @@ $hyoo_crus_flex_field $mol_ghost
 	node $hyoo_crus_node
 	prop $hyoo_crus_flex_prop
 	Str $mol_textarea
+		enabled <= enabled true
 		value? <=> str? \
 	Ref $mol_select
+		enabled <= enabled true
 		value? <=> ref? null
 		options <= ref_options /
 		option_label* <= ref_label* \
 	Items $mol_view
 		sub <= rows /
 			<= Row_add $mol_button_minor
+				enabled <= enabled true
 				click? <=> row_add? null
 				title \+
 			<= Row*0 $mol_dump_value

@@ -229,9 +229,6 @@ var $;
         toString() {
             return this[Symbol.toStringTag] || this.constructor.name + '<>';
         }
-        toJSON() {
-            return this.toString();
-        }
     }
     $.$mol_object2 = $mol_object2;
 })($ || ($ = {}));
@@ -8930,6 +8927,9 @@ var $;
         ref() {
             return $hyoo_crus_ref(this.lord_ref().description + '_' + (this.land().numb() || '') + '_' + this.head());
         }
+        toJSON() {
+            return this.ref().description;
+        }
         cast(Node) {
             return this.land().Node(Node).Item(this.head());
         }
@@ -9178,6 +9178,9 @@ var $;
         }
         if (typeof json.toJSON === 'function') {
             return $mol_tree2_from_json(json.toJSON());
+        }
+        if (json.toString !== Object.prototype.toString) {
+            return $mol_tree2.data(json.toString(), [], span);
         }
         if (json instanceof Error) {
             const { name, message, stack } = json;
@@ -9761,9 +9764,10 @@ var $;
             return this.items();
         }
         dive(key, Node) {
-            this.has(key, true, Node.tag);
+            if (this.can_change())
+                this.has(key, true, Node.tag);
             const unit = this.find(key);
-            return this.land().Node(Node).Item(unit.self());
+            return unit ? this.land().Node(Node).Item(unit.self()) : null;
         }
         static to(Value) {
             return class Dict extends $hyoo_crus_dict {
@@ -10129,6 +10133,144 @@ var $;
     $.$hyoo_crus_mine = $hyoo_crus_mine;
 })($ || ($ = {}));
 //hyoo/crus/mine/mine.ts
+;
+"use strict";
+var $;
+(function ($) {
+    class $hyoo_crus_pack extends $mol_buffer {
+        toBlob() {
+            return new Blob([this], { type: 'application/x-crus-pack' });
+        }
+        parts() {
+            const faces = {};
+            const units = {};
+            const rocks = [];
+            const buff = this.asArray();
+            let land = null;
+            for (let offset = 0; offset < this.byteLength;) {
+                const kind = this.uint8(offset);
+                if (kind % 2) {
+                    switch (kind) {
+                        case $hyoo_crus_part.land: {
+                            const head = new Uint8Array(buff.buffer, buff.byteOffset + offset, 4);
+                            if (!$mol_compare_deep($hyoo_crus_part_crus, head)) {
+                                $mol_fail(new Error('Wrong 4CC code'));
+                            }
+                            offset += 4;
+                            land = $hyoo_crus_ref_decode(new Uint8Array(buff.buffer, buff.byteOffset + offset, 18));
+                            faces[land] ||= new $hyoo_crus_face_map;
+                            offset += 20;
+                            continue;
+                        }
+                        case $hyoo_crus_part.face: {
+                            if (!land)
+                                $mol_fail(new Error('Land is undefined'));
+                            const count = this.uint32(offset) >> 8;
+                            const peer = $mol_base64_ae_encode(new Uint8Array(buff.buffer, buff.byteOffset + offset + 4, 6));
+                            const time = this.uint48(offset + 10);
+                            offset += 16;
+                            faces[land] ||= new $hyoo_crus_face_map;
+                            faces[land].time_max(peer, time);
+                            faces[land].count_shift(peer, count);
+                            continue;
+                        }
+                        case $hyoo_crus_part.pass: {
+                            if (!land)
+                                $mol_fail(new Error('Land is undefined'));
+                            const unit = new $hyoo_crus_pass(buff.slice(offset, offset += $hyoo_crus_unit.size).buffer);
+                            units[land] ||= [];
+                            units[land].push(unit);
+                            continue;
+                        }
+                        case $hyoo_crus_part.gift: {
+                            if (!land)
+                                $mol_fail(new Error('Land is undefined'));
+                            const unit = new $hyoo_crus_gift(buff.slice(offset, offset += $hyoo_crus_unit.size).buffer);
+                            units[land] ||= [];
+                            units[land].push(unit);
+                            continue;
+                        }
+                        case $hyoo_crus_part.hash: {
+                            const hash = buff.slice(offset += 4, offset += 24);
+                            rocks.push([hash, null]);
+                            continue;
+                        }
+                        case $hyoo_crus_part.rock: {
+                            const size = this.uint32(offset) >> 8;
+                            const hash = buff.slice(offset += 4, offset += 24);
+                            const rock = buff.slice(offset, offset + size);
+                            rocks.push([hash, rock]);
+                            offset += Math.ceil(size / 8) * 8;
+                            continue;
+                        }
+                        case $hyoo_crus_part.buck: {
+                            offset += 128;
+                            continue;
+                        }
+                        default: $mol_fail(new Error(`Unknown CRUS Pack Part (${kind.toString(2)}) at (${offset.toString(16)})`));
+                    }
+                }
+                else {
+                    if (!land)
+                        $mol_fail(new Error('Land is undefined'));
+                    units[land] ||= [];
+                    units[land].push(new $hyoo_crus_gist(buff.slice(offset, offset += $hyoo_crus_unit.size).buffer));
+                    continue;
+                }
+            }
+            return { faces, units, rocks };
+        }
+        static make(faces, units, rocks) {
+            let size = 0;
+            for (const land of Reflect.ownKeys(faces)) {
+                size += 24 + faces[land].size * 16;
+            }
+            for (const land of Reflect.ownKeys(units)) {
+                size += 24 + units[land].length * $hyoo_crus_unit.size;
+            }
+            for (const [hash, rock] of rocks) {
+                size += 24 + (rock ? Math.ceil(rock.length / 8) * 8 : 0);
+            }
+            if (size === 0)
+                return null;
+            const buff = new Uint8Array(size);
+            const pack = new $hyoo_crus_pack(buff.buffer);
+            let offset = 0;
+            const open_land = (land) => {
+                buff.set($hyoo_crus_part_crus, offset);
+                buff.set($hyoo_crus_ref_encode(land), offset + 4);
+                offset += 24;
+            };
+            for (const land of Reflect.ownKeys(faces)) {
+                open_land(land);
+                for (const peer of faces[land].keys()) {
+                    pack.uint32(offset, (faces[land].get(peer).count << 8) | $hyoo_crus_part.face);
+                    buff.set($mol_base64_ae_decode(peer), offset + 4);
+                    pack.uint48(offset + 10, faces[land].time(peer));
+                    offset += 16;
+                }
+            }
+            for (const land of Reflect.ownKeys(units)) {
+                open_land(land);
+                for (const unit of units[land]) {
+                    buff.set(unit.asArray(), offset);
+                    offset += unit.byteLength;
+                }
+            }
+            for (const [hash, rock] of rocks) {
+                const len = rock?.length ?? 0;
+                pack.uint32(offset, rock ? (len << 8) + $hyoo_crus_part.rock : $hyoo_crus_part.hash);
+                buff.set(hash, offset + 4);
+                if (rock)
+                    buff.set(rock, offset + 24);
+                offset += 24 + Math.ceil(len / 8) * 8;
+            }
+            return pack;
+        }
+    }
+    $.$hyoo_crus_pack = $hyoo_crus_pack;
+})($ || ($ = {}));
+//hyoo/crus/pack/pack.ts
 ;
 "use strict";
 var $;
@@ -10512,14 +10654,28 @@ var $;
             }
             return delta;
         }
-        delta_buffer(face = new $hyoo_crus_face_map) {
+        delta_pack(face = new $hyoo_crus_face_map) {
             const delta = this.delta_unit(face);
-            const bytes = new Uint8Array(delta.length * $hyoo_crus_unit.size);
-            for (let i = 0; i < delta.length; ++i) {
-                const unit = delta[i];
-                bytes.set(unit.asArray(), i * $hyoo_crus_unit.size);
+            if (!delta.length)
+                return null;
+            const rocks = [];
+            for (const unit of delta) {
+                if (unit.kind() !== 'gist')
+                    continue;
+                const gist = unit.narrow();
+                if (gist.size() <= 32)
+                    continue;
+                const rock = this.$.$hyoo_crus_mine.rock(gist.hash()) ?? null;
+                rocks.push([gist.hash(), rock]);
             }
-            return bytes;
+            const pack = $hyoo_crus_pack.make({}, { [this.ref()]: delta }, rocks);
+            return pack;
+        }
+        faces_pack() {
+            const pack = $hyoo_crus_pack.make({
+                [this.ref()]: this.face,
+            }, {}, []);
+            return pack;
         }
         apply_unit(delta) {
             if (!delta.length)
@@ -10644,7 +10800,10 @@ var $;
             });
         }
         fork() {
-            const land = this.realm().home().Land_new(0);
+            const realm = this.realm();
+            if (!realm)
+                $mol_fail(new Error('Realm is required to fork'));
+            const land = realm.home().Land_new(0);
             land.Meta().Inflow.items([this.ref()]);
             return land;
         }
@@ -10659,15 +10818,16 @@ var $;
                     break merge;
                 const exists = new Set([...this.gists.get(head)?.keys() ?? []]);
                 const realm = this.realm();
-                for (const ref of inflow) {
-                    const land = realm.Land(ref);
-                    for (const gist of land.gists_ordered(head)) {
-                        if (exists.has(gist.self()))
-                            continue;
-                        queue.push(gist);
-                        exists.add(gist.self());
+                if (realm)
+                    for (const ref of inflow) {
+                        const land = realm.Land(ref);
+                        for (const gist of land.gists_ordered(head)) {
+                            if (exists.has(gist.self()))
+                                continue;
+                            queue.push(gist);
+                            exists.add(gist.self());
+                        }
                     }
-                }
             }
             if (queue.length < 2)
                 return queue.filter(unit => !unit.nil());
@@ -10797,15 +10957,16 @@ var $;
             this.loading();
             try {
                 this.saving();
+                this.bus();
+                this.realm()?.yard().sync_land(this);
             }
             catch (error) {
                 $mol_fail_log(error);
             }
-            this.bus();
         }
         bus() {
             return new this.$.$mol_bus(`$hyoo_crus_land:${this.ref().description}`, $mol_wire_async(bins => {
-                const yard = this.$.$hyoo_crus_yard;
+                const yard = this.realm().yard();
                 this.apply_unit_trust(bins.map(bin => {
                     const unit = new $hyoo_crus_unit(bin).narrow();
                     yard.persisted.add(unit);
@@ -10815,7 +10976,7 @@ var $;
         }
         loading() {
             $mol_wire_solid();
-            const units = this.$.$hyoo_crus_yard.load(this);
+            const units = this.realm()?.yard().load(this) ?? [];
             const errors = this.apply_unit(units).filter(Boolean);
             if (errors.length)
                 this.$.$mol_log3_fail({
@@ -10825,7 +10986,9 @@ var $;
         }
         saving() {
             this.$.$mol_wait_timeout(250);
-            const yard = this.$.$hyoo_crus_yard;
+            const yard = this.realm()?.yard();
+            if (!yard)
+                return;
             const encoding = [];
             const signing = [];
             const persisting = [];
@@ -11102,16 +11265,19 @@ var $;
 (function ($) {
     class $hyoo_crus_base extends $hyoo_crus_dict {
         title(next) {
-            return this.dive('title', $hyoo_crus_reg).value_str(next);
+            return this.dive('title', $hyoo_crus_reg)?.value_str(next) ?? '';
         }
         selection(next) {
-            return this.dive('selection', $hyoo_crus_reg).value_str(next) ?? '';
+            return this.dive('selection', $hyoo_crus_reg)?.value_str(next) ?? '';
         }
         profiles() {
-            return this.dive('profiles', $hyoo_crus_dict).keys();
+            return this.dive('profiles', $hyoo_crus_dict)?.keys() ?? [];
         }
         Profile(app) {
-            return this.dive('profiles', $hyoo_crus_dict).dive(app, $hyoo_crus_reg).yoke(app);
+            return this.dive('profiles', $hyoo_crus_dict)
+                ?.dive(app, $hyoo_crus_reg)
+                ?.yoke(app)
+                ?? null;
         }
     }
     __decorate([
@@ -11129,80 +11295,6 @@ var $;
     $.$hyoo_crus_base = $hyoo_crus_base;
 })($ || ($ = {}));
 //hyoo/crus/base/base.ts
-;
-"use strict";
-var $;
-(function ($) {
-    class $hyoo_crus_yard extends $mol_object {
-        static persisted = new WeakSet();
-        static load(land) {
-            return [];
-        }
-        static async save(land, units) { }
-    }
-    $.$hyoo_crus_yard = $hyoo_crus_yard;
-})($ || ($ = {}));
-//hyoo/crus/yard/yard.ts
-;
-"use strict";
-var $;
-(function ($) {
-    var $$;
-    (function ($$) {
-        class $hyoo_crus_yard extends $.$hyoo_crus_yard {
-            static async save(land, units) {
-                const db = await this.db();
-                const change = db.change('Pass', 'Gift', 'Gist');
-                const { Pass, Gift, Gist } = change.stores;
-                const lord_ref = land.lord().ref().description;
-                const land_numb = land.numb() || 'AAAAAAAA';
-                for (const unit of units) {
-                    unit.choose({
-                        pass: pass => Pass.put(pass.buffer, [lord_ref, land_numb, pass.peer() || 'AAAAAAAA']),
-                        gift: gift => Gift.put(gift.buffer, [lord_ref, land_numb, gift.dest().description || 'AAAAAAAAAAAAAAAA']),
-                        gist: gist => Gist.put(gist.buffer, [lord_ref, land_numb, gist.head() || 'AAAAAAAA', gist.self() || 'AAAAAAAA']),
-                    });
-                    this.persisted.add(unit);
-                }
-                await change.commit();
-            }
-            static load(land) {
-                const lord_ref = land.lord().ref().description;
-                const land_numb = land.numb() || 'AAAAAAAA';
-                const key = $mol_wire_sync(IDBKeyRange).bound([lord_ref, land_numb], [lord_ref, land_numb + '\uFFFF']);
-                const [pass, gift, gist] = $mol_wire_sync(this).query(key);
-                const units = [
-                    ...pass.map(bin => new $hyoo_crus_pass(bin)),
-                    ...gift.map(bin => new $hyoo_crus_gift(bin)),
-                    ...gist.map(bin => new $hyoo_crus_gist(bin)),
-                ];
-                for (const unit of units)
-                    this.persisted.add(unit);
-                return units;
-            }
-            static async query(key) {
-                const db = await this.db();
-                const { Pass, Gift, Gist } = db.read('Pass', 'Gift', 'Gist');
-                return Promise.all([Pass.select(key), Gift.select(key), Gist.select(key)]);
-            }
-            static async db() {
-                return await this.$.$mol_db('$hyoo_crus_yard', mig => {
-                    mig.store_make('Pass');
-                    mig.store_make('Gift');
-                    mig.store_make('Gist');
-                });
-            }
-        }
-        __decorate([
-            $mol_action
-        ], $hyoo_crus_yard, "load", null);
-        __decorate([
-            $mol_memo.method
-        ], $hyoo_crus_yard, "db", null);
-        $$.$hyoo_crus_yard = $hyoo_crus_yard;
-    })($$ = $.$$ || ($.$$ = {}));
-})($ || ($ = {}));
-//hyoo/crus/yard/yard.web.ts
 ;
 "use strict";
 var $;
@@ -11238,7 +11330,7 @@ var $;
             return this.Land(this.numb_make(idea || undefined));
         }
         Profile(app, Node) {
-            return this.base().Profile(app).Data(Node);
+            return this.base().Profile(app)?.Data(Node) ?? null;
         }
         numb_make(idea = Math.floor(Math.random() * 2 ** 48)) {
             for (let i = 0; i < 4096; ++i) {
@@ -11269,142 +11361,456 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    class $hyoo_crus_pack extends $mol_buffer {
-        toBlob() {
-            return new Blob([this], { type: 'application/x-crus-pack' });
+    let $mol_rest_code;
+    (function ($mol_rest_code) {
+        $mol_rest_code[$mol_rest_code["Continue"] = 100] = "Continue";
+        $mol_rest_code[$mol_rest_code["Switching_Protocols"] = 101] = "Switching_Protocols";
+        $mol_rest_code[$mol_rest_code["Processing"] = 102] = "Processing";
+        $mol_rest_code[$mol_rest_code["OK"] = 200] = "OK";
+        $mol_rest_code[$mol_rest_code["Created"] = 201] = "Created";
+        $mol_rest_code[$mol_rest_code["Accepted"] = 202] = "Accepted";
+        $mol_rest_code[$mol_rest_code["Non_Authoritative_Information"] = 203] = "Non_Authoritative_Information";
+        $mol_rest_code[$mol_rest_code["No_Content"] = 204] = "No_Content";
+        $mol_rest_code[$mol_rest_code["Reset_Content"] = 205] = "Reset_Content";
+        $mol_rest_code[$mol_rest_code["Partial_Content"] = 206] = "Partial_Content";
+        $mol_rest_code[$mol_rest_code["Multi_Status"] = 207] = "Multi_Status";
+        $mol_rest_code[$mol_rest_code["Already_Reported"] = 208] = "Already_Reported";
+        $mol_rest_code[$mol_rest_code["IM_Used"] = 226] = "IM_Used";
+        $mol_rest_code[$mol_rest_code["Multiple_Choices"] = 300] = "Multiple_Choices";
+        $mol_rest_code[$mol_rest_code["Moved_Permanently"] = 301] = "Moved_Permanently";
+        $mol_rest_code[$mol_rest_code["Found"] = 302] = "Found";
+        $mol_rest_code[$mol_rest_code["See_Other"] = 303] = "See_Other";
+        $mol_rest_code[$mol_rest_code["Not_Modified"] = 304] = "Not_Modified";
+        $mol_rest_code[$mol_rest_code["Use_Proxy"] = 305] = "Use_Proxy";
+        $mol_rest_code[$mol_rest_code["Temporary_Redirect"] = 307] = "Temporary_Redirect";
+        $mol_rest_code[$mol_rest_code["Bad_Request"] = 400] = "Bad_Request";
+        $mol_rest_code[$mol_rest_code["Unauthorized"] = 401] = "Unauthorized";
+        $mol_rest_code[$mol_rest_code["Payment_Required"] = 402] = "Payment_Required";
+        $mol_rest_code[$mol_rest_code["Forbidden"] = 403] = "Forbidden";
+        $mol_rest_code[$mol_rest_code["Not_Found"] = 404] = "Not_Found";
+        $mol_rest_code[$mol_rest_code["Method_Not_Allowed"] = 405] = "Method_Not_Allowed";
+        $mol_rest_code[$mol_rest_code["Not_Acceptable"] = 406] = "Not_Acceptable";
+        $mol_rest_code[$mol_rest_code["Proxy_Authentication_Required"] = 407] = "Proxy_Authentication_Required";
+        $mol_rest_code[$mol_rest_code["Request_Timeout"] = 408] = "Request_Timeout";
+        $mol_rest_code[$mol_rest_code["Conflict"] = 409] = "Conflict";
+        $mol_rest_code[$mol_rest_code["Gone"] = 410] = "Gone";
+        $mol_rest_code[$mol_rest_code["Length_Required"] = 411] = "Length_Required";
+        $mol_rest_code[$mol_rest_code["Precondition_Failed"] = 412] = "Precondition_Failed";
+        $mol_rest_code[$mol_rest_code["Request_Entity_Too_Large"] = 413] = "Request_Entity_Too_Large";
+        $mol_rest_code[$mol_rest_code["Request_URI_Too_Long"] = 414] = "Request_URI_Too_Long";
+        $mol_rest_code[$mol_rest_code["Unsupported_Media_Type"] = 415] = "Unsupported_Media_Type";
+        $mol_rest_code[$mol_rest_code["Requested_Range_Not_Satisfiable"] = 416] = "Requested_Range_Not_Satisfiable";
+        $mol_rest_code[$mol_rest_code["Expectation_Failed"] = 417] = "Expectation_Failed";
+        $mol_rest_code[$mol_rest_code["Teapot"] = 418] = "Teapot";
+        $mol_rest_code[$mol_rest_code["Unprocessable_Entity"] = 422] = "Unprocessable_Entity";
+        $mol_rest_code[$mol_rest_code["Locked"] = 423] = "Locked";
+        $mol_rest_code[$mol_rest_code["Failed_Dependency"] = 424] = "Failed_Dependency";
+        $mol_rest_code[$mol_rest_code["Upgrade_Required"] = 426] = "Upgrade_Required";
+        $mol_rest_code[$mol_rest_code["Precondition_Required"] = 428] = "Precondition_Required";
+        $mol_rest_code[$mol_rest_code["Too_Many_Requests"] = 429] = "Too_Many_Requests";
+        $mol_rest_code[$mol_rest_code["Request_Header_Fields_Too_Large"] = 431] = "Request_Header_Fields_Too_Large";
+        $mol_rest_code[$mol_rest_code["Unavailable_For_Legal_Reasons"] = 451] = "Unavailable_For_Legal_Reasons";
+        $mol_rest_code[$mol_rest_code["Internal_Server_Error"] = 500] = "Internal_Server_Error";
+        $mol_rest_code[$mol_rest_code["Not_Implemented"] = 501] = "Not_Implemented";
+        $mol_rest_code[$mol_rest_code["Bad_Gateway"] = 502] = "Bad_Gateway";
+        $mol_rest_code[$mol_rest_code["Service_Unavailable"] = 503] = "Service_Unavailable";
+        $mol_rest_code[$mol_rest_code["Gateway_Timeout"] = 504] = "Gateway_Timeout";
+        $mol_rest_code[$mol_rest_code["HTTP_Version_Not_Supported"] = 505] = "HTTP_Version_Not_Supported";
+        $mol_rest_code[$mol_rest_code["Insufficient_Storage"] = 507] = "Insufficient_Storage";
+        $mol_rest_code[$mol_rest_code["Loop_Detected"] = 508] = "Loop_Detected";
+        $mol_rest_code[$mol_rest_code["Not_Extended"] = 510] = "Not_Extended";
+        $mol_rest_code[$mol_rest_code["Network_Authentication_Required"] = 511] = "Network_Authentication_Required";
+        $mol_rest_code[$mol_rest_code["Network_Read_Timeout_Error"] = 598] = "Network_Read_Timeout_Error";
+        $mol_rest_code[$mol_rest_code["Network_Connect_Timeout_Error"] = 599] = "Network_Connect_Timeout_Error";
+    })($mol_rest_code = $.$mol_rest_code || ($.$mol_rest_code = {}));
+})($ || ($ = {}));
+//mol/rest/code/code.ts
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_rest_port extends $mol_object {
+        send_code(code) { }
+        send_type(mime) { }
+        send_data(data) {
+            if (data === null)
+                return this.send_nil();
+            if (typeof data === 'string')
+                return this.send_text(data);
+            if (data instanceof Uint8Array)
+                return this.send_bin(data);
+            if (data instanceof $mol_dom_context.Element)
+                return this.send_dom(data);
+            return this.send_json(data);
         }
-        parts() {
-            const faces = {};
-            const units = {};
-            const rocks = [];
-            const buff = this.asArray();
-            let land = null;
-            for (let offset = 0; offset < this.byteLength;) {
-                const kind = this.uint8(offset);
-                if (kind % 2) {
-                    switch (kind) {
-                        case $hyoo_crus_part.land: {
-                            if (!$mol_compare_deep($hyoo_crus_part_crus, buff.slice(offset, offset += 4))) {
-                                $mol_fail(new Error('Wrong 4CC code'));
-                            }
-                            land = $hyoo_crus_ref_decode(buff.slice(offset, offset += 18));
-                            offset += 2;
-                            continue;
-                        }
-                        case $hyoo_crus_part.face: {
-                            if (!land)
-                                $mol_fail(new Error('Land is undefined'));
-                            const count = this.uint32(offset) >> 8;
-                            const peer = $mol_base64_ae_encode(buff.slice(offset += 4, offset += 6));
-                            const time = this.uint48(offset += 6);
-                            faces[land] ||= new $hyoo_crus_face_map;
-                            faces[land].time_max(peer, time);
-                            faces[land].count_shift(peer, count);
-                            continue;
-                        }
-                        case $hyoo_crus_part.pass: {
-                            if (!land)
-                                $mol_fail(new Error('Land is undefined'));
-                            const unit = new $hyoo_crus_pass(buff.slice(offset, offset += $hyoo_crus_unit.size).buffer);
-                            units[land] ||= [];
-                            units[land].push(unit);
-                            continue;
-                        }
-                        case $hyoo_crus_part.gift: {
-                            if (!land)
-                                $mol_fail(new Error('Land is undefined'));
-                            const unit = new $hyoo_crus_gift(buff.slice(offset, offset += $hyoo_crus_unit.size).buffer);
-                            units[land] ||= [];
-                            units[land].push(unit);
-                            continue;
-                        }
-                        case $hyoo_crus_part.hash: {
-                            const hash = buff.slice(offset += 4, offset += 20);
-                            rocks.push([hash, null]);
-                            continue;
-                        }
-                        case $hyoo_crus_part.rock: {
-                            const size = this.uint32(offset) >> 8;
-                            const hash = buff.slice(offset += 4, offset += 20);
-                            const rock = buff.slice(offset, offset + size);
-                            rocks.push([hash, rock]);
-                            offset += Math.ceil(size / 8) * 8;
-                            continue;
-                        }
-                        case $hyoo_crus_part.buck: {
-                            offset += 128;
-                            continue;
-                        }
-                        default: $mol_fail(new Error(`Unknown CRUS Pack Part (${kind.toString(2)}) as (${offset.toString(16)})`));
-                    }
-                }
-                else {
-                    if (!land)
-                        $mol_fail(new Error('Land is undefined'));
-                    units[land] ||= [];
-                    units[land].push(new $hyoo_crus_gist(buff.slice(offset, offset += $hyoo_crus_unit.size).buffer));
-                    continue;
-                }
-            }
-            return { faces, units, rocks };
+        send_nil() {
+            this.send_code(204);
         }
-        static make(faces, units, rocks) {
-            let size = 0;
-            for (const land of Reflect.ownKeys(faces)) {
-                size += 24 + faces[land].size * 16;
-            }
-            for (const land of Reflect.ownKeys(units)) {
-                size += 24 + units[land].length * $hyoo_crus_unit.size;
-            }
-            for (const [hash, rock] of rocks) {
-                size += 24 + (rock ? Math.ceil(rock.length / 8) * 8 : 0);
-            }
-            if (size === 0)
-                return null;
-            const buff = new Uint8Array(size);
-            const pack = new $hyoo_crus_pack(buff.buffer);
-            let offset = 0;
-            const open_land = (land) => {
-                buff.set($hyoo_crus_part_crus, offset);
-                buff.set($hyoo_crus_ref_encode(land), offset + 4);
-                offset += 24;
-            };
-            for (const land of Reflect.ownKeys(faces)) {
-                open_land(land);
-                for (const peer of faces[land].keys()) {
-                    pack.uint32(offset, (faces[land].count << 8) | $hyoo_crus_part.face);
-                    buff.set($mol_base64_ae_decode(peer), offset + 4);
-                    pack.uint48(offset + 10, faces[land].time(peer));
-                    offset += 16;
-                }
-            }
-            for (const land of Reflect.ownKeys(units)) {
-                open_land(land);
-                for (const unit of units[land]) {
-                    buff.set(unit.asArray(), offset);
-                    offset += unit.byteLength;
-                }
-            }
-            for (const [hash, rock] of rocks) {
-                const len = rock?.length ?? 0;
-                pack.uint32(offset, rock ? (len << 8) + $hyoo_crus_part.rock : $hyoo_crus_part.hash);
-                buff.set(hash, offset + 4);
-                if (rock)
-                    buff.set(rock, offset + 24);
-                offset += 24 + Math.ceil(len / 8) * 8;
-            }
-            return pack;
+        send_bin(data) {
+            this.send_code(200);
+            this.send_type('application/octet-stream');
+        }
+        send_text(data) {
+            this.send_code(200);
+            this.send_type('text/plain');
+            this.send_bin($mol_charset_encode(data));
+        }
+        send_json(data) {
+            this.send_code(200);
+            this.send_type('application/json');
+            this.send_text(JSON.stringify(data));
+        }
+        send_dom(data) {
+            this.send_code(200);
+            this.send_type('text/html');
+            this.send_text($mol_dom_serialize(data));
+        }
+        static make(config) {
+            return super.make(config);
         }
     }
-    $.$hyoo_crus_pack = $hyoo_crus_pack;
+    __decorate([
+        $mol_action
+    ], $mol_rest_port.prototype, "send_data", null);
+    __decorate([
+        $mol_action
+    ], $mol_rest_port.prototype, "send_nil", null);
+    __decorate([
+        $mol_action
+    ], $mol_rest_port.prototype, "send_bin", null);
+    __decorate([
+        $mol_action
+    ], $mol_rest_port.prototype, "send_text", null);
+    __decorate([
+        $mol_action
+    ], $mol_rest_port.prototype, "send_json", null);
+    __decorate([
+        $mol_action
+    ], $mol_rest_port.prototype, "send_dom", null);
+    __decorate([
+        ($mol_action)
+    ], $mol_rest_port, "make", null);
+    $.$mol_rest_port = $mol_rest_port;
 })($ || ($ = {}));
-//hyoo/crus/pack/pack.ts
+//mol/rest/port/port.ts
+;
+"use strict";
+var $;
+(function ($) {
+    class $hyoo_crus_yard extends $mol_object {
+        realm() {
+            return null;
+        }
+        persisted = new WeakSet();
+        load(land) {
+            return [];
+        }
+        async save(land, units) { }
+        static masters = [];
+        master_cursor(next = 0, force) {
+            return next;
+        }
+        master_current() {
+            return this.$.$hyoo_crus_yard.masters[this.master_cursor()];
+        }
+        master_next() {
+            this.master_cursor((this.master_cursor() + 1) % this.$.$hyoo_crus_yard.masters.length, !!'force');
+        }
+        reconnects(reset) {
+            return ($mol_wire_probe(() => this.reconnects()) ?? 0) + 1;
+        }
+        master() {
+            return null;
+        }
+        slaves = new $mol_wire_set();
+        ports() {
+            try {
+                return [this.master(), ...this.slaves].filter($mol_guard_defined);
+            }
+            catch (error) {
+                $mol_fail_log(error);
+                return [...this.slaves];
+            }
+        }
+        port_lands(port, next = []) {
+            return next;
+        }
+        sync() {
+            const realm = this.realm();
+            for (const port of this.ports()) {
+                for (const land of this.port_lands(port)) {
+                    try {
+                        this.sync_port_land([port, realm.Land(land)]);
+                    }
+                    catch (error) {
+                        $mol_fail_log(error);
+                    }
+                }
+            }
+        }
+        port_income(port, msg) {
+            const pack = $mol_wire_sync($hyoo_crus_pack).from(msg);
+            const faces = pack.parts().faces;
+            const land_refs = Reflect.ownKeys(faces);
+            this.port_lands(port, [...new Set([
+                    ...this.port_lands(port),
+                    ...land_refs,
+                ])]);
+            for (const land_ref of land_refs) {
+                const land = this.realm().Land(land_ref);
+                const port_face = this.face_port_land([port, land]);
+                if (port_face)
+                    port_face.sync(faces[land_ref]);
+                else
+                    this.face_port_land([port, land], faces[land_ref]);
+            }
+            this.realm().apply_pack(pack);
+        }
+        sync_land(land) {
+            for (const port of this.ports() ?? []) {
+                try {
+                    this.sync_port_land([port, land]);
+                }
+                catch (error) {
+                    $mol_fail_log(error);
+                }
+            }
+        }
+        sync_port_land([port, land]) {
+            this.init_port_land([port, land]);
+            const faces = this.face_port_land([port, land]);
+            if (!faces)
+                return;
+            const delta = land.delta_pack(faces);
+            if (!delta)
+                return;
+            port.send_bin(delta.asArray());
+            faces.sync(land.face);
+        }
+        init_port_land([port, land]) {
+            port.send_bin(land.faces_pack().asArray());
+        }
+        face_port_land([port, land], next = null) {
+            $mol_wire_solid();
+            return next;
+        }
+    }
+    __decorate([
+        $mol_mem
+    ], $hyoo_crus_yard.prototype, "realm", null);
+    __decorate([
+        $mol_mem
+    ], $hyoo_crus_yard.prototype, "master_cursor", null);
+    __decorate([
+        $mol_mem
+    ], $hyoo_crus_yard.prototype, "master_current", null);
+    __decorate([
+        $mol_action
+    ], $hyoo_crus_yard.prototype, "master_next", null);
+    __decorate([
+        $mol_mem
+    ], $hyoo_crus_yard.prototype, "reconnects", null);
+    __decorate([
+        $mol_mem
+    ], $hyoo_crus_yard.prototype, "ports", null);
+    __decorate([
+        $mol_mem_key
+    ], $hyoo_crus_yard.prototype, "port_lands", null);
+    __decorate([
+        $mol_mem
+    ], $hyoo_crus_yard.prototype, "sync", null);
+    __decorate([
+        $mol_action
+    ], $hyoo_crus_yard.prototype, "port_income", null);
+    __decorate([
+        $mol_mem_key
+    ], $hyoo_crus_yard.prototype, "sync_land", null);
+    __decorate([
+        $mol_mem_key
+    ], $hyoo_crus_yard.prototype, "sync_port_land", null);
+    __decorate([
+        $mol_mem_key
+    ], $hyoo_crus_yard.prototype, "init_port_land", null);
+    __decorate([
+        $mol_mem_key
+    ], $hyoo_crus_yard.prototype, "face_port_land", null);
+    $.$hyoo_crus_yard = $hyoo_crus_yard;
+})($ || ($ = {}));
+//hyoo/crus/yard/yard.ts
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_rest_port_ws extends $mol_rest_port {
+    }
+    $.$mol_rest_port_ws = $mol_rest_port_ws;
+})($ || ($ = {}));
+//mol/rest/port/ws/ws.ts
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_rest_port_ws_web extends $mol_rest_port_ws {
+        socket;
+        send_nil() {
+            if (this.socket.readyState !== this.socket.OPEN)
+                return;
+            this.socket.send('');
+        }
+        send_bin(data) {
+            if (this.socket.readyState !== this.socket.OPEN)
+                return;
+            this.socket.send(data);
+        }
+        send_text(data) {
+            if (this.socket.readyState !== this.socket.OPEN)
+                return;
+            const bin = $mol_charset_encode(data);
+            this.socket.send(bin);
+        }
+    }
+    __decorate([
+        $mol_action
+    ], $mol_rest_port_ws_web.prototype, "send_nil", null);
+    __decorate([
+        $mol_action
+    ], $mol_rest_port_ws_web.prototype, "send_bin", null);
+    __decorate([
+        $mol_action
+    ], $mol_rest_port_ws_web.prototype, "send_text", null);
+    $.$mol_rest_port_ws_web = $mol_rest_port_ws_web;
+    $.$mol_rest_port_ws = $mol_rest_port_ws_web;
+})($ || ($ = {}));
+//mol/rest/port/ws/ws.web.ts
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $hyoo_crus_yard extends $.$hyoo_crus_yard {
+            static masters = [
+                'https://crus.hyoo.ru/'
+            ];
+            async save(land, units) {
+                const db = await this.db();
+                const change = db.change('Pass', 'Gift', 'Gist');
+                const { Pass, Gift, Gist } = change.stores;
+                const lord_ref = land.lord().ref().description;
+                const land_numb = land.numb() || 'AAAAAAAA';
+                for (const unit of units) {
+                    unit.choose({
+                        pass: pass => Pass.put(pass.buffer, [lord_ref, land_numb, pass.peer() || 'AAAAAAAA']),
+                        gift: gift => Gift.put(gift.buffer, [lord_ref, land_numb, gift.dest().description || 'AAAAAAAAAAAAAAAA']),
+                        gist: gist => Gist.put(gist.buffer, [lord_ref, land_numb, gist.head() || 'AAAAAAAA', gist.self() || 'AAAAAAAA']),
+                    });
+                    this.persisted.add(unit);
+                }
+                await change.commit();
+            }
+            load(land) {
+                const lord_ref = land.lord().ref().description;
+                const land_numb = land.numb() || 'AAAAAAAA';
+                const key = $mol_wire_sync(IDBKeyRange).bound([lord_ref, land_numb], [lord_ref, land_numb + '\uFFFF']);
+                const [pass, gift, gist] = $mol_wire_sync(this).query(key);
+                const units = [
+                    ...pass.map(bin => new $hyoo_crus_pass(bin)),
+                    ...gift.map(bin => new $hyoo_crus_gift(bin)),
+                    ...gist.map(bin => new $hyoo_crus_gist(bin)),
+                ];
+                for (const unit of units)
+                    this.persisted.add(unit);
+                return units;
+            }
+            async query(key) {
+                const db = await this.db();
+                const { Pass, Gift, Gist } = db.read('Pass', 'Gift', 'Gist');
+                return Promise.all([Pass.select(key), Gift.select(key), Gist.select(key)]);
+            }
+            async db() {
+                return await this.$.$mol_db('$hyoo_crus_yard', mig => {
+                    mig.store_make('Pass');
+                    mig.store_make('Gift');
+                    mig.store_make('Gist');
+                });
+            }
+            master() {
+                this.reconnects();
+                const link = this.master_current();
+                const socket = new $mol_dom_context.WebSocket(link.replace(/^https?:/, 'ws:') + 'sync/');
+                socket.binaryType = 'arraybuffer';
+                const port = $mol_rest_port_ws_web.make({ socket });
+                socket.onmessage = async (event) => {
+                    if (event.data instanceof ArrayBuffer) {
+                        if (!event.data.byteLength)
+                            return;
+                        await $mol_wire_async(this).port_income(port, new Uint8Array(event.data));
+                    }
+                    else {
+                        this.$.$mol_log3_fail({
+                            place: this,
+                            message: 'Wrong data',
+                            data: event.data
+                        });
+                    }
+                };
+                let interval;
+                socket.onclose = () => {
+                    clearInterval(interval);
+                    setTimeout(() => this.reconnects(null), 1000);
+                };
+                Object.assign(socket, {
+                    destructor: () => {
+                        socket.onclose = () => { };
+                        clearInterval(interval);
+                        socket.close();
+                    }
+                });
+                return new Promise((done, fail) => {
+                    socket.onopen = () => {
+                        this.$.$mol_log3_come({
+                            place: this,
+                            message: 'Connected to Master',
+                            port: $mol_key(socket),
+                            server: link,
+                        });
+                        interval = setInterval(() => socket.send(new Uint8Array), 30000);
+                        done(port);
+                    };
+                    socket.onerror = () => {
+                        socket.onclose = event => {
+                            fail(new Error(`Master is unavailable (${event.code})`));
+                        };
+                        clearInterval(interval);
+                        this.master_next();
+                    };
+                });
+            }
+        }
+        __decorate([
+            $mol_action
+        ], $hyoo_crus_yard.prototype, "load", null);
+        __decorate([
+            $mol_memo.method
+        ], $hyoo_crus_yard.prototype, "db", null);
+        __decorate([
+            $mol_mem
+        ], $hyoo_crus_yard.prototype, "master", null);
+        $$.$hyoo_crus_yard = $hyoo_crus_yard;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+//hyoo/crus/yard/yard.web.ts
 ;
 "use strict";
 var $;
 (function ($) {
     class $hyoo_crus_realm extends $mol_object {
         lords = new $mol_wire_dict();
+        yard() {
+            return this.$.$hyoo_crus_yard.make({
+                realm: $mol_const(this),
+            });
+        }
         home() {
             return this.Lord(this.$.$hyoo_crus_auth.current().lord());
         }
@@ -11445,6 +11851,9 @@ var $;
             }
         }
     }
+    __decorate([
+        $mol_mem
+    ], $hyoo_crus_realm.prototype, "yard", null);
     __decorate([
         $mol_mem_key
     ], $hyoo_crus_realm.prototype, "Lord", null);
@@ -15556,11 +15965,13 @@ var $;
         }
         Str() {
             const obj = new this.$.$mol_textarea();
+            obj.enabled = () => this.enabled();
             obj.value = (next) => this.str(next);
             return obj;
         }
         Ref() {
             const obj = new this.$.$mol_select();
+            obj.enabled = () => this.enabled();
             obj.value = (next) => this.ref(next);
             obj.options = () => this.ref_options();
             obj.option_label = (id) => this.ref_label(id);
@@ -15570,6 +15981,9 @@ var $;
             const obj = new this.$.$mol_view();
             obj.sub = () => this.rows();
             return obj;
+        }
+        enabled() {
+            return true;
         }
         str(next) {
             if (next !== undefined)
@@ -15594,6 +16008,7 @@ var $;
         }
         Row_add() {
             const obj = new this.$.$mol_button_minor();
+            obj.enabled = () => this.enabled();
             obj.click = (next) => this.row_add(next);
             obj.title = () => "+";
             return obj;
@@ -15678,10 +16093,10 @@ var $;
                 return new $mol_view;
             }
             str(next) {
-                return this.node().cast($hyoo_crus_reg_str).value(next) ?? '';
+                return this.node()?.cast($hyoo_crus_reg_str).value(next) ?? '';
             }
             ref(next) {
-                return this.node().cast($hyoo_crus_reg).value(next);
+                return this.node()?.cast($hyoo_crus_reg).value(next) ?? null;
             }
             ref_options() {
                 return this.prop().enum()?.items() ?? [];
@@ -15690,14 +16105,14 @@ var $;
                 if (!ref)
                     return '';
                 if (typeof ref === 'symbol')
-                    return this.node().realm().Node(ref, $hyoo_crus_flex_thing).title() ?? ref.description;
+                    return this.node()?.realm().Node(ref, $hyoo_crus_flex_thing).title() ?? ref.description;
                 return $hyoo_crus_vary_cast_str(ref) ?? '';
             }
             rows() {
                 return [
-                    ...this.node().cast($hyoo_crus_list).items().map((vary, i) => {
+                    ...this.node()?.cast($hyoo_crus_list).items().map((vary, i) => {
                         return typeof vary === 'symbol' ? this.Row_ref(i) : this.Row(i);
-                    }),
+                    }) ?? [],
                     this.Row_add(),
                 ];
             }
@@ -15718,6 +16133,9 @@ var $;
             row_arg(index) {
                 const ref = this.row_value(index).description;
                 return { ref };
+            }
+            enabled() {
+                return this.node()?.can_change() ?? false;
             }
         }
         __decorate([
@@ -17664,11 +18082,13 @@ var $;
             spread_ids() {
                 const spread = this.spread();
                 const spread_land = $hyoo_crus_ref_root($hyoo_crus_ref(spread));
-                return [...this.realm().lords.values()].flatMap(lord => {
-                    return [...lord.lands.values()].flatMap(land => {
-                        return land.ref() === spread_land ? [land.ref().description, spread] : [land.ref().description];
-                    });
-                });
+                return [...new Set([...this.realm().lords.values()].flatMap(lord => {
+                        return [lord.ref().description, ...[...lord.lands.values()].flatMap(land => {
+                                return land.ref() === spread_land
+                                    ? [land.ref().description, spread]
+                                    : [land.ref().description];
+                            })];
+                    }))];
             }
             land(id) {
                 return this.realm().Land($hyoo_crus_ref_root($hyoo_crus_ref(id)));

@@ -4775,22 +4775,6 @@ var $;
 var $;
 (function ($) {
     $mol_test({
-        'fromJSON'() {
-            $mol_assert_equal($mol_tree2_from_json([]).toString(), '/\n');
-            $mol_assert_equal($mol_tree2_from_json([false, true]).toString(), '/\n\tfalse\n\ttrue\n');
-            $mol_assert_equal($mol_tree2_from_json([0, 1, 2.3]).toString(), '/\n\t0\n\t1\n\t2.3\n');
-            $mol_assert_equal($mol_tree2_from_json(new Uint16Array([1, 10, 256])).toString(), '\\\x01\x00\n\\\x00\x00\x01\n');
-            $mol_assert_equal($mol_tree2_from_json(['', 'foo', 'bar\nbaz']).toString(), '/\n\t\\\n\t\\foo\n\t\\\n\t\t\\bar\n\t\t\\baz\n');
-            $mol_assert_equal($mol_tree2_from_json({ 'foo': false, 'bar\nbaz': 'lol' }).toString(), '*\n\tfoo false\n\t\\\n\t\t\\bar\n\t\t\\baz\n\t\t\\lol\n');
-        },
-    });
-})($ || ($ = {}));
-//mol/tree2/from/json/json.test.ts
-;
-"use strict";
-var $;
-(function ($) {
-    $mol_test({
         async 'put, get, drop, count records and clear store'() {
             const db = await $$.$mol_db('$mol_db_test', mig => mig.store_make('letters'));
             const trans = db.change('letters');
@@ -4954,6 +4938,62 @@ var $;
     });
 })($ || ($ = {}));
 //hyoo/crus/mine/mine.test.ts
+;
+"use strict";
+var $;
+(function ($_1) {
+    var $$;
+    (function ($$) {
+        $mol_test({
+            "faces serial and parse"($) {
+                const land1 = $hyoo_crus_ref('12345678_12345678');
+                const land2 = $hyoo_crus_ref('87654321_87654321');
+                const land3 = $hyoo_crus_ref('87654321_87654321');
+                const faces1 = new $hyoo_crus_face_map;
+                faces1.time_max('12345678', Date.now());
+                faces1.count_shift('12345678', 777);
+                const faces2 = new $hyoo_crus_face_map;
+                faces2.time_max('12345678', Date.now());
+                faces2.time_max('87654321', Date.now() + 1);
+                faces2.count_shift('12345678', 333);
+                faces2.count_shift('87654321', 1);
+                const faces3 = new $hyoo_crus_face_map;
+                const pack = $hyoo_crus_pack.make({
+                    [land1]: faces1,
+                    [land2]: faces2,
+                    [land3]: faces3,
+                }, {}, []);
+                const parts = pack.parts();
+                $mol_assert_equal(parts, {
+                    faces: {
+                        [land1]: faces1,
+                        [land2]: faces2,
+                        [land3]: faces3,
+                    },
+                    units: {},
+                    rocks: [],
+                });
+            },
+        });
+    })($$ = $_1.$$ || ($_1.$$ = {}));
+})($ || ($ = {}));
+//hyoo/crus/pack/pack.test.ts
+;
+"use strict";
+var $;
+(function ($) {
+    $mol_test({
+        'fromJSON'() {
+            $mol_assert_equal($mol_tree2_from_json([]).toString(), '/\n');
+            $mol_assert_equal($mol_tree2_from_json([false, true]).toString(), '/\n\tfalse\n\ttrue\n');
+            $mol_assert_equal($mol_tree2_from_json([0, 1, 2.3]).toString(), '/\n\t0\n\t1\n\t2.3\n');
+            $mol_assert_equal($mol_tree2_from_json(new Uint16Array([1, 10, 256])).toString(), '\\\x01\x00\n\\\x00\x00\x01\n');
+            $mol_assert_equal($mol_tree2_from_json(['', 'foo', 'bar\nbaz']).toString(), '/\n\t\\\n\t\\foo\n\t\\\n\t\t\\bar\n\t\t\\baz\n');
+            $mol_assert_equal($mol_tree2_from_json({ 'foo': false, 'bar\nbaz': 'lol' }).toString(), '*\n\tfoo false\n\t\\\n\t\t\\bar\n\t\t\\baz\n\t\t\\lol\n');
+        },
+    });
+})($ || ($ = {}));
+//mol/tree2/from/json/json.test.ts
 ;
 "use strict";
 var $;
@@ -6005,13 +6045,20 @@ var $;
 (function ($_1) {
     $mol_test_mocks.push($ => {
         class $hyoo_crus_yard extends $.$hyoo_crus_yard {
-            static load(land) {
+            load(land) {
                 return [];
             }
-            static async save(land, units) { }
+            async save(land, units) { }
+            ports() {
+                return [];
+            }
         }
         $.$hyoo_crus_yard = $hyoo_crus_yard;
     });
+    $hyoo_crus_yard.masters = [
+        `http://localhost:9090/`,
+        $mol_dom_context.document.location.origin,
+    ];
 })($ || ($ = {}));
 //hyoo/crus/yard/yard.test.ts
 ;
