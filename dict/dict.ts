@@ -17,8 +17,9 @@ namespace $ {
 		dive< Node extends typeof $hyoo_crus_node >(
 			key: $hyoo_crus_vary_type,
 			Node: Node,
+			auto?: any,
 		) {
-			if( this.can_change() ) this.has( key, true, Node.tag )
+			if( this.can_change() && auto !== undefined ) this.has( key, true, Node.tag )
 			const unit = this.find( key )
 			return unit ? this.land().Node( Node ).Item( unit.self() ) : null
 		}
@@ -65,7 +66,7 @@ namespace $ {
 				const field = Field[0].toLowerCase() + Field.slice(1)
 				
 				Object.defineProperty( Entity.prototype, Field, { get: function() {
-					return ( this as any as $hyoo_crus_dict ).dive( field, schema[ Field ] as any )
+					return ( this as any as $hyoo_crus_dict ).dive( field, schema[ Field ] as any, null )
 				} } )
 				
 				Object.defineProperty( Entity.prototype, field, {

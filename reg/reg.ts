@@ -85,12 +85,13 @@ namespace $ {
 		}
 		
 		@ $mol_mem_key
-		yoke( vary: $hyoo_crus_vary_type ) {
+		yoke( vary: $hyoo_crus_vary_type, auto?: any ) {
 			
 			const realm = this.realm()
 			
 			const ref = this.value_ref()
 			if( ref ) return realm!.Land( ref )
+			if( auto === undefined ) return null
 			
 			const hash = $mol_crypto_hash( $hyoo_crus_vary_encode( vary ).bin )
 			const numb = new Uint16Array( $mol_base64_decode( this.land().numb() ).buffer )
@@ -151,7 +152,7 @@ namespace $ {
 				
 				@ $mol_action
 				remote_ensure() {
-					this.yoke( this.ref() )
+					this.yoke( this.ref(), null )
 					return this.remote()!
 				}
 	

@@ -10,8 +10,8 @@ namespace $.$$ {
 			const dict = land.Node( $hyoo_crus_dict ).Item('')
 			$mol_assert_equal( dict.keys(), [] )
 			
-			dict.dive( 123, $hyoo_crus_reg )
-			dict.dive( 'xxx', $hyoo_crus_reg )
+			dict.dive( 123, $hyoo_crus_reg, null )
+			dict.dive( 'xxx', $hyoo_crus_reg, null )
 			$mol_assert_equal( dict.keys(), [ 'xxx', 123 ] )
 			$mol_assert_equal( dict.has( 123 ), true )
 			$mol_assert_equal( dict.has( 'xxx' ), true )
@@ -38,15 +38,15 @@ namespace $.$$ {
 			const dict1 = land1.Node( $hyoo_crus_dict ).Item('')
 			const dict2 = land2.Node( $hyoo_crus_dict ).Item('')
 
-			dict1.dive( 123, $hyoo_crus_reg )!.value_vary( 666 )
+			dict1.dive( 123, $hyoo_crus_reg, null )!.value_vary( 666 )
 			land2.face.tick()
-			dict2.dive( 123, $hyoo_crus_reg )!.value_vary( 777 )
+			dict2.dive( 123, $hyoo_crus_reg, null )!.value_vary( 777 )
 			land1.apply_unit_trust( land2.delta_unit() )
 			$mol_assert_equal( dict1.dive( 123, $hyoo_crus_reg )!.value_vary(), 777 )
 			
-			dict1.dive( 'xxx', $hyoo_crus_list )!.items([ 'foo' ])
+			dict1.dive( 'xxx', $hyoo_crus_list, null )!.items([ 'foo' ])
 			land2.face.tick()
-			dict2.dive( 'xxx', $hyoo_crus_list )!.items([ 'bar' ])
+			dict2.dive( 'xxx', $hyoo_crus_list, null )!.items([ 'bar' ])
 			land1.apply_unit_trust( land2.delta_unit() )
 			$mol_assert_equal( dict1.dive( 'xxx', $hyoo_crus_list )!.items(), [ 'bar', 'foo' ] )
 

@@ -3,12 +3,12 @@ namespace $ {
 		
 		@ $mol_mem
 		title( next?: string ) {
-			return this.dive( 'title', $hyoo_crus_reg )?.value_str( next ) ?? ''
+			return this.dive( 'title', $hyoo_crus_reg, next )?.value_str( next ) ?? ''
 		}
 		
 		@ $mol_mem
 		selection( next?: string ) {
-			return this.dive( 'selection', $hyoo_crus_reg )?.value_str( next ) ?? ''
+			return this.dive( 'selection', $hyoo_crus_reg, next )?.value_str( next ) ?? ''
 		}
 		
 		@ $mol_mem
@@ -17,10 +17,10 @@ namespace $ {
 		}
 		
 		@ $mol_mem_key
-		Profile( app: string ) {
-			return this.dive( 'profiles', $hyoo_crus_dict )
-				?.dive( app, $hyoo_crus_reg )
-				?.yoke( app )
+		Profile( app: string, auto?: any ) {
+			return this.dive( 'profiles', $hyoo_crus_dict, auto )
+				?.dive( app, $hyoo_crus_reg, auto )
+				?.yoke( app, auto )
 				?? null
 		}
 		
