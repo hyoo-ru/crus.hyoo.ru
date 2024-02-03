@@ -19,12 +19,16 @@ namespace $.$$ {
 			return prop.title() ?? prop.ref().description!
 		}
 		
-		field_node( prop: $hyoo_crus_flex_prop ) {
-			return this.node().cast( $hyoo_crus_dict ).dive( prop.key() ?? prop.ref(), $hyoo_crus_node )!
+		field_node( prop: $hyoo_crus_flex_prop, auto?: any ) {
+			return this.node().cast( $hyoo_crus_dict ).dive( prop.key() ?? prop.ref(), $hyoo_crus_node, auto )!
 		}
 		
 		field_prop( prop: $hyoo_crus_flex_prop ) {
 			return prop
+		}
+		
+		enabled() {
+			return this.node()?.can_change() ?? false
 		}
 		
 	}

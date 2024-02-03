@@ -1,5 +1,5 @@
 $hyoo_crus_flex_field $mol_ghost
-	node $hyoo_crus_node
+	node? $hyoo_crus_node
 	prop $hyoo_crus_flex_prop
 	Str $mol_textarea
 		enabled <= enabled true
