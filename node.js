@@ -6380,8 +6380,8 @@ var $;
         keys() {
             return this.items();
         }
-        dive(key, Node) {
-            if (this.can_change())
+        dive(key, Node, auto) {
+            if (this.can_change() && auto !== undefined)
                 this.has(key, true, Node.tag);
             const unit = this.find(key);
             return unit ? this.land().Node(Node).Item(unit.self()) : null;
@@ -6405,7 +6405,7 @@ var $;
             for (const Field in schema) {
                 const field = Field[0].toLowerCase() + Field.slice(1);
                 Object.defineProperty(Entity.prototype, Field, { get: function () {
-                        return this.dive(field, schema[Field]);
+                        return this.dive(field, schema[Field], null);
                     } });
                 Object.defineProperty(Entity.prototype, field, {
                     value: function (next) { return (next === undefined && !this.has(field)) ? null : this[Field].value(next); }
@@ -7050,11 +7050,13 @@ var $;
                 return res;
             }
         }
-        yoke(vary) {
+        yoke(vary, auto) {
             const realm = this.realm();
             const ref = this.value_ref();
             if (ref)
                 return realm.Land(ref);
+            if (auto === undefined)
+                return null;
             const hash = $mol_crypto_hash($hyoo_crus_vary_encode(vary).bin);
             const numb = new Uint16Array($mol_base64_decode(this.land().numb()).buffer);
             const idea = new $mol_buffer(hash.buffer).uint32(0) + numb[0] + numb[1] * 2 ** 16 + numb[2] * 2 ** 32;
@@ -7091,7 +7093,7 @@ var $;
                     return realm.Node(ref, Value());
                 }
                 remote_ensure() {
-                    this.yoke(this.ref());
+                    this.yoke(this.ref(), null);
                     return this.remote();
                 }
                 local_ensure() {
@@ -7900,18 +7902,18 @@ var $;
 (function ($) {
     class $hyoo_crus_base extends $hyoo_crus_dict {
         title(next) {
-            return this.dive('title', $hyoo_crus_reg)?.value_str(next) ?? '';
+            return this.dive('title', $hyoo_crus_reg, next)?.value_str(next) ?? '';
         }
         selection(next) {
-            return this.dive('selection', $hyoo_crus_reg)?.value_str(next) ?? '';
+            return this.dive('selection', $hyoo_crus_reg, next)?.value_str(next) ?? '';
         }
         profiles() {
             return this.dive('profiles', $hyoo_crus_dict)?.keys() ?? [];
         }
-        Profile(app) {
-            return this.dive('profiles', $hyoo_crus_dict)
-                ?.dive(app, $hyoo_crus_reg)
-                ?.yoke(app)
+        Profile(app, auto) {
+            return this.dive('profiles', $hyoo_crus_dict, auto)
+                ?.dive(app, $hyoo_crus_reg, auto)
+                ?.yoke(app, auto)
                 ?? null;
         }
     }

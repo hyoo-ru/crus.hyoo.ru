@@ -6371,8 +6371,8 @@ var $;
         keys() {
             return this.items();
         }
-        dive(key, Node) {
-            if (this.can_change())
+        dive(key, Node, auto) {
+            if (this.can_change() && auto !== undefined)
                 this.has(key, true, Node.tag);
             const unit = this.find(key);
             return unit ? this.land().Node(Node).Item(unit.self()) : null;
@@ -6396,7 +6396,7 @@ var $;
             for (const Field in schema) {
                 const field = Field[0].toLowerCase() + Field.slice(1);
                 Object.defineProperty(Entity.prototype, Field, { get: function () {
-                        return this.dive(field, schema[Field]);
+                        return this.dive(field, schema[Field], null);
                     } });
                 Object.defineProperty(Entity.prototype, field, {
                     value: function (next) { return (next === undefined && !this.has(field)) ? null : this[Field].value(next); }
@@ -7041,11 +7041,13 @@ var $;
                 return res;
             }
         }
-        yoke(vary) {
+        yoke(vary, auto) {
             const realm = this.realm();
             const ref = this.value_ref();
             if (ref)
                 return realm.Land(ref);
+            if (auto === undefined)
+                return null;
             const hash = $mol_crypto_hash($hyoo_crus_vary_encode(vary).bin);
             const numb = new Uint16Array($mol_base64_decode(this.land().numb()).buffer);
             const idea = new $mol_buffer(hash.buffer).uint32(0) + numb[0] + numb[1] * 2 ** 16 + numb[2] * 2 ** 32;
@@ -7082,7 +7084,7 @@ var $;
                     return realm.Node(ref, Value());
                 }
                 remote_ensure() {
-                    this.yoke(this.ref());
+                    this.yoke(this.ref(), null);
                     return this.remote();
                 }
                 local_ensure() {
@@ -7891,18 +7893,18 @@ var $;
 (function ($) {
     class $hyoo_crus_base extends $hyoo_crus_dict {
         title(next) {
-            return this.dive('title', $hyoo_crus_reg)?.value_str(next) ?? '';
+            return this.dive('title', $hyoo_crus_reg, next)?.value_str(next) ?? '';
         }
         selection(next) {
-            return this.dive('selection', $hyoo_crus_reg)?.value_str(next) ?? '';
+            return this.dive('selection', $hyoo_crus_reg, next)?.value_str(next) ?? '';
         }
         profiles() {
             return this.dive('profiles', $hyoo_crus_dict)?.keys() ?? [];
         }
-        Profile(app) {
-            return this.dive('profiles', $hyoo_crus_dict)
-                ?.dive(app, $hyoo_crus_reg)
-                ?.yoke(app)
+        Profile(app, auto) {
+            return this.dive('profiles', $hyoo_crus_dict, auto)
+                ?.dive(app, $hyoo_crus_reg, auto)
+                ?.yoke(app, auto)
                 ?? null;
         }
     }
@@ -12491,7 +12493,7 @@ var $;
                 const realm = $hyoo_crus_realm.make({ $ });
                 const land = realm.home().base().land();
                 const reg = land.Node($hyoo_crus_reg).Item('11111111');
-                const remote = reg.yoke(null).Data($hyoo_crus_reg);
+                const remote = reg.yoke(null, null).Data($hyoo_crus_reg);
                 $mol_assert_unique(reg.land(), remote.land());
                 $mol_assert_equal(reg.value_ref(), remote.ref());
                 $mol_assert_equal(reg.yoke(null).Data($hyoo_crus_reg), remote);
@@ -12533,8 +12535,8 @@ var $;
                 const land = $hyoo_crus_land.make({ $ });
                 const dict = land.Node($hyoo_crus_dict).Item('');
                 $mol_assert_equal(dict.keys(), []);
-                dict.dive(123, $hyoo_crus_reg);
-                dict.dive('xxx', $hyoo_crus_reg);
+                dict.dive(123, $hyoo_crus_reg, null);
+                dict.dive('xxx', $hyoo_crus_reg, null);
                 $mol_assert_equal(dict.keys(), ['xxx', 123]);
                 $mol_assert_equal(dict.has(123), true);
                 $mol_assert_equal(dict.has('xxx'), true);
@@ -12553,14 +12555,14 @@ var $;
                 const land2 = $hyoo_crus_land.make({ $ });
                 const dict1 = land1.Node($hyoo_crus_dict).Item('');
                 const dict2 = land2.Node($hyoo_crus_dict).Item('');
-                dict1.dive(123, $hyoo_crus_reg).value_vary(666);
+                dict1.dive(123, $hyoo_crus_reg, null).value_vary(666);
                 land2.face.tick();
-                dict2.dive(123, $hyoo_crus_reg).value_vary(777);
+                dict2.dive(123, $hyoo_crus_reg, null).value_vary(777);
                 land1.apply_unit_trust(land2.delta_unit());
                 $mol_assert_equal(dict1.dive(123, $hyoo_crus_reg).value_vary(), 777);
-                dict1.dive('xxx', $hyoo_crus_list).items(['foo']);
+                dict1.dive('xxx', $hyoo_crus_list, null).items(['foo']);
                 land2.face.tick();
-                dict2.dive('xxx', $hyoo_crus_list).items(['bar']);
+                dict2.dive('xxx', $hyoo_crus_list, null).items(['bar']);
                 land1.apply_unit_trust(land2.delta_unit());
                 $mol_assert_equal(dict1.dive('xxx', $hyoo_crus_list).items(), ['bar', 'foo']);
             },
@@ -12614,11 +12616,11 @@ var $;
         'Per app profiles'($) {
             const realm = $hyoo_crus_realm.make({ $ });
             const base = realm.home().base();
-            const profile1 = base.Profile('my_foo');
-            const profile2 = base.Profile('my_bar');
+            const profile1 = base.Profile('my_foo', null);
+            const profile2 = base.Profile('my_bar', null);
             $mol_assert_unique(base.lord().base().land(), profile1, profile2);
             $mol_assert_equal(base.lord(), profile1.lord(), profile2.lord());
-            $mol_assert_like(base.profiles(), ['my_bar', 'my_foo']);
+            $mol_assert_equal(base.profiles(), ['my_bar', 'my_foo']);
         },
     });
 })($ || ($ = {}));

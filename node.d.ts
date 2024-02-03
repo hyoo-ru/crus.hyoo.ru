@@ -4047,7 +4047,7 @@ declare namespace $ {
         static tag: "keys" | "term" | "solo" | "vals";
         value(): this;
         keys(): readonly $hyoo_crus_vary_type[];
-        dive<Node extends typeof $hyoo_crus_node>(key: $hyoo_crus_vary_type, Node: Node): InstanceType<Node> | null;
+        dive<Node extends typeof $hyoo_crus_node>(key: $hyoo_crus_vary_type, Node: Node, auto?: any): InstanceType<Node> | null;
         static to<Value extends {
             tag: keyof typeof $hyoo_crus_gist_tag;
             new (): {
@@ -4059,7 +4059,7 @@ declare namespace $ {
                 key(key: $hyoo_crus_vary_type): InstanceType<Value>;
                 value(): any;
                 keys(): readonly $hyoo_crus_vary_type[];
-                dive<Node_1 extends typeof $hyoo_crus_node>(key: $hyoo_crus_vary_type, Node: Node_1): InstanceType<Node_1> | null;
+                dive<Node_1 extends typeof $hyoo_crus_node>(key: $hyoo_crus_vary_type, Node: Node_1, auto?: any): InstanceType<Node_1> | null;
                 [$mol_ambient_ref]: typeof $$;
                 [Symbol.toStringTag]: string;
                 splice: (next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: "keys" | "term" | "solo" | "vals") => void;
@@ -4376,7 +4376,7 @@ declare namespace $ {
         value_bin(next?: Uint8Array | null): Uint8Array | null;
         value_ref(next?: typeof $hyoo_crus_ref.Value): typeof $hyoo_crus_ref.Value | null;
         value_as<Decode extends $mol_data_value>(decode: Decode, next?: ReturnType<Decode>): any;
-        yoke(vary: $hyoo_crus_vary_type): $hyoo_crus_land;
+        yoke(vary: $hyoo_crus_vary_type, auto?: any): $hyoo_crus_land | null;
         static of<Tip extends keyof typeof $hyoo_crus_vary_tip>(tip: Tip): {
             new (): {
                 value(next?: ReturnType<{
@@ -4423,7 +4423,7 @@ declare namespace $ {
                     $hyoo_crus_ref: symbol;
                 }) | null;
                 value_as<Decode extends $mol_data_value<any, any>>(decode: Decode, next?: ReturnType<Decode> | undefined): any;
-                yoke(vary: $hyoo_crus_vary_type): $hyoo_crus_land;
+                yoke(vary: $hyoo_crus_vary_type, auto?: any): $hyoo_crus_land | null;
                 land(): $hyoo_crus_land;
                 head(): string;
                 lord(): $hyoo_crus_lord | null;
@@ -4493,7 +4493,7 @@ declare namespace $ {
                         $hyoo_crus_ref: symbol;
                     }) | null;
                     value_as: <Decode_1 extends $mol_data_value<any, any>>(decode: Decode_1, next?: ReturnType<Decode_1> | undefined) => any;
-                    yoke: (vary: $hyoo_crus_vary_type) => $hyoo_crus_land;
+                    yoke: (vary: $hyoo_crus_vary_type, auto?: any) => $hyoo_crus_land | null;
                 };
                 Value: Value;
                 toString(): string;
@@ -4557,7 +4557,7 @@ declare namespace $ {
                     $hyoo_crus_ref: symbol;
                 }) | null;
                 value_as: <Decode extends $mol_data_value<any, any>>(decode: Decode, next?: ReturnType<Decode> | undefined) => any;
-                yoke: (vary: $hyoo_crus_vary_type) => $hyoo_crus_land;
+                yoke: (vary: $hyoo_crus_vary_type, auto?: any) => $hyoo_crus_land | null;
             };
             Value: Value;
             toString(): string;
@@ -4588,7 +4588,7 @@ declare namespace $ {
                 $hyoo_crus_ref: symbol;
             }) | null;
             value_as<Decode extends $mol_data_value<any, any>>(decode: Decode, next?: ReturnType<Decode> | undefined): any;
-            yoke(vary: $hyoo_crus_vary_type): $hyoo_crus_land;
+            yoke(vary: $hyoo_crus_vary_type, auto?: any): $hyoo_crus_land | null;
             land(): $hyoo_crus_land;
             head(): string;
             lord(): $hyoo_crus_lord | null;
@@ -4661,7 +4661,7 @@ declare namespace $ {
                     $hyoo_crus_ref: symbol;
                 }) | null;
                 value_as<Decode_1 extends $mol_data_value<any, any>>(decode: Decode_1, next?: ReturnType<Decode_1> | undefined): any;
-                yoke(vary: $hyoo_crus_vary_type): $hyoo_crus_land;
+                yoke(vary: $hyoo_crus_vary_type, auto?: any): $hyoo_crus_land | null;
                 land(): $hyoo_crus_land;
                 head(): string;
                 lord(): $hyoo_crus_lord | null;
@@ -4731,7 +4731,7 @@ declare namespace $ {
                         $hyoo_crus_ref: symbol;
                     }) | null;
                     value_as: <Decode_2 extends $mol_data_value<any, any>>(decode: Decode_2, next?: ReturnType<Decode_2> | undefined) => any;
-                    yoke: (vary: $hyoo_crus_vary_type) => $hyoo_crus_land;
+                    yoke: (vary: $hyoo_crus_vary_type, auto?: any) => $hyoo_crus_land | null;
                 };
                 Value: Value;
                 toString(): string;
@@ -4795,7 +4795,7 @@ declare namespace $ {
                     $hyoo_crus_ref: symbol;
                 }) | null;
                 value_as: <Decode_2 extends $mol_data_value<any, any>>(decode: Decode_2, next?: ReturnType<Decode_2> | undefined) => any;
-                yoke: (vary: $hyoo_crus_vary_type) => $hyoo_crus_land;
+                yoke: (vary: $hyoo_crus_vary_type, auto?: any) => $hyoo_crus_land | null;
             };
             Value: Value;
             toString(): string;
@@ -4835,7 +4835,7 @@ declare namespace $ {
                 $hyoo_crus_ref: symbol;
             }) | null;
             value_as<Decode extends $mol_data_value<any, any>>(decode: Decode, next?: ReturnType<Decode> | undefined): any;
-            yoke(vary: $hyoo_crus_vary_type): $hyoo_crus_land;
+            yoke(vary: $hyoo_crus_vary_type, auto?: any): $hyoo_crus_land | null;
             land(): $hyoo_crus_land;
             head(): string;
             lord(): $hyoo_crus_lord | null;
@@ -4908,7 +4908,7 @@ declare namespace $ {
                     $hyoo_crus_ref: symbol;
                 }) | null;
                 value_as<Decode_1 extends $mol_data_value<any, any>>(decode: Decode_1, next?: ReturnType<Decode_1> | undefined): any;
-                yoke(vary: $hyoo_crus_vary_type): $hyoo_crus_land;
+                yoke(vary: $hyoo_crus_vary_type, auto?: any): $hyoo_crus_land | null;
                 land(): $hyoo_crus_land;
                 head(): string;
                 lord(): $hyoo_crus_lord | null;
@@ -4978,7 +4978,7 @@ declare namespace $ {
                         $hyoo_crus_ref: symbol;
                     }) | null;
                     value_as: <Decode_2 extends $mol_data_value<any, any>>(decode: Decode_2, next?: ReturnType<Decode_2> | undefined) => any;
-                    yoke: (vary: $hyoo_crus_vary_type) => $hyoo_crus_land;
+                    yoke: (vary: $hyoo_crus_vary_type, auto?: any) => $hyoo_crus_land | null;
                 };
                 Value: Value;
                 toString(): string;
@@ -5042,7 +5042,7 @@ declare namespace $ {
                     $hyoo_crus_ref: symbol;
                 }) | null;
                 value_as: <Decode_2 extends $mol_data_value<any, any>>(decode: Decode_2, next?: ReturnType<Decode_2> | undefined) => any;
-                yoke: (vary: $hyoo_crus_vary_type) => $hyoo_crus_land;
+                yoke: (vary: $hyoo_crus_vary_type, auto?: any) => $hyoo_crus_land | null;
             };
             Value: Value;
             toString(): string;
@@ -5082,7 +5082,7 @@ declare namespace $ {
                 $hyoo_crus_ref: symbol;
             }) | null;
             value_as<Decode extends $mol_data_value<any, any>>(decode: Decode, next?: ReturnType<Decode> | undefined): any;
-            yoke(vary: $hyoo_crus_vary_type): $hyoo_crus_land;
+            yoke(vary: $hyoo_crus_vary_type, auto?: any): $hyoo_crus_land | null;
             land(): $hyoo_crus_land;
             head(): string;
             lord(): $hyoo_crus_lord | null;
@@ -5155,7 +5155,7 @@ declare namespace $ {
                     $hyoo_crus_ref: symbol;
                 }) | null;
                 value_as<Decode_1 extends $mol_data_value<any, any>>(decode: Decode_1, next?: ReturnType<Decode_1> | undefined): any;
-                yoke(vary: $hyoo_crus_vary_type): $hyoo_crus_land;
+                yoke(vary: $hyoo_crus_vary_type, auto?: any): $hyoo_crus_land | null;
                 land(): $hyoo_crus_land;
                 head(): string;
                 lord(): $hyoo_crus_lord | null;
@@ -5225,7 +5225,7 @@ declare namespace $ {
                         $hyoo_crus_ref: symbol;
                     }) | null;
                     value_as: <Decode_2 extends $mol_data_value<any, any>>(decode: Decode_2, next?: ReturnType<Decode_2> | undefined) => any;
-                    yoke: (vary: $hyoo_crus_vary_type) => $hyoo_crus_land;
+                    yoke: (vary: $hyoo_crus_vary_type, auto?: any) => $hyoo_crus_land | null;
                 };
                 Value: Value;
                 toString(): string;
@@ -5289,7 +5289,7 @@ declare namespace $ {
                     $hyoo_crus_ref: symbol;
                 }) | null;
                 value_as: <Decode_2 extends $mol_data_value<any, any>>(decode: Decode_2, next?: ReturnType<Decode_2> | undefined) => any;
-                yoke: (vary: $hyoo_crus_vary_type) => $hyoo_crus_land;
+                yoke: (vary: $hyoo_crus_vary_type, auto?: any) => $hyoo_crus_land | null;
             };
             Value: Value;
             toString(): string;
@@ -5329,7 +5329,7 @@ declare namespace $ {
                 $hyoo_crus_ref: symbol;
             }) | null;
             value_as<Decode extends $mol_data_value<any, any>>(decode: Decode, next?: ReturnType<Decode> | undefined): any;
-            yoke(vary: $hyoo_crus_vary_type): $hyoo_crus_land;
+            yoke(vary: $hyoo_crus_vary_type, auto?: any): $hyoo_crus_land | null;
             land(): $hyoo_crus_land;
             head(): string;
             lord(): $hyoo_crus_lord | null;
@@ -5402,7 +5402,7 @@ declare namespace $ {
                     $hyoo_crus_ref: symbol;
                 }) | null;
                 value_as<Decode_1 extends $mol_data_value<any, any>>(decode: Decode_1, next?: ReturnType<Decode_1> | undefined): any;
-                yoke(vary: $hyoo_crus_vary_type): $hyoo_crus_land;
+                yoke(vary: $hyoo_crus_vary_type, auto?: any): $hyoo_crus_land | null;
                 land(): $hyoo_crus_land;
                 head(): string;
                 lord(): $hyoo_crus_lord | null;
@@ -5472,7 +5472,7 @@ declare namespace $ {
                         $hyoo_crus_ref: symbol;
                     }) | null;
                     value_as: <Decode_2 extends $mol_data_value<any, any>>(decode: Decode_2, next?: ReturnType<Decode_2> | undefined) => any;
-                    yoke: (vary: $hyoo_crus_vary_type) => $hyoo_crus_land;
+                    yoke: (vary: $hyoo_crus_vary_type, auto?: any) => $hyoo_crus_land | null;
                 };
                 Value: Value;
                 toString(): string;
@@ -5536,7 +5536,7 @@ declare namespace $ {
                     $hyoo_crus_ref: symbol;
                 }) | null;
                 value_as: <Decode_2 extends $mol_data_value<any, any>>(decode: Decode_2, next?: ReturnType<Decode_2> | undefined) => any;
-                yoke: (vary: $hyoo_crus_vary_type) => $hyoo_crus_land;
+                yoke: (vary: $hyoo_crus_vary_type, auto?: any) => $hyoo_crus_land | null;
             };
             Value: Value;
             toString(): string;
@@ -5580,7 +5580,7 @@ declare namespace $ {
                 $hyoo_crus_ref: symbol;
             }) | null;
             value_as<Decode extends $mol_data_value<any, any>>(decode: Decode, next?: ReturnType<Decode> | undefined): any;
-            yoke(vary: $hyoo_crus_vary_type): $hyoo_crus_land;
+            yoke(vary: $hyoo_crus_vary_type, auto?: any): $hyoo_crus_land | null;
             land(): $hyoo_crus_land;
             head(): string;
             lord(): $hyoo_crus_lord | null;
@@ -5653,7 +5653,7 @@ declare namespace $ {
                     $hyoo_crus_ref: symbol;
                 }) | null;
                 value_as<Decode_1 extends $mol_data_value<any, any>>(decode: Decode_1, next?: ReturnType<Decode_1> | undefined): any;
-                yoke(vary: $hyoo_crus_vary_type): $hyoo_crus_land;
+                yoke(vary: $hyoo_crus_vary_type, auto?: any): $hyoo_crus_land | null;
                 land(): $hyoo_crus_land;
                 head(): string;
                 lord(): $hyoo_crus_lord | null;
@@ -5723,7 +5723,7 @@ declare namespace $ {
                         $hyoo_crus_ref: symbol;
                     }) | null;
                     value_as: <Decode_2 extends $mol_data_value<any, any>>(decode: Decode_2, next?: ReturnType<Decode_2> | undefined) => any;
-                    yoke: (vary: $hyoo_crus_vary_type) => $hyoo_crus_land;
+                    yoke: (vary: $hyoo_crus_vary_type, auto?: any) => $hyoo_crus_land | null;
                 };
                 Value: Value;
                 toString(): string;
@@ -5787,7 +5787,7 @@ declare namespace $ {
                     $hyoo_crus_ref: symbol;
                 }) | null;
                 value_as: <Decode_2 extends $mol_data_value<any, any>>(decode: Decode_2, next?: ReturnType<Decode_2> | undefined) => any;
-                yoke: (vary: $hyoo_crus_vary_type) => $hyoo_crus_land;
+                yoke: (vary: $hyoo_crus_vary_type, auto?: any) => $hyoo_crus_land | null;
             };
             Value: Value;
             toString(): string;
@@ -5827,7 +5827,7 @@ declare namespace $ {
                 $hyoo_crus_ref: symbol;
             }) | null;
             value_as<Decode extends $mol_data_value<any, any>>(decode: Decode, next?: ReturnType<Decode> | undefined): any;
-            yoke(vary: $hyoo_crus_vary_type): $hyoo_crus_land;
+            yoke(vary: $hyoo_crus_vary_type, auto?: any): $hyoo_crus_land | null;
             land(): $hyoo_crus_land;
             head(): string;
             lord(): $hyoo_crus_lord | null;
@@ -5900,7 +5900,7 @@ declare namespace $ {
                     $hyoo_crus_ref: symbol;
                 }) | null;
                 value_as<Decode_1 extends $mol_data_value<any, any>>(decode: Decode_1, next?: ReturnType<Decode_1> | undefined): any;
-                yoke(vary: $hyoo_crus_vary_type): $hyoo_crus_land;
+                yoke(vary: $hyoo_crus_vary_type, auto?: any): $hyoo_crus_land | null;
                 land(): $hyoo_crus_land;
                 head(): string;
                 lord(): $hyoo_crus_lord | null;
@@ -5970,7 +5970,7 @@ declare namespace $ {
                         $hyoo_crus_ref: symbol;
                     }) | null;
                     value_as: <Decode_2 extends $mol_data_value<any, any>>(decode: Decode_2, next?: ReturnType<Decode_2> | undefined) => any;
-                    yoke: (vary: $hyoo_crus_vary_type) => $hyoo_crus_land;
+                    yoke: (vary: $hyoo_crus_vary_type, auto?: any) => $hyoo_crus_land | null;
                 };
                 Value: Value;
                 toString(): string;
@@ -6034,7 +6034,7 @@ declare namespace $ {
                     $hyoo_crus_ref: symbol;
                 }) | null;
                 value_as: <Decode_2 extends $mol_data_value<any, any>>(decode: Decode_2, next?: ReturnType<Decode_2> | undefined) => any;
-                yoke: (vary: $hyoo_crus_vary_type) => $hyoo_crus_land;
+                yoke: (vary: $hyoo_crus_vary_type, auto?: any) => $hyoo_crus_land | null;
             };
             Value: Value;
             toString(): string;
@@ -6074,7 +6074,7 @@ declare namespace $ {
                 $hyoo_crus_ref: symbol;
             }) | null;
             value_as<Decode extends $mol_data_value<any, any>>(decode: Decode, next?: ReturnType<Decode> | undefined): any;
-            yoke(vary: $hyoo_crus_vary_type): $hyoo_crus_land;
+            yoke(vary: $hyoo_crus_vary_type, auto?: any): $hyoo_crus_land | null;
             land(): $hyoo_crus_land;
             head(): string;
             lord(): $hyoo_crus_lord | null;
@@ -6147,7 +6147,7 @@ declare namespace $ {
                     $hyoo_crus_ref: symbol;
                 }) | null;
                 value_as<Decode_1 extends $mol_data_value<any, any>>(decode: Decode_1, next?: ReturnType<Decode_1> | undefined): any;
-                yoke(vary: $hyoo_crus_vary_type): $hyoo_crus_land;
+                yoke(vary: $hyoo_crus_vary_type, auto?: any): $hyoo_crus_land | null;
                 land(): $hyoo_crus_land;
                 head(): string;
                 lord(): $hyoo_crus_lord | null;
@@ -6217,7 +6217,7 @@ declare namespace $ {
                         $hyoo_crus_ref: symbol;
                     }) | null;
                     value_as: <Decode_2 extends $mol_data_value<any, any>>(decode: Decode_2, next?: ReturnType<Decode_2> | undefined) => any;
-                    yoke: (vary: $hyoo_crus_vary_type) => $hyoo_crus_land;
+                    yoke: (vary: $hyoo_crus_vary_type, auto?: any) => $hyoo_crus_land | null;
                 };
                 Value: Value;
                 toString(): string;
@@ -6281,7 +6281,7 @@ declare namespace $ {
                     $hyoo_crus_ref: symbol;
                 }) | null;
                 value_as: <Decode_2 extends $mol_data_value<any, any>>(decode: Decode_2, next?: ReturnType<Decode_2> | undefined) => any;
-                yoke: (vary: $hyoo_crus_vary_type) => $hyoo_crus_land;
+                yoke: (vary: $hyoo_crus_vary_type, auto?: any) => $hyoo_crus_land | null;
             };
             Value: Value;
             toString(): string;
@@ -6321,7 +6321,7 @@ declare namespace $ {
                 $hyoo_crus_ref: symbol;
             }) | null;
             value_as<Decode extends $mol_data_value<any, any>>(decode: Decode, next?: ReturnType<Decode> | undefined): any;
-            yoke(vary: $hyoo_crus_vary_type): $hyoo_crus_land;
+            yoke(vary: $hyoo_crus_vary_type, auto?: any): $hyoo_crus_land | null;
             land(): $hyoo_crus_land;
             head(): string;
             lord(): $hyoo_crus_lord | null;
@@ -6394,7 +6394,7 @@ declare namespace $ {
                     $hyoo_crus_ref: symbol;
                 }) | null;
                 value_as<Decode_1 extends $mol_data_value<any, any>>(decode: Decode_1, next?: ReturnType<Decode_1> | undefined): any;
-                yoke(vary: $hyoo_crus_vary_type): $hyoo_crus_land;
+                yoke(vary: $hyoo_crus_vary_type, auto?: any): $hyoo_crus_land | null;
                 land(): $hyoo_crus_land;
                 head(): string;
                 lord(): $hyoo_crus_lord | null;
@@ -6464,7 +6464,7 @@ declare namespace $ {
                         $hyoo_crus_ref: symbol;
                     }) | null;
                     value_as: <Decode_2 extends $mol_data_value<any, any>>(decode: Decode_2, next?: ReturnType<Decode_2> | undefined) => any;
-                    yoke: (vary: $hyoo_crus_vary_type) => $hyoo_crus_land;
+                    yoke: (vary: $hyoo_crus_vary_type, auto?: any) => $hyoo_crus_land | null;
                 };
                 Value: Value;
                 toString(): string;
@@ -6528,7 +6528,7 @@ declare namespace $ {
                     $hyoo_crus_ref: symbol;
                 }) | null;
                 value_as: <Decode_2 extends $mol_data_value<any, any>>(decode: Decode_2, next?: ReturnType<Decode_2> | undefined) => any;
-                yoke: (vary: $hyoo_crus_vary_type) => $hyoo_crus_land;
+                yoke: (vary: $hyoo_crus_vary_type, auto?: any) => $hyoo_crus_land | null;
             };
             Value: Value;
             toString(): string;
@@ -6568,7 +6568,7 @@ declare namespace $ {
                 $hyoo_crus_ref: symbol;
             }) | null;
             value_as<Decode extends $mol_data_value<any, any>>(decode: Decode, next?: ReturnType<Decode> | undefined): any;
-            yoke(vary: $hyoo_crus_vary_type): $hyoo_crus_land;
+            yoke(vary: $hyoo_crus_vary_type, auto?: any): $hyoo_crus_land | null;
             land(): $hyoo_crus_land;
             head(): string;
             lord(): $hyoo_crus_lord | null;
@@ -6641,7 +6641,7 @@ declare namespace $ {
                     $hyoo_crus_ref: symbol;
                 }) | null;
                 value_as<Decode_1 extends $mol_data_value<any, any>>(decode: Decode_1, next?: ReturnType<Decode_1> | undefined): any;
-                yoke(vary: $hyoo_crus_vary_type): $hyoo_crus_land;
+                yoke(vary: $hyoo_crus_vary_type, auto?: any): $hyoo_crus_land | null;
                 land(): $hyoo_crus_land;
                 head(): string;
                 lord(): $hyoo_crus_lord | null;
@@ -6711,7 +6711,7 @@ declare namespace $ {
                         $hyoo_crus_ref: symbol;
                     }) | null;
                     value_as: <Decode_2 extends $mol_data_value<any, any>>(decode: Decode_2, next?: ReturnType<Decode_2> | undefined) => any;
-                    yoke: (vary: $hyoo_crus_vary_type) => $hyoo_crus_land;
+                    yoke: (vary: $hyoo_crus_vary_type, auto?: any) => $hyoo_crus_land | null;
                 };
                 Value: Value;
                 toString(): string;
@@ -6775,7 +6775,7 @@ declare namespace $ {
                     $hyoo_crus_ref: symbol;
                 }) | null;
                 value_as: <Decode_2 extends $mol_data_value<any, any>>(decode: Decode_2, next?: ReturnType<Decode_2> | undefined) => any;
-                yoke: (vary: $hyoo_crus_vary_type) => $hyoo_crus_land;
+                yoke: (vary: $hyoo_crus_vary_type, auto?: any) => $hyoo_crus_land | null;
             };
             Value: Value;
             toString(): string;
@@ -6815,7 +6815,7 @@ declare namespace $ {
                 $hyoo_crus_ref: symbol;
             }) | null;
             value_as<Decode extends $mol_data_value<any, any>>(decode: Decode, next?: ReturnType<Decode> | undefined): any;
-            yoke(vary: $hyoo_crus_vary_type): $hyoo_crus_land;
+            yoke(vary: $hyoo_crus_vary_type, auto?: any): $hyoo_crus_land | null;
             land(): $hyoo_crus_land;
             head(): string;
             lord(): $hyoo_crus_lord | null;
@@ -6888,7 +6888,7 @@ declare namespace $ {
                     $hyoo_crus_ref: symbol;
                 }) | null;
                 value_as<Decode_1 extends $mol_data_value<any, any>>(decode: Decode_1, next?: ReturnType<Decode_1> | undefined): any;
-                yoke(vary: $hyoo_crus_vary_type): $hyoo_crus_land;
+                yoke(vary: $hyoo_crus_vary_type, auto?: any): $hyoo_crus_land | null;
                 land(): $hyoo_crus_land;
                 head(): string;
                 lord(): $hyoo_crus_lord | null;
@@ -6958,7 +6958,7 @@ declare namespace $ {
                         $hyoo_crus_ref: symbol;
                     }) | null;
                     value_as: <Decode_2 extends $mol_data_value<any, any>>(decode: Decode_2, next?: ReturnType<Decode_2> | undefined) => any;
-                    yoke: (vary: $hyoo_crus_vary_type) => $hyoo_crus_land;
+                    yoke: (vary: $hyoo_crus_vary_type, auto?: any) => $hyoo_crus_land | null;
                 };
                 Value: Value;
                 toString(): string;
@@ -7022,7 +7022,7 @@ declare namespace $ {
                     $hyoo_crus_ref: symbol;
                 }) | null;
                 value_as: <Decode_2 extends $mol_data_value<any, any>>(decode: Decode_2, next?: ReturnType<Decode_2> | undefined) => any;
-                yoke: (vary: $hyoo_crus_vary_type) => $hyoo_crus_land;
+                yoke: (vary: $hyoo_crus_vary_type, auto?: any) => $hyoo_crus_land | null;
             };
             Value: Value;
             toString(): string;
@@ -7122,7 +7122,7 @@ declare namespace $ {
         title(next?: string): string;
         selection(next?: string): string;
         profiles(): readonly $hyoo_crus_vary_type[];
-        Profile(app: string): $hyoo_crus_land | null;
+        Profile(app: string, auto?: any): $hyoo_crus_land | null;
     }
 }
 
