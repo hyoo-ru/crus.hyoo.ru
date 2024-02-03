@@ -19,7 +19,7 @@ namespace $ {
 		@ $mol_mem
 		_yard() {
 			$mol_wire_solid()
-			this._realm.yard().sync()
+			setTimeout( ()=> this._realm.yard().sync() )
 			return this._realm.yard()
 		}
 		
