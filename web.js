@@ -11692,7 +11692,8 @@ var $;
     (function ($$) {
         class $hyoo_crus_yard extends $.$hyoo_crus_yard {
             static masters = [
-                'https://crus.hyoo.ru/'
+                'https://crus.hyoo.ru/',
+                'https://crus.onrender.ru/',
             ];
             async save(land, units) {
                 const db = await this.db();
