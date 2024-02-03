@@ -15957,7 +15957,9 @@ var $;
 var $;
 (function ($) {
     class $hyoo_crus_flex_field extends $mol_ghost {
-        node() {
+        node(next) {
+            if (next !== undefined)
+                return next;
             const obj = new this.$.$hyoo_crus_node();
             return obj;
         }
@@ -16095,10 +16097,10 @@ var $;
                 return new $mol_view;
             }
             str(next) {
-                return this.node()?.cast($hyoo_crus_reg_str).value(next) ?? '';
+                return this.node(next)?.cast($hyoo_crus_reg_str).value(next) ?? '';
             }
             ref(next) {
-                return this.node()?.cast($hyoo_crus_reg).value(next) ?? null;
+                return this.node(next)?.cast($hyoo_crus_reg).value(next) ?? null;
             }
             ref_options() {
                 return this.prop().enum()?.items() ?? [];
@@ -16107,7 +16109,7 @@ var $;
                 if (!ref)
                     return '';
                 if (typeof ref === 'symbol')
-                    return this.node()?.realm().Node(ref, $hyoo_crus_flex_thing).title() ?? ref.description;
+                    return this.prop()?.realm().Node(ref, $hyoo_crus_flex_thing).title() ?? ref.description;
                 return $hyoo_crus_vary_cast_str(ref) ?? '';
             }
             rows() {
@@ -16119,7 +16121,7 @@ var $;
                 ];
             }
             row_add() {
-                const target = this.node().cast($hyoo_crus_list.ref(() => $hyoo_crus_flex_thing)).local_make();
+                const target = this.node(null).cast($hyoo_crus_list.ref(() => $hyoo_crus_flex_thing)).local_make();
                 target.kind(this.prop().target());
                 this.$.$mol_state_arg.href(this.$.$mol_state_arg.link({
                     ref: target.ref().description
@@ -16135,9 +16137,6 @@ var $;
             row_arg(index) {
                 const ref = this.row_value(index).description;
                 return { ref };
-            }
-            enabled() {
-                return this.node()?.can_change() ?? false;
             }
         }
         __decorate([
@@ -16442,7 +16441,9 @@ var $;
         field_name(id) {
             return "xxx";
         }
-        field_node(id) {
+        field_node(id, next) {
+            if (next !== undefined)
+                return next;
             const obj = new this.$.$hyoo_crus_node();
             return obj;
         }
@@ -16450,10 +16451,14 @@ var $;
             const obj = new this.$.$hyoo_crus_flex_prop();
             return obj;
         }
+        enabled() {
+            return true;
+        }
         Field_control(id) {
             const obj = new this.$.$hyoo_crus_flex_field();
-            obj.node = () => this.field_node(id);
+            obj.node = (next) => this.field_node(id, next);
             obj.prop = () => this.field_prop(id);
+            obj.enabled = () => this.enabled();
             return obj;
         }
         Field(id) {
@@ -16507,11 +16512,14 @@ var $;
             field_name(prop) {
                 return prop.title() ?? prop.ref().description;
             }
-            field_node(prop) {
-                return this.node().cast($hyoo_crus_dict).dive(prop.key() ?? prop.ref(), $hyoo_crus_node);
+            field_node(prop, auto) {
+                return this.node().cast($hyoo_crus_dict).dive(prop.key() ?? prop.ref(), $hyoo_crus_node, auto);
             }
             field_prop(prop) {
                 return prop;
+            }
+            enabled() {
+                return this.node()?.can_change() ?? false;
             }
         }
         __decorate([

@@ -847,7 +847,7 @@ $mol_dump_value $mol_view
 					preview_show <= preview_show
 
 $hyoo_crus_flex_field $mol_ghost
-	node $hyoo_crus_node
+	node? $hyoo_crus_node
 	prop $hyoo_crus_flex_prop
 	Str $mol_textarea
 		enabled <= enabled true
@@ -909,8 +909,9 @@ $hyoo_crus_flex_form $mol_list
 		<= Field*0 $mol_form_field
 			name <= field_name* \xxx
 			control <= Field_control* $hyoo_crus_flex_field
-				node <= field_node* $hyoo_crus_node
+				node? <=> field_node*? $hyoo_crus_node
 				prop <= field_prop* $hyoo_crus_flex_prop
+				enabled <= enabled true
 
 $hyoo_crus_node_dump $mol_expander
 	node $hyoo_crus_node

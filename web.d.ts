@@ -9793,7 +9793,7 @@ declare namespace $ {
 
 declare namespace $ {
     class $hyoo_crus_flex_field extends $mol_ghost {
-        node(): $hyoo_crus_node;
+        node(next?: any): $hyoo_crus_node;
         prop(): $hyoo_crus_flex_prop;
         Str(): $$.$mol_textarea;
         Ref(): $$.$mol_select;
@@ -9854,7 +9854,6 @@ declare namespace $.$$ {
         row_arg(index: number): {
             ref: string;
         };
-        enabled(): boolean;
     }
 }
 
@@ -9938,8 +9937,9 @@ declare namespace $ {
         kind(): $hyoo_crus_flex_kind;
         rows(): readonly any[];
         field_name(id: any): string;
-        field_node(id: any): $hyoo_crus_node;
+        field_node(id: any, next?: any): $hyoo_crus_node;
         field_prop(id: any): $hyoo_crus_flex_prop;
+        enabled(): boolean;
         Field_control(id: any): $$.$hyoo_crus_flex_field;
         Field(id: any): $$.$mol_form_field;
         fields(): readonly any[];
@@ -9951,8 +9951,9 @@ declare namespace $.$$ {
         kind(): $hyoo_crus_flex_kind;
         fields(): $mol_form_field[];
         field_name(prop: $hyoo_crus_flex_prop): string;
-        field_node(prop: $hyoo_crus_flex_prop): $hyoo_crus_node;
+        field_node(prop: $hyoo_crus_flex_prop, auto?: any): $hyoo_crus_node;
         field_prop(prop: $hyoo_crus_flex_prop): $hyoo_crus_flex_prop;
+        enabled(): boolean;
     }
 }
 
