@@ -11739,8 +11739,8 @@ var $;
             }
             master() {
                 this.reconnects();
-                const link = this.master_current();
-                const socket = new $mol_dom_context.WebSocket(link.replace(/^https?:/, 'wss:') + 'sync/');
+                const link = this.master_current() + 'sync/';
+                const socket = new $mol_dom_context.WebSocket(link.replace(/^http/, 'ws'));
                 socket.binaryType = 'arraybuffer';
                 const port = $mol_rest_port_ws_web.make({ socket });
                 socket.onmessage = async (event) => {
