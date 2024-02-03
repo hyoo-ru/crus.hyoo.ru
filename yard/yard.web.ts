@@ -2,7 +2,8 @@ namespace $.$$ {
 	export class $hyoo_crus_yard extends $.$hyoo_crus_yard {
 		
 		static masters = [
-			'https://crus.hyoo.ru/'
+			'https://crus.hyoo.ru/',
+			'https://crus.onrender.ru/',
 		]
 		
 		async save( land: $hyoo_crus_land, units: readonly $hyoo_crus_unit[] ) {
