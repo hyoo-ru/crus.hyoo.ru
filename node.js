@@ -3198,6 +3198,7 @@ var $;
                 console.log('data in');
                 $mol_wire_async(this).ws_income(chunk, upgrade, socket).catch(e => {
                     console.error('[', e, e.stack, ']');
+                    console.log('[', e, e.stack, ']');
                 });
             });
             const key_in = req.headers["sec-websocket-key"];
