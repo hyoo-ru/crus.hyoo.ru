@@ -138,8 +138,8 @@ namespace $.$$ {
 					
 					this.$.$mol_log3_come({
 						place: this,
-						message: 'Connected to Master',
-						port: $mol_key( socket ),
+						message: 'Connected',
+						port: $mol_key( port ),
 						server: link,
 					})
 					

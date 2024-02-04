@@ -17,7 +17,7 @@ namespace $ {
 		static masters = [] as string[]
 		
 		@ $mol_mem
-		master_cursor( next = 0, force?: true ) {
+		master_cursor( next = 0 ) {
 			return next
 		}
 		
@@ -28,7 +28,7 @@ namespace $ {
 		
 		@ $mol_action
 		master_next() {
-			this.master_cursor( ( this.master_cursor() + 1 ) % this.$.$hyoo_crus_yard.masters.length, !!'force' )
+			this.master_cursor( ( this.master_cursor() + 1 ) % this.$.$hyoo_crus_yard.masters.length )
 		}
 		
 		@ $mol_mem
@@ -43,6 +43,20 @@ namespace $ {
 		slaves = new $mol_wire_set< $mol_rest_port >()
 		
 		@ $mol_mem
+		sync() {
+			const realm = this.realm()
+			for( const port of this.ports() ) {
+				for( const land of this.port_lands( port ) ) {
+					try {
+						this.sync_port_land([ port, land ])
+					} catch( error ) {
+						$mol_fail_log( error )
+					}
+				}
+			}
+		}
+		
+		@ $mol_mem
 		ports() {
 			try {
 				return [ this.master(), ... this.slaves ].filter( $mol_guard_defined )
@@ -53,87 +67,106 @@ namespace $ {
 		}
 		
 		@ $mol_mem_key
-		port_lands( port: $mol_rest_port, next = [] as typeof $hyoo_crus_ref.Value[] ) {
-			return next
-		}
-		
-		@ $mol_mem
-		sync() {
-			const realm = this.realm()
-			for( const port of this.ports() ) {
-				for( const land of this.port_lands( port ) ) {
-					try {
-						this.sync_port_land([ port, realm.Land( land ) ])
-					} catch( error ) {
-						$mol_fail_log( error )
-					}
-				}
-			}
+		port_lands( port: $mol_rest_port ) {
+			return new $mol_wire_set< $hyoo_crus_ref >()
 		}
 		
 		@ $mol_action
 		port_income( port: $mol_rest_port, msg: Uint8Array ) {
 			
 			const pack = $mol_wire_sync( $hyoo_crus_pack ).from( msg ) as $hyoo_crus_pack
-			const faces = pack.parts().faces
-			const land_refs = Reflect.ownKeys( faces ) as typeof $hyoo_crus_ref.Value[]
+			const parts = pack.parts()
 			
-			this.port_lands( port, [ ... new Set([
-				... this.port_lands( port ),
-				... land_refs,
-			]) ] )
+			$mol_wire_sync( this.$ ).$mol_log3_rise({
+				place: this,
+				message: 'Gain Pack',
+				port: $mol_key( port ),
+				... parts,
+			})
 			
-			for( const land_ref of land_refs ) {
+			const lands = this.port_lands( port )
+			
+			for( const land of Reflect.ownKeys( parts.faces ) as $hyoo_crus_ref[] ) {
 				
-				const land = this.realm().Land( land_ref )
+				lands.add( land )
 				const port_face = this.face_port_land([ port, land ])
-				
-				if( port_face ) port_face.sync( faces[ land_ref ] )
-				else this.face_port_land( [ port, land ], faces[ land_ref ] )
+				// console.log($mol_key(port), land.ref(), port_face, faces[ land_ref ] )
+				// this.face_port_land( [ port, land ], faces[ land ] )
+				if( port_face ) port_face.sync( parts.faces[ land ] )
+				else this.face_port_land( [ port, land ], parts.faces[ land ] )
 			
+			}
+			
+			for( const land of Reflect.ownKeys( parts.units ) as $hyoo_crus_ref[] ) {
+				
+				const port_face = this.face_port_land([ port, land ])
+				if( !port_face ) continue
+				
+				for( const unit of parts.units[ land ] ) {
+					if( unit instanceof $hyoo_crus_gift || unit instanceof $hyoo_crus_gist ) {
+						port_face.time_max( unit.peer(), unit.time() )
+					}
+				}
+				
 			}
 			
 			this.realm().apply_pack( pack )
 		}
 		
 		@ $mol_mem_key
-		sync_land( land: $hyoo_crus_land ) {
-			for( const port of this.ports() ?? [] ) {
-				try {
-					this.sync_port_land([ port, land ])
-				} catch( error ) {
-					$mol_fail_log( error )
-				}
+		sync_land( land: $hyoo_crus_ref ) {
+			for( const port of this.ports() ) {
+				this.port_lands( port ).add( land )
 			}
 		}
 		
 		@ $mol_mem_key
-		sync_port_land( [ port, land ]: [ $mol_rest_port, $hyoo_crus_land ] ) {
+		sync_port_land( [ port, land ]: [ $mol_rest_port, $hyoo_crus_ref ] ) {
 			
 			this.init_port_land([ port, land ])
 			
 			const faces = this.face_port_land([ port, land ])
 			if( !faces ) return
 			
-			const delta = land.delta_pack( faces )
-			if( !delta ) return
+			const Land = this.realm().Land( land )
+			Land.saving()
 			
-			port.send_bin( delta.asArray() )
-			faces.sync( land.face )
+			
+			const parts = Land.delta_parts( faces )
+			if( !parts ) return
+			
+			this.$.$mol_log3_rise({
+				place: this,
+				message: 'Send Unit',
+				port: $mol_key( port ),
+				land: land,
+				... parts,
+			})
+			
+			port.send_bin( $hyoo_crus_pack.make( parts.faces, parts.units, parts.rocks ).asArray() )
+			faces.sync( Land.face )
 			
 		}
 		
 		@ $mol_mem_key
-		init_port_land( [ port, land ]: [ $mol_rest_port, $hyoo_crus_land ] ) {
-			port.send_bin( land.faces_pack().asArray() )
+		init_port_land( [ port, land ]: [ $mol_rest_port, $hyoo_crus_ref ] ) {
+			// $mol_wire_solid()
+			this.$.$mol_log3_rise({
+				place: this,
+				message: 'Send Face',
+				port: $mol_key( port ),
+				land: land,
+				faces: this.realm().Land( land ).face,
+			})
+			port.send_bin( this.realm().Land( land ).faces_pack().asArray() )
 		}
 		
 		@ $mol_mem_key
 		face_port_land(
-			[ port, land ]: [ $mol_rest_port, $hyoo_crus_land ],
+			[ port, land ]: [ $mol_rest_port, $hyoo_crus_ref ],
 			next = null as null | $hyoo_crus_face_map
 		) {
-			$mol_wire_solid()
+			// $mol_wire_solid()
 			return next
 		}
 		

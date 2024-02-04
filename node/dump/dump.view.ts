@@ -57,7 +57,7 @@ namespace $.$$ {
 		
 		@ $mol_mem_key
 		unit_title( index: number ) {
-			const ref = this.unit_value( index ) as typeof $hyoo_crus_ref.Value
+			const ref = this.unit_value( index ) as $hyoo_crus_ref
 			return this.node().realm()?.Node( ref, $hyoo_crus_entity ).title() || ref.description
 		}
 		

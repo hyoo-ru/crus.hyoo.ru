@@ -2,7 +2,7 @@ namespace $ {
 	
 	type json = null | boolean | number | string | { [ key in string ]: json } | readonly json[]
 	export type $hyoo_crus_vary_type =
-	| Uint8Array | bigint | typeof $hyoo_crus_ref.Value
+	| Uint8Array | bigint | $hyoo_crus_ref
 	| $mol_time_moment | $mol_time_duration | $mol_time_interval
 	| $mol_tree2 | json | Node
 	
@@ -60,7 +60,7 @@ namespace $ {
 		bool:  ( vary: boolean )=> any,
 		int:   ( vary: bigint )=> any,
 		real:  ( vary: number )=> any,
-		ref:   ( vary: typeof $hyoo_crus_ref.Value )=> any,
+		ref:   ( vary: $hyoo_crus_ref )=> any,
 		
 		str:   ( vary: string )=> any,
 		time:  ( vary: $mol_time_moment )=> any,

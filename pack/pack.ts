@@ -8,12 +8,12 @@ namespace $ {
 		
 		parts() {
 			
-			const faces = {} as Record< typeof $hyoo_crus_ref.Value, $hyoo_crus_face_map >
-			const units = {} as Record< typeof $hyoo_crus_ref.Value, $hyoo_crus_unit[] >
+			const faces = {} as Record< $hyoo_crus_ref, $hyoo_crus_face_map >
+			const units = {} as Record< $hyoo_crus_ref, $hyoo_crus_unit[] >
 			const rocks = [] as [ Uint8Array, null | Uint8Array ][]
 			
 			const buff = this.asArray()
-			let land = null as typeof $hyoo_crus_ref.Value | null
+			let land = null as $hyoo_crus_ref | null
 			
 			for( let offset = 0; offset < this.byteLength; ) {
 				
@@ -66,6 +66,7 @@ namespace $ {
 								buff.slice( offset, offset += $hyoo_crus_unit.size ).buffer
 							)
 							
+							delete faces[ land ]
 							units[ land ] ||= []
 							units[ land ].push( unit )
 							
@@ -80,6 +81,7 @@ namespace $ {
 								buff.slice( offset, offset += $hyoo_crus_unit.size ).buffer
 							)
 							
+							delete faces[ land ]
 							units[ land ] ||= []
 							units[ land ].push( unit )
 							
@@ -119,6 +121,7 @@ namespace $ {
 					
 					if( !land ) $mol_fail( new Error( 'Land is undefined' ) )
 					
+					delete faces[ land ]
 					units[ land ] ||= []
 					units[ land ].push( new $hyoo_crus_gist(
 						buff.slice( offset, offset += $hyoo_crus_unit.size ).buffer
@@ -134,19 +137,19 @@ namespace $ {
 		}
 	
 		static make(
-			faces: Record< typeof $hyoo_crus_ref.Value, $hyoo_crus_face_map >,
-			units: Record< typeof $hyoo_crus_ref.Value, readonly $hyoo_crus_unit[] >,
+			faces: Record< $hyoo_crus_ref, $hyoo_crus_face_map >,
+			units: Record< $hyoo_crus_ref, readonly $hyoo_crus_unit[] >,
 			rocks: readonly [ Uint8Array, null | Uint8Array ][],
 		) {
 			
 			let size = 0
 			
-			for( const land of Reflect.ownKeys( faces ) as typeof $hyoo_crus_ref.Value[] ) {
-				size += 24 + faces[ land as typeof $hyoo_crus_ref.Value ].size * 16
+			for( const land of Reflect.ownKeys( faces ) as $hyoo_crus_ref[] ) {
+				size += 24 + faces[ land as $hyoo_crus_ref ].size * 16
 			}
 			
-			for( const land of Reflect.ownKeys( units ) as typeof $hyoo_crus_ref.Value[] ) {
-				size += 24 + units[ land as typeof $hyoo_crus_ref.Value ].length * $hyoo_crus_unit.size
+			for( const land of Reflect.ownKeys( units ) as $hyoo_crus_ref[] ) {
+				size += 24 + units[ land as $hyoo_crus_ref ].length * $hyoo_crus_unit.size
 			}
 			
 			for( const [ hash, rock ] of rocks ) {
@@ -160,13 +163,13 @@ namespace $ {
 			
 			let offset = 0
 			
-			const open_land = ( land: typeof $hyoo_crus_ref.Value )=> {
+			const open_land = ( land: $hyoo_crus_ref )=> {
 				buff.set( $hyoo_crus_part_crus, offset )
 				buff.set( $hyoo_crus_ref_encode( land ), offset + 4 )
 				offset += 24
 			}
 			
-			for( const land of Reflect.ownKeys( faces ) as typeof $hyoo_crus_ref.Value[] ) {
+			for( const land of Reflect.ownKeys( faces ) as $hyoo_crus_ref[] ) {
 				
 				open_land( land )
 				
@@ -179,7 +182,7 @@ namespace $ {
 				
 			}
 			
-			for( const land of Reflect.ownKeys( units ) as typeof $hyoo_crus_ref.Value[] ) {
+			for( const land of Reflect.ownKeys( units ) as $hyoo_crus_ref[] ) {
 				
 				open_land( land )
 				

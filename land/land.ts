@@ -29,7 +29,7 @@ namespace $ {
 		face = new $hyoo_crus_face_map
 		
 		passes = new $mol_wire_dict< string /*peer*/, $hyoo_crus_pass >()
-		gifts = new $mol_wire_dict< typeof $hyoo_crus_ref.Value /*lord*/, $hyoo_crus_gift >()
+		gifts = new $mol_wire_dict< $hyoo_crus_ref /*lord*/, $hyoo_crus_gift >()
 		gists = new $mol_wire_dict< string /*head*/, $mol_wire_dict< string /*self*/, $hyoo_crus_gist > >()
 		
 		self_all = new $mol_wire_set< string >()
@@ -96,7 +96,7 @@ namespace $ {
 		}
 		
 		@ $mol_mem_key
-		lord_rang( lord: typeof $hyoo_crus_ref.Value ) {
+		lord_rang( lord: $hyoo_crus_ref ) {
 			if( lord === this.lord_ref() ) return $hyoo_crus_rang.law
 			return this.gifts.get( lord )?.rang() ?? $hyoo_crus_rang.get
 		}
@@ -136,6 +136,17 @@ namespace $ {
 		/** Makes binary Delta between Face and current state. */
 		delta_pack( face = new $hyoo_crus_face_map ) {
 			
+			const parts = this.delta_parts( face )
+			if( !parts ) return null
+			
+			const { faces, units, rocks } = parts
+			const pack = $hyoo_crus_pack.make( faces, units, rocks )
+			
+			return pack
+		}
+		
+		delta_parts( face = new $hyoo_crus_face_map ) {
+			
 			const delta = this.delta_unit( face )
 			if( !delta.length ) return null
 			
@@ -152,11 +163,15 @@ namespace $ {
 				
 			}
 			
-			const pack = $hyoo_crus_pack.make( {}, { [ this.ref() ]: delta }, rocks )
-			return pack
+			return {
+				faces: {},
+				units: { [ this.ref() ]: delta },
+				rocks,
+			}
 			
 		}
 		
+		@ $mol_action
 		faces_pack() {
 			const pack = $hyoo_crus_pack.make( {
 				[ this.ref() ]: this.face,
@@ -442,7 +457,7 @@ namespace $ {
 		/** Places data to tree. */
 		@ $mol_action
 		give(
-			dest: typeof $hyoo_crus_ref.Value,
+			dest: $hyoo_crus_ref,
 			rang: $hyoo_crus_rang,
 		) {
 				
@@ -576,10 +591,12 @@ namespace $ {
 			try {
 				this.saving()
 				this.bus()
-				this.realm()?.yard().sync_land( this )
+				this.realm()?.yard().sync_land( this.ref() )
 			} catch( error ) {
 				$mol_fail_log( error )
 			}
+			
+			this.realm()?.yard().sync()
 			
 		}
 		
@@ -651,8 +668,8 @@ namespace $ {
 			$mol_wire_race( ... encoding.map( unit => ()=> this.gist_encode( unit ) ) )
 			$mol_wire_race( ... signing.map( unit => ()=> this.unit_sign( unit ) ) )
 			
-			this.bus().send( persisting.map( unit => unit.buffer ) )
 			if( persisting.length )	$mol_wire_sync( yard ).save( this, persisting )
+			this.bus().send( persisting.map( unit => unit.buffer ) )
 			
 		}
 		

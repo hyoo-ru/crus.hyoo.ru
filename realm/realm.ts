@@ -2,7 +2,7 @@ namespace $ {
 	
 	export class $hyoo_crus_realm extends $mol_object {
 		
-		lords = new $mol_wire_dict< typeof $hyoo_crus_ref.Value, $hyoo_crus_lord >()
+		lords = new $mol_wire_dict< $hyoo_crus_ref, $hyoo_crus_lord >()
 		
 		@ $mol_mem
 		yard() {
@@ -16,7 +16,7 @@ namespace $ {
 		}
 		
 		@ $mol_mem_key
-		Lord( numb: typeof $hyoo_crus_ref.Value ) {
+		Lord( numb: $hyoo_crus_ref ) {
 			
 			let lord = this.lords.get( numb )
 			if( lord ) return lord
@@ -31,12 +31,12 @@ namespace $ {
 			
 		}
 		
-		Land( ref: typeof $hyoo_crus_ref.Value ) {
+		Land( ref: $hyoo_crus_ref ) {
 			const lord = this.Lord( $hyoo_crus_ref_home( ref ) )
 			return lord.Land( $hyoo_crus_ref_land( ref ) )
 		}
 		
-		Node< Node extends typeof $hyoo_crus_node > ( ref: typeof $hyoo_crus_ref.Value, Node: Node ) {
+		Node< Node extends typeof $hyoo_crus_node > ( ref: $hyoo_crus_ref, Node: Node ) {
 			const land = this.Land( $hyoo_crus_ref_root( ref ) )
 			return land.Node( Node ).Item( $hyoo_crus_ref_head( ref ) )
 		}
@@ -46,7 +46,7 @@ namespace $ {
 			
 			const { faces, units, rocks } = pack.parts()
 			
-			for( const land of Reflect.ownKeys( units ) as typeof $hyoo_crus_ref.Value[] ) {
+			for( const land of Reflect.ownKeys( units ) as $hyoo_crus_ref[] ) {
 				
 				const errors = this.Land( land ).apply_unit( units[ land ] ).filter( Boolean )
 				

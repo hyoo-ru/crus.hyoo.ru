@@ -70,7 +70,7 @@ namespace $ {
 			}
 		}
 		
-		id12( offset: number, next?: typeof $hyoo_crus_ref.Value ) {
+		id12( offset: number, next?: $hyoo_crus_ref ) {
 			if( next === undefined ) {
 				return $hyoo_crus_ref_decode( new Uint8Array( this.buffer, offset, 12 ) )
 			} else {

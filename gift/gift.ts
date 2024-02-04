@@ -22,8 +22,8 @@ namespace $ {
 			return new Uint8Array( this.buffer, this.byteOffset + 26, 6 )
 		}
 		
-		_dest!: typeof $hyoo_crus_ref.Value
-		dest( next?: typeof $hyoo_crus_ref.Value ) {
+		_dest!: $hyoo_crus_ref
+		dest( next?: $hyoo_crus_ref ) {
 			if( next === undefined && this._dest !== undefined ) return this._dest
 			else return this._dest = this.id12( 14, next )
 		}

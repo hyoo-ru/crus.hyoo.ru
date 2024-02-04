@@ -58,7 +58,7 @@ namespace $ {
 		}
 		
 		@ $mol_mem
-		value_ref( next?: typeof $hyoo_crus_ref.Value ): typeof $hyoo_crus_ref.Value | null {
+		value_ref( next?: $hyoo_crus_ref ): $hyoo_crus_ref | null {
 			return $hyoo_crus_vary_cast_ref( this.value_vary( next ) )
 		}
 		

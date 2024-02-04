@@ -6,8 +6,8 @@ namespace $ {
 			return this.uint8( 1 )
 		}
 		
-		_lord!: typeof $hyoo_crus_ref.Value
-		lord( next?: typeof $hyoo_crus_ref.Value ) {
+		_lord!: $hyoo_crus_ref
+		lord( next?: $hyoo_crus_ref ) {
 			if( next === undefined && this._lord !== undefined ) return this._lord
 			else return this._lord = this.id12( 2, next )
 		}

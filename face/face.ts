@@ -13,9 +13,6 @@ namespace $ {
 		/** Maximum time for all peers. */
 		last = 0
 		
-		/** Total unit count. */
-		count = 0
-		
 		constructor(
 			entries?: $hyoo_crus_face_data
 		) {
@@ -36,8 +33,6 @@ namespace $ {
 			peer: string,
 			count: number,
 		) {
-			
-			this.count += count
 			
 			let face = this.get( peer )
 			if( !face ) this.set( peer, face = { stamp: 0, milli: 0, count: 0 } )

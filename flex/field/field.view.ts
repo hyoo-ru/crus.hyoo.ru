@@ -15,7 +15,7 @@ namespace $.$$ {
 			return this.node( next )?.cast( $hyoo_crus_reg_str ).value( next ) ?? ''
 		}
 		
-		ref( next?: typeof $hyoo_crus_ref.Value ) {
+		ref( next?: $hyoo_crus_ref ) {
 			return this.node( next )?.cast( $hyoo_crus_reg ).value( next ) ?? null
 		}
 		
@@ -55,13 +55,13 @@ namespace $.$$ {
 		
 		@ $mol_mem_key
 		row_title( index: number ) {
-			const ref = this.row_value( index ) as typeof $hyoo_crus_ref.Value
+			const ref = this.row_value( index ) as $hyoo_crus_ref
 			return this.node().realm()!.Node( ref , $hyoo_crus_flex_thing ).title() || ref?.description!
 		}
 		
 		@ $mol_mem_key
 		row_arg( index: number ) {
-			const ref = ( this.row_value( index ) as typeof $hyoo_crus_ref.Value ).description!
+			const ref = ( this.row_value( index ) as $hyoo_crus_ref ).description!
 			return { ref }
 		}
 		
