@@ -1700,7 +1700,6 @@ var $;
         if (!$mol_fail_catch(error))
             return false;
         console.error(error);
-        console.error(error.stack);
         return true;
     }
     $.$mol_fail_log = $mol_fail_log;
@@ -3196,7 +3195,10 @@ var $;
                 }
             }));
             socket.on('data', (chunk) => {
-                $mol_wire_async(this).ws_income(chunk, upgrade, socket);
+                console.log('data in');
+                $mol_wire_async(this).ws_income(chunk, upgrade, socket).catch(e => {
+                    console.error('[', e, e.stack, ']');
+                });
             });
             const key_in = req.headers["sec-websocket-key"];
             const magic = '258EAFA5-E914-47DA-95CA-C5AB0DC85B11';
