@@ -3195,7 +3195,7 @@ var $;
                 }
             }));
             socket.on('data', (chunk) => {
-                $mol_wire_async(this).ws_income(port, chunk, upgrade, socket);
+                $mol_wire_async(this).ws_income(chunk, upgrade, socket);
             });
             const key_in = req.headers["sec-websocket-key"];
             const magic = '258EAFA5-E914-47DA-95CA-C5AB0DC85B11';
@@ -3212,7 +3212,7 @@ var $;
                 port: $mol_key(port),
             });
         }
-        ws_income(port, chunk, upgrade, sock) {
+        ws_income(chunk, upgrade, sock) {
             const frame = $mol_wire_sync($mol_websocket_frame).from(chunk);
             const msg_size = frame.size() + frame.data().size;
             if (msg_size > chunk.byteLength) {
@@ -3247,6 +3247,7 @@ var $;
             }
             try {
                 $mol_wire_sync(this.root()).REQUEST(message);
+                sock.resume();
             }
             catch (error) {
                 if ($mol_promise_like(error))
@@ -3256,8 +3257,6 @@ var $;
                     message: error.message ?? '',
                     stack: error.stack,
                 });
-            }
-            finally {
                 sock.resume();
             }
         }
