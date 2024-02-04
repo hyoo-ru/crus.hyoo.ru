@@ -3203,7 +3203,6 @@ var $;
         }
         _ws_icome_partial = [];
         async ws_income(chunk, upgrade, sock) {
-            console.log(chunk.byteLength);
             sock.pause();
             this._ws_icome_partial.push(chunk);
             const patial_size = this._ws_icome_partial.reduce((sum, buf) => sum + buf.byteLength, 0);
@@ -5552,7 +5551,6 @@ var $;
 (function ($) {
     class $hyoo_crus_face_map extends Map {
         last = 0;
-        count = 0;
         constructor(entries) {
             super();
             if (entries)
@@ -5565,7 +5563,6 @@ var $;
             }
         }
         count_shift(peer, count) {
-            this.count += count;
             let face = this.get(peer);
             if (!face)
                 this.set(peer, face = { stamp: 0, milli: 0, count: 0 });
@@ -6473,6 +6470,147 @@ var $;
 "use strict";
 var $;
 (function ($) {
+    class $hyoo_crus_pack extends $mol_buffer {
+        toBlob() {
+            return new Blob([this], { type: 'application/x-crus-pack' });
+        }
+        parts() {
+            const faces = {};
+            const units = {};
+            const rocks = [];
+            const buff = this.asArray();
+            let land = null;
+            for (let offset = 0; offset < this.byteLength;) {
+                const kind = this.uint8(offset);
+                if (kind % 2) {
+                    switch (kind) {
+                        case $hyoo_crus_part.land: {
+                            const head = new Uint8Array(buff.buffer, buff.byteOffset + offset, 4);
+                            if (!$mol_compare_deep($hyoo_crus_part_crus, head)) {
+                                $mol_fail(new Error('Wrong 4CC code'));
+                            }
+                            offset += 4;
+                            land = $hyoo_crus_ref_decode(new Uint8Array(buff.buffer, buff.byteOffset + offset, 18));
+                            faces[land] ||= new $hyoo_crus_face_map;
+                            offset += 20;
+                            continue;
+                        }
+                        case $hyoo_crus_part.face: {
+                            if (!land)
+                                $mol_fail(new Error('Land is undefined'));
+                            const count = this.uint32(offset) >> 8;
+                            const peer = $mol_base64_ae_encode(new Uint8Array(buff.buffer, buff.byteOffset + offset + 4, 6));
+                            const time = this.uint48(offset + 10);
+                            offset += 16;
+                            faces[land] ||= new $hyoo_crus_face_map;
+                            faces[land].time_max(peer, time);
+                            faces[land].count_shift(peer, count);
+                            continue;
+                        }
+                        case $hyoo_crus_part.pass: {
+                            if (!land)
+                                $mol_fail(new Error('Land is undefined'));
+                            const unit = new $hyoo_crus_pass(buff.slice(offset, offset += $hyoo_crus_unit.size).buffer);
+                            delete faces[land];
+                            units[land] ||= [];
+                            units[land].push(unit);
+                            continue;
+                        }
+                        case $hyoo_crus_part.gift: {
+                            if (!land)
+                                $mol_fail(new Error('Land is undefined'));
+                            const unit = new $hyoo_crus_gift(buff.slice(offset, offset += $hyoo_crus_unit.size).buffer);
+                            delete faces[land];
+                            units[land] ||= [];
+                            units[land].push(unit);
+                            continue;
+                        }
+                        case $hyoo_crus_part.hash: {
+                            const hash = buff.slice(offset += 4, offset += 24);
+                            rocks.push([hash, null]);
+                            continue;
+                        }
+                        case $hyoo_crus_part.rock: {
+                            const size = this.uint32(offset) >> 8;
+                            const hash = buff.slice(offset += 4, offset += 24);
+                            const rock = buff.slice(offset, offset + size);
+                            rocks.push([hash, rock]);
+                            offset += Math.ceil(size / 8) * 8;
+                            continue;
+                        }
+                        case $hyoo_crus_part.buck: {
+                            offset += 128;
+                            continue;
+                        }
+                        default: $mol_fail(new Error(`Unknown CRUS Pack Part (${kind.toString(2)}) at (${offset.toString(16)})`));
+                    }
+                }
+                else {
+                    if (!land)
+                        $mol_fail(new Error('Land is undefined'));
+                    delete faces[land];
+                    units[land] ||= [];
+                    units[land].push(new $hyoo_crus_gist(buff.slice(offset, offset += $hyoo_crus_unit.size).buffer));
+                    continue;
+                }
+            }
+            return { faces, units, rocks };
+        }
+        static make(faces, units, rocks) {
+            let size = 0;
+            for (const land of Reflect.ownKeys(faces)) {
+                size += 24 + faces[land].size * 16;
+            }
+            for (const land of Reflect.ownKeys(units)) {
+                size += 24 + units[land].length * $hyoo_crus_unit.size;
+            }
+            for (const [hash, rock] of rocks) {
+                size += 24 + (rock ? Math.ceil(rock.length / 8) * 8 : 0);
+            }
+            if (size === 0)
+                return null;
+            const buff = new Uint8Array(size);
+            const pack = new $hyoo_crus_pack(buff.buffer);
+            let offset = 0;
+            const open_land = (land) => {
+                buff.set($hyoo_crus_part_crus, offset);
+                buff.set($hyoo_crus_ref_encode(land), offset + 4);
+                offset += 24;
+            };
+            for (const land of Reflect.ownKeys(faces)) {
+                open_land(land);
+                for (const peer of faces[land].keys()) {
+                    pack.uint32(offset, (faces[land].get(peer).count << 8) | $hyoo_crus_part.face);
+                    buff.set($mol_base64_ae_decode(peer), offset + 4);
+                    pack.uint48(offset + 10, faces[land].time(peer));
+                    offset += 16;
+                }
+            }
+            for (const land of Reflect.ownKeys(units)) {
+                open_land(land);
+                for (const unit of units[land]) {
+                    buff.set(unit.asArray(), offset);
+                    offset += unit.byteLength;
+                }
+            }
+            for (const [hash, rock] of rocks) {
+                const len = rock?.length ?? 0;
+                pack.uint32(offset, rock ? (len << 8) + $hyoo_crus_part.rock : $hyoo_crus_part.hash);
+                buff.set(hash, offset + 4);
+                if (rock)
+                    buff.set(rock, offset + 24);
+                offset += 24 + Math.ceil(len / 8) * 8;
+            }
+            return pack;
+        }
+    }
+    $.$hyoo_crus_pack = $hyoo_crus_pack;
+})($ || ($ = {}));
+//hyoo/crus/pack/pack.ts
+;
+"use strict";
+var $;
+(function ($) {
     function $mol_db_response(request) {
         return new Promise((done, fail) => {
             request.onerror = () => fail(new Error(request.error.message));
@@ -6768,144 +6906,6 @@ var $;
     $.$hyoo_crus_mine = $hyoo_crus_mine;
 })($ || ($ = {}));
 //hyoo/crus/mine/mine.ts
-;
-"use strict";
-var $;
-(function ($) {
-    class $hyoo_crus_pack extends $mol_buffer {
-        toBlob() {
-            return new Blob([this], { type: 'application/x-crus-pack' });
-        }
-        parts() {
-            const faces = {};
-            const units = {};
-            const rocks = [];
-            const buff = this.asArray();
-            let land = null;
-            for (let offset = 0; offset < this.byteLength;) {
-                const kind = this.uint8(offset);
-                if (kind % 2) {
-                    switch (kind) {
-                        case $hyoo_crus_part.land: {
-                            const head = new Uint8Array(buff.buffer, buff.byteOffset + offset, 4);
-                            if (!$mol_compare_deep($hyoo_crus_part_crus, head)) {
-                                $mol_fail(new Error('Wrong 4CC code'));
-                            }
-                            offset += 4;
-                            land = $hyoo_crus_ref_decode(new Uint8Array(buff.buffer, buff.byteOffset + offset, 18));
-                            faces[land] ||= new $hyoo_crus_face_map;
-                            offset += 20;
-                            continue;
-                        }
-                        case $hyoo_crus_part.face: {
-                            if (!land)
-                                $mol_fail(new Error('Land is undefined'));
-                            const count = this.uint32(offset) >> 8;
-                            const peer = $mol_base64_ae_encode(new Uint8Array(buff.buffer, buff.byteOffset + offset + 4, 6));
-                            const time = this.uint48(offset + 10);
-                            offset += 16;
-                            faces[land] ||= new $hyoo_crus_face_map;
-                            faces[land].time_max(peer, time);
-                            faces[land].count_shift(peer, count);
-                            continue;
-                        }
-                        case $hyoo_crus_part.pass: {
-                            if (!land)
-                                $mol_fail(new Error('Land is undefined'));
-                            const unit = new $hyoo_crus_pass(buff.slice(offset, offset += $hyoo_crus_unit.size).buffer);
-                            units[land] ||= [];
-                            units[land].push(unit);
-                            continue;
-                        }
-                        case $hyoo_crus_part.gift: {
-                            if (!land)
-                                $mol_fail(new Error('Land is undefined'));
-                            const unit = new $hyoo_crus_gift(buff.slice(offset, offset += $hyoo_crus_unit.size).buffer);
-                            units[land] ||= [];
-                            units[land].push(unit);
-                            continue;
-                        }
-                        case $hyoo_crus_part.hash: {
-                            const hash = buff.slice(offset += 4, offset += 24);
-                            rocks.push([hash, null]);
-                            continue;
-                        }
-                        case $hyoo_crus_part.rock: {
-                            const size = this.uint32(offset) >> 8;
-                            const hash = buff.slice(offset += 4, offset += 24);
-                            const rock = buff.slice(offset, offset + size);
-                            rocks.push([hash, rock]);
-                            offset += Math.ceil(size / 8) * 8;
-                            continue;
-                        }
-                        case $hyoo_crus_part.buck: {
-                            offset += 128;
-                            continue;
-                        }
-                        default: $mol_fail(new Error(`Unknown CRUS Pack Part (${kind.toString(2)}) at (${offset.toString(16)})`));
-                    }
-                }
-                else {
-                    if (!land)
-                        $mol_fail(new Error('Land is undefined'));
-                    units[land] ||= [];
-                    units[land].push(new $hyoo_crus_gist(buff.slice(offset, offset += $hyoo_crus_unit.size).buffer));
-                    continue;
-                }
-            }
-            return { faces, units, rocks };
-        }
-        static make(faces, units, rocks) {
-            let size = 0;
-            for (const land of Reflect.ownKeys(faces)) {
-                size += 24 + faces[land].size * 16;
-            }
-            for (const land of Reflect.ownKeys(units)) {
-                size += 24 + units[land].length * $hyoo_crus_unit.size;
-            }
-            for (const [hash, rock] of rocks) {
-                size += 24 + (rock ? Math.ceil(rock.length / 8) * 8 : 0);
-            }
-            if (size === 0)
-                return null;
-            const buff = new Uint8Array(size);
-            const pack = new $hyoo_crus_pack(buff.buffer);
-            let offset = 0;
-            const open_land = (land) => {
-                buff.set($hyoo_crus_part_crus, offset);
-                buff.set($hyoo_crus_ref_encode(land), offset + 4);
-                offset += 24;
-            };
-            for (const land of Reflect.ownKeys(faces)) {
-                open_land(land);
-                for (const peer of faces[land].keys()) {
-                    pack.uint32(offset, (faces[land].get(peer).count << 8) | $hyoo_crus_part.face);
-                    buff.set($mol_base64_ae_decode(peer), offset + 4);
-                    pack.uint48(offset + 10, faces[land].time(peer));
-                    offset += 16;
-                }
-            }
-            for (const land of Reflect.ownKeys(units)) {
-                open_land(land);
-                for (const unit of units[land]) {
-                    buff.set(unit.asArray(), offset);
-                    offset += unit.byteLength;
-                }
-            }
-            for (const [hash, rock] of rocks) {
-                const len = rock?.length ?? 0;
-                pack.uint32(offset, rock ? (len << 8) + $hyoo_crus_part.rock : $hyoo_crus_part.hash);
-                buff.set(hash, offset + 4);
-                if (rock)
-                    buff.set(rock, offset + 24);
-                offset += 24 + Math.ceil(len / 8) * 8;
-            }
-            return pack;
-        }
-    }
-    $.$hyoo_crus_pack = $hyoo_crus_pack;
-})($ || ($ = {}));
-//hyoo/crus/pack/pack.ts
 ;
 "use strict";
 var $;
@@ -7295,6 +7295,14 @@ var $;
             return delta;
         }
         delta_pack(face = new $hyoo_crus_face_map) {
+            const parts = this.delta_parts(face);
+            if (!parts)
+                return null;
+            const { faces, units, rocks } = parts;
+            const pack = $hyoo_crus_pack.make(faces, units, rocks);
+            return pack;
+        }
+        delta_parts(face = new $hyoo_crus_face_map) {
             const delta = this.delta_unit(face);
             if (!delta.length)
                 return null;
@@ -7308,8 +7316,11 @@ var $;
                 const rock = this.$.$hyoo_crus_mine.rock(gist.hash()) ?? null;
                 rocks.push([gist.hash(), rock]);
             }
-            const pack = $hyoo_crus_pack.make({}, { [this.ref()]: delta }, rocks);
-            return pack;
+            return {
+                faces: {},
+                units: { [this.ref()]: delta },
+                rocks,
+            };
         }
         faces_pack() {
             const pack = $hyoo_crus_pack.make({
@@ -7598,11 +7609,12 @@ var $;
             try {
                 this.saving();
                 this.bus();
-                this.realm()?.yard().sync_land(this);
+                this.realm()?.yard().sync_land(this.ref());
             }
             catch (error) {
                 $mol_fail_log(error);
             }
+            this.realm()?.yard().sync();
         }
         bus() {
             return new this.$.$mol_bus(`$hyoo_crus_land:${this.ref().description}`, $mol_wire_async(bins => {
@@ -7656,9 +7668,9 @@ var $;
             }
             $mol_wire_race(...encoding.map(unit => () => this.gist_encode(unit)));
             $mol_wire_race(...signing.map(unit => () => this.unit_sign(unit)));
-            this.bus().send(persisting.map(unit => unit.buffer));
             if (persisting.length)
                 $mol_wire_sync(yard).save(this, persisting);
+            this.bus().send(persisting.map(unit => unit.buffer));
         }
         unit_sign(unit) {
             if (unit.signed())
@@ -7830,6 +7842,9 @@ var $;
     __decorate([
         $mol_mem_key
     ], $hyoo_crus_land.prototype, "lord_rang", null);
+    __decorate([
+        $mol_action
+    ], $hyoo_crus_land.prototype, "faces_pack", null);
     __decorate([
         $mol_action
     ], $hyoo_crus_land.prototype, "apply_unit", null);
@@ -8011,14 +8026,14 @@ var $;
         }
         async save(land, units) { }
         static masters = [];
-        master_cursor(next = 0, force) {
+        master_cursor(next = 0) {
             return next;
         }
         master_current() {
             return this.$.$hyoo_crus_yard.masters[this.master_cursor()];
         }
         master_next() {
-            this.master_cursor((this.master_cursor() + 1) % this.$.$hyoo_crus_yard.masters.length, !!'force');
+            this.master_cursor((this.master_cursor() + 1) % this.$.$hyoo_crus_yard.masters.length);
         }
         reconnects(reset) {
             return ($mol_wire_probe(() => this.reconnects()) ?? 0) + 1;
@@ -8027,6 +8042,19 @@ var $;
             return null;
         }
         slaves = new $mol_wire_set();
+        sync() {
+            const realm = this.realm();
+            for (const port of this.ports()) {
+                for (const land of this.port_lands(port)) {
+                    try {
+                        this.sync_port_land([port, land]);
+                    }
+                    catch (error) {
+                        $mol_fail_log(error);
+                    }
+                }
+            }
+        }
         ports() {
             try {
                 return [this.master(), ...this.slaves].filter($mol_guard_defined);
@@ -8036,48 +8064,42 @@ var $;
                 return [...this.slaves];
             }
         }
-        port_lands(port, next = []) {
-            return next;
-        }
-        sync() {
-            const realm = this.realm();
-            for (const port of this.ports()) {
-                for (const land of this.port_lands(port)) {
-                    try {
-                        this.sync_port_land([port, realm.Land(land)]);
-                    }
-                    catch (error) {
-                        $mol_fail_log(error);
-                    }
-                }
-            }
+        port_lands(port) {
+            return new $mol_wire_set();
         }
         port_income(port, msg) {
             const pack = $mol_wire_sync($hyoo_crus_pack).from(msg);
-            const faces = pack.parts().faces;
-            const land_refs = Reflect.ownKeys(faces);
-            this.port_lands(port, [...new Set([
-                    ...this.port_lands(port),
-                    ...land_refs,
-                ])]);
-            for (const land_ref of land_refs) {
-                const land = this.realm().Land(land_ref);
+            const parts = pack.parts();
+            $mol_wire_sync(this.$).$mol_log3_rise({
+                place: this,
+                message: 'Gain Pack',
+                port: $mol_key(port),
+                ...parts,
+            });
+            const lands = this.port_lands(port);
+            for (const land of Reflect.ownKeys(parts.faces)) {
+                lands.add(land);
                 const port_face = this.face_port_land([port, land]);
                 if (port_face)
-                    port_face.sync(faces[land_ref]);
+                    port_face.sync(parts.faces[land]);
                 else
-                    this.face_port_land([port, land], faces[land_ref]);
+                    this.face_port_land([port, land], parts.faces[land]);
+            }
+            for (const land of Reflect.ownKeys(parts.units)) {
+                const port_face = this.face_port_land([port, land]);
+                if (!port_face)
+                    continue;
+                for (const unit of parts.units[land]) {
+                    if (unit instanceof $hyoo_crus_gift || unit instanceof $hyoo_crus_gist) {
+                        port_face.time_max(unit.peer(), unit.time());
+                    }
+                }
             }
             this.realm().apply_pack(pack);
         }
         sync_land(land) {
-            for (const port of this.ports() ?? []) {
-                try {
-                    this.sync_port_land([port, land]);
-                }
-                catch (error) {
-                    $mol_fail_log(error);
-                }
+            for (const port of this.ports()) {
+                this.port_lands(port).add(land);
             }
         }
         sync_port_land([port, land]) {
@@ -8085,17 +8107,32 @@ var $;
             const faces = this.face_port_land([port, land]);
             if (!faces)
                 return;
-            const delta = land.delta_pack(faces);
-            if (!delta)
+            const Land = this.realm().Land(land);
+            Land.saving();
+            const parts = Land.delta_parts(faces);
+            if (!parts)
                 return;
-            port.send_bin(delta.asArray());
-            faces.sync(land.face);
+            this.$.$mol_log3_rise({
+                place: this,
+                message: 'Send Unit',
+                port: $mol_key(port),
+                land: land,
+                ...parts,
+            });
+            port.send_bin($hyoo_crus_pack.make(parts.faces, parts.units, parts.rocks).asArray());
+            faces.sync(Land.face);
         }
         init_port_land([port, land]) {
-            port.send_bin(land.faces_pack().asArray());
+            this.$.$mol_log3_rise({
+                place: this,
+                message: 'Send Face',
+                port: $mol_key(port),
+                land: land,
+                faces: this.realm().Land(land).face,
+            });
+            port.send_bin(this.realm().Land(land).faces_pack().asArray());
         }
         face_port_land([port, land], next = null) {
-            $mol_wire_solid();
             return next;
         }
     }
@@ -8116,13 +8153,13 @@ var $;
     ], $hyoo_crus_yard.prototype, "reconnects", null);
     __decorate([
         $mol_mem
+    ], $hyoo_crus_yard.prototype, "sync", null);
+    __decorate([
+        $mol_mem
     ], $hyoo_crus_yard.prototype, "ports", null);
     __decorate([
         $mol_mem_key
     ], $hyoo_crus_yard.prototype, "port_lands", null);
-    __decorate([
-        $mol_mem
-    ], $hyoo_crus_yard.prototype, "sync", null);
     __decorate([
         $mol_action
     ], $hyoo_crus_yard.prototype, "port_income", null);
@@ -11374,6 +11411,46 @@ var $;
 ;
 "use strict";
 var $;
+(function ($_1) {
+    var $$;
+    (function ($$) {
+        $mol_test({
+            "faces serial and parse"($) {
+                const land1 = $hyoo_crus_ref('12345678_12345678');
+                const land2 = $hyoo_crus_ref('87654321_87654321');
+                const land3 = $hyoo_crus_ref('87654321_87654321');
+                const faces1 = new $hyoo_crus_face_map;
+                faces1.time_max('12345678', Date.now());
+                faces1.count_shift('12345678', 777);
+                const faces2 = new $hyoo_crus_face_map;
+                faces2.time_max('12345678', Date.now());
+                faces2.time_max('87654321', Date.now() + 1);
+                faces2.count_shift('12345678', 333);
+                faces2.count_shift('87654321', 1);
+                const faces3 = new $hyoo_crus_face_map;
+                const pack = $hyoo_crus_pack.make({
+                    [land1]: faces1,
+                    [land2]: faces2,
+                    [land3]: faces3,
+                }, {}, []);
+                const parts = pack.parts();
+                $mol_assert_equal(parts, {
+                    faces: {
+                        [land1]: faces1,
+                        [land2]: faces2,
+                        [land3]: faces3,
+                    },
+                    units: {},
+                    rocks: [],
+                });
+            },
+        });
+    })($$ = $_1.$$ || ($_1.$$ = {}));
+})($ || ($ = {}));
+//hyoo/crus/pack/pack.test.ts
+;
+"use strict";
+var $;
 (function ($) {
     $mol_test({
         async 'put, get, drop, count records and clear store'() {
@@ -11539,46 +11616,6 @@ var $;
     });
 })($ || ($ = {}));
 //hyoo/crus/mine/mine.test.ts
-;
-"use strict";
-var $;
-(function ($_1) {
-    var $$;
-    (function ($$) {
-        $mol_test({
-            "faces serial and parse"($) {
-                const land1 = $hyoo_crus_ref('12345678_12345678');
-                const land2 = $hyoo_crus_ref('87654321_87654321');
-                const land3 = $hyoo_crus_ref('87654321_87654321');
-                const faces1 = new $hyoo_crus_face_map;
-                faces1.time_max('12345678', Date.now());
-                faces1.count_shift('12345678', 777);
-                const faces2 = new $hyoo_crus_face_map;
-                faces2.time_max('12345678', Date.now());
-                faces2.time_max('87654321', Date.now() + 1);
-                faces2.count_shift('12345678', 333);
-                faces2.count_shift('87654321', 1);
-                const faces3 = new $hyoo_crus_face_map;
-                const pack = $hyoo_crus_pack.make({
-                    [land1]: faces1,
-                    [land2]: faces2,
-                    [land3]: faces3,
-                }, {}, []);
-                const parts = pack.parts();
-                $mol_assert_equal(parts, {
-                    faces: {
-                        [land1]: faces1,
-                        [land2]: faces2,
-                        [land3]: faces3,
-                    },
-                    units: {},
-                    rocks: [],
-                });
-            },
-        });
-    })($$ = $_1.$$ || ($_1.$$ = {}));
-})($ || ($ = {}));
-//hyoo/crus/pack/pack.test.ts
 ;
 "use strict";
 var $;

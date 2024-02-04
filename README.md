@@ -196,7 +196,7 @@ export class $my_app extends $mol_object {
 	
 	// Use existed entity by reference
 	@ $mol_mem_key
-	Person( ref: typeof $hyoo_crus_ref.Value ) {
+	Person( ref: $hyoo_crus_ref ) {
 		return this.Realm().Node( ref, $my_person )
 	}
 	
