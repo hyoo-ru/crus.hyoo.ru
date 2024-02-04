@@ -3218,7 +3218,7 @@ var $;
             sock.pause();
             if (msg_size > chunk.byteLength) {
                 sock.unshift(chunk);
-                process.nextTick(() => sock.resume());
+                setTimeout(() => sock.resume());
                 return;
             }
             if (msg_size < chunk.byteLength) {
