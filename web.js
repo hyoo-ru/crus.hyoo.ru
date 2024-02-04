@@ -9710,6 +9710,9 @@ var $;
     class $hyoo_crus_list_json extends $hyoo_crus_list.of('json') {
     }
     $.$hyoo_crus_list_json = $hyoo_crus_list_json;
+    class $hyoo_crus_list_jsan extends $hyoo_crus_list.of('jsan') {
+    }
+    $.$hyoo_crus_list_jsan = $hyoo_crus_list_jsan;
     class $hyoo_crus_list_xml extends $hyoo_crus_list.of('dom') {
     }
     $.$hyoo_crus_list_xml = $hyoo_crus_list_xml;
@@ -10539,6 +10542,9 @@ var $;
     class $hyoo_crus_reg_json extends $hyoo_crus_reg.of('json') {
     }
     $.$hyoo_crus_reg_json = $hyoo_crus_reg_json;
+    class $hyoo_crus_reg_jsan extends $hyoo_crus_reg.of('jsan') {
+    }
+    $.$hyoo_crus_reg_jsan = $hyoo_crus_reg_jsan;
     class $hyoo_crus_reg_xml extends $hyoo_crus_reg.of('dom') {
     }
     $.$hyoo_crus_reg_xml = $hyoo_crus_reg_xml;
@@ -11542,7 +11548,9 @@ var $;
             for (const port of this.ports()) {
                 for (const land of this.port_lands(port)) {
                     try {
+                        console.log('sync on', land);
                         this.sync_port_land([port, realm.Land(land)]);
+                        console.log('sync off', land);
                     }
                     catch (error) {
                         $mol_fail_log(error);
