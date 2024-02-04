@@ -28,11 +28,13 @@ namespace $ {
 		}
 		
 		POST( msg: $mol_rest_message ) {
+			console.log( 'POST ON' )
 			this._yard().port_income( msg.port, msg.bin() )
+			console.log( 'POST OFF' )
 		}
 		
 		CLOSE( msg: $mol_rest_message ) {
-			this._realm.yard().slaves.delete( msg.port )
+			this._yard().slaves.delete( msg.port )
 		}
 		
 	}

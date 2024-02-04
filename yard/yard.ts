@@ -63,7 +63,9 @@ namespace $ {
 			for( const port of this.ports() ) {
 				for( const land of this.port_lands( port ) ) {
 					try {
+						console.log( 'sync on', land )
 						this.sync_port_land([ port, realm.Land( land ) ])
+						console.log( 'sync off', land )
 					} catch( error ) {
 						$mol_fail_log( error )
 					}

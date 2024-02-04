@@ -199,6 +199,7 @@ namespace $ {
 	export class $hyoo_crus_list_str extends $hyoo_crus_list.of( 'str' ) {}
 	export class $hyoo_crus_list_time extends $hyoo_crus_list.of( 'time' ) {}
 	export class $hyoo_crus_list_json extends $hyoo_crus_list.of( 'json' ) {}
+	export class $hyoo_crus_list_jsan extends $hyoo_crus_list.of( 'jsan' ) {}
 	export class $hyoo_crus_list_xml extends $hyoo_crus_list.of( 'dom' ) {}
 	export class $hyoo_crus_list_tree extends $hyoo_crus_list.of( 'tree' ) {}
 
