@@ -3195,11 +3195,7 @@ var $;
                 }
             }));
             socket.on('data', (chunk) => {
-                console.log('data in');
-                $mol_wire_async(this).ws_income(chunk, upgrade, socket).catch(e => {
-                    console.error('[', e, e.stack, ']');
-                    console.log('[', e, e.stack, ']');
-                });
+                $mol_wire_async(this).ws_income(chunk, upgrade, socket)
             });
             const key_in = req.headers["sec-websocket-key"];
             const magic = '258EAFA5-E914-47DA-95CA-C5AB0DC85B11';
