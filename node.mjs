@@ -3195,10 +3195,7 @@ var $;
                 }
             }));
             socket.on('data', (chunk) => {
-                console.log('data in');
-                $mol_wire_async(this).ws_income(chunk, upgrade, socket).catch(e => {
-                    console.error('[', e, e.stack, ']');
-                });
+                $mol_wire_async(this).ws_income(chunk, upgrade, socket);
             });
             const key_in = req.headers["sec-websocket-key"];
             const magic = '258EAFA5-E914-47DA-95CA-C5AB0DC85B11';
@@ -3218,11 +3215,12 @@ var $;
         ws_income(chunk, upgrade, sock) {
             const frame = $mol_wire_sync($mol_websocket_frame).from(chunk);
             const msg_size = frame.size() + frame.data().size;
+            sock.pause();
             if (msg_size > chunk.byteLength) {
                 sock.unshift(chunk);
+                process.nextTick(() => sock.resume());
                 return;
             }
-            sock.pause();
             if (msg_size < chunk.byteLength) {
                 const tail = new Uint8Array(chunk.buffer, chunk.byteOffset + msg_size);
                 $mol_wire_sync(sock).unshift(tail);
@@ -8050,9 +8048,7 @@ var $;
             for (const port of this.ports()) {
                 for (const land of this.port_lands(port)) {
                     try {
-                        console.log('sync on', land);
                         this.sync_port_land([port, realm.Land(land)]);
-                        console.log('sync off', land);
                     }
                     catch (error) {
                         $mol_fail_log(error);
@@ -8240,9 +8236,7 @@ var $;
             this._yard().slaves.add(msg.port);
         }
         POST(msg) {
-            console.log('POST ON');
             this._yard().port_income(msg.port, msg.bin());
-            console.log('POST OFF');
         }
         CLOSE(msg) {
             this._yard().slaves.delete(msg.port);
