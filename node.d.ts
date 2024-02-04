@@ -810,7 +810,7 @@ declare namespace $ {
         http_income(req: InstanceType<$node['http']['IncomingMessage']>, res: InstanceType<$node['http']['ServerResponse']>): void;
         ws_upgrade(req: InstanceType<$node['http']['IncomingMessage']>, socket: InstanceType<$node['stream']['Duplex']>, head: Buffer): void;
         _ws_icome_partial: Uint8Array[];
-        ws_income(chunk: Buffer, upgrade: $mol_rest_message, sock: InstanceType<typeof $node.stream.Duplex>): void;
+        ws_income(chunk: Buffer, upgrade: $mol_rest_message, sock: InstanceType<typeof $node.stream.Duplex>): Promise<void>;
         root(resource?: $mol_rest_resource): $mol_rest_resource;
         static start<Resource extends typeof $mol_rest_resource>(Resource: Resource): Resource;
     }

@@ -3185,9 +3185,7 @@ var $;
                     return;
                 }
             }));
-            socket.on('data', (chunk) => {
-                $mol_wire_async(this).ws_income(chunk, upgrade, socket);
-            });
+            socket.on('data', (chunk) => this.ws_income(chunk, upgrade, socket));
             const key_in = req.headers["sec-websocket-key"];
             const magic = '258EAFA5-E914-47DA-95CA-C5AB0DC85B11';
             const key_out = $mol_base64_encode($mol_crypto_hash($mol_charset_encode(key_in + magic)));
@@ -3204,26 +3202,24 @@ var $;
             });
         }
         _ws_icome_partial = [];
-        ws_income(chunk, upgrade, sock) {
+        async ws_income(chunk, upgrade, sock) {
             console.log(chunk.byteLength);
-            const patial_size = this._ws_icome_partial.reduce((sum, buf) => sum + buf.byteLength, 0);
-            const frame = $mol_wire_sync($mol_websocket_frame).from(chunk);
-            const msg_size = frame.size() + frame.data().size;
             sock.pause();
-            if (msg_size > patial_size + chunk.byteLength) {
+            this._ws_icome_partial.push(chunk);
+            const patial_size = this._ws_icome_partial.reduce((sum, buf) => sum + buf.byteLength, 0);
+            let frame = $mol_websocket_frame.from(this._ws_icome_partial[0]);
+            const msg_size = frame.size() + frame.data().size;
+            if (msg_size > patial_size) {
                 setTimeout(() => sock.resume());
-                this._ws_icome_partial.push(chunk);
                 return;
             }
-            if (this._ws_icome_partial.length) {
-                this._ws_icome_partial.push(chunk);
-                chunk = Buffer.alloc(patial_size + chunk.byteLength);
-                let offset = 0;
-                for (const buf of this._ws_icome_partial.splice(0)) {
-                    chunk.set(buf, offset);
-                    offset += buf.byteLength;
-                }
+            chunk = Buffer.alloc(patial_size);
+            let offset = 0;
+            for (const buf of this._ws_icome_partial.splice(0)) {
+                chunk.set(buf, offset);
+                offset += buf.byteLength;
             }
+            frame = $mol_websocket_frame.from(chunk);
             if (msg_size < chunk.byteLength) {
                 const tail = new Uint8Array(chunk.buffer, chunk.byteOffset + msg_size);
                 $mol_wire_sync(sock).unshift(tail);
@@ -3242,7 +3238,7 @@ var $;
             if (op !== 'txt' && op !== 'bin')
                 return;
             if (data.length !== 0) {
-                $mol_wire_sync(this.$).$mol_log3_rise({
+                this.$.$mol_log3_rise({
                     place: this,
                     message: message.method(),
                     url: message.uri(),
@@ -3250,13 +3246,13 @@ var $;
                 });
             }
             try {
-                $mol_wire_sync(this.root()).REQUEST(message);
+                await $mol_wire_async(this.root()).REQUEST(message);
                 sock.resume();
             }
             catch (error) {
                 if ($mol_promise_like(error))
                     $mol_fail_hidden(error);
-                $mol_wire_sync($$).$mol_log3_fail({
+                $$.$mol_log3_fail({
                     place: this,
                     message: error.message ?? '',
                     stack: error.stack,
@@ -3294,9 +3290,6 @@ var $;
     __decorate([
         $mol_action
     ], $mol_rest_server.prototype, "ws_upgrade", null);
-    __decorate([
-        $mol_action
-    ], $mol_rest_server.prototype, "ws_income", null);
     __decorate([
         $mol_mem
     ], $mol_rest_server.prototype, "root", null);
