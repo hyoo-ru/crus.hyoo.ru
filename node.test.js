@@ -3217,9 +3217,9 @@ var $;
             }
             if (this._ws_icome_partial.length) {
                 this._ws_icome_partial.push(chunk);
-                chunk = new Buffer(msg_size);
+                chunk = Buffer.alloc(msg_size);
                 let offset = 0;
-                for (const buf of this._ws_icome_partial) {
+                for (const buf of this._ws_icome_partial.splice(0)) {
                     chunk.set(buf, offset);
                     offset += buf.byteLength;
                 }
