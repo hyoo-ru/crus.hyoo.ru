@@ -3212,14 +3212,26 @@ var $;
                 port: $mol_key(port),
             });
         }
+        _ws_icome_partial = [];
         ws_income(chunk, upgrade, sock) {
+            console.log(chunk.byteLength);
+            const patial_size = this._ws_icome_partial.reduce((sum, buf) => sum + buf.byteLength, 0);
             const frame = $mol_wire_sync($mol_websocket_frame).from(chunk);
             const msg_size = frame.size() + frame.data().size;
             sock.pause();
-            if (msg_size > chunk.byteLength) {
-                sock.unshift(chunk);
+            if (msg_size > patial_size + chunk.byteLength) {
                 setTimeout(() => sock.resume());
+                this._ws_icome_partial.push(chunk);
                 return;
+            }
+            if (this._ws_icome_partial.length) {
+                this._ws_icome_partial.push(chunk);
+                chunk = new Buffer(msg_size);
+                let offset = 0;
+                for (const buf of this._ws_icome_partial) {
+                    chunk.set(buf, offset);
+                    offset += buf.byteLength;
+                }
             }
             if (msg_size < chunk.byteLength) {
                 const tail = new Uint8Array(chunk.buffer, chunk.byteOffset + msg_size);
