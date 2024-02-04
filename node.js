@@ -3215,6 +3215,7 @@ var $;
         ws_income(chunk, upgrade, sock) {
             const frame = $mol_wire_sync($mol_websocket_frame).from(chunk);
             const msg_size = frame.size() + frame.data().size;
+		console.log( 'ws_income', chunk )
             sock.pause();
             if (msg_size > chunk.byteLength) {
                 sock.unshift(chunk);
