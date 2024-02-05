@@ -2143,10 +2143,8 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    const $hyoo_crus_part_crus: Uint8Array;
     enum $hyoo_crus_part {
-        land = 67,
-        face = 239,
+        land = 219,
         pass = 255,
         gift = 247,
         gist = 0,
@@ -2171,7 +2169,7 @@ declare namespace $ {
             gift: (unit: $hyoo_crus_gift) => Res;
             gist: (unit: $hyoo_crus_gist) => Res;
         }): Res;
-        narrow(): $hyoo_crus_unit;
+        narrow(): $hyoo_crus_pass | $hyoo_crus_gift | $hyoo_crus_gist;
         id6(offset: number, next?: string): string;
         id12(offset: number, next?: $hyoo_crus_ref): symbol & {
             $hyoo_crus_ref: symbol;
@@ -2576,19 +2574,13 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    type $hyoo_crus_face_data = Iterable<readonly [peer: string, face: $hyoo_crus_face]>;
-    type $hyoo_crus_face = {
-        stamp: number;
-        milli: number;
-        count: number;
-    };
-    class $hyoo_crus_face_map extends Map<string, $hyoo_crus_face> {
+    type $hyoo_crus_face_data = Iterable<readonly [peer: string, time: number]>;
+    class $hyoo_crus_face_map extends Map<string, number> {
         last: number;
+        total: number;
         constructor(entries?: $hyoo_crus_face_data);
         sync(right: $hyoo_crus_face_data): void;
-        count_shift(peer: string, count: number): number;
-        time_max(peer: string, time: number): number;
-        time(peer: string): number;
+        time_max(peer: string, time: number): void;
         tick(): number;
     }
 }
@@ -5606,18 +5598,25 @@ declare namespace $ {
 }
 
 declare namespace $ {
+    type $hyoo_crus_pack_parts = {
+        lands: Record<$hyoo_crus_ref, {
+            faces: $hyoo_crus_face_map;
+            units: $hyoo_crus_unit[];
+        }>;
+        rocks: [Uint8Array, null | Uint8Array][];
+    };
     class $hyoo_crus_pack extends $mol_buffer {
         toBlob(): Blob;
         parts(): {
-            faces: Record<symbol & {
+            lands: Record<symbol & {
                 $hyoo_crus_ref: symbol;
-            }, $hyoo_crus_face_map>;
-            units: Record<symbol & {
-                $hyoo_crus_ref: symbol;
-            }, $hyoo_crus_unit[]>;
+            }, {
+                faces: $hyoo_crus_face_map;
+                units: $hyoo_crus_unit[];
+            }>;
             rocks: [Uint8Array, Uint8Array | null][];
         };
-        static make(faces: Record<$hyoo_crus_ref, $hyoo_crus_face_map>, units: Record<$hyoo_crus_ref, readonly $hyoo_crus_unit[]>, rocks: readonly [Uint8Array, null | Uint8Array][]): $hyoo_crus_pack;
+        static make({ lands, rocks }: $hyoo_crus_pack_parts): $hyoo_crus_pack;
     }
 }
 
@@ -8723,7 +8722,7 @@ declare namespace $ {
         ref(): symbol & {
             $hyoo_crus_ref: symbol;
         };
-        face: $hyoo_crus_face_map;
+        faces: $hyoo_crus_face_map;
         passes: $mol_wire_dict<string, $hyoo_crus_pass>;
         gifts: $mol_wire_dict<symbol & {
             $hyoo_crus_ref: symbol;
@@ -8743,9 +8742,11 @@ declare namespace $ {
         delta_unit(face?: $hyoo_crus_face_map): $hyoo_crus_unit[];
         delta_pack(face?: $hyoo_crus_face_map): $hyoo_crus_pack | null;
         delta_parts(face?: $hyoo_crus_face_map): {
-            faces: {};
-            units: {
-                [x: symbol]: $hyoo_crus_unit[];
+            lands: {
+                [x: symbol]: {
+                    faces: $hyoo_crus_face_map;
+                    units: $hyoo_crus_unit[];
+                };
             };
             rocks: [Uint8Array, Uint8Array | null][];
         } | null;
@@ -10665,7 +10666,7 @@ declare namespace $.$$ {
         encrypted(next?: boolean): boolean;
         body(): ($hyoo_crus_flex_form | $hyoo_crus_node_dump)[];
         fork(): void;
-        pack(): $hyoo_crus_pack;
+        pack(): $hyoo_crus_pack | null;
         size(): string;
         dump(): Blob;
         dump_name(): string;
