@@ -908,7 +908,7 @@ $hyoo_crus_flex_form $mol_list
 	rows <= fields /
 		<= Field*0 $mol_form_field
 			name <= field_name* \xxx
-			control <= Field_control* $hyoo_crus_flex_field
+			Content <= Field_control* $hyoo_crus_flex_field
 				node? <=> field_node*? $hyoo_crus_node
 				prop <= field_prop* $hyoo_crus_flex_prop
 				enabled <= enabled true
@@ -1005,9 +1005,14 @@ $hyoo_crus_land_page $mol_page
 	body /
 		<= Flex $hyoo_crus_flex_form
 			node <= node
-		<= Node_dump*AAAAAAAA $hyoo_crus_node_dump
-			title <= node_title* \
-			node <= node_dump* $hyoo_crus_node
+		<= Raw $mol_labeler
+			Content <= Raw_content $mol_list rows /
+				<= Raw_data $hyoo_crus_node_dump
+					title \Data
+					node <= node
+				<= Raw_meta $hyoo_crus_node_dump
+					title \Meta
+					node <= node_meta $hyoo_crus_node
 		- <= Text $mol_textarea
 			value? <=> text? \
 			selection? <=> selection? /

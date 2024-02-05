@@ -10597,9 +10597,11 @@ declare namespace $ {
         foot(): readonly any[];
         Close(): any;
         Flex(): $$.$hyoo_crus_flex_form;
-        node_title(id: any): string;
-        node_dump(id: any): $hyoo_crus_node;
-        Node_dump(id: any): $$.$hyoo_crus_node_dump;
+        Raw_data(): $$.$hyoo_crus_node_dump;
+        node_meta(): $hyoo_crus_node;
+        Raw_meta(): $$.$hyoo_crus_node_dump;
+        Raw_content(): $$.$mol_list;
+        Raw(): $mol_labeler;
         Encrypted_icon(): $mol_icon_lock;
         encrypted(next?: any): boolean;
         encryptable(): boolean;
@@ -10660,11 +10662,10 @@ declare namespace $ {
 declare namespace $.$$ {
     class $hyoo_crus_land_page extends $.$hyoo_crus_land_page {
         title(): string;
-        node_title(head: string): string;
-        node_dump(head: string): $hyoo_crus_node;
+        node_meta(): $hyoo_crus_node;
         encryptable(): boolean;
         encrypted(next?: boolean): boolean;
-        body(): ($hyoo_crus_flex_form | $hyoo_crus_node_dump)[];
+        dump_data_node(): $hyoo_crus_node;
         fork(): void;
         pack(): $hyoo_crus_pack | null;
         size(): string;

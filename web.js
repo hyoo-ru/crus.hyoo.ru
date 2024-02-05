@@ -16479,7 +16479,7 @@ var $;
         Field(id) {
             const obj = new this.$.$mol_form_field();
             obj.name = () => this.field_name(id);
-            obj.control = () => this.Field_control(id);
+            obj.Content = () => this.Field_control(id);
             return obj;
         }
         fields() {
@@ -17467,7 +17467,7 @@ var $;
         body() {
             return [
                 this.Flex(),
-                this.Node_dump("AAAAAAAA")
+                this.Raw()
             ];
         }
         foot() {
@@ -17485,17 +17485,33 @@ var $;
             obj.node = () => this.node();
             return obj;
         }
-        node_title(id) {
-            return "";
+        Raw_data() {
+            const obj = new this.$.$hyoo_crus_node_dump();
+            obj.title = () => "Data";
+            obj.node = () => this.node();
+            return obj;
         }
-        node_dump(id) {
+        node_meta() {
             const obj = new this.$.$hyoo_crus_node();
             return obj;
         }
-        Node_dump(id) {
+        Raw_meta() {
             const obj = new this.$.$hyoo_crus_node_dump();
-            obj.title = () => this.node_title(id);
-            obj.node = () => this.node_dump(id);
+            obj.title = () => "Meta";
+            obj.node = () => this.node_meta();
+            return obj;
+        }
+        Raw_content() {
+            const obj = new this.$.$mol_list();
+            obj.rows = () => [
+                this.Raw_data(),
+                this.Raw_meta()
+            ];
+            return obj;
+        }
+        Raw() {
+            const obj = new this.$.$mol_labeler();
+            obj.Content = () => this.Raw_content();
             return obj;
         }
         Encrypted_icon() {
@@ -17579,11 +17595,20 @@ var $;
         $mol_mem
     ], $hyoo_crus_land_page.prototype, "Flex", null);
     __decorate([
-        $mol_mem_key
-    ], $hyoo_crus_land_page.prototype, "node_dump", null);
+        $mol_mem
+    ], $hyoo_crus_land_page.prototype, "Raw_data", null);
     __decorate([
-        $mol_mem_key
-    ], $hyoo_crus_land_page.prototype, "Node_dump", null);
+        $mol_mem
+    ], $hyoo_crus_land_page.prototype, "node_meta", null);
+    __decorate([
+        $mol_mem
+    ], $hyoo_crus_land_page.prototype, "Raw_meta", null);
+    __decorate([
+        $mol_mem
+    ], $hyoo_crus_land_page.prototype, "Raw_content", null);
+    __decorate([
+        $mol_mem
+    ], $hyoo_crus_land_page.prototype, "Raw", null);
     __decorate([
         $mol_mem
     ], $hyoo_crus_land_page.prototype, "Encrypted_icon", null);
@@ -17720,14 +17745,8 @@ var $;
             title() {
                 return '🌍 ' + this.land().ref().description;
             }
-            node_title(head) {
-                const id = this.node_dump(head).head();
-                if (id === 'AQAAAAAA')
-                    return 'Meta';
-                return id || 'Data';
-            }
-            node_dump(head) {
-                return this.land().Node($hyoo_crus_node).Item(head);
+            node_meta() {
+                return this.land().Node($hyoo_crus_node).Item('AQAAAAAA');
             }
             encryptable() {
                 return this.land().encrypted() || this.land().encryptable();
@@ -17735,12 +17754,8 @@ var $;
             encrypted(next) {
                 return this.land().encrypted(next);
             }
-            body() {
-                return [
-                    this.Flex(),
-                    this.Node_dump(this.node().head()),
-                    this.Node_dump('AQAAAAAA'),
-                ];
+            dump_data_node() {
+                return this.node();
             }
             fork() {
                 this.$.$mol_dom_context.location.href = this.$.$mol_state_arg.link({
@@ -17767,9 +17782,6 @@ var $;
         __decorate([
             $mol_mem
         ], $hyoo_crus_land_page.prototype, "encrypted", null);
-        __decorate([
-            $mol_mem
-        ], $hyoo_crus_land_page.prototype, "body", null);
         __decorate([
             $mol_mem
         ], $hyoo_crus_land_page.prototype, "pack", null);
