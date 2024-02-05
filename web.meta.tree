@@ -82,6 +82,7 @@
 	deploy \/hyoo/calc/calc_logo.svg
 \/hyoo/crus/app
 	deploy \/hyoo/crus/logo/logo.svg
+	deploy \/hyoo/crus/logo/logo-512.png
 	deploy \/hyoo/crus/logo/bg.webp
 	deploy \/hyoo/crus/readme.md
 	deploy \/hyoo/crus/diagram/crus-reg.png
