@@ -1,17 +1,14 @@
 namespace $ {
 	
-	export type $hyoo_crus_face_data = Iterable< readonly [ peer: string, face: $hyoo_crus_face ] >
+	export type $hyoo_crus_face_data = Iterable< readonly [ peer: string, time: number ] >
 	
-	export type $hyoo_crus_face = {
-		stamp: number // unix timestamp
-		milli: number // milliseconds
-		count: number // unit count
-	}
-	
-	export class $hyoo_crus_face_map extends Map< string, $hyoo_crus_face > {
+	export class $hyoo_crus_face_map extends Map< string, number > {
 		
 		/** Maximum time for all peers. */
 		last = 0
+		
+		/** Total units count in Land. */
+		total = 0
 		
 		constructor(
 			entries?: $hyoo_crus_face_data
@@ -22,24 +19,8 @@ namespace $ {
 		
 		/** Synchronize this clock with another. */
 		sync( right: $hyoo_crus_face_data ) {
-			for( const [ peer, face ] of right ) {
-				this.time_max( peer, face.stamp * 1000 + face.milli )
-				this.count_shift( peer, face.count )
-			}
-		}
-		
-		/** Change unit cout for peer. */
-		count_shift(
-			peer: string,
-			count: number,
-		) {
-			
-			let face = this.get( peer )
-			if( !face ) this.set( peer, face = { stamp: 0, milli: 0, count: 0 } )
-			
-			face.count += count
-			
-			return face.count
+			if( right instanceof $hyoo_crus_face_map ) this.total = right.total
+			for( const [ peer, time ] of right ) this.time_max( peer, time )
 		}
 		
 		/** Update last time for peer. */
@@ -50,23 +31,8 @@ namespace $ {
 			
 			if( this.last < time ) this.last = time
 			
-			let face = this.get( peer )
-			if( !face ) this.set( peer, face = { stamp: 0, milli: 0, count: 0 } )
-			
-			time = Math.max( face.stamp * 1000 + face.milli, time )
-			
-			face.stamp = Math.floor( time / 1000 )
-			face.milli = time % 1000
-			
-			return time
-		}
-		
-		time( peer: string ) {
-			
-			const face = this.get( peer )
-			if( !face ) return 0
-			
-			return face.stamp * 1000 + face.milli
+			let prev = this.get( peer ) ?? 0
+			if( prev < time ) this.set( peer, time )
 			
 		}
 		
@@ -79,6 +45,7 @@ namespace $ {
 		[ $mol_dev_format_head ]() {
 			return $mol_dev_format_span( {} ,
 				$mol_dev_format_native( this ) ,
+				$mol_dev_format_shade( ' ', this.total ) ,
 				$mol_dev_format_shade( ' ', new Date( this.last ) ) ,
 			)
 		}

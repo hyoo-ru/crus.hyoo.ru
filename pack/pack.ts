@@ -1,18 +1,28 @@
 namespace $ {
 	
+	export type $hyoo_crus_pack_parts = {
+		
+		lands: Record< $hyoo_crus_ref, {
+			faces: $hyoo_crus_face_map,
+			units: $hyoo_crus_unit[],
+		} >,
+		
+		rocks: [ Uint8Array, null | Uint8Array ][],
+		
+	}
+	
 	export class $hyoo_crus_pack extends $mol_buffer {
 		
 		toBlob() {
-			return new Blob( [ this ], { type: 'application/x-crus-pack' } )
+			return new Blob( [ this ], { type: 'application/vnd.hyoo_crus_pack' } )
 		}
 		
 		parts() {
 			
-			const faces = {} as Record< $hyoo_crus_ref, $hyoo_crus_face_map >
-			const units = {} as Record< $hyoo_crus_ref, $hyoo_crus_unit[] >
-			const rocks = [] as [ Uint8Array, null | Uint8Array ][]
+			const lands = {} as $hyoo_crus_pack_parts[ 'lands' ]
+			const rocks = [] as $hyoo_crus_pack_parts[ 'rocks' ]
 			
-			const buff = this.asArray()
+			const buf = this.asArray()
 			let land = null as $hyoo_crus_ref | null
 			
 			for( let offset = 0; offset < this.byteLength; ) {
@@ -24,36 +34,32 @@ namespace $ {
 						
 						case $hyoo_crus_part.land: {
 							
-							const head = new Uint8Array( buff.buffer, buff.byteOffset + offset, 4 )
-							if( !$mol_compare_deep( $hyoo_crus_part_crus, head ) ) {
-								$mol_fail( new Error( 'Wrong 4CC code' ) )
-							}
+							const faces = new $hyoo_crus_face_map
+							faces.total = this.uint32( offset ) >> 8
 							offset += 4
 							
 							land = $hyoo_crus_ref_decode(
-								new Uint8Array( buff.buffer, buff.byteOffset + offset, 18 )
+								new Uint8Array( buf.buffer, buf.byteOffset + offset, 18 )
 							)
+							offset += 18
 							
-							faces[ land ] ||= new $hyoo_crus_face_map
+							const len = this.uint16( offset )
+							offset += 2
 							
-							offset += 20
-							continue
-						}
-						
-						case $hyoo_crus_part.face: {
+							for( let i = 0; i < len; ++i ) {
+								
+								const peer = $mol_base64_ae_encode(
+									new Uint8Array( buf.buffer, buf.byteOffset + offset, 6 )
+								)
+								
+								const time = this.uint48( offset + 6 )
+								
+								faces.time_max( peer, time )
+								offset += 12
+								
+							}
 							
-							if( !land ) $mol_fail( new Error( 'Land is undefined' ) )
-							
-							const count = this.uint32( offset ) >> 8
-							const peer = $mol_base64_ae_encode(
-								new Uint8Array( buff.buffer, buff.byteOffset + offset + 4, 6 )
-							)
-							const time = this.uint48( offset + 10 )
-							offset += 16
-							
-							faces[ land ] ||= new $hyoo_crus_face_map
-							faces[ land ].time_max( peer, time )
-							faces[ land ].count_shift( peer, count )
+							lands[ land ] = { faces, units: [] }
 							
 							continue
 						}
@@ -63,12 +69,11 @@ namespace $ {
 							if( !land ) $mol_fail( new Error( 'Land is undefined' ) )
 							
 							const unit = new $hyoo_crus_pass(
-								buff.slice( offset, offset += $hyoo_crus_unit.size ).buffer
+								buf.slice( offset, offset += $hyoo_crus_unit.size ).buffer
 							)
 							
-							delete faces[ land ]
-							units[ land ] ||= []
-							units[ land ].push( unit )
+							lands[ land ].units ||= []
+							lands[ land ].units.push( unit )
 							
 							continue
 						}
@@ -78,19 +83,18 @@ namespace $ {
 							if( !land ) $mol_fail( new Error( 'Land is undefined' ) )
 							
 							const unit = new $hyoo_crus_gift(
-								buff.slice( offset, offset += $hyoo_crus_unit.size ).buffer
+								buf.slice( offset, offset += $hyoo_crus_unit.size ).buffer
 							)
 							
-							delete faces[ land ]
-							units[ land ] ||= []
-							units[ land ].push( unit )
+							lands[ land ].units ||= []
+							lands[ land ].units.push( unit )
 							
 							continue
 						}
 						
 						case $hyoo_crus_part.hash: {
 							
-							const hash = buff.slice( offset += 4, offset += 24 )
+							const hash = buf.slice( offset += 4, offset += 24 )
 							rocks.push([ hash, null ])
 							
 							continue
@@ -99,8 +103,8 @@ namespace $ {
 						case $hyoo_crus_part.rock: {
 							
 							const size = this.uint32( offset ) >> 8
-							const hash = buff.slice( offset += 4, offset += 24 )
-							const rock = buff.slice( offset, offset + size )
+							const hash = buf.slice( offset += 4, offset += 24 )
+							const rock = buf.slice( offset, offset + size )
 							
 							rocks.push([ hash, rock ])
 							offset += Math.ceil( size / 8 ) * 8
@@ -121,35 +125,30 @@ namespace $ {
 					
 					if( !land ) $mol_fail( new Error( 'Land is undefined' ) )
 					
-					delete faces[ land ]
-					units[ land ] ||= []
-					units[ land ].push( new $hyoo_crus_gist(
-						buff.slice( offset, offset += $hyoo_crus_unit.size ).buffer
-					) )
+					const unit = new $hyoo_crus_gist(
+						buf.slice( offset, offset += $hyoo_crus_unit.size ).buffer
+					)
 					
+					lands[ land ].units ||= []
+					lands[ land ].units.push( unit )
+			
 					continue
 				}
 				
 			}
 			
-			return { faces, units, rocks }
+			return { lands, rocks }
 			
 		}
 	
-		static make(
-			faces: Record< $hyoo_crus_ref, $hyoo_crus_face_map >,
-			units: Record< $hyoo_crus_ref, readonly $hyoo_crus_unit[] >,
-			rocks: readonly [ Uint8Array, null | Uint8Array ][],
-		) {
+		static make( { lands, rocks }: $hyoo_crus_pack_parts ) {
 			
 			let size = 0
 			
-			for( const land of Reflect.ownKeys( faces ) as $hyoo_crus_ref[] ) {
-				size += 24 + faces[ land as $hyoo_crus_ref ].size * 16
-			}
-			
-			for( const land of Reflect.ownKeys( units ) as $hyoo_crus_ref[] ) {
-				size += 24 + units[ land as $hyoo_crus_ref ].length * $hyoo_crus_unit.size
+			for( const land of Reflect.ownKeys( lands ) as $hyoo_crus_ref[] ) {
+				size += 24
+				size += lands[ land ].faces.size * 12
+				size += lands[ land ].units.length * $hyoo_crus_unit.size
 			}
 			
 			for( const [ hash, rock ] of rocks ) {
@@ -163,30 +162,22 @@ namespace $ {
 			
 			let offset = 0
 			
-			const open_land = ( land: $hyoo_crus_ref )=> {
-				buff.set( $hyoo_crus_part_crus, offset )
+			for( const land of Reflect.ownKeys( lands ) as $hyoo_crus_ref[] ) {
+				
+				const faces = lands[ land ].faces
+				
+				pack.uint32( offset, $hyoo_crus_part.land | ( faces.total << 8 ) )
 				buff.set( $hyoo_crus_ref_encode( land ), offset + 4 )
+				pack.uint16( offset + 22, faces.size )
 				offset += 24
-			}
-			
-			for( const land of Reflect.ownKeys( faces ) as $hyoo_crus_ref[] ) {
 				
-				open_land( land )
-				
-				for( const peer of faces[ land ].keys() ) {
-					pack.uint32( offset, ( faces[ land ].get( peer )!.count << 8 ) | $hyoo_crus_part.face )
-					buff.set( $mol_base64_ae_decode( peer ), offset + 4 )
-					pack.uint48( offset + 10, faces[ land ].time( peer ) )
-					offset += 16
+				for( const [ peer, time ] of faces ) {
+					buff.set( $mol_base64_ae_decode( peer ), offset )
+					pack.uint48( offset + 6, time )
+					offset += 12
 				}
 				
-			}
-			
-			for( const land of Reflect.ownKeys( units ) as $hyoo_crus_ref[] ) {
-				
-				open_land( land )
-				
-				for( const unit of units[ land ] ) {
+				for( const unit of lands[ land ].units ) {
 					buff.set( unit.asArray(), offset )
 					offset += unit.byteLength
 				}

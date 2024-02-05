@@ -43,17 +43,17 @@ namespace $ {
 		} ) {
 			const way = this.kind()
 			const Unit = {
-				gist: $hyoo_crus_gist,
 				pass: $hyoo_crus_pass,
 				gift: $hyoo_crus_gift,
+				gist: $hyoo_crus_gist,
 			}[ way ]
 			if( this instanceof Unit ) return ways[ way ]( this as any )
 			const unit = new Unit( this.buffer, this.byteOffset, this.byteLength ) as any
 			return ways[ way ]( unit )
 		}
 		
-		narrow(): $hyoo_crus_unit {
-			return this.choose< $hyoo_crus_unit >({
+		narrow() {
+			return this.choose< $hyoo_crus_pass | $hyoo_crus_gift | $hyoo_crus_gist >({
 				gist: unit => unit,
 				pass: unit => unit,
 				gift: unit => unit,

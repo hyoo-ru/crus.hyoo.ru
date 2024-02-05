@@ -44,11 +44,11 @@ namespace $ {
 		@ $mol_action
 		apply_pack( pack: $hyoo_crus_pack ) {
 			
-			const { faces, units, rocks } = pack.parts()
+			const { lands, rocks } = pack.parts()
 			
-			for( const land of Reflect.ownKeys( units ) as $hyoo_crus_ref[] ) {
+			for( const land of Reflect.ownKeys( lands ) as $hyoo_crus_ref[] ) {
 				
-				const errors = this.Land( land ).apply_unit( units[ land ] ).filter( Boolean )
+				const errors = this.Land( land ).apply_unit( lands[ land ].units ).filter( Boolean )
 				
 				for( const error of errors ) this.$.$mol_log3_warn({
 					place: `${this}.apply_pack()`,

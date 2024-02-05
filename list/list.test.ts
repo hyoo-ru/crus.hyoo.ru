@@ -105,7 +105,7 @@ namespace $ {
 			const list2 = land2.Node( $hyoo_crus_list ).Item('')
 
 			list1.items([ 'foo', 'xxx' ])
-			land2.face.tick()
+			land2.faces.tick()
 			list2.items([ 'foo', 'yyy' ])
 			land1.apply_unit_trust( land2.delta_unit() )
 			$mol_assert_equal( list1.items(), [ 'foo', 'yyy', 'foo', 'xxx' ] )
@@ -188,7 +188,7 @@ namespace $ {
 			left.Data( $hyoo_crus_list ).move( 1, 0 )
 			
 			const right = fork( base )
-			right.face.sync( left.face )
+			right.faces.sync( left.faces )
 			right.Data( $hyoo_crus_list ).items([ 1, 7, 2, 3, 4 ])
 			
 			sync( left, right )
@@ -209,7 +209,7 @@ namespace $ {
 			left.Data( $hyoo_crus_list ).items([ 1, 7, 2, 3, 4 ])
 			
 			const right = fork( base )
-			right.face.sync( left.face )
+			right.faces.sync( left.faces )
 			right.Data( $hyoo_crus_list ).move( 1, 0 )
 			
 			sync( left, right )
@@ -230,7 +230,7 @@ namespace $ {
 			left.Data( $hyoo_crus_list ).move( 1, 4 )
 			
 			const right = fork( base )
-			right.face.sync( left.face )
+			right.faces.sync( left.faces )
 			right.Data( $hyoo_crus_list ).items([ 1, 7, 2, 3, 4 ])
 			
 			sync( left, right )
@@ -251,7 +251,7 @@ namespace $ {
 			left.Data( $hyoo_crus_list ).items([ 1, 7, 2, 3, 4 ])
 			
 			const right = fork( base )
-			right.face.sync( left.face )
+			right.faces.sync( left.faces )
 			right.Data( $hyoo_crus_list ).move( 1, 4 )
 			
 			sync( left, right )
@@ -272,7 +272,7 @@ namespace $ {
 			left.Data( $hyoo_crus_list ).items([ 1, 3, 4 ])
 			
 			const right = fork( base )
-			right.face.sync( left.face )
+			right.faces.sync( left.faces )
 			right.Data( $hyoo_crus_list ).items([ 1, 2, 7, 3, 4 ])
 			
 			sync( left, right )
@@ -293,7 +293,7 @@ namespace $ {
 			left.Data( $hyoo_crus_list ).items([ 1, 2, 7, 3, 4 ])
 			
 			const right = fork( base )
-			right.face.sync( left.face )
+			right.faces.sync( left.faces )
 			right.Data( $hyoo_crus_list ).items([ 1, 3, 4 ])
 			
 			sync( left, right )
@@ -314,7 +314,7 @@ namespace $ {
 			left.Data( $hyoo_crus_list ).wipe( 2 )
 			
 			const right = fork( base )
-			right.face.sync( left.face )
+			right.faces.sync( left.faces )
 			right.Data( $hyoo_crus_list ).items([ 1, 2, 7, 3, 4 ])
 			
 			sync( left, right )
@@ -335,7 +335,7 @@ namespace $ {
 			left.Data( $hyoo_crus_list ).items([ 1, 2, 7, 3, 4 ])
 			
 			const right = fork( base )
-			right.face.sync( left.face )
+			right.faces.sync( left.faces )
 			right.Data( $hyoo_crus_list ).wipe( 2 )
 			
 			sync( left, right )
@@ -356,7 +356,7 @@ namespace $ {
 			left.gist_move( left.Data( $hyoo_crus_list ).units()[1], '11111111', 0 )
 			
 			const right = fork( base )
-			right.face.sync( left.face )
+			right.faces.sync( left.faces )
 			right.Data( $hyoo_crus_list ).items([ 1, 2, 7, 3, 4 ])
 			
 			sync( left, right )
@@ -382,7 +382,7 @@ namespace $ {
 			left.Data( $hyoo_crus_list ).items([ 1, 2, 7, 3, 4 ])
 			
 			const right = fork( base )
-			right.face.sync( left.face )
+			right.faces.sync( left.faces )
 			right.gist_move( right.Data( $hyoo_crus_list ).units()[1], '11111111', 0 )
 			
 			sync( left, right )
@@ -408,7 +408,7 @@ namespace $ {
 			left.Data( $hyoo_crus_list ).items([ 1, 2, 7, 4 ])
 			
 			const right = fork( base )
-			right.face.sync( left.face )
+			right.faces.sync( left.faces )
 			right.Data( $hyoo_crus_list ).items([ 1, 2, 13, 3, 4 ])
 			
 			sync( left, right )
@@ -429,7 +429,7 @@ namespace $ {
 			left.Data( $hyoo_crus_list ).items([ 1, 2, 13, 3, 4 ])
 			
 			const right = fork( base )
-			right.face.sync( left.face )
+			right.faces.sync( left.faces )
 			right.Data( $hyoo_crus_list ).items([ 1, 2, 7, 4 ])
 			
 			sync( left, right )
@@ -451,7 +451,7 @@ namespace $ {
 			left.Data( $hyoo_crus_list ).move( 1, 5 )
 			
 			const right = fork( base )
-			right.face.sync( left.face )
+			right.faces.sync( left.faces )
 			right.Data( $hyoo_crus_list ).items([ 1, 2, 7, 3, 4, 5, 6 ])
 			
 			sync( left, right )
@@ -472,7 +472,7 @@ namespace $ {
 			left.Data( $hyoo_crus_list ).items([ 1, 2, 7, 3, 4, 5, 6 ])
 			
 			const right = fork( base )
-			right.face.sync( left.face )
+			right.faces.sync( left.faces )
 			right.Data( $hyoo_crus_list ).move( 1, 5 )
 			right.Data( $hyoo_crus_list ).move( 1, 5 )
 			

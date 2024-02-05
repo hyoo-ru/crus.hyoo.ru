@@ -90,7 +90,7 @@ namespace $ {
 			const text2 = land2.Node( $hyoo_crus_text ).Item('')
 			
 			text1.str( 'foo bar.' )
-			land2.face.sync( land1.face )
+			land2.faces.sync( land1.faces )
 			text2.str( 'xxx yyy.' )
 			
 			const delta1 = land1.delta_unit()
@@ -119,12 +119,12 @@ namespace $ {
 			
 			const right = $hyoo_crus_land.make({ $ })
 			right.apply_unit_trust( base.delta_unit() )
-			right.face.sync( left.face )
+			right.faces.sync( left.faces )
 			right.Data( $hyoo_crus_text ).str( '( [ f ] )' )
 			right.Data( $hyoo_crus_text ).str( '( [ fu ] )' )
 			
-			const left_delta = left.delta_unit( base.face )
-			const right_delta = right.delta_unit( base.face )
+			const left_delta = left.delta_unit( base.faces )
+			const right_delta = right.delta_unit( base.faces )
 			
 			left.apply_unit_trust( right_delta )
 			right.apply_unit_trust( left_delta )

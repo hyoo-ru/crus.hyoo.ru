@@ -86,26 +86,21 @@ namespace $ {
 			
 			const lands = this.port_lands( port )
 			
-			for( const land of Reflect.ownKeys( parts.faces ) as $hyoo_crus_ref[] ) {
+			for( const land of Reflect.ownKeys( parts.lands ) as $hyoo_crus_ref[] ) {
 				
 				lands.add( land )
-				const port_face = this.face_port_land([ port, land ])
-				// console.log($mol_key(port), land.ref(), port_face, faces[ land_ref ] )
-				// this.face_port_land( [ port, land ], faces[ land ] )
-				if( port_face ) port_face.sync( parts.faces[ land ] )
-				else this.face_port_land( [ port, land ], parts.faces[ land ] )
-			
-			}
-			
-			for( const land of Reflect.ownKeys( parts.units ) as $hyoo_crus_ref[] ) {
 				
-				const port_face = this.face_port_land([ port, land ])
-				if( !port_face ) continue
+				const faces = parts.lands[ land ].faces
+				let port_faces = this.face_port_land([ port, land ])
 				
-				for( const unit of parts.units[ land ] ) {
-					if( unit instanceof $hyoo_crus_gift || unit instanceof $hyoo_crus_gist ) {
-						port_face.time_max( unit.peer(), unit.time() )
-					}
+				if( port_faces ) port_faces.sync( faces )
+				else this.face_port_land( [ port, land ], port_faces = faces )
+			
+				const units = parts.lands[ land ].units
+				for( let unit of units ) {
+					const unit2 = unit.narrow()
+					if( unit2 instanceof $hyoo_crus_pass ) continue
+					port_faces.time_max( unit2.peer(), unit2.time() )
 				}
 				
 			}
@@ -131,7 +126,6 @@ namespace $ {
 			const Land = this.realm().Land( land )
 			Land.saving()
 			
-			
 			const parts = Land.delta_parts( faces )
 			if( !parts ) return
 			
@@ -139,12 +133,11 @@ namespace $ {
 				place: this,
 				message: 'Send Unit',
 				port: $mol_key( port ),
-				land: land,
 				... parts,
 			})
 			
-			port.send_bin( $hyoo_crus_pack.make( parts.faces, parts.units, parts.rocks ).asArray() )
-			faces.sync( Land.face )
+			port.send_bin( $hyoo_crus_pack.make( parts ).asArray() )
+			faces.sync( Land.faces )
 			
 		}
 		
@@ -156,7 +149,7 @@ namespace $ {
 				message: 'Send Face',
 				port: $mol_key( port ),
 				land: land,
-				faces: this.realm().Land( land ).face,
+				faces: this.realm().Land( land ).faces,
 			})
 			port.send_bin( this.realm().Land( land ).faces_pack().asArray() )
 		}

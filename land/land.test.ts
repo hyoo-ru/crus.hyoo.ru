@@ -63,7 +63,7 @@ namespace $ {
 			land1.post( '', '', 'AA111111', new Uint8Array([ 1 ]) )
 			$mol_assert_equal( land1.delta_unit().length, 2 )
 			
-			const face = new $hyoo_crus_face_map( land1.face )
+			const face = new $hyoo_crus_face_map( land1.faces )
 			
 			land1.post( 'AA111111', '', 'AA222222', new Uint8Array([ 2 ]) )
 			$mol_assert_equal( land1.delta_unit().length, 3 )
@@ -164,12 +164,12 @@ namespace $ {
 			$mol_assert_equal( base.Data( $hyoo_crus_list ).items(), [ 'foo', 'xxx' ] )
 			$mol_assert_equal( left.Data( $hyoo_crus_list ).items(), [ 'foo', 'xxx' ] )
 			
-			left.face.sync( base.face )
+			left.faces.sync( base.faces )
 			left.Data( $hyoo_crus_list ).items([ 'foo', 'yyy' ])
 			$mol_assert_equal( left.Data( $hyoo_crus_list ).items(), [ 'foo', 'yyy' ] )
 			
 			const right = base.fork()
-			right.face.sync( left.face )
+			right.faces.sync( left.faces )
 			right.Data( $hyoo_crus_list ).items([ 'foo', 'zzz' ])
 			$mol_assert_equal( right.Data( $hyoo_crus_list ).items(), [ 'foo', 'zzz' ] )
 			
