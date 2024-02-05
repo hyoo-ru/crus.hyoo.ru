@@ -3,8 +3,8 @@
 > *💃 The elegant basis for reactive architecture.*
 
 - **C**onvergent: *✅CvRDT, ✅Total Ordered, ✅Interleaving Free, ✅Weak Typed*
-- **R**ealtime: *💤Delta Replication, 💤WebSocket/WebRTC, 💤Inplace Updates, ✅In Memory with Persistance*
-- **U**nbreakable: *✅High availability, 💤Partition Tolerance, 💤Auto Recovery, ✅Long Offline, 💤WAL Free, 💤Backup Free*
+- **R**ealtime: *✅Delta Replication, ✅WebSocket/💤WebRTC, 💤Inplace Updates, ✅In Memory with Persistance*
+- **U**nbreakable: *✅High availability, ✅Partition Tolerance, ✅Auto Recovery, ✅Long Offline, 💤WAL Free, 💤Backup Free*
 - **S**ecure: *✅Private Key Auth, ✅Signed Changes, ✅Encrypted Merge, ✅Zero-Trust, ✅Leakage Proof*
 - **D**ecentralized: *✅Local First, ✅Oracle Free, 💤Peer to Peer*
 - **B**rilliant: *✅Reactive Architecture, ✅Graph Structure, ✅First Class ISO8601/JSON/DOM/Tree*
