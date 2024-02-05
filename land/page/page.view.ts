@@ -5,14 +5,14 @@ namespace $.$$ {
 			return '🌍 ' + this.land().ref().description
 		}
 		
-		override node_title( head: string ) {
-			const id = this.node_dump( head ).head()
-			if( id === 'AQAAAAAA' ) return 'Meta'
-			return id || 'Data'
-		}
+		// override node_title( head: string ) {
+		// 	const id = this.node_dump( head ).head()
+		// 	if( id === 'AQAAAAAA' ) return 'Meta'
+		// 	return id || 'Data'
+		// }
 		
-		override node_dump( head: string ) {
-			return this.land().Node( $hyoo_crus_node ).Item( head )
+		override node_meta() {
+			return this.land().Node( $hyoo_crus_node ).Item( 'AQAAAAAA' )
 		}
 		
 		@ $mol_mem
@@ -25,13 +25,17 @@ namespace $.$$ {
 			return this.land().encrypted( next )
 		}
 		
-		@ $mol_mem
-		override body() {
-			return [
-				this.Flex(),
-				this.Node_dump( this.node().head() ),
-				this.Node_dump( 'AQAAAAAA' ),
-			]
+		// @ $mol_mem
+		// override body() {
+		// 	return [
+		// 		this.Flex(),
+		// 		this.Node_dump( this.node().head() ),
+		// 		this.Node_dump( 'AQAAAAAA' ),
+		// 	]
+		// }
+		
+		dump_data_node() {
+			return this.node()
 		}
 		
 		override fork() {
