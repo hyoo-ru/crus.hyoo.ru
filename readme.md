@@ -1,6 +1,6 @@
 # CRUS🦿DB
 
-> *💃 The elegant basis for reactive architecture.*
+> Decentralized high-available database with conflict-free real-time synchronization
 
 - **C**onvergent: *✅CvRDT, ✅Total Ordered, ✅Interleaving Free, ✅Weak Typed*
 - **R**ealtime: *✅Delta Replication, ✅WebSocket/💤WebRTC, 💤Inplace Updates, ✅In Memory with Persistance*
