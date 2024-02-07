@@ -17,8 +17,11 @@ namespace $ {
 		/** Blob response. */
 		rock = 0b1111_0101,
 		
-		/** Immutable-B-Trie-Tree bucket. */
-		buck = 0b0000_0001,
+		/** B+Tree root bucket. */
+		root = 0b0000_0001,
+		
+		/** B+Tree branch bucket. */
+		buck = 0b0000_1001,
 		
 	}
 	

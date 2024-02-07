@@ -18,13 +18,21 @@ namespace $.$$ {
 			
 			const faces3 = new $hyoo_crus_face_map
 			
+			const rock1 = new Uint8Array([ 1, 2, 3 ])
+			const rock2 = new Uint8Array([ 3, 2, 1 ])
+			const hash1 = $mol_crypto_hash( rock1 )
+			const hash2 = $mol_crypto_hash( rock2 )
+			
 			const parts = {
 				lands: {
 					[ land1 ]: { faces: faces1, units: [] },
 					[ land2 ]: { faces: faces2, units: [] },
 					[ land3 ]: { faces: faces3, units: [] },
 				},
-				rocks: [],
+				rocks: [
+					[ hash1, rock1 ],
+					[ hash2, rock2 ],
+				] as $hyoo_crus_pack_parts[ 'rocks' ],
 			}
 			
 			$mol_assert_equal(
