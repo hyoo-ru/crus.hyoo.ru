@@ -4417,7 +4417,8 @@ var $;
         $hyoo_crus_part[$hyoo_crus_part["gist"] = 0] = "gist";
         $hyoo_crus_part[$hyoo_crus_part["hash"] = 253] = "hash";
         $hyoo_crus_part[$hyoo_crus_part["rock"] = 245] = "rock";
-        $hyoo_crus_part[$hyoo_crus_part["buck"] = 1] = "buck";
+        $hyoo_crus_part[$hyoo_crus_part["root"] = 1] = "root";
+        $hyoo_crus_part[$hyoo_crus_part["buck"] = 9] = "buck";
     })($hyoo_crus_part = $.$hyoo_crus_part || ($.$hyoo_crus_part = {}));
 })($ || ($ = {}));
 //hyoo/crus/part/part.ts
@@ -6515,10 +6516,10 @@ var $;
                         }
                         case $hyoo_crus_part.rock: {
                             const size = this.uint32(offset) >> 8;
-                            const hash = buf.slice(offset += 4, offset += 24);
-                            const rock = buf.slice(offset, offset + size);
+                            const rock = buf.slice(offset + 4, offset + 4 + size);
+                            const hash = $mol_crypto_hash(rock);
                             rocks.push([hash, rock]);
-                            offset += Math.ceil(size / 8) * 8;
+                            offset += Math.ceil(size / 8 + .5) * 8;
                             continue;
                         }
                         case $hyoo_crus_part.buck: {
@@ -6547,7 +6548,7 @@ var $;
                 size += lands[land].units.length * $hyoo_crus_unit.size;
             }
             for (const [hash, rock] of rocks) {
-                size += 24 + (rock ? Math.ceil(rock.length / 8) * 8 : 0);
+                size += rock ? Math.ceil(rock.length / 8 + .5) * 8 : 24;
             }
             if (size === 0)
                 return null;
@@ -6573,10 +6574,11 @@ var $;
             for (const [hash, rock] of rocks) {
                 const len = rock?.length ?? 0;
                 pack.uint32(offset, rock ? (len << 8) + $hyoo_crus_part.rock : $hyoo_crus_part.hash);
-                buff.set(hash, offset + 4);
                 if (rock)
-                    buff.set(rock, offset + 24);
-                offset += 24 + Math.ceil(len / 8) * 8;
+                    buff.set(rock, offset + 4);
+                else
+                    buff.set(hash, offset + 4);
+                offset += rock ? Math.ceil(len / 8 + .5) * 8 : 24;
             }
             return pack;
         }

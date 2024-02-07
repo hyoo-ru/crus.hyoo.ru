@@ -1090,7 +1090,8 @@ declare namespace $ {
         gist = 0,
         hash = 253,
         rock = 245,
-        buck = 1
+        root = 1,
+        buck = 9
     }
 }
 
