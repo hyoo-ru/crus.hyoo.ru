@@ -119,7 +119,7 @@
     "$mol_mem_cached",
     "$mol_wire_probe",
     "$mol_compare_array",
-    "$mol_rest_resource_fs_extensions",
+    "$mol_file_extensions",
     "$hyoo_crus_realm",
     "$mol_wire_dict",
     "$hyoo_crus_ref",

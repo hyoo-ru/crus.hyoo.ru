@@ -947,7 +947,7 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    let $mol_rest_resource_fs_extensions: Record<string, `image/${string}` | `text/${string}` | `audio/${string}` | `video/${string}` | `font/${string}` | `application/${string}` | `model/${string}`>;
+    let $mol_file_extensions: Record<string, `image/${string}` | `text/${string}` | `audio/${string}` | `video/${string}` | `font/${string}` | `application/${string}` | `model/${string}`>;
 }
 
 declare namespace $ {
