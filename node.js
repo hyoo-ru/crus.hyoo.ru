@@ -7273,7 +7273,9 @@ var $;
         lord_rang(lord) {
             if (lord === this.lord_ref())
                 return $hyoo_crus_rang.law;
-            return this.gifts.get(lord)?.rang() ?? $hyoo_crus_rang.get;
+            return this.gifts.get(lord)?.rang()
+                ?? this.gifts.get($hyoo_crus_ref('FFFFFFFF_FFFFFFFF'))?.rang()
+                ?? $hyoo_crus_rang.get;
         }
         peer_rang(peer) {
             const auth = this.passes.get(peer);
@@ -7283,21 +7285,30 @@ var $;
         }
         delta_unit(face = new $hyoo_crus_face_map) {
             const delta = [];
-            for (const unit of this.passes.values()) {
-                if (face.get(unit.peer()))
-                    continue;
-                delta.push(unit);
-            }
+            const passed = new Set();
+            const auth = (peer) => {
+                if (passed.has(peer))
+                    return;
+                if (face.get(peer))
+                    return;
+                const pass = this.passes.get(peer);
+                delta.push(pass);
+                passed.add(peer);
+            };
             for (const [lord, unit] of this.gifts) {
                 const time = face.get(unit.peer()) ?? 0;
-                if (time < unit.time())
-                    delta.push(unit);
+                if (time >= unit.time())
+                    continue;
+                auth(unit.peer());
+                delta.push(unit);
             }
             for (const kids of this.gists.values()) {
                 for (const unit of kids.values()) {
                     const time = face.get(unit.peer()) ?? 0;
-                    if (time < unit.time())
-                        delta.push(unit);
+                    if (time >= unit.time())
+                        continue;
+                    auth(unit.peer());
+                    delta.push(unit);
                 }
             }
             if (delta.length || this.faces.total <= this.faces.total)
@@ -7344,13 +7355,13 @@ var $;
             });
             return pack;
         }
-        apply_unit(delta) {
+        apply_unit(delta, skip_check = false) {
             if (!delta.length)
                 return [];
             const errors = $mol_wire_sync(this).units_verify(delta);
             if (errors.some(v => v))
                 return errors;
-            return this.apply_unit_trust(delta);
+            return this.apply_unit_trust(delta, skip_check);
         }
         async units_verify(delta) {
             const passes = delta.filter(unit => unit.kind() === 'pass');
@@ -7370,11 +7381,13 @@ var $;
                 return await key_public.verify(sens, unit.sign()) ? '' : `Wrong unit sign`;
             }));
         }
-        apply_unit_trust(delta) {
+        apply_unit_trust(delta, skip_check = false) {
             return delta.map(unit => {
-                const error = this.check_unit(unit);
-                if (error)
-                    return error;
+                if (!skip_check) {
+                    const error = this.check_unit(unit);
+                    if (error)
+                        return error;
+                }
                 let need_recheck = false;
                 const res = unit.choose({
                     pass: next => {
@@ -7555,7 +7568,7 @@ var $;
             unit.rang(rang);
             unit.time(this.faces.tick());
             unit.peer(auth.peer());
-            unit.dest(dest);
+            unit.dest(dest ?? $hyoo_crus_ref('FFFFFFFF_FFFFFFFF'));
             const error = this.apply_unit_trust([unit])[0];
             if (error)
                 $mol_fail(new Error(error));
@@ -7643,7 +7656,7 @@ var $;
         loading() {
             $mol_wire_solid();
             const units = this.realm()?.yard().load(this) ?? [];
-            const errors = this.apply_unit(units).filter(Boolean);
+            const errors = this.apply_unit(units, !!'skip_check').filter(Boolean);
             if (errors.length)
                 this.$.$mol_log3_fail({
                     place: this,
