@@ -16922,7 +16922,7 @@ var $;
 var $;
 (function ($) {
     const { unicode_only, line_end, tab, repeat_greedy, optional, forbid_after, force_after, char_only, char_except } = $mol_regexp;
-    $.$hyoo_crowd_tokenizer = $mol_regexp.from({
+    $.$hyoo_crus_text_tokens = $mol_regexp.from({
         token: {
             'line-break': line_end,
             'indents': repeat_greedy(tab, 1),
@@ -16989,9 +16989,9 @@ var $;
                 ]), 1),
             ],
         },
-    }).native;
+    });
 })($ || ($ = {}));
-//hyoo/crowd/tokenizer/tokenizer.ts
+//hyoo/crus/text/tokens/tokens.ts
 ;
 "use strict";
 var $;
@@ -17075,7 +17075,7 @@ var $;
                 --from;
                 next = ($hyoo_crus_vary_cast_str(land.gist_decode(list[from])) ?? '') + next;
             }
-            const words = next.match($hyoo_crowd_tokenizer) ?? [];
+            const words = next.match($hyoo_crus_text_tokens) ?? [];
             this.cast($hyoo_crus_list).splice(words, from, to);
             return this;
         }

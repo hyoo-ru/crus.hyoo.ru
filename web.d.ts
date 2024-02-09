@@ -10597,7 +10597,21 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    let $hyoo_crowd_tokenizer: RegExp;
+    let $hyoo_crus_text_tokens: $mol_regexp<{
+        [x: string]: string;
+        readonly token: string;
+        readonly link: string;
+        readonly emoji: string;
+        readonly 'line-break': string;
+        readonly indents: string;
+        readonly Word: string;
+        readonly word: string;
+        readonly spaces: string;
+        readonly others: string;
+        readonly space: string;
+        readonly win_end: string;
+        readonly mac_end: string;
+    }>;
 }
 
 declare namespace $ {

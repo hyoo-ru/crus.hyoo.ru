@@ -6132,38 +6132,38 @@ var $;
 (function ($) {
     $mol_test({
         'empty string'() {
-            $mol_assert_like(''.match($hyoo_crowd_tokenizer), null);
+            $mol_assert_equal(''.match($hyoo_crus_text_tokens), null);
         },
         'new lines'() {
-            $mol_assert_like('\n\r\n'.match($hyoo_crowd_tokenizer), ['\n', '\r\n']);
+            $mol_assert_equal('\n\r\n'.match($hyoo_crus_text_tokens), ['\n', '\r\n']);
         },
         'numbers'() {
-            $mol_assert_like('123'.match($hyoo_crowd_tokenizer), ['123']);
+            $mol_assert_equal('123'.match($hyoo_crus_text_tokens), ['123']);
         },
         'emoji'() {
-            $mol_assert_like('😀😁'.match($hyoo_crowd_tokenizer), ['😀', '😁']);
+            $mol_assert_equal('😀😁'.match($hyoo_crus_text_tokens), ['😀', '😁']);
         },
         'emoji with modifier'() {
-            $mol_assert_like('👩🏿👩🏿'.match($hyoo_crowd_tokenizer), ['👩🏿', '👩🏿']);
+            $mol_assert_equal('👩🏿👩🏿'.match($hyoo_crus_text_tokens), ['👩🏿', '👩🏿']);
         },
         'combo emoji with modifier'() {
-            $mol_assert_like('👩🏿‍🤝‍🧑🏿👩🏿‍🤝‍🧑🏿'.match($hyoo_crowd_tokenizer), ['👩🏿‍🤝‍🧑🏿', '👩🏿‍🤝‍🧑🏿']);
+            $mol_assert_equal('👩🏿‍🤝‍🧑🏿👩🏿‍🤝‍🧑🏿'.match($hyoo_crus_text_tokens), ['👩🏿‍🤝‍🧑🏿', '👩🏿‍🤝‍🧑🏿']);
         },
         'word with spaces'() {
-            $mol_assert_like('foo1  bar2'.match($hyoo_crowd_tokenizer), ['foo1', ' ', ' bar2']);
+            $mol_assert_equal('foo1  bar2'.match($hyoo_crus_text_tokens), ['foo1', ' ', ' bar2']);
         },
         'word with diactric'() {
-            $mol_assert_like('Е́е́'.match($hyoo_crowd_tokenizer), ['Е́е́']);
+            $mol_assert_equal('Е́е́'.match($hyoo_crus_text_tokens), ['Е́е́']);
         },
         'word with punctuation'() {
-            $mol_assert_like('foo--bar'.match($hyoo_crowd_tokenizer), ['foo', '--', 'bar']);
+            $mol_assert_equal('foo--bar'.match($hyoo_crus_text_tokens), ['foo', '--', 'bar']);
         },
         'CamelCase'() {
-            $mol_assert_like('Foo1BAR2'.match($hyoo_crowd_tokenizer), ['Foo1', 'BAR2']);
+            $mol_assert_equal('Foo1BAR2'.match($hyoo_crus_text_tokens), ['Foo1', 'BAR2']);
         },
     });
 })($ || ($ = {}));
-//hyoo/crowd/tokenizer/tokenizer.test.ts
+//hyoo/crus/text/tokens/tokens.test.ts
 ;
 "use strict";
 var $;
@@ -6530,6 +6530,119 @@ var $;
     });
 })($ || ($ = {}));
 //hyoo/crowd/clock/clock.test.ts
+;
+"use strict";
+var $;
+(function ($) {
+    const { unicode_only, line_end, tab, repeat_greedy, optional, forbid_after, force_after, char_only, char_except } = $mol_regexp;
+    $.$hyoo_crowd_tokenizer = $mol_regexp.from({
+        token: {
+            'line-break': line_end,
+            'indents': repeat_greedy(tab, 1),
+            'emoji': [
+                unicode_only('Extended_Pictographic'),
+                optional(unicode_only('Emoji_Modifier')),
+                repeat_greedy([
+                    unicode_only('Emoji_Component'),
+                    unicode_only('Extended_Pictographic'),
+                    optional(unicode_only('Emoji_Modifier')),
+                ]),
+            ],
+            'link': /\b(https?:\/\/[^\s,.;:!?")]+(?:[,.;:!?")][^\s,.;:!?")]+)+)/,
+            'Word': [
+                [
+                    forbid_after(line_end),
+                    unicode_only('White_Space'),
+                ],
+                repeat_greedy(char_only([
+                    unicode_only('General_Category', 'Uppercase_Letter'),
+                    unicode_only('Diacritic'),
+                    unicode_only('General_Category', 'Number'),
+                ]), 1),
+                repeat_greedy(char_only([
+                    unicode_only('General_Category', 'Lowercase_Letter'),
+                    unicode_only('Diacritic'),
+                    unicode_only('General_Category', 'Number'),
+                ])),
+            ],
+            'word': [
+                [
+                    forbid_after(line_end),
+                    unicode_only('White_Space'),
+                ],
+                repeat_greedy(char_only([
+                    unicode_only('General_Category', 'Lowercase_Letter'),
+                    unicode_only('Diacritic'),
+                    unicode_only('General_Category', 'Number'),
+                ]), 1),
+            ],
+            'spaces': [
+                forbid_after(line_end),
+                repeat_greedy(unicode_only('White_Space'), 1),
+                force_after(unicode_only('White_Space')),
+            ],
+            'space': [
+                forbid_after(line_end),
+                unicode_only('White_Space'),
+                forbid_after([
+                    unicode_only('White_Space'),
+                    unicode_only('General_Category', 'Uppercase_Letter'),
+                    unicode_only('General_Category', 'Lowercase_Letter'),
+                    unicode_only('Diacritic'),
+                    unicode_only('General_Category', 'Number'),
+                ]),
+            ],
+            'others': [
+                repeat_greedy(char_except([
+                    unicode_only('General_Category', 'Uppercase_Letter'),
+                    unicode_only('General_Category', 'Lowercase_Letter'),
+                    unicode_only('Diacritic'),
+                    unicode_only('General_Category', 'Number'),
+                    unicode_only('White_Space'),
+                ]), 1),
+            ],
+        },
+    }).native;
+})($ || ($ = {}));
+//hyoo/crowd/tokenizer/tokenizer.ts
+;
+"use strict";
+var $;
+(function ($) {
+    $mol_test({
+        'empty string'() {
+            $mol_assert_like(''.match($hyoo_crowd_tokenizer), null);
+        },
+        'new lines'() {
+            $mol_assert_like('\n\r\n'.match($hyoo_crowd_tokenizer), ['\n', '\r\n']);
+        },
+        'numbers'() {
+            $mol_assert_like('123'.match($hyoo_crowd_tokenizer), ['123']);
+        },
+        'emoji'() {
+            $mol_assert_like('😀😁'.match($hyoo_crowd_tokenizer), ['😀', '😁']);
+        },
+        'emoji with modifier'() {
+            $mol_assert_like('👩🏿👩🏿'.match($hyoo_crowd_tokenizer), ['👩🏿', '👩🏿']);
+        },
+        'combo emoji with modifier'() {
+            $mol_assert_like('👩🏿‍🤝‍🧑🏿👩🏿‍🤝‍🧑🏿'.match($hyoo_crowd_tokenizer), ['👩🏿‍🤝‍🧑🏿', '👩🏿‍🤝‍🧑🏿']);
+        },
+        'word with spaces'() {
+            $mol_assert_like('foo1  bar2'.match($hyoo_crowd_tokenizer), ['foo1', ' ', ' bar2']);
+        },
+        'word with diactric'() {
+            $mol_assert_like('Е́е́'.match($hyoo_crowd_tokenizer), ['Е́е́']);
+        },
+        'word with punctuation'() {
+            $mol_assert_like('foo--bar'.match($hyoo_crowd_tokenizer), ['foo', '--', 'bar']);
+        },
+        'CamelCase'() {
+            $mol_assert_like('Foo1BAR2'.match($hyoo_crowd_tokenizer), ['Foo1', 'BAR2']);
+        },
+    });
+})($ || ($ = {}));
+//hyoo/crowd/tokenizer/tokenizer.test.ts
 ;
 "use strict";
 var $;
