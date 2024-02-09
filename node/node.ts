@@ -45,12 +45,12 @@ namespace $ {
 		nodes< Node extends typeof $hyoo_crus_node >( Node: Node | null ): readonly InstanceType< Node >[] {
 			const land = this.land()
 			const map = {
-				term: land.Node( Node || $hyoo_crus_reg ),
-				solo: land.Node( Node || $hyoo_crus_reg ),
-				vals: land.Node( Node || $hyoo_crus_list ),
-				keys: land.Node( Node || $hyoo_crus_dict ),
+				term: ()=> land.Node( Node || $hyoo_crus_reg ),
+				solo: ()=> land.Node( Node || $hyoo_crus_reg ),
+				vals: ()=> land.Node( Node || $hyoo_crus_list ),
+				keys: ()=> land.Node( Node || $hyoo_crus_dict ),
 			}
-			return this.units().map( unit => map[ unit.tag() ].Item( unit.self() ) ) as any
+			return this.units().map( unit => map[ unit.tag() ]().Item( unit.self() ) ) as any
 		}
 		
 		@ $mol_mem
@@ -64,6 +64,29 @@ namespace $ {
 		
 		can_change( lord = this.land().auth().lord() ) {
 			return this.land().lord_rang( lord ) >= $hyoo_crus_rang.add
+		}
+		
+		@ $mol_mem
+		last_change() {
+			
+			const land = this.land()
+			let last = 0
+			
+			const map = {
+				term: ()=> null,
+				solo: ()=> land.Node( $hyoo_crus_reg ),
+				vals: ()=> land.Node( $hyoo_crus_list ),
+				keys: ()=> land.Node( $hyoo_crus_dict ),
+			}
+			
+			const visit = ( gist: $hyoo_crus_gist )=> {
+				if( gist.time() > last ) last = gist.time()
+				map[ gist.tag() ]()?.Item( gist.self() ).units().forEach( visit )
+			}
+			for( const gist of this.units() ) visit( gist )
+			
+			return last ? new $mol_time_moment( last ) : null
+			
 		}
 		
 		;[ $mol_dev_format_head ]() {

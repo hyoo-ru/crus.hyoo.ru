@@ -103,12 +103,22 @@ namespace $ {
 						case $hyoo_crus_part.rock: {
 							
 							const size = this.uint32( offset ) >> 8
-							const rock = buf.slice( offset + 4, offset + 4 + size )
+							if( size === 0 ) {
+								
+								const hash = buf.slice( offset + 4, offset + 4 + 24 )
+								rocks.push([ hash, null ])
+								offset += 4 + 24
+								
+							} else {
+								
+								const rock = buf.slice( offset + 4, offset + 4 + size )
+								
+								const hash = $mol_crypto_hash( rock )
+								rocks.push([ hash, rock ])
+								
+								offset += Math.ceil( size / 8 + .5 ) * 8
 							
-							const hash = $mol_crypto_hash( rock )
-							rocks.push([ hash, rock ])
-							
-							offset += Math.ceil( size / 8 + .5 ) * 8
+							}
 							continue
 							
 						}
@@ -188,7 +198,7 @@ namespace $ {
 			for( const [ hash, rock ] of rocks ) {
 				
 				const len = rock?.length ?? 0
-				pack.uint32( offset, rock ? ( len << 8 ) + $hyoo_crus_part.rock : $hyoo_crus_part.hash )
+				pack.uint32( offset, $hyoo_crus_part.rock | ( len << 8 ) )
 				
 				if( rock ) buff.set( rock, offset + 4 )
 				else buff.set( hash, offset + 4 )

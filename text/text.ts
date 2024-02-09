@@ -181,7 +181,7 @@ namespace $ {
 		}
 		
 		@ $mol_mem_key
-		selection( lord: $hyoo_crus_ref, next?: readonly[ number /*begin*/, number /*end*/ ] ) {
+		selection( lord: $hyoo_crus_ref, next?: readonly[ begin: number, end: number ] ) {
 			
 			const base = this.realm()!.Lord( lord ).base()
 			

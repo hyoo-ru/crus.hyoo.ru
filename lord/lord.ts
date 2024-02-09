@@ -43,8 +43,8 @@ namespace $ {
 			return this.Land( this.numb_make( idea || undefined ) )
 		}
 		
-		Profile< Node extends typeof $hyoo_crus_node >( app: string, Node: Node ) {
-			return this.base().Profile( app )?.Data( Node ) ?? null
+		Profile< Node extends typeof $hyoo_crus_node >( app: string, Node: Node, auto?: any ) {
+			return this.base().Profile( app, auto )?.Data( Node ) ?? null
 		}
 		
 		@ $mol_action
