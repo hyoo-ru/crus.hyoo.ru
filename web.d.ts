@@ -2633,6 +2633,7 @@ declare namespace $ {
         can_change(lord?: symbol & {
             $hyoo_crus_ref: symbol;
         }): boolean;
+        last_change(): $mol_time_moment | null;
     }
 }
 
@@ -2824,6 +2825,7 @@ declare namespace $ {
                 can_change(lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }): boolean;
+                last_change(): $mol_time_moment | null;
                 $: typeof $$;
                 destructor(): void;
                 toString(): string;
@@ -2871,6 +2873,7 @@ declare namespace $ {
                     can_change: (lord?: symbol & {
                         $hyoo_crus_ref: symbol;
                     }) => boolean;
+                    last_change: () => $mol_time_moment | null;
                 };
                 Value: Value;
                 toJSON(): string;
@@ -2930,6 +2933,7 @@ declare namespace $ {
                 can_change: (lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }) => boolean;
+                last_change: () => $mol_time_moment | null;
             };
             Value: Value;
             toJSON(): string;
@@ -2974,6 +2978,7 @@ declare namespace $ {
             can_change(lord?: symbol & {
                 $hyoo_crus_ref: symbol;
             }): boolean;
+            last_change(): $mol_time_moment | null;
             $: typeof $$;
             destructor(): void;
             toString(): string;
@@ -3042,6 +3047,7 @@ declare namespace $ {
                 can_change(lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }): boolean;
+                last_change(): $mol_time_moment | null;
                 $: typeof $$;
                 destructor(): void;
                 toString(): string;
@@ -3089,6 +3095,7 @@ declare namespace $ {
                     can_change: (lord?: symbol & {
                         $hyoo_crus_ref: symbol;
                     }) => boolean;
+                    last_change: () => $mol_time_moment | null;
                 };
                 Value: Value;
                 toJSON(): string;
@@ -3148,6 +3155,7 @@ declare namespace $ {
                 can_change: (lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }) => boolean;
+                last_change: () => $mol_time_moment | null;
             };
             Value: Value;
             toJSON(): string;
@@ -3201,6 +3209,7 @@ declare namespace $ {
             can_change(lord?: symbol & {
                 $hyoo_crus_ref: symbol;
             }): boolean;
+            last_change(): $mol_time_moment | null;
             $: typeof $$;
             destructor(): void;
             toString(): string;
@@ -3269,6 +3278,7 @@ declare namespace $ {
                 can_change(lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }): boolean;
+                last_change(): $mol_time_moment | null;
                 $: typeof $$;
                 destructor(): void;
                 toString(): string;
@@ -3316,6 +3326,7 @@ declare namespace $ {
                     can_change: (lord?: symbol & {
                         $hyoo_crus_ref: symbol;
                     }) => boolean;
+                    last_change: () => $mol_time_moment | null;
                 };
                 Value: Value;
                 toJSON(): string;
@@ -3375,6 +3386,7 @@ declare namespace $ {
                 can_change: (lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }) => boolean;
+                last_change: () => $mol_time_moment | null;
             };
             Value: Value;
             toJSON(): string;
@@ -3428,6 +3440,7 @@ declare namespace $ {
             can_change(lord?: symbol & {
                 $hyoo_crus_ref: symbol;
             }): boolean;
+            last_change(): $mol_time_moment | null;
             $: typeof $$;
             destructor(): void;
             toString(): string;
@@ -3496,6 +3509,7 @@ declare namespace $ {
                 can_change(lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }): boolean;
+                last_change(): $mol_time_moment | null;
                 $: typeof $$;
                 destructor(): void;
                 toString(): string;
@@ -3543,6 +3557,7 @@ declare namespace $ {
                     can_change: (lord?: symbol & {
                         $hyoo_crus_ref: symbol;
                     }) => boolean;
+                    last_change: () => $mol_time_moment | null;
                 };
                 Value: Value;
                 toJSON(): string;
@@ -3602,6 +3617,7 @@ declare namespace $ {
                 can_change: (lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }) => boolean;
+                last_change: () => $mol_time_moment | null;
             };
             Value: Value;
             toJSON(): string;
@@ -3655,6 +3671,7 @@ declare namespace $ {
             can_change(lord?: symbol & {
                 $hyoo_crus_ref: symbol;
             }): boolean;
+            last_change(): $mol_time_moment | null;
             $: typeof $$;
             destructor(): void;
             toString(): string;
@@ -3723,6 +3740,7 @@ declare namespace $ {
                 can_change(lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }): boolean;
+                last_change(): $mol_time_moment | null;
                 $: typeof $$;
                 destructor(): void;
                 toString(): string;
@@ -3770,6 +3788,7 @@ declare namespace $ {
                     can_change: (lord?: symbol & {
                         $hyoo_crus_ref: symbol;
                     }) => boolean;
+                    last_change: () => $mol_time_moment | null;
                 };
                 Value: Value;
                 toJSON(): string;
@@ -3829,6 +3848,7 @@ declare namespace $ {
                 can_change: (lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }) => boolean;
+                last_change: () => $mol_time_moment | null;
             };
             Value: Value;
             toJSON(): string;
@@ -3886,6 +3906,7 @@ declare namespace $ {
             can_change(lord?: symbol & {
                 $hyoo_crus_ref: symbol;
             }): boolean;
+            last_change(): $mol_time_moment | null;
             $: typeof $$;
             destructor(): void;
             toString(): string;
@@ -3954,6 +3975,7 @@ declare namespace $ {
                 can_change(lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }): boolean;
+                last_change(): $mol_time_moment | null;
                 $: typeof $$;
                 destructor(): void;
                 toString(): string;
@@ -4001,6 +4023,7 @@ declare namespace $ {
                     can_change: (lord?: symbol & {
                         $hyoo_crus_ref: symbol;
                     }) => boolean;
+                    last_change: () => $mol_time_moment | null;
                 };
                 Value: Value;
                 toJSON(): string;
@@ -4060,6 +4083,7 @@ declare namespace $ {
                 can_change: (lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }) => boolean;
+                last_change: () => $mol_time_moment | null;
             };
             Value: Value;
             toJSON(): string;
@@ -4113,6 +4137,7 @@ declare namespace $ {
             can_change(lord?: symbol & {
                 $hyoo_crus_ref: symbol;
             }): boolean;
+            last_change(): $mol_time_moment | null;
             $: typeof $$;
             destructor(): void;
             toString(): string;
@@ -4181,6 +4206,7 @@ declare namespace $ {
                 can_change(lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }): boolean;
+                last_change(): $mol_time_moment | null;
                 $: typeof $$;
                 destructor(): void;
                 toString(): string;
@@ -4228,6 +4254,7 @@ declare namespace $ {
                     can_change: (lord?: symbol & {
                         $hyoo_crus_ref: symbol;
                     }) => boolean;
+                    last_change: () => $mol_time_moment | null;
                 };
                 Value: Value;
                 toJSON(): string;
@@ -4287,6 +4314,7 @@ declare namespace $ {
                 can_change: (lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }) => boolean;
+                last_change: () => $mol_time_moment | null;
             };
             Value: Value;
             toJSON(): string;
@@ -4340,6 +4368,7 @@ declare namespace $ {
             can_change(lord?: symbol & {
                 $hyoo_crus_ref: symbol;
             }): boolean;
+            last_change(): $mol_time_moment | null;
             $: typeof $$;
             destructor(): void;
             toString(): string;
@@ -4408,6 +4437,7 @@ declare namespace $ {
                 can_change(lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }): boolean;
+                last_change(): $mol_time_moment | null;
                 $: typeof $$;
                 destructor(): void;
                 toString(): string;
@@ -4455,6 +4485,7 @@ declare namespace $ {
                     can_change: (lord?: symbol & {
                         $hyoo_crus_ref: symbol;
                     }) => boolean;
+                    last_change: () => $mol_time_moment | null;
                 };
                 Value: Value;
                 toJSON(): string;
@@ -4514,6 +4545,7 @@ declare namespace $ {
                 can_change: (lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }) => boolean;
+                last_change: () => $mol_time_moment | null;
             };
             Value: Value;
             toJSON(): string;
@@ -4567,6 +4599,7 @@ declare namespace $ {
             can_change(lord?: symbol & {
                 $hyoo_crus_ref: symbol;
             }): boolean;
+            last_change(): $mol_time_moment | null;
             $: typeof $$;
             destructor(): void;
             toString(): string;
@@ -4635,6 +4668,7 @@ declare namespace $ {
                 can_change(lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }): boolean;
+                last_change(): $mol_time_moment | null;
                 $: typeof $$;
                 destructor(): void;
                 toString(): string;
@@ -4682,6 +4716,7 @@ declare namespace $ {
                     can_change: (lord?: symbol & {
                         $hyoo_crus_ref: symbol;
                     }) => boolean;
+                    last_change: () => $mol_time_moment | null;
                 };
                 Value: Value;
                 toJSON(): string;
@@ -4741,6 +4776,7 @@ declare namespace $ {
                 can_change: (lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }) => boolean;
+                last_change: () => $mol_time_moment | null;
             };
             Value: Value;
             toJSON(): string;
@@ -4794,6 +4830,7 @@ declare namespace $ {
             can_change(lord?: symbol & {
                 $hyoo_crus_ref: symbol;
             }): boolean;
+            last_change(): $mol_time_moment | null;
             $: typeof $$;
             destructor(): void;
             toString(): string;
@@ -4862,6 +4899,7 @@ declare namespace $ {
                 can_change(lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }): boolean;
+                last_change(): $mol_time_moment | null;
                 $: typeof $$;
                 destructor(): void;
                 toString(): string;
@@ -4909,6 +4947,7 @@ declare namespace $ {
                     can_change: (lord?: symbol & {
                         $hyoo_crus_ref: symbol;
                     }) => boolean;
+                    last_change: () => $mol_time_moment | null;
                 };
                 Value: Value;
                 toJSON(): string;
@@ -4968,6 +5007,7 @@ declare namespace $ {
                 can_change: (lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }) => boolean;
+                last_change: () => $mol_time_moment | null;
             };
             Value: Value;
             toJSON(): string;
@@ -5021,6 +5061,7 @@ declare namespace $ {
             can_change(lord?: symbol & {
                 $hyoo_crus_ref: symbol;
             }): boolean;
+            last_change(): $mol_time_moment | null;
             $: typeof $$;
             destructor(): void;
             toString(): string;
@@ -5089,6 +5130,7 @@ declare namespace $ {
                 can_change(lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }): boolean;
+                last_change(): $mol_time_moment | null;
                 $: typeof $$;
                 destructor(): void;
                 toString(): string;
@@ -5136,6 +5178,7 @@ declare namespace $ {
                     can_change: (lord?: symbol & {
                         $hyoo_crus_ref: symbol;
                     }) => boolean;
+                    last_change: () => $mol_time_moment | null;
                 };
                 Value: Value;
                 toJSON(): string;
@@ -5195,6 +5238,7 @@ declare namespace $ {
                 can_change: (lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }) => boolean;
+                last_change: () => $mol_time_moment | null;
             };
             Value: Value;
             toJSON(): string;
@@ -5248,6 +5292,7 @@ declare namespace $ {
             can_change(lord?: symbol & {
                 $hyoo_crus_ref: symbol;
             }): boolean;
+            last_change(): $mol_time_moment | null;
             $: typeof $$;
             destructor(): void;
             toString(): string;
@@ -5316,6 +5361,7 @@ declare namespace $ {
                 can_change(lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }): boolean;
+                last_change(): $mol_time_moment | null;
                 $: typeof $$;
                 destructor(): void;
                 toString(): string;
@@ -5363,6 +5409,7 @@ declare namespace $ {
                     can_change: (lord?: symbol & {
                         $hyoo_crus_ref: symbol;
                     }) => boolean;
+                    last_change: () => $mol_time_moment | null;
                 };
                 Value: Value;
                 toJSON(): string;
@@ -5422,6 +5469,7 @@ declare namespace $ {
                 can_change: (lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }) => boolean;
+                last_change: () => $mol_time_moment | null;
             };
             Value: Value;
             toJSON(): string;
@@ -5503,6 +5551,7 @@ declare namespace $ {
                 can_change: (lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }) => boolean;
+                last_change: () => $mol_time_moment | null;
             };
             toString(): string;
             tag: "keys" | "term" | "solo" | "vals";
@@ -5572,6 +5621,7 @@ declare namespace $ {
             can_change(lord?: symbol & {
                 $hyoo_crus_ref: symbol;
             }): boolean;
+            last_change(): $mol_time_moment | null;
             $: typeof $$;
             destructor(): void;
             toString(): string;
@@ -5857,6 +5907,7 @@ declare namespace $ {
                 can_change(lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }): boolean;
+                last_change(): $mol_time_moment | null;
                 $: typeof $$;
                 destructor(): void;
                 toString(): string;
@@ -5895,6 +5946,7 @@ declare namespace $ {
                     can_change: (lord?: symbol & {
                         $hyoo_crus_ref: symbol;
                     }) => boolean;
+                    last_change: () => $mol_time_moment | null;
                     pick_unit: () => $hyoo_crus_gist | undefined;
                     value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
                     value_bool: (next?: boolean | undefined) => boolean | null;
@@ -5959,6 +6011,7 @@ declare namespace $ {
                 can_change: (lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }) => boolean;
+                last_change: () => $mol_time_moment | null;
                 pick_unit: () => $hyoo_crus_gist | undefined;
                 value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
                 value_bool: (next?: boolean | undefined) => boolean | null;
@@ -6022,6 +6075,7 @@ declare namespace $ {
             can_change(lord?: symbol & {
                 $hyoo_crus_ref: symbol;
             }): boolean;
+            last_change(): $mol_time_moment | null;
             $: typeof $$;
             destructor(): void;
             toString(): string;
@@ -6095,6 +6149,7 @@ declare namespace $ {
                 can_change(lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }): boolean;
+                last_change(): $mol_time_moment | null;
                 $: typeof $$;
                 destructor(): void;
                 toString(): string;
@@ -6133,6 +6188,7 @@ declare namespace $ {
                     can_change: (lord?: symbol & {
                         $hyoo_crus_ref: symbol;
                     }) => boolean;
+                    last_change: () => $mol_time_moment | null;
                     pick_unit: () => $hyoo_crus_gist | undefined;
                     value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
                     value_bool: (next?: boolean | undefined) => boolean | null;
@@ -6197,6 +6253,7 @@ declare namespace $ {
                 can_change: (lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }) => boolean;
+                last_change: () => $mol_time_moment | null;
                 pick_unit: () => $hyoo_crus_gist | undefined;
                 value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
                 value_bool: (next?: boolean | undefined) => boolean | null;
@@ -6269,6 +6326,7 @@ declare namespace $ {
             can_change(lord?: symbol & {
                 $hyoo_crus_ref: symbol;
             }): boolean;
+            last_change(): $mol_time_moment | null;
             $: typeof $$;
             destructor(): void;
             toString(): string;
@@ -6342,6 +6400,7 @@ declare namespace $ {
                 can_change(lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }): boolean;
+                last_change(): $mol_time_moment | null;
                 $: typeof $$;
                 destructor(): void;
                 toString(): string;
@@ -6380,6 +6439,7 @@ declare namespace $ {
                     can_change: (lord?: symbol & {
                         $hyoo_crus_ref: symbol;
                     }) => boolean;
+                    last_change: () => $mol_time_moment | null;
                     pick_unit: () => $hyoo_crus_gist | undefined;
                     value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
                     value_bool: (next?: boolean | undefined) => boolean | null;
@@ -6444,6 +6504,7 @@ declare namespace $ {
                 can_change: (lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }) => boolean;
+                last_change: () => $mol_time_moment | null;
                 pick_unit: () => $hyoo_crus_gist | undefined;
                 value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
                 value_bool: (next?: boolean | undefined) => boolean | null;
@@ -6516,6 +6577,7 @@ declare namespace $ {
             can_change(lord?: symbol & {
                 $hyoo_crus_ref: symbol;
             }): boolean;
+            last_change(): $mol_time_moment | null;
             $: typeof $$;
             destructor(): void;
             toString(): string;
@@ -6589,6 +6651,7 @@ declare namespace $ {
                 can_change(lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }): boolean;
+                last_change(): $mol_time_moment | null;
                 $: typeof $$;
                 destructor(): void;
                 toString(): string;
@@ -6627,6 +6690,7 @@ declare namespace $ {
                     can_change: (lord?: symbol & {
                         $hyoo_crus_ref: symbol;
                     }) => boolean;
+                    last_change: () => $mol_time_moment | null;
                     pick_unit: () => $hyoo_crus_gist | undefined;
                     value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
                     value_bool: (next?: boolean | undefined) => boolean | null;
@@ -6691,6 +6755,7 @@ declare namespace $ {
                 can_change: (lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }) => boolean;
+                last_change: () => $mol_time_moment | null;
                 pick_unit: () => $hyoo_crus_gist | undefined;
                 value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
                 value_bool: (next?: boolean | undefined) => boolean | null;
@@ -6763,6 +6828,7 @@ declare namespace $ {
             can_change(lord?: symbol & {
                 $hyoo_crus_ref: symbol;
             }): boolean;
+            last_change(): $mol_time_moment | null;
             $: typeof $$;
             destructor(): void;
             toString(): string;
@@ -6836,6 +6902,7 @@ declare namespace $ {
                 can_change(lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }): boolean;
+                last_change(): $mol_time_moment | null;
                 $: typeof $$;
                 destructor(): void;
                 toString(): string;
@@ -6874,6 +6941,7 @@ declare namespace $ {
                     can_change: (lord?: symbol & {
                         $hyoo_crus_ref: symbol;
                     }) => boolean;
+                    last_change: () => $mol_time_moment | null;
                     pick_unit: () => $hyoo_crus_gist | undefined;
                     value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
                     value_bool: (next?: boolean | undefined) => boolean | null;
@@ -6938,6 +7006,7 @@ declare namespace $ {
                 can_change: (lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }) => boolean;
+                last_change: () => $mol_time_moment | null;
                 pick_unit: () => $hyoo_crus_gist | undefined;
                 value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
                 value_bool: (next?: boolean | undefined) => boolean | null;
@@ -7014,6 +7083,7 @@ declare namespace $ {
             can_change(lord?: symbol & {
                 $hyoo_crus_ref: symbol;
             }): boolean;
+            last_change(): $mol_time_moment | null;
             $: typeof $$;
             destructor(): void;
             toString(): string;
@@ -7087,6 +7157,7 @@ declare namespace $ {
                 can_change(lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }): boolean;
+                last_change(): $mol_time_moment | null;
                 $: typeof $$;
                 destructor(): void;
                 toString(): string;
@@ -7125,6 +7196,7 @@ declare namespace $ {
                     can_change: (lord?: symbol & {
                         $hyoo_crus_ref: symbol;
                     }) => boolean;
+                    last_change: () => $mol_time_moment | null;
                     pick_unit: () => $hyoo_crus_gist | undefined;
                     value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
                     value_bool: (next?: boolean | undefined) => boolean | null;
@@ -7189,6 +7261,7 @@ declare namespace $ {
                 can_change: (lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }) => boolean;
+                last_change: () => $mol_time_moment | null;
                 pick_unit: () => $hyoo_crus_gist | undefined;
                 value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
                 value_bool: (next?: boolean | undefined) => boolean | null;
@@ -7261,6 +7334,7 @@ declare namespace $ {
             can_change(lord?: symbol & {
                 $hyoo_crus_ref: symbol;
             }): boolean;
+            last_change(): $mol_time_moment | null;
             $: typeof $$;
             destructor(): void;
             toString(): string;
@@ -7334,6 +7408,7 @@ declare namespace $ {
                 can_change(lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }): boolean;
+                last_change(): $mol_time_moment | null;
                 $: typeof $$;
                 destructor(): void;
                 toString(): string;
@@ -7372,6 +7447,7 @@ declare namespace $ {
                     can_change: (lord?: symbol & {
                         $hyoo_crus_ref: symbol;
                     }) => boolean;
+                    last_change: () => $mol_time_moment | null;
                     pick_unit: () => $hyoo_crus_gist | undefined;
                     value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
                     value_bool: (next?: boolean | undefined) => boolean | null;
@@ -7436,6 +7512,7 @@ declare namespace $ {
                 can_change: (lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }) => boolean;
+                last_change: () => $mol_time_moment | null;
                 pick_unit: () => $hyoo_crus_gist | undefined;
                 value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
                 value_bool: (next?: boolean | undefined) => boolean | null;
@@ -7508,6 +7585,7 @@ declare namespace $ {
             can_change(lord?: symbol & {
                 $hyoo_crus_ref: symbol;
             }): boolean;
+            last_change(): $mol_time_moment | null;
             $: typeof $$;
             destructor(): void;
             toString(): string;
@@ -7581,6 +7659,7 @@ declare namespace $ {
                 can_change(lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }): boolean;
+                last_change(): $mol_time_moment | null;
                 $: typeof $$;
                 destructor(): void;
                 toString(): string;
@@ -7619,6 +7698,7 @@ declare namespace $ {
                     can_change: (lord?: symbol & {
                         $hyoo_crus_ref: symbol;
                     }) => boolean;
+                    last_change: () => $mol_time_moment | null;
                     pick_unit: () => $hyoo_crus_gist | undefined;
                     value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
                     value_bool: (next?: boolean | undefined) => boolean | null;
@@ -7683,6 +7763,7 @@ declare namespace $ {
                 can_change: (lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }) => boolean;
+                last_change: () => $mol_time_moment | null;
                 pick_unit: () => $hyoo_crus_gist | undefined;
                 value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
                 value_bool: (next?: boolean | undefined) => boolean | null;
@@ -7755,6 +7836,7 @@ declare namespace $ {
             can_change(lord?: symbol & {
                 $hyoo_crus_ref: symbol;
             }): boolean;
+            last_change(): $mol_time_moment | null;
             $: typeof $$;
             destructor(): void;
             toString(): string;
@@ -7828,6 +7910,7 @@ declare namespace $ {
                 can_change(lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }): boolean;
+                last_change(): $mol_time_moment | null;
                 $: typeof $$;
                 destructor(): void;
                 toString(): string;
@@ -7866,6 +7949,7 @@ declare namespace $ {
                     can_change: (lord?: symbol & {
                         $hyoo_crus_ref: symbol;
                     }) => boolean;
+                    last_change: () => $mol_time_moment | null;
                     pick_unit: () => $hyoo_crus_gist | undefined;
                     value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
                     value_bool: (next?: boolean | undefined) => boolean | null;
@@ -7930,6 +8014,7 @@ declare namespace $ {
                 can_change: (lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }) => boolean;
+                last_change: () => $mol_time_moment | null;
                 pick_unit: () => $hyoo_crus_gist | undefined;
                 value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
                 value_bool: (next?: boolean | undefined) => boolean | null;
@@ -8002,6 +8087,7 @@ declare namespace $ {
             can_change(lord?: symbol & {
                 $hyoo_crus_ref: symbol;
             }): boolean;
+            last_change(): $mol_time_moment | null;
             $: typeof $$;
             destructor(): void;
             toString(): string;
@@ -8075,6 +8161,7 @@ declare namespace $ {
                 can_change(lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }): boolean;
+                last_change(): $mol_time_moment | null;
                 $: typeof $$;
                 destructor(): void;
                 toString(): string;
@@ -8113,6 +8200,7 @@ declare namespace $ {
                     can_change: (lord?: symbol & {
                         $hyoo_crus_ref: symbol;
                     }) => boolean;
+                    last_change: () => $mol_time_moment | null;
                     pick_unit: () => $hyoo_crus_gist | undefined;
                     value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
                     value_bool: (next?: boolean | undefined) => boolean | null;
@@ -8177,6 +8265,7 @@ declare namespace $ {
                 can_change: (lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }) => boolean;
+                last_change: () => $mol_time_moment | null;
                 pick_unit: () => $hyoo_crus_gist | undefined;
                 value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
                 value_bool: (next?: boolean | undefined) => boolean | null;
@@ -8249,6 +8338,7 @@ declare namespace $ {
             can_change(lord?: symbol & {
                 $hyoo_crus_ref: symbol;
             }): boolean;
+            last_change(): $mol_time_moment | null;
             $: typeof $$;
             destructor(): void;
             toString(): string;
@@ -8322,6 +8412,7 @@ declare namespace $ {
                 can_change(lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }): boolean;
+                last_change(): $mol_time_moment | null;
                 $: typeof $$;
                 destructor(): void;
                 toString(): string;
@@ -8360,6 +8451,7 @@ declare namespace $ {
                     can_change: (lord?: symbol & {
                         $hyoo_crus_ref: symbol;
                     }) => boolean;
+                    last_change: () => $mol_time_moment | null;
                     pick_unit: () => $hyoo_crus_gist | undefined;
                     value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
                     value_bool: (next?: boolean | undefined) => boolean | null;
@@ -8424,6 +8516,7 @@ declare namespace $ {
                 can_change: (lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }) => boolean;
+                last_change: () => $mol_time_moment | null;
                 pick_unit: () => $hyoo_crus_gist | undefined;
                 value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
                 value_bool: (next?: boolean | undefined) => boolean | null;
@@ -8496,6 +8589,7 @@ declare namespace $ {
             can_change(lord?: symbol & {
                 $hyoo_crus_ref: symbol;
             }): boolean;
+            last_change(): $mol_time_moment | null;
             $: typeof $$;
             destructor(): void;
             toString(): string;
@@ -8569,6 +8663,7 @@ declare namespace $ {
                 can_change(lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }): boolean;
+                last_change(): $mol_time_moment | null;
                 $: typeof $$;
                 destructor(): void;
                 toString(): string;
@@ -8607,6 +8702,7 @@ declare namespace $ {
                     can_change: (lord?: symbol & {
                         $hyoo_crus_ref: symbol;
                     }) => boolean;
+                    last_change: () => $mol_time_moment | null;
                     pick_unit: () => $hyoo_crus_gist | undefined;
                     value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
                     value_bool: (next?: boolean | undefined) => boolean | null;
@@ -8671,6 +8767,7 @@ declare namespace $ {
                 can_change: (lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }) => boolean;
+                last_change: () => $mol_time_moment | null;
                 pick_unit: () => $hyoo_crus_gist | undefined;
                 value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
                 value_bool: (next?: boolean | undefined) => boolean | null;
@@ -8808,7 +8905,7 @@ declare namespace $ {
         toString(): string;
         Land(numb: string): $hyoo_crus_land;
         Land_new(idea: number): $hyoo_crus_land;
-        Profile<Node extends typeof $hyoo_crus_node>(app: string, Node: Node): InstanceType<Node> | null;
+        Profile<Node extends typeof $hyoo_crus_node>(app: string, Node: Node, auto?: any): InstanceType<Node> | null;
         numb_make(idea?: number): string;
     }
 }
@@ -9781,6 +9878,7 @@ declare namespace $ {
             can_change: (lord?: symbol & {
                 $hyoo_crus_ref: symbol;
             }) => boolean;
+            last_change: () => $mol_time_moment | null;
             pick_unit: () => $hyoo_crus_gist | undefined;
             value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
             value_bool: (next?: boolean | undefined) => boolean | null;
@@ -9841,6 +9939,7 @@ declare namespace $ {
             can_change: (lord?: symbol & {
                 $hyoo_crus_ref: symbol;
             }) => boolean;
+            last_change: () => $mol_time_moment | null;
         };
     } & {
         readonly props: (next?: $hyoo_crus_flex_prop[] | undefined) => $hyoo_crus_flex_prop[] | null;
@@ -9878,6 +9977,7 @@ declare namespace $ {
             can_change: (lord?: symbol & {
                 $hyoo_crus_ref: symbol;
             }) => boolean;
+            last_change: () => $mol_time_moment | null;
             pick_unit: () => $hyoo_crus_gist | undefined;
             value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
             value_bool: (next?: boolean | undefined) => boolean | null;
@@ -9921,6 +10021,7 @@ declare namespace $ {
             can_change: (lord?: symbol & {
                 $hyoo_crus_ref: symbol;
             }) => boolean;
+            last_change: () => $mol_time_moment | null;
             pick_unit: () => $hyoo_crus_gist | undefined;
             value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
             value_bool: (next?: boolean | undefined) => boolean | null;
@@ -9984,6 +10085,7 @@ declare namespace $ {
             can_change: (lord?: symbol & {
                 $hyoo_crus_ref: symbol;
             }) => boolean;
+            last_change: () => $mol_time_moment | null;
         };
         Props: {
             value(next?: $hyoo_crus_flex_prop[] | undefined): $hyoo_crus_flex_prop[];
@@ -10022,6 +10124,7 @@ declare namespace $ {
             can_change: (lord?: symbol & {
                 $hyoo_crus_ref: symbol;
             }) => boolean;
+            last_change: () => $mol_time_moment | null;
         };
         Types: $hyoo_crus_list_str;
     } & {
@@ -10506,7 +10609,7 @@ declare namespace $ {
         write(next: string, str_from?: number, str_to?: number): this;
         point_by_offset(offset: number): readonly [string, number];
         offset_by_point([self, offset]: readonly [string, number]): readonly [string, number];
-        selection(lord: $hyoo_crus_ref, next?: readonly [number, number]): number[] | readonly [number, number];
+        selection(lord: $hyoo_crus_ref, next?: readonly [begin: number, end: number]): number[] | readonly [begin: number, end: number];
     }
 }
 

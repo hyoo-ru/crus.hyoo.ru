@@ -1396,9 +1396,9 @@ declare namespace $ {
     class $hyoo_crus_gist extends $hyoo_crus_unit {
         _vary: $hyoo_crus_vary_type | undefined;
         _open: Uint8Array | undefined;
-        hint(tip?: "time" | "json" | "bin" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom" | "tree", tag?: "keys" | "term" | "solo" | "vals"): void;
+        hint(tip?: "time" | "json" | "bin" | "tree" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom", tag?: "keys" | "term" | "solo" | "vals"): void;
         tag(): "keys" | "term" | "solo" | "vals";
-        tip(): "time" | "json" | "bin" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom" | "tree";
+        tip(): "time" | "json" | "bin" | "tree" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom";
         utf(): boolean;
         nil(): boolean;
         size(next?: number): number;
@@ -1409,9 +1409,9 @@ declare namespace $ {
         head(next?: string): string;
         _lead: string;
         lead(next?: string): string;
-        hash(next?: Uint8Array, tip?: "time" | "json" | "bin" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom" | "tree", tag?: "keys" | "term" | "solo" | "vals"): Uint8Array;
+        hash(next?: Uint8Array, tip?: "time" | "json" | "bin" | "tree" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom", tag?: "keys" | "term" | "solo" | "vals"): Uint8Array;
         meta(): Uint8Array;
-        data(next?: Uint8Array, tip?: "time" | "json" | "bin" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom" | "tree", tag?: "keys" | "term" | "solo" | "vals"): Uint8Array;
+        data(next?: Uint8Array, tip?: "time" | "json" | "bin" | "tree" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom", tag?: "keys" | "term" | "solo" | "vals"): Uint8Array;
         idea(): number;
         static compare(left: $hyoo_crus_gist, right: $hyoo_crus_gist): number;
     }
@@ -1488,6 +1488,7 @@ declare namespace $ {
         can_change(lord?: symbol & {
             $hyoo_crus_ref: symbol;
         }): boolean;
+        last_change(): $mol_time_moment | null;
     }
 }
 
@@ -1634,6 +1635,7 @@ declare namespace $ {
                 can_change(lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }): boolean;
+                last_change(): $mol_time_moment | null;
                 $: typeof $$;
                 destructor(): void;
                 toString(): string;
@@ -1642,7 +1644,7 @@ declare namespace $ {
             };
             tip: Tip;
             tag: "keys" | "term" | "solo" | "vals";
-            of<Tip extends "time" | "json" | "bin" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom" | "tree">(tip: Tip): any;
+            of<Tip extends "time" | "json" | "bin" | "tree" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom">(tip: Tip): any;
             ref<Value_1 extends unknown>(Value: Value): {
                 new (): {
                     value(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
@@ -1681,6 +1683,7 @@ declare namespace $ {
                     can_change: (lord?: symbol & {
                         $hyoo_crus_ref: symbol;
                     }) => boolean;
+                    last_change: () => $mol_time_moment | null;
                 };
                 Value: Value;
                 toJSON(): string;
@@ -1740,6 +1743,7 @@ declare namespace $ {
                 can_change: (lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }) => boolean;
+                last_change: () => $mol_time_moment | null;
             };
             Value: Value;
             toJSON(): string;
@@ -1784,6 +1788,7 @@ declare namespace $ {
             can_change(lord?: symbol & {
                 $hyoo_crus_ref: symbol;
             }): boolean;
+            last_change(): $mol_time_moment | null;
             $: typeof $$;
             destructor(): void;
             toString(): string;
@@ -1792,7 +1797,7 @@ declare namespace $ {
         };
         tip: "bin";
         tag: "keys" | "term" | "solo" | "vals";
-        of<Tip extends "time" | "json" | "bin" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom" | "tree">(tip: Tip): {
+        of<Tip extends "time" | "json" | "bin" | "tree" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom">(tip: Tip): {
             new (): {
                 value(next?: readonly ReturnType<{
                     readonly nil: () => null;
@@ -1852,6 +1857,7 @@ declare namespace $ {
                 can_change(lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }): boolean;
+                last_change(): $mol_time_moment | null;
                 $: typeof $$;
                 destructor(): void;
                 toString(): string;
@@ -1860,7 +1866,7 @@ declare namespace $ {
             };
             tip: Tip;
             tag: "keys" | "term" | "solo" | "vals";
-            of<Tip extends "time" | "json" | "bin" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom" | "tree">(tip: Tip): any;
+            of<Tip extends "time" | "json" | "bin" | "tree" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom">(tip: Tip): any;
             ref<Value extends unknown>(Value: Value): {
                 new (): {
                     value(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
@@ -1899,6 +1905,7 @@ declare namespace $ {
                     can_change: (lord?: symbol & {
                         $hyoo_crus_ref: symbol;
                     }) => boolean;
+                    last_change: () => $mol_time_moment | null;
                 };
                 Value: Value;
                 toJSON(): string;
@@ -1958,6 +1965,7 @@ declare namespace $ {
                 can_change: (lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }) => boolean;
+                last_change: () => $mol_time_moment | null;
             };
             Value: Value;
             toJSON(): string;
@@ -2011,6 +2019,7 @@ declare namespace $ {
             can_change(lord?: symbol & {
                 $hyoo_crus_ref: symbol;
             }): boolean;
+            last_change(): $mol_time_moment | null;
             $: typeof $$;
             destructor(): void;
             toString(): string;
@@ -2019,7 +2028,7 @@ declare namespace $ {
         };
         tip: "bool";
         tag: "keys" | "term" | "solo" | "vals";
-        of<Tip extends "time" | "json" | "bin" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom" | "tree">(tip: Tip): {
+        of<Tip extends "time" | "json" | "bin" | "tree" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom">(tip: Tip): {
             new (): {
                 value(next?: readonly ReturnType<{
                     readonly nil: () => null;
@@ -2079,6 +2088,7 @@ declare namespace $ {
                 can_change(lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }): boolean;
+                last_change(): $mol_time_moment | null;
                 $: typeof $$;
                 destructor(): void;
                 toString(): string;
@@ -2087,7 +2097,7 @@ declare namespace $ {
             };
             tip: Tip;
             tag: "keys" | "term" | "solo" | "vals";
-            of<Tip extends "time" | "json" | "bin" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom" | "tree">(tip: Tip): any;
+            of<Tip extends "time" | "json" | "bin" | "tree" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom">(tip: Tip): any;
             ref<Value extends unknown>(Value: Value): {
                 new (): {
                     value(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
@@ -2126,6 +2136,7 @@ declare namespace $ {
                     can_change: (lord?: symbol & {
                         $hyoo_crus_ref: symbol;
                     }) => boolean;
+                    last_change: () => $mol_time_moment | null;
                 };
                 Value: Value;
                 toJSON(): string;
@@ -2185,6 +2196,7 @@ declare namespace $ {
                 can_change: (lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }) => boolean;
+                last_change: () => $mol_time_moment | null;
             };
             Value: Value;
             toJSON(): string;
@@ -2238,6 +2250,7 @@ declare namespace $ {
             can_change(lord?: symbol & {
                 $hyoo_crus_ref: symbol;
             }): boolean;
+            last_change(): $mol_time_moment | null;
             $: typeof $$;
             destructor(): void;
             toString(): string;
@@ -2246,7 +2259,7 @@ declare namespace $ {
         };
         tip: "int";
         tag: "keys" | "term" | "solo" | "vals";
-        of<Tip extends "time" | "json" | "bin" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom" | "tree">(tip: Tip): {
+        of<Tip extends "time" | "json" | "bin" | "tree" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom">(tip: Tip): {
             new (): {
                 value(next?: readonly ReturnType<{
                     readonly nil: () => null;
@@ -2306,6 +2319,7 @@ declare namespace $ {
                 can_change(lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }): boolean;
+                last_change(): $mol_time_moment | null;
                 $: typeof $$;
                 destructor(): void;
                 toString(): string;
@@ -2314,7 +2328,7 @@ declare namespace $ {
             };
             tip: Tip;
             tag: "keys" | "term" | "solo" | "vals";
-            of<Tip extends "time" | "json" | "bin" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom" | "tree">(tip: Tip): any;
+            of<Tip extends "time" | "json" | "bin" | "tree" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom">(tip: Tip): any;
             ref<Value extends unknown>(Value: Value): {
                 new (): {
                     value(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
@@ -2353,6 +2367,7 @@ declare namespace $ {
                     can_change: (lord?: symbol & {
                         $hyoo_crus_ref: symbol;
                     }) => boolean;
+                    last_change: () => $mol_time_moment | null;
                 };
                 Value: Value;
                 toJSON(): string;
@@ -2412,6 +2427,7 @@ declare namespace $ {
                 can_change: (lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }) => boolean;
+                last_change: () => $mol_time_moment | null;
             };
             Value: Value;
             toJSON(): string;
@@ -2465,6 +2481,7 @@ declare namespace $ {
             can_change(lord?: symbol & {
                 $hyoo_crus_ref: symbol;
             }): boolean;
+            last_change(): $mol_time_moment | null;
             $: typeof $$;
             destructor(): void;
             toString(): string;
@@ -2473,7 +2490,7 @@ declare namespace $ {
         };
         tip: "real";
         tag: "keys" | "term" | "solo" | "vals";
-        of<Tip extends "time" | "json" | "bin" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom" | "tree">(tip: Tip): {
+        of<Tip extends "time" | "json" | "bin" | "tree" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom">(tip: Tip): {
             new (): {
                 value(next?: readonly ReturnType<{
                     readonly nil: () => null;
@@ -2533,6 +2550,7 @@ declare namespace $ {
                 can_change(lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }): boolean;
+                last_change(): $mol_time_moment | null;
                 $: typeof $$;
                 destructor(): void;
                 toString(): string;
@@ -2541,7 +2559,7 @@ declare namespace $ {
             };
             tip: Tip;
             tag: "keys" | "term" | "solo" | "vals";
-            of<Tip extends "time" | "json" | "bin" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom" | "tree">(tip: Tip): any;
+            of<Tip extends "time" | "json" | "bin" | "tree" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom">(tip: Tip): any;
             ref<Value extends unknown>(Value: Value): {
                 new (): {
                     value(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
@@ -2580,6 +2598,7 @@ declare namespace $ {
                     can_change: (lord?: symbol & {
                         $hyoo_crus_ref: symbol;
                     }) => boolean;
+                    last_change: () => $mol_time_moment | null;
                 };
                 Value: Value;
                 toJSON(): string;
@@ -2639,6 +2658,7 @@ declare namespace $ {
                 can_change: (lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }) => boolean;
+                last_change: () => $mol_time_moment | null;
             };
             Value: Value;
             toJSON(): string;
@@ -2696,6 +2716,7 @@ declare namespace $ {
             can_change(lord?: symbol & {
                 $hyoo_crus_ref: symbol;
             }): boolean;
+            last_change(): $mol_time_moment | null;
             $: typeof $$;
             destructor(): void;
             toString(): string;
@@ -2704,7 +2725,7 @@ declare namespace $ {
         };
         tip: "ref";
         tag: "keys" | "term" | "solo" | "vals";
-        of<Tip extends "time" | "json" | "bin" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom" | "tree">(tip: Tip): {
+        of<Tip extends "time" | "json" | "bin" | "tree" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom">(tip: Tip): {
             new (): {
                 value(next?: readonly ReturnType<{
                     readonly nil: () => null;
@@ -2764,6 +2785,7 @@ declare namespace $ {
                 can_change(lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }): boolean;
+                last_change(): $mol_time_moment | null;
                 $: typeof $$;
                 destructor(): void;
                 toString(): string;
@@ -2772,7 +2794,7 @@ declare namespace $ {
             };
             tip: Tip;
             tag: "keys" | "term" | "solo" | "vals";
-            of<Tip extends "time" | "json" | "bin" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom" | "tree">(tip: Tip): any;
+            of<Tip extends "time" | "json" | "bin" | "tree" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom">(tip: Tip): any;
             ref<Value extends unknown>(Value: Value): {
                 new (): {
                     value(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
@@ -2811,6 +2833,7 @@ declare namespace $ {
                     can_change: (lord?: symbol & {
                         $hyoo_crus_ref: symbol;
                     }) => boolean;
+                    last_change: () => $mol_time_moment | null;
                 };
                 Value: Value;
                 toJSON(): string;
@@ -2870,6 +2893,7 @@ declare namespace $ {
                 can_change: (lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }) => boolean;
+                last_change: () => $mol_time_moment | null;
             };
             Value: Value;
             toJSON(): string;
@@ -2923,6 +2947,7 @@ declare namespace $ {
             can_change(lord?: symbol & {
                 $hyoo_crus_ref: symbol;
             }): boolean;
+            last_change(): $mol_time_moment | null;
             $: typeof $$;
             destructor(): void;
             toString(): string;
@@ -2931,7 +2956,7 @@ declare namespace $ {
         };
         tip: "str";
         tag: "keys" | "term" | "solo" | "vals";
-        of<Tip extends "time" | "json" | "bin" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom" | "tree">(tip: Tip): {
+        of<Tip extends "time" | "json" | "bin" | "tree" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom">(tip: Tip): {
             new (): {
                 value(next?: readonly ReturnType<{
                     readonly nil: () => null;
@@ -2991,6 +3016,7 @@ declare namespace $ {
                 can_change(lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }): boolean;
+                last_change(): $mol_time_moment | null;
                 $: typeof $$;
                 destructor(): void;
                 toString(): string;
@@ -2999,7 +3025,7 @@ declare namespace $ {
             };
             tip: Tip;
             tag: "keys" | "term" | "solo" | "vals";
-            of<Tip extends "time" | "json" | "bin" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom" | "tree">(tip: Tip): any;
+            of<Tip extends "time" | "json" | "bin" | "tree" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom">(tip: Tip): any;
             ref<Value extends unknown>(Value: Value): {
                 new (): {
                     value(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
@@ -3038,6 +3064,7 @@ declare namespace $ {
                     can_change: (lord?: symbol & {
                         $hyoo_crus_ref: symbol;
                     }) => boolean;
+                    last_change: () => $mol_time_moment | null;
                 };
                 Value: Value;
                 toJSON(): string;
@@ -3097,6 +3124,7 @@ declare namespace $ {
                 can_change: (lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }) => boolean;
+                last_change: () => $mol_time_moment | null;
             };
             Value: Value;
             toJSON(): string;
@@ -3150,6 +3178,7 @@ declare namespace $ {
             can_change(lord?: symbol & {
                 $hyoo_crus_ref: symbol;
             }): boolean;
+            last_change(): $mol_time_moment | null;
             $: typeof $$;
             destructor(): void;
             toString(): string;
@@ -3158,7 +3187,7 @@ declare namespace $ {
         };
         tip: "time";
         tag: "keys" | "term" | "solo" | "vals";
-        of<Tip extends "time" | "json" | "bin" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom" | "tree">(tip: Tip): {
+        of<Tip extends "time" | "json" | "bin" | "tree" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom">(tip: Tip): {
             new (): {
                 value(next?: readonly ReturnType<{
                     readonly nil: () => null;
@@ -3218,6 +3247,7 @@ declare namespace $ {
                 can_change(lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }): boolean;
+                last_change(): $mol_time_moment | null;
                 $: typeof $$;
                 destructor(): void;
                 toString(): string;
@@ -3226,7 +3256,7 @@ declare namespace $ {
             };
             tip: Tip;
             tag: "keys" | "term" | "solo" | "vals";
-            of<Tip extends "time" | "json" | "bin" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom" | "tree">(tip: Tip): any;
+            of<Tip extends "time" | "json" | "bin" | "tree" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom">(tip: Tip): any;
             ref<Value extends unknown>(Value: Value): {
                 new (): {
                     value(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
@@ -3265,6 +3295,7 @@ declare namespace $ {
                     can_change: (lord?: symbol & {
                         $hyoo_crus_ref: symbol;
                     }) => boolean;
+                    last_change: () => $mol_time_moment | null;
                 };
                 Value: Value;
                 toJSON(): string;
@@ -3324,6 +3355,7 @@ declare namespace $ {
                 can_change: (lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }) => boolean;
+                last_change: () => $mol_time_moment | null;
             };
             Value: Value;
             toJSON(): string;
@@ -3377,6 +3409,7 @@ declare namespace $ {
             can_change(lord?: symbol & {
                 $hyoo_crus_ref: symbol;
             }): boolean;
+            last_change(): $mol_time_moment | null;
             $: typeof $$;
             destructor(): void;
             toString(): string;
@@ -3385,7 +3418,7 @@ declare namespace $ {
         };
         tip: "json";
         tag: "keys" | "term" | "solo" | "vals";
-        of<Tip extends "time" | "json" | "bin" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom" | "tree">(tip: Tip): {
+        of<Tip extends "time" | "json" | "bin" | "tree" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom">(tip: Tip): {
             new (): {
                 value(next?: readonly ReturnType<{
                     readonly nil: () => null;
@@ -3445,6 +3478,7 @@ declare namespace $ {
                 can_change(lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }): boolean;
+                last_change(): $mol_time_moment | null;
                 $: typeof $$;
                 destructor(): void;
                 toString(): string;
@@ -3453,7 +3487,7 @@ declare namespace $ {
             };
             tip: Tip;
             tag: "keys" | "term" | "solo" | "vals";
-            of<Tip extends "time" | "json" | "bin" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom" | "tree">(tip: Tip): any;
+            of<Tip extends "time" | "json" | "bin" | "tree" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom">(tip: Tip): any;
             ref<Value extends unknown>(Value: Value): {
                 new (): {
                     value(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
@@ -3492,6 +3526,7 @@ declare namespace $ {
                     can_change: (lord?: symbol & {
                         $hyoo_crus_ref: symbol;
                     }) => boolean;
+                    last_change: () => $mol_time_moment | null;
                 };
                 Value: Value;
                 toJSON(): string;
@@ -3551,6 +3586,7 @@ declare namespace $ {
                 can_change: (lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }) => boolean;
+                last_change: () => $mol_time_moment | null;
             };
             Value: Value;
             toJSON(): string;
@@ -3604,6 +3640,7 @@ declare namespace $ {
             can_change(lord?: symbol & {
                 $hyoo_crus_ref: symbol;
             }): boolean;
+            last_change(): $mol_time_moment | null;
             $: typeof $$;
             destructor(): void;
             toString(): string;
@@ -3612,7 +3649,7 @@ declare namespace $ {
         };
         tip: "jsan";
         tag: "keys" | "term" | "solo" | "vals";
-        of<Tip extends "time" | "json" | "bin" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom" | "tree">(tip: Tip): {
+        of<Tip extends "time" | "json" | "bin" | "tree" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom">(tip: Tip): {
             new (): {
                 value(next?: readonly ReturnType<{
                     readonly nil: () => null;
@@ -3672,6 +3709,7 @@ declare namespace $ {
                 can_change(lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }): boolean;
+                last_change(): $mol_time_moment | null;
                 $: typeof $$;
                 destructor(): void;
                 toString(): string;
@@ -3680,7 +3718,7 @@ declare namespace $ {
             };
             tip: Tip;
             tag: "keys" | "term" | "solo" | "vals";
-            of<Tip extends "time" | "json" | "bin" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom" | "tree">(tip: Tip): any;
+            of<Tip extends "time" | "json" | "bin" | "tree" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom">(tip: Tip): any;
             ref<Value extends unknown>(Value: Value): {
                 new (): {
                     value(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
@@ -3719,6 +3757,7 @@ declare namespace $ {
                     can_change: (lord?: symbol & {
                         $hyoo_crus_ref: symbol;
                     }) => boolean;
+                    last_change: () => $mol_time_moment | null;
                 };
                 Value: Value;
                 toJSON(): string;
@@ -3778,6 +3817,7 @@ declare namespace $ {
                 can_change: (lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }) => boolean;
+                last_change: () => $mol_time_moment | null;
             };
             Value: Value;
             toJSON(): string;
@@ -3831,6 +3871,7 @@ declare namespace $ {
             can_change(lord?: symbol & {
                 $hyoo_crus_ref: symbol;
             }): boolean;
+            last_change(): $mol_time_moment | null;
             $: typeof $$;
             destructor(): void;
             toString(): string;
@@ -3839,7 +3880,7 @@ declare namespace $ {
         };
         tip: "dom";
         tag: "keys" | "term" | "solo" | "vals";
-        of<Tip extends "time" | "json" | "bin" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom" | "tree">(tip: Tip): {
+        of<Tip extends "time" | "json" | "bin" | "tree" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom">(tip: Tip): {
             new (): {
                 value(next?: readonly ReturnType<{
                     readonly nil: () => null;
@@ -3899,6 +3940,7 @@ declare namespace $ {
                 can_change(lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }): boolean;
+                last_change(): $mol_time_moment | null;
                 $: typeof $$;
                 destructor(): void;
                 toString(): string;
@@ -3907,7 +3949,7 @@ declare namespace $ {
             };
             tip: Tip;
             tag: "keys" | "term" | "solo" | "vals";
-            of<Tip extends "time" | "json" | "bin" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom" | "tree">(tip: Tip): any;
+            of<Tip extends "time" | "json" | "bin" | "tree" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom">(tip: Tip): any;
             ref<Value extends unknown>(Value: Value): {
                 new (): {
                     value(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
@@ -3946,6 +3988,7 @@ declare namespace $ {
                     can_change: (lord?: symbol & {
                         $hyoo_crus_ref: symbol;
                     }) => boolean;
+                    last_change: () => $mol_time_moment | null;
                 };
                 Value: Value;
                 toJSON(): string;
@@ -4005,6 +4048,7 @@ declare namespace $ {
                 can_change: (lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }) => boolean;
+                last_change: () => $mol_time_moment | null;
             };
             Value: Value;
             toJSON(): string;
@@ -4058,6 +4102,7 @@ declare namespace $ {
             can_change(lord?: symbol & {
                 $hyoo_crus_ref: symbol;
             }): boolean;
+            last_change(): $mol_time_moment | null;
             $: typeof $$;
             destructor(): void;
             toString(): string;
@@ -4066,7 +4111,7 @@ declare namespace $ {
         };
         tip: "tree";
         tag: "keys" | "term" | "solo" | "vals";
-        of<Tip extends "time" | "json" | "bin" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom" | "tree">(tip: Tip): {
+        of<Tip extends "time" | "json" | "bin" | "tree" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom">(tip: Tip): {
             new (): {
                 value(next?: readonly ReturnType<{
                     readonly nil: () => null;
@@ -4126,6 +4171,7 @@ declare namespace $ {
                 can_change(lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }): boolean;
+                last_change(): $mol_time_moment | null;
                 $: typeof $$;
                 destructor(): void;
                 toString(): string;
@@ -4134,7 +4180,7 @@ declare namespace $ {
             };
             tip: Tip;
             tag: "keys" | "term" | "solo" | "vals";
-            of<Tip extends "time" | "json" | "bin" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom" | "tree">(tip: Tip): any;
+            of<Tip extends "time" | "json" | "bin" | "tree" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom">(tip: Tip): any;
             ref<Value extends unknown>(Value: Value): {
                 new (): {
                     value(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
@@ -4173,6 +4219,7 @@ declare namespace $ {
                     can_change: (lord?: symbol & {
                         $hyoo_crus_ref: symbol;
                     }) => boolean;
+                    last_change: () => $mol_time_moment | null;
                 };
                 Value: Value;
                 toJSON(): string;
@@ -4232,6 +4279,7 @@ declare namespace $ {
                 can_change: (lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }) => boolean;
+                last_change: () => $mol_time_moment | null;
             };
             Value: Value;
             toJSON(): string;
@@ -4313,6 +4361,7 @@ declare namespace $ {
                 can_change: (lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }) => boolean;
+                last_change: () => $mol_time_moment | null;
             };
             toString(): string;
             tag: "keys" | "term" | "solo" | "vals";
@@ -4382,6 +4431,7 @@ declare namespace $ {
             can_change(lord?: symbol & {
                 $hyoo_crus_ref: symbol;
             }): boolean;
+            last_change(): $mol_time_moment | null;
             $: typeof $$;
             destructor(): void;
             toString(): string;
@@ -4670,6 +4720,7 @@ declare namespace $ {
                 can_change(lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }): boolean;
+                last_change(): $mol_time_moment | null;
                 $: typeof $$;
                 destructor(): void;
                 toString(): string;
@@ -4678,7 +4729,7 @@ declare namespace $ {
             };
             tip: Tip;
             tag: "keys" | "term" | "solo" | "vals";
-            of<Tip extends "time" | "json" | "bin" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom" | "tree">(tip: Tip): any;
+            of<Tip extends "time" | "json" | "bin" | "tree" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom">(tip: Tip): any;
             ref<Value_1 extends unknown>(Value: Value): {
                 new (): {
                     value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
@@ -4708,6 +4759,7 @@ declare namespace $ {
                     can_change: (lord?: symbol & {
                         $hyoo_crus_ref: symbol;
                     }) => boolean;
+                    last_change: () => $mol_time_moment | null;
                     pick_unit: () => $hyoo_crus_gist | undefined;
                     value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
                     value_bool: (next?: boolean | undefined) => boolean | null;
@@ -4772,6 +4824,7 @@ declare namespace $ {
                 can_change: (lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }) => boolean;
+                last_change: () => $mol_time_moment | null;
                 pick_unit: () => $hyoo_crus_gist | undefined;
                 value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
                 value_bool: (next?: boolean | undefined) => boolean | null;
@@ -4835,6 +4888,7 @@ declare namespace $ {
             can_change(lord?: symbol & {
                 $hyoo_crus_ref: symbol;
             }): boolean;
+            last_change(): $mol_time_moment | null;
             $: typeof $$;
             destructor(): void;
             toString(): string;
@@ -4843,7 +4897,7 @@ declare namespace $ {
         };
         tip: "bin";
         tag: "keys" | "term" | "solo" | "vals";
-        of<Tip extends "time" | "json" | "bin" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom" | "tree">(tip: Tip): {
+        of<Tip extends "time" | "json" | "bin" | "tree" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom">(tip: Tip): {
             new (): {
                 value(next?: ReturnType<{
                     readonly nil: () => null;
@@ -4908,6 +4962,7 @@ declare namespace $ {
                 can_change(lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }): boolean;
+                last_change(): $mol_time_moment | null;
                 $: typeof $$;
                 destructor(): void;
                 toString(): string;
@@ -4916,7 +4971,7 @@ declare namespace $ {
             };
             tip: Tip;
             tag: "keys" | "term" | "solo" | "vals";
-            of<Tip extends "time" | "json" | "bin" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom" | "tree">(tip: Tip): any;
+            of<Tip extends "time" | "json" | "bin" | "tree" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom">(tip: Tip): any;
             ref<Value extends unknown>(Value: Value): {
                 new (): {
                     value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
@@ -4946,6 +5001,7 @@ declare namespace $ {
                     can_change: (lord?: symbol & {
                         $hyoo_crus_ref: symbol;
                     }) => boolean;
+                    last_change: () => $mol_time_moment | null;
                     pick_unit: () => $hyoo_crus_gist | undefined;
                     value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
                     value_bool: (next?: boolean | undefined) => boolean | null;
@@ -5010,6 +5066,7 @@ declare namespace $ {
                 can_change: (lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }) => boolean;
+                last_change: () => $mol_time_moment | null;
                 pick_unit: () => $hyoo_crus_gist | undefined;
                 value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
                 value_bool: (next?: boolean | undefined) => boolean | null;
@@ -5082,6 +5139,7 @@ declare namespace $ {
             can_change(lord?: symbol & {
                 $hyoo_crus_ref: symbol;
             }): boolean;
+            last_change(): $mol_time_moment | null;
             $: typeof $$;
             destructor(): void;
             toString(): string;
@@ -5090,7 +5148,7 @@ declare namespace $ {
         };
         tip: "bool";
         tag: "keys" | "term" | "solo" | "vals";
-        of<Tip extends "time" | "json" | "bin" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom" | "tree">(tip: Tip): {
+        of<Tip extends "time" | "json" | "bin" | "tree" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom">(tip: Tip): {
             new (): {
                 value(next?: ReturnType<{
                     readonly nil: () => null;
@@ -5155,6 +5213,7 @@ declare namespace $ {
                 can_change(lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }): boolean;
+                last_change(): $mol_time_moment | null;
                 $: typeof $$;
                 destructor(): void;
                 toString(): string;
@@ -5163,7 +5222,7 @@ declare namespace $ {
             };
             tip: Tip;
             tag: "keys" | "term" | "solo" | "vals";
-            of<Tip extends "time" | "json" | "bin" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom" | "tree">(tip: Tip): any;
+            of<Tip extends "time" | "json" | "bin" | "tree" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom">(tip: Tip): any;
             ref<Value extends unknown>(Value: Value): {
                 new (): {
                     value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
@@ -5193,6 +5252,7 @@ declare namespace $ {
                     can_change: (lord?: symbol & {
                         $hyoo_crus_ref: symbol;
                     }) => boolean;
+                    last_change: () => $mol_time_moment | null;
                     pick_unit: () => $hyoo_crus_gist | undefined;
                     value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
                     value_bool: (next?: boolean | undefined) => boolean | null;
@@ -5257,6 +5317,7 @@ declare namespace $ {
                 can_change: (lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }) => boolean;
+                last_change: () => $mol_time_moment | null;
                 pick_unit: () => $hyoo_crus_gist | undefined;
                 value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
                 value_bool: (next?: boolean | undefined) => boolean | null;
@@ -5329,6 +5390,7 @@ declare namespace $ {
             can_change(lord?: symbol & {
                 $hyoo_crus_ref: symbol;
             }): boolean;
+            last_change(): $mol_time_moment | null;
             $: typeof $$;
             destructor(): void;
             toString(): string;
@@ -5337,7 +5399,7 @@ declare namespace $ {
         };
         tip: "int";
         tag: "keys" | "term" | "solo" | "vals";
-        of<Tip extends "time" | "json" | "bin" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom" | "tree">(tip: Tip): {
+        of<Tip extends "time" | "json" | "bin" | "tree" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom">(tip: Tip): {
             new (): {
                 value(next?: ReturnType<{
                     readonly nil: () => null;
@@ -5402,6 +5464,7 @@ declare namespace $ {
                 can_change(lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }): boolean;
+                last_change(): $mol_time_moment | null;
                 $: typeof $$;
                 destructor(): void;
                 toString(): string;
@@ -5410,7 +5473,7 @@ declare namespace $ {
             };
             tip: Tip;
             tag: "keys" | "term" | "solo" | "vals";
-            of<Tip extends "time" | "json" | "bin" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom" | "tree">(tip: Tip): any;
+            of<Tip extends "time" | "json" | "bin" | "tree" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom">(tip: Tip): any;
             ref<Value extends unknown>(Value: Value): {
                 new (): {
                     value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
@@ -5440,6 +5503,7 @@ declare namespace $ {
                     can_change: (lord?: symbol & {
                         $hyoo_crus_ref: symbol;
                     }) => boolean;
+                    last_change: () => $mol_time_moment | null;
                     pick_unit: () => $hyoo_crus_gist | undefined;
                     value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
                     value_bool: (next?: boolean | undefined) => boolean | null;
@@ -5504,6 +5568,7 @@ declare namespace $ {
                 can_change: (lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }) => boolean;
+                last_change: () => $mol_time_moment | null;
                 pick_unit: () => $hyoo_crus_gist | undefined;
                 value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
                 value_bool: (next?: boolean | undefined) => boolean | null;
@@ -5576,6 +5641,7 @@ declare namespace $ {
             can_change(lord?: symbol & {
                 $hyoo_crus_ref: symbol;
             }): boolean;
+            last_change(): $mol_time_moment | null;
             $: typeof $$;
             destructor(): void;
             toString(): string;
@@ -5584,7 +5650,7 @@ declare namespace $ {
         };
         tip: "real";
         tag: "keys" | "term" | "solo" | "vals";
-        of<Tip extends "time" | "json" | "bin" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom" | "tree">(tip: Tip): {
+        of<Tip extends "time" | "json" | "bin" | "tree" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom">(tip: Tip): {
             new (): {
                 value(next?: ReturnType<{
                     readonly nil: () => null;
@@ -5649,6 +5715,7 @@ declare namespace $ {
                 can_change(lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }): boolean;
+                last_change(): $mol_time_moment | null;
                 $: typeof $$;
                 destructor(): void;
                 toString(): string;
@@ -5657,7 +5724,7 @@ declare namespace $ {
             };
             tip: Tip;
             tag: "keys" | "term" | "solo" | "vals";
-            of<Tip extends "time" | "json" | "bin" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom" | "tree">(tip: Tip): any;
+            of<Tip extends "time" | "json" | "bin" | "tree" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom">(tip: Tip): any;
             ref<Value extends unknown>(Value: Value): {
                 new (): {
                     value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
@@ -5687,6 +5754,7 @@ declare namespace $ {
                     can_change: (lord?: symbol & {
                         $hyoo_crus_ref: symbol;
                     }) => boolean;
+                    last_change: () => $mol_time_moment | null;
                     pick_unit: () => $hyoo_crus_gist | undefined;
                     value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
                     value_bool: (next?: boolean | undefined) => boolean | null;
@@ -5751,6 +5819,7 @@ declare namespace $ {
                 can_change: (lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }) => boolean;
+                last_change: () => $mol_time_moment | null;
                 pick_unit: () => $hyoo_crus_gist | undefined;
                 value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
                 value_bool: (next?: boolean | undefined) => boolean | null;
@@ -5827,6 +5896,7 @@ declare namespace $ {
             can_change(lord?: symbol & {
                 $hyoo_crus_ref: symbol;
             }): boolean;
+            last_change(): $mol_time_moment | null;
             $: typeof $$;
             destructor(): void;
             toString(): string;
@@ -5835,7 +5905,7 @@ declare namespace $ {
         };
         tip: "ref";
         tag: "keys" | "term" | "solo" | "vals";
-        of<Tip extends "time" | "json" | "bin" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom" | "tree">(tip: Tip): {
+        of<Tip extends "time" | "json" | "bin" | "tree" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom">(tip: Tip): {
             new (): {
                 value(next?: ReturnType<{
                     readonly nil: () => null;
@@ -5900,6 +5970,7 @@ declare namespace $ {
                 can_change(lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }): boolean;
+                last_change(): $mol_time_moment | null;
                 $: typeof $$;
                 destructor(): void;
                 toString(): string;
@@ -5908,7 +5979,7 @@ declare namespace $ {
             };
             tip: Tip;
             tag: "keys" | "term" | "solo" | "vals";
-            of<Tip extends "time" | "json" | "bin" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom" | "tree">(tip: Tip): any;
+            of<Tip extends "time" | "json" | "bin" | "tree" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom">(tip: Tip): any;
             ref<Value extends unknown>(Value: Value): {
                 new (): {
                     value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
@@ -5938,6 +6009,7 @@ declare namespace $ {
                     can_change: (lord?: symbol & {
                         $hyoo_crus_ref: symbol;
                     }) => boolean;
+                    last_change: () => $mol_time_moment | null;
                     pick_unit: () => $hyoo_crus_gist | undefined;
                     value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
                     value_bool: (next?: boolean | undefined) => boolean | null;
@@ -6002,6 +6074,7 @@ declare namespace $ {
                 can_change: (lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }) => boolean;
+                last_change: () => $mol_time_moment | null;
                 pick_unit: () => $hyoo_crus_gist | undefined;
                 value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
                 value_bool: (next?: boolean | undefined) => boolean | null;
@@ -6074,6 +6147,7 @@ declare namespace $ {
             can_change(lord?: symbol & {
                 $hyoo_crus_ref: symbol;
             }): boolean;
+            last_change(): $mol_time_moment | null;
             $: typeof $$;
             destructor(): void;
             toString(): string;
@@ -6082,7 +6156,7 @@ declare namespace $ {
         };
         tip: "str";
         tag: "keys" | "term" | "solo" | "vals";
-        of<Tip extends "time" | "json" | "bin" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom" | "tree">(tip: Tip): {
+        of<Tip extends "time" | "json" | "bin" | "tree" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom">(tip: Tip): {
             new (): {
                 value(next?: ReturnType<{
                     readonly nil: () => null;
@@ -6147,6 +6221,7 @@ declare namespace $ {
                 can_change(lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }): boolean;
+                last_change(): $mol_time_moment | null;
                 $: typeof $$;
                 destructor(): void;
                 toString(): string;
@@ -6155,7 +6230,7 @@ declare namespace $ {
             };
             tip: Tip;
             tag: "keys" | "term" | "solo" | "vals";
-            of<Tip extends "time" | "json" | "bin" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom" | "tree">(tip: Tip): any;
+            of<Tip extends "time" | "json" | "bin" | "tree" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom">(tip: Tip): any;
             ref<Value extends unknown>(Value: Value): {
                 new (): {
                     value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
@@ -6185,6 +6260,7 @@ declare namespace $ {
                     can_change: (lord?: symbol & {
                         $hyoo_crus_ref: symbol;
                     }) => boolean;
+                    last_change: () => $mol_time_moment | null;
                     pick_unit: () => $hyoo_crus_gist | undefined;
                     value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
                     value_bool: (next?: boolean | undefined) => boolean | null;
@@ -6249,6 +6325,7 @@ declare namespace $ {
                 can_change: (lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }) => boolean;
+                last_change: () => $mol_time_moment | null;
                 pick_unit: () => $hyoo_crus_gist | undefined;
                 value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
                 value_bool: (next?: boolean | undefined) => boolean | null;
@@ -6321,6 +6398,7 @@ declare namespace $ {
             can_change(lord?: symbol & {
                 $hyoo_crus_ref: symbol;
             }): boolean;
+            last_change(): $mol_time_moment | null;
             $: typeof $$;
             destructor(): void;
             toString(): string;
@@ -6329,7 +6407,7 @@ declare namespace $ {
         };
         tip: "time";
         tag: "keys" | "term" | "solo" | "vals";
-        of<Tip extends "time" | "json" | "bin" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom" | "tree">(tip: Tip): {
+        of<Tip extends "time" | "json" | "bin" | "tree" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom">(tip: Tip): {
             new (): {
                 value(next?: ReturnType<{
                     readonly nil: () => null;
@@ -6394,6 +6472,7 @@ declare namespace $ {
                 can_change(lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }): boolean;
+                last_change(): $mol_time_moment | null;
                 $: typeof $$;
                 destructor(): void;
                 toString(): string;
@@ -6402,7 +6481,7 @@ declare namespace $ {
             };
             tip: Tip;
             tag: "keys" | "term" | "solo" | "vals";
-            of<Tip extends "time" | "json" | "bin" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom" | "tree">(tip: Tip): any;
+            of<Tip extends "time" | "json" | "bin" | "tree" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom">(tip: Tip): any;
             ref<Value extends unknown>(Value: Value): {
                 new (): {
                     value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
@@ -6432,6 +6511,7 @@ declare namespace $ {
                     can_change: (lord?: symbol & {
                         $hyoo_crus_ref: symbol;
                     }) => boolean;
+                    last_change: () => $mol_time_moment | null;
                     pick_unit: () => $hyoo_crus_gist | undefined;
                     value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
                     value_bool: (next?: boolean | undefined) => boolean | null;
@@ -6496,6 +6576,7 @@ declare namespace $ {
                 can_change: (lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }) => boolean;
+                last_change: () => $mol_time_moment | null;
                 pick_unit: () => $hyoo_crus_gist | undefined;
                 value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
                 value_bool: (next?: boolean | undefined) => boolean | null;
@@ -6568,6 +6649,7 @@ declare namespace $ {
             can_change(lord?: symbol & {
                 $hyoo_crus_ref: symbol;
             }): boolean;
+            last_change(): $mol_time_moment | null;
             $: typeof $$;
             destructor(): void;
             toString(): string;
@@ -6576,7 +6658,7 @@ declare namespace $ {
         };
         tip: "json";
         tag: "keys" | "term" | "solo" | "vals";
-        of<Tip extends "time" | "json" | "bin" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom" | "tree">(tip: Tip): {
+        of<Tip extends "time" | "json" | "bin" | "tree" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom">(tip: Tip): {
             new (): {
                 value(next?: ReturnType<{
                     readonly nil: () => null;
@@ -6641,6 +6723,7 @@ declare namespace $ {
                 can_change(lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }): boolean;
+                last_change(): $mol_time_moment | null;
                 $: typeof $$;
                 destructor(): void;
                 toString(): string;
@@ -6649,7 +6732,7 @@ declare namespace $ {
             };
             tip: Tip;
             tag: "keys" | "term" | "solo" | "vals";
-            of<Tip extends "time" | "json" | "bin" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom" | "tree">(tip: Tip): any;
+            of<Tip extends "time" | "json" | "bin" | "tree" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom">(tip: Tip): any;
             ref<Value extends unknown>(Value: Value): {
                 new (): {
                     value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
@@ -6679,6 +6762,7 @@ declare namespace $ {
                     can_change: (lord?: symbol & {
                         $hyoo_crus_ref: symbol;
                     }) => boolean;
+                    last_change: () => $mol_time_moment | null;
                     pick_unit: () => $hyoo_crus_gist | undefined;
                     value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
                     value_bool: (next?: boolean | undefined) => boolean | null;
@@ -6743,6 +6827,7 @@ declare namespace $ {
                 can_change: (lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }) => boolean;
+                last_change: () => $mol_time_moment | null;
                 pick_unit: () => $hyoo_crus_gist | undefined;
                 value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
                 value_bool: (next?: boolean | undefined) => boolean | null;
@@ -6815,6 +6900,7 @@ declare namespace $ {
             can_change(lord?: symbol & {
                 $hyoo_crus_ref: symbol;
             }): boolean;
+            last_change(): $mol_time_moment | null;
             $: typeof $$;
             destructor(): void;
             toString(): string;
@@ -6823,7 +6909,7 @@ declare namespace $ {
         };
         tip: "jsan";
         tag: "keys" | "term" | "solo" | "vals";
-        of<Tip extends "time" | "json" | "bin" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom" | "tree">(tip: Tip): {
+        of<Tip extends "time" | "json" | "bin" | "tree" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom">(tip: Tip): {
             new (): {
                 value(next?: ReturnType<{
                     readonly nil: () => null;
@@ -6888,6 +6974,7 @@ declare namespace $ {
                 can_change(lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }): boolean;
+                last_change(): $mol_time_moment | null;
                 $: typeof $$;
                 destructor(): void;
                 toString(): string;
@@ -6896,7 +6983,7 @@ declare namespace $ {
             };
             tip: Tip;
             tag: "keys" | "term" | "solo" | "vals";
-            of<Tip extends "time" | "json" | "bin" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom" | "tree">(tip: Tip): any;
+            of<Tip extends "time" | "json" | "bin" | "tree" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom">(tip: Tip): any;
             ref<Value extends unknown>(Value: Value): {
                 new (): {
                     value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
@@ -6926,6 +7013,7 @@ declare namespace $ {
                     can_change: (lord?: symbol & {
                         $hyoo_crus_ref: symbol;
                     }) => boolean;
+                    last_change: () => $mol_time_moment | null;
                     pick_unit: () => $hyoo_crus_gist | undefined;
                     value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
                     value_bool: (next?: boolean | undefined) => boolean | null;
@@ -6990,6 +7078,7 @@ declare namespace $ {
                 can_change: (lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }) => boolean;
+                last_change: () => $mol_time_moment | null;
                 pick_unit: () => $hyoo_crus_gist | undefined;
                 value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
                 value_bool: (next?: boolean | undefined) => boolean | null;
@@ -7062,6 +7151,7 @@ declare namespace $ {
             can_change(lord?: symbol & {
                 $hyoo_crus_ref: symbol;
             }): boolean;
+            last_change(): $mol_time_moment | null;
             $: typeof $$;
             destructor(): void;
             toString(): string;
@@ -7070,7 +7160,7 @@ declare namespace $ {
         };
         tip: "dom";
         tag: "keys" | "term" | "solo" | "vals";
-        of<Tip extends "time" | "json" | "bin" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom" | "tree">(tip: Tip): {
+        of<Tip extends "time" | "json" | "bin" | "tree" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom">(tip: Tip): {
             new (): {
                 value(next?: ReturnType<{
                     readonly nil: () => null;
@@ -7135,6 +7225,7 @@ declare namespace $ {
                 can_change(lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }): boolean;
+                last_change(): $mol_time_moment | null;
                 $: typeof $$;
                 destructor(): void;
                 toString(): string;
@@ -7143,7 +7234,7 @@ declare namespace $ {
             };
             tip: Tip;
             tag: "keys" | "term" | "solo" | "vals";
-            of<Tip extends "time" | "json" | "bin" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom" | "tree">(tip: Tip): any;
+            of<Tip extends "time" | "json" | "bin" | "tree" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom">(tip: Tip): any;
             ref<Value extends unknown>(Value: Value): {
                 new (): {
                     value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
@@ -7173,6 +7264,7 @@ declare namespace $ {
                     can_change: (lord?: symbol & {
                         $hyoo_crus_ref: symbol;
                     }) => boolean;
+                    last_change: () => $mol_time_moment | null;
                     pick_unit: () => $hyoo_crus_gist | undefined;
                     value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
                     value_bool: (next?: boolean | undefined) => boolean | null;
@@ -7237,6 +7329,7 @@ declare namespace $ {
                 can_change: (lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }) => boolean;
+                last_change: () => $mol_time_moment | null;
                 pick_unit: () => $hyoo_crus_gist | undefined;
                 value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
                 value_bool: (next?: boolean | undefined) => boolean | null;
@@ -7309,6 +7402,7 @@ declare namespace $ {
             can_change(lord?: symbol & {
                 $hyoo_crus_ref: symbol;
             }): boolean;
+            last_change(): $mol_time_moment | null;
             $: typeof $$;
             destructor(): void;
             toString(): string;
@@ -7317,7 +7411,7 @@ declare namespace $ {
         };
         tip: "tree";
         tag: "keys" | "term" | "solo" | "vals";
-        of<Tip extends "time" | "json" | "bin" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom" | "tree">(tip: Tip): {
+        of<Tip extends "time" | "json" | "bin" | "tree" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom">(tip: Tip): {
             new (): {
                 value(next?: ReturnType<{
                     readonly nil: () => null;
@@ -7382,6 +7476,7 @@ declare namespace $ {
                 can_change(lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }): boolean;
+                last_change(): $mol_time_moment | null;
                 $: typeof $$;
                 destructor(): void;
                 toString(): string;
@@ -7390,7 +7485,7 @@ declare namespace $ {
             };
             tip: Tip;
             tag: "keys" | "term" | "solo" | "vals";
-            of<Tip extends "time" | "json" | "bin" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom" | "tree">(tip: Tip): any;
+            of<Tip extends "time" | "json" | "bin" | "tree" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom">(tip: Tip): any;
             ref<Value extends unknown>(Value: Value): {
                 new (): {
                     value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
@@ -7420,6 +7515,7 @@ declare namespace $ {
                     can_change: (lord?: symbol & {
                         $hyoo_crus_ref: symbol;
                     }) => boolean;
+                    last_change: () => $mol_time_moment | null;
                     pick_unit: () => $hyoo_crus_gist | undefined;
                     value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
                     value_bool: (next?: boolean | undefined) => boolean | null;
@@ -7484,6 +7580,7 @@ declare namespace $ {
                 can_change: (lord?: symbol & {
                     $hyoo_crus_ref: symbol;
                 }) => boolean;
+                last_change: () => $mol_time_moment | null;
                 pick_unit: () => $hyoo_crus_gist | undefined;
                 value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
                 value_bool: (next?: boolean | undefined) => boolean | null;
@@ -7621,7 +7718,7 @@ declare namespace $ {
         toString(): string;
         Land(numb: string): $hyoo_crus_land;
         Land_new(idea: number): $hyoo_crus_land;
-        Profile<Node extends typeof $hyoo_crus_node>(app: string, Node: Node): InstanceType<Node> | null;
+        Profile<Node extends typeof $hyoo_crus_node>(app: string, Node: Node, auto?: any): InstanceType<Node> | null;
         numb_make(idea?: number): string;
     }
 }

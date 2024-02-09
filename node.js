@@ -3971,6 +3971,7 @@ var $;
         'rtf': 'application/rtf',
         'sh': 'application/x-sh',
         'tar': 'application/x-tar',
+        'tree': 'application/x-tree',
         'vsd': 'application/vnd.visio',
         'xhtml': 'application/xhtml+xml',
         'xls': 'application/vnd.ms-excel',
@@ -5714,12 +5715,12 @@ var $;
         nodes(Node) {
             const land = this.land();
             const map = {
-                term: land.Node(Node || $hyoo_crus_reg),
-                solo: land.Node(Node || $hyoo_crus_reg),
-                vals: land.Node(Node || $hyoo_crus_list),
-                keys: land.Node(Node || $hyoo_crus_dict),
+                term: () => land.Node(Node || $hyoo_crus_reg),
+                solo: () => land.Node(Node || $hyoo_crus_reg),
+                vals: () => land.Node(Node || $hyoo_crus_list),
+                keys: () => land.Node(Node || $hyoo_crus_dict),
             };
-            return this.units().map(unit => map[unit.tag()].Item(unit.self()));
+            return this.units().map(unit => map[unit.tag()]().Item(unit.self()));
         }
         units() {
             return this.land().gists_ordered(this.head());
@@ -5729,6 +5730,24 @@ var $;
         }
         can_change(lord = this.land().auth().lord()) {
             return this.land().lord_rang(lord) >= $hyoo_crus_rang.add;
+        }
+        last_change() {
+            const land = this.land();
+            let last = 0;
+            const map = {
+                term: () => null,
+                solo: () => land.Node($hyoo_crus_reg),
+                vals: () => land.Node($hyoo_crus_list),
+                keys: () => land.Node($hyoo_crus_dict),
+            };
+            const visit = (gist) => {
+                if (gist.time() > last)
+                    last = gist.time();
+                map[gist.tag()]()?.Item(gist.self()).units().forEach(visit);
+            };
+            for (const gist of this.units())
+                visit(gist);
+            return last ? new $mol_time_moment(last) : null;
         }
         ;
         [$mol_dev_format_head]() {
@@ -5747,6 +5766,9 @@ var $;
     __decorate([
         $mol_mem
     ], $hyoo_crus_node.prototype, "units", null);
+    __decorate([
+        $mol_mem
+    ], $hyoo_crus_node.prototype, "last_change", null);
     $.$hyoo_crus_node = $hyoo_crus_node;
 })($ || ($ = {}));
 //hyoo/crus/node/node.ts
@@ -6516,10 +6538,17 @@ var $;
                         }
                         case $hyoo_crus_part.rock: {
                             const size = this.uint32(offset) >> 8;
-                            const rock = buf.slice(offset + 4, offset + 4 + size);
-                            const hash = $mol_crypto_hash(rock);
-                            rocks.push([hash, rock]);
-                            offset += Math.ceil(size / 8 + .5) * 8;
+                            if (size === 0) {
+                                const hash = buf.slice(offset + 4, offset + 4 + 24);
+                                rocks.push([hash, null]);
+                                offset += 4 + 24;
+                            }
+                            else {
+                                const rock = buf.slice(offset + 4, offset + 4 + size);
+                                const hash = $mol_crypto_hash(rock);
+                                rocks.push([hash, rock]);
+                                offset += Math.ceil(size / 8 + .5) * 8;
+                            }
                             continue;
                         }
                         case $hyoo_crus_part.buck: {
@@ -6573,7 +6602,7 @@ var $;
             }
             for (const [hash, rock] of rocks) {
                 const len = rock?.length ?? 0;
-                pack.uint32(offset, rock ? (len << 8) + $hyoo_crus_part.rock : $hyoo_crus_part.hash);
+                pack.uint32(offset, $hyoo_crus_part.rock | (len << 8));
                 if (rock)
                     buff.set(rock, offset + 4);
                 else
@@ -7969,8 +7998,8 @@ var $;
         Land_new(idea) {
             return this.Land(this.numb_make(idea || undefined));
         }
-        Profile(app, Node) {
-            return this.base().Profile(app)?.Data(Node) ?? null;
+        Profile(app, Node, auto) {
+            return this.base().Profile(app, auto)?.Data(Node) ?? null;
         }
         numb_make(idea = Math.floor(Math.random() * 2 ** 48)) {
             for (let i = 0; i < 4096; ++i) {
