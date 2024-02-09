@@ -192,7 +192,7 @@ namespace $ {
 				
 			} else {
 				
-				// this.units() // track text to recalc selection on its change
+				this.text() // track text to recalc selection on its change
 				return base.selection().split( '|' ).map( point => {
 					const chunks = point.split( ':' )
 					return this.offset_by_point([ chunks[0], Number( chunks[1] ) || 0 ])[1]
