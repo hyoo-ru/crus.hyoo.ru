@@ -98,7 +98,9 @@ namespace $ {
 		@ $mol_mem_key
 		lord_rang( lord: $hyoo_crus_ref ) {
 			if( lord === this.lord_ref() ) return $hyoo_crus_rang.law
-			return this.gifts.get( lord )?.rang() ?? $hyoo_crus_rang.get
+			return this.gifts.get( lord )?.rang()
+				?? this.gifts.get( $hyoo_crus_ref( 'FFFFFFFF_FFFFFFFF' ) )?.rang()
+				?? $hyoo_crus_rang.get
 		}
 		
 		peer_rang( peer: string ) {
@@ -112,20 +114,38 @@ namespace $ {
 			
 			const delta = [] as $hyoo_crus_unit[]
 			
-			for( const unit of this.passes.values() ) {
-				if( face.get( unit.peer() ) ) continue
-				delta.push( unit )
+			const passed = new Set< string >()
+			const auth = ( peer: string )=> {
+				
+				if( passed.has( peer ) ) return
+				if( face.get( peer ) ) return
+				
+				const pass = this.passes.get( peer )!
+				
+				delta.push( pass )
+				passed.add( peer )
+				
 			}
 			
 			for( const [ lord, unit ] of this.gifts ) {
+				
 				const time = face.get( unit.peer() ) ?? 0
-				if( time < unit.time() ) delta.push( unit )
+				if( time >= unit.time() ) continue
+				
+				auth( unit.peer() )
+				delta.push( unit )
+				
 			}
 			
 			for( const kids of this.gists.values() ) {
 				for( const unit of kids.values() ) {
+					
 					const time = face.get( unit.peer() ) ?? 0
-					if( time < unit.time() ) delta.push( unit )
+					if( time >= unit.time() ) continue
+					
+					auth( unit.peer() )
+					delta.push( unit )
+					
 				}
 			}
 			
@@ -189,14 +209,14 @@ namespace $ {
 		
 		/** Applies Delta to current state with verify. */
 		@ $mol_action
-		apply_unit( delta: readonly $hyoo_crus_unit[] ) {
+		apply_unit( delta: readonly $hyoo_crus_unit[], skip_check = false ) {
 			
 			if( !delta.length ) return []
 			
 			const errors = $mol_wire_sync( this ).units_verify( delta )
 			if( errors.some( v => v ) ) return errors
 			
-			return this.apply_unit_trust( delta )
+			return this.apply_unit_trust( delta, skip_check )
 		}
 		
 		async units_verify( delta: readonly $hyoo_crus_unit[] ) {
@@ -229,11 +249,13 @@ namespace $ {
 		
 		/** Applies Delta to current state without verifying. */
 		@ $mol_action
-		apply_unit_trust( delta: readonly $hyoo_crus_unit[] ) {
+		apply_unit_trust( delta: readonly $hyoo_crus_unit[], skip_check = false ) {
 			return delta.map( unit => {
 				
-				const error = this.check_unit( unit )
-				if( error ) return error
+				if( !skip_check ) {
+					const error = this.check_unit( unit )
+					if( error ) return error
+				}
 				
 				let need_recheck = false
 				const res = unit.choose({
@@ -463,19 +485,19 @@ namespace $ {
 		/** Places data to tree. */
 		@ $mol_action
 		give(
-			dest: $hyoo_crus_ref,
+			dest: $hyoo_crus_ref | null,
 			rang: $hyoo_crus_rang,
 		) {
 				
 			this.join()
 			
-			const auth  = this.auth()
+			const auth = this.auth()
 			const unit = new $hyoo_crus_gift
 			
 			unit.rang( rang )
 			unit.time( this.faces.tick() )
 			unit.peer( auth.peer() )
-			unit.dest( dest )
+			unit.dest( dest ?? $hyoo_crus_ref( 'FFFFFFFF_FFFFFFFF' ) )
 			
 			const error = this.apply_unit_trust([ unit ])[0]
 			if( error ) $mol_fail( new Error( error ) )
@@ -630,7 +652,7 @@ namespace $ {
 			$mol_wire_solid()
 			
 			const units = this.realm()?.yard().load( this ) ?? []
-			const errors = this.apply_unit( units ).filter( Boolean )
+			const errors = this.apply_unit( units, !!'skip_check' ).filter( Boolean )
 			
 			if( errors.length ) this.$.$mol_log3_fail({
 				place: this,
