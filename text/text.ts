@@ -118,7 +118,7 @@ namespace $ {
 				next = ( $hyoo_crus_vary_cast_str( land.gist_decode( list[ from ] ) ) ?? '' ) + next
 			}
 			
-			const words = next.match( $hyoo_crowd_tokenizer ) ?? []
+			const words = next.match( $hyoo_crus_text_tokens ) ?? []
 			this.cast( $hyoo_crus_list ).splice( words, from, to )
 			
 			return this
