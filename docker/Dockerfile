@@ -13,4 +13,4 @@ COPY ./ hyoo/crus
 RUN npm start hyoo/crus/app
 
 WORKDIR ./hyoo/crus/app/-
-ENTRYPOINT node node.js port=3000 db=postgres://docker:password@:5432/crus?sslmode=disable log=/var/log/sync.log &>> /var/log/sync.log
+ENTRYPOINT node node.js $hyoo_crus_app=3000 &>> /var/log/sync.log
