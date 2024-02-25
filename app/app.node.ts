@@ -14,13 +14,20 @@ namespace $ {
 	@ $mol_rest_server.start
 	export class $hyoo_crus_app_sync extends $mol_rest_resource {
 		
-		_realm = new $hyoo_crus_realm
+		@ $mol_mem
+		_realm() {
+			return new $hyoo_crus_realm
+		}
 		
 		@ $mol_mem
 		_yard() {
-			$mol_wire_solid()
-			setTimeout( ()=> this._realm.yard().sync() )
-			return this._realm.yard()
+			setTimeout( ()=> this._sync() )
+			return this._realm().yard()
+		}
+		
+		@ $mol_mem
+		_sync() {
+			this._yard().sync()
 		}
 		
 		OPEN( msg: $mol_rest_message ) {

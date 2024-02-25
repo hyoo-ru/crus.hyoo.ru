@@ -44,7 +44,6 @@ namespace $ {
 		
 		@ $mol_mem
 		sync() {
-			const realm = this.realm()
 			for( const port of this.ports() ) {
 				for( const land of this.port_lands( port ) ) {
 					try {
@@ -75,7 +74,7 @@ namespace $ {
 		port_income( port: $mol_rest_port, msg: Uint8Array ) {
 			
 			const pack = $mol_wire_sync( $hyoo_crus_pack ).from( msg ) as $hyoo_crus_pack
-			const parts = pack.parts()
+			const parts =  $mol_wire_sync( pack ).parts()
 			
 			$mol_wire_sync( this.$ ).$mol_log3_rise({
 				place: this,
