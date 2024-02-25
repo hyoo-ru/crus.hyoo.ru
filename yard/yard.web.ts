@@ -95,8 +95,8 @@ namespace $.$$ {
 			
 			this.reconnects()
 			
-			const link = this.master_current() + 'sync/'
-			const socket = new $mol_dom_context.WebSocket( link.replace( /^http/, 'ws' ) )
+			const link = this.master_current().replace( /^http/, 'ws' )
+			const socket = new $mol_dom_context.WebSocket( link )
 			socket.binaryType = 'arraybuffer'
 			const port = $mol_rest_port_ws_web.make({ socket })
 			
@@ -152,11 +152,12 @@ namespace $.$$ {
 					
 					socket.onclose = event => {
 						fail( new Error( `Master is unavailable (${ event.code })` ) )
+						clearInterval( interval )
+						setTimeout( ()=> {
+							this.master_next()
+							this.reconnects( null )
+						} )
 					}
-					
-					clearInterval( interval )
-					
-					this.master_next()
 					
 				}
 				
