@@ -1,6 +1,5 @@
 namespace $ {
 
-	@ $mol_rest_server.start
 	export class $hyoo_crus_app extends $mol_rest_resource_fs {
 		
 		@ $mol_mem
@@ -32,5 +31,7 @@ namespace $ {
 		}
 		
 	}
+	
+	$hyoo_crus_app.serve()
 	
 }
