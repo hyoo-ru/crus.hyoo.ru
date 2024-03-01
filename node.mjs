@@ -11,7 +11,7 @@ var $;
 (function ($) {
 })($ || ($ = {}));
 module.exports = $;
-//mam.ts
+
 ;
 
 $node[ "../mam.ts" ] = $node[ "../mam.ts" ] = module.exports }.call( {} , {} )
@@ -30,111 +30,7 @@ $.$$ = $
 
 ;
 "use strict";
-//hyoo/hyoo.ts
-;
-"use strict";
-var $;
-(function ($) {
-    $.$mol_ambient_ref = Symbol('$mol_ambient_ref');
-    function $mol_ambient(overrides) {
-        return Object.setPrototypeOf(overrides, this || $);
-    }
-    $.$mol_ambient = $mol_ambient;
-})($ || ($ = {}));
-//mol/ambient/ambient.ts
-;
-"use strict";
-var $;
-(function ($) {
-    const instances = new WeakSet();
-    function $mol_delegate(proto, target) {
-        const proxy = new Proxy(proto, {
-            get: (_, field) => {
-                const obj = target();
-                let val = Reflect.get(obj, field);
-                if (typeof val === 'function') {
-                    val = val.bind(obj);
-                }
-                return val;
-            },
-            has: (_, field) => Reflect.has(target(), field),
-            set: (_, field, value) => Reflect.set(target(), field, value),
-            getOwnPropertyDescriptor: (_, field) => Reflect.getOwnPropertyDescriptor(target(), field),
-            ownKeys: () => Reflect.ownKeys(target()),
-            getPrototypeOf: () => Reflect.getPrototypeOf(target()),
-            setPrototypeOf: (_, donor) => Reflect.setPrototypeOf(target(), donor),
-            isExtensible: () => Reflect.isExtensible(target()),
-            preventExtensions: () => Reflect.preventExtensions(target()),
-            apply: (_, self, args) => Reflect.apply(target(), self, args),
-            construct: (_, args, retarget) => Reflect.construct(target(), args, retarget),
-            defineProperty: (_, field, descr) => Reflect.defineProperty(target(), field, descr),
-            deleteProperty: (_, field) => Reflect.deleteProperty(target(), field),
-        });
-        instances.add(proxy);
-        return proxy;
-    }
-    $.$mol_delegate = $mol_delegate;
-    Reflect.defineProperty($mol_delegate, Symbol.hasInstance, {
-        value: (obj) => instances.has(obj),
-    });
-})($ || ($ = {}));
-//mol/delegate/delegate.ts
-;
-"use strict";
-var $;
-(function ($) {
-    $.$mol_owning_map = new WeakMap();
-    function $mol_owning_allow(having) {
-        try {
-            if (!having)
-                return false;
-            if (typeof having !== 'object' && typeof having !== 'function')
-                return false;
-            if (having instanceof $mol_delegate)
-                return false;
-            if (typeof having['destructor'] !== 'function')
-                return false;
-            return true;
-        }
-        catch {
-            return false;
-        }
-    }
-    $.$mol_owning_allow = $mol_owning_allow;
-    function $mol_owning_get(having, Owner) {
-        if (!$mol_owning_allow(having))
-            return null;
-        while (true) {
-            const owner = $.$mol_owning_map.get(having);
-            if (!owner)
-                return owner;
-            if (!Owner)
-                return owner;
-            if (owner instanceof Owner)
-                return owner;
-            having = owner;
-        }
-    }
-    $.$mol_owning_get = $mol_owning_get;
-    function $mol_owning_check(owner, having) {
-        if (!$mol_owning_allow(having))
-            return false;
-        if ($.$mol_owning_map.get(having) !== owner)
-            return false;
-        return true;
-    }
-    $.$mol_owning_check = $mol_owning_check;
-    function $mol_owning_catch(owner, having) {
-        if (!$mol_owning_allow(having))
-            return false;
-        if ($.$mol_owning_map.get(having))
-            return false;
-        $.$mol_owning_map.set(having, owner);
-        return true;
-    }
-    $.$mol_owning_catch = $mol_owning_catch;
-})($ || ($ = {}));
-//mol/owning/owning.ts
+
 ;
 "use strict";
 var $;
@@ -144,115 +40,7 @@ var $;
     }
     $.$mol_fail = $mol_fail;
 })($ || ($ = {}));
-//mol/fail/fail.ts
-;
-"use strict";
-var $;
-(function ($) {
-    function $mol_fail_hidden(error) {
-        throw error;
-    }
-    $.$mol_fail_hidden = $mol_fail_hidden;
-})($ || ($ = {}));
-//mol/fail/hidden/hidden.ts
-;
-"use strict";
-//mol/type/writable/writable.ts
-;
-"use strict";
-var $;
-(function ($) {
-    const named = new WeakSet();
-    function $mol_func_name(func) {
-        let name = func.name;
-        if (name?.length > 1)
-            return name;
-        if (named.has(func))
-            return name;
-        for (let key in this) {
-            try {
-                if (this[key] !== func)
-                    continue;
-                name = key;
-                Object.defineProperty(func, 'name', { value: name });
-                break;
-            }
-            catch { }
-        }
-        named.add(func);
-        return name;
-    }
-    $.$mol_func_name = $mol_func_name;
-    function $mol_func_name_from(target, source) {
-        Object.defineProperty(target, 'name', { value: source.name });
-        return target;
-    }
-    $.$mol_func_name_from = $mol_func_name_from;
-})($ || ($ = {}));
-//mol/func/name/name.ts
-;
-"use strict";
-var $;
-(function ($) {
-    class $mol_object2 {
-        static $ = $;
-        [Symbol.toStringTag];
-        [$mol_ambient_ref] = null;
-        get $() {
-            if (this[$mol_ambient_ref])
-                return this[$mol_ambient_ref];
-            const owner = $mol_owning_get(this);
-            return this[$mol_ambient_ref] = owner?.$ || $mol_object2.$;
-        }
-        set $(next) {
-            if (this[$mol_ambient_ref])
-                $mol_fail_hidden(new Error('Context already defined'));
-            this[$mol_ambient_ref] = next;
-        }
-        static create(init) {
-            const obj = new this;
-            if (init)
-                init(obj);
-            return obj;
-        }
-        static [Symbol.toPrimitive]() {
-            return this.toString();
-        }
-        static toString() {
-            return this[Symbol.toStringTag] || this.$.$mol_func_name(this);
-        }
-        static toJSON() {
-            return this.toString();
-        }
-        destructor() { }
-        static destructor() { }
-        toString() {
-            return this[Symbol.toStringTag] || this.constructor.name + '<>';
-        }
-    }
-    $.$mol_object2 = $mol_object2;
-})($ || ($ = {}));
-//mol/object2/object2.ts
-;
-"use strict";
-var $;
-(function ($_1) {
-    let $$;
-    (function ($$) {
-        let $;
-    })($$ = $_1.$$ || ($_1.$$ = {}));
-    $_1.$mol_object_field = Symbol('$mol_object_field');
-    class $mol_object extends $mol_object2 {
-        static make(config) {
-            return super.create(obj => {
-                for (let key in config)
-                    obj[key] = config[key];
-            });
-        }
-    }
-    $_1.$mol_object = $mol_object;
-})($ || ($ = {}));
-//mol/object/object.ts
+
 ;
 "use strict";
 var $;
@@ -265,7 +53,7 @@ var $;
         $mol_wire_cursor[$mol_wire_cursor["final"] = -4] = "final";
     })($mol_wire_cursor = $.$mol_wire_cursor || ($.$mol_wire_cursor = {}));
 })($ || ($ = {}));
-//mol/wire/cursor/cursor.ts
+
 ;
 "use strict";
 var $;
@@ -332,10 +120,10 @@ var $;
     }
     $.$mol_wire_pub = $mol_wire_pub;
 })($ || ($ = {}));
-//mol/wire/pub/pub.ts
+
 ;
 "use strict";
-//mol/wire/sub/sub.ts
+
 ;
 "use strict";
 var $;
@@ -347,7 +135,7 @@ var $;
     $.$mol_wire_auto = $mol_wire_auto;
     $.$mol_wire_affected = [];
 })($ || ($ = {}));
-//mol/wire/wire.ts
+
 ;
 "use strict";
 var $;
@@ -449,7 +237,7 @@ var $;
         'margin-left': '13px'
     });
 })($ || ($ = {}));
-//mol/dev/format/format.ts
+
 ;
 "use strict";
 var $;
@@ -593,7 +381,199 @@ var $;
     }
     $.$mol_wire_pub_sub = $mol_wire_pub_sub;
 })($ || ($ = {}));
-//mol/wire/pub/sub/sub.ts
+
+;
+"use strict";
+var $;
+(function ($) {
+    $.$mol_ambient_ref = Symbol('$mol_ambient_ref');
+    function $mol_ambient(overrides) {
+        return Object.setPrototypeOf(overrides, this || $);
+    }
+    $.$mol_ambient = $mol_ambient;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    const instances = new WeakSet();
+    function $mol_delegate(proto, target) {
+        const proxy = new Proxy(proto, {
+            get: (_, field) => {
+                const obj = target();
+                let val = Reflect.get(obj, field);
+                if (typeof val === 'function') {
+                    val = val.bind(obj);
+                }
+                return val;
+            },
+            has: (_, field) => Reflect.has(target(), field),
+            set: (_, field, value) => Reflect.set(target(), field, value),
+            getOwnPropertyDescriptor: (_, field) => Reflect.getOwnPropertyDescriptor(target(), field),
+            ownKeys: () => Reflect.ownKeys(target()),
+            getPrototypeOf: () => Reflect.getPrototypeOf(target()),
+            setPrototypeOf: (_, donor) => Reflect.setPrototypeOf(target(), donor),
+            isExtensible: () => Reflect.isExtensible(target()),
+            preventExtensions: () => Reflect.preventExtensions(target()),
+            apply: (_, self, args) => Reflect.apply(target(), self, args),
+            construct: (_, args, retarget) => Reflect.construct(target(), args, retarget),
+            defineProperty: (_, field, descr) => Reflect.defineProperty(target(), field, descr),
+            deleteProperty: (_, field) => Reflect.deleteProperty(target(), field),
+        });
+        instances.add(proxy);
+        return proxy;
+    }
+    $.$mol_delegate = $mol_delegate;
+    Reflect.defineProperty($mol_delegate, Symbol.hasInstance, {
+        value: (obj) => instances.has(obj),
+    });
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    $.$mol_owning_map = new WeakMap();
+    function $mol_owning_allow(having) {
+        try {
+            if (!having)
+                return false;
+            if (typeof having !== 'object' && typeof having !== 'function')
+                return false;
+            if (having instanceof $mol_delegate)
+                return false;
+            if (typeof having['destructor'] !== 'function')
+                return false;
+            return true;
+        }
+        catch {
+            return false;
+        }
+    }
+    $.$mol_owning_allow = $mol_owning_allow;
+    function $mol_owning_get(having, Owner) {
+        if (!$mol_owning_allow(having))
+            return null;
+        while (true) {
+            const owner = $.$mol_owning_map.get(having);
+            if (!owner)
+                return owner;
+            if (!Owner)
+                return owner;
+            if (owner instanceof Owner)
+                return owner;
+            having = owner;
+        }
+    }
+    $.$mol_owning_get = $mol_owning_get;
+    function $mol_owning_check(owner, having) {
+        if (!$mol_owning_allow(having))
+            return false;
+        if ($.$mol_owning_map.get(having) !== owner)
+            return false;
+        return true;
+    }
+    $.$mol_owning_check = $mol_owning_check;
+    function $mol_owning_catch(owner, having) {
+        if (!$mol_owning_allow(having))
+            return false;
+        if ($.$mol_owning_map.get(having))
+            return false;
+        $.$mol_owning_map.set(having, owner);
+        return true;
+    }
+    $.$mol_owning_catch = $mol_owning_catch;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    function $mol_fail_hidden(error) {
+        throw error;
+    }
+    $.$mol_fail_hidden = $mol_fail_hidden;
+})($ || ($ = {}));
+
+;
+"use strict";
+
+;
+"use strict";
+var $;
+(function ($) {
+    const named = new WeakSet();
+    function $mol_func_name(func) {
+        let name = func.name;
+        if (name?.length > 1)
+            return name;
+        if (named.has(func))
+            return name;
+        for (let key in this) {
+            try {
+                if (this[key] !== func)
+                    continue;
+                name = key;
+                Object.defineProperty(func, 'name', { value: name });
+                break;
+            }
+            catch { }
+        }
+        named.add(func);
+        return name;
+    }
+    $.$mol_func_name = $mol_func_name;
+    function $mol_func_name_from(target, source) {
+        Object.defineProperty(target, 'name', { value: source.name });
+        return target;
+    }
+    $.$mol_func_name_from = $mol_func_name_from;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_object2 {
+        static $ = $;
+        [Symbol.toStringTag];
+        [$mol_ambient_ref] = null;
+        get $() {
+            if (this[$mol_ambient_ref])
+                return this[$mol_ambient_ref];
+            const owner = $mol_owning_get(this);
+            return this[$mol_ambient_ref] = owner?.$ || $mol_object2.$;
+        }
+        set $(next) {
+            if (this[$mol_ambient_ref])
+                $mol_fail_hidden(new Error('Context already defined'));
+            this[$mol_ambient_ref] = next;
+        }
+        static create(init) {
+            const obj = new this;
+            if (init)
+                init(obj);
+            return obj;
+        }
+        static [Symbol.toPrimitive]() {
+            return this.toString();
+        }
+        static toString() {
+            return this[Symbol.toStringTag] || this.$.$mol_func_name(this);
+        }
+        static toJSON() {
+            return this.toString();
+        }
+        destructor() { }
+        static destructor() { }
+        toString() {
+            return this[Symbol.toStringTag] || this.constructor.name + '<>';
+        }
+    }
+    $.$mol_object2 = $mol_object2;
+})($ || ($ = {}));
+
 ;
 "use strict";
 var $;
@@ -614,7 +594,7 @@ var $;
     }
     $.$mol_after_timeout = $mol_after_timeout;
 })($ || ($ = {}));
-//mol/after/timeout/timeout.ts
+
 ;
 "use strict";
 var $;
@@ -628,7 +608,7 @@ var $;
     }
     $.$mol_after_frame = $mol_after_frame;
 })($ || ($ = {}));
-//mol/after/frame/frame.node.ts
+
 ;
 "use strict";
 var $;
@@ -638,7 +618,7 @@ var $;
     }
     $.$mol_promise_like = $mol_promise_like;
 })($ || ($ = {}));
-//mol/promise/like/like.ts
+
 ;
 "use strict";
 var $;
@@ -861,69 +841,7 @@ var $;
     }
     $.$mol_wire_fiber = $mol_wire_fiber;
 })($ || ($ = {}));
-//mol/wire/fiber/fiber.ts
-;
-"use strict";
-var $;
-(function ($) {
-    function $mol_guid(length = 8, exists = () => false) {
-        for (;;) {
-            let id = Math.random().toString(36).substring(2, length + 2).toUpperCase();
-            if (exists(id))
-                continue;
-            return id;
-        }
-    }
-    $.$mol_guid = $mol_guid;
-})($ || ($ = {}));
-//mol/guid/guid.ts
-;
-"use strict";
-var $;
-(function ($) {
-    $.$mol_key_store = new WeakMap();
-    function $mol_key(value) {
-        if (typeof value === 'bigint')
-            return value.toString() + 'n';
-        if (typeof value === 'symbol')
-            return value.description;
-        if (!value)
-            return JSON.stringify(value);
-        if (typeof value !== 'object' && typeof value !== 'function')
-            return JSON.stringify(value);
-        return JSON.stringify(value, (field, value) => {
-            if (typeof value === 'bigint')
-                return value.toString() + 'n';
-            if (typeof value === 'symbol')
-                return value.description;
-            if (!value)
-                return value;
-            if (typeof value !== 'object' && typeof value !== 'function')
-                return value;
-            if (Array.isArray(value))
-                return value;
-            const proto = Reflect.getPrototypeOf(value);
-            if (!proto)
-                return value;
-            if (Reflect.getPrototypeOf(proto) === null)
-                return value;
-            if ('toJSON' in value)
-                return value;
-            if (value instanceof RegExp)
-                return value.toString();
-            if (value instanceof Uint8Array)
-                return [...value];
-            let key = $.$mol_key_store.get(value);
-            if (key)
-                return key;
-            key = $mol_guid();
-            $.$mol_key_store.set(value, key);
-            return key;
-        });
-    }
-    $.$mol_key = $mol_key;
-})($ || ($ = {}));
-//mol/key/key.ts
+
 ;
 "use strict";
 var $;
@@ -1062,7 +980,7 @@ var $;
         return Object.is(left[Symbol.toPrimitive]('default'), right[Symbol.toPrimitive]('default'));
     }
 })($ || ($ = {}));
-//mol/compare/deep/deep.ts
+
 ;
 "use strict";
 var $;
@@ -1086,7 +1004,7 @@ var $;
     $.$mol_log3_area_lazy = $mol_log3_area_lazy;
     $.$mol_log3_stack = [];
 })($ || ($ = {}));
-//mol/log3/log3.ts
+
 ;
 "use strict";
 var $;
@@ -1153,7 +1071,7 @@ var $;
     }
     $.$mol_span = $mol_span;
 })($ || ($ = {}));
-//mol/span/span.ts
+
 ;
 "use strict";
 var $;
@@ -1186,7 +1104,7 @@ var $;
     }
     $.$mol_tree2_to_string = $mol_tree2_to_string;
 })($ || ($ = {}));
-//mol/tree2/to/string/string.ts
+
 ;
 "use strict";
 var $;
@@ -1321,22 +1239,23 @@ var $;
             });
             return this.clone(sub);
         }
+        hack_self(belt, context = {}) {
+            let handle = belt[this.type] || belt[''];
+            if (!handle || handle === Object.prototype[this.type]) {
+                handle = (input, belt, context) => [
+                    input.clone(input.hack(belt, context), context.span)
+                ];
+            }
+            try {
+                return handle(this, belt, context);
+            }
+            catch (error) {
+                error.message += `\n${this.clone([])}${this.span}`;
+                $mol_fail_hidden(error);
+            }
+        }
         hack(belt, context = {}) {
-            return [].concat(...this.kids.map(child => {
-                let handle = belt[child.type] || belt[''];
-                if (!handle || handle === Object.prototype[child.type]) {
-                    handle = (input, belt, context) => [
-                        input.clone(input.hack(belt, context), context.span)
-                    ];
-                }
-                try {
-                    return handle(child, belt, context);
-                }
-                catch (error) {
-                    error.message += `\n${child.clone([])}${child.span}`;
-                    $mol_fail_hidden(error);
-                }
-            }));
+            return [].concat(...this.kids.map(child => child.hack_self(belt, context)));
         }
         error(message, Class = Error) {
             return this.span.error(`${message}\n${this.clone([])}`, Class);
@@ -1350,7 +1269,7 @@ var $;
     }
     $.$mol_tree2_empty = $mol_tree2_empty;
 })($ || ($ = {}));
-//mol/tree2/tree2.ts
+
 ;
 "use strict";
 var $;
@@ -1368,7 +1287,7 @@ var $;
     }
     $.$mol_error_syntax = $mol_error_syntax;
 })($ || ($ = {}));
-//mol/error/syntax/syntax.ts
+
 ;
 "use strict";
 var $;
@@ -1457,7 +1376,7 @@ var $;
     }
     $.$mol_tree2_from_string = $mol_tree2_from_string;
 })($ || ($ = {}));
-//mol/tree2/from/string/string.ts
+
 ;
 "use strict";
 var $;
@@ -1507,7 +1426,7 @@ var $;
     }
     $.$mol_tree2_from_json = $mol_tree2_from_json;
 })($ || ($ = {}));
-//mol/tree2/from/json/json.ts
+
 ;
 "use strict";
 var $;
@@ -1553,7 +1472,7 @@ var $;
     }
     $.$mol_term_color = $mol_term_color;
 })($ || ($ = {}));
-//mol/term/color/color.ts
+
 ;
 "use strict";
 var $;
@@ -1578,7 +1497,7 @@ var $;
     $.$mol_log3_rise = $mol_log3_node_make('log', 'stdout', 'rise', $mol_term_color.magenta);
     $.$mol_log3_area = $mol_log3_node_make('log', 'stdout', 'area', $mol_term_color.cyan);
 })($ || ($ = {}));
-//mol/log3/log3.node.ts
+
 ;
 "use strict";
 var $;
@@ -1639,7 +1558,53 @@ var $;
     }
     $.$mol_wire_task = $mol_wire_task;
 })($ || ($ = {}));
-//mol/wire/task/task.ts
+
+;
+"use strict";
+var $;
+(function ($) {
+    function $mol_wire_sync(obj) {
+        return new Proxy(obj, {
+            get(obj, field) {
+                const val = obj[field];
+                if (typeof val !== 'function')
+                    return val;
+                const temp = $mol_wire_task.getter(val);
+                return function $mol_wire_sync(...args) {
+                    const fiber = temp(obj, args);
+                    return fiber.sync();
+                };
+            },
+            apply(obj, self, args) {
+                const temp = $mol_wire_task.getter(obj);
+                const fiber = temp(self, args);
+                return fiber.sync();
+            },
+        });
+    }
+    $.$mol_wire_sync = $mol_wire_sync;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($_1) {
+    let $$;
+    (function ($$) {
+        let $;
+    })($$ = $_1.$$ || ($_1.$$ = {}));
+    $_1.$mol_object_field = Symbol('$mol_object_field');
+    class $mol_object extends $mol_object2 {
+        static make(config) {
+            return super.create(obj => {
+                for (let key in config)
+                    obj[key] = config[key];
+            });
+        }
+    }
+    $_1.$mol_object = $mol_object;
+})($ || ($ = {}));
+
 ;
 "use strict";
 var $;
@@ -1665,13 +1630,91 @@ var $;
     }
     $.$mol_wire_method = $mol_wire_method;
 })($ || ($ = {}));
-//mol/wire/method/method.ts
+
 ;
 "use strict";
-//mol/type/tail/tail.ts
+var $;
+(function ($) {
+    $.$mol_action = $mol_wire_method;
+})($ || ($ = {}));
+
 ;
 "use strict";
-//mol/type/foot/foot.ts
+var $;
+(function ($) {
+    let $mol_rest_code;
+    (function ($mol_rest_code) {
+        $mol_rest_code[$mol_rest_code["Continue"] = 100] = "Continue";
+        $mol_rest_code[$mol_rest_code["Switching_Protocols"] = 101] = "Switching_Protocols";
+        $mol_rest_code[$mol_rest_code["Processing"] = 102] = "Processing";
+        $mol_rest_code[$mol_rest_code["OK"] = 200] = "OK";
+        $mol_rest_code[$mol_rest_code["Created"] = 201] = "Created";
+        $mol_rest_code[$mol_rest_code["Accepted"] = 202] = "Accepted";
+        $mol_rest_code[$mol_rest_code["Non_Authoritative_Information"] = 203] = "Non_Authoritative_Information";
+        $mol_rest_code[$mol_rest_code["No_Content"] = 204] = "No_Content";
+        $mol_rest_code[$mol_rest_code["Reset_Content"] = 205] = "Reset_Content";
+        $mol_rest_code[$mol_rest_code["Partial_Content"] = 206] = "Partial_Content";
+        $mol_rest_code[$mol_rest_code["Multi_Status"] = 207] = "Multi_Status";
+        $mol_rest_code[$mol_rest_code["Already_Reported"] = 208] = "Already_Reported";
+        $mol_rest_code[$mol_rest_code["IM_Used"] = 226] = "IM_Used";
+        $mol_rest_code[$mol_rest_code["Multiple_Choices"] = 300] = "Multiple_Choices";
+        $mol_rest_code[$mol_rest_code["Moved_Permanently"] = 301] = "Moved_Permanently";
+        $mol_rest_code[$mol_rest_code["Found"] = 302] = "Found";
+        $mol_rest_code[$mol_rest_code["See_Other"] = 303] = "See_Other";
+        $mol_rest_code[$mol_rest_code["Not_Modified"] = 304] = "Not_Modified";
+        $mol_rest_code[$mol_rest_code["Use_Proxy"] = 305] = "Use_Proxy";
+        $mol_rest_code[$mol_rest_code["Temporary_Redirect"] = 307] = "Temporary_Redirect";
+        $mol_rest_code[$mol_rest_code["Bad_Request"] = 400] = "Bad_Request";
+        $mol_rest_code[$mol_rest_code["Unauthorized"] = 401] = "Unauthorized";
+        $mol_rest_code[$mol_rest_code["Payment_Required"] = 402] = "Payment_Required";
+        $mol_rest_code[$mol_rest_code["Forbidden"] = 403] = "Forbidden";
+        $mol_rest_code[$mol_rest_code["Not_Found"] = 404] = "Not_Found";
+        $mol_rest_code[$mol_rest_code["Method_Not_Allowed"] = 405] = "Method_Not_Allowed";
+        $mol_rest_code[$mol_rest_code["Not_Acceptable"] = 406] = "Not_Acceptable";
+        $mol_rest_code[$mol_rest_code["Proxy_Authentication_Required"] = 407] = "Proxy_Authentication_Required";
+        $mol_rest_code[$mol_rest_code["Request_Timeout"] = 408] = "Request_Timeout";
+        $mol_rest_code[$mol_rest_code["Conflict"] = 409] = "Conflict";
+        $mol_rest_code[$mol_rest_code["Gone"] = 410] = "Gone";
+        $mol_rest_code[$mol_rest_code["Length_Required"] = 411] = "Length_Required";
+        $mol_rest_code[$mol_rest_code["Precondition_Failed"] = 412] = "Precondition_Failed";
+        $mol_rest_code[$mol_rest_code["Request_Entity_Too_Large"] = 413] = "Request_Entity_Too_Large";
+        $mol_rest_code[$mol_rest_code["Request_URI_Too_Long"] = 414] = "Request_URI_Too_Long";
+        $mol_rest_code[$mol_rest_code["Unsupported_Media_Type"] = 415] = "Unsupported_Media_Type";
+        $mol_rest_code[$mol_rest_code["Requested_Range_Not_Satisfiable"] = 416] = "Requested_Range_Not_Satisfiable";
+        $mol_rest_code[$mol_rest_code["Expectation_Failed"] = 417] = "Expectation_Failed";
+        $mol_rest_code[$mol_rest_code["Teapot"] = 418] = "Teapot";
+        $mol_rest_code[$mol_rest_code["Unprocessable_Entity"] = 422] = "Unprocessable_Entity";
+        $mol_rest_code[$mol_rest_code["Locked"] = 423] = "Locked";
+        $mol_rest_code[$mol_rest_code["Failed_Dependency"] = 424] = "Failed_Dependency";
+        $mol_rest_code[$mol_rest_code["Upgrade_Required"] = 426] = "Upgrade_Required";
+        $mol_rest_code[$mol_rest_code["Precondition_Required"] = 428] = "Precondition_Required";
+        $mol_rest_code[$mol_rest_code["Too_Many_Requests"] = 429] = "Too_Many_Requests";
+        $mol_rest_code[$mol_rest_code["Request_Header_Fields_Too_Large"] = 431] = "Request_Header_Fields_Too_Large";
+        $mol_rest_code[$mol_rest_code["Unavailable_For_Legal_Reasons"] = 451] = "Unavailable_For_Legal_Reasons";
+        $mol_rest_code[$mol_rest_code["Internal_Server_Error"] = 500] = "Internal_Server_Error";
+        $mol_rest_code[$mol_rest_code["Not_Implemented"] = 501] = "Not_Implemented";
+        $mol_rest_code[$mol_rest_code["Bad_Gateway"] = 502] = "Bad_Gateway";
+        $mol_rest_code[$mol_rest_code["Service_Unavailable"] = 503] = "Service_Unavailable";
+        $mol_rest_code[$mol_rest_code["Gateway_Timeout"] = 504] = "Gateway_Timeout";
+        $mol_rest_code[$mol_rest_code["HTTP_Version_Not_Supported"] = 505] = "HTTP_Version_Not_Supported";
+        $mol_rest_code[$mol_rest_code["Insufficient_Storage"] = 507] = "Insufficient_Storage";
+        $mol_rest_code[$mol_rest_code["Loop_Detected"] = 508] = "Loop_Detected";
+        $mol_rest_code[$mol_rest_code["Not_Extended"] = 510] = "Not_Extended";
+        $mol_rest_code[$mol_rest_code["Network_Authentication_Required"] = 511] = "Network_Authentication_Required";
+        $mol_rest_code[$mol_rest_code["Network_Read_Timeout_Error"] = 598] = "Network_Read_Timeout_Error";
+        $mol_rest_code[$mol_rest_code["Network_Connect_Timeout_Error"] = 599] = "Network_Connect_Timeout_Error";
+    })($mol_rest_code = $.$mol_rest_code || ($.$mol_rest_code = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+})($ || ($ = {}));
+
+;
+"use strict";
+
 ;
 "use strict";
 var $;
@@ -1689,7 +1732,7 @@ var $;
     }
     $.$mol_fail_catch = $mol_fail_catch;
 })($ || ($ = {}));
-//mol/fail/catch/catch.ts
+
 ;
 "use strict";
 var $;
@@ -1704,7 +1747,267 @@ var $;
     }
     $.$mol_fail_log = $mol_fail_log;
 })($ || ($ = {}));
-//mol/fail/log/log.ts
+
+;
+"use strict";
+var $node = new Proxy({ require }, {
+    get(target, name, wrapper) {
+        if (target[name])
+            return target[name];
+        const mod = target.require('module');
+        if (mod.builtinModules.indexOf(name) >= 0)
+            return target.require(name);
+        if (name[0] === '.')
+            return target.require(name);
+        const path = target.require('path');
+        const fs = target.require('fs');
+        let dir = path.resolve('.');
+        const suffix = `./node_modules/${name}`;
+        const $$ = $;
+        while (!fs.existsSync(path.join(dir, suffix))) {
+            const parent = path.resolve(dir, '..');
+            if (parent === dir) {
+                $$.$mol_exec('.', 'npm', 'install', '--omit=dev', name);
+                try {
+                    $$.$mol_exec('.', 'npm', 'install', '--omit=dev', '@types/' + name);
+                }
+                catch { }
+                break;
+            }
+            else {
+                dir = parent;
+            }
+        }
+        try {
+            return target.require(name);
+        }
+        catch (error) {
+            $.$mol_fail_log(error);
+            return null;
+        }
+    },
+    set(target, name, value) {
+        target[name] = value;
+        return true;
+    },
+});
+require = (req => Object.assign(function require(name) {
+    return $node[name];
+}, req))(require);
+
+;
+"use strict";
+var $;
+(function ($) {
+    function $mol_env() {
+        return {};
+    }
+    $.$mol_env = $mol_env;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    $.$mol_env = function $mol_env() {
+        return this.process.env;
+    };
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    function $mol_exec(dir, command, ...args) {
+        let [app, ...args0] = command.split(' ');
+        args = [...args0, ...args];
+        this.$mol_log3_come({
+            place: '$mol_exec',
+            dir: $node.path.relative('', dir),
+            message: 'Run',
+            command: `${app} ${args.join(' ')}`,
+        });
+        var res = $node['child_process'].spawnSync(app, args, {
+            cwd: $node.path.resolve(dir),
+            shell: true,
+            env: this.$mol_env(),
+        });
+        if (res.status || res.error) {
+            return $mol_fail(res.error || new Error(res.stderr.toString(), { cause: res.stdout }));
+        }
+        if (!res.stdout)
+            res.stdout = Buffer.from([]);
+        return res;
+    }
+    $.$mol_exec = $mol_exec;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    $.$mol_dom_context = new $node.jsdom.JSDOM('', { url: 'https://localhost/' }).window;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    const TextEncoder = globalThis.TextEncoder ?? $node.util.TextEncoder;
+    const encoder = new TextEncoder();
+    function $mol_charset_encode(value) {
+        return encoder.encode(value);
+    }
+    $.$mol_charset_encode = $mol_charset_encode;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    function $mol_dom_serialize(node) {
+        const serializer = new $mol_dom_context.XMLSerializer;
+        return serializer.serializeToString(node);
+    }
+    $.$mol_dom_serialize = $mol_dom_serialize;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_rest_port extends $mol_object {
+        send_code(code) { }
+        send_type(mime) { }
+        send_data(data) {
+            if (data === null)
+                return this.send_nil();
+            if (typeof data === 'string')
+                return this.send_text(data);
+            if (data instanceof Uint8Array)
+                return this.send_bin(data);
+            if (data instanceof $mol_dom_context.Element)
+                return this.send_dom(data);
+            return this.send_json(data);
+        }
+        send_nil() {
+            this.send_code(204);
+        }
+        send_bin(data) {
+            this.send_code(200);
+            this.send_type('application/octet-stream');
+        }
+        send_text(data) {
+            this.send_code(200);
+            this.send_type('text/plain');
+            this.send_bin($mol_charset_encode(data));
+        }
+        send_json(data) {
+            this.send_code(200);
+            this.send_type('application/json');
+            this.send_text(JSON.stringify(data));
+        }
+        send_dom(data) {
+            this.send_code(200);
+            this.send_type('text/html');
+            this.send_text($mol_dom_serialize(data));
+        }
+        static make(config) {
+            return super.make(config);
+        }
+    }
+    __decorate([
+        $mol_action
+    ], $mol_rest_port.prototype, "send_data", null);
+    __decorate([
+        $mol_action
+    ], $mol_rest_port.prototype, "send_nil", null);
+    __decorate([
+        $mol_action
+    ], $mol_rest_port.prototype, "send_bin", null);
+    __decorate([
+        $mol_action
+    ], $mol_rest_port.prototype, "send_text", null);
+    __decorate([
+        $mol_action
+    ], $mol_rest_port.prototype, "send_json", null);
+    __decorate([
+        $mol_action
+    ], $mol_rest_port.prototype, "send_dom", null);
+    __decorate([
+        ($mol_action)
+    ], $mol_rest_port, "make", null);
+    $.$mol_rest_port = $mol_rest_port;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    function $mol_guid(length = 8, exists = () => false) {
+        for (;;) {
+            let id = Math.random().toString(36).substring(2, length + 2).toUpperCase();
+            if (exists(id))
+                continue;
+            return id;
+        }
+    }
+    $.$mol_guid = $mol_guid;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    $.$mol_key_store = new WeakMap();
+    function $mol_key(value) {
+        if (typeof value === 'bigint')
+            return value.toString() + 'n';
+        if (typeof value === 'symbol')
+            return value.description;
+        if (!value)
+            return JSON.stringify(value);
+        if (typeof value !== 'object' && typeof value !== 'function')
+            return JSON.stringify(value);
+        return JSON.stringify(value, (field, value) => {
+            if (typeof value === 'bigint')
+                return value.toString() + 'n';
+            if (typeof value === 'symbol')
+                return value.description;
+            if (!value)
+                return value;
+            if (typeof value !== 'object' && typeof value !== 'function')
+                return value;
+            if (Array.isArray(value))
+                return value;
+            const proto = Reflect.getPrototypeOf(value);
+            if (!proto)
+                return value;
+            if (Reflect.getPrototypeOf(proto) === null)
+                return value;
+            if ('toJSON' in value)
+                return value;
+            if (value instanceof RegExp)
+                return value.toString();
+            if (value instanceof Uint8Array)
+                return [...value];
+            let key = $.$mol_key_store.get(value);
+            if (key)
+                return key;
+            key = $mol_guid();
+            $.$mol_key_store.set(value, key);
+            return key;
+        });
+    }
+    $.$mol_key = $mol_key;
+})($ || ($ = {}));
+
+;
+"use strict";
+
+;
+"use strict";
+
 ;
 "use strict";
 var $;
@@ -1834,7 +2137,7 @@ var $;
     ], $mol_wire_atom.prototype, "once", null);
     $.$mol_wire_atom = $mol_wire_atom;
 })($ || ($ = {}));
-//mol/wire/atom/atom.ts
+
 ;
 "use strict";
 var $;
@@ -1872,7 +2175,7 @@ var $;
     }
     $.$mol_wire_solo = $mol_wire_solo;
 })($ || ($ = {}));
-//mol/wire/solo/solo.ts
+
 ;
 "use strict";
 var $;
@@ -1910,7 +2213,7 @@ var $;
     }
     $.$mol_wire_plex = $mol_wire_plex;
 })($ || ($ = {}));
-//mol/wire/plex/plex.ts
+
 ;
 "use strict";
 var $;
@@ -1918,308 +2221,10 @@ var $;
     $.$mol_mem = $mol_wire_solo;
     $.$mol_mem_key = $mol_wire_plex;
 })($ || ($ = {}));
-//mol/mem/mem.ts
+
 ;
 "use strict";
-//node/node.ts
-;
-"use strict";
-var $node = new Proxy({ require }, {
-    get(target, name, wrapper) {
-        if (target[name])
-            return target[name];
-        const mod = target.require('module');
-        if (mod.builtinModules.indexOf(name) >= 0)
-            return target.require(name);
-        if (name[0] === '.')
-            return target.require(name);
-        const path = target.require('path');
-        const fs = target.require('fs');
-        let dir = path.resolve('.');
-        const suffix = `./node_modules/${name}`;
-        const $$ = $;
-        while (!fs.existsSync(path.join(dir, suffix))) {
-            const parent = path.resolve(dir, '..');
-            if (parent === dir) {
-                $$.$mol_exec('.', 'npm', 'install', '--omit=dev', name);
-                try {
-                    $$.$mol_exec('.', 'npm', 'install', '--omit=dev', '@types/' + name);
-                }
-                catch { }
-                break;
-            }
-            else {
-                dir = parent;
-            }
-        }
-        try {
-            return target.require(name);
-        }
-        catch (error) {
-            $.$mol_fail_log(error);
-            return null;
-        }
-    },
-    set(target, name, value) {
-        target[name] = value;
-        return true;
-    },
-});
-require = (req => Object.assign(function require(name) {
-    return $node[name];
-}, req))(require);
-//node/node.node.ts
-;
-"use strict";
-var $;
-(function ($) {
-    function $mol_wire_async(obj) {
-        let fiber;
-        const temp = $mol_wire_task.getter(obj);
-        return new Proxy(obj, {
-            get(obj, field) {
-                const val = obj[field];
-                if (typeof val !== 'function')
-                    return val;
-                let fiber;
-                const temp = $mol_wire_task.getter(val);
-                return function $mol_wire_async(...args) {
-                    fiber?.destructor();
-                    fiber = temp(obj, args);
-                    return fiber.async();
-                };
-            },
-            apply(obj, self, args) {
-                fiber?.destructor();
-                fiber = temp(self, args);
-                return fiber.async();
-            },
-        });
-    }
-    $.$mol_wire_async = $mol_wire_async;
-})($ || ($ = {}));
-//mol/wire/async/async.ts
-;
-"use strict";
-var $;
-(function ($) {
-    $.$mol_action = $mol_wire_method;
-})($ || ($ = {}));
-//mol/action/action.ts
-;
-"use strict";
-var $;
-(function ($) {
-    let $mol_rest_code;
-    (function ($mol_rest_code) {
-        $mol_rest_code[$mol_rest_code["Continue"] = 100] = "Continue";
-        $mol_rest_code[$mol_rest_code["Switching_Protocols"] = 101] = "Switching_Protocols";
-        $mol_rest_code[$mol_rest_code["Processing"] = 102] = "Processing";
-        $mol_rest_code[$mol_rest_code["OK"] = 200] = "OK";
-        $mol_rest_code[$mol_rest_code["Created"] = 201] = "Created";
-        $mol_rest_code[$mol_rest_code["Accepted"] = 202] = "Accepted";
-        $mol_rest_code[$mol_rest_code["Non_Authoritative_Information"] = 203] = "Non_Authoritative_Information";
-        $mol_rest_code[$mol_rest_code["No_Content"] = 204] = "No_Content";
-        $mol_rest_code[$mol_rest_code["Reset_Content"] = 205] = "Reset_Content";
-        $mol_rest_code[$mol_rest_code["Partial_Content"] = 206] = "Partial_Content";
-        $mol_rest_code[$mol_rest_code["Multi_Status"] = 207] = "Multi_Status";
-        $mol_rest_code[$mol_rest_code["Already_Reported"] = 208] = "Already_Reported";
-        $mol_rest_code[$mol_rest_code["IM_Used"] = 226] = "IM_Used";
-        $mol_rest_code[$mol_rest_code["Multiple_Choices"] = 300] = "Multiple_Choices";
-        $mol_rest_code[$mol_rest_code["Moved_Permanently"] = 301] = "Moved_Permanently";
-        $mol_rest_code[$mol_rest_code["Found"] = 302] = "Found";
-        $mol_rest_code[$mol_rest_code["See_Other"] = 303] = "See_Other";
-        $mol_rest_code[$mol_rest_code["Not_Modified"] = 304] = "Not_Modified";
-        $mol_rest_code[$mol_rest_code["Use_Proxy"] = 305] = "Use_Proxy";
-        $mol_rest_code[$mol_rest_code["Temporary_Redirect"] = 307] = "Temporary_Redirect";
-        $mol_rest_code[$mol_rest_code["Bad_Request"] = 400] = "Bad_Request";
-        $mol_rest_code[$mol_rest_code["Unauthorized"] = 401] = "Unauthorized";
-        $mol_rest_code[$mol_rest_code["Payment_Required"] = 402] = "Payment_Required";
-        $mol_rest_code[$mol_rest_code["Forbidden"] = 403] = "Forbidden";
-        $mol_rest_code[$mol_rest_code["Not_Found"] = 404] = "Not_Found";
-        $mol_rest_code[$mol_rest_code["Method_Not_Allowed"] = 405] = "Method_Not_Allowed";
-        $mol_rest_code[$mol_rest_code["Not_Acceptable"] = 406] = "Not_Acceptable";
-        $mol_rest_code[$mol_rest_code["Proxy_Authentication_Required"] = 407] = "Proxy_Authentication_Required";
-        $mol_rest_code[$mol_rest_code["Request_Timeout"] = 408] = "Request_Timeout";
-        $mol_rest_code[$mol_rest_code["Conflict"] = 409] = "Conflict";
-        $mol_rest_code[$mol_rest_code["Gone"] = 410] = "Gone";
-        $mol_rest_code[$mol_rest_code["Length_Required"] = 411] = "Length_Required";
-        $mol_rest_code[$mol_rest_code["Precondition_Failed"] = 412] = "Precondition_Failed";
-        $mol_rest_code[$mol_rest_code["Request_Entity_Too_Large"] = 413] = "Request_Entity_Too_Large";
-        $mol_rest_code[$mol_rest_code["Request_URI_Too_Long"] = 414] = "Request_URI_Too_Long";
-        $mol_rest_code[$mol_rest_code["Unsupported_Media_Type"] = 415] = "Unsupported_Media_Type";
-        $mol_rest_code[$mol_rest_code["Requested_Range_Not_Satisfiable"] = 416] = "Requested_Range_Not_Satisfiable";
-        $mol_rest_code[$mol_rest_code["Expectation_Failed"] = 417] = "Expectation_Failed";
-        $mol_rest_code[$mol_rest_code["Teapot"] = 418] = "Teapot";
-        $mol_rest_code[$mol_rest_code["Unprocessable_Entity"] = 422] = "Unprocessable_Entity";
-        $mol_rest_code[$mol_rest_code["Locked"] = 423] = "Locked";
-        $mol_rest_code[$mol_rest_code["Failed_Dependency"] = 424] = "Failed_Dependency";
-        $mol_rest_code[$mol_rest_code["Upgrade_Required"] = 426] = "Upgrade_Required";
-        $mol_rest_code[$mol_rest_code["Precondition_Required"] = 428] = "Precondition_Required";
-        $mol_rest_code[$mol_rest_code["Too_Many_Requests"] = 429] = "Too_Many_Requests";
-        $mol_rest_code[$mol_rest_code["Request_Header_Fields_Too_Large"] = 431] = "Request_Header_Fields_Too_Large";
-        $mol_rest_code[$mol_rest_code["Unavailable_For_Legal_Reasons"] = 451] = "Unavailable_For_Legal_Reasons";
-        $mol_rest_code[$mol_rest_code["Internal_Server_Error"] = 500] = "Internal_Server_Error";
-        $mol_rest_code[$mol_rest_code["Not_Implemented"] = 501] = "Not_Implemented";
-        $mol_rest_code[$mol_rest_code["Bad_Gateway"] = 502] = "Bad_Gateway";
-        $mol_rest_code[$mol_rest_code["Service_Unavailable"] = 503] = "Service_Unavailable";
-        $mol_rest_code[$mol_rest_code["Gateway_Timeout"] = 504] = "Gateway_Timeout";
-        $mol_rest_code[$mol_rest_code["HTTP_Version_Not_Supported"] = 505] = "HTTP_Version_Not_Supported";
-        $mol_rest_code[$mol_rest_code["Insufficient_Storage"] = 507] = "Insufficient_Storage";
-        $mol_rest_code[$mol_rest_code["Loop_Detected"] = 508] = "Loop_Detected";
-        $mol_rest_code[$mol_rest_code["Not_Extended"] = 510] = "Not_Extended";
-        $mol_rest_code[$mol_rest_code["Network_Authentication_Required"] = 511] = "Network_Authentication_Required";
-        $mol_rest_code[$mol_rest_code["Network_Read_Timeout_Error"] = 598] = "Network_Read_Timeout_Error";
-        $mol_rest_code[$mol_rest_code["Network_Connect_Timeout_Error"] = 599] = "Network_Connect_Timeout_Error";
-    })($mol_rest_code = $.$mol_rest_code || ($.$mol_rest_code = {}));
-})($ || ($ = {}));
-//mol/rest/code/code.ts
-;
-"use strict";
-var $;
-(function ($) {
-})($ || ($ = {}));
-//mol/dom/context/context.ts
-;
-"use strict";
-var $;
-(function ($) {
-    $.$mol_dom_context = new $node.jsdom.JSDOM('', { url: 'https://localhost/' }).window;
-})($ || ($ = {}));
-//mol/dom/context/context.node.ts
-;
-"use strict";
-var $;
-(function ($) {
-    const TextEncoder = globalThis.TextEncoder ?? $node.util.TextEncoder;
-    const encoder = new TextEncoder();
-    function $mol_charset_encode(value) {
-        return encoder.encode(value);
-    }
-    $.$mol_charset_encode = $mol_charset_encode;
-})($ || ($ = {}));
-//mol/charset/encode/encode.ts
-;
-"use strict";
-var $;
-(function ($) {
-    function $mol_dom_serialize(node) {
-        const serializer = new $mol_dom_context.XMLSerializer;
-        return serializer.serializeToString(node);
-    }
-    $.$mol_dom_serialize = $mol_dom_serialize;
-})($ || ($ = {}));
-//mol/dom/serialize/serialize.ts
-;
-"use strict";
-var $;
-(function ($) {
-    class $mol_rest_port extends $mol_object {
-        send_code(code) { }
-        send_type(mime) { }
-        send_data(data) {
-            if (data === null)
-                return this.send_nil();
-            if (typeof data === 'string')
-                return this.send_text(data);
-            if (data instanceof Uint8Array)
-                return this.send_bin(data);
-            if (data instanceof $mol_dom_context.Element)
-                return this.send_dom(data);
-            return this.send_json(data);
-        }
-        send_nil() {
-            this.send_code(204);
-        }
-        send_bin(data) {
-            this.send_code(200);
-            this.send_type('application/octet-stream');
-        }
-        send_text(data) {
-            this.send_code(200);
-            this.send_type('text/plain');
-            this.send_bin($mol_charset_encode(data));
-        }
-        send_json(data) {
-            this.send_code(200);
-            this.send_type('application/json');
-            this.send_text(JSON.stringify(data));
-        }
-        send_dom(data) {
-            this.send_code(200);
-            this.send_type('text/html');
-            this.send_text($mol_dom_serialize(data));
-        }
-        static make(config) {
-            return super.make(config);
-        }
-    }
-    __decorate([
-        $mol_action
-    ], $mol_rest_port.prototype, "send_data", null);
-    __decorate([
-        $mol_action
-    ], $mol_rest_port.prototype, "send_nil", null);
-    __decorate([
-        $mol_action
-    ], $mol_rest_port.prototype, "send_bin", null);
-    __decorate([
-        $mol_action
-    ], $mol_rest_port.prototype, "send_text", null);
-    __decorate([
-        $mol_action
-    ], $mol_rest_port.prototype, "send_json", null);
-    __decorate([
-        $mol_action
-    ], $mol_rest_port.prototype, "send_dom", null);
-    __decorate([
-        ($mol_action)
-    ], $mol_rest_port, "make", null);
-    $.$mol_rest_port = $mol_rest_port;
-})($ || ($ = {}));
-//mol/rest/port/port.ts
-;
-"use strict";
-var $;
-(function ($) {
-    class $mol_rest_port_http extends $mol_rest_port {
-        output;
-        send_code(code) {
-            if (this.output.writableEnded)
-                return;
-            if (this.output.statusCode !== 400)
-                return;
-            this.output.statusCode = code;
-        }
-        send_type(mime) {
-            if (this.output.writableEnded)
-                return;
-            if (this.output.getHeader('content-type'))
-                return;
-            this.output.setHeader('content-type', mime);
-        }
-        send_bin(data) {
-            if (this.output.writableEnded)
-                return;
-            super.send_bin(data);
-            this.output.write(data);
-        }
-    }
-    __decorate([
-        $mol_action
-    ], $mol_rest_port_http.prototype, "send_code", null);
-    __decorate([
-        $mol_action
-    ], $mol_rest_port_http.prototype, "send_type", null);
-    __decorate([
-        $mol_action
-    ], $mol_rest_port_http.prototype, "send_bin", null);
-    $.$mol_rest_port_http = $mol_rest_port_http;
-})($ || ($ = {}));
-//mol/rest/port/http/http.node.ts
-;
-"use strict";
-//mol/charset/encoding/encoding.ts
+
 ;
 "use strict";
 var $;
@@ -2233,7 +2238,7 @@ var $;
     }
     $.$mol_charset_decode = $mol_charset_decode;
 })($ || ($ = {}));
-//mol/charset/decode/decode.ts
+
 ;
 "use strict";
 var $;
@@ -2247,7 +2252,7 @@ var $;
     }
     $.$mol_const = $mol_const;
 })($ || ($ = {}));
-//mol/const/const.ts
+
 ;
 "use strict";
 var $;
@@ -2343,485 +2348,7 @@ var $;
     ], $mol_rest_message, "make", null);
     $.$mol_rest_message = $mol_rest_message;
 })($ || ($ = {}));
-//mol/rest/message/message.node.ts
-;
-"use strict";
-var $;
-(function ($) {
-    function $mol_wire_sync(obj) {
-        return new Proxy(obj, {
-            get(obj, field) {
-                const val = obj[field];
-                if (typeof val !== 'function')
-                    return val;
-                const temp = $mol_wire_task.getter(val);
-                return function $mol_wire_sync(...args) {
-                    const fiber = temp(obj, args);
-                    return fiber.sync();
-                };
-            },
-            apply(obj, self, args) {
-                const temp = $mol_wire_task.getter(obj);
-                const fiber = temp(self, args);
-                return fiber.sync();
-            },
-        });
-    }
-    $.$mol_wire_sync = $mol_wire_sync;
-})($ || ($ = {}));
-//mol/wire/sync/sync.ts
-;
-"use strict";
-var $;
-(function ($) {
-    function $mol_dom_parse(text, type = 'application/xhtml+xml') {
-        const parser = new $mol_dom_context.DOMParser();
-        const doc = parser.parseFromString(text, type);
-        const error = doc.getElementsByTagName('parsererror');
-        if (error.length)
-            throw new Error(error[0].textContent);
-        return doc;
-    }
-    $.$mol_dom_parse = $mol_dom_parse;
-})($ || ($ = {}));
-//mol/dom/parse/parse.ts
-;
-"use strict";
-var $;
-(function ($) {
-    class $mol_rest_message_http extends $mol_rest_message {
-        input;
-        method() {
-            return this.input.method ?? super.method();
-        }
-        uri() {
-            const addr = this.input.socket?.localAddress ?? 'localhost';
-            const port = this.input.socket?.localPort ?? '80';
-            return new URL(this.input.url, `http://[${addr}]:${port}/`);
-        }
-        type() {
-            return (this.input.headers['content-type'] ?? 'application/octet-stream');
-        }
-        data() {
-            const consume = $mol_wire_sync($node['stream/consumers']);
-            if (this.type().startsWith('text/')) {
-                const text = consume.text(this.input);
-                if (this.type() === 'text/html') {
-                    return $mol_dom_parse(text, 'application/xhtml+xml').documentElement;
-                }
-                return text;
-            }
-            else {
-                if (this.type() === 'application/json') {
-                    return consume.json(this.input);
-                }
-                else {
-                    return new Uint8Array(consume.arrayBuffer(this.input));
-                }
-            }
-        }
-        route(uri) {
-            return $mol_rest_message_http.make({
-                port: this.port,
-                input: this.input,
-                uri: $mol_const(uri),
-                data: () => this.data(),
-            });
-        }
-    }
-    __decorate([
-        $mol_mem
-    ], $mol_rest_message_http.prototype, "method", null);
-    __decorate([
-        $mol_mem
-    ], $mol_rest_message_http.prototype, "uri", null);
-    __decorate([
-        $mol_mem
-    ], $mol_rest_message_http.prototype, "type", null);
-    __decorate([
-        $mol_mem
-    ], $mol_rest_message_http.prototype, "data", null);
-    __decorate([
-        $mol_action
-    ], $mol_rest_message_http.prototype, "route", null);
-    $.$mol_rest_message_http = $mol_rest_message_http;
-})($ || ($ = {}));
-//mol/rest/message/http/http.node.ts
-;
-"use strict";
-var $;
-(function ($) {
-    class $mol_rest_port_ws extends $mol_rest_port {
-    }
-    $.$mol_rest_port_ws = $mol_rest_port_ws;
-})($ || ($ = {}));
-//mol/rest/port/ws/ws.ts
-;
-"use strict";
-var $;
-(function ($) {
-    function $mol_base64_encode(src) {
-        throw new Error('Not implemented');
-    }
-    $.$mol_base64_encode = $mol_base64_encode;
-})($ || ($ = {}));
-//mol/base64/encode/encode.ts
-;
-"use strict";
-var $;
-(function ($) {
-    function $mol_base64_encode_node(str) {
-        if (!str)
-            return '';
-        if (Buffer.isBuffer(str))
-            return str.toString('base64');
-        return Buffer.from(str).toString('base64');
-    }
-    $.$mol_base64_encode_node = $mol_base64_encode_node;
-    $.$mol_base64_encode = $mol_base64_encode_node;
-})($ || ($ = {}));
-//mol/base64/encode/encode.node.ts
-;
-"use strict";
-var $;
-(function ($) {
-    function $mol_base64_decode(base64) {
-        throw new Error('Not implemented');
-    }
-    $.$mol_base64_decode = $mol_base64_decode;
-})($ || ($ = {}));
-//mol/base64/decode/decode.ts
-;
-"use strict";
-var $;
-(function ($) {
-    function $mol_base64_decode_node(base64Str) {
-        base64Str = base64Str.replace(/-/g, '+').replace(/_/g, '/');
-        const buffer = Buffer.from(base64Str, 'base64');
-        return new Uint8Array(buffer.buffer, buffer.byteOffset, buffer.byteLength);
-    }
-    $.$mol_base64_decode_node = $mol_base64_decode_node;
-    $.$mol_base64_decode = $mol_base64_decode_node;
-})($ || ($ = {}));
-//mol/base64/decode/decode.node.ts
-;
-"use strict";
-var $;
-(function ($) {
-    function $mol_base64_ae_encode(buffer) {
-        return $mol_base64_encode(buffer).replace(/\+/g, 'æ').replace(/\//g, 'Æ').replace(/=/g, '');
-    }
-    $.$mol_base64_ae_encode = $mol_base64_ae_encode;
-    function $mol_base64_ae_decode(str) {
-        return $mol_base64_decode(str.replace(/æ/g, '+').replace(/Æ/g, '/'));
-    }
-    $.$mol_base64_ae_decode = $mol_base64_ae_decode;
-})($ || ($ = {}));
-//mol/base64/ae/ae.ts
-;
-"use strict";
-var $;
-(function ($) {
-    class $mol_buffer extends DataView {
-        static from(array) {
-            if (typeof array === 'number')
-                array = new Uint8Array(array);
-            if (typeof array === 'string')
-                array = $mol_base64_ae_decode(array);
-            return new this(array.buffer, array.byteOffset, array.byteLength);
-        }
-        static toString() {
-            return $$.$mol_func_name(this);
-        }
-        getUint48(offset, LE = false) {
-            if (offset % 4) {
-                return this.getUint16(offset, LE) + this.getUint32(offset + 2, LE) * 2 ** 16;
-            }
-            else {
-                return this.getUint32(offset, LE) + this.getUint16(offset + 4, LE) * 2 ** 32;
-            }
-        }
-        setUint48(offset, value, LE = false) {
-            if (offset % 4) {
-                this.setUint16(offset, value & ((1 << 16) - 1), LE);
-                this.setUint32(offset + 2, (value / 2 ** 16) | 0, LE);
-            }
-            else {
-                this.setUint32(offset, value | 0, LE);
-                this.setUint16(offset + 4, (value / 2 ** 32) | 0, LE);
-            }
-        }
-        int8(offset, next) {
-            if (next === undefined)
-                return this.getInt8(offset);
-            if (next >= -(2 ** 7) && next < 2 ** 7)
-                return this.setInt8(offset, next), next;
-            $mol_fail(new Error(`Wrong int8 value ${next}`));
-        }
-        uint8(offset, next) {
-            if (next === undefined)
-                return this.getUint8(offset);
-            if (next >= 0 && next < 2 ** 8)
-                return this.setUint8(offset, next), next;
-            $mol_fail(new Error(`Wrong uint8 value ${next}`));
-        }
-        int16(offset, next) {
-            if (next === undefined)
-                return this.getInt16(offset, !!'LE');
-            if (next >= -(2 ** 15) && next < 2 ** 15)
-                return this.setInt16(offset, next, !!'LE'), next;
-            $mol_fail(new Error(`Wrong int16 value ${next}`));
-        }
-        uint16(offset, next) {
-            if (next === undefined)
-                return this.getUint16(offset, !!'LE');
-            if (next >= 0 && next < 2 ** 16)
-                return this.setUint16(offset, next, !!'LE'), next;
-            $mol_fail(new Error(`Wrong uint16 value ${next}`));
-        }
-        int32(offset, next) {
-            if (next === undefined)
-                return this.getInt32(offset, !!'LE');
-            if (next >= -(2 ** 31) && next < 2 ** 31)
-                return this.setInt32(offset, next, !!'LE'), next;
-            $mol_fail(new Error(`Wrong int32 value ${next}`));
-        }
-        uint32(offset, next) {
-            if (next === undefined)
-                return this.getUint32(offset, !!'LE');
-            if (next >= 0 && next < 2 ** 32)
-                return this.setUint32(offset, next, !!'LE'), next;
-            $mol_fail(new Error(`Wrong uint32 value ${next}`));
-        }
-        uint48(offset, next) {
-            if (next === undefined)
-                return this.getUint48(offset, !!'LE');
-            if (next >= 0 && next < 2 ** 48)
-                return this.setUint48(offset, next, !!'LE'), next;
-            $mol_fail(new Error(`Wrong uint48 value ${next}`));
-        }
-        int64(offset, next) {
-            if (next === undefined)
-                return this.getBigInt64(offset, !!'LE');
-            if (next >= -(2 ** 63) && next < 2 ** 63)
-                return this.setBigInt64(offset, next, !!'LE'), next;
-            $mol_fail(new Error(`Wrong int64 value ${next}`));
-        }
-        uint64(offset, next) {
-            if (next === undefined)
-                return this.getBigUint64(offset, !!'LE');
-            if (next >= 0 && next < 2 ** 64)
-                return this.setBigUint64(offset, next, !!'LE'), next;
-            $mol_fail(new Error(`Wrong uint64 value ${next}`));
-        }
-        float32(offset, next) {
-            if (next !== undefined)
-                this.setFloat32(offset, next, !!'LE');
-            return this.getFloat32(offset, !!'LE');
-        }
-        float64(offset, next) {
-            if (next !== undefined)
-                this.setFloat64(offset, next, !!'LE');
-            return this.getFloat64(offset, !!'LE');
-        }
-        asArray() {
-            return new Uint8Array(this.buffer, this.byteOffset, this.byteLength);
-        }
-        toString() {
-            return $mol_base64_ae_encode(this.asArray());
-        }
-    }
-    $.$mol_buffer = $mol_buffer;
-})($ || ($ = {}));
-//mol/buffer/buffer.ts
-;
-"use strict";
-var $;
-(function ($) {
-    let $mol_websocket_frame_op;
-    (function ($mol_websocket_frame_op) {
-        $mol_websocket_frame_op[$mol_websocket_frame_op["con"] = 0] = "con";
-        $mol_websocket_frame_op[$mol_websocket_frame_op["txt"] = 1] = "txt";
-        $mol_websocket_frame_op[$mol_websocket_frame_op["bin"] = 2] = "bin";
-        $mol_websocket_frame_op[$mol_websocket_frame_op["stop"] = 8] = "stop";
-        $mol_websocket_frame_op[$mol_websocket_frame_op["ping"] = 9] = "ping";
-        $mol_websocket_frame_op[$mol_websocket_frame_op["pong"] = 10] = "pong";
-    })($mol_websocket_frame_op = $.$mol_websocket_frame_op || ($.$mol_websocket_frame_op = {}));
-    class $mol_websocket_frame extends $mol_buffer {
-        kind(next) {
-            if (next) {
-                this.uint8(0, Number(next.fin) << 7 | $mol_websocket_frame_op[next.op]);
-                return next;
-            }
-            else {
-                const state = this.uint8(0);
-                const fin = state >> 7;
-                const op = $mol_websocket_frame_op[state & 0b1111];
-                if (op === undefined)
-                    $mol_fail(new Error(`Wrong op (${state.toString(2)})`));
-                return { op, fin };
-            }
-        }
-        data(next) {
-            if (next === undefined) {
-                const state = this.getUint8(1);
-                const mask = state >> 7;
-                let size = state & 0b0111_1111;
-                if (size === 126)
-                    size = this.getUint16(2);
-                else if (size === 127)
-                    size = this.getUint32(2);
-                return { size, mask };
-            }
-            else {
-                if (next.size >= 2 ** 16) {
-                    this.setUint8(1, 127 | Number(next.mask) << 7);
-                    this.setUint32(2, next.size);
-                }
-                else if (next.size >= 126) {
-                    this.setUint8(1, 126 | Number(next.mask) << 7);
-                    this.setUint16(2, next.size);
-                }
-                else {
-                    this.setUint8(1, next.size | Number(next.mask) << 7);
-                }
-                return next;
-            }
-        }
-        size() {
-            const short = this.getUint8(1) & 0b0111_1111;
-            const mask = this.getUint8(1) >> 7;
-            return (short === 127 ? 10 : short === 126 ? 4 : 2) + (mask ? 4 : 0);
-        }
-        mask() {
-            return new Uint8Array(this.buffer, this.byteOffset + this.size() - 4, 4);
-        }
-        toString() {
-            const { op, fin } = this.kind();
-            const { size, mask } = this.data();
-            return `${op}${fin ? '!' : '+'}${size}${mask ? '@' : '#'}`;
-        }
-        static make(op, size = 0, mask = false, fin = true) {
-            const head = (size >= 2 ** 16 ? 10 : size >= 126 ? 4 : 2) + (mask ? 4 : 0);
-            const frame = $mol_websocket_frame.from(head);
-            frame.kind({ op, fin });
-            frame.data({ size, mask });
-            return frame;
-        }
-    }
-    $.$mol_websocket_frame = $mol_websocket_frame;
-})($ || ($ = {}));
-//mol/websocket/frame/frame.ts
-;
-"use strict";
-var $;
-(function ($) {
-    class $mol_rest_port_ws_node extends $mol_rest_port_ws {
-        socket;
-        send_nil() {
-            if (this.socket.writableEnded)
-                return;
-            this.socket.write($mol_websocket_frame.make('pong', 0).asArray());
-        }
-        send_bin(data) {
-            if (this.socket.writableEnded)
-                return;
-            this.socket.write($mol_websocket_frame.make('bin', data.byteLength).asArray());
-            this.socket.write(data);
-        }
-        send_text(data) {
-            if (this.socket.writableEnded)
-                return;
-            const bin = $mol_charset_encode(data);
-            this.socket.write($mol_websocket_frame.make('txt', bin.byteLength).asArray());
-            this.socket.write(bin);
-        }
-    }
-    __decorate([
-        $mol_action
-    ], $mol_rest_port_ws_node.prototype, "send_nil", null);
-    __decorate([
-        $mol_action
-    ], $mol_rest_port_ws_node.prototype, "send_bin", null);
-    __decorate([
-        $mol_action
-    ], $mol_rest_port_ws_node.prototype, "send_text", null);
-    $.$mol_rest_port_ws_node = $mol_rest_port_ws_node;
-    $.$mol_rest_port_ws = $mol_rest_port_ws_node;
-})($ || ($ = {}));
-//mol/rest/port/ws/ws.node.ts
-;
-"use strict";
-var $;
-(function ($) {
-    let sponge = new Uint32Array(80);
-    function $mol_crypto_hash(data) {
-        const bits = data.byteLength << 3;
-        const kbits = bits >> 5;
-        const kword = 0x80 << (24 - bits & 0b11111);
-        const bytes = 16 + (bits + 64 >>> 9 << 4);
-        const klens = bytes - 1;
-        const words = new Int32Array(data.buffer, data.byteOffset, data.byteLength >> 2);
-        let tail = 0;
-        for (let i = words.length * 4; i < data.length; ++i) {
-            tail |= data[i] << (i << 3 & 0b11000);
-        }
-        const hash = new Int32Array([1732584193, -271733879, -1732584194, 271733878, -1009589776]);
-        for (let i = 0; i < bytes; i += 16) {
-            let h0 = hash[0];
-            let h1 = hash[1];
-            let h2 = hash[2];
-            let h3 = hash[3];
-            let h4 = hash[4];
-            for (let j = 0; j < 80; ++j) {
-                let turn;
-                if (j < 16) {
-                    const k = i + j;
-                    if (k === klens) {
-                        sponge[j] = bits;
-                    }
-                    else {
-                        let word = k === words.length ? tail :
-                            k > words.length ? 0 :
-                                words[k];
-                        word = word << 24 | word << 8 & 0xFF0000 | word >>> 8 & 0xFF00 | word >>> 24 & 0xFF;
-                        if (k === kbits)
-                            word |= kword;
-                        sponge[j] = word;
-                    }
-                    turn = (h1 & h2 | ~h1 & h3) + 1518500249;
-                }
-                else {
-                    const shuffle = sponge[j - 3] ^ sponge[j - 8] ^ sponge[j - 14] ^ sponge[j - 16];
-                    sponge[j] = shuffle << 1 | shuffle >>> 31;
-                    turn =
-                        j < 20 ? (h1 & h2 | ~h1 & h3) + 1518500249 :
-                            j < 40 ? (h1 ^ h2 ^ h3) + 1859775393 :
-                                j < 60 ? (h1 & h2 | h1 & h3 | h2 & h3) - 1894007588 :
-                                    (h1 ^ h2 ^ h3) - 899497514;
-                }
-                const next = turn + h4 + (sponge[j] >>> 0) + ((h0 << 5) | (h0 >>> 27));
-                h4 = h3;
-                h3 = h2;
-                h2 = (h1 << 30) | (h1 >>> 2);
-                h1 = h0;
-                h0 = next;
-            }
-            hash[0] += h0;
-            hash[1] += h1;
-            hash[2] += h2;
-            hash[3] += h3;
-            hash[4] += h4;
-        }
-        for (let i = 0; i < 20; ++i) {
-            const word = hash[i];
-            hash[i] = word << 24 | word << 8 & 0xFF0000 | word >>> 8 & 0xFF00 | word >>> 24 & 0xFF;
-        }
-        return new Uint8Array(hash.buffer);
-    }
-    $.$mol_crypto_hash = $mol_crypto_hash;
-})($ || ($ = {}));
-//mol/crypto/hash/hash.ts
+
 ;
 "use strict";
 var $;
@@ -2847,10 +2374,40 @@ var $;
     ], $mol_rest_port_webrtc.prototype, "send_text", null);
     $.$mol_rest_port_webrtc = $mol_rest_port_webrtc;
 })($ || ($ = {}));
-//mol/rest/port/webrtc/webrtc.node.ts
+
 ;
 "use strict";
-//mol/state/arg/arg.ts
+var $;
+(function ($) {
+    function $mol_wire_async(obj) {
+        let fiber;
+        const temp = $mol_wire_task.getter(obj);
+        return new Proxy(obj, {
+            get(obj, field) {
+                const val = obj[field];
+                if (typeof val !== 'function')
+                    return val;
+                let fiber;
+                const temp = $mol_wire_task.getter(val);
+                return function $mol_wire_async(...args) {
+                    fiber?.destructor();
+                    fiber = temp(obj, args);
+                    return fiber.async();
+                };
+            },
+            apply(obj, self, args) {
+                fiber?.destructor();
+                fiber = temp(self, args);
+                return fiber.async();
+            },
+        });
+    }
+    $.$mol_wire_async = $mol_wire_async;
+})($ || ($ = {}));
+
+;
+"use strict";
+
 ;
 "use strict";
 var $;
@@ -2944,7 +2501,7 @@ var $;
     ], $mol_state_arg, "go", null);
     $.$mol_state_arg = $mol_state_arg;
 })($ || ($ = {}));
-//mol/state/arg/arg.node.ts
+
 ;
 "use strict";
 var $;
@@ -3015,17 +2572,13 @@ var $;
             const server = $mol_rest_server.make({
                 port: () => port,
             });
+            server.root(this.make({}));
+            server.start();
             return server;
         }
         static serve() {
-            const name = this.$.$mol_func_name(this);
-            const port = Number(this.$.$mol_state_arg.value(name));
-            if (!port)
-                return;
-            const server = this.port(port);
-            server.root(new this);
-            server.start();
-            return server;
+            const port = Number(this.$.$mol_state_arg.value('port'));
+            return port ? this.port(port) : null;
         }
     }
     __decorate([
@@ -3036,274 +2589,7 @@ var $;
     ], $mol_rest_resource, "port", null);
     $.$mol_rest_resource = $mol_rest_resource;
 })($ || ($ = {}));
-//mol/rest/resource/resource.node.ts
-;
-"use strict";
-var $;
-(function ($) {
-    function $mol_wire_solid() {
-        let current = $mol_wire_auto();
-        if (current.temp)
-            current = current.host;
-        if (current.reap !== nothing) {
-            current?.sub_on(sub, sub.data.length);
-        }
-        current.reap = nothing;
-    }
-    $.$mol_wire_solid = $mol_wire_solid;
-    const nothing = () => { };
-    const sub = new $mol_wire_pub_sub;
-})($ || ($ = {}));
-//mol/wire/solid/solid.ts
-;
-"use strict";
-var $;
-(function ($) {
-    function $mol_env() {
-        return {};
-    }
-    $.$mol_env = $mol_env;
-})($ || ($ = {}));
-//mol/env/env.ts
-;
-"use strict";
-var $;
-(function ($) {
-    $.$mol_env = function $mol_env() {
-        return this.process.env;
-    };
-})($ || ($ = {}));
-//mol/env/env.node.ts
-;
-"use strict";
-var $;
-(function ($) {
-    function $mol_exec(dir, command, ...args) {
-        let [app, ...args0] = command.split(' ');
-        args = [...args0, ...args];
-        this.$mol_log3_come({
-            place: '$mol_exec',
-            dir: $node.path.relative('', dir),
-            message: 'Run',
-            command: `${app} ${args.join(' ')}`,
-        });
-        var res = $node['child_process'].spawnSync(app, args, {
-            cwd: $node.path.resolve(dir),
-            shell: true,
-            env: this.$mol_env(),
-        });
-        if (res.status || res.error)
-            return $mol_fail(res.error || new Error(res.stderr.toString()));
-        if (!res.stdout)
-            res.stdout = Buffer.from([]);
-        return res;
-    }
-    $.$mol_exec = $mol_exec;
-})($ || ($ = {}));
-//mol/exec/exec.node.ts
-;
-"use strict";
-var $;
-(function ($) {
-    class $mol_rest_server extends $mol_object {
-        port() {
-            return 0;
-        }
-        start() {
-            this.http_server();
-        }
-        http_server() {
-            const server = $node.http.createServer((req, res) => {
-                res.statusCode = 400;
-                $mol_wire_async(this).http_income(req, res);
-            });
-            server.on('upgrade', (req, sock, head) => $mol_wire_async(this).ws_upgrade(req, sock, head));
-            server.listen(this.port(), () => {
-                const ifaces = Object.entries($node.os.networkInterfaces())
-                    .flatMap(([type, ifaces]) => ifaces?.map(iface => iface.family === 'IPv6' ? `[${iface.address}]` : iface.address) ?? []);
-                this.$.$mol_log3_done({
-                    place: this,
-                    message: 'HTTP Server Started',
-                    links: ifaces.map(iface => `http://${iface}:${this.port()}/`),
-                });
-            });
-            return server;
-        }
-        http_income(req, res) {
-            const port = $mol_rest_port_http.make({ output: res });
-            const msg = $mol_rest_message_http.make({ port, input: req });
-            $mol_wire_sync(this.$).$mol_log3_rise({
-                place: this,
-                message: msg.method(),
-                url: msg.uri(),
-                remote: req.socket.remoteAddress + ':' + req.socket.remotePort
-            });
-            $mol_wire_sync(res).setHeader('Access-Control-Allow-Origin', '*');
-            $mol_wire_sync(res).setHeader('Access-Control-Allow-Methods', '*');
-            $mol_wire_sync(res).setHeader('Access-Control-Allow-Headers', '*');
-            try {
-                $mol_wire_sync(this.root()).REQUEST(msg);
-            }
-            catch (error) {
-                if ($mol_promise_like(error))
-                    $mol_fail_hidden(error);
-                $mol_wire_sync($$).$mol_log3_fail({
-                    place: this,
-                    message: error.message ?? '',
-                    stack: error.stack,
-                });
-                $mol_wire_sync(res).writeHead(500, error.name || 'Server Error');
-            }
-            res.end();
-        }
-        ws_upgrade(req, socket, head) {
-            const port = $mol_rest_port_ws_node.make({ socket });
-            const upgrade = $mol_rest_message_http.make({ port, input: req });
-            try {
-                $mol_wire_sync(this.root()).REQUEST(upgrade.derive('OPEN', null));
-            }
-            catch (error) {
-                if ($mol_promise_like(error))
-                    $mol_fail_hidden(error);
-                $mol_wire_sync($$).$mol_log3_fail({
-                    place: this,
-                    message: error.message ?? '',
-                    stack: error.stack,
-                });
-                socket.end();
-                return;
-            }
-            socket.on('end', $mol_wire_async(() => {
-                $mol_wire_sync(this.$).$mol_log3_done({
-                    place: this,
-                    message: 'CLOSE',
-                    url: upgrade.uri(),
-                    port: $mol_key(port),
-                });
-                try {
-                    $mol_wire_sync(this.root()).REQUEST(upgrade.derive('CLOSE', null));
-                }
-                catch (error) {
-                    if ($mol_promise_like(error))
-                        $mol_fail_hidden(error);
-                    $mol_wire_sync($$).$mol_log3_fail({
-                        place: this,
-                        message: error.message ?? '',
-                        stack: error.stack,
-                    });
-                    return;
-                }
-            }));
-            socket.on('data', (chunk) => this.ws_income(chunk, upgrade, socket));
-            const key_in = req.headers["sec-websocket-key"];
-            const magic = '258EAFA5-E914-47DA-95CA-C5AB0DC85B11';
-            const key_out = $mol_base64_encode($mol_crypto_hash($mol_charset_encode(key_in + magic)));
-            socket.write('HTTP/1.1 101 WS Handshaked\r\n' +
-                'Upgrade: WebSocket\r\n' +
-                'Connection: Upgrade\r\n' +
-                `Sec-WebSocket-Accept: ${key_out}\r\n` +
-                '\r\n');
-            $mol_wire_sync(this.$).$mol_log3_come({
-                place: this,
-                message: 'OPEN',
-                url: upgrade.uri(),
-                port: $mol_key(port),
-            });
-        }
-        _ws_icome_partial = [];
-        async ws_income(chunk, upgrade, sock) {
-            sock.pause();
-            this._ws_icome_partial.push(chunk);
-            const patial_size = this._ws_icome_partial.reduce((sum, buf) => sum + buf.byteLength, 0);
-            let frame = $mol_websocket_frame.from(this._ws_icome_partial[0]);
-            const msg_size = frame.size() + frame.data().size;
-            if (msg_size > patial_size) {
-                setTimeout(() => sock.resume());
-                return;
-            }
-            chunk = Buffer.alloc(patial_size);
-            let offset = 0;
-            for (const buf of this._ws_icome_partial.splice(0)) {
-                chunk.set(buf, offset);
-                offset += buf.byteLength;
-            }
-            frame = $mol_websocket_frame.from(chunk);
-            if (msg_size < chunk.byteLength) {
-                const tail = new Uint8Array(chunk.buffer, chunk.byteOffset + msg_size);
-                $mol_wire_sync(sock).unshift(tail);
-            }
-            let data = new Uint8Array(chunk.buffer, chunk.byteOffset + frame.size(), frame.data().size);
-            if (frame.data().mask) {
-                const mask = frame.mask();
-                for (let i = 0; i < data.length; ++i) {
-                    data[i] ^= mask[i % 4];
-                }
-            }
-            const op = frame.kind().op;
-            if (op === 'txt')
-                data = $mol_charset_decode(data);
-            const message = upgrade.derive('POST', data);
-            if (op !== 'txt' && op !== 'bin')
-                return;
-            try {
-                if (data.length !== 0) {
-                    this.$.$mol_log3_rise({
-                        place: this,
-                        message: message.method(),
-                        url: message.uri(),
-                        frame: frame.toString(),
-                    });
-                    await $mol_wire_async(this.root()).REQUEST(message);
-                }
-                sock.resume();
-            }
-            catch (error) {
-                if ($mol_promise_like(error))
-                    $mol_fail_hidden(error);
-                $$.$mol_log3_fail({
-                    place: this,
-                    message: error.message ?? '',
-                    stack: error.stack,
-                });
-                sock.resume();
-            }
-        }
-        root(resource) {
-            $mol_wire_solid();
-            return resource ?? $mol_rest_resource.make({});
-        }
-        static start(Resource) {
-            const name = $$.$mol_func_name(Resource);
-            const port = Number($$.$mol_state_arg.value(name));
-            if (!port)
-                return null;
-            const server = Resource.port(port);
-            server.root(Resource.make({}));
-            server.start();
-            return Resource;
-        }
-    }
-    __decorate([
-        $mol_mem
-    ], $mol_rest_server.prototype, "port", null);
-    __decorate([
-        $mol_mem
-    ], $mol_rest_server.prototype, "start", null);
-    __decorate([
-        $mol_mem
-    ], $mol_rest_server.prototype, "http_server", null);
-    __decorate([
-        $mol_action
-    ], $mol_rest_server.prototype, "http_income", null);
-    __decorate([
-        $mol_action
-    ], $mol_rest_server.prototype, "ws_upgrade", null);
-    __decorate([
-        $mol_mem
-    ], $mol_rest_server.prototype, "root", null);
-    $.$mol_rest_server = $mol_rest_server;
-})($ || ($ = {}));
-//mol/rest/server/server.node.ts
+
 ;
 "use strict";
 var $;
@@ -3358,10 +2644,10 @@ var $;
     }
     $.$mol_dom_render_children = $mol_dom_render_children;
 })($ || ($ = {}));
-//mol/dom/render/children/children.ts
+
 ;
 "use strict";
-//mol/type/partial/deep/deep.ts
+
 ;
 "use strict";
 var $;
@@ -3482,7 +2768,7 @@ var $;
     }
     $.$mol_jsx = $mol_jsx;
 })($ || ($ = {}));
-//mol/jsx/jsx.ts
+
 ;
 "use strict";
 var $;
@@ -3520,7 +2806,7 @@ var $;
     }
     $.$mol_wrapper = $mol_wrapper;
 })($ || ($ = {}));
-//mol/wrapper/wrapper.ts
+
 ;
 "use strict";
 var $;
@@ -3539,7 +2825,7 @@ var $;
     }
     $.$mol_memo = $mol_memo;
 })($ || ($ = {}));
-//mol/memo/memo.ts
+
 ;
 "use strict";
 var $;
@@ -3586,9 +2872,13 @@ var $;
                 return exists;
             if (next === exists)
                 return exists;
-            if (next)
+            if (next) {
                 this.parent().exists(true);
-            this.ensure();
+                this.ensure();
+            }
+            else {
+                this.drop();
+            }
             this.reset();
             return next;
         }
@@ -3646,6 +2936,9 @@ var $;
                 default: return 0;
             }
         }
+        open(...modes) {
+            return 0;
+        }
     }
     __decorate([
         $mol_mem
@@ -3658,7 +2951,7 @@ var $;
     ], $mol_file, "absolute", null);
     $.$mol_file = $mol_file;
 })($ || ($ = {}));
-//mol/file/file.ts
+
 ;
 "use strict";
 var $;
@@ -3678,14 +2971,14 @@ var $;
     }
     $.$mol_wire_probe = $mol_wire_probe;
 })($ || ($ = {}));
-//mol/wire/probe/probe.ts
+
 ;
 "use strict";
 var $;
 (function ($) {
     $.$mol_mem_cached = $mol_wire_probe;
 })($ || ($ = {}));
-//mol/mem/cached/cached.ts
+
 ;
 "use strict";
 var $;
@@ -3704,7 +2997,7 @@ var $;
     }
     $.$mol_compare_array = $mol_compare_array;
 })($ || ($ = {}));
-//mol/compare/array/array.ts
+
 ;
 "use strict";
 var $;
@@ -3732,6 +3025,16 @@ var $;
     function buffer_normalize(buf) {
         return new Uint8Array(buf.buffer, buf.byteOffset, buf.byteLength);
     }
+    let $mol_file_mode_open;
+    (function ($mol_file_mode_open) {
+        $mol_file_mode_open[$mol_file_mode_open["create"] = $node.fs.constants.O_CREAT] = "create";
+        $mol_file_mode_open[$mol_file_mode_open["exists_truncate"] = $node.fs.constants.O_TRUNC] = "exists_truncate";
+        $mol_file_mode_open[$mol_file_mode_open["exists_fail"] = $node.fs.constants.O_EXCL] = "exists_fail";
+        $mol_file_mode_open[$mol_file_mode_open["read_only"] = $node.fs.constants.O_RDONLY] = "read_only";
+        $mol_file_mode_open[$mol_file_mode_open["write_only"] = $node.fs.constants.O_WRONLY] = "write_only";
+        $mol_file_mode_open[$mol_file_mode_open["read_write"] = $node.fs.constants.O_RDWR] = "read_write";
+        $mol_file_mode_open[$mol_file_mode_open["append"] = $node.fs.constants.O_APPEND] = "append";
+    })($mol_file_mode_open = $.$mol_file_mode_open || ($.$mol_file_mode_open = {}));
     class $mol_file_node extends $mol_file {
         static absolute(path) {
             return this.make({
@@ -3795,6 +3098,9 @@ var $;
                 e.message += '\n' + path;
                 this.$.$mol_fail_hidden(e);
             }
+        }
+        drop() {
+            $node.fs.unlinkSync(this.path());
         }
         buffer(next) {
             const path = this.path();
@@ -3869,6 +3175,9 @@ var $;
                 return this.$.$mol_fail_hidden(e);
             }
         }
+        open(...modes) {
+            return $node.fs.openSync(this.path(), modes.reduce((res, mode) => res | $mol_file_mode_open[mode], 0));
+        }
     }
     __decorate([
         $mol_mem
@@ -3879,6 +3188,9 @@ var $;
     __decorate([
         $mol_mem
     ], $mol_file_node.prototype, "ensure", null);
+    __decorate([
+        $mol_action
+    ], $mol_file_node.prototype, "drop", null);
     __decorate([
         $mol_mem
     ], $mol_file_node.prototype, "buffer", null);
@@ -3891,7 +3203,7 @@ var $;
     $.$mol_file_node = $mol_file_node;
     $.$mol_file = $mol_file_node;
 })($ || ($ = {}));
-//mol/file/file.node.ts
+
 ;
 "use strict";
 var $;
@@ -3982,7 +3294,712 @@ var $;
         '7z': 'application/x-7z-compressed',
     };
 })($ || ($ = {}));
-//mol/file/extensions/extensions.ts
+
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_rest_port_http extends $mol_rest_port {
+        output;
+        send_code(code) {
+            if (this.output.writableEnded)
+                return;
+            if (this.output.statusCode !== 400)
+                return;
+            this.output.statusCode = code;
+        }
+        send_type(mime) {
+            if (this.output.writableEnded)
+                return;
+            if (this.output.getHeader('content-type'))
+                return;
+            this.output.setHeader('content-type', mime);
+        }
+        send_bin(data) {
+            if (this.output.writableEnded)
+                return;
+            super.send_bin(data);
+            this.output.write(data);
+        }
+    }
+    __decorate([
+        $mol_action
+    ], $mol_rest_port_http.prototype, "send_code", null);
+    __decorate([
+        $mol_action
+    ], $mol_rest_port_http.prototype, "send_type", null);
+    __decorate([
+        $mol_action
+    ], $mol_rest_port_http.prototype, "send_bin", null);
+    $.$mol_rest_port_http = $mol_rest_port_http;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    function $mol_dom_parse(text, type = 'application/xhtml+xml') {
+        const parser = new $mol_dom_context.DOMParser();
+        const doc = parser.parseFromString(text, type);
+        const error = doc.getElementsByTagName('parsererror');
+        if (error.length)
+            throw new Error(error[0].textContent);
+        return doc;
+    }
+    $.$mol_dom_parse = $mol_dom_parse;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_rest_message_http extends $mol_rest_message {
+        input;
+        method() {
+            return this.input.method ?? super.method();
+        }
+        uri() {
+            const addr = this.input.socket?.localAddress ?? 'localhost';
+            const port = this.input.socket?.localPort ?? '80';
+            return new URL(this.input.url, `http://[${addr}]:${port}/`);
+        }
+        type() {
+            return (this.input.headers['content-type'] ?? 'application/octet-stream');
+        }
+        data() {
+            const consume = $mol_wire_sync($node['stream/consumers']);
+            if (this.type().startsWith('text/')) {
+                const text = consume.text(this.input);
+                if (this.type() === 'text/html') {
+                    return $mol_dom_parse(text, 'application/xhtml+xml').documentElement;
+                }
+                return text;
+            }
+            else {
+                if (this.type() === 'application/json') {
+                    return consume.json(this.input);
+                }
+                else {
+                    return new Uint8Array(consume.arrayBuffer(this.input));
+                }
+            }
+        }
+        route(uri) {
+            return $mol_rest_message_http.make({
+                port: this.port,
+                input: this.input,
+                uri: $mol_const(uri),
+                data: () => this.data(),
+            });
+        }
+    }
+    __decorate([
+        $mol_mem
+    ], $mol_rest_message_http.prototype, "method", null);
+    __decorate([
+        $mol_mem
+    ], $mol_rest_message_http.prototype, "uri", null);
+    __decorate([
+        $mol_mem
+    ], $mol_rest_message_http.prototype, "type", null);
+    __decorate([
+        $mol_mem
+    ], $mol_rest_message_http.prototype, "data", null);
+    __decorate([
+        $mol_action
+    ], $mol_rest_message_http.prototype, "route", null);
+    $.$mol_rest_message_http = $mol_rest_message_http;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_rest_port_ws extends $mol_rest_port {
+    }
+    $.$mol_rest_port_ws = $mol_rest_port_ws;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    function $mol_base64_encode(src) {
+        throw new Error('Not implemented');
+    }
+    $.$mol_base64_encode = $mol_base64_encode;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    function $mol_base64_encode_node(str) {
+        if (!str)
+            return '';
+        if (Buffer.isBuffer(str))
+            return str.toString('base64');
+        return Buffer.from(str).toString('base64');
+    }
+    $.$mol_base64_encode_node = $mol_base64_encode_node;
+    $.$mol_base64_encode = $mol_base64_encode_node;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    function $mol_base64_decode(base64) {
+        throw new Error('Not implemented');
+    }
+    $.$mol_base64_decode = $mol_base64_decode;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    function $mol_base64_decode_node(base64Str) {
+        base64Str = base64Str.replace(/-/g, '+').replace(/_/g, '/');
+        const buffer = Buffer.from(base64Str, 'base64');
+        return new Uint8Array(buffer.buffer, buffer.byteOffset, buffer.byteLength);
+    }
+    $.$mol_base64_decode_node = $mol_base64_decode_node;
+    $.$mol_base64_decode = $mol_base64_decode_node;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    function $mol_base64_ae_encode(buffer) {
+        return $mol_base64_encode(buffer).replace(/\+/g, 'æ').replace(/\//g, 'Æ').replace(/=/g, '');
+    }
+    $.$mol_base64_ae_encode = $mol_base64_ae_encode;
+    function $mol_base64_ae_decode(str) {
+        return $mol_base64_decode(str.replace(/æ/g, '+').replace(/Æ/g, '/'));
+    }
+    $.$mol_base64_ae_decode = $mol_base64_ae_decode;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_buffer extends DataView {
+        static from(array) {
+            if (typeof array === 'number')
+                array = new Uint8Array(array);
+            if (typeof array === 'string')
+                array = $mol_base64_ae_decode(array);
+            return new this(array.buffer, array.byteOffset, array.byteLength);
+        }
+        static toString() {
+            return $$.$mol_func_name(this);
+        }
+        getUint48(offset, LE = false) {
+            if (offset % 4) {
+                return this.getUint16(offset, LE) + this.getUint32(offset + 2, LE) * 2 ** 16;
+            }
+            else {
+                return this.getUint32(offset, LE) + this.getUint16(offset + 4, LE) * 2 ** 32;
+            }
+        }
+        setUint48(offset, value, LE = false) {
+            if (offset % 4) {
+                this.setUint16(offset, value & ((1 << 16) - 1), LE);
+                this.setUint32(offset + 2, (value / 2 ** 16) | 0, LE);
+            }
+            else {
+                this.setUint32(offset, value | 0, LE);
+                this.setUint16(offset + 4, (value / 2 ** 32) | 0, LE);
+            }
+        }
+        int8(offset, next) {
+            if (next === undefined)
+                return this.getInt8(offset);
+            if (next >= -(2 ** 7) && next < 2 ** 7)
+                return this.setInt8(offset, next), next;
+            $mol_fail(new Error(`Wrong int8 value ${next}`));
+        }
+        uint8(offset, next) {
+            if (next === undefined)
+                return this.getUint8(offset);
+            if (next >= 0 && next < 2 ** 8)
+                return this.setUint8(offset, next), next;
+            $mol_fail(new Error(`Wrong uint8 value ${next}`));
+        }
+        int16(offset, next) {
+            if (next === undefined)
+                return this.getInt16(offset, !!'LE');
+            if (next >= -(2 ** 15) && next < 2 ** 15)
+                return this.setInt16(offset, next, !!'LE'), next;
+            $mol_fail(new Error(`Wrong int16 value ${next}`));
+        }
+        uint16(offset, next) {
+            if (next === undefined)
+                return this.getUint16(offset, !!'LE');
+            if (next >= 0 && next < 2 ** 16)
+                return this.setUint16(offset, next, !!'LE'), next;
+            $mol_fail(new Error(`Wrong uint16 value ${next}`));
+        }
+        int32(offset, next) {
+            if (next === undefined)
+                return this.getInt32(offset, !!'LE');
+            if (next >= -(2 ** 31) && next < 2 ** 31)
+                return this.setInt32(offset, next, !!'LE'), next;
+            $mol_fail(new Error(`Wrong int32 value ${next}`));
+        }
+        uint32(offset, next) {
+            if (next === undefined)
+                return this.getUint32(offset, !!'LE');
+            if (next >= 0 && next < 2 ** 32)
+                return this.setUint32(offset, next, !!'LE'), next;
+            $mol_fail(new Error(`Wrong uint32 value ${next}`));
+        }
+        uint48(offset, next) {
+            if (next === undefined)
+                return this.getUint48(offset, !!'LE');
+            if (next >= 0 && next < 2 ** 48)
+                return this.setUint48(offset, next, !!'LE'), next;
+            $mol_fail(new Error(`Wrong uint48 value ${next}`));
+        }
+        int64(offset, next) {
+            if (next === undefined)
+                return this.getBigInt64(offset, !!'LE');
+            if (next >= -(2 ** 63) && next < 2 ** 63)
+                return this.setBigInt64(offset, next, !!'LE'), next;
+            $mol_fail(new Error(`Wrong int64 value ${next}`));
+        }
+        uint64(offset, next) {
+            if (next === undefined)
+                return this.getBigUint64(offset, !!'LE');
+            if (next >= 0 && next < 2 ** 64)
+                return this.setBigUint64(offset, next, !!'LE'), next;
+            $mol_fail(new Error(`Wrong uint64 value ${next}`));
+        }
+        float32(offset, next) {
+            if (next !== undefined)
+                this.setFloat32(offset, next, !!'LE');
+            return this.getFloat32(offset, !!'LE');
+        }
+        float64(offset, next) {
+            if (next !== undefined)
+                this.setFloat64(offset, next, !!'LE');
+            return this.getFloat64(offset, !!'LE');
+        }
+        asArray() {
+            return new Uint8Array(this.buffer, this.byteOffset, this.byteLength);
+        }
+        toString() {
+            return $mol_base64_ae_encode(this.asArray());
+        }
+    }
+    $.$mol_buffer = $mol_buffer;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    let $mol_websocket_frame_op;
+    (function ($mol_websocket_frame_op) {
+        $mol_websocket_frame_op[$mol_websocket_frame_op["con"] = 0] = "con";
+        $mol_websocket_frame_op[$mol_websocket_frame_op["txt"] = 1] = "txt";
+        $mol_websocket_frame_op[$mol_websocket_frame_op["bin"] = 2] = "bin";
+        $mol_websocket_frame_op[$mol_websocket_frame_op["stop"] = 8] = "stop";
+        $mol_websocket_frame_op[$mol_websocket_frame_op["ping"] = 9] = "ping";
+        $mol_websocket_frame_op[$mol_websocket_frame_op["pong"] = 10] = "pong";
+    })($mol_websocket_frame_op = $.$mol_websocket_frame_op || ($.$mol_websocket_frame_op = {}));
+    class $mol_websocket_frame extends $mol_buffer {
+        kind(next) {
+            if (next) {
+                this.setUint8(0, Number(next.fin) << 7 | $mol_websocket_frame_op[next.op]);
+                return next;
+            }
+            else {
+                const state = this.getUint8(0);
+                const fin = state >> 7;
+                const op = $mol_websocket_frame_op[state & 0b1111];
+                if (op === undefined)
+                    $mol_fail(new Error(`Wrong op (${state.toString(2)})`));
+                return { op, fin };
+            }
+        }
+        data(next) {
+            if (next === undefined) {
+                const state = this.getUint8(1);
+                const mask = state >> 7;
+                let size = state & 0b0111_1111;
+                if (size === 126)
+                    size = this.getUint16(2);
+                else if (size === 127)
+                    size = this.getUint32(2);
+                return { size, mask };
+            }
+            else {
+                if (next.size >= 2 ** 16) {
+                    this.setUint8(1, 127 | Number(next.mask) << 7);
+                    this.setUint32(2, next.size);
+                }
+                else if (next.size >= 126) {
+                    this.setUint8(1, 126 | Number(next.mask) << 7);
+                    this.setUint16(2, next.size);
+                }
+                else {
+                    this.setUint8(1, next.size | Number(next.mask) << 7);
+                }
+                return next;
+            }
+        }
+        size() {
+            const short = this.getUint8(1) & 0b0111_1111;
+            const mask = this.getUint8(1) >> 7;
+            return (short === 127 ? 10 : short === 126 ? 4 : 2) + (mask ? 4 : 0);
+        }
+        mask() {
+            return new Uint8Array(this.buffer, this.byteOffset + this.size() - 4, 4);
+        }
+        toString() {
+            const { op, fin } = this.kind();
+            const { size, mask } = this.data();
+            return `${op}${fin ? '!' : '+'}${size}${mask ? '@' : '#'}`;
+        }
+        static make(op, size = 0, mask = false, fin = true) {
+            const head = (size >= 2 ** 16 ? 10 : size >= 126 ? 4 : 2) + (mask ? 4 : 0);
+            const frame = $mol_websocket_frame.from(head);
+            frame.kind({ op, fin });
+            frame.data({ size, mask });
+            return frame;
+        }
+    }
+    $.$mol_websocket_frame = $mol_websocket_frame;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_rest_port_ws_node extends $mol_rest_port_ws {
+        socket;
+        send_nil() {
+            if (this.socket.writableEnded)
+                return;
+            this.socket.write($mol_websocket_frame.make('pong', 0).asArray());
+        }
+        send_bin(data) {
+            if (this.socket.writableEnded)
+                return;
+            this.socket.write($mol_websocket_frame.make('bin', data.byteLength).asArray());
+            this.socket.write(data);
+        }
+        send_text(data) {
+            if (this.socket.writableEnded)
+                return;
+            const bin = $mol_charset_encode(data);
+            this.socket.write($mol_websocket_frame.make('txt', bin.byteLength).asArray());
+            this.socket.write(bin);
+        }
+    }
+    __decorate([
+        $mol_action
+    ], $mol_rest_port_ws_node.prototype, "send_nil", null);
+    __decorate([
+        $mol_action
+    ], $mol_rest_port_ws_node.prototype, "send_bin", null);
+    __decorate([
+        $mol_action
+    ], $mol_rest_port_ws_node.prototype, "send_text", null);
+    $.$mol_rest_port_ws_node = $mol_rest_port_ws_node;
+    $.$mol_rest_port_ws = $mol_rest_port_ws_node;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    let sponge = new Uint32Array(80);
+    function $mol_crypto_hash(data) {
+        const bits = data.byteLength << 3;
+        const kbits = bits >> 5;
+        const kword = 0x80 << (24 - bits & 0b11111);
+        const bytes = 16 + (bits + 64 >>> 9 << 4);
+        const klens = bytes - 1;
+        const words = new Int32Array(data.buffer, data.byteOffset, data.byteLength >> 2);
+        let tail = 0;
+        for (let i = words.length * 4; i < data.length; ++i) {
+            tail |= data[i] << (i << 3 & 0b11000);
+        }
+        const hash = new Int32Array([1732584193, -271733879, -1732584194, 271733878, -1009589776]);
+        for (let i = 0; i < bytes; i += 16) {
+            let h0 = hash[0];
+            let h1 = hash[1];
+            let h2 = hash[2];
+            let h3 = hash[3];
+            let h4 = hash[4];
+            for (let j = 0; j < 80; ++j) {
+                let turn;
+                if (j < 16) {
+                    const k = i + j;
+                    if (k === klens) {
+                        sponge[j] = bits;
+                    }
+                    else {
+                        let word = k === words.length ? tail :
+                            k > words.length ? 0 :
+                                words[k];
+                        word = word << 24 | word << 8 & 0xFF0000 | word >>> 8 & 0xFF00 | word >>> 24 & 0xFF;
+                        if (k === kbits)
+                            word |= kword;
+                        sponge[j] = word;
+                    }
+                    turn = (h1 & h2 | ~h1 & h3) + 1518500249;
+                }
+                else {
+                    const shuffle = sponge[j - 3] ^ sponge[j - 8] ^ sponge[j - 14] ^ sponge[j - 16];
+                    sponge[j] = shuffle << 1 | shuffle >>> 31;
+                    turn =
+                        j < 20 ? (h1 & h2 | ~h1 & h3) + 1518500249 :
+                            j < 40 ? (h1 ^ h2 ^ h3) + 1859775393 :
+                                j < 60 ? (h1 & h2 | h1 & h3 | h2 & h3) - 1894007588 :
+                                    (h1 ^ h2 ^ h3) - 899497514;
+                }
+                const next = turn + h4 + (sponge[j] >>> 0) + ((h0 << 5) | (h0 >>> 27));
+                h4 = h3;
+                h3 = h2;
+                h2 = (h1 << 30) | (h1 >>> 2);
+                h1 = h0;
+                h0 = next;
+            }
+            hash[0] += h0;
+            hash[1] += h1;
+            hash[2] += h2;
+            hash[3] += h3;
+            hash[4] += h4;
+        }
+        for (let i = 0; i < 20; ++i) {
+            const word = hash[i];
+            hash[i] = word << 24 | word << 8 & 0xFF0000 | word >>> 8 & 0xFF00 | word >>> 24 & 0xFF;
+        }
+        return new Uint8Array(hash.buffer);
+    }
+    $.$mol_crypto_hash = $mol_crypto_hash;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    function $mol_wire_solid() {
+        let current = $mol_wire_auto();
+        if (current.temp)
+            current = current.host;
+        if (current.reap !== nothing) {
+            current?.sub_on(sub, sub.data.length);
+        }
+        current.reap = nothing;
+    }
+    $.$mol_wire_solid = $mol_wire_solid;
+    const nothing = () => { };
+    const sub = new $mol_wire_pub_sub;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_rest_server extends $mol_object {
+        port() {
+            return 0;
+        }
+        start() {
+            this.http_server();
+        }
+        http_server() {
+            const server = $node.http.createServer((req, res) => {
+                res.statusCode = 400;
+                $mol_wire_async(this).http_income(req, res);
+            });
+            server.on('upgrade', (req, sock, head) => $mol_wire_async(this).ws_upgrade(req, sock, head));
+            server.listen(this.port(), () => {
+                const ifaces = Object.entries($node.os.networkInterfaces())
+                    .flatMap(([type, ifaces]) => ifaces?.map(iface => iface.family === 'IPv6' ? `[${iface.address}]` : iface.address) ?? []);
+                this.$.$mol_log3_done({
+                    place: this,
+                    message: 'HTTP Server Started',
+                    links: ifaces.map(iface => `http://${iface}:${this.port()}/`),
+                });
+            });
+            return server;
+        }
+        http_income(req, res) {
+            const port = $mol_rest_port_http.make({ output: res });
+            const msg = $mol_rest_message_http.make({ port, input: req });
+            $mol_wire_sync(this.$).$mol_log3_rise({
+                place: this,
+                message: msg.method(),
+                url: msg.uri(),
+                remote: req.socket.remoteAddress + ':' + req.socket.remotePort
+            });
+            $mol_wire_sync(res).setHeader('Access-Control-Allow-Origin', '*');
+            $mol_wire_sync(res).setHeader('Access-Control-Allow-Methods', '*');
+            $mol_wire_sync(res).setHeader('Access-Control-Allow-Headers', '*');
+            try {
+                $mol_wire_sync(this.root()).REQUEST(msg);
+            }
+            catch (error) {
+                if ($mol_promise_like(error))
+                    $mol_fail_hidden(error);
+                $mol_wire_sync($$).$mol_log3_fail({
+                    place: this,
+                    message: error.message ?? '',
+                    stack: error.stack,
+                });
+                $mol_wire_sync(res).writeHead(500, error.name || 'Server Error');
+            }
+            res.end();
+        }
+        ws_upgrade(req, socket, head) {
+            const port = $mol_rest_port_ws_node.make({ socket });
+            const upgrade = $mol_rest_message_http.make({ port, input: req });
+            try {
+                $mol_wire_sync(this.root()).REQUEST(upgrade.derive('OPEN', null));
+            }
+            catch (error) {
+                if ($mol_promise_like(error))
+                    $mol_fail_hidden(error);
+                $mol_wire_sync($$).$mol_log3_fail({
+                    place: this,
+                    message: error.message ?? '',
+                    stack: error.stack,
+                });
+                socket.end();
+                return;
+            }
+            socket.on('end', $mol_wire_async(() => {
+                $mol_wire_sync(this.$).$mol_log3_done({
+                    place: this,
+                    message: 'CLOSE',
+                    url: upgrade.uri(),
+                    port: $mol_key(port),
+                });
+                try {
+                    $mol_wire_sync(this.root()).REQUEST(upgrade.derive('CLOSE', null));
+                }
+                catch (error) {
+                    if ($mol_promise_like(error))
+                        $mol_fail_hidden(error);
+                    $mol_wire_sync($$).$mol_log3_fail({
+                        place: this,
+                        message: error.message ?? '',
+                        stack: error.stack,
+                    });
+                    return;
+                }
+            }));
+            socket.on('data', (chunk) => this.ws_income(chunk, upgrade, socket));
+            const key_in = req.headers["sec-websocket-key"];
+            const magic = '258EAFA5-E914-47DA-95CA-C5AB0DC85B11';
+            const key_out = $mol_base64_encode($mol_crypto_hash($mol_charset_encode(key_in + magic)));
+            socket.write('HTTP/1.1 101 WS Handshaked\r\n' +
+                'Upgrade: WebSocket\r\n' +
+                'Connection: Upgrade\r\n' +
+                `Sec-WebSocket-Accept: ${key_out}\r\n` +
+                '\r\n');
+            $mol_wire_sync(this.$).$mol_log3_come({
+                place: this,
+                message: 'OPEN',
+                url: upgrade.uri(),
+                port: $mol_key(port),
+            });
+        }
+        _ws_icome_partial = [];
+        async ws_income(chunk, upgrade, sock) {
+            sock.pause();
+            try {
+                this._ws_icome_partial.push(chunk);
+                const patial_size = this._ws_icome_partial.reduce((sum, buf) => sum + buf.byteLength, 0);
+                let frame = $mol_websocket_frame.from(this._ws_icome_partial[0]);
+                const msg_size = frame.size() + frame.data().size;
+                if (msg_size > patial_size) {
+                    setTimeout(() => sock.resume());
+                    return;
+                }
+                chunk = Buffer.alloc(patial_size);
+                let offset = 0;
+                for (const buf of this._ws_icome_partial.splice(0)) {
+                    chunk.set(buf, offset);
+                    offset += buf.byteLength;
+                }
+                frame = $mol_websocket_frame.from(chunk);
+                if (msg_size < chunk.byteLength) {
+                    const tail = new Uint8Array(chunk.buffer, chunk.byteOffset + msg_size);
+                    sock.unshift(tail);
+                }
+                let data = new Uint8Array(chunk.buffer, chunk.byteOffset + frame.size(), frame.data().size);
+                if (frame.data().mask) {
+                    const mask = frame.mask();
+                    for (let i = 0; i < data.length; ++i) {
+                        data[i] ^= mask[i % 4];
+                    }
+                }
+                const op = frame.kind().op;
+                if (op === 'txt')
+                    data = $mol_charset_decode(data);
+                const message = upgrade.derive('POST', data);
+                if (op !== 'txt' && op !== 'bin') {
+                    setTimeout(() => sock.resume());
+                    return;
+                }
+                if (data.length !== 0) {
+                    this.$.$mol_log3_rise({
+                        place: this,
+                        message: message.method(),
+                        port: $mol_key(message.port),
+                        url: message.uri(),
+                        frame: frame.toString(),
+                    });
+                    await $mol_wire_async(this.root()).REQUEST(message);
+                }
+                setTimeout(() => sock.resume());
+            }
+            catch (error) {
+                if ($mol_promise_like(error))
+                    $mol_fail_hidden(error);
+                $$.$mol_log3_fail({
+                    place: this,
+                    message: error.message ?? '',
+                    stack: error.stack,
+                });
+                setTimeout(() => sock.resume());
+            }
+        }
+        root(resource) {
+            $mol_wire_solid();
+            return resource ?? $mol_rest_resource.make({});
+        }
+    }
+    __decorate([
+        $mol_mem
+    ], $mol_rest_server.prototype, "port", null);
+    __decorate([
+        $mol_mem
+    ], $mol_rest_server.prototype, "start", null);
+    __decorate([
+        $mol_mem
+    ], $mol_rest_server.prototype, "http_server", null);
+    __decorate([
+        $mol_action
+    ], $mol_rest_server.prototype, "http_income", null);
+    __decorate([
+        $mol_action
+    ], $mol_rest_server.prototype, "ws_upgrade", null);
+    __decorate([
+        $mol_mem
+    ], $mol_rest_server.prototype, "root", null);
+    $.$mol_rest_server = $mol_rest_server;
+})($ || ($ = {}));
+
 ;
 "use strict";
 var $;
@@ -4036,7 +4053,7 @@ var $;
     ], $mol_rest_resource_fs.prototype, "_root", null);
     $.$mol_rest_resource_fs = $mol_rest_resource_fs;
 })($ || ($ = {}));
-//mol/rest/resource/fs/fs.node.tsx
+
 ;
 "use strict";
 var $;
@@ -4106,10 +4123,10 @@ var $;
     }
     $.$mol_wire_dict = $mol_wire_dict;
 })($ || ($ = {}));
-//mol/wire/dict/dict.ts
+
 ;
 "use strict";
-//mol/data/value/value.ts
+
 ;
 "use strict";
 var $;
@@ -4119,7 +4136,7 @@ var $;
     }
     $.$mol_data_tagged = $mol_data_tagged;
 })($ || ($ = {}));
-//mol/data/tagged/tagged.ts
+
 ;
 "use strict";
 var $;
@@ -4179,7 +4196,7 @@ var $;
     }
     $.$hyoo_crus_ref_resolve = $hyoo_crus_ref_resolve;
 })($ || ($ = {}));
-//hyoo/crus/ref/ref.ts
+
 ;
 "use strict";
 var $;
@@ -4193,14 +4210,14 @@ var $;
     }
     $.$mol_base64_url_decode = $mol_base64_url_decode;
 })($ || ($ = {}));
-//mol/base64/url/url.ts
+
 ;
 "use strict";
 var $;
 (function ($) {
     $.$mol_crypto_native = $node.crypto.webcrypto;
 })($ || ($ = {}));
-//mol/crypto/native/native.node.ts
+
 ;
 "use strict";
 var $;
@@ -4293,14 +4310,14 @@ var $;
     ], $mol_crypto_key_private.prototype, "public", null);
     $.$mol_crypto_key_private = $mol_crypto_key_private;
 })($ || ($ = {}));
-//mol/crypto/key/key.ts
+
 ;
 "use strict";
 var $;
 (function ($) {
     $.$mol_mem_persist = $mol_wire_solid;
 })($ || ($ = {}));
-//mol/mem/persist/persist.ts
+
 ;
 "use strict";
 var $;
@@ -4345,7 +4362,7 @@ var $;
     ], $mol_storage, "persisted", null);
     $.$mol_storage = $mol_storage;
 })($ || ($ = {}));
-//mol/storage/storage.ts
+
 ;
 "use strict";
 var $;
@@ -4405,7 +4422,7 @@ var $;
     ], $mol_state_local, "value", null);
     $.$mol_state_local = $mol_state_local;
 })($ || ($ = {}));
-//mol/state/local/local.ts
+
 ;
 "use strict";
 var $;
@@ -4422,7 +4439,7 @@ var $;
         $hyoo_crus_part[$hyoo_crus_part["buck"] = 9] = "buck";
     })($hyoo_crus_part = $.$hyoo_crus_part || ($.$hyoo_crus_part = {}));
 })($ || ($ = {}));
-//hyoo/crus/part/part.ts
+
 ;
 "use strict";
 var $;
@@ -4465,6 +4482,9 @@ var $;
                 pass: unit => unit,
                 gift: unit => unit,
             });
+        }
+        key() {
+            return this.narrow().key();
         }
         id6(offset, next) {
             if (next === undefined) {
@@ -4518,7 +4538,7 @@ var $;
     }
     $.$hyoo_crus_unit = $hyoo_crus_unit;
 })($ || ($ = {}));
-//hyoo/crus/unit/unit.ts
+
 ;
 "use strict";
 var $;
@@ -4585,7 +4605,7 @@ var $;
     }
     $.$mol_crypto_secret = $mol_crypto_secret;
 })($ || ($ = {}));
-//mol/crypto/secret/secret.ts
+
 ;
 "use strict";
 var $;
@@ -4601,6 +4621,9 @@ var $;
             else
                 return this._lord = this.id12(2, next);
         }
+        key() {
+            return this.id6(2);
+        }
         auth(next) {
             const prev = new Uint8Array(this.buffer, this.byteOffset, 64);
             if (next)
@@ -4613,7 +4636,7 @@ var $;
     }
     $.$hyoo_crus_pass = $hyoo_crus_pass;
 })($ || ($ = {}));
-//hyoo/crus/pass/pass.ts
+
 ;
 "use strict";
 var $;
@@ -4627,7 +4650,7 @@ var $;
         $hyoo_crus_rang[$hyoo_crus_rang["law"] = 15] = "law";
     })($hyoo_crus_rang = $.$hyoo_crus_rang || ($.$hyoo_crus_rang = {}));
 })($ || ($ = {}));
-//hyoo/crus/rang/rang.ts
+
 ;
 "use strict";
 var $;
@@ -4662,7 +4685,7 @@ var $;
     }
     $.$mol_time_base = $mol_time_base;
 })($ || ($ = {}));
-//mol/time/base/base.ts
+
 ;
 "use strict";
 var $;
@@ -4797,7 +4820,7 @@ var $;
     }
     $.$mol_time_duration = $mol_time_duration;
 })($ || ($ = {}));
-//mol/time/duration/duration.ts
+
 ;
 "use strict";
 var $;
@@ -5184,7 +5207,7 @@ var $;
     }
     $.$mol_time_moment = $mol_time_moment;
 })($ || ($ = {}));
-//mol/time/moment/moment.ts
+
 ;
 "use strict";
 var $;
@@ -5212,6 +5235,9 @@ var $;
             else
                 return this._dest = this.id12(14, next);
         }
+        key() {
+            return this.dest().description;
+        }
         bill() {
             return new Uint8Array(this.buffer, this.byteOffset + 32, 32);
         }
@@ -5224,7 +5250,7 @@ var $;
     }
     $.$hyoo_crus_gift = $hyoo_crus_gift;
 })($ || ($ = {}));
-//hyoo/crus/gift/gift.ts
+
 ;
 "use strict";
 var $;
@@ -5293,10 +5319,10 @@ var $;
     }
     $.$mol_time_interval = $mol_time_interval;
 })($ || ($ = {}));
-//mol/time/interval/interval.ts
+
 ;
 "use strict";
-//mol/type/result/result.ts
+
 ;
 "use strict";
 var $;
@@ -5397,7 +5423,7 @@ var $;
     }
     $.$hyoo_crus_vary_decode = $hyoo_crus_vary_decode;
 })($ || ($ = {}));
-//hyoo/crus/vary/vary.ts
+
 ;
 "use strict";
 var $;
@@ -5446,6 +5472,9 @@ var $;
                 return this._head;
             else
                 return this._head = this.id6(20, next);
+        }
+        key() {
+            return `${this.head()}/${this.self()}`;
         }
         _lead;
         lead(next) {
@@ -5506,7 +5535,7 @@ var $;
     }
     $.$hyoo_crus_gist = $hyoo_crus_gist;
 })($ || ($ = {}));
-//hyoo/crus/gist/gist.ts
+
 ;
 "use strict";
 var $;
@@ -5554,7 +5583,7 @@ var $;
     ], $hyoo_crus_auth, "current", null);
     $.$hyoo_crus_auth = $hyoo_crus_auth;
 })($ || ($ = {}));
-//hyoo/crus/auth/auth.ts
+
 ;
 "use strict";
 var $;
@@ -5592,7 +5621,7 @@ var $;
     ], $hyoo_crus_face_map.prototype, "tick", null);
     $.$hyoo_crus_face_map = $hyoo_crus_face_map;
 })($ || ($ = {}));
-//hyoo/crus/face/face.ts
+
 ;
 "use strict";
 var $;
@@ -5658,7 +5687,7 @@ var $;
     }
     $.$mol_wire_set = $mol_wire_set;
 })($ || ($ = {}));
-//mol/wire/set/set.ts
+
 ;
 "use strict";
 var $;
@@ -5681,7 +5710,7 @@ var $;
     }
     $.$hyoo_crus_area_to = $hyoo_crus_area_to;
 })($ || ($ = {}));
-//hyoo/crus/area/area.ts
+
 ;
 "use strict";
 var $;
@@ -5771,7 +5800,7 @@ var $;
     ], $hyoo_crus_node.prototype, "last_change", null);
     $.$hyoo_crus_node = $hyoo_crus_node;
 })($ || ($ = {}));
-//hyoo/crus/node/node.ts
+
 ;
 "use strict";
 var $;
@@ -5809,7 +5838,7 @@ var $;
     }
     $.$mol_reconcile = $mol_reconcile;
 })($ || ($ = {}));
-//mol/reconcile/reconcile.ts
+
 ;
 "use strict";
 var $;
@@ -5829,7 +5858,7 @@ var $;
     }
     $.$mol_tree2_bin_from_string = $mol_tree2_bin_from_string;
 })($ || ($ = {}));
-//mol/tree2/bin/bin.ts
+
 ;
 "use strict";
 var $;
@@ -5891,7 +5920,7 @@ var $;
     }
     $.$mol_tree2_xml_from_dom = $mol_tree2_xml_from_dom;
 })($ || ($ = {}));
-//mol/tree2/xml/from/dom/dom.ts
+
 ;
 "use strict";
 var $;
@@ -6163,10 +6192,10 @@ var $;
     }
     $.$hyoo_crus_vary_cast = $hyoo_crus_vary_cast;
 })($ || ($ = {}));
-//hyoo/crus/vary/cast/cast.tsx
+
 ;
 "use strict";
-//mol/type/erase/erase.ts
+
 ;
 "use strict";
 var $;
@@ -6176,7 +6205,7 @@ var $;
     }
     $.$mol_guard_defined = $mol_guard_defined;
 })($ || ($ = {}));
-//mol/guard/defined.ts
+
 ;
 "use strict";
 var $;
@@ -6346,7 +6375,7 @@ var $;
     }
     $.$hyoo_crus_list_tree = $hyoo_crus_list_tree;
 })($ || ($ = {}));
-//hyoo/crus/list/list.ts
+
 ;
 "use strict";
 var $;
@@ -6379,7 +6408,7 @@ var $;
     }
     $.$mol_wire_field = $mol_wire_field;
 })($ || ($ = {}));
-//mol/wire/field/field.ts
+
 ;
 "use strict";
 var $;
@@ -6449,7 +6478,7 @@ var $;
         }
     }
 })($ || ($ = {}));
-//hyoo/crus/dict/dict.ts
+
 ;
 "use strict";
 var $;
@@ -6460,7 +6489,7 @@ var $;
     }
     $.$hyoo_crus_meta = $hyoo_crus_meta;
 })($ || ($ = {}));
-//hyoo/crus/meta/meta.ts
+
 ;
 "use strict";
 var $;
@@ -6480,7 +6509,7 @@ var $;
     ], $hyoo_crus_fund.prototype, "Item", null);
     $.$hyoo_crus_fund = $hyoo_crus_fund;
 })($ || ($ = {}));
-//hyoo/crus/fund/fund.ts
+
 ;
 "use strict";
 var $;
@@ -6489,11 +6518,12 @@ var $;
         toBlob() {
             return new Blob([this], { type: 'application/vnd.hyoo_crus_pack' });
         }
-        parts() {
+        parts(land = null) {
             const lands = {};
+            if (land)
+                lands[land] = { faces: new $hyoo_crus_face_map, units: [] };
             const rocks = [];
             const buf = this.asArray();
-            let land = null;
             for (let offset = 0; offset < this.byteLength;) {
                 const kind = this.uint8(offset);
                 if (kind % 2) {
@@ -6614,249 +6644,7 @@ var $;
     }
     $.$hyoo_crus_pack = $hyoo_crus_pack;
 })($ || ($ = {}));
-//hyoo/crus/pack/pack.ts
-;
-"use strict";
-var $;
-(function ($) {
-    function $mol_db_response(request) {
-        return new Promise((done, fail) => {
-            request.onerror = () => fail(new Error(request.error.message));
-            request.onsuccess = () => done(request.result);
-        });
-    }
-    $.$mol_db_response = $mol_db_response;
-})($ || ($ = {}));
-//mol/db/response/response.ts
-;
-"use strict";
-var $;
-(function ($) {
-    async function $mol_db(name, ...migrations) {
-        const request = this.$mol_dom_context.indexedDB.open(name, migrations.length ? migrations.length + 1 : undefined);
-        request.onupgradeneeded = event => {
-            migrations.splice(0, event.oldVersion - 1);
-            const transaction = new $mol_db_transaction(request.transaction);
-            for (const migrate of migrations)
-                migrate(transaction);
-        };
-        const db = await $mol_db_response(request);
-        return new $mol_db_database(db);
-    }
-    $.$mol_db = $mol_db;
-})($ || ($ = {}));
-//mol/db/db.ts
-;
-"use strict";
-var $;
-(function ($) {
-    class $mol_db_store {
-        native;
-        constructor(native) {
-            this.native = native;
-        }
-        get name() {
-            return this.native.name;
-        }
-        get path() {
-            return this.native.keyPath;
-        }
-        get incremental() {
-            return this.native.autoIncrement;
-        }
-        get indexes() {
-            return new Proxy({}, {
-                ownKeys: () => [...this.native.indexNames],
-                has: (_, name) => this.native.indexNames.contains(name),
-                get: (_, name) => new $mol_db_index(this.native.index(name))
-            });
-        }
-        index_make(name, path = [], unique = false, multiEntry = false) {
-            return this.native.createIndex(name, path, { multiEntry, unique });
-        }
-        index_drop(name) {
-            this.native.deleteIndex(name);
-            return this;
-        }
-        get transaction() {
-            return new $mol_db_transaction(this.native.transaction);
-        }
-        get db() {
-            return this.transaction.db;
-        }
-        clear() {
-            return $mol_db_response(this.native.clear());
-        }
-        count(keys) {
-            return $mol_db_response(this.native.count(keys));
-        }
-        put(doc, key) {
-            return $mol_db_response(this.native.put(doc, key));
-        }
-        get(key) {
-            return $mol_db_response(this.native.get(key));
-        }
-        select(key, count) {
-            return $mol_db_response(this.native.getAll(key, count));
-        }
-        drop(keys) {
-            return $mol_db_response(this.native.delete(keys));
-        }
-    }
-    $.$mol_db_store = $mol_db_store;
-})($ || ($ = {}));
-//mol/db/store/store.ts
-;
-"use strict";
-//mol/db/store/store_schema.ts
-;
-"use strict";
-var $;
-(function ($) {
-    class $mol_db_index {
-        native;
-        constructor(native) {
-            this.native = native;
-        }
-        get name() {
-            return this.native.name;
-        }
-        get paths() {
-            return this.native.keyPath;
-        }
-        get unique() {
-            return this.native.unique;
-        }
-        get multiple() {
-            return this.native.multiEntry;
-        }
-        get store() {
-            return new $mol_db_store(this.native.objectStore);
-        }
-        get transaction() {
-            return this.store.transaction;
-        }
-        get db() {
-            return this.store.db;
-        }
-        count(keys) {
-            return $mol_db_response(this.native.count(keys));
-        }
-        get(key) {
-            return $mol_db_response(this.native.get(key));
-        }
-        select(key, count) {
-            return $mol_db_response(this.native.getAll(key, count));
-        }
-    }
-    $.$mol_db_index = $mol_db_index;
-})($ || ($ = {}));
-//mol/db/index/index.ts
-;
-"use strict";
-//mol/db/index/index_schema.ts
-;
-"use strict";
-var $;
-(function ($) {
-    $mol_dom_context.indexedDB = $node['fake-indexeddb'].indexedDB;
-    $mol_dom_context.IDBCursor = $node['fake-indexeddb'].IDBCursor;
-    $mol_dom_context.IDBCursorWithValue = $node['fake-indexeddb'].IDBCursorWithValue;
-    $mol_dom_context.IDBDatabase = $node['fake-indexeddb'].IDBDatabase;
-    $mol_dom_context.IDBFactory = $node['fake-indexeddb'].IDBFactory;
-    $mol_dom_context.IDBIndex = $node['fake-indexeddb'].IDBIndex;
-    $mol_dom_context.IDBKeyRange = $node['fake-indexeddb'].IDBKeyRange;
-    $mol_dom_context.IDBObjectStore = $node['fake-indexeddb'].IDBObjectStore;
-    $mol_dom_context.IDBOpenDBRequest = $node['fake-indexeddb'].IDBOpenDBRequest;
-    $mol_dom_context.IDBRequest = $node['fake-indexeddb'].IDBRequest;
-    $mol_dom_context.IDBTransaction = $node['fake-indexeddb'].IDBTransaction;
-    $mol_dom_context.IDBVersionChangeEvent = $node['fake-indexeddb'].IDBVersionChangeEvent;
-})($ || ($ = {}));
-//mol/db/db.node.ts
-;
-"use strict";
-//mol/db/db_schema.ts
-;
-"use strict";
-var $;
-(function ($) {
-    class $mol_db_database {
-        native;
-        constructor(native) {
-            this.native = native;
-        }
-        get name() {
-            return this.native.name;
-        }
-        get version() {
-            return this.native.version;
-        }
-        get stores() {
-            return [...this.native.objectStoreNames];
-        }
-        read(...names) {
-            return new $mol_db_transaction(this.native.transaction(names, 'readonly', { durability: 'relaxed' })).stores;
-        }
-        change(...names) {
-            return new $mol_db_transaction(this.native.transaction(names, 'readwrite', { durability: 'relaxed' }));
-        }
-        kill() {
-            this.native.close();
-            const request = $mol_dom_context.indexedDB.deleteDatabase(this.name);
-            request.onblocked = console.warn;
-            return $mol_db_response(request);
-        }
-        destructor() {
-            this.native.close();
-        }
-    }
-    $.$mol_db_database = $mol_db_database;
-})($ || ($ = {}));
-//mol/db/database/database.ts
-;
-"use strict";
-var $;
-(function ($) {
-    class $mol_db_transaction {
-        native;
-        constructor(native) {
-            this.native = native;
-        }
-        get stores() {
-            return new Proxy({}, {
-                ownKeys: () => [...this.native.objectStoreNames],
-                has: (_, name) => this.native.objectStoreNames.contains(name),
-                get: (_, name, proxy) => (name in proxy)
-                    ? new $mol_db_store(this.native.objectStore(name))
-                    : undefined,
-            });
-        }
-        store_make(name) {
-            return this.native.db.createObjectStore(name, { autoIncrement: true });
-        }
-        store_drop(name) {
-            this.native.db.deleteObjectStore(name);
-            return this;
-        }
-        abort() {
-            if (this.native.error)
-                return;
-            this.native.abort();
-        }
-        commit() {
-            this.native.commit?.();
-            return new Promise((done, fail) => {
-                this.native.onerror = () => fail(new Error(this.native.error.message));
-                this.native.oncomplete = () => done();
-            });
-        }
-        get db() {
-            return new $mol_db_database(this.native.db);
-        }
-    }
-    $.$mol_db_transaction = $mol_db_transaction;
-})($ || ($ = {}));
-//mol/db/transaction/transaction.ts
+
 ;
 "use strict";
 var $;
@@ -6867,33 +6655,12 @@ var $;
         }
         static rock(hash, next) {
             $mol_wire_solid();
-            const prev = $mol_mem_cached(() => this.rock(hash));
-            if (prev)
-                return prev;
-            if (next) {
-                this.change().then(Rock => Rock.put(next.buffer, [hash]));
-                return next;
-            }
-            else {
-                const buf = $mol_wire_sync(this.read()).get([hash]);
-                return buf ? new Uint8Array(buf) : undefined;
-            }
+            return next;
         }
         static save(blob) {
             const hash = this.hash(blob);
             this.rock(hash, blob);
             return hash;
-        }
-        static read() {
-            const db = $mol_wire_sync(this).db();
-            return $mol_wire_sync(db).read('Rock').Rock;
-        }
-        static async change() {
-            const db = await this.db();
-            return db.change('Rock').stores.Rock;
-        }
-        static async db() {
-            return await this.$.$mol_db('$hyoo_crus_mine', mig => mig.store_make('Rock'));
         }
     }
     __decorate([
@@ -6905,15 +6672,39 @@ var $;
     __decorate([
         $mol_action
     ], $hyoo_crus_mine, "save", null);
-    __decorate([
-        $mol_action
-    ], $hyoo_crus_mine, "read", null);
-    __decorate([
-        $mol_memo.method
-    ], $hyoo_crus_mine, "db", null);
     $.$hyoo_crus_mine = $hyoo_crus_mine;
 })($ || ($ = {}));
-//hyoo/crus/mine/mine.ts
+
+;
+"use strict";
+var $;
+(function ($) {
+    class $hyoo_crus_mine_node extends $hyoo_crus_mine {
+        static root() {
+            return $mol_file.relative('.crus');
+        }
+        static rock_file(hash) {
+            const id = $mol_base64_ae_encode(hash);
+            return this.root().resolve(`rock/${id.slice(0, 2)}/${id}.blob`);
+        }
+        static rock(hash, next) {
+            $mol_wire_solid();
+            return this.rock_file(hash).buffer(next);
+        }
+    }
+    __decorate([
+        $mol_mem
+    ], $hyoo_crus_mine_node, "root", null);
+    __decorate([
+        $mol_mem_key
+    ], $hyoo_crus_mine_node, "rock_file", null);
+    __decorate([
+        $mol_mem_key
+    ], $hyoo_crus_mine_node, "rock", null);
+    $.$hyoo_crus_mine_node = $hyoo_crus_mine_node;
+    $.$hyoo_crus_mine = $hyoo_crus_mine_node;
+})($ || ($ = {}));
+
 ;
 "use strict";
 var $;
@@ -6939,7 +6730,7 @@ var $;
     }
     $.$mol_bus = $mol_bus;
 })($ || ($ = {}));
-//mol/bus/bus.ts
+
 ;
 "use strict";
 var $;
@@ -6958,7 +6749,7 @@ var $;
     }
     $.$mol_promise = $mol_promise;
 })($ || ($ = {}));
-//mol/promise/promise/promise.ts
+
 ;
 "use strict";
 var $;
@@ -6976,7 +6767,7 @@ var $;
     }
     $.$mol_wait_timeout = $mol_wait_timeout;
 })($ || ($ = {}));
-//mol/wait/timeout/timeout.ts
+
 ;
 "use strict";
 var $;
@@ -7000,7 +6791,7 @@ var $;
     }
     $.$mol_wire_race = $mol_wire_race;
 })($ || ($ = {}));
-//mol/wire/race/race.ts
+
 ;
 "use strict";
 var $;
@@ -7192,7 +6983,7 @@ var $;
     }
     $.$hyoo_crus_reg_tree = $hyoo_crus_reg_tree;
 })($ || ($ = {}));
-//hyoo/crus/reg/reg.ts
+
 ;
 "use strict";
 var $;
@@ -7284,6 +7075,7 @@ var $;
             return this.lord_rang(auth.lord());
         }
         delta_unit(face = new $hyoo_crus_face_map) {
+            this.loading();
             const delta = [];
             const passed = new Set();
             const auth = (peer) => {
@@ -7656,6 +7448,11 @@ var $;
         loading() {
             $mol_wire_solid();
             const units = this.realm()?.yard().load(this) ?? [];
+            $mol_wire_sync(this.$).$mol_log3_rise({
+                place: this,
+                message: 'Load Unit',
+                units: units.length,
+            });
             const errors = this.apply_unit(units, !!'skip_check').filter(Boolean);
             if (errors.length)
                 this.$.$mol_log3_fail({
@@ -7940,7 +7737,7 @@ var $;
     ], $hyoo_crus_land.prototype, "secret", null);
     $.$hyoo_crus_land = $hyoo_crus_land;
 })($ || ($ = {}));
-//hyoo/crus/land/land.ts
+
 ;
 "use strict";
 var $;
@@ -7976,7 +7773,7 @@ var $;
     ], $hyoo_crus_base.prototype, "Profile", null);
     $.$hyoo_crus_base = $hyoo_crus_base;
 })($ || ($ = {}));
-//hyoo/crus/base/base.ts
+
 ;
 "use strict";
 var $;
@@ -8038,7 +7835,7 @@ var $;
     ], $hyoo_crus_lord.prototype, "numb_make", null);
     $.$hyoo_crus_lord = $hyoo_crus_lord;
 })($ || ($ = {}));
-//hyoo/crus/lord/lord.ts
+
 ;
 "use strict";
 var $;
@@ -8070,7 +7867,6 @@ var $;
         }
         slaves = new $mol_wire_set();
         sync() {
-            const realm = this.realm();
             for (const port of this.ports()) {
                 for (const land of this.port_lands(port)) {
                     try {
@@ -8096,12 +7892,13 @@ var $;
         }
         port_income(port, msg) {
             const pack = $mol_wire_sync($hyoo_crus_pack).from(msg);
-            const parts = pack.parts();
+            const parts = $mol_wire_sync(pack).parts();
             $mol_wire_sync(this.$).$mol_log3_rise({
                 place: this,
                 message: 'Gain Pack',
                 port: $mol_key(port),
-                ...parts,
+                lands: parts.lands,
+                rocks: parts.rocks.length,
             });
             const lands = this.port_lands(port);
             for (const land of Reflect.ownKeys(parts.lands)) {
@@ -8141,7 +7938,8 @@ var $;
                 place: this,
                 message: 'Send Unit',
                 port: $mol_key(port),
-                ...parts,
+                lands: parts.lands,
+                rocks: parts.rocks.length,
             });
             port.send_bin($hyoo_crus_pack.make(parts).asArray());
             faces.sync(Land.faces);
@@ -8201,7 +7999,86 @@ var $;
     ], $hyoo_crus_yard.prototype, "face_port_land", null);
     $.$hyoo_crus_yard = $hyoo_crus_yard;
 })($ || ($ = {}));
-//hyoo/crus/yard/yard.ts
+
+;
+"use strict";
+var $;
+(function ($) {
+    class $hyoo_crus_yard_node extends $.$hyoo_crus_yard {
+        root() {
+            return $mol_file.relative('.crus');
+        }
+        land_file(land) {
+            const id = land.ref().description;
+            const dir = this.root().resolve(`unit/${id.slice(0, 2)}`);
+            dir.exists(true);
+            return dir.resolve(`${id}.crus`);
+        }
+        land_offsets(land) {
+            return new Map();
+        }
+        file_sizes = new Map();
+        land_descr(land) {
+            return this.land_file(land).open('create', 'read_write');
+        }
+        async save(land, units) {
+            const descr = this.land_descr(land);
+            const offsets = this.land_offsets(land);
+            const append = [];
+            for (const unit of units) {
+                const off = offsets.get(unit.key());
+                if (off === undefined) {
+                    append.push(unit);
+                }
+                else {
+                    $node.fs.write(descr, unit, 0, unit.byteLength, off, () => { });
+                }
+            }
+            if (!append.length)
+                return;
+            let size = this.file_sizes.get(descr) ?? 0;
+            let offset = size;
+            size += append.length * $hyoo_crus_unit.size;
+            $node.fs.ftruncateSync(descr, size);
+            this.file_sizes.set(descr, size);
+            for (const unit of append) {
+                $node.fs.write(descr, unit, 0, unit.byteLength, offset, () => { });
+                offsets.set(unit.key(), offset);
+                offset += unit.byteLength;
+            }
+        }
+        load(land) {
+            const descr = this.land_descr(land);
+            const buf = $node.fs.readFileSync(descr);
+            if (!buf.length)
+                return [];
+            this.file_sizes.set(descr, buf.length);
+            const pack = $hyoo_crus_pack.from(buf);
+            const { lands, rocks } = pack.parts(land.ref());
+            const units = lands[land.ref()]?.units ?? [];
+            const offsets = this.land_offsets(land);
+            for (let i = 0; i < units.length; ++i) {
+                offsets.set(units[i].key(), i * $hyoo_crus_unit.size);
+            }
+            return units;
+        }
+    }
+    __decorate([
+        $mol_mem
+    ], $hyoo_crus_yard_node.prototype, "root", null);
+    __decorate([
+        $mol_mem_key
+    ], $hyoo_crus_yard_node.prototype, "land_file", null);
+    __decorate([
+        $mol_mem_key
+    ], $hyoo_crus_yard_node.prototype, "land_descr", null);
+    __decorate([
+        $mol_action
+    ], $hyoo_crus_yard_node.prototype, "load", null);
+    $.$hyoo_crus_yard_node = $hyoo_crus_yard_node;
+    $.$hyoo_crus_yard = $hyoo_crus_yard_node;
+})($ || ($ = {}));
+
 ;
 "use strict";
 var $;
@@ -8264,30 +8141,21 @@ var $;
     ], $hyoo_crus_realm.prototype, "apply_pack", null);
     $.$hyoo_crus_realm = $hyoo_crus_realm;
 })($ || ($ = {}));
-//hyoo/crus/realm/realm.ts
+
 ;
 "use strict";
 var $;
 (function ($) {
-    let $hyoo_crus_app = class $hyoo_crus_app extends $mol_rest_resource_fs {
-        sync() {
-            $mol_wire_solid();
-            return $hyoo_crus_app_sync.make({});
+    class $hyoo_crus_app extends $mol_rest_resource_fs {
+        _realm() {
+            return new $hyoo_crus_realm;
         }
-    };
-    __decorate([
-        $mol_mem
-    ], $hyoo_crus_app.prototype, "sync", null);
-    $hyoo_crus_app = __decorate([
-        $mol_rest_server.start
-    ], $hyoo_crus_app);
-    $.$hyoo_crus_app = $hyoo_crus_app;
-    let $hyoo_crus_app_sync = class $hyoo_crus_app_sync extends $mol_rest_resource {
-        _realm = new $hyoo_crus_realm;
         _yard() {
-            $mol_wire_solid();
-            setTimeout(() => this._realm.yard().sync());
-            return this._realm.yard();
+            setTimeout(() => this._sync());
+            return this._realm().yard();
+        }
+        _sync() {
+            this._yard().sync();
         }
         OPEN(msg) {
             this._yard().slaves.add(msg.port);
@@ -8298,16 +8166,20 @@ var $;
         CLOSE(msg) {
             this._yard().slaves.delete(msg.port);
         }
-    };
+    }
     __decorate([
         $mol_mem
-    ], $hyoo_crus_app_sync.prototype, "_yard", null);
-    $hyoo_crus_app_sync = __decorate([
-        $mol_rest_server.start
-    ], $hyoo_crus_app_sync);
-    $.$hyoo_crus_app_sync = $hyoo_crus_app_sync;
+    ], $hyoo_crus_app.prototype, "_realm", null);
+    __decorate([
+        $mol_mem
+    ], $hyoo_crus_app.prototype, "_yard", null);
+    __decorate([
+        $mol_mem
+    ], $hyoo_crus_app.prototype, "_sync", null);
+    $.$hyoo_crus_app = $hyoo_crus_app;
+    $hyoo_crus_app.serve();
 })($ || ($ = {}));
-//hyoo/crus/app/app.node.ts
+
 
 export default $
 //# sourceMappingURL=node.js.map

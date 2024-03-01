@@ -14,71 +14,7 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    const $mol_ambient_ref: unique symbol;
-    type $mol_ambient_context = $;
-    function $mol_ambient(this: $ | void, overrides: Partial<$>): $;
-}
-
-declare namespace $ {
-    function $mol_delegate<Value extends object>(proto: Value, target: () => Value): Value;
-}
-
-declare namespace $ {
-    const $mol_owning_map: WeakMap<any, any>;
-    function $mol_owning_allow<Having>(having: Having): having is Having & {
-        destructor(): void;
-    };
-    function $mol_owning_get<Having, Owner extends object>(having: Having, Owner?: {
-        new (): Owner;
-    }): Owner | null;
-    function $mol_owning_check<Owner, Having>(owner: Owner, having: Having): having is Having & {
-        destructor(): void;
-    };
-    function $mol_owning_catch<Owner, Having>(owner: Owner, having: Having): boolean;
-}
-
-declare namespace $ {
     function $mol_fail(error: any): never;
-}
-
-declare namespace $ {
-    function $mol_fail_hidden(error: any): never;
-}
-
-declare namespace $ {
-    type $mol_type_writable<T> = {
-        -readonly [P in keyof T]: T[P];
-    };
-}
-
-declare namespace $ {
-    function $mol_func_name(this: $, func: Function): string;
-    function $mol_func_name_from<Target extends Function>(target: Target, source: Function): Target;
-}
-
-declare namespace $ {
-    class $mol_object2 {
-        static $: typeof $$;
-        [Symbol.toStringTag]: string;
-        [$mol_ambient_ref]: typeof $$;
-        get $(): $;
-        set $(next: $);
-        static create<Instance>(this: new (init?: (instance: any) => void) => Instance, init?: (instance: $mol_type_writable<Instance>) => void): Instance;
-        static [Symbol.toPrimitive](): any;
-        static toString(): any;
-        static toJSON(): any;
-        destructor(): void;
-        static destructor(): void;
-        toString(): string;
-    }
-}
-
-declare namespace $ {
-    namespace $$ { }
-    const $mol_object_field: unique symbol;
-    class $mol_object extends $mol_object2 {
-        static make<This extends typeof $mol_object>(this: This, config: Partial<InstanceType<This>>): InstanceType<This>;
-    }
 }
 
 declare namespace $ {
@@ -178,6 +114,62 @@ declare namespace $ {
 }
 
 declare namespace $ {
+    const $mol_ambient_ref: unique symbol;
+    type $mol_ambient_context = $;
+    function $mol_ambient(this: $ | void, overrides: Partial<$>): $;
+}
+
+declare namespace $ {
+    function $mol_delegate<Value extends object>(proto: Value, target: () => Value): Value;
+}
+
+declare namespace $ {
+    const $mol_owning_map: WeakMap<any, any>;
+    function $mol_owning_allow<Having>(having: Having): having is Having & {
+        destructor(): void;
+    };
+    function $mol_owning_get<Having, Owner extends object>(having: Having, Owner?: {
+        new (): Owner;
+    }): Owner | null;
+    function $mol_owning_check<Owner, Having>(owner: Owner, having: Having): having is Having & {
+        destructor(): void;
+    };
+    function $mol_owning_catch<Owner, Having>(owner: Owner, having: Having): boolean;
+}
+
+declare namespace $ {
+    function $mol_fail_hidden(error: any): never;
+}
+
+declare namespace $ {
+    type $mol_type_writable<T> = {
+        -readonly [P in keyof T]: T[P];
+    };
+}
+
+declare namespace $ {
+    function $mol_func_name(this: $, func: Function): string;
+    function $mol_func_name_from<Target extends Function>(target: Target, source: Function): Target;
+}
+
+declare namespace $ {
+    class $mol_object2 {
+        static $: typeof $$;
+        [Symbol.toStringTag]: string;
+        [$mol_ambient_ref]: typeof $$;
+        get $(): $;
+        set $(next: $);
+        static create<Instance>(this: new (init?: (instance: any) => void) => Instance, init?: (instance: $mol_type_writable<Instance>) => void): Instance;
+        static [Symbol.toPrimitive](): any;
+        static toString(): any;
+        static toJSON(): any;
+        destructor(): void;
+        static destructor(): void;
+        toString(): string;
+    }
+}
+
+declare namespace $ {
     class $mol_after_timeout extends $mol_object2 {
         delay: number;
         task: () => void;
@@ -228,15 +220,6 @@ declare namespace $ {
         async(): Promise<Result>;
         step(): Promise<null>;
     }
-}
-
-declare namespace $ {
-    function $mol_guid(length?: number, exists?: (id: string) => boolean): string;
-}
-
-declare namespace $ {
-    const $mol_key_store: WeakMap<object, string>;
-    function $mol_key<Value>(value: Value): string;
 }
 
 declare namespace $ {
@@ -318,6 +301,10 @@ declare namespace $ {
         insert(value: $mol_tree2 | null, ...path: $mol_tree2_path): $mol_tree2;
         select(...path: $mol_tree2_path): $mol_tree2;
         filter(path: string[], value?: string): $mol_tree2;
+        hack_self<Context extends {
+            span?: $mol_span;
+            [key: string]: unknown;
+        } = {}>(belt: $mol_tree2_belt<Context>, context?: Context): readonly $mol_tree2[];
         hack<Context extends {
             span?: $mol_span;
             [key: string]: unknown;
@@ -387,6 +374,24 @@ declare namespace $ {
 }
 
 declare namespace $ {
+    export function $mol_wire_sync<Host extends object>(obj: Host): ObjectOrFunctionResultAwaited<Host>;
+    type FunctionResultAwaited<Some> = Some extends (...args: infer Args) => infer Res ? (...args: Args) => Awaited<Res> : Some;
+    type MethodsResultAwaited<Host extends Object> = {
+        [K in keyof Host]: FunctionResultAwaited<Host[K]>;
+    };
+    type ObjectOrFunctionResultAwaited<Some> = (Some extends (...args: any) => unknown ? FunctionResultAwaited<Some> : {}) & (Some extends Object ? MethodsResultAwaited<Some> : Some);
+    export {};
+}
+
+declare namespace $ {
+    namespace $$ { }
+    const $mol_object_field: unique symbol;
+    class $mol_object extends $mol_object2 {
+        static make<This extends typeof $mol_object>(this: This, config: Partial<InstanceType<This>>): InstanceType<This>;
+    }
+}
+
+declare namespace $ {
     function $mol_wire_method<Host extends object, Args extends readonly any[]>(host: Host, field: PropertyKey, descr?: TypedPropertyDescriptor<(...args: Args) => any>): {
         value: (this: Host, ...args: Args) => any;
         enumerable?: boolean | undefined;
@@ -395,77 +400,6 @@ declare namespace $ {
         get?: (() => (...args: Args) => any) | undefined;
         set?: ((value: (...args: Args) => any) => void) | undefined;
     };
-}
-
-declare namespace $ {
-    type $mol_type_tail<Tuple extends readonly any[]> = ((...tail: Tuple) => any) extends ((head: any, ...tail: infer Tail) => any) ? Tail : never;
-}
-
-declare namespace $ {
-    type $mol_type_foot<Tuple extends readonly any[]> = Tuple['length'] extends 0 ? never : Tuple[$mol_type_tail<Tuple>['length']];
-}
-
-declare namespace $ {
-    function $mol_fail_catch(error: unknown): boolean;
-}
-
-declare namespace $ {
-    function $mol_fail_log(error: unknown): boolean;
-}
-
-declare namespace $ {
-    class $mol_wire_atom<Host, Args extends readonly unknown[], Result> extends $mol_wire_fiber<Host, Args, Result> {
-        static solo<Host, Args extends readonly unknown[], Result>(host: Host, task: (this: Host, ...args: Args) => Result): $mol_wire_atom<Host, Args, Result>;
-        static plex<Host, Args extends readonly unknown[], Result>(host: Host, task: (this: Host, ...args: Args) => Result, key: Args[0]): $mol_wire_atom<Host, Args, Result>;
-        static watching: Set<$mol_wire_atom<any, any, any>>;
-        static watcher: $mol_after_frame | null;
-        static watch(): void;
-        watch(): void;
-        resync(args: Args): Error | Result | Promise<Error | Result>;
-        once(): Awaited<Result>;
-        channel(): ((next?: $mol_type_foot<Args>) => Awaited<Result>) & {
-            atom: $mol_wire_atom<Host, Args, Result>;
-        };
-        destructor(): void;
-        put(next: Result | Error | Promise<Result | Error>): Error | Result | Promise<Error | Result>;
-    }
-}
-
-declare namespace $ {
-    export function $mol_wire_solo<Args extends any[]>(host: object, field: string, descr?: TypedPropertyDescriptor<(...args: Args) => any>): TypedPropertyDescriptor<(...args: First_optional<Args>) => any>;
-    type First_optional<Args extends any[]> = Args extends [] ? [] : [Args[0] | undefined, ...$mol_type_tail<Args>];
-    export {};
-}
-
-declare namespace $ {
-    function $mol_wire_plex<Args extends [any, ...any[]]>(host: object, field: string, descr?: TypedPropertyDescriptor<(...args: Args) => any>): {
-        value: (this: typeof host, ...args: Args) => any;
-        enumerable?: boolean | undefined;
-        configurable?: boolean | undefined;
-        writable?: boolean | undefined;
-        get?: (() => (...args: Args) => any) | undefined;
-        set?: ((value: (...args: Args) => any) => void) | undefined;
-    };
-}
-
-declare namespace $ {
-    let $mol_mem: typeof $mol_wire_solo;
-    let $mol_mem_key: typeof $mol_wire_plex;
-}
-
-interface $node {
-    [key: string]: any;
-}
-declare var $node: $node;
-
-declare namespace $ {
-    export function $mol_wire_async<Host extends object>(obj: Host): ObjectOrFunctionResultPromisify<Host>;
-    type FunctionResultPromisify<Some> = Some extends (...args: infer Args) => infer Res ? Res extends PromiseLike<unknown> ? Some : (...args: Args) => Promise<Res> : Some;
-    type MethodsResultPromisify<Host extends Object> = {
-        [K in keyof Host]: FunctionResultPromisify<Host[K]>;
-    };
-    type ObjectOrFunctionResultPromisify<Some> = (Some extends (...args: any) => unknown ? FunctionResultPromisify<Some> : {}) & (Some extends Object ? MethodsResultPromisify<Some> : Some);
-    export {};
 }
 
 declare namespace $ {
@@ -541,6 +475,32 @@ declare namespace $ {
 }
 
 declare namespace $ {
+    function $mol_fail_catch(error: unknown): boolean;
+}
+
+declare namespace $ {
+    function $mol_fail_log(error: unknown): boolean;
+}
+
+interface $node {
+    [key: string]: any;
+}
+declare var $node: $node;
+
+declare namespace $ {
+    function $mol_env(): Record<string, string | undefined>;
+}
+
+declare namespace $ {
+}
+
+/// <reference types="node" />
+/// <reference types="node" />
+declare namespace $ {
+    function $mol_exec(this: $, dir: string, command: string, ...args: string[]): import("child_process").SpawnSyncReturns<Buffer>;
+}
+
+declare namespace $ {
 }
 
 declare namespace $ {
@@ -568,12 +528,60 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    class $mol_rest_port_http extends $mol_rest_port {
-        output: InstanceType<$node['http']['ServerResponse']>;
-        send_code(code: $mol_rest_code): void;
-        send_type(mime: $mol_rest_port_mime): void;
-        send_bin(data: Uint8Array): void;
+    function $mol_guid(length?: number, exists?: (id: string) => boolean): string;
+}
+
+declare namespace $ {
+    const $mol_key_store: WeakMap<object, string>;
+    function $mol_key<Value>(value: Value): string;
+}
+
+declare namespace $ {
+    type $mol_type_tail<Tuple extends readonly any[]> = ((...tail: Tuple) => any) extends ((head: any, ...tail: infer Tail) => any) ? Tail : never;
+}
+
+declare namespace $ {
+    type $mol_type_foot<Tuple extends readonly any[]> = Tuple['length'] extends 0 ? never : Tuple[$mol_type_tail<Tuple>['length']];
+}
+
+declare namespace $ {
+    class $mol_wire_atom<Host, Args extends readonly unknown[], Result> extends $mol_wire_fiber<Host, Args, Result> {
+        static solo<Host, Args extends readonly unknown[], Result>(host: Host, task: (this: Host, ...args: Args) => Result): $mol_wire_atom<Host, Args, Result>;
+        static plex<Host, Args extends readonly unknown[], Result>(host: Host, task: (this: Host, ...args: Args) => Result, key: Args[0]): $mol_wire_atom<Host, Args, Result>;
+        static watching: Set<$mol_wire_atom<any, any, any>>;
+        static watcher: $mol_after_frame | null;
+        static watch(): void;
+        watch(): void;
+        resync(args: Args): Error | Result | Promise<Error | Result>;
+        once(): Awaited<Result>;
+        channel(): ((next?: $mol_type_foot<Args>) => Awaited<Result>) & {
+            atom: $mol_wire_atom<Host, Args, Result>;
+        };
+        destructor(): void;
+        put(next: Result | Error | Promise<Result | Error>): Error | Result | Promise<Error | Result>;
     }
+}
+
+declare namespace $ {
+    export function $mol_wire_solo<Args extends any[]>(host: object, field: string, descr?: TypedPropertyDescriptor<(...args: Args) => any>): TypedPropertyDescriptor<(...args: First_optional<Args>) => any>;
+    type First_optional<Args extends any[]> = Args extends [] ? [] : [Args[0] | undefined, ...$mol_type_tail<Args>];
+    export {};
+}
+
+declare namespace $ {
+    function $mol_wire_plex<Args extends [any, ...any[]]>(host: object, field: string, descr?: TypedPropertyDescriptor<(...args: Args) => any>): {
+        value: (this: typeof host, ...args: Args) => any;
+        enumerable?: boolean | undefined;
+        configurable?: boolean | undefined;
+        writable?: boolean | undefined;
+        get?: (() => (...args: Args) => any) | undefined;
+        set?: ((value: (...args: Args) => any) => void) | undefined;
+    };
+}
+
+declare namespace $ {
+    let $mol_mem: typeof $mol_wire_solo;
+    let $mol_mem_key: typeof $mol_wire_plex;
 }
 
 declare namespace $ {
@@ -611,134 +619,21 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    export function $mol_wire_sync<Host extends object>(obj: Host): ObjectOrFunctionResultAwaited<Host>;
-    type FunctionResultAwaited<Some> = Some extends (...args: infer Args) => infer Res ? (...args: Args) => Awaited<Res> : Some;
-    type MethodsResultAwaited<Host extends Object> = {
-        [K in keyof Host]: FunctionResultAwaited<Host[K]>;
-    };
-    type ObjectOrFunctionResultAwaited<Some> = (Some extends (...args: any) => unknown ? FunctionResultAwaited<Some> : {}) & (Some extends Object ? MethodsResultAwaited<Some> : Some);
-    export {};
-}
-
-declare namespace $ {
-    function $mol_dom_parse(text: string, type?: DOMParserSupportedType): Document;
-}
-
-declare namespace $ {
-    class $mol_rest_message_http extends $mol_rest_message {
-        input: InstanceType<$node['http']['IncomingMessage']>;
-        method(): string;
-        uri(): URL;
-        type(): `image/${string}` | `text/${string}` | `audio/${string}` | `video/${string}` | `font/${string}` | `application/${string}` | `model/${string}`;
-        data(): null | string | Uint8Array | Element | object;
-        route(uri: URL): $mol_rest_message_http;
-    }
-}
-
-declare namespace $ {
-    class $mol_rest_port_ws extends $mol_rest_port {
-    }
-}
-
-declare namespace $ {
-    function $mol_base64_encode(src: string | Uint8Array): string;
-}
-
-declare namespace $ {
-    function $mol_base64_encode_node(str: string | Uint8Array): string;
-}
-
-declare namespace $ {
-    function $mol_base64_decode(base64: string): Uint8Array;
-}
-
-declare namespace $ {
-    function $mol_base64_decode_node(base64Str: string): Uint8Array;
-}
-
-declare namespace $ {
-    function $mol_base64_ae_encode(buffer: Uint8Array): string;
-    function $mol_base64_ae_decode(str: string): Uint8Array;
-}
-
-declare namespace $ {
-    class $mol_buffer extends DataView {
-        static from<This extends typeof $mol_buffer>(this: This, array: number | string | ArrayBufferView): InstanceType<This>;
-        static toString(): string;
-        getUint48(offset: number, LE?: boolean): number;
-        setUint48(offset: number, value: number, LE?: boolean): void;
-        int8(offset: number, next?: number): number;
-        uint8(offset: number, next?: number): number;
-        int16(offset: number, next?: number): number;
-        uint16(offset: number, next?: number): number;
-        int32(offset: number, next?: number): number;
-        uint32(offset: number, next?: number): number;
-        uint48(offset: number, next?: number): number;
-        int64(offset: number, next?: bigint): bigint;
-        uint64(offset: number, next?: bigint): bigint;
-        float32(offset: number, next?: number): number;
-        float64(offset: number, next?: number): number;
-        asArray(): Uint8Array;
-        toString(): string;
-    }
-}
-
-declare namespace $ {
-    enum $mol_websocket_frame_op {
-        con = 0,
-        txt = 1,
-        bin = 2,
-        stop = 8,
-        ping = 9,
-        pong = 10
-    }
-    class $mol_websocket_frame extends $mol_buffer {
-        kind(next?: {
-            op: keyof typeof $mol_websocket_frame_op;
-            fin: boolean;
-        }): {
-            op: keyof typeof $mol_websocket_frame_op;
-            fin: boolean;
-        } | {
-            op: "stop" | "bin" | "con" | "txt" | "ping" | "pong";
-            fin: number;
-        };
-        data(next?: {
-            size: number;
-            mask: boolean;
-        }): {
-            size: number;
-            mask: boolean;
-        } | {
-            size: number;
-            mask: number;
-        };
-        size(): number;
-        mask(): Uint8Array;
-        toString(): string;
-        static make(op: keyof typeof $mol_websocket_frame_op, size?: number, mask?: boolean, fin?: boolean): $mol_websocket_frame;
-    }
-}
-
-declare namespace $ {
-    class $mol_rest_port_ws_node extends $mol_rest_port_ws {
-        socket: InstanceType<$node['stream']['Duplex']>;
-        send_nil(): void;
-        send_bin(data: Uint8Array): void;
-        send_text(data: string): void;
-    }
-}
-
-declare namespace $ {
-    function $mol_crypto_hash(data: Uint8Array): Uint8Array;
-}
-
-declare namespace $ {
     class $mol_rest_port_webrtc extends $mol_rest_port {
         channel: InstanceType<typeof import('node-datachannel/polyfill').RTCDataChannel>;
         send_bin(data: Uint8Array): void;
         send_text(data: string): void;
     }
+}
+
+declare namespace $ {
+    export function $mol_wire_async<Host extends object>(obj: Host): ObjectOrFunctionResultPromisify<Host>;
+    type FunctionResultPromisify<Some> = Some extends (...args: infer Args) => infer Res ? Res extends PromiseLike<unknown> ? Some : (...args: Args) => Promise<Res> : Some;
+    type MethodsResultPromisify<Host extends Object> = {
+        [K in keyof Host]: FunctionResultPromisify<Host[K]>;
+    };
+    type ObjectOrFunctionResultPromisify<Some> = (Some extends (...args: any) => unknown ? FunctionResultPromisify<Some> : {}) & (Some extends Object ? MethodsResultPromisify<Some> : Some);
+    export {};
 }
 
 declare namespace $ {
@@ -779,40 +674,7 @@ declare namespace $ {
         POST(msg: $mol_rest_message): void;
         DELETE(msg: $mol_rest_message): void;
         static port(port: number): $mol_rest_server;
-        static serve(): $mol_rest_server | undefined;
-    }
-}
-
-declare namespace $ {
-    function $mol_wire_solid(): void;
-}
-
-declare namespace $ {
-    function $mol_env(): Record<string, string | undefined>;
-}
-
-declare namespace $ {
-}
-
-/// <reference types="node" />
-/// <reference types="node" />
-declare namespace $ {
-    function $mol_exec(this: $, dir: string, command: string, ...args: string[]): import("child_process").SpawnSyncReturns<Buffer>;
-}
-
-/// <reference types="node" />
-/// <reference types="node" />
-declare namespace $ {
-    class $mol_rest_server extends $mol_object {
-        port(): number;
-        start(): void;
-        http_server(): import("http").Server<typeof import("http").IncomingMessage, typeof import("http").ServerResponse>;
-        http_income(req: InstanceType<$node['http']['IncomingMessage']>, res: InstanceType<$node['http']['ServerResponse']>): void;
-        ws_upgrade(req: InstanceType<$node['http']['IncomingMessage']>, socket: InstanceType<$node['stream']['Duplex']>, head: Buffer): void;
-        _ws_icome_partial: Uint8Array[];
-        ws_income(chunk: Buffer, upgrade: $mol_rest_message, sock: InstanceType<typeof $node.stream.Duplex>): Promise<void>;
-        root(resource?: $mol_rest_resource): $mol_rest_resource;
-        static start<Resource extends typeof $mol_rest_resource>(Resource: Resource): Resource;
+        static serve(): $mol_rest_server | null;
     }
 }
 
@@ -899,6 +761,7 @@ declare namespace $ {
         reset(): void;
         version(): string;
         abstract ensure(): void;
+        abstract drop(): void;
         watcher(): {
             destructor(): void;
         };
@@ -914,6 +777,7 @@ declare namespace $ {
         abstract append(next: Uint8Array | string): void;
         find(include?: RegExp, exclude?: RegExp): $mol_file[];
         size(): number;
+        open(...modes: readonly ('create' | 'exists_truncate' | 'exists_fail' | 'read_only' | 'write_only' | 'read_write' | 'append')[]): number;
     }
 }
 
@@ -930,6 +794,15 @@ declare namespace $ {
 }
 
 declare namespace $ {
+    enum $mol_file_mode_open {
+        create,
+        exists_truncate,
+        exists_fail,
+        read_only,
+        write_only,
+        read_write,
+        append
+    }
     class $mol_file_node extends $mol_file {
         static absolute(path: string): $mol_file_node;
         static relative(path: string): $mol_file_node;
@@ -938,16 +811,159 @@ declare namespace $ {
         };
         stat(next?: $mol_file_stat | null, virt?: 'virt'): $mol_file_stat | null;
         ensure(): void;
+        drop(): void;
         buffer(next?: Uint8Array): Uint8Array;
         sub(): $mol_file[];
         resolve(path: string): $mol_file;
         relate(base?: $mol_file): string;
         append(next: Uint8Array | string): undefined;
+        open(...modes: readonly (keyof typeof $mol_file_mode_open)[]): number;
     }
 }
 
 declare namespace $ {
     let $mol_file_extensions: Record<string, `image/${string}` | `text/${string}` | `audio/${string}` | `video/${string}` | `font/${string}` | `application/${string}` | `model/${string}`>;
+}
+
+declare namespace $ {
+    class $mol_rest_port_http extends $mol_rest_port {
+        output: InstanceType<$node['http']['ServerResponse']>;
+        send_code(code: $mol_rest_code): void;
+        send_type(mime: $mol_rest_port_mime): void;
+        send_bin(data: Uint8Array): void;
+    }
+}
+
+declare namespace $ {
+    function $mol_dom_parse(text: string, type?: DOMParserSupportedType): Document;
+}
+
+declare namespace $ {
+    class $mol_rest_message_http extends $mol_rest_message {
+        input: InstanceType<$node['http']['IncomingMessage']>;
+        method(): string;
+        uri(): URL;
+        type(): `image/${string}` | `text/${string}` | `audio/${string}` | `video/${string}` | `font/${string}` | `application/${string}` | `model/${string}`;
+        data(): null | string | Uint8Array | Element | object;
+        route(uri: URL): $mol_rest_message_http;
+    }
+}
+
+declare namespace $ {
+    class $mol_rest_port_ws extends $mol_rest_port {
+    }
+}
+
+declare namespace $ {
+    function $mol_base64_encode(src: string | Uint8Array): string;
+}
+
+declare namespace $ {
+    function $mol_base64_encode_node(str: string | Uint8Array): string;
+}
+
+declare namespace $ {
+    function $mol_base64_decode(base64: string): Uint8Array;
+}
+
+declare namespace $ {
+    function $mol_base64_decode_node(base64Str: string): Uint8Array;
+}
+
+declare namespace $ {
+    function $mol_base64_ae_encode(buffer: Uint8Array): string;
+    function $mol_base64_ae_decode(str: string): Uint8Array;
+}
+
+declare namespace $ {
+    class $mol_buffer extends DataView {
+        static from<This extends typeof $mol_buffer>(this: This, array: number | string | ArrayBufferView): InstanceType<This>;
+        static toString(): string;
+        getUint48(offset: number, LE?: boolean): number;
+        setUint48(offset: number, value: number, LE?: boolean): void;
+        int8(offset: number, next?: number): number;
+        uint8(offset: number, next?: number): number;
+        int16(offset: number, next?: number): number;
+        uint16(offset: number, next?: number): number;
+        int32(offset: number, next?: number): number;
+        uint32(offset: number, next?: number): number;
+        uint48(offset: number, next?: number): number;
+        int64(offset: number, next?: bigint): bigint;
+        uint64(offset: number, next?: bigint): bigint;
+        float32(offset: number, next?: number): number;
+        float64(offset: number, next?: number): number;
+        asArray(): Uint8Array;
+        toString(): string;
+    }
+}
+
+declare namespace $ {
+    enum $mol_websocket_frame_op {
+        con = 0,
+        txt = 1,
+        bin = 2,
+        stop = 8,
+        ping = 9,
+        pong = 10
+    }
+    class $mol_websocket_frame extends $mol_buffer {
+        kind(next?: {
+            op: keyof typeof $mol_websocket_frame_op;
+            fin: boolean;
+        }): {
+            op: keyof typeof $mol_websocket_frame_op;
+            fin: boolean;
+        } | {
+            op: "stop" | "bin" | "txt" | "con" | "ping" | "pong";
+            fin: number;
+        };
+        data(next?: {
+            size: number;
+            mask: boolean;
+        }): {
+            size: number;
+            mask: boolean;
+        } | {
+            size: number;
+            mask: number;
+        };
+        size(): number;
+        mask(): Uint8Array;
+        toString(): string;
+        static make(op: keyof typeof $mol_websocket_frame_op, size?: number, mask?: boolean, fin?: boolean): $mol_websocket_frame;
+    }
+}
+
+declare namespace $ {
+    class $mol_rest_port_ws_node extends $mol_rest_port_ws {
+        socket: InstanceType<$node['stream']['Duplex']>;
+        send_nil(): void;
+        send_bin(data: Uint8Array): void;
+        send_text(data: string): void;
+    }
+}
+
+declare namespace $ {
+    function $mol_crypto_hash(data: Uint8Array): Uint8Array;
+}
+
+declare namespace $ {
+    function $mol_wire_solid(): void;
+}
+
+/// <reference types="node" />
+/// <reference types="node" />
+declare namespace $ {
+    class $mol_rest_server extends $mol_object {
+        port(): number;
+        start(): void;
+        http_server(): import("http").Server<typeof import("http").IncomingMessage, typeof import("http").ServerResponse>;
+        http_income(req: InstanceType<$node['http']['IncomingMessage']>, res: InstanceType<$node['http']['ServerResponse']>): void;
+        ws_upgrade(req: InstanceType<$node['http']['IncomingMessage']>, socket: InstanceType<$node['stream']['Duplex']>, head: Buffer): void;
+        _ws_icome_partial: Uint8Array[];
+        ws_income(chunk: Buffer, upgrade: $mol_rest_message, sock: InstanceType<typeof $node.stream.Duplex>): Promise<void>;
+        root(resource?: $mol_rest_resource): $mol_rest_resource;
+    }
 }
 
 declare namespace $ {
@@ -1111,6 +1127,7 @@ declare namespace $ {
             gist: (unit: $hyoo_crus_gist) => Res;
         }): Res;
         narrow(): $hyoo_crus_pass | $hyoo_crus_gift | $hyoo_crus_gist;
+        key(): string;
         id6(offset: number, next?: string): string;
         id12(offset: number, next?: $hyoo_crus_ref): symbol & {
             $hyoo_crus_ref: symbol;
@@ -1150,6 +1167,7 @@ declare namespace $ {
         lord(next?: $hyoo_crus_ref): symbol & {
             $hyoo_crus_ref: symbol;
         };
+        key(): string;
         auth(next?: ArrayLike<number>): Uint8Array;
     }
 }
@@ -1291,6 +1309,7 @@ declare namespace $ {
         dest(next?: $hyoo_crus_ref): symbol & {
             $hyoo_crus_ref: symbol;
         };
+        key(): string;
         bill(): Uint8Array;
         static compare(left: $hyoo_crus_gift, right: $hyoo_crus_gift): number;
     }
@@ -1407,6 +1426,7 @@ declare namespace $ {
         self(next?: string): string;
         _head: string;
         head(next?: string): string;
+        key(): string;
         _lead: string;
         lead(next?: string): string;
         hash(next?: Uint8Array, tip?: "time" | "json" | "bin" | "tree" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom", tag?: "keys" | "term" | "solo" | "vals"): Uint8Array;
@@ -1528,7 +1548,7 @@ declare namespace $ {
     function $hyoo_crus_vary_cast_dur(vary: $hyoo_crus_vary_type): $mol_time_duration | $mol_time_moment | null;
     function $hyoo_crus_vary_cast_range(vary: $hyoo_crus_vary_type): $mol_time_moment | $mol_time_interval | null;
     function $hyoo_crus_vary_cast_json(vary: $hyoo_crus_vary_type): any;
-    function $hyoo_crus_vary_cast_jsan(vary: $hyoo_crus_vary_type): any[] | string[] | never[] | number[] | boolean[] | {}[] | null;
+    function $hyoo_crus_vary_cast_jsan(vary: $hyoo_crus_vary_type): any[] | never[] | string[] | number[] | boolean[] | {}[] | null;
     function $hyoo_crus_vary_cast_dom(vary: $hyoo_crus_vary_type): Element | HTMLElement | $mol_jsx.JSX.Element | null;
     function $hyoo_crus_vary_cast_tree(vary: $hyoo_crus_vary_type): $mol_tree2 | null;
     const $hyoo_crus_vary_cast_funcs: {
@@ -1651,14 +1671,14 @@ declare namespace $ {
                     remote_list(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
                     remote_make(): $mol_type_result<$mol_type_result<Value>>;
                     local_make(idea?: number | undefined): $mol_type_result<$mol_type_result<Value>>;
-                    [$mol_ambient_ref]: typeof $$;
-                    [Symbol.toStringTag]: string;
+                    toString: () => string;
                     splice: (next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: "keys" | "term" | "solo" | "vals") => void;
                     find: (vary: $hyoo_crus_vary_type) => $hyoo_crus_gist | null;
+                    [Symbol.toStringTag]: string;
                     head: () => string;
-                    toString: () => string;
-                    has: (vary: $hyoo_crus_vary_type, next?: boolean | undefined, tag?: "keys" | "term" | "solo" | "vals") => boolean;
+                    [$mol_ambient_ref]: typeof $$;
                     destructor: () => void;
+                    has: (vary: $hyoo_crus_vary_type, next?: boolean | undefined, tag?: "keys" | "term" | "solo" | "vals") => boolean;
                     $: typeof $$;
                     toJSON: () => string | undefined;
                     add: (vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => void;
@@ -1687,8 +1707,8 @@ declare namespace $ {
                 };
                 Value: Value;
                 toJSON(): string;
-                [Symbol.toPrimitive]: typeof $mol_object2.[ Symbol.toPrimitive ];
                 toString: typeof $mol_object2.toString & (() => string);
+                [Symbol.toPrimitive]: typeof $mol_object2.[ Symbol.toPrimitive ];
                 destructor: typeof $mol_object2.destructor;
                 $: typeof $$;
                 create: typeof $mol_object2.create;
@@ -1711,14 +1731,14 @@ declare namespace $ {
                 remote_list(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
                 remote_make(): $mol_type_result<$mol_type_result<Value>>;
                 local_make(idea?: number): $mol_type_result<$mol_type_result<Value>>;
-                [$mol_ambient_ref]: typeof $$;
-                [Symbol.toStringTag]: string;
+                toString: () => string;
                 splice: (next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: "keys" | "term" | "solo" | "vals") => void;
                 find: (vary: $hyoo_crus_vary_type) => $hyoo_crus_gist | null;
+                [Symbol.toStringTag]: string;
                 head: () => string;
-                toString: () => string;
-                has: (vary: $hyoo_crus_vary_type, next?: boolean | undefined, tag?: "keys" | "term" | "solo" | "vals") => boolean;
+                [$mol_ambient_ref]: typeof $$;
                 destructor: () => void;
+                has: (vary: $hyoo_crus_vary_type, next?: boolean | undefined, tag?: "keys" | "term" | "solo" | "vals") => boolean;
                 $: typeof $$;
                 toJSON: () => string | undefined;
                 add: (vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => void;
@@ -1747,8 +1767,8 @@ declare namespace $ {
             };
             Value: Value;
             toJSON(): string;
-            [Symbol.toPrimitive]: typeof $mol_object2.[ Symbol.toPrimitive ];
             toString: typeof $mol_object2.toString & (() => string);
+            [Symbol.toPrimitive]: typeof $mol_object2.[ Symbol.toPrimitive ];
             destructor: typeof $mol_object2.destructor;
             $: typeof $$;
             create: typeof $mol_object2.create;
@@ -1873,14 +1893,14 @@ declare namespace $ {
                     remote_list(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
                     remote_make(): $mol_type_result<$mol_type_result<Value>>;
                     local_make(idea?: number | undefined): $mol_type_result<$mol_type_result<Value>>;
-                    [$mol_ambient_ref]: typeof $$;
-                    [Symbol.toStringTag]: string;
+                    toString: () => string;
                     splice: (next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: "keys" | "term" | "solo" | "vals") => void;
                     find: (vary: $hyoo_crus_vary_type) => $hyoo_crus_gist | null;
+                    [Symbol.toStringTag]: string;
                     head: () => string;
-                    toString: () => string;
-                    has: (vary: $hyoo_crus_vary_type, next?: boolean | undefined, tag?: "keys" | "term" | "solo" | "vals") => boolean;
+                    [$mol_ambient_ref]: typeof $$;
                     destructor: () => void;
+                    has: (vary: $hyoo_crus_vary_type, next?: boolean | undefined, tag?: "keys" | "term" | "solo" | "vals") => boolean;
                     $: typeof $$;
                     toJSON: () => string | undefined;
                     add: (vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => void;
@@ -1909,8 +1929,8 @@ declare namespace $ {
                 };
                 Value: Value;
                 toJSON(): string;
-                [Symbol.toPrimitive]: typeof $mol_object2.[ Symbol.toPrimitive ];
                 toString: typeof $mol_object2.toString & (() => string);
+                [Symbol.toPrimitive]: typeof $mol_object2.[ Symbol.toPrimitive ];
                 destructor: typeof $mol_object2.destructor;
                 $: typeof $$;
                 create: typeof $mol_object2.create;
@@ -1933,14 +1953,14 @@ declare namespace $ {
                 remote_list(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
                 remote_make(): $mol_type_result<$mol_type_result<Value>>;
                 local_make(idea?: number | undefined): $mol_type_result<$mol_type_result<Value>>;
-                [$mol_ambient_ref]: typeof $$;
-                [Symbol.toStringTag]: string;
+                toString: () => string;
                 splice: (next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: "keys" | "term" | "solo" | "vals") => void;
                 find: (vary: $hyoo_crus_vary_type) => $hyoo_crus_gist | null;
+                [Symbol.toStringTag]: string;
                 head: () => string;
-                toString: () => string;
-                has: (vary: $hyoo_crus_vary_type, next?: boolean | undefined, tag?: "keys" | "term" | "solo" | "vals") => boolean;
+                [$mol_ambient_ref]: typeof $$;
                 destructor: () => void;
+                has: (vary: $hyoo_crus_vary_type, next?: boolean | undefined, tag?: "keys" | "term" | "solo" | "vals") => boolean;
                 $: typeof $$;
                 toJSON: () => string | undefined;
                 add: (vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => void;
@@ -1969,8 +1989,8 @@ declare namespace $ {
             };
             Value: Value;
             toJSON(): string;
-            [Symbol.toPrimitive]: typeof $mol_object2.[ Symbol.toPrimitive ];
             toString: typeof $mol_object2.toString & (() => string);
+            [Symbol.toPrimitive]: typeof $mol_object2.[ Symbol.toPrimitive ];
             destructor: typeof $mol_object2.destructor;
             $: typeof $$;
             create: typeof $mol_object2.create;
@@ -2104,14 +2124,14 @@ declare namespace $ {
                     remote_list(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
                     remote_make(): $mol_type_result<$mol_type_result<Value>>;
                     local_make(idea?: number | undefined): $mol_type_result<$mol_type_result<Value>>;
-                    [$mol_ambient_ref]: typeof $$;
-                    [Symbol.toStringTag]: string;
+                    toString: () => string;
                     splice: (next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: "keys" | "term" | "solo" | "vals") => void;
                     find: (vary: $hyoo_crus_vary_type) => $hyoo_crus_gist | null;
+                    [Symbol.toStringTag]: string;
                     head: () => string;
-                    toString: () => string;
-                    has: (vary: $hyoo_crus_vary_type, next?: boolean | undefined, tag?: "keys" | "term" | "solo" | "vals") => boolean;
+                    [$mol_ambient_ref]: typeof $$;
                     destructor: () => void;
+                    has: (vary: $hyoo_crus_vary_type, next?: boolean | undefined, tag?: "keys" | "term" | "solo" | "vals") => boolean;
                     $: typeof $$;
                     toJSON: () => string | undefined;
                     add: (vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => void;
@@ -2140,8 +2160,8 @@ declare namespace $ {
                 };
                 Value: Value;
                 toJSON(): string;
-                [Symbol.toPrimitive]: typeof $mol_object2.[ Symbol.toPrimitive ];
                 toString: typeof $mol_object2.toString & (() => string);
+                [Symbol.toPrimitive]: typeof $mol_object2.[ Symbol.toPrimitive ];
                 destructor: typeof $mol_object2.destructor;
                 $: typeof $$;
                 create: typeof $mol_object2.create;
@@ -2164,14 +2184,14 @@ declare namespace $ {
                 remote_list(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
                 remote_make(): $mol_type_result<$mol_type_result<Value>>;
                 local_make(idea?: number | undefined): $mol_type_result<$mol_type_result<Value>>;
-                [$mol_ambient_ref]: typeof $$;
-                [Symbol.toStringTag]: string;
+                toString: () => string;
                 splice: (next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: "keys" | "term" | "solo" | "vals") => void;
                 find: (vary: $hyoo_crus_vary_type) => $hyoo_crus_gist | null;
+                [Symbol.toStringTag]: string;
                 head: () => string;
-                toString: () => string;
-                has: (vary: $hyoo_crus_vary_type, next?: boolean | undefined, tag?: "keys" | "term" | "solo" | "vals") => boolean;
+                [$mol_ambient_ref]: typeof $$;
                 destructor: () => void;
+                has: (vary: $hyoo_crus_vary_type, next?: boolean | undefined, tag?: "keys" | "term" | "solo" | "vals") => boolean;
                 $: typeof $$;
                 toJSON: () => string | undefined;
                 add: (vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => void;
@@ -2200,8 +2220,8 @@ declare namespace $ {
             };
             Value: Value;
             toJSON(): string;
-            [Symbol.toPrimitive]: typeof $mol_object2.[ Symbol.toPrimitive ];
             toString: typeof $mol_object2.toString & (() => string);
+            [Symbol.toPrimitive]: typeof $mol_object2.[ Symbol.toPrimitive ];
             destructor: typeof $mol_object2.destructor;
             $: typeof $$;
             create: typeof $mol_object2.create;
@@ -2335,14 +2355,14 @@ declare namespace $ {
                     remote_list(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
                     remote_make(): $mol_type_result<$mol_type_result<Value>>;
                     local_make(idea?: number | undefined): $mol_type_result<$mol_type_result<Value>>;
-                    [$mol_ambient_ref]: typeof $$;
-                    [Symbol.toStringTag]: string;
+                    toString: () => string;
                     splice: (next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: "keys" | "term" | "solo" | "vals") => void;
                     find: (vary: $hyoo_crus_vary_type) => $hyoo_crus_gist | null;
+                    [Symbol.toStringTag]: string;
                     head: () => string;
-                    toString: () => string;
-                    has: (vary: $hyoo_crus_vary_type, next?: boolean | undefined, tag?: "keys" | "term" | "solo" | "vals") => boolean;
+                    [$mol_ambient_ref]: typeof $$;
                     destructor: () => void;
+                    has: (vary: $hyoo_crus_vary_type, next?: boolean | undefined, tag?: "keys" | "term" | "solo" | "vals") => boolean;
                     $: typeof $$;
                     toJSON: () => string | undefined;
                     add: (vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => void;
@@ -2371,8 +2391,8 @@ declare namespace $ {
                 };
                 Value: Value;
                 toJSON(): string;
-                [Symbol.toPrimitive]: typeof $mol_object2.[ Symbol.toPrimitive ];
                 toString: typeof $mol_object2.toString & (() => string);
+                [Symbol.toPrimitive]: typeof $mol_object2.[ Symbol.toPrimitive ];
                 destructor: typeof $mol_object2.destructor;
                 $: typeof $$;
                 create: typeof $mol_object2.create;
@@ -2395,14 +2415,14 @@ declare namespace $ {
                 remote_list(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
                 remote_make(): $mol_type_result<$mol_type_result<Value>>;
                 local_make(idea?: number | undefined): $mol_type_result<$mol_type_result<Value>>;
-                [$mol_ambient_ref]: typeof $$;
-                [Symbol.toStringTag]: string;
+                toString: () => string;
                 splice: (next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: "keys" | "term" | "solo" | "vals") => void;
                 find: (vary: $hyoo_crus_vary_type) => $hyoo_crus_gist | null;
+                [Symbol.toStringTag]: string;
                 head: () => string;
-                toString: () => string;
-                has: (vary: $hyoo_crus_vary_type, next?: boolean | undefined, tag?: "keys" | "term" | "solo" | "vals") => boolean;
+                [$mol_ambient_ref]: typeof $$;
                 destructor: () => void;
+                has: (vary: $hyoo_crus_vary_type, next?: boolean | undefined, tag?: "keys" | "term" | "solo" | "vals") => boolean;
                 $: typeof $$;
                 toJSON: () => string | undefined;
                 add: (vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => void;
@@ -2431,8 +2451,8 @@ declare namespace $ {
             };
             Value: Value;
             toJSON(): string;
-            [Symbol.toPrimitive]: typeof $mol_object2.[ Symbol.toPrimitive ];
             toString: typeof $mol_object2.toString & (() => string);
+            [Symbol.toPrimitive]: typeof $mol_object2.[ Symbol.toPrimitive ];
             destructor: typeof $mol_object2.destructor;
             $: typeof $$;
             create: typeof $mol_object2.create;
@@ -2566,14 +2586,14 @@ declare namespace $ {
                     remote_list(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
                     remote_make(): $mol_type_result<$mol_type_result<Value>>;
                     local_make(idea?: number | undefined): $mol_type_result<$mol_type_result<Value>>;
-                    [$mol_ambient_ref]: typeof $$;
-                    [Symbol.toStringTag]: string;
+                    toString: () => string;
                     splice: (next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: "keys" | "term" | "solo" | "vals") => void;
                     find: (vary: $hyoo_crus_vary_type) => $hyoo_crus_gist | null;
+                    [Symbol.toStringTag]: string;
                     head: () => string;
-                    toString: () => string;
-                    has: (vary: $hyoo_crus_vary_type, next?: boolean | undefined, tag?: "keys" | "term" | "solo" | "vals") => boolean;
+                    [$mol_ambient_ref]: typeof $$;
                     destructor: () => void;
+                    has: (vary: $hyoo_crus_vary_type, next?: boolean | undefined, tag?: "keys" | "term" | "solo" | "vals") => boolean;
                     $: typeof $$;
                     toJSON: () => string | undefined;
                     add: (vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => void;
@@ -2602,8 +2622,8 @@ declare namespace $ {
                 };
                 Value: Value;
                 toJSON(): string;
-                [Symbol.toPrimitive]: typeof $mol_object2.[ Symbol.toPrimitive ];
                 toString: typeof $mol_object2.toString & (() => string);
+                [Symbol.toPrimitive]: typeof $mol_object2.[ Symbol.toPrimitive ];
                 destructor: typeof $mol_object2.destructor;
                 $: typeof $$;
                 create: typeof $mol_object2.create;
@@ -2626,14 +2646,14 @@ declare namespace $ {
                 remote_list(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
                 remote_make(): $mol_type_result<$mol_type_result<Value>>;
                 local_make(idea?: number | undefined): $mol_type_result<$mol_type_result<Value>>;
-                [$mol_ambient_ref]: typeof $$;
-                [Symbol.toStringTag]: string;
+                toString: () => string;
                 splice: (next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: "keys" | "term" | "solo" | "vals") => void;
                 find: (vary: $hyoo_crus_vary_type) => $hyoo_crus_gist | null;
+                [Symbol.toStringTag]: string;
                 head: () => string;
-                toString: () => string;
-                has: (vary: $hyoo_crus_vary_type, next?: boolean | undefined, tag?: "keys" | "term" | "solo" | "vals") => boolean;
+                [$mol_ambient_ref]: typeof $$;
                 destructor: () => void;
+                has: (vary: $hyoo_crus_vary_type, next?: boolean | undefined, tag?: "keys" | "term" | "solo" | "vals") => boolean;
                 $: typeof $$;
                 toJSON: () => string | undefined;
                 add: (vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => void;
@@ -2662,8 +2682,8 @@ declare namespace $ {
             };
             Value: Value;
             toJSON(): string;
-            [Symbol.toPrimitive]: typeof $mol_object2.[ Symbol.toPrimitive ];
             toString: typeof $mol_object2.toString & (() => string);
+            [Symbol.toPrimitive]: typeof $mol_object2.[ Symbol.toPrimitive ];
             destructor: typeof $mol_object2.destructor;
             $: typeof $$;
             create: typeof $mol_object2.create;
@@ -2801,14 +2821,14 @@ declare namespace $ {
                     remote_list(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
                     remote_make(): $mol_type_result<$mol_type_result<Value>>;
                     local_make(idea?: number | undefined): $mol_type_result<$mol_type_result<Value>>;
-                    [$mol_ambient_ref]: typeof $$;
-                    [Symbol.toStringTag]: string;
+                    toString: () => string;
                     splice: (next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: "keys" | "term" | "solo" | "vals") => void;
                     find: (vary: $hyoo_crus_vary_type) => $hyoo_crus_gist | null;
+                    [Symbol.toStringTag]: string;
                     head: () => string;
-                    toString: () => string;
-                    has: (vary: $hyoo_crus_vary_type, next?: boolean | undefined, tag?: "keys" | "term" | "solo" | "vals") => boolean;
+                    [$mol_ambient_ref]: typeof $$;
                     destructor: () => void;
+                    has: (vary: $hyoo_crus_vary_type, next?: boolean | undefined, tag?: "keys" | "term" | "solo" | "vals") => boolean;
                     $: typeof $$;
                     toJSON: () => string | undefined;
                     add: (vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => void;
@@ -2837,8 +2857,8 @@ declare namespace $ {
                 };
                 Value: Value;
                 toJSON(): string;
-                [Symbol.toPrimitive]: typeof $mol_object2.[ Symbol.toPrimitive ];
                 toString: typeof $mol_object2.toString & (() => string);
+                [Symbol.toPrimitive]: typeof $mol_object2.[ Symbol.toPrimitive ];
                 destructor: typeof $mol_object2.destructor;
                 $: typeof $$;
                 create: typeof $mol_object2.create;
@@ -2861,14 +2881,14 @@ declare namespace $ {
                 remote_list(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
                 remote_make(): $mol_type_result<$mol_type_result<Value>>;
                 local_make(idea?: number | undefined): $mol_type_result<$mol_type_result<Value>>;
-                [$mol_ambient_ref]: typeof $$;
-                [Symbol.toStringTag]: string;
+                toString: () => string;
                 splice: (next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: "keys" | "term" | "solo" | "vals") => void;
                 find: (vary: $hyoo_crus_vary_type) => $hyoo_crus_gist | null;
+                [Symbol.toStringTag]: string;
                 head: () => string;
-                toString: () => string;
-                has: (vary: $hyoo_crus_vary_type, next?: boolean | undefined, tag?: "keys" | "term" | "solo" | "vals") => boolean;
+                [$mol_ambient_ref]: typeof $$;
                 destructor: () => void;
+                has: (vary: $hyoo_crus_vary_type, next?: boolean | undefined, tag?: "keys" | "term" | "solo" | "vals") => boolean;
                 $: typeof $$;
                 toJSON: () => string | undefined;
                 add: (vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => void;
@@ -2897,8 +2917,8 @@ declare namespace $ {
             };
             Value: Value;
             toJSON(): string;
-            [Symbol.toPrimitive]: typeof $mol_object2.[ Symbol.toPrimitive ];
             toString: typeof $mol_object2.toString & (() => string);
+            [Symbol.toPrimitive]: typeof $mol_object2.[ Symbol.toPrimitive ];
             destructor: typeof $mol_object2.destructor;
             $: typeof $$;
             create: typeof $mol_object2.create;
@@ -3032,14 +3052,14 @@ declare namespace $ {
                     remote_list(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
                     remote_make(): $mol_type_result<$mol_type_result<Value>>;
                     local_make(idea?: number | undefined): $mol_type_result<$mol_type_result<Value>>;
-                    [$mol_ambient_ref]: typeof $$;
-                    [Symbol.toStringTag]: string;
+                    toString: () => string;
                     splice: (next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: "keys" | "term" | "solo" | "vals") => void;
                     find: (vary: $hyoo_crus_vary_type) => $hyoo_crus_gist | null;
+                    [Symbol.toStringTag]: string;
                     head: () => string;
-                    toString: () => string;
-                    has: (vary: $hyoo_crus_vary_type, next?: boolean | undefined, tag?: "keys" | "term" | "solo" | "vals") => boolean;
+                    [$mol_ambient_ref]: typeof $$;
                     destructor: () => void;
+                    has: (vary: $hyoo_crus_vary_type, next?: boolean | undefined, tag?: "keys" | "term" | "solo" | "vals") => boolean;
                     $: typeof $$;
                     toJSON: () => string | undefined;
                     add: (vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => void;
@@ -3068,8 +3088,8 @@ declare namespace $ {
                 };
                 Value: Value;
                 toJSON(): string;
-                [Symbol.toPrimitive]: typeof $mol_object2.[ Symbol.toPrimitive ];
                 toString: typeof $mol_object2.toString & (() => string);
+                [Symbol.toPrimitive]: typeof $mol_object2.[ Symbol.toPrimitive ];
                 destructor: typeof $mol_object2.destructor;
                 $: typeof $$;
                 create: typeof $mol_object2.create;
@@ -3092,14 +3112,14 @@ declare namespace $ {
                 remote_list(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
                 remote_make(): $mol_type_result<$mol_type_result<Value>>;
                 local_make(idea?: number | undefined): $mol_type_result<$mol_type_result<Value>>;
-                [$mol_ambient_ref]: typeof $$;
-                [Symbol.toStringTag]: string;
+                toString: () => string;
                 splice: (next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: "keys" | "term" | "solo" | "vals") => void;
                 find: (vary: $hyoo_crus_vary_type) => $hyoo_crus_gist | null;
+                [Symbol.toStringTag]: string;
                 head: () => string;
-                toString: () => string;
-                has: (vary: $hyoo_crus_vary_type, next?: boolean | undefined, tag?: "keys" | "term" | "solo" | "vals") => boolean;
+                [$mol_ambient_ref]: typeof $$;
                 destructor: () => void;
+                has: (vary: $hyoo_crus_vary_type, next?: boolean | undefined, tag?: "keys" | "term" | "solo" | "vals") => boolean;
                 $: typeof $$;
                 toJSON: () => string | undefined;
                 add: (vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => void;
@@ -3128,8 +3148,8 @@ declare namespace $ {
             };
             Value: Value;
             toJSON(): string;
-            [Symbol.toPrimitive]: typeof $mol_object2.[ Symbol.toPrimitive ];
             toString: typeof $mol_object2.toString & (() => string);
+            [Symbol.toPrimitive]: typeof $mol_object2.[ Symbol.toPrimitive ];
             destructor: typeof $mol_object2.destructor;
             $: typeof $$;
             create: typeof $mol_object2.create;
@@ -3263,14 +3283,14 @@ declare namespace $ {
                     remote_list(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
                     remote_make(): $mol_type_result<$mol_type_result<Value>>;
                     local_make(idea?: number | undefined): $mol_type_result<$mol_type_result<Value>>;
-                    [$mol_ambient_ref]: typeof $$;
-                    [Symbol.toStringTag]: string;
+                    toString: () => string;
                     splice: (next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: "keys" | "term" | "solo" | "vals") => void;
                     find: (vary: $hyoo_crus_vary_type) => $hyoo_crus_gist | null;
+                    [Symbol.toStringTag]: string;
                     head: () => string;
-                    toString: () => string;
-                    has: (vary: $hyoo_crus_vary_type, next?: boolean | undefined, tag?: "keys" | "term" | "solo" | "vals") => boolean;
+                    [$mol_ambient_ref]: typeof $$;
                     destructor: () => void;
+                    has: (vary: $hyoo_crus_vary_type, next?: boolean | undefined, tag?: "keys" | "term" | "solo" | "vals") => boolean;
                     $: typeof $$;
                     toJSON: () => string | undefined;
                     add: (vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => void;
@@ -3299,8 +3319,8 @@ declare namespace $ {
                 };
                 Value: Value;
                 toJSON(): string;
-                [Symbol.toPrimitive]: typeof $mol_object2.[ Symbol.toPrimitive ];
                 toString: typeof $mol_object2.toString & (() => string);
+                [Symbol.toPrimitive]: typeof $mol_object2.[ Symbol.toPrimitive ];
                 destructor: typeof $mol_object2.destructor;
                 $: typeof $$;
                 create: typeof $mol_object2.create;
@@ -3323,14 +3343,14 @@ declare namespace $ {
                 remote_list(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
                 remote_make(): $mol_type_result<$mol_type_result<Value>>;
                 local_make(idea?: number | undefined): $mol_type_result<$mol_type_result<Value>>;
-                [$mol_ambient_ref]: typeof $$;
-                [Symbol.toStringTag]: string;
+                toString: () => string;
                 splice: (next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: "keys" | "term" | "solo" | "vals") => void;
                 find: (vary: $hyoo_crus_vary_type) => $hyoo_crus_gist | null;
+                [Symbol.toStringTag]: string;
                 head: () => string;
-                toString: () => string;
-                has: (vary: $hyoo_crus_vary_type, next?: boolean | undefined, tag?: "keys" | "term" | "solo" | "vals") => boolean;
+                [$mol_ambient_ref]: typeof $$;
                 destructor: () => void;
+                has: (vary: $hyoo_crus_vary_type, next?: boolean | undefined, tag?: "keys" | "term" | "solo" | "vals") => boolean;
                 $: typeof $$;
                 toJSON: () => string | undefined;
                 add: (vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => void;
@@ -3359,8 +3379,8 @@ declare namespace $ {
             };
             Value: Value;
             toJSON(): string;
-            [Symbol.toPrimitive]: typeof $mol_object2.[ Symbol.toPrimitive ];
             toString: typeof $mol_object2.toString & (() => string);
+            [Symbol.toPrimitive]: typeof $mol_object2.[ Symbol.toPrimitive ];
             destructor: typeof $mol_object2.destructor;
             $: typeof $$;
             create: typeof $mol_object2.create;
@@ -3494,14 +3514,14 @@ declare namespace $ {
                     remote_list(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
                     remote_make(): $mol_type_result<$mol_type_result<Value>>;
                     local_make(idea?: number | undefined): $mol_type_result<$mol_type_result<Value>>;
-                    [$mol_ambient_ref]: typeof $$;
-                    [Symbol.toStringTag]: string;
+                    toString: () => string;
                     splice: (next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: "keys" | "term" | "solo" | "vals") => void;
                     find: (vary: $hyoo_crus_vary_type) => $hyoo_crus_gist | null;
+                    [Symbol.toStringTag]: string;
                     head: () => string;
-                    toString: () => string;
-                    has: (vary: $hyoo_crus_vary_type, next?: boolean | undefined, tag?: "keys" | "term" | "solo" | "vals") => boolean;
+                    [$mol_ambient_ref]: typeof $$;
                     destructor: () => void;
+                    has: (vary: $hyoo_crus_vary_type, next?: boolean | undefined, tag?: "keys" | "term" | "solo" | "vals") => boolean;
                     $: typeof $$;
                     toJSON: () => string | undefined;
                     add: (vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => void;
@@ -3530,8 +3550,8 @@ declare namespace $ {
                 };
                 Value: Value;
                 toJSON(): string;
-                [Symbol.toPrimitive]: typeof $mol_object2.[ Symbol.toPrimitive ];
                 toString: typeof $mol_object2.toString & (() => string);
+                [Symbol.toPrimitive]: typeof $mol_object2.[ Symbol.toPrimitive ];
                 destructor: typeof $mol_object2.destructor;
                 $: typeof $$;
                 create: typeof $mol_object2.create;
@@ -3554,14 +3574,14 @@ declare namespace $ {
                 remote_list(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
                 remote_make(): $mol_type_result<$mol_type_result<Value>>;
                 local_make(idea?: number | undefined): $mol_type_result<$mol_type_result<Value>>;
-                [$mol_ambient_ref]: typeof $$;
-                [Symbol.toStringTag]: string;
+                toString: () => string;
                 splice: (next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: "keys" | "term" | "solo" | "vals") => void;
                 find: (vary: $hyoo_crus_vary_type) => $hyoo_crus_gist | null;
+                [Symbol.toStringTag]: string;
                 head: () => string;
-                toString: () => string;
-                has: (vary: $hyoo_crus_vary_type, next?: boolean | undefined, tag?: "keys" | "term" | "solo" | "vals") => boolean;
+                [$mol_ambient_ref]: typeof $$;
                 destructor: () => void;
+                has: (vary: $hyoo_crus_vary_type, next?: boolean | undefined, tag?: "keys" | "term" | "solo" | "vals") => boolean;
                 $: typeof $$;
                 toJSON: () => string | undefined;
                 add: (vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => void;
@@ -3590,8 +3610,8 @@ declare namespace $ {
             };
             Value: Value;
             toJSON(): string;
-            [Symbol.toPrimitive]: typeof $mol_object2.[ Symbol.toPrimitive ];
             toString: typeof $mol_object2.toString & (() => string);
+            [Symbol.toPrimitive]: typeof $mol_object2.[ Symbol.toPrimitive ];
             destructor: typeof $mol_object2.destructor;
             $: typeof $$;
             create: typeof $mol_object2.create;
@@ -3612,7 +3632,7 @@ declare namespace $ {
     }
     const $hyoo_crus_list_jsan_base: {
         new (): {
-            value(next?: readonly (any[] | string[] | never[] | number[] | boolean[] | {}[] | null)[] | undefined): readonly (any[] | string[] | never[] | number[] | boolean[] | {}[] | null)[];
+            value(next?: readonly (any[] | never[] | string[] | number[] | boolean[] | {}[] | null)[] | undefined): readonly (any[] | never[] | string[] | number[] | boolean[] | {}[] | null)[];
             items(next?: readonly $hyoo_crus_vary_type[] | undefined, tag?: "keys" | "term" | "solo" | "vals"): readonly $hyoo_crus_vary_type[];
             splice(next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: "keys" | "term" | "solo" | "vals"): void;
             find(vary: $hyoo_crus_vary_type): $hyoo_crus_gist | null;
@@ -3725,14 +3745,14 @@ declare namespace $ {
                     remote_list(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
                     remote_make(): $mol_type_result<$mol_type_result<Value>>;
                     local_make(idea?: number | undefined): $mol_type_result<$mol_type_result<Value>>;
-                    [$mol_ambient_ref]: typeof $$;
-                    [Symbol.toStringTag]: string;
+                    toString: () => string;
                     splice: (next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: "keys" | "term" | "solo" | "vals") => void;
                     find: (vary: $hyoo_crus_vary_type) => $hyoo_crus_gist | null;
+                    [Symbol.toStringTag]: string;
                     head: () => string;
-                    toString: () => string;
-                    has: (vary: $hyoo_crus_vary_type, next?: boolean | undefined, tag?: "keys" | "term" | "solo" | "vals") => boolean;
+                    [$mol_ambient_ref]: typeof $$;
                     destructor: () => void;
+                    has: (vary: $hyoo_crus_vary_type, next?: boolean | undefined, tag?: "keys" | "term" | "solo" | "vals") => boolean;
                     $: typeof $$;
                     toJSON: () => string | undefined;
                     add: (vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => void;
@@ -3761,8 +3781,8 @@ declare namespace $ {
                 };
                 Value: Value;
                 toJSON(): string;
-                [Symbol.toPrimitive]: typeof $mol_object2.[ Symbol.toPrimitive ];
                 toString: typeof $mol_object2.toString & (() => string);
+                [Symbol.toPrimitive]: typeof $mol_object2.[ Symbol.toPrimitive ];
                 destructor: typeof $mol_object2.destructor;
                 $: typeof $$;
                 create: typeof $mol_object2.create;
@@ -3785,14 +3805,14 @@ declare namespace $ {
                 remote_list(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
                 remote_make(): $mol_type_result<$mol_type_result<Value>>;
                 local_make(idea?: number | undefined): $mol_type_result<$mol_type_result<Value>>;
-                [$mol_ambient_ref]: typeof $$;
-                [Symbol.toStringTag]: string;
+                toString: () => string;
                 splice: (next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: "keys" | "term" | "solo" | "vals") => void;
                 find: (vary: $hyoo_crus_vary_type) => $hyoo_crus_gist | null;
+                [Symbol.toStringTag]: string;
                 head: () => string;
-                toString: () => string;
-                has: (vary: $hyoo_crus_vary_type, next?: boolean | undefined, tag?: "keys" | "term" | "solo" | "vals") => boolean;
+                [$mol_ambient_ref]: typeof $$;
                 destructor: () => void;
+                has: (vary: $hyoo_crus_vary_type, next?: boolean | undefined, tag?: "keys" | "term" | "solo" | "vals") => boolean;
                 $: typeof $$;
                 toJSON: () => string | undefined;
                 add: (vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => void;
@@ -3821,8 +3841,8 @@ declare namespace $ {
             };
             Value: Value;
             toJSON(): string;
-            [Symbol.toPrimitive]: typeof $mol_object2.[ Symbol.toPrimitive ];
             toString: typeof $mol_object2.toString & (() => string);
+            [Symbol.toPrimitive]: typeof $mol_object2.[ Symbol.toPrimitive ];
             destructor: typeof $mol_object2.destructor;
             $: typeof $$;
             create: typeof $mol_object2.create;
@@ -3956,14 +3976,14 @@ declare namespace $ {
                     remote_list(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
                     remote_make(): $mol_type_result<$mol_type_result<Value>>;
                     local_make(idea?: number | undefined): $mol_type_result<$mol_type_result<Value>>;
-                    [$mol_ambient_ref]: typeof $$;
-                    [Symbol.toStringTag]: string;
+                    toString: () => string;
                     splice: (next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: "keys" | "term" | "solo" | "vals") => void;
                     find: (vary: $hyoo_crus_vary_type) => $hyoo_crus_gist | null;
+                    [Symbol.toStringTag]: string;
                     head: () => string;
-                    toString: () => string;
-                    has: (vary: $hyoo_crus_vary_type, next?: boolean | undefined, tag?: "keys" | "term" | "solo" | "vals") => boolean;
+                    [$mol_ambient_ref]: typeof $$;
                     destructor: () => void;
+                    has: (vary: $hyoo_crus_vary_type, next?: boolean | undefined, tag?: "keys" | "term" | "solo" | "vals") => boolean;
                     $: typeof $$;
                     toJSON: () => string | undefined;
                     add: (vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => void;
@@ -3992,8 +4012,8 @@ declare namespace $ {
                 };
                 Value: Value;
                 toJSON(): string;
-                [Symbol.toPrimitive]: typeof $mol_object2.[ Symbol.toPrimitive ];
                 toString: typeof $mol_object2.toString & (() => string);
+                [Symbol.toPrimitive]: typeof $mol_object2.[ Symbol.toPrimitive ];
                 destructor: typeof $mol_object2.destructor;
                 $: typeof $$;
                 create: typeof $mol_object2.create;
@@ -4016,14 +4036,14 @@ declare namespace $ {
                 remote_list(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
                 remote_make(): $mol_type_result<$mol_type_result<Value>>;
                 local_make(idea?: number | undefined): $mol_type_result<$mol_type_result<Value>>;
-                [$mol_ambient_ref]: typeof $$;
-                [Symbol.toStringTag]: string;
+                toString: () => string;
                 splice: (next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: "keys" | "term" | "solo" | "vals") => void;
                 find: (vary: $hyoo_crus_vary_type) => $hyoo_crus_gist | null;
+                [Symbol.toStringTag]: string;
                 head: () => string;
-                toString: () => string;
-                has: (vary: $hyoo_crus_vary_type, next?: boolean | undefined, tag?: "keys" | "term" | "solo" | "vals") => boolean;
+                [$mol_ambient_ref]: typeof $$;
                 destructor: () => void;
+                has: (vary: $hyoo_crus_vary_type, next?: boolean | undefined, tag?: "keys" | "term" | "solo" | "vals") => boolean;
                 $: typeof $$;
                 toJSON: () => string | undefined;
                 add: (vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => void;
@@ -4052,8 +4072,8 @@ declare namespace $ {
             };
             Value: Value;
             toJSON(): string;
-            [Symbol.toPrimitive]: typeof $mol_object2.[ Symbol.toPrimitive ];
             toString: typeof $mol_object2.toString & (() => string);
+            [Symbol.toPrimitive]: typeof $mol_object2.[ Symbol.toPrimitive ];
             destructor: typeof $mol_object2.destructor;
             $: typeof $$;
             create: typeof $mol_object2.create;
@@ -4187,14 +4207,14 @@ declare namespace $ {
                     remote_list(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
                     remote_make(): $mol_type_result<$mol_type_result<Value>>;
                     local_make(idea?: number | undefined): $mol_type_result<$mol_type_result<Value>>;
-                    [$mol_ambient_ref]: typeof $$;
-                    [Symbol.toStringTag]: string;
+                    toString: () => string;
                     splice: (next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: "keys" | "term" | "solo" | "vals") => void;
                     find: (vary: $hyoo_crus_vary_type) => $hyoo_crus_gist | null;
+                    [Symbol.toStringTag]: string;
                     head: () => string;
-                    toString: () => string;
-                    has: (vary: $hyoo_crus_vary_type, next?: boolean | undefined, tag?: "keys" | "term" | "solo" | "vals") => boolean;
+                    [$mol_ambient_ref]: typeof $$;
                     destructor: () => void;
+                    has: (vary: $hyoo_crus_vary_type, next?: boolean | undefined, tag?: "keys" | "term" | "solo" | "vals") => boolean;
                     $: typeof $$;
                     toJSON: () => string | undefined;
                     add: (vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => void;
@@ -4223,8 +4243,8 @@ declare namespace $ {
                 };
                 Value: Value;
                 toJSON(): string;
-                [Symbol.toPrimitive]: typeof $mol_object2.[ Symbol.toPrimitive ];
                 toString: typeof $mol_object2.toString & (() => string);
+                [Symbol.toPrimitive]: typeof $mol_object2.[ Symbol.toPrimitive ];
                 destructor: typeof $mol_object2.destructor;
                 $: typeof $$;
                 create: typeof $mol_object2.create;
@@ -4247,14 +4267,14 @@ declare namespace $ {
                 remote_list(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
                 remote_make(): $mol_type_result<$mol_type_result<Value>>;
                 local_make(idea?: number | undefined): $mol_type_result<$mol_type_result<Value>>;
-                [$mol_ambient_ref]: typeof $$;
-                [Symbol.toStringTag]: string;
+                toString: () => string;
                 splice: (next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: "keys" | "term" | "solo" | "vals") => void;
                 find: (vary: $hyoo_crus_vary_type) => $hyoo_crus_gist | null;
+                [Symbol.toStringTag]: string;
                 head: () => string;
-                toString: () => string;
-                has: (vary: $hyoo_crus_vary_type, next?: boolean | undefined, tag?: "keys" | "term" | "solo" | "vals") => boolean;
+                [$mol_ambient_ref]: typeof $$;
                 destructor: () => void;
+                has: (vary: $hyoo_crus_vary_type, next?: boolean | undefined, tag?: "keys" | "term" | "solo" | "vals") => boolean;
                 $: typeof $$;
                 toJSON: () => string | undefined;
                 add: (vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => void;
@@ -4283,8 +4303,8 @@ declare namespace $ {
             };
             Value: Value;
             toJSON(): string;
-            [Symbol.toPrimitive]: typeof $mol_object2.[ Symbol.toPrimitive ];
             toString: typeof $mol_object2.toString & (() => string);
+            [Symbol.toPrimitive]: typeof $mol_object2.[ Symbol.toPrimitive ];
             destructor: typeof $mol_object2.destructor;
             $: typeof $$;
             create: typeof $mol_object2.create;
@@ -4329,14 +4349,14 @@ declare namespace $ {
                 value(): any;
                 keys(): readonly $hyoo_crus_vary_type[];
                 dive<Node_1 extends typeof $hyoo_crus_node>(key: $hyoo_crus_vary_type, Node: Node_1, auto?: any): InstanceType<Node_1> | null;
-                [$mol_ambient_ref]: typeof $$;
-                [Symbol.toStringTag]: string;
+                toString: () => string;
                 splice: (next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: "keys" | "term" | "solo" | "vals") => void;
                 find: (vary: $hyoo_crus_vary_type) => $hyoo_crus_gist | null;
+                [Symbol.toStringTag]: string;
                 head: () => string;
-                toString: () => string;
-                has: (vary: $hyoo_crus_vary_type, next?: boolean | undefined, tag?: "keys" | "term" | "solo" | "vals") => boolean;
+                [$mol_ambient_ref]: typeof $$;
                 destructor: () => void;
+                has: (vary: $hyoo_crus_vary_type, next?: boolean | undefined, tag?: "keys" | "term" | "solo" | "vals") => boolean;
                 $: typeof $$;
                 toJSON: () => string | undefined;
                 add: (vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => void;
@@ -4468,7 +4488,9 @@ declare namespace $ {
     };
     class $hyoo_crus_pack extends $mol_buffer {
         toBlob(): Blob;
-        parts(): {
+        parts(land?: (symbol & {
+            $hyoo_crus_ref: symbol;
+        }) | null): {
             lands: Record<symbol & {
                 $hyoo_crus_ref: symbol;
             }, {
@@ -4482,128 +4504,18 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    function $mol_db_response<Result>(request: IDBRequest<Result>): Promise<Result>;
-}
-
-declare namespace $ {
-    function $mol_db<Schema extends $mol_db_schema>(this: $, name: string, ...migrations: ((transaction: $mol_db_transaction<$mol_db_schema>) => void)[]): Promise<$mol_db_database<Schema>>;
-}
-
-declare namespace $ {
-    class $mol_db_store<Schema extends $mol_db_store_schema> {
-        readonly native: IDBObjectStore;
-        constructor(native: IDBObjectStore);
-        get name(): string;
-        get path(): string | string[];
-        get incremental(): boolean;
-        get indexes(): { [Name in keyof Schema["Indexes"]]: $mol_db_index<{
-            Key: Schema["Indexes"][Name];
-            Doc: Schema['Doc'];
-        }>; };
-        index_make(name: string, path?: string[], unique?: boolean, multiEntry?: boolean): IDBIndex;
-        index_drop(name: string): this;
-        get transaction(): $mol_db_transaction<$mol_db_schema>;
-        get db(): $mol_db_database<$mol_db_schema>;
-        clear(): Promise<undefined>;
-        count(keys?: Schema['Key'] | IDBKeyRange): Promise<number>;
-        put(doc: Schema['Doc'], key?: Schema['Key']): Promise<IDBValidKey>;
-        get(key: Schema['Key']): Promise<Schema["Doc"] | undefined>;
-        select(key?: Schema['Key'] | IDBKeyRange | null, count?: number): Promise<Schema["Doc"][]>;
-        drop(keys: Schema['Key'] | IDBKeyRange): Promise<undefined>;
-    }
-}
-
-declare namespace $ {
-    type $mol_db_store_schema = {
-        Key: IDBValidKey;
-        Doc: unknown;
-        Indexes: Record<string, IDBValidKey[]>;
-    };
-}
-
-declare namespace $ {
-    class $mol_db_index<Schema extends $mol_db_index_schema> {
-        readonly native: IDBIndex;
-        constructor(native: IDBIndex);
-        get name(): string;
-        get paths(): string[];
-        get unique(): boolean;
-        get multiple(): boolean;
-        get store(): $mol_db_store<$mol_db_store_schema>;
-        get transaction(): $mol_db_transaction<$mol_db_schema>;
-        get db(): $mol_db_database<$mol_db_schema>;
-        count(keys?: Schema['Key'] | IDBKeyRange): Promise<number>;
-        get(key: Schema['Key']): Promise<Schema["Doc"] | undefined>;
-        select(key?: Schema['Key'] | IDBKeyRange | null, count?: number): Promise<Schema["Doc"][]>;
-    }
-}
-
-declare namespace $ {
-    type $mol_db_index_schema = {
-        Key: IDBValidKey[];
-        Doc: unknown;
-    };
-}
-
-declare namespace $ {
-}
-
-declare namespace $ {
-    type $mol_db_schema = Record<string, $mol_db_store_schema>;
-}
-
-declare namespace $ {
-    class $mol_db_database<Schema extends $mol_db_schema> {
-        readonly native: IDBDatabase;
-        constructor(native: IDBDatabase);
-        get name(): string;
-        get version(): number;
-        get stores(): (keyof Schema)[];
-        read<Names extends Exclude<keyof Schema, symbol | number>>(...names: Names[]): Pick<Schema, Names> extends infer T extends $mol_db_schema ? { [Name in keyof T]: $mol_db_store<Pick<Schema, Names>[Name]>; } : never;
-        change<Names extends Exclude<keyof Schema, symbol | number>>(...names: Names[]): $mol_db_transaction<Pick<Schema, Names>>;
-        kill(): Promise<IDBDatabase>;
-        destructor(): void;
-    }
-}
-
-interface IDBTransaction {
-    commit(): void;
-}
-declare namespace $ {
-    class $mol_db_transaction<Schema extends $mol_db_schema> {
-        readonly native: IDBTransaction;
-        constructor(native: IDBTransaction);
-        get stores(): { [Name in keyof Schema]: $mol_db_store<Schema[Name]>; };
-        store_make(name: string): IDBObjectStore;
-        store_drop(name: string): this;
-        abort(): void;
-        commit(): Promise<void>;
-        get db(): $mol_db_database<$mol_db_schema>;
-    }
-}
-
-declare namespace $ {
     class $hyoo_crus_mine extends $mol_object {
         static hash(blob: Uint8Array): Uint8Array;
         static rock(hash: Uint8Array, next?: Uint8Array): Uint8Array | undefined;
         static save(blob: Uint8Array): Uint8Array;
-        static read(): $mol_db_store<{
-            Key: [Uint8Array];
-            Doc: ArrayBuffer;
-            Indexes: {};
-        }>;
-        static change(): Promise<$mol_db_store<{
-            Key: [Uint8Array];
-            Doc: ArrayBuffer;
-            Indexes: {};
-        }>>;
-        static db(): Promise<$mol_db_database<{
-            Rock: {
-                Key: [Uint8Array];
-                Doc: ArrayBuffer;
-                Indexes: {};
-            };
-        }>>;
+    }
+}
+
+declare namespace $ {
+    class $hyoo_crus_mine_node extends $hyoo_crus_mine {
+        static root(): $mol_file;
+        static rock_file(hash: Uint8Array): $mol_file;
+        static rock(hash: Uint8Array, next?: Uint8Array): Uint8Array | undefined;
     }
 }
 
@@ -4736,10 +4648,10 @@ declare namespace $ {
                     remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                     remote_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
                     local_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
-                    [$mol_ambient_ref]: typeof $$;
+                    toString: () => string;
                     [Symbol.toStringTag]: string;
                     head: () => string;
-                    toString: () => string;
+                    [$mol_ambient_ref]: typeof $$;
                     destructor: () => void;
                     $: typeof $$;
                     toJSON: () => string | undefined;
@@ -4801,10 +4713,10 @@ declare namespace $ {
                 remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                 remote_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
                 local_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
-                [$mol_ambient_ref]: typeof $$;
+                toString: () => string;
                 [Symbol.toStringTag]: string;
                 head: () => string;
-                toString: () => string;
+                [$mol_ambient_ref]: typeof $$;
                 destructor: () => void;
                 $: typeof $$;
                 toJSON: () => string | undefined;
@@ -4978,10 +4890,10 @@ declare namespace $ {
                     remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                     remote_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
                     local_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
-                    [$mol_ambient_ref]: typeof $$;
+                    toString: () => string;
                     [Symbol.toStringTag]: string;
                     head: () => string;
-                    toString: () => string;
+                    [$mol_ambient_ref]: typeof $$;
                     destructor: () => void;
                     $: typeof $$;
                     toJSON: () => string | undefined;
@@ -5043,10 +4955,10 @@ declare namespace $ {
                 remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                 remote_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
                 local_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
-                [$mol_ambient_ref]: typeof $$;
+                toString: () => string;
                 [Symbol.toStringTag]: string;
                 head: () => string;
-                toString: () => string;
+                [$mol_ambient_ref]: typeof $$;
                 destructor: () => void;
                 $: typeof $$;
                 toJSON: () => string | undefined;
@@ -5229,10 +5141,10 @@ declare namespace $ {
                     remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                     remote_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
                     local_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
-                    [$mol_ambient_ref]: typeof $$;
+                    toString: () => string;
                     [Symbol.toStringTag]: string;
                     head: () => string;
-                    toString: () => string;
+                    [$mol_ambient_ref]: typeof $$;
                     destructor: () => void;
                     $: typeof $$;
                     toJSON: () => string | undefined;
@@ -5294,10 +5206,10 @@ declare namespace $ {
                 remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                 remote_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
                 local_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
-                [$mol_ambient_ref]: typeof $$;
+                toString: () => string;
                 [Symbol.toStringTag]: string;
                 head: () => string;
-                toString: () => string;
+                [$mol_ambient_ref]: typeof $$;
                 destructor: () => void;
                 $: typeof $$;
                 toJSON: () => string | undefined;
@@ -5480,10 +5392,10 @@ declare namespace $ {
                     remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                     remote_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
                     local_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
-                    [$mol_ambient_ref]: typeof $$;
+                    toString: () => string;
                     [Symbol.toStringTag]: string;
                     head: () => string;
-                    toString: () => string;
+                    [$mol_ambient_ref]: typeof $$;
                     destructor: () => void;
                     $: typeof $$;
                     toJSON: () => string | undefined;
@@ -5545,10 +5457,10 @@ declare namespace $ {
                 remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                 remote_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
                 local_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
-                [$mol_ambient_ref]: typeof $$;
+                toString: () => string;
                 [Symbol.toStringTag]: string;
                 head: () => string;
-                toString: () => string;
+                [$mol_ambient_ref]: typeof $$;
                 destructor: () => void;
                 $: typeof $$;
                 toJSON: () => string | undefined;
@@ -5731,10 +5643,10 @@ declare namespace $ {
                     remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                     remote_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
                     local_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
-                    [$mol_ambient_ref]: typeof $$;
+                    toString: () => string;
                     [Symbol.toStringTag]: string;
                     head: () => string;
-                    toString: () => string;
+                    [$mol_ambient_ref]: typeof $$;
                     destructor: () => void;
                     $: typeof $$;
                     toJSON: () => string | undefined;
@@ -5796,10 +5708,10 @@ declare namespace $ {
                 remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                 remote_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
                 local_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
-                [$mol_ambient_ref]: typeof $$;
+                toString: () => string;
                 [Symbol.toStringTag]: string;
                 head: () => string;
-                toString: () => string;
+                [$mol_ambient_ref]: typeof $$;
                 destructor: () => void;
                 $: typeof $$;
                 toJSON: () => string | undefined;
@@ -5986,10 +5898,10 @@ declare namespace $ {
                     remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                     remote_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
                     local_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
-                    [$mol_ambient_ref]: typeof $$;
+                    toString: () => string;
                     [Symbol.toStringTag]: string;
                     head: () => string;
-                    toString: () => string;
+                    [$mol_ambient_ref]: typeof $$;
                     destructor: () => void;
                     $: typeof $$;
                     toJSON: () => string | undefined;
@@ -6051,10 +5963,10 @@ declare namespace $ {
                 remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                 remote_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
                 local_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
-                [$mol_ambient_ref]: typeof $$;
+                toString: () => string;
                 [Symbol.toStringTag]: string;
                 head: () => string;
-                toString: () => string;
+                [$mol_ambient_ref]: typeof $$;
                 destructor: () => void;
                 $: typeof $$;
                 toJSON: () => string | undefined;
@@ -6237,10 +6149,10 @@ declare namespace $ {
                     remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                     remote_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
                     local_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
-                    [$mol_ambient_ref]: typeof $$;
+                    toString: () => string;
                     [Symbol.toStringTag]: string;
                     head: () => string;
-                    toString: () => string;
+                    [$mol_ambient_ref]: typeof $$;
                     destructor: () => void;
                     $: typeof $$;
                     toJSON: () => string | undefined;
@@ -6302,10 +6214,10 @@ declare namespace $ {
                 remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                 remote_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
                 local_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
-                [$mol_ambient_ref]: typeof $$;
+                toString: () => string;
                 [Symbol.toStringTag]: string;
                 head: () => string;
-                toString: () => string;
+                [$mol_ambient_ref]: typeof $$;
                 destructor: () => void;
                 $: typeof $$;
                 toJSON: () => string | undefined;
@@ -6488,10 +6400,10 @@ declare namespace $ {
                     remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                     remote_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
                     local_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
-                    [$mol_ambient_ref]: typeof $$;
+                    toString: () => string;
                     [Symbol.toStringTag]: string;
                     head: () => string;
-                    toString: () => string;
+                    [$mol_ambient_ref]: typeof $$;
                     destructor: () => void;
                     $: typeof $$;
                     toJSON: () => string | undefined;
@@ -6553,10 +6465,10 @@ declare namespace $ {
                 remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                 remote_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
                 local_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
-                [$mol_ambient_ref]: typeof $$;
+                toString: () => string;
                 [Symbol.toStringTag]: string;
                 head: () => string;
-                toString: () => string;
+                [$mol_ambient_ref]: typeof $$;
                 destructor: () => void;
                 $: typeof $$;
                 toJSON: () => string | undefined;
@@ -6739,10 +6651,10 @@ declare namespace $ {
                     remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                     remote_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
                     local_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
-                    [$mol_ambient_ref]: typeof $$;
+                    toString: () => string;
                     [Symbol.toStringTag]: string;
                     head: () => string;
-                    toString: () => string;
+                    [$mol_ambient_ref]: typeof $$;
                     destructor: () => void;
                     $: typeof $$;
                     toJSON: () => string | undefined;
@@ -6804,10 +6716,10 @@ declare namespace $ {
                 remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                 remote_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
                 local_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
-                [$mol_ambient_ref]: typeof $$;
+                toString: () => string;
                 [Symbol.toStringTag]: string;
                 head: () => string;
-                toString: () => string;
+                [$mol_ambient_ref]: typeof $$;
                 destructor: () => void;
                 $: typeof $$;
                 toJSON: () => string | undefined;
@@ -6867,7 +6779,7 @@ declare namespace $ {
     }
     const $hyoo_crus_reg_jsan_base: {
         new (): {
-            value(next?: any[] | string[] | never[] | number[] | boolean[] | {}[] | null | undefined): any[] | string[] | never[] | number[] | boolean[] | {}[] | null;
+            value(next?: any[] | never[] | string[] | number[] | boolean[] | {}[] | null | undefined): any[] | never[] | string[] | number[] | boolean[] | {}[] | null;
             pick_unit(): $hyoo_crus_gist | undefined;
             value_vary(next?: $hyoo_crus_vary_type | undefined): $hyoo_crus_vary_type;
             value_bool(next?: boolean | undefined): boolean | null;
@@ -6990,10 +6902,10 @@ declare namespace $ {
                     remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                     remote_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
                     local_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
-                    [$mol_ambient_ref]: typeof $$;
+                    toString: () => string;
                     [Symbol.toStringTag]: string;
                     head: () => string;
-                    toString: () => string;
+                    [$mol_ambient_ref]: typeof $$;
                     destructor: () => void;
                     $: typeof $$;
                     toJSON: () => string | undefined;
@@ -7055,10 +6967,10 @@ declare namespace $ {
                 remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                 remote_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
                 local_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
-                [$mol_ambient_ref]: typeof $$;
+                toString: () => string;
                 [Symbol.toStringTag]: string;
                 head: () => string;
-                toString: () => string;
+                [$mol_ambient_ref]: typeof $$;
                 destructor: () => void;
                 $: typeof $$;
                 toJSON: () => string | undefined;
@@ -7241,10 +7153,10 @@ declare namespace $ {
                     remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                     remote_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
                     local_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
-                    [$mol_ambient_ref]: typeof $$;
+                    toString: () => string;
                     [Symbol.toStringTag]: string;
                     head: () => string;
-                    toString: () => string;
+                    [$mol_ambient_ref]: typeof $$;
                     destructor: () => void;
                     $: typeof $$;
                     toJSON: () => string | undefined;
@@ -7306,10 +7218,10 @@ declare namespace $ {
                 remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                 remote_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
                 local_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
-                [$mol_ambient_ref]: typeof $$;
+                toString: () => string;
                 [Symbol.toStringTag]: string;
                 head: () => string;
-                toString: () => string;
+                [$mol_ambient_ref]: typeof $$;
                 destructor: () => void;
                 $: typeof $$;
                 toJSON: () => string | undefined;
@@ -7492,10 +7404,10 @@ declare namespace $ {
                     remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                     remote_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
                     local_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
-                    [$mol_ambient_ref]: typeof $$;
+                    toString: () => string;
                     [Symbol.toStringTag]: string;
                     head: () => string;
-                    toString: () => string;
+                    [$mol_ambient_ref]: typeof $$;
                     destructor: () => void;
                     $: typeof $$;
                     toJSON: () => string | undefined;
@@ -7557,10 +7469,10 @@ declare namespace $ {
                 remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                 remote_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
                 local_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
-                [$mol_ambient_ref]: typeof $$;
+                toString: () => string;
                 [Symbol.toStringTag]: string;
                 head: () => string;
-                toString: () => string;
+                [$mol_ambient_ref]: typeof $$;
                 destructor: () => void;
                 $: typeof $$;
                 toJSON: () => string | undefined;
@@ -7750,6 +7662,18 @@ declare namespace $ {
 }
 
 declare namespace $ {
+    class $hyoo_crus_yard_node extends $.$hyoo_crus_yard {
+        root(): $mol_file;
+        land_file(land: $hyoo_crus_land): $mol_file;
+        land_offsets(land: $hyoo_crus_land): Map<string, number>;
+        file_sizes: Map<number, number>;
+        land_descr(land: $hyoo_crus_land): number;
+        save(land: $hyoo_crus_land, units: readonly $hyoo_crus_unit[]): Promise<void>;
+        load(land: $hyoo_crus_land): $hyoo_crus_unit[];
+    }
+}
+
+declare namespace $ {
     class $hyoo_crus_realm extends $mol_object {
         lords: $mol_wire_dict<symbol & {
             $hyoo_crus_ref: symbol;
@@ -7765,11 +7689,9 @@ declare namespace $ {
 
 declare namespace $ {
     class $hyoo_crus_app extends $mol_rest_resource_fs {
-        sync(): $hyoo_crus_app_sync;
-    }
-    class $hyoo_crus_app_sync extends $mol_rest_resource {
-        _realm: $hyoo_crus_realm;
+        _realm(): $hyoo_crus_realm;
         _yard(): $hyoo_crus_yard;
+        _sync(): void;
         OPEN(msg: $mol_rest_message): void;
         POST(msg: $mol_rest_message): void;
         CLOSE(msg: $mol_rest_message): void;
@@ -7777,3 +7699,4 @@ declare namespace $ {
 }
 
 export = $;
+//# sourceMappingURL=node.d.ts.map
