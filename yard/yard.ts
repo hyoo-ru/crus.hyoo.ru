@@ -80,7 +80,8 @@ namespace $ {
 				place: this,
 				message: 'Gain Pack',
 				port: $mol_key( port ),
-				... parts,
+				lands: parts.lands,
+				rocks: parts.rocks.length,
 			})
 			
 			const lands = this.port_lands( port )
@@ -132,7 +133,8 @@ namespace $ {
 				place: this,
 				message: 'Send Unit',
 				port: $mol_key( port ),
-				... parts,
+				lands: parts.lands,
+				rocks: parts.rocks.length,
 			})
 			
 			port.send_bin( $hyoo_crus_pack.make( parts ).asArray() )
