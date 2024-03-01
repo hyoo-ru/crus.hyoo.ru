@@ -12,11 +12,11 @@ namespace $.$$ {
 		}
 		
 		str( next?: string ) {
-			return this.node( next )?.cast( $hyoo_crus_reg_str ).value( next ) ?? ''
+			return this.node( next as any )?.cast( $hyoo_crus_reg_str ).value( next ) ?? ''
 		}
 		
 		ref( next?: $hyoo_crus_ref ) {
-			return this.node( next )?.cast( $hyoo_crus_reg ).value( next ) ?? null
+			return this.node( next as any )?.cast( $hyoo_crus_reg ).value( next ) ?? null
 		}
 		
 		ref_options() {
@@ -41,7 +41,7 @@ namespace $.$$ {
 		
 		@ $mol_mem
 		row_add() {
-			const target = this.node().cast( $hyoo_crus_list.ref( ()=> $hyoo_crus_flex_thing ) ).local_make()
+			const target = this.node( null as any ).cast( $hyoo_crus_list.ref( ()=> $hyoo_crus_flex_thing ) ).local_make()
 			target.kind( this.prop().target() )
 			this.$.$mol_state_arg.href( this.$.$mol_state_arg.link({
 				ref: target.ref().description!
