@@ -59,6 +59,10 @@ namespace $ {
 			else return this._head = this.id6( 20, next )
 		}
 		
+		key(): string {
+			return `${ this.head() }/${ this.self() }`
+		}
+		
 		_lead!: string
 		lead( next?: string ) {
 			if( next === undefined && this._lead !== undefined ) return this._lead

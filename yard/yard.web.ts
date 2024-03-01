@@ -1,5 +1,5 @@
-namespace $.$$ {
-	export class $hyoo_crus_yard extends $.$hyoo_crus_yard {
+namespace $ {
+	export class $hyoo_crus_yard_web extends $.$hyoo_crus_yard {
 		
 		static masters = [
 			'https://crus.onrender.com/',
@@ -166,4 +166,5 @@ namespace $.$$ {
 		}
 		
 	}
+	$.$hyoo_crus_yard = $hyoo_crus_yard_web
 }

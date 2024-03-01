@@ -60,6 +60,10 @@ namespace $ {
 			})
 		}
 		
+		key(): string {
+			return this.narrow().key()
+		}
+		
 		id6( offset: number, next?: string ) {
 			if( next === undefined ) {
 				const str = $mol_base64_ae_encode( new Uint8Array( this.buffer, offset, 6 ) )

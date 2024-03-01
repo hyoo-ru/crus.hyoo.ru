@@ -12,6 +12,10 @@ namespace $ {
 			else return this._lord = this.id12( 2, next )
 		}
 		
+		key(): string {
+			return this.id6( 2 )
+		}
+		
 		auth( next?: ArrayLike< number > ) {
 			const prev = new Uint8Array( this.buffer, this.byteOffset, 64 )
 			if( next ) prev.set( next )

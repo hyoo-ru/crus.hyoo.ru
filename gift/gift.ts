@@ -28,6 +28,10 @@ namespace $ {
 			else return this._dest = this.id12( 14, next )
 		}
 		
+		key(): string {
+			return this.dest().description!
+		}
+		
 		bill() {
 			return new Uint8Array( this.buffer, this.byteOffset + 32, 32 )
 		}

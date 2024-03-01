@@ -112,6 +112,8 @@ namespace $ {
 		/** Picks units between Face and current state. */
 		delta_unit( face = new $hyoo_crus_face_map ): $hyoo_crus_unit[] {
 			
+			this.loading()
+			
 			const delta = [] as $hyoo_crus_unit[]
 			
 			const passed = new Set< string >()
@@ -652,6 +654,13 @@ namespace $ {
 			$mol_wire_solid()
 			
 			const units = this.realm()?.yard().load( this ) ?? []
+			
+			$mol_wire_sync( this.$ ).$mol_log3_rise({
+				place: this,
+				message: 'Load Unit',
+				units: units.length,
+			})
+			
 			const errors = this.apply_unit( units, !!'skip_check' ).filter( Boolean )
 			
 			if( errors.length ) this.$.$mol_log3_fail({

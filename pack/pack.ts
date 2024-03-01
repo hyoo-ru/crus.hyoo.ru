@@ -17,13 +17,14 @@ namespace $ {
 			return new Blob( [ this ], { type: 'application/vnd.hyoo_crus_pack' } )
 		}
 		
-		parts() {
+		parts( land = null as $hyoo_crus_ref | null ) {
 			
 			const lands = {} as $hyoo_crus_pack_parts[ 'lands' ]
+			if( land ) lands[ land ] = { faces: new $hyoo_crus_face_map, units: [] }
+			
 			const rocks = [] as $hyoo_crus_pack_parts[ 'rocks' ]
 			
 			const buf = this.asArray()
-			let land = null as $hyoo_crus_ref | null
 			
 			for( let offset = 0; offset < this.byteLength; ) {
 				
