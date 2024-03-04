@@ -12642,7 +12642,7 @@ var $;
             if (auto === undefined)
                 return null;
             const hash = $mol_crypto_hash($hyoo_crus_vary_encode(vary).bin);
-            const numb = new Uint16Array($mol_base64_decode(this.land().numb()).buffer);
+            const numb = new Uint16Array($mol_base64_ae_decode(this.land().numb()).buffer);
             const idea = new $mol_buffer(hash.buffer).uint32(0) + numb[0] + numb[1] * 2 ** 16 + numb[2] * 2 ** 32;
             const land = realm.Lord(this.land().auth().lord()).Land_new(idea);
             this.value_ref(land.ref());
@@ -17650,7 +17650,7 @@ var $;
             this.cause = cause;
             const stack_get = Object.getOwnPropertyDescriptor(this, 'stack')?.get ?? (() => super.stack);
             Object.defineProperty(this, 'stack', {
-                get: () => stack_get.call(this) + '\n' + [JSON.stringify(this.cause, null, '  ') ?? 'no cause', ...this.errors.map(e => e.stack)].map(e => e.trim()
+                get: () => (stack_get.call(this) ?? this.message) + '\n' + [JSON.stringify(this.cause, null, '  ') ?? 'no cause', ...this.errors.map(e => e.stack)].map(e => e.trim()
                     .replace(/at /gm, '   at ')
                     .replace(/^(?!    +at )(.*)/gm, '    at | $1 (#)')).join('\n')
             });
