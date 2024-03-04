@@ -3625,13 +3625,13 @@ var $;
                 if (size === 126)
                     size = this.getUint16(2);
                 else if (size === 127)
-                    size = this.getUint32(2);
+                    size = this.getUint32(6);
                 return { size, mask };
             }
             else {
                 if (next.size >= 2 ** 16) {
                     this.setUint8(1, 127 | Number(next.mask) << 7);
-                    this.setUint32(2, next.size);
+                    this.setUint32(6, next.size);
                 }
                 else if (next.size >= 126) {
                     this.setUint8(1, 126 | Number(next.mask) << 7);
