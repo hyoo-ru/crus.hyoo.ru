@@ -94,7 +94,7 @@ namespace $ {
 			if( auto === undefined ) return null
 			
 			const hash = $mol_crypto_hash( $hyoo_crus_vary_encode( vary ).bin )
-			const numb = new Uint16Array( $mol_base64_decode( this.land().numb() ).buffer )
+			const numb = new Uint16Array( $mol_base64_ae_decode( this.land().numb() ).buffer )
 			const idea = new $mol_buffer( hash.buffer ).uint32(0) + numb[0] + numb[1] * 2**16 + numb[2] * 2**32
 
 			const land = realm!.Lord( this.land().auth().lord() ).Land_new( idea )
