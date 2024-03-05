@@ -481,6 +481,7 @@ namespace $ {
 			const error = this.apply_unit_trust([ next ])[0]
 			if( error ) $mol_fail( new Error( error ) )
 			
+			this.broadcast()
 			return next
 		}
 		
@@ -504,6 +505,7 @@ namespace $ {
 			const error = this.apply_unit_trust([ unit ])[0]
 			if( error ) $mol_fail( new Error( error ) )
 			
+			this.broadcast()
 			return unit
 		}
 		
@@ -545,6 +547,7 @@ namespace $ {
 			const error = this.apply_unit_trust([ unit ])[0]
 			if( error ) $mol_fail( new Error( error ) )
 			
+			this.broadcast()
 			return unit
 		}
 		
@@ -613,6 +616,10 @@ namespace $ {
 			
 		}
 		
+		broadcast() {
+			this.realm()?.yard().neonatals.add( this.ref() )
+		}
+		
 		@ $mol_mem
 		sync() {
 			
@@ -621,12 +628,11 @@ namespace $ {
 			try {
 				this.saving()
 				this.bus()
-				this.realm()?.yard().sync_land( this.ref() )
 			} catch( error ) {
 				$mol_fail_log( error )
 			}
 			
-			this.realm()?.yard().sync()
+			this.realm()?.yard().sync_land( this.ref() )
 			
 		}
 		

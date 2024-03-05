@@ -7,6 +7,7 @@ namespace $ {
 		}
 		
 		persisted = new WeakSet< $hyoo_crus_unit >()
+		neonatals = new $mol_wire_set< $hyoo_crus_ref >()
 		
 		load( land: $hyoo_crus_land ) {
 			return [] as readonly $hyoo_crus_unit[]
@@ -45,14 +46,17 @@ namespace $ {
 		@ $mol_mem
 		sync() {
 			for( const port of this.ports() ) {
-				for( const land of this.port_lands( port ) ) {
-					try {
-						this.sync_port_land([ port, land ])
-					} catch( error ) {
-						$mol_fail_log( error )
-					}
+				
+				for( const land of this.neonatals ) {
+					this.sync_port_land([ port, land ])
 				}
+				
+				for( const land of this.port_lands( port ) ) {
+					this.sync_port_land([ port, land ])
+				}
+				
 			}
+			this.neonatals.clear()
 		}
 		
 		@ $mol_mem
@@ -113,32 +117,39 @@ namespace $ {
 			for( const port of this.ports() ) {
 				this.port_lands( port ).add( land )
 			}
+			this.sync()
 		}
 		
 		@ $mol_mem_key
 		sync_port_land( [ port, land ]: [ $mol_rest_port, $hyoo_crus_ref ] ) {
 			
-			this.init_port_land([ port, land ])
+			try {
 			
-			const faces = this.face_port_land([ port, land ])
-			if( !faces ) return
+				this.init_port_land([ port, land ])
+				
+				const faces = this.face_port_land([ port, land ])
+				if( !faces ) return
+				
+				const Land = this.realm().Land( land )
+				Land.saving()
+				
+				const parts = Land.delta_parts( faces )
+				if( !parts ) return
+				
+				this.$.$mol_log3_rise({
+					place: this,
+					message: 'Send Unit',
+					port: $mol_key( port ),
+					lands: parts.lands,
+					rocks: parts.rocks.length,
+				})
+				
+				port.send_bin( $hyoo_crus_pack.make( parts ).asArray() )
+				faces.sync( Land.faces )
 			
-			const Land = this.realm().Land( land )
-			Land.saving()
-			
-			const parts = Land.delta_parts( faces )
-			if( !parts ) return
-			
-			this.$.$mol_log3_rise({
-				place: this,
-				message: 'Send Unit',
-				port: $mol_key( port ),
-				lands: parts.lands,
-				rocks: parts.rocks.length,
-			})
-			
-			port.send_bin( $hyoo_crus_pack.make( parts ).asArray() )
-			faces.sync( Land.faces )
+			} catch( error ) {
+				$mol_fail_log( error )
+			}
 			
 		}
 		
