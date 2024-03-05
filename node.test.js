@@ -7342,6 +7342,7 @@ var $;
             const error = this.apply_unit_trust([next])[0];
             if (error)
                 $mol_fail(new Error(error));
+            this.broadcast();
             return next;
         }
         give(dest, rang) {
@@ -7355,6 +7356,7 @@ var $;
             const error = this.apply_unit_trust([unit])[0];
             if (error)
                 $mol_fail(new Error(error));
+            this.broadcast();
             return unit;
         }
         post(lead, head, self, vary, tag = 'term') {
@@ -7383,6 +7385,7 @@ var $;
             const error = this.apply_unit_trust([unit])[0];
             if (error)
                 $mol_fail(new Error(error));
+            this.broadcast();
             return unit;
         }
         gist_move(gist, head, seat) {
@@ -7414,17 +7417,19 @@ var $;
             const seat = units.indexOf(gist);
             this.post(seat ? units[seat - 1].self() : '', gist.head(), gist.self(), null, 'term');
         }
+        broadcast() {
+            this.realm()?.yard().neonatals.add(this.ref());
+        }
         sync() {
             this.loading();
             try {
                 this.saving();
                 this.bus();
-                this.realm()?.yard().sync_land(this.ref());
             }
             catch (error) {
                 $mol_fail_log(error);
             }
-            this.realm()?.yard().sync();
+            this.realm()?.yard().sync_land(this.ref());
         }
         bus() {
             return new this.$.$mol_bus(`$hyoo_crus_land:${this.ref().description}`, $mol_wire_async(bins => {
@@ -7836,6 +7841,7 @@ var $;
             return null;
         }
         persisted = new WeakSet();
+        neonatals = new $mol_wire_set();
         load(land) {
             return [];
         }
@@ -7859,15 +7865,14 @@ var $;
         slaves = new $mol_wire_set();
         sync() {
             for (const port of this.ports()) {
+                for (const land of this.neonatals) {
+                    this.sync_port_land([port, land]);
+                }
                 for (const land of this.port_lands(port)) {
-                    try {
-                        this.sync_port_land([port, land]);
-                    }
-                    catch (error) {
-                        $mol_fail_log(error);
-                    }
+                    this.sync_port_land([port, land]);
                 }
             }
+            this.neonatals.clear();
         }
         ports() {
             try {
@@ -7914,26 +7919,32 @@ var $;
             for (const port of this.ports()) {
                 this.port_lands(port).add(land);
             }
+            this.sync();
         }
         sync_port_land([port, land]) {
-            this.init_port_land([port, land]);
-            const faces = this.face_port_land([port, land]);
-            if (!faces)
-                return;
-            const Land = this.realm().Land(land);
-            Land.saving();
-            const parts = Land.delta_parts(faces);
-            if (!parts)
-                return;
-            this.$.$mol_log3_rise({
-                place: this,
-                message: 'Send Unit',
-                port: $mol_key(port),
-                lands: parts.lands,
-                rocks: parts.rocks.length,
-            });
-            port.send_bin($hyoo_crus_pack.make(parts).asArray());
-            faces.sync(Land.faces);
+            try {
+                this.init_port_land([port, land]);
+                const faces = this.face_port_land([port, land]);
+                if (!faces)
+                    return;
+                const Land = this.realm().Land(land);
+                Land.saving();
+                const parts = Land.delta_parts(faces);
+                if (!parts)
+                    return;
+                this.$.$mol_log3_rise({
+                    place: this,
+                    message: 'Send Unit',
+                    port: $mol_key(port),
+                    lands: parts.lands,
+                    rocks: parts.rocks.length,
+                });
+                port.send_bin($hyoo_crus_pack.make(parts).asArray());
+                faces.sync(Land.faces);
+            }
+            catch (error) {
+                $mol_fail_log(error);
+            }
         }
         init_port_land([port, land]) {
             this.$.$mol_log3_rise({

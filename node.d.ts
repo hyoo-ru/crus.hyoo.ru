@@ -7587,6 +7587,7 @@ declare namespace $ {
         post(lead: string, head: string, self: string, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): $hyoo_crus_gist;
         gist_move(gist: $hyoo_crus_gist, head: string, seat: number): void;
         gist_wipe(gist: $hyoo_crus_gist): void;
+        broadcast(): void;
         sync(): void;
         bus(): $mol_bus<ArrayBuffer[]>;
         loading(): void;
@@ -7639,6 +7640,9 @@ declare namespace $ {
     class $hyoo_crus_yard extends $mol_object {
         realm(): $hyoo_crus_realm;
         persisted: WeakSet<$hyoo_crus_unit>;
+        neonatals: $mol_wire_set<symbol & {
+            $hyoo_crus_ref: symbol;
+        }>;
         load(land: $hyoo_crus_land): readonly $hyoo_crus_unit[];
         save(land: $hyoo_crus_land, units: readonly $hyoo_crus_unit[]): Promise<void>;
         static masters: string[];
