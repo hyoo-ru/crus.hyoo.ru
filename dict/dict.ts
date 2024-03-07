@@ -73,7 +73,7 @@ namespace $ {
 					value: function( next?: any ){ return ( next === undefined && !this.has( field ) ) ? null : this[ Field ].value( next ) }
 				} )
 				
-				$mol_wire_field( Entity.prototype, Field )
+				$mol_wire_field( Entity.prototype, Field as any )
 			}
 			
 			return Entity
