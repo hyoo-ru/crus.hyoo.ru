@@ -1636,7 +1636,7 @@ declare namespace $ {
                 cut(vary: $hyoo_crus_vary_type): void;
                 move(from: number, to: number): void;
                 wipe(seat: number): void;
-                node_make<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): InstanceType<Node_1>;
+                node_make<Node extends typeof $hyoo_crus_node>(Node: Node, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): InstanceType<Node>;
                 land(): $hyoo_crus_land;
                 head(): string;
                 lord(): $hyoo_crus_lord | null;
@@ -1648,8 +1648,8 @@ declare namespace $ {
                     $hyoo_crus_ref: symbol;
                 };
                 toJSON(): string | undefined;
-                cast<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2): InstanceType<Node_2>;
-                nodes<Node_3 extends typeof $hyoo_crus_node>(Node: Node_3 | null): readonly InstanceType<Node_3>[];
+                cast<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1): InstanceType<Node_1>;
+                nodes<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2 | null): readonly InstanceType<Node_2>[];
                 units(): $hyoo_crus_gist[];
                 filled(): boolean;
                 can_change(lord?: symbol & {
@@ -1665,7 +1665,7 @@ declare namespace $ {
             tip: Tip;
             tag: "keys" | "term" | "solo" | "vals";
             of<Tip extends "time" | "json" | "bin" | "tree" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom">(tip: Tip): any;
-            ref<Value_1 extends unknown>(Value: Value): {
+            ref<Value extends unknown>(Value: Value): {
                 new (): {
                     value(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
                     remote_list(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
@@ -1689,15 +1689,15 @@ declare namespace $ {
                     cut: (vary: $hyoo_crus_vary_type) => void;
                     move: (from: number, to: number) => void;
                     wipe: (seat: number) => void;
-                    node_make: <Node_4 extends typeof $hyoo_crus_node>(Node: Node_4, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => InstanceType<Node_4>;
+                    node_make: <Node_3 extends typeof $hyoo_crus_node>(Node: Node_3, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => InstanceType<Node_3>;
                     land: () => $hyoo_crus_land;
                     lord: () => $hyoo_crus_lord | null;
                     realm: () => $hyoo_crus_realm | null;
                     lord_ref: () => symbol & {
                         $hyoo_crus_ref: symbol;
                     };
-                    cast: <Node_5 extends typeof $hyoo_crus_node>(Node: Node_5) => InstanceType<Node_5>;
-                    nodes: <Node_6 extends typeof $hyoo_crus_node>(Node: Node_6 | null) => readonly InstanceType<Node_6>[];
+                    cast: <Node_4 extends typeof $hyoo_crus_node>(Node: Node_4) => InstanceType<Node_4>;
+                    nodes: <Node_5 extends typeof $hyoo_crus_node>(Node: Node_5 | null) => readonly InstanceType<Node_5>[];
                     units: () => $hyoo_crus_gist[];
                     filled: () => boolean;
                     can_change: (lord?: symbol & {
@@ -1707,7 +1707,7 @@ declare namespace $ {
                 };
                 Value: Value;
                 toJSON(): string;
-                toString: typeof $mol_object2.toString & (() => string);
+                toString: typeof $mol_object2.toString;
                 [Symbol.toPrimitive]: typeof $mol_object2.[ Symbol.toPrimitive ];
                 destructor: typeof $mol_object2.destructor;
                 $: typeof $$;
@@ -1749,15 +1749,15 @@ declare namespace $ {
                 cut: (vary: $hyoo_crus_vary_type) => void;
                 move: (from: number, to: number) => void;
                 wipe: (seat: number) => void;
-                node_make: <Node_1 extends typeof $hyoo_crus_node>(Node: Node_1, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => InstanceType<Node_1>;
+                node_make: <Node extends typeof $hyoo_crus_node>(Node: Node, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => InstanceType<Node>;
                 land: () => $hyoo_crus_land;
                 lord: () => $hyoo_crus_lord | null;
                 realm: () => $hyoo_crus_realm | null;
                 lord_ref: () => symbol & {
                     $hyoo_crus_ref: symbol;
                 };
-                cast: <Node_2 extends typeof $hyoo_crus_node>(Node: Node_2) => InstanceType<Node_2>;
-                nodes: <Node_3 extends typeof $hyoo_crus_node>(Node: Node_3 | null) => readonly InstanceType<Node_3>[];
+                cast: <Node_1 extends typeof $hyoo_crus_node>(Node: Node_1) => InstanceType<Node_1>;
+                nodes: <Node_2 extends typeof $hyoo_crus_node>(Node: Node_2 | null) => readonly InstanceType<Node_2>[];
                 units: () => $hyoo_crus_gist[];
                 filled: () => boolean;
                 can_change: (lord?: symbol & {
@@ -1767,7 +1767,7 @@ declare namespace $ {
             };
             Value: Value;
             toJSON(): string;
-            toString: typeof $mol_object2.toString & (() => string);
+            toString: typeof $mol_object2.toString;
             [Symbol.toPrimitive]: typeof $mol_object2.[ Symbol.toPrimitive ];
             destructor: typeof $mol_object2.destructor;
             $: typeof $$;
@@ -1789,7 +1789,7 @@ declare namespace $ {
             cut(vary: $hyoo_crus_vary_type): void;
             move(from: number, to: number): void;
             wipe(seat: number): void;
-            node_make<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): InstanceType<Node_1>;
+            node_make<Node extends typeof $hyoo_crus_node>(Node: Node, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): InstanceType<Node>;
             land(): $hyoo_crus_land;
             head(): string;
             lord(): $hyoo_crus_lord | null;
@@ -1801,8 +1801,8 @@ declare namespace $ {
                 $hyoo_crus_ref: symbol;
             };
             toJSON(): string | undefined;
-            cast<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2): InstanceType<Node_2>;
-            nodes<Node_3 extends typeof $hyoo_crus_node>(Node: Node_3 | null): readonly InstanceType<Node_3>[];
+            cast<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1): InstanceType<Node_1>;
+            nodes<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2 | null): readonly InstanceType<Node_2>[];
             units(): $hyoo_crus_gist[];
             filled(): boolean;
             can_change(lord?: symbol & {
@@ -1858,7 +1858,7 @@ declare namespace $ {
                 cut(vary: $hyoo_crus_vary_type): void;
                 move(from: number, to: number): void;
                 wipe(seat: number): void;
-                node_make<Node_4 extends typeof $hyoo_crus_node>(Node: Node_4, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): InstanceType<Node_4>;
+                node_make<Node_3 extends typeof $hyoo_crus_node>(Node: Node_3, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): InstanceType<Node_3>;
                 land(): $hyoo_crus_land;
                 head(): string;
                 lord(): $hyoo_crus_lord | null;
@@ -1870,8 +1870,8 @@ declare namespace $ {
                     $hyoo_crus_ref: symbol;
                 };
                 toJSON(): string | undefined;
-                cast<Node_5 extends typeof $hyoo_crus_node>(Node: Node_5): InstanceType<Node_5>;
-                nodes<Node_6 extends typeof $hyoo_crus_node>(Node: Node_6 | null): readonly InstanceType<Node_6>[];
+                cast<Node_4 extends typeof $hyoo_crus_node>(Node: Node_4): InstanceType<Node_4>;
+                nodes<Node_5 extends typeof $hyoo_crus_node>(Node: Node_5 | null): readonly InstanceType<Node_5>[];
                 units(): $hyoo_crus_gist[];
                 filled(): boolean;
                 can_change(lord?: symbol & {
@@ -1911,15 +1911,15 @@ declare namespace $ {
                     cut: (vary: $hyoo_crus_vary_type) => void;
                     move: (from: number, to: number) => void;
                     wipe: (seat: number) => void;
-                    node_make: <Node_7 extends typeof $hyoo_crus_node>(Node: Node_7, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => InstanceType<Node_7>;
+                    node_make: <Node_6 extends typeof $hyoo_crus_node>(Node: Node_6, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => InstanceType<Node_6>;
                     land: () => $hyoo_crus_land;
                     lord: () => $hyoo_crus_lord | null;
                     realm: () => $hyoo_crus_realm | null;
                     lord_ref: () => symbol & {
                         $hyoo_crus_ref: symbol;
                     };
-                    cast: <Node_8 extends typeof $hyoo_crus_node>(Node: Node_8) => InstanceType<Node_8>;
-                    nodes: <Node_9 extends typeof $hyoo_crus_node>(Node: Node_9 | null) => readonly InstanceType<Node_9>[];
+                    cast: <Node_7 extends typeof $hyoo_crus_node>(Node: Node_7) => InstanceType<Node_7>;
+                    nodes: <Node_8 extends typeof $hyoo_crus_node>(Node: Node_8 | null) => readonly InstanceType<Node_8>[];
                     units: () => $hyoo_crus_gist[];
                     filled: () => boolean;
                     can_change: (lord?: symbol & {
@@ -1929,7 +1929,7 @@ declare namespace $ {
                 };
                 Value: Value;
                 toJSON(): string;
-                toString: typeof $mol_object2.toString & (() => string);
+                toString: typeof $mol_object2.toString;
                 [Symbol.toPrimitive]: typeof $mol_object2.[ Symbol.toPrimitive ];
                 destructor: typeof $mol_object2.destructor;
                 $: typeof $$;
@@ -1971,15 +1971,15 @@ declare namespace $ {
                 cut: (vary: $hyoo_crus_vary_type) => void;
                 move: (from: number, to: number) => void;
                 wipe: (seat: number) => void;
-                node_make: <Node_7 extends typeof $hyoo_crus_node>(Node: Node_7, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => InstanceType<Node_7>;
+                node_make: <Node_6 extends typeof $hyoo_crus_node>(Node: Node_6, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => InstanceType<Node_6>;
                 land: () => $hyoo_crus_land;
                 lord: () => $hyoo_crus_lord | null;
                 realm: () => $hyoo_crus_realm | null;
                 lord_ref: () => symbol & {
                     $hyoo_crus_ref: symbol;
                 };
-                cast: <Node_8 extends typeof $hyoo_crus_node>(Node: Node_8) => InstanceType<Node_8>;
-                nodes: <Node_9 extends typeof $hyoo_crus_node>(Node: Node_9 | null) => readonly InstanceType<Node_9>[];
+                cast: <Node_7 extends typeof $hyoo_crus_node>(Node: Node_7) => InstanceType<Node_7>;
+                nodes: <Node_8 extends typeof $hyoo_crus_node>(Node: Node_8 | null) => readonly InstanceType<Node_8>[];
                 units: () => $hyoo_crus_gist[];
                 filled: () => boolean;
                 can_change: (lord?: symbol & {
@@ -1989,7 +1989,7 @@ declare namespace $ {
             };
             Value: Value;
             toJSON(): string;
-            toString: typeof $mol_object2.toString & (() => string);
+            toString: typeof $mol_object2.toString;
             [Symbol.toPrimitive]: typeof $mol_object2.[ Symbol.toPrimitive ];
             destructor: typeof $mol_object2.destructor;
             $: typeof $$;
@@ -2020,7 +2020,7 @@ declare namespace $ {
             cut(vary: $hyoo_crus_vary_type): void;
             move(from: number, to: number): void;
             wipe(seat: number): void;
-            node_make<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): InstanceType<Node_1>;
+            node_make<Node extends typeof $hyoo_crus_node>(Node: Node, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): InstanceType<Node>;
             land(): $hyoo_crus_land;
             head(): string;
             lord(): $hyoo_crus_lord | null;
@@ -2032,8 +2032,8 @@ declare namespace $ {
                 $hyoo_crus_ref: symbol;
             };
             toJSON(): string | undefined;
-            cast<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2): InstanceType<Node_2>;
-            nodes<Node_3 extends typeof $hyoo_crus_node>(Node: Node_3 | null): readonly InstanceType<Node_3>[];
+            cast<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1): InstanceType<Node_1>;
+            nodes<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2 | null): readonly InstanceType<Node_2>[];
             units(): $hyoo_crus_gist[];
             filled(): boolean;
             can_change(lord?: symbol & {
@@ -2089,7 +2089,7 @@ declare namespace $ {
                 cut(vary: $hyoo_crus_vary_type): void;
                 move(from: number, to: number): void;
                 wipe(seat: number): void;
-                node_make<Node_4 extends typeof $hyoo_crus_node>(Node: Node_4, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): InstanceType<Node_4>;
+                node_make<Node_3 extends typeof $hyoo_crus_node>(Node: Node_3, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): InstanceType<Node_3>;
                 land(): $hyoo_crus_land;
                 head(): string;
                 lord(): $hyoo_crus_lord | null;
@@ -2101,8 +2101,8 @@ declare namespace $ {
                     $hyoo_crus_ref: symbol;
                 };
                 toJSON(): string | undefined;
-                cast<Node_5 extends typeof $hyoo_crus_node>(Node: Node_5): InstanceType<Node_5>;
-                nodes<Node_6 extends typeof $hyoo_crus_node>(Node: Node_6 | null): readonly InstanceType<Node_6>[];
+                cast<Node_4 extends typeof $hyoo_crus_node>(Node: Node_4): InstanceType<Node_4>;
+                nodes<Node_5 extends typeof $hyoo_crus_node>(Node: Node_5 | null): readonly InstanceType<Node_5>[];
                 units(): $hyoo_crus_gist[];
                 filled(): boolean;
                 can_change(lord?: symbol & {
@@ -2142,15 +2142,15 @@ declare namespace $ {
                     cut: (vary: $hyoo_crus_vary_type) => void;
                     move: (from: number, to: number) => void;
                     wipe: (seat: number) => void;
-                    node_make: <Node_7 extends typeof $hyoo_crus_node>(Node: Node_7, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => InstanceType<Node_7>;
+                    node_make: <Node_6 extends typeof $hyoo_crus_node>(Node: Node_6, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => InstanceType<Node_6>;
                     land: () => $hyoo_crus_land;
                     lord: () => $hyoo_crus_lord | null;
                     realm: () => $hyoo_crus_realm | null;
                     lord_ref: () => symbol & {
                         $hyoo_crus_ref: symbol;
                     };
-                    cast: <Node_8 extends typeof $hyoo_crus_node>(Node: Node_8) => InstanceType<Node_8>;
-                    nodes: <Node_9 extends typeof $hyoo_crus_node>(Node: Node_9 | null) => readonly InstanceType<Node_9>[];
+                    cast: <Node_7 extends typeof $hyoo_crus_node>(Node: Node_7) => InstanceType<Node_7>;
+                    nodes: <Node_8 extends typeof $hyoo_crus_node>(Node: Node_8 | null) => readonly InstanceType<Node_8>[];
                     units: () => $hyoo_crus_gist[];
                     filled: () => boolean;
                     can_change: (lord?: symbol & {
@@ -2160,7 +2160,7 @@ declare namespace $ {
                 };
                 Value: Value;
                 toJSON(): string;
-                toString: typeof $mol_object2.toString & (() => string);
+                toString: typeof $mol_object2.toString;
                 [Symbol.toPrimitive]: typeof $mol_object2.[ Symbol.toPrimitive ];
                 destructor: typeof $mol_object2.destructor;
                 $: typeof $$;
@@ -2202,15 +2202,15 @@ declare namespace $ {
                 cut: (vary: $hyoo_crus_vary_type) => void;
                 move: (from: number, to: number) => void;
                 wipe: (seat: number) => void;
-                node_make: <Node_7 extends typeof $hyoo_crus_node>(Node: Node_7, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => InstanceType<Node_7>;
+                node_make: <Node_6 extends typeof $hyoo_crus_node>(Node: Node_6, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => InstanceType<Node_6>;
                 land: () => $hyoo_crus_land;
                 lord: () => $hyoo_crus_lord | null;
                 realm: () => $hyoo_crus_realm | null;
                 lord_ref: () => symbol & {
                     $hyoo_crus_ref: symbol;
                 };
-                cast: <Node_8 extends typeof $hyoo_crus_node>(Node: Node_8) => InstanceType<Node_8>;
-                nodes: <Node_9 extends typeof $hyoo_crus_node>(Node: Node_9 | null) => readonly InstanceType<Node_9>[];
+                cast: <Node_7 extends typeof $hyoo_crus_node>(Node: Node_7) => InstanceType<Node_7>;
+                nodes: <Node_8 extends typeof $hyoo_crus_node>(Node: Node_8 | null) => readonly InstanceType<Node_8>[];
                 units: () => $hyoo_crus_gist[];
                 filled: () => boolean;
                 can_change: (lord?: symbol & {
@@ -2220,7 +2220,7 @@ declare namespace $ {
             };
             Value: Value;
             toJSON(): string;
-            toString: typeof $mol_object2.toString & (() => string);
+            toString: typeof $mol_object2.toString;
             [Symbol.toPrimitive]: typeof $mol_object2.[ Symbol.toPrimitive ];
             destructor: typeof $mol_object2.destructor;
             $: typeof $$;
@@ -2251,7 +2251,7 @@ declare namespace $ {
             cut(vary: $hyoo_crus_vary_type): void;
             move(from: number, to: number): void;
             wipe(seat: number): void;
-            node_make<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): InstanceType<Node_1>;
+            node_make<Node extends typeof $hyoo_crus_node>(Node: Node, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): InstanceType<Node>;
             land(): $hyoo_crus_land;
             head(): string;
             lord(): $hyoo_crus_lord | null;
@@ -2263,8 +2263,8 @@ declare namespace $ {
                 $hyoo_crus_ref: symbol;
             };
             toJSON(): string | undefined;
-            cast<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2): InstanceType<Node_2>;
-            nodes<Node_3 extends typeof $hyoo_crus_node>(Node: Node_3 | null): readonly InstanceType<Node_3>[];
+            cast<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1): InstanceType<Node_1>;
+            nodes<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2 | null): readonly InstanceType<Node_2>[];
             units(): $hyoo_crus_gist[];
             filled(): boolean;
             can_change(lord?: symbol & {
@@ -2320,7 +2320,7 @@ declare namespace $ {
                 cut(vary: $hyoo_crus_vary_type): void;
                 move(from: number, to: number): void;
                 wipe(seat: number): void;
-                node_make<Node_4 extends typeof $hyoo_crus_node>(Node: Node_4, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): InstanceType<Node_4>;
+                node_make<Node_3 extends typeof $hyoo_crus_node>(Node: Node_3, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): InstanceType<Node_3>;
                 land(): $hyoo_crus_land;
                 head(): string;
                 lord(): $hyoo_crus_lord | null;
@@ -2332,8 +2332,8 @@ declare namespace $ {
                     $hyoo_crus_ref: symbol;
                 };
                 toJSON(): string | undefined;
-                cast<Node_5 extends typeof $hyoo_crus_node>(Node: Node_5): InstanceType<Node_5>;
-                nodes<Node_6 extends typeof $hyoo_crus_node>(Node: Node_6 | null): readonly InstanceType<Node_6>[];
+                cast<Node_4 extends typeof $hyoo_crus_node>(Node: Node_4): InstanceType<Node_4>;
+                nodes<Node_5 extends typeof $hyoo_crus_node>(Node: Node_5 | null): readonly InstanceType<Node_5>[];
                 units(): $hyoo_crus_gist[];
                 filled(): boolean;
                 can_change(lord?: symbol & {
@@ -2373,15 +2373,15 @@ declare namespace $ {
                     cut: (vary: $hyoo_crus_vary_type) => void;
                     move: (from: number, to: number) => void;
                     wipe: (seat: number) => void;
-                    node_make: <Node_7 extends typeof $hyoo_crus_node>(Node: Node_7, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => InstanceType<Node_7>;
+                    node_make: <Node_6 extends typeof $hyoo_crus_node>(Node: Node_6, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => InstanceType<Node_6>;
                     land: () => $hyoo_crus_land;
                     lord: () => $hyoo_crus_lord | null;
                     realm: () => $hyoo_crus_realm | null;
                     lord_ref: () => symbol & {
                         $hyoo_crus_ref: symbol;
                     };
-                    cast: <Node_8 extends typeof $hyoo_crus_node>(Node: Node_8) => InstanceType<Node_8>;
-                    nodes: <Node_9 extends typeof $hyoo_crus_node>(Node: Node_9 | null) => readonly InstanceType<Node_9>[];
+                    cast: <Node_7 extends typeof $hyoo_crus_node>(Node: Node_7) => InstanceType<Node_7>;
+                    nodes: <Node_8 extends typeof $hyoo_crus_node>(Node: Node_8 | null) => readonly InstanceType<Node_8>[];
                     units: () => $hyoo_crus_gist[];
                     filled: () => boolean;
                     can_change: (lord?: symbol & {
@@ -2391,7 +2391,7 @@ declare namespace $ {
                 };
                 Value: Value;
                 toJSON(): string;
-                toString: typeof $mol_object2.toString & (() => string);
+                toString: typeof $mol_object2.toString;
                 [Symbol.toPrimitive]: typeof $mol_object2.[ Symbol.toPrimitive ];
                 destructor: typeof $mol_object2.destructor;
                 $: typeof $$;
@@ -2433,15 +2433,15 @@ declare namespace $ {
                 cut: (vary: $hyoo_crus_vary_type) => void;
                 move: (from: number, to: number) => void;
                 wipe: (seat: number) => void;
-                node_make: <Node_7 extends typeof $hyoo_crus_node>(Node: Node_7, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => InstanceType<Node_7>;
+                node_make: <Node_6 extends typeof $hyoo_crus_node>(Node: Node_6, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => InstanceType<Node_6>;
                 land: () => $hyoo_crus_land;
                 lord: () => $hyoo_crus_lord | null;
                 realm: () => $hyoo_crus_realm | null;
                 lord_ref: () => symbol & {
                     $hyoo_crus_ref: symbol;
                 };
-                cast: <Node_8 extends typeof $hyoo_crus_node>(Node: Node_8) => InstanceType<Node_8>;
-                nodes: <Node_9 extends typeof $hyoo_crus_node>(Node: Node_9 | null) => readonly InstanceType<Node_9>[];
+                cast: <Node_7 extends typeof $hyoo_crus_node>(Node: Node_7) => InstanceType<Node_7>;
+                nodes: <Node_8 extends typeof $hyoo_crus_node>(Node: Node_8 | null) => readonly InstanceType<Node_8>[];
                 units: () => $hyoo_crus_gist[];
                 filled: () => boolean;
                 can_change: (lord?: symbol & {
@@ -2451,7 +2451,7 @@ declare namespace $ {
             };
             Value: Value;
             toJSON(): string;
-            toString: typeof $mol_object2.toString & (() => string);
+            toString: typeof $mol_object2.toString;
             [Symbol.toPrimitive]: typeof $mol_object2.[ Symbol.toPrimitive ];
             destructor: typeof $mol_object2.destructor;
             $: typeof $$;
@@ -2482,7 +2482,7 @@ declare namespace $ {
             cut(vary: $hyoo_crus_vary_type): void;
             move(from: number, to: number): void;
             wipe(seat: number): void;
-            node_make<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): InstanceType<Node_1>;
+            node_make<Node extends typeof $hyoo_crus_node>(Node: Node, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): InstanceType<Node>;
             land(): $hyoo_crus_land;
             head(): string;
             lord(): $hyoo_crus_lord | null;
@@ -2494,8 +2494,8 @@ declare namespace $ {
                 $hyoo_crus_ref: symbol;
             };
             toJSON(): string | undefined;
-            cast<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2): InstanceType<Node_2>;
-            nodes<Node_3 extends typeof $hyoo_crus_node>(Node: Node_3 | null): readonly InstanceType<Node_3>[];
+            cast<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1): InstanceType<Node_1>;
+            nodes<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2 | null): readonly InstanceType<Node_2>[];
             units(): $hyoo_crus_gist[];
             filled(): boolean;
             can_change(lord?: symbol & {
@@ -2551,7 +2551,7 @@ declare namespace $ {
                 cut(vary: $hyoo_crus_vary_type): void;
                 move(from: number, to: number): void;
                 wipe(seat: number): void;
-                node_make<Node_4 extends typeof $hyoo_crus_node>(Node: Node_4, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): InstanceType<Node_4>;
+                node_make<Node_3 extends typeof $hyoo_crus_node>(Node: Node_3, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): InstanceType<Node_3>;
                 land(): $hyoo_crus_land;
                 head(): string;
                 lord(): $hyoo_crus_lord | null;
@@ -2563,8 +2563,8 @@ declare namespace $ {
                     $hyoo_crus_ref: symbol;
                 };
                 toJSON(): string | undefined;
-                cast<Node_5 extends typeof $hyoo_crus_node>(Node: Node_5): InstanceType<Node_5>;
-                nodes<Node_6 extends typeof $hyoo_crus_node>(Node: Node_6 | null): readonly InstanceType<Node_6>[];
+                cast<Node_4 extends typeof $hyoo_crus_node>(Node: Node_4): InstanceType<Node_4>;
+                nodes<Node_5 extends typeof $hyoo_crus_node>(Node: Node_5 | null): readonly InstanceType<Node_5>[];
                 units(): $hyoo_crus_gist[];
                 filled(): boolean;
                 can_change(lord?: symbol & {
@@ -2604,15 +2604,15 @@ declare namespace $ {
                     cut: (vary: $hyoo_crus_vary_type) => void;
                     move: (from: number, to: number) => void;
                     wipe: (seat: number) => void;
-                    node_make: <Node_7 extends typeof $hyoo_crus_node>(Node: Node_7, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => InstanceType<Node_7>;
+                    node_make: <Node_6 extends typeof $hyoo_crus_node>(Node: Node_6, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => InstanceType<Node_6>;
                     land: () => $hyoo_crus_land;
                     lord: () => $hyoo_crus_lord | null;
                     realm: () => $hyoo_crus_realm | null;
                     lord_ref: () => symbol & {
                         $hyoo_crus_ref: symbol;
                     };
-                    cast: <Node_8 extends typeof $hyoo_crus_node>(Node: Node_8) => InstanceType<Node_8>;
-                    nodes: <Node_9 extends typeof $hyoo_crus_node>(Node: Node_9 | null) => readonly InstanceType<Node_9>[];
+                    cast: <Node_7 extends typeof $hyoo_crus_node>(Node: Node_7) => InstanceType<Node_7>;
+                    nodes: <Node_8 extends typeof $hyoo_crus_node>(Node: Node_8 | null) => readonly InstanceType<Node_8>[];
                     units: () => $hyoo_crus_gist[];
                     filled: () => boolean;
                     can_change: (lord?: symbol & {
@@ -2622,7 +2622,7 @@ declare namespace $ {
                 };
                 Value: Value;
                 toJSON(): string;
-                toString: typeof $mol_object2.toString & (() => string);
+                toString: typeof $mol_object2.toString;
                 [Symbol.toPrimitive]: typeof $mol_object2.[ Symbol.toPrimitive ];
                 destructor: typeof $mol_object2.destructor;
                 $: typeof $$;
@@ -2664,15 +2664,15 @@ declare namespace $ {
                 cut: (vary: $hyoo_crus_vary_type) => void;
                 move: (from: number, to: number) => void;
                 wipe: (seat: number) => void;
-                node_make: <Node_7 extends typeof $hyoo_crus_node>(Node: Node_7, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => InstanceType<Node_7>;
+                node_make: <Node_6 extends typeof $hyoo_crus_node>(Node: Node_6, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => InstanceType<Node_6>;
                 land: () => $hyoo_crus_land;
                 lord: () => $hyoo_crus_lord | null;
                 realm: () => $hyoo_crus_realm | null;
                 lord_ref: () => symbol & {
                     $hyoo_crus_ref: symbol;
                 };
-                cast: <Node_8 extends typeof $hyoo_crus_node>(Node: Node_8) => InstanceType<Node_8>;
-                nodes: <Node_9 extends typeof $hyoo_crus_node>(Node: Node_9 | null) => readonly InstanceType<Node_9>[];
+                cast: <Node_7 extends typeof $hyoo_crus_node>(Node: Node_7) => InstanceType<Node_7>;
+                nodes: <Node_8 extends typeof $hyoo_crus_node>(Node: Node_8 | null) => readonly InstanceType<Node_8>[];
                 units: () => $hyoo_crus_gist[];
                 filled: () => boolean;
                 can_change: (lord?: symbol & {
@@ -2682,7 +2682,7 @@ declare namespace $ {
             };
             Value: Value;
             toJSON(): string;
-            toString: typeof $mol_object2.toString & (() => string);
+            toString: typeof $mol_object2.toString;
             [Symbol.toPrimitive]: typeof $mol_object2.[ Symbol.toPrimitive ];
             destructor: typeof $mol_object2.destructor;
             $: typeof $$;
@@ -2717,7 +2717,7 @@ declare namespace $ {
             cut(vary: $hyoo_crus_vary_type): void;
             move(from: number, to: number): void;
             wipe(seat: number): void;
-            node_make<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): InstanceType<Node_1>;
+            node_make<Node extends typeof $hyoo_crus_node>(Node: Node, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): InstanceType<Node>;
             land(): $hyoo_crus_land;
             head(): string;
             lord(): $hyoo_crus_lord | null;
@@ -2729,8 +2729,8 @@ declare namespace $ {
                 $hyoo_crus_ref: symbol;
             };
             toJSON(): string | undefined;
-            cast<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2): InstanceType<Node_2>;
-            nodes<Node_3 extends typeof $hyoo_crus_node>(Node: Node_3 | null): readonly InstanceType<Node_3>[];
+            cast<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1): InstanceType<Node_1>;
+            nodes<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2 | null): readonly InstanceType<Node_2>[];
             units(): $hyoo_crus_gist[];
             filled(): boolean;
             can_change(lord?: symbol & {
@@ -2786,7 +2786,7 @@ declare namespace $ {
                 cut(vary: $hyoo_crus_vary_type): void;
                 move(from: number, to: number): void;
                 wipe(seat: number): void;
-                node_make<Node_4 extends typeof $hyoo_crus_node>(Node: Node_4, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): InstanceType<Node_4>;
+                node_make<Node_3 extends typeof $hyoo_crus_node>(Node: Node_3, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): InstanceType<Node_3>;
                 land(): $hyoo_crus_land;
                 head(): string;
                 lord(): $hyoo_crus_lord | null;
@@ -2798,8 +2798,8 @@ declare namespace $ {
                     $hyoo_crus_ref: symbol;
                 };
                 toJSON(): string | undefined;
-                cast<Node_5 extends typeof $hyoo_crus_node>(Node: Node_5): InstanceType<Node_5>;
-                nodes<Node_6 extends typeof $hyoo_crus_node>(Node: Node_6 | null): readonly InstanceType<Node_6>[];
+                cast<Node_4 extends typeof $hyoo_crus_node>(Node: Node_4): InstanceType<Node_4>;
+                nodes<Node_5 extends typeof $hyoo_crus_node>(Node: Node_5 | null): readonly InstanceType<Node_5>[];
                 units(): $hyoo_crus_gist[];
                 filled(): boolean;
                 can_change(lord?: symbol & {
@@ -2839,15 +2839,15 @@ declare namespace $ {
                     cut: (vary: $hyoo_crus_vary_type) => void;
                     move: (from: number, to: number) => void;
                     wipe: (seat: number) => void;
-                    node_make: <Node_7 extends typeof $hyoo_crus_node>(Node: Node_7, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => InstanceType<Node_7>;
+                    node_make: <Node_6 extends typeof $hyoo_crus_node>(Node: Node_6, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => InstanceType<Node_6>;
                     land: () => $hyoo_crus_land;
                     lord: () => $hyoo_crus_lord | null;
                     realm: () => $hyoo_crus_realm | null;
                     lord_ref: () => symbol & {
                         $hyoo_crus_ref: symbol;
                     };
-                    cast: <Node_8 extends typeof $hyoo_crus_node>(Node: Node_8) => InstanceType<Node_8>;
-                    nodes: <Node_9 extends typeof $hyoo_crus_node>(Node: Node_9 | null) => readonly InstanceType<Node_9>[];
+                    cast: <Node_7 extends typeof $hyoo_crus_node>(Node: Node_7) => InstanceType<Node_7>;
+                    nodes: <Node_8 extends typeof $hyoo_crus_node>(Node: Node_8 | null) => readonly InstanceType<Node_8>[];
                     units: () => $hyoo_crus_gist[];
                     filled: () => boolean;
                     can_change: (lord?: symbol & {
@@ -2857,7 +2857,7 @@ declare namespace $ {
                 };
                 Value: Value;
                 toJSON(): string;
-                toString: typeof $mol_object2.toString & (() => string);
+                toString: typeof $mol_object2.toString;
                 [Symbol.toPrimitive]: typeof $mol_object2.[ Symbol.toPrimitive ];
                 destructor: typeof $mol_object2.destructor;
                 $: typeof $$;
@@ -2899,15 +2899,15 @@ declare namespace $ {
                 cut: (vary: $hyoo_crus_vary_type) => void;
                 move: (from: number, to: number) => void;
                 wipe: (seat: number) => void;
-                node_make: <Node_7 extends typeof $hyoo_crus_node>(Node: Node_7, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => InstanceType<Node_7>;
+                node_make: <Node_6 extends typeof $hyoo_crus_node>(Node: Node_6, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => InstanceType<Node_6>;
                 land: () => $hyoo_crus_land;
                 lord: () => $hyoo_crus_lord | null;
                 realm: () => $hyoo_crus_realm | null;
                 lord_ref: () => symbol & {
                     $hyoo_crus_ref: symbol;
                 };
-                cast: <Node_8 extends typeof $hyoo_crus_node>(Node: Node_8) => InstanceType<Node_8>;
-                nodes: <Node_9 extends typeof $hyoo_crus_node>(Node: Node_9 | null) => readonly InstanceType<Node_9>[];
+                cast: <Node_7 extends typeof $hyoo_crus_node>(Node: Node_7) => InstanceType<Node_7>;
+                nodes: <Node_8 extends typeof $hyoo_crus_node>(Node: Node_8 | null) => readonly InstanceType<Node_8>[];
                 units: () => $hyoo_crus_gist[];
                 filled: () => boolean;
                 can_change: (lord?: symbol & {
@@ -2917,7 +2917,7 @@ declare namespace $ {
             };
             Value: Value;
             toJSON(): string;
-            toString: typeof $mol_object2.toString & (() => string);
+            toString: typeof $mol_object2.toString;
             [Symbol.toPrimitive]: typeof $mol_object2.[ Symbol.toPrimitive ];
             destructor: typeof $mol_object2.destructor;
             $: typeof $$;
@@ -2948,7 +2948,7 @@ declare namespace $ {
             cut(vary: $hyoo_crus_vary_type): void;
             move(from: number, to: number): void;
             wipe(seat: number): void;
-            node_make<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): InstanceType<Node_1>;
+            node_make<Node extends typeof $hyoo_crus_node>(Node: Node, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): InstanceType<Node>;
             land(): $hyoo_crus_land;
             head(): string;
             lord(): $hyoo_crus_lord | null;
@@ -2960,8 +2960,8 @@ declare namespace $ {
                 $hyoo_crus_ref: symbol;
             };
             toJSON(): string | undefined;
-            cast<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2): InstanceType<Node_2>;
-            nodes<Node_3 extends typeof $hyoo_crus_node>(Node: Node_3 | null): readonly InstanceType<Node_3>[];
+            cast<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1): InstanceType<Node_1>;
+            nodes<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2 | null): readonly InstanceType<Node_2>[];
             units(): $hyoo_crus_gist[];
             filled(): boolean;
             can_change(lord?: symbol & {
@@ -3017,7 +3017,7 @@ declare namespace $ {
                 cut(vary: $hyoo_crus_vary_type): void;
                 move(from: number, to: number): void;
                 wipe(seat: number): void;
-                node_make<Node_4 extends typeof $hyoo_crus_node>(Node: Node_4, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): InstanceType<Node_4>;
+                node_make<Node_3 extends typeof $hyoo_crus_node>(Node: Node_3, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): InstanceType<Node_3>;
                 land(): $hyoo_crus_land;
                 head(): string;
                 lord(): $hyoo_crus_lord | null;
@@ -3029,8 +3029,8 @@ declare namespace $ {
                     $hyoo_crus_ref: symbol;
                 };
                 toJSON(): string | undefined;
-                cast<Node_5 extends typeof $hyoo_crus_node>(Node: Node_5): InstanceType<Node_5>;
-                nodes<Node_6 extends typeof $hyoo_crus_node>(Node: Node_6 | null): readonly InstanceType<Node_6>[];
+                cast<Node_4 extends typeof $hyoo_crus_node>(Node: Node_4): InstanceType<Node_4>;
+                nodes<Node_5 extends typeof $hyoo_crus_node>(Node: Node_5 | null): readonly InstanceType<Node_5>[];
                 units(): $hyoo_crus_gist[];
                 filled(): boolean;
                 can_change(lord?: symbol & {
@@ -3070,15 +3070,15 @@ declare namespace $ {
                     cut: (vary: $hyoo_crus_vary_type) => void;
                     move: (from: number, to: number) => void;
                     wipe: (seat: number) => void;
-                    node_make: <Node_7 extends typeof $hyoo_crus_node>(Node: Node_7, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => InstanceType<Node_7>;
+                    node_make: <Node_6 extends typeof $hyoo_crus_node>(Node: Node_6, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => InstanceType<Node_6>;
                     land: () => $hyoo_crus_land;
                     lord: () => $hyoo_crus_lord | null;
                     realm: () => $hyoo_crus_realm | null;
                     lord_ref: () => symbol & {
                         $hyoo_crus_ref: symbol;
                     };
-                    cast: <Node_8 extends typeof $hyoo_crus_node>(Node: Node_8) => InstanceType<Node_8>;
-                    nodes: <Node_9 extends typeof $hyoo_crus_node>(Node: Node_9 | null) => readonly InstanceType<Node_9>[];
+                    cast: <Node_7 extends typeof $hyoo_crus_node>(Node: Node_7) => InstanceType<Node_7>;
+                    nodes: <Node_8 extends typeof $hyoo_crus_node>(Node: Node_8 | null) => readonly InstanceType<Node_8>[];
                     units: () => $hyoo_crus_gist[];
                     filled: () => boolean;
                     can_change: (lord?: symbol & {
@@ -3088,7 +3088,7 @@ declare namespace $ {
                 };
                 Value: Value;
                 toJSON(): string;
-                toString: typeof $mol_object2.toString & (() => string);
+                toString: typeof $mol_object2.toString;
                 [Symbol.toPrimitive]: typeof $mol_object2.[ Symbol.toPrimitive ];
                 destructor: typeof $mol_object2.destructor;
                 $: typeof $$;
@@ -3130,15 +3130,15 @@ declare namespace $ {
                 cut: (vary: $hyoo_crus_vary_type) => void;
                 move: (from: number, to: number) => void;
                 wipe: (seat: number) => void;
-                node_make: <Node_7 extends typeof $hyoo_crus_node>(Node: Node_7, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => InstanceType<Node_7>;
+                node_make: <Node_6 extends typeof $hyoo_crus_node>(Node: Node_6, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => InstanceType<Node_6>;
                 land: () => $hyoo_crus_land;
                 lord: () => $hyoo_crus_lord | null;
                 realm: () => $hyoo_crus_realm | null;
                 lord_ref: () => symbol & {
                     $hyoo_crus_ref: symbol;
                 };
-                cast: <Node_8 extends typeof $hyoo_crus_node>(Node: Node_8) => InstanceType<Node_8>;
-                nodes: <Node_9 extends typeof $hyoo_crus_node>(Node: Node_9 | null) => readonly InstanceType<Node_9>[];
+                cast: <Node_7 extends typeof $hyoo_crus_node>(Node: Node_7) => InstanceType<Node_7>;
+                nodes: <Node_8 extends typeof $hyoo_crus_node>(Node: Node_8 | null) => readonly InstanceType<Node_8>[];
                 units: () => $hyoo_crus_gist[];
                 filled: () => boolean;
                 can_change: (lord?: symbol & {
@@ -3148,7 +3148,7 @@ declare namespace $ {
             };
             Value: Value;
             toJSON(): string;
-            toString: typeof $mol_object2.toString & (() => string);
+            toString: typeof $mol_object2.toString;
             [Symbol.toPrimitive]: typeof $mol_object2.[ Symbol.toPrimitive ];
             destructor: typeof $mol_object2.destructor;
             $: typeof $$;
@@ -3179,7 +3179,7 @@ declare namespace $ {
             cut(vary: $hyoo_crus_vary_type): void;
             move(from: number, to: number): void;
             wipe(seat: number): void;
-            node_make<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): InstanceType<Node_1>;
+            node_make<Node extends typeof $hyoo_crus_node>(Node: Node, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): InstanceType<Node>;
             land(): $hyoo_crus_land;
             head(): string;
             lord(): $hyoo_crus_lord | null;
@@ -3191,8 +3191,8 @@ declare namespace $ {
                 $hyoo_crus_ref: symbol;
             };
             toJSON(): string | undefined;
-            cast<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2): InstanceType<Node_2>;
-            nodes<Node_3 extends typeof $hyoo_crus_node>(Node: Node_3 | null): readonly InstanceType<Node_3>[];
+            cast<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1): InstanceType<Node_1>;
+            nodes<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2 | null): readonly InstanceType<Node_2>[];
             units(): $hyoo_crus_gist[];
             filled(): boolean;
             can_change(lord?: symbol & {
@@ -3248,7 +3248,7 @@ declare namespace $ {
                 cut(vary: $hyoo_crus_vary_type): void;
                 move(from: number, to: number): void;
                 wipe(seat: number): void;
-                node_make<Node_4 extends typeof $hyoo_crus_node>(Node: Node_4, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): InstanceType<Node_4>;
+                node_make<Node_3 extends typeof $hyoo_crus_node>(Node: Node_3, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): InstanceType<Node_3>;
                 land(): $hyoo_crus_land;
                 head(): string;
                 lord(): $hyoo_crus_lord | null;
@@ -3260,8 +3260,8 @@ declare namespace $ {
                     $hyoo_crus_ref: symbol;
                 };
                 toJSON(): string | undefined;
-                cast<Node_5 extends typeof $hyoo_crus_node>(Node: Node_5): InstanceType<Node_5>;
-                nodes<Node_6 extends typeof $hyoo_crus_node>(Node: Node_6 | null): readonly InstanceType<Node_6>[];
+                cast<Node_4 extends typeof $hyoo_crus_node>(Node: Node_4): InstanceType<Node_4>;
+                nodes<Node_5 extends typeof $hyoo_crus_node>(Node: Node_5 | null): readonly InstanceType<Node_5>[];
                 units(): $hyoo_crus_gist[];
                 filled(): boolean;
                 can_change(lord?: symbol & {
@@ -3301,15 +3301,15 @@ declare namespace $ {
                     cut: (vary: $hyoo_crus_vary_type) => void;
                     move: (from: number, to: number) => void;
                     wipe: (seat: number) => void;
-                    node_make: <Node_7 extends typeof $hyoo_crus_node>(Node: Node_7, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => InstanceType<Node_7>;
+                    node_make: <Node_6 extends typeof $hyoo_crus_node>(Node: Node_6, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => InstanceType<Node_6>;
                     land: () => $hyoo_crus_land;
                     lord: () => $hyoo_crus_lord | null;
                     realm: () => $hyoo_crus_realm | null;
                     lord_ref: () => symbol & {
                         $hyoo_crus_ref: symbol;
                     };
-                    cast: <Node_8 extends typeof $hyoo_crus_node>(Node: Node_8) => InstanceType<Node_8>;
-                    nodes: <Node_9 extends typeof $hyoo_crus_node>(Node: Node_9 | null) => readonly InstanceType<Node_9>[];
+                    cast: <Node_7 extends typeof $hyoo_crus_node>(Node: Node_7) => InstanceType<Node_7>;
+                    nodes: <Node_8 extends typeof $hyoo_crus_node>(Node: Node_8 | null) => readonly InstanceType<Node_8>[];
                     units: () => $hyoo_crus_gist[];
                     filled: () => boolean;
                     can_change: (lord?: symbol & {
@@ -3319,7 +3319,7 @@ declare namespace $ {
                 };
                 Value: Value;
                 toJSON(): string;
-                toString: typeof $mol_object2.toString & (() => string);
+                toString: typeof $mol_object2.toString;
                 [Symbol.toPrimitive]: typeof $mol_object2.[ Symbol.toPrimitive ];
                 destructor: typeof $mol_object2.destructor;
                 $: typeof $$;
@@ -3361,15 +3361,15 @@ declare namespace $ {
                 cut: (vary: $hyoo_crus_vary_type) => void;
                 move: (from: number, to: number) => void;
                 wipe: (seat: number) => void;
-                node_make: <Node_7 extends typeof $hyoo_crus_node>(Node: Node_7, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => InstanceType<Node_7>;
+                node_make: <Node_6 extends typeof $hyoo_crus_node>(Node: Node_6, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => InstanceType<Node_6>;
                 land: () => $hyoo_crus_land;
                 lord: () => $hyoo_crus_lord | null;
                 realm: () => $hyoo_crus_realm | null;
                 lord_ref: () => symbol & {
                     $hyoo_crus_ref: symbol;
                 };
-                cast: <Node_8 extends typeof $hyoo_crus_node>(Node: Node_8) => InstanceType<Node_8>;
-                nodes: <Node_9 extends typeof $hyoo_crus_node>(Node: Node_9 | null) => readonly InstanceType<Node_9>[];
+                cast: <Node_7 extends typeof $hyoo_crus_node>(Node: Node_7) => InstanceType<Node_7>;
+                nodes: <Node_8 extends typeof $hyoo_crus_node>(Node: Node_8 | null) => readonly InstanceType<Node_8>[];
                 units: () => $hyoo_crus_gist[];
                 filled: () => boolean;
                 can_change: (lord?: symbol & {
@@ -3379,7 +3379,7 @@ declare namespace $ {
             };
             Value: Value;
             toJSON(): string;
-            toString: typeof $mol_object2.toString & (() => string);
+            toString: typeof $mol_object2.toString;
             [Symbol.toPrimitive]: typeof $mol_object2.[ Symbol.toPrimitive ];
             destructor: typeof $mol_object2.destructor;
             $: typeof $$;
@@ -3410,7 +3410,7 @@ declare namespace $ {
             cut(vary: $hyoo_crus_vary_type): void;
             move(from: number, to: number): void;
             wipe(seat: number): void;
-            node_make<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): InstanceType<Node_1>;
+            node_make<Node extends typeof $hyoo_crus_node>(Node: Node, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): InstanceType<Node>;
             land(): $hyoo_crus_land;
             head(): string;
             lord(): $hyoo_crus_lord | null;
@@ -3422,8 +3422,8 @@ declare namespace $ {
                 $hyoo_crus_ref: symbol;
             };
             toJSON(): string | undefined;
-            cast<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2): InstanceType<Node_2>;
-            nodes<Node_3 extends typeof $hyoo_crus_node>(Node: Node_3 | null): readonly InstanceType<Node_3>[];
+            cast<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1): InstanceType<Node_1>;
+            nodes<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2 | null): readonly InstanceType<Node_2>[];
             units(): $hyoo_crus_gist[];
             filled(): boolean;
             can_change(lord?: symbol & {
@@ -3479,7 +3479,7 @@ declare namespace $ {
                 cut(vary: $hyoo_crus_vary_type): void;
                 move(from: number, to: number): void;
                 wipe(seat: number): void;
-                node_make<Node_4 extends typeof $hyoo_crus_node>(Node: Node_4, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): InstanceType<Node_4>;
+                node_make<Node_3 extends typeof $hyoo_crus_node>(Node: Node_3, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): InstanceType<Node_3>;
                 land(): $hyoo_crus_land;
                 head(): string;
                 lord(): $hyoo_crus_lord | null;
@@ -3491,8 +3491,8 @@ declare namespace $ {
                     $hyoo_crus_ref: symbol;
                 };
                 toJSON(): string | undefined;
-                cast<Node_5 extends typeof $hyoo_crus_node>(Node: Node_5): InstanceType<Node_5>;
-                nodes<Node_6 extends typeof $hyoo_crus_node>(Node: Node_6 | null): readonly InstanceType<Node_6>[];
+                cast<Node_4 extends typeof $hyoo_crus_node>(Node: Node_4): InstanceType<Node_4>;
+                nodes<Node_5 extends typeof $hyoo_crus_node>(Node: Node_5 | null): readonly InstanceType<Node_5>[];
                 units(): $hyoo_crus_gist[];
                 filled(): boolean;
                 can_change(lord?: symbol & {
@@ -3532,15 +3532,15 @@ declare namespace $ {
                     cut: (vary: $hyoo_crus_vary_type) => void;
                     move: (from: number, to: number) => void;
                     wipe: (seat: number) => void;
-                    node_make: <Node_7 extends typeof $hyoo_crus_node>(Node: Node_7, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => InstanceType<Node_7>;
+                    node_make: <Node_6 extends typeof $hyoo_crus_node>(Node: Node_6, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => InstanceType<Node_6>;
                     land: () => $hyoo_crus_land;
                     lord: () => $hyoo_crus_lord | null;
                     realm: () => $hyoo_crus_realm | null;
                     lord_ref: () => symbol & {
                         $hyoo_crus_ref: symbol;
                     };
-                    cast: <Node_8 extends typeof $hyoo_crus_node>(Node: Node_8) => InstanceType<Node_8>;
-                    nodes: <Node_9 extends typeof $hyoo_crus_node>(Node: Node_9 | null) => readonly InstanceType<Node_9>[];
+                    cast: <Node_7 extends typeof $hyoo_crus_node>(Node: Node_7) => InstanceType<Node_7>;
+                    nodes: <Node_8 extends typeof $hyoo_crus_node>(Node: Node_8 | null) => readonly InstanceType<Node_8>[];
                     units: () => $hyoo_crus_gist[];
                     filled: () => boolean;
                     can_change: (lord?: symbol & {
@@ -3550,7 +3550,7 @@ declare namespace $ {
                 };
                 Value: Value;
                 toJSON(): string;
-                toString: typeof $mol_object2.toString & (() => string);
+                toString: typeof $mol_object2.toString;
                 [Symbol.toPrimitive]: typeof $mol_object2.[ Symbol.toPrimitive ];
                 destructor: typeof $mol_object2.destructor;
                 $: typeof $$;
@@ -3592,15 +3592,15 @@ declare namespace $ {
                 cut: (vary: $hyoo_crus_vary_type) => void;
                 move: (from: number, to: number) => void;
                 wipe: (seat: number) => void;
-                node_make: <Node_7 extends typeof $hyoo_crus_node>(Node: Node_7, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => InstanceType<Node_7>;
+                node_make: <Node_6 extends typeof $hyoo_crus_node>(Node: Node_6, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => InstanceType<Node_6>;
                 land: () => $hyoo_crus_land;
                 lord: () => $hyoo_crus_lord | null;
                 realm: () => $hyoo_crus_realm | null;
                 lord_ref: () => symbol & {
                     $hyoo_crus_ref: symbol;
                 };
-                cast: <Node_8 extends typeof $hyoo_crus_node>(Node: Node_8) => InstanceType<Node_8>;
-                nodes: <Node_9 extends typeof $hyoo_crus_node>(Node: Node_9 | null) => readonly InstanceType<Node_9>[];
+                cast: <Node_7 extends typeof $hyoo_crus_node>(Node: Node_7) => InstanceType<Node_7>;
+                nodes: <Node_8 extends typeof $hyoo_crus_node>(Node: Node_8 | null) => readonly InstanceType<Node_8>[];
                 units: () => $hyoo_crus_gist[];
                 filled: () => boolean;
                 can_change: (lord?: symbol & {
@@ -3610,7 +3610,7 @@ declare namespace $ {
             };
             Value: Value;
             toJSON(): string;
-            toString: typeof $mol_object2.toString & (() => string);
+            toString: typeof $mol_object2.toString;
             [Symbol.toPrimitive]: typeof $mol_object2.[ Symbol.toPrimitive ];
             destructor: typeof $mol_object2.destructor;
             $: typeof $$;
@@ -3641,7 +3641,7 @@ declare namespace $ {
             cut(vary: $hyoo_crus_vary_type): void;
             move(from: number, to: number): void;
             wipe(seat: number): void;
-            node_make<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): InstanceType<Node_1>;
+            node_make<Node extends typeof $hyoo_crus_node>(Node: Node, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): InstanceType<Node>;
             land(): $hyoo_crus_land;
             head(): string;
             lord(): $hyoo_crus_lord | null;
@@ -3653,8 +3653,8 @@ declare namespace $ {
                 $hyoo_crus_ref: symbol;
             };
             toJSON(): string | undefined;
-            cast<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2): InstanceType<Node_2>;
-            nodes<Node_3 extends typeof $hyoo_crus_node>(Node: Node_3 | null): readonly InstanceType<Node_3>[];
+            cast<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1): InstanceType<Node_1>;
+            nodes<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2 | null): readonly InstanceType<Node_2>[];
             units(): $hyoo_crus_gist[];
             filled(): boolean;
             can_change(lord?: symbol & {
@@ -3710,7 +3710,7 @@ declare namespace $ {
                 cut(vary: $hyoo_crus_vary_type): void;
                 move(from: number, to: number): void;
                 wipe(seat: number): void;
-                node_make<Node_4 extends typeof $hyoo_crus_node>(Node: Node_4, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): InstanceType<Node_4>;
+                node_make<Node_3 extends typeof $hyoo_crus_node>(Node: Node_3, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): InstanceType<Node_3>;
                 land(): $hyoo_crus_land;
                 head(): string;
                 lord(): $hyoo_crus_lord | null;
@@ -3722,8 +3722,8 @@ declare namespace $ {
                     $hyoo_crus_ref: symbol;
                 };
                 toJSON(): string | undefined;
-                cast<Node_5 extends typeof $hyoo_crus_node>(Node: Node_5): InstanceType<Node_5>;
-                nodes<Node_6 extends typeof $hyoo_crus_node>(Node: Node_6 | null): readonly InstanceType<Node_6>[];
+                cast<Node_4 extends typeof $hyoo_crus_node>(Node: Node_4): InstanceType<Node_4>;
+                nodes<Node_5 extends typeof $hyoo_crus_node>(Node: Node_5 | null): readonly InstanceType<Node_5>[];
                 units(): $hyoo_crus_gist[];
                 filled(): boolean;
                 can_change(lord?: symbol & {
@@ -3763,15 +3763,15 @@ declare namespace $ {
                     cut: (vary: $hyoo_crus_vary_type) => void;
                     move: (from: number, to: number) => void;
                     wipe: (seat: number) => void;
-                    node_make: <Node_7 extends typeof $hyoo_crus_node>(Node: Node_7, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => InstanceType<Node_7>;
+                    node_make: <Node_6 extends typeof $hyoo_crus_node>(Node: Node_6, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => InstanceType<Node_6>;
                     land: () => $hyoo_crus_land;
                     lord: () => $hyoo_crus_lord | null;
                     realm: () => $hyoo_crus_realm | null;
                     lord_ref: () => symbol & {
                         $hyoo_crus_ref: symbol;
                     };
-                    cast: <Node_8 extends typeof $hyoo_crus_node>(Node: Node_8) => InstanceType<Node_8>;
-                    nodes: <Node_9 extends typeof $hyoo_crus_node>(Node: Node_9 | null) => readonly InstanceType<Node_9>[];
+                    cast: <Node_7 extends typeof $hyoo_crus_node>(Node: Node_7) => InstanceType<Node_7>;
+                    nodes: <Node_8 extends typeof $hyoo_crus_node>(Node: Node_8 | null) => readonly InstanceType<Node_8>[];
                     units: () => $hyoo_crus_gist[];
                     filled: () => boolean;
                     can_change: (lord?: symbol & {
@@ -3781,7 +3781,7 @@ declare namespace $ {
                 };
                 Value: Value;
                 toJSON(): string;
-                toString: typeof $mol_object2.toString & (() => string);
+                toString: typeof $mol_object2.toString;
                 [Symbol.toPrimitive]: typeof $mol_object2.[ Symbol.toPrimitive ];
                 destructor: typeof $mol_object2.destructor;
                 $: typeof $$;
@@ -3823,15 +3823,15 @@ declare namespace $ {
                 cut: (vary: $hyoo_crus_vary_type) => void;
                 move: (from: number, to: number) => void;
                 wipe: (seat: number) => void;
-                node_make: <Node_7 extends typeof $hyoo_crus_node>(Node: Node_7, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => InstanceType<Node_7>;
+                node_make: <Node_6 extends typeof $hyoo_crus_node>(Node: Node_6, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => InstanceType<Node_6>;
                 land: () => $hyoo_crus_land;
                 lord: () => $hyoo_crus_lord | null;
                 realm: () => $hyoo_crus_realm | null;
                 lord_ref: () => symbol & {
                     $hyoo_crus_ref: symbol;
                 };
-                cast: <Node_8 extends typeof $hyoo_crus_node>(Node: Node_8) => InstanceType<Node_8>;
-                nodes: <Node_9 extends typeof $hyoo_crus_node>(Node: Node_9 | null) => readonly InstanceType<Node_9>[];
+                cast: <Node_7 extends typeof $hyoo_crus_node>(Node: Node_7) => InstanceType<Node_7>;
+                nodes: <Node_8 extends typeof $hyoo_crus_node>(Node: Node_8 | null) => readonly InstanceType<Node_8>[];
                 units: () => $hyoo_crus_gist[];
                 filled: () => boolean;
                 can_change: (lord?: symbol & {
@@ -3841,7 +3841,7 @@ declare namespace $ {
             };
             Value: Value;
             toJSON(): string;
-            toString: typeof $mol_object2.toString & (() => string);
+            toString: typeof $mol_object2.toString;
             [Symbol.toPrimitive]: typeof $mol_object2.[ Symbol.toPrimitive ];
             destructor: typeof $mol_object2.destructor;
             $: typeof $$;
@@ -3872,7 +3872,7 @@ declare namespace $ {
             cut(vary: $hyoo_crus_vary_type): void;
             move(from: number, to: number): void;
             wipe(seat: number): void;
-            node_make<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): InstanceType<Node_1>;
+            node_make<Node extends typeof $hyoo_crus_node>(Node: Node, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): InstanceType<Node>;
             land(): $hyoo_crus_land;
             head(): string;
             lord(): $hyoo_crus_lord | null;
@@ -3884,8 +3884,8 @@ declare namespace $ {
                 $hyoo_crus_ref: symbol;
             };
             toJSON(): string | undefined;
-            cast<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2): InstanceType<Node_2>;
-            nodes<Node_3 extends typeof $hyoo_crus_node>(Node: Node_3 | null): readonly InstanceType<Node_3>[];
+            cast<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1): InstanceType<Node_1>;
+            nodes<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2 | null): readonly InstanceType<Node_2>[];
             units(): $hyoo_crus_gist[];
             filled(): boolean;
             can_change(lord?: symbol & {
@@ -3941,7 +3941,7 @@ declare namespace $ {
                 cut(vary: $hyoo_crus_vary_type): void;
                 move(from: number, to: number): void;
                 wipe(seat: number): void;
-                node_make<Node_4 extends typeof $hyoo_crus_node>(Node: Node_4, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): InstanceType<Node_4>;
+                node_make<Node_3 extends typeof $hyoo_crus_node>(Node: Node_3, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): InstanceType<Node_3>;
                 land(): $hyoo_crus_land;
                 head(): string;
                 lord(): $hyoo_crus_lord | null;
@@ -3953,8 +3953,8 @@ declare namespace $ {
                     $hyoo_crus_ref: symbol;
                 };
                 toJSON(): string | undefined;
-                cast<Node_5 extends typeof $hyoo_crus_node>(Node: Node_5): InstanceType<Node_5>;
-                nodes<Node_6 extends typeof $hyoo_crus_node>(Node: Node_6 | null): readonly InstanceType<Node_6>[];
+                cast<Node_4 extends typeof $hyoo_crus_node>(Node: Node_4): InstanceType<Node_4>;
+                nodes<Node_5 extends typeof $hyoo_crus_node>(Node: Node_5 | null): readonly InstanceType<Node_5>[];
                 units(): $hyoo_crus_gist[];
                 filled(): boolean;
                 can_change(lord?: symbol & {
@@ -3994,15 +3994,15 @@ declare namespace $ {
                     cut: (vary: $hyoo_crus_vary_type) => void;
                     move: (from: number, to: number) => void;
                     wipe: (seat: number) => void;
-                    node_make: <Node_7 extends typeof $hyoo_crus_node>(Node: Node_7, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => InstanceType<Node_7>;
+                    node_make: <Node_6 extends typeof $hyoo_crus_node>(Node: Node_6, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => InstanceType<Node_6>;
                     land: () => $hyoo_crus_land;
                     lord: () => $hyoo_crus_lord | null;
                     realm: () => $hyoo_crus_realm | null;
                     lord_ref: () => symbol & {
                         $hyoo_crus_ref: symbol;
                     };
-                    cast: <Node_8 extends typeof $hyoo_crus_node>(Node: Node_8) => InstanceType<Node_8>;
-                    nodes: <Node_9 extends typeof $hyoo_crus_node>(Node: Node_9 | null) => readonly InstanceType<Node_9>[];
+                    cast: <Node_7 extends typeof $hyoo_crus_node>(Node: Node_7) => InstanceType<Node_7>;
+                    nodes: <Node_8 extends typeof $hyoo_crus_node>(Node: Node_8 | null) => readonly InstanceType<Node_8>[];
                     units: () => $hyoo_crus_gist[];
                     filled: () => boolean;
                     can_change: (lord?: symbol & {
@@ -4012,7 +4012,7 @@ declare namespace $ {
                 };
                 Value: Value;
                 toJSON(): string;
-                toString: typeof $mol_object2.toString & (() => string);
+                toString: typeof $mol_object2.toString;
                 [Symbol.toPrimitive]: typeof $mol_object2.[ Symbol.toPrimitive ];
                 destructor: typeof $mol_object2.destructor;
                 $: typeof $$;
@@ -4054,15 +4054,15 @@ declare namespace $ {
                 cut: (vary: $hyoo_crus_vary_type) => void;
                 move: (from: number, to: number) => void;
                 wipe: (seat: number) => void;
-                node_make: <Node_7 extends typeof $hyoo_crus_node>(Node: Node_7, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => InstanceType<Node_7>;
+                node_make: <Node_6 extends typeof $hyoo_crus_node>(Node: Node_6, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => InstanceType<Node_6>;
                 land: () => $hyoo_crus_land;
                 lord: () => $hyoo_crus_lord | null;
                 realm: () => $hyoo_crus_realm | null;
                 lord_ref: () => symbol & {
                     $hyoo_crus_ref: symbol;
                 };
-                cast: <Node_8 extends typeof $hyoo_crus_node>(Node: Node_8) => InstanceType<Node_8>;
-                nodes: <Node_9 extends typeof $hyoo_crus_node>(Node: Node_9 | null) => readonly InstanceType<Node_9>[];
+                cast: <Node_7 extends typeof $hyoo_crus_node>(Node: Node_7) => InstanceType<Node_7>;
+                nodes: <Node_8 extends typeof $hyoo_crus_node>(Node: Node_8 | null) => readonly InstanceType<Node_8>[];
                 units: () => $hyoo_crus_gist[];
                 filled: () => boolean;
                 can_change: (lord?: symbol & {
@@ -4072,7 +4072,7 @@ declare namespace $ {
             };
             Value: Value;
             toJSON(): string;
-            toString: typeof $mol_object2.toString & (() => string);
+            toString: typeof $mol_object2.toString;
             [Symbol.toPrimitive]: typeof $mol_object2.[ Symbol.toPrimitive ];
             destructor: typeof $mol_object2.destructor;
             $: typeof $$;
@@ -4103,7 +4103,7 @@ declare namespace $ {
             cut(vary: $hyoo_crus_vary_type): void;
             move(from: number, to: number): void;
             wipe(seat: number): void;
-            node_make<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): InstanceType<Node_1>;
+            node_make<Node extends typeof $hyoo_crus_node>(Node: Node, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): InstanceType<Node>;
             land(): $hyoo_crus_land;
             head(): string;
             lord(): $hyoo_crus_lord | null;
@@ -4115,8 +4115,8 @@ declare namespace $ {
                 $hyoo_crus_ref: symbol;
             };
             toJSON(): string | undefined;
-            cast<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2): InstanceType<Node_2>;
-            nodes<Node_3 extends typeof $hyoo_crus_node>(Node: Node_3 | null): readonly InstanceType<Node_3>[];
+            cast<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1): InstanceType<Node_1>;
+            nodes<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2 | null): readonly InstanceType<Node_2>[];
             units(): $hyoo_crus_gist[];
             filled(): boolean;
             can_change(lord?: symbol & {
@@ -4172,7 +4172,7 @@ declare namespace $ {
                 cut(vary: $hyoo_crus_vary_type): void;
                 move(from: number, to: number): void;
                 wipe(seat: number): void;
-                node_make<Node_4 extends typeof $hyoo_crus_node>(Node: Node_4, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): InstanceType<Node_4>;
+                node_make<Node_3 extends typeof $hyoo_crus_node>(Node: Node_3, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): InstanceType<Node_3>;
                 land(): $hyoo_crus_land;
                 head(): string;
                 lord(): $hyoo_crus_lord | null;
@@ -4184,8 +4184,8 @@ declare namespace $ {
                     $hyoo_crus_ref: symbol;
                 };
                 toJSON(): string | undefined;
-                cast<Node_5 extends typeof $hyoo_crus_node>(Node: Node_5): InstanceType<Node_5>;
-                nodes<Node_6 extends typeof $hyoo_crus_node>(Node: Node_6 | null): readonly InstanceType<Node_6>[];
+                cast<Node_4 extends typeof $hyoo_crus_node>(Node: Node_4): InstanceType<Node_4>;
+                nodes<Node_5 extends typeof $hyoo_crus_node>(Node: Node_5 | null): readonly InstanceType<Node_5>[];
                 units(): $hyoo_crus_gist[];
                 filled(): boolean;
                 can_change(lord?: symbol & {
@@ -4225,15 +4225,15 @@ declare namespace $ {
                     cut: (vary: $hyoo_crus_vary_type) => void;
                     move: (from: number, to: number) => void;
                     wipe: (seat: number) => void;
-                    node_make: <Node_7 extends typeof $hyoo_crus_node>(Node: Node_7, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => InstanceType<Node_7>;
+                    node_make: <Node_6 extends typeof $hyoo_crus_node>(Node: Node_6, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => InstanceType<Node_6>;
                     land: () => $hyoo_crus_land;
                     lord: () => $hyoo_crus_lord | null;
                     realm: () => $hyoo_crus_realm | null;
                     lord_ref: () => symbol & {
                         $hyoo_crus_ref: symbol;
                     };
-                    cast: <Node_8 extends typeof $hyoo_crus_node>(Node: Node_8) => InstanceType<Node_8>;
-                    nodes: <Node_9 extends typeof $hyoo_crus_node>(Node: Node_9 | null) => readonly InstanceType<Node_9>[];
+                    cast: <Node_7 extends typeof $hyoo_crus_node>(Node: Node_7) => InstanceType<Node_7>;
+                    nodes: <Node_8 extends typeof $hyoo_crus_node>(Node: Node_8 | null) => readonly InstanceType<Node_8>[];
                     units: () => $hyoo_crus_gist[];
                     filled: () => boolean;
                     can_change: (lord?: symbol & {
@@ -4243,7 +4243,7 @@ declare namespace $ {
                 };
                 Value: Value;
                 toJSON(): string;
-                toString: typeof $mol_object2.toString & (() => string);
+                toString: typeof $mol_object2.toString;
                 [Symbol.toPrimitive]: typeof $mol_object2.[ Symbol.toPrimitive ];
                 destructor: typeof $mol_object2.destructor;
                 $: typeof $$;
@@ -4285,15 +4285,15 @@ declare namespace $ {
                 cut: (vary: $hyoo_crus_vary_type) => void;
                 move: (from: number, to: number) => void;
                 wipe: (seat: number) => void;
-                node_make: <Node_7 extends typeof $hyoo_crus_node>(Node: Node_7, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => InstanceType<Node_7>;
+                node_make: <Node_6 extends typeof $hyoo_crus_node>(Node: Node_6, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => InstanceType<Node_6>;
                 land: () => $hyoo_crus_land;
                 lord: () => $hyoo_crus_lord | null;
                 realm: () => $hyoo_crus_realm | null;
                 lord_ref: () => symbol & {
                     $hyoo_crus_ref: symbol;
                 };
-                cast: <Node_8 extends typeof $hyoo_crus_node>(Node: Node_8) => InstanceType<Node_8>;
-                nodes: <Node_9 extends typeof $hyoo_crus_node>(Node: Node_9 | null) => readonly InstanceType<Node_9>[];
+                cast: <Node_7 extends typeof $hyoo_crus_node>(Node: Node_7) => InstanceType<Node_7>;
+                nodes: <Node_8 extends typeof $hyoo_crus_node>(Node: Node_8 | null) => readonly InstanceType<Node_8>[];
                 units: () => $hyoo_crus_gist[];
                 filled: () => boolean;
                 can_change: (lord?: symbol & {
@@ -4303,7 +4303,7 @@ declare namespace $ {
             };
             Value: Value;
             toJSON(): string;
-            toString: typeof $mol_object2.toString & (() => string);
+            toString: typeof $mol_object2.toString;
             [Symbol.toPrimitive]: typeof $mol_object2.[ Symbol.toPrimitive ];
             destructor: typeof $mol_object2.destructor;
             $: typeof $$;
@@ -4348,7 +4348,7 @@ declare namespace $ {
                 key(key: $hyoo_crus_vary_type): InstanceType<Value>;
                 value(): any;
                 keys(): readonly $hyoo_crus_vary_type[];
-                dive<Node_1 extends typeof $hyoo_crus_node>(key: $hyoo_crus_vary_type, Node: Node_1, auto?: any): InstanceType<Node_1> | null;
+                dive<Node extends typeof $hyoo_crus_node>(key: $hyoo_crus_vary_type, Node: Node, auto?: any): InstanceType<Node> | null;
                 toString: () => string;
                 splice: (next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: "keys" | "term" | "solo" | "vals") => void;
                 find: (vary: $hyoo_crus_vary_type) => $hyoo_crus_gist | null;
@@ -4367,15 +4367,15 @@ declare namespace $ {
                 cut: (vary: $hyoo_crus_vary_type) => void;
                 move: (from: number, to: number) => void;
                 wipe: (seat: number) => void;
-                node_make: <Node_2 extends typeof $hyoo_crus_node>(Node: Node_2, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => InstanceType<Node_2>;
+                node_make: <Node_1 extends typeof $hyoo_crus_node>(Node: Node_1, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => InstanceType<Node_1>;
                 land: () => $hyoo_crus_land;
                 lord: () => $hyoo_crus_lord | null;
                 realm: () => $hyoo_crus_realm | null;
                 lord_ref: () => symbol & {
                     $hyoo_crus_ref: symbol;
                 };
-                cast: <Node_3 extends typeof $hyoo_crus_node>(Node: Node_3) => InstanceType<Node_3>;
-                nodes: <Node_4 extends typeof $hyoo_crus_node>(Node: Node_4 | null) => readonly InstanceType<Node_4>[];
+                cast: <Node_2 extends typeof $hyoo_crus_node>(Node: Node_2) => InstanceType<Node_2>;
+                nodes: <Node_3 extends typeof $hyoo_crus_node>(Node: Node_3 | null) => readonly InstanceType<Node_3>[];
                 units: () => $hyoo_crus_gist[];
                 filled: () => boolean;
                 can_change: (lord?: symbol & {
@@ -4432,7 +4432,7 @@ declare namespace $ {
             cut(vary: $hyoo_crus_vary_type): void;
             move(from: number, to: number): void;
             wipe(seat: number): void;
-            node_make<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): InstanceType<Node_1>;
+            node_make<Node extends typeof $hyoo_crus_node>(Node: Node, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): InstanceType<Node>;
             land(): $hyoo_crus_land;
             head(): string;
             lord(): $hyoo_crus_lord | null;
@@ -4444,8 +4444,8 @@ declare namespace $ {
                 $hyoo_crus_ref: symbol;
             };
             toJSON(): string | undefined;
-            cast<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2): InstanceType<Node_2>;
-            nodes<Node_3 extends typeof $hyoo_crus_node>(Node: Node_3 | null): readonly InstanceType<Node_3>[];
+            cast<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1): InstanceType<Node_1>;
+            nodes<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2 | null): readonly InstanceType<Node_2>[];
             units(): $hyoo_crus_gist[];
             filled(): boolean;
             can_change(lord?: symbol & {
@@ -4625,8 +4625,8 @@ declare namespace $ {
                     $hyoo_crus_ref: symbol;
                 };
                 toJSON(): string | undefined;
-                cast<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1): InstanceType<Node_1>;
-                nodes<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2 | null): readonly InstanceType<Node_2>[];
+                cast<Node extends typeof $hyoo_crus_node>(Node: Node): InstanceType<Node>;
+                nodes<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1 | null): readonly InstanceType<Node_1>[];
                 units(): $hyoo_crus_gist[];
                 filled(): boolean;
                 can_change(lord?: symbol & {
@@ -4642,7 +4642,7 @@ declare namespace $ {
             tip: Tip;
             tag: "keys" | "term" | "solo" | "vals";
             of<Tip extends "time" | "json" | "bin" | "tree" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom">(tip: Tip): any;
-            ref<Value_1 extends unknown>(Value: Value): {
+            ref<Value extends unknown>(Value: Value): {
                 new (): {
                     value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                     remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
@@ -4664,8 +4664,8 @@ declare namespace $ {
                     lord_ref: () => symbol & {
                         $hyoo_crus_ref: symbol;
                     };
-                    cast: <Node_3 extends typeof $hyoo_crus_node>(Node: Node_3) => InstanceType<Node_3>;
-                    nodes: <Node_4 extends typeof $hyoo_crus_node>(Node: Node_4 | null) => readonly InstanceType<Node_4>[];
+                    cast: <Node_2 extends typeof $hyoo_crus_node>(Node: Node_2) => InstanceType<Node_2>;
+                    nodes: <Node_3 extends typeof $hyoo_crus_node>(Node: Node_3 | null) => readonly InstanceType<Node_3>[];
                     units: () => $hyoo_crus_gist[];
                     filled: () => boolean;
                     can_change: (lord?: symbol & {
@@ -4729,8 +4729,8 @@ declare namespace $ {
                 lord_ref: () => symbol & {
                     $hyoo_crus_ref: symbol;
                 };
-                cast: <Node_1 extends typeof $hyoo_crus_node>(Node: Node_1) => InstanceType<Node_1>;
-                nodes: <Node_2 extends typeof $hyoo_crus_node>(Node: Node_2 | null) => readonly InstanceType<Node_2>[];
+                cast: <Node extends typeof $hyoo_crus_node>(Node: Node) => InstanceType<Node>;
+                nodes: <Node_1 extends typeof $hyoo_crus_node>(Node: Node_1 | null) => readonly InstanceType<Node_1>[];
                 units: () => $hyoo_crus_gist[];
                 filled: () => boolean;
                 can_change: (lord?: symbol & {
@@ -4793,8 +4793,8 @@ declare namespace $ {
                 $hyoo_crus_ref: symbol;
             };
             toJSON(): string | undefined;
-            cast<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1): InstanceType<Node_1>;
-            nodes<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2 | null): readonly InstanceType<Node_2>[];
+            cast<Node extends typeof $hyoo_crus_node>(Node: Node): InstanceType<Node>;
+            nodes<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1 | null): readonly InstanceType<Node_1>[];
             units(): $hyoo_crus_gist[];
             filled(): boolean;
             can_change(lord?: symbol & {
@@ -4867,8 +4867,8 @@ declare namespace $ {
                     $hyoo_crus_ref: symbol;
                 };
                 toJSON(): string | undefined;
-                cast<Node_3 extends typeof $hyoo_crus_node>(Node: Node_3): InstanceType<Node_3>;
-                nodes<Node_4 extends typeof $hyoo_crus_node>(Node: Node_4 | null): readonly InstanceType<Node_4>[];
+                cast<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2): InstanceType<Node_2>;
+                nodes<Node_3 extends typeof $hyoo_crus_node>(Node: Node_3 | null): readonly InstanceType<Node_3>[];
                 units(): $hyoo_crus_gist[];
                 filled(): boolean;
                 can_change(lord?: symbol & {
@@ -4906,8 +4906,8 @@ declare namespace $ {
                     lord_ref: () => symbol & {
                         $hyoo_crus_ref: symbol;
                     };
-                    cast: <Node_5 extends typeof $hyoo_crus_node>(Node: Node_5) => InstanceType<Node_5>;
-                    nodes: <Node_6 extends typeof $hyoo_crus_node>(Node: Node_6 | null) => readonly InstanceType<Node_6>[];
+                    cast: <Node_4 extends typeof $hyoo_crus_node>(Node: Node_4) => InstanceType<Node_4>;
+                    nodes: <Node_5 extends typeof $hyoo_crus_node>(Node: Node_5 | null) => readonly InstanceType<Node_5>[];
                     units: () => $hyoo_crus_gist[];
                     filled: () => boolean;
                     can_change: (lord?: symbol & {
@@ -4971,8 +4971,8 @@ declare namespace $ {
                 lord_ref: () => symbol & {
                     $hyoo_crus_ref: symbol;
                 };
-                cast: <Node_5 extends typeof $hyoo_crus_node>(Node: Node_5) => InstanceType<Node_5>;
-                nodes: <Node_6 extends typeof $hyoo_crus_node>(Node: Node_6 | null) => readonly InstanceType<Node_6>[];
+                cast: <Node_4 extends typeof $hyoo_crus_node>(Node: Node_4) => InstanceType<Node_4>;
+                nodes: <Node_5 extends typeof $hyoo_crus_node>(Node: Node_5 | null) => readonly InstanceType<Node_5>[];
                 units: () => $hyoo_crus_gist[];
                 filled: () => boolean;
                 can_change: (lord?: symbol & {
@@ -5044,8 +5044,8 @@ declare namespace $ {
                 $hyoo_crus_ref: symbol;
             };
             toJSON(): string | undefined;
-            cast<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1): InstanceType<Node_1>;
-            nodes<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2 | null): readonly InstanceType<Node_2>[];
+            cast<Node extends typeof $hyoo_crus_node>(Node: Node): InstanceType<Node>;
+            nodes<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1 | null): readonly InstanceType<Node_1>[];
             units(): $hyoo_crus_gist[];
             filled(): boolean;
             can_change(lord?: symbol & {
@@ -5118,8 +5118,8 @@ declare namespace $ {
                     $hyoo_crus_ref: symbol;
                 };
                 toJSON(): string | undefined;
-                cast<Node_3 extends typeof $hyoo_crus_node>(Node: Node_3): InstanceType<Node_3>;
-                nodes<Node_4 extends typeof $hyoo_crus_node>(Node: Node_4 | null): readonly InstanceType<Node_4>[];
+                cast<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2): InstanceType<Node_2>;
+                nodes<Node_3 extends typeof $hyoo_crus_node>(Node: Node_3 | null): readonly InstanceType<Node_3>[];
                 units(): $hyoo_crus_gist[];
                 filled(): boolean;
                 can_change(lord?: symbol & {
@@ -5157,8 +5157,8 @@ declare namespace $ {
                     lord_ref: () => symbol & {
                         $hyoo_crus_ref: symbol;
                     };
-                    cast: <Node_5 extends typeof $hyoo_crus_node>(Node: Node_5) => InstanceType<Node_5>;
-                    nodes: <Node_6 extends typeof $hyoo_crus_node>(Node: Node_6 | null) => readonly InstanceType<Node_6>[];
+                    cast: <Node_4 extends typeof $hyoo_crus_node>(Node: Node_4) => InstanceType<Node_4>;
+                    nodes: <Node_5 extends typeof $hyoo_crus_node>(Node: Node_5 | null) => readonly InstanceType<Node_5>[];
                     units: () => $hyoo_crus_gist[];
                     filled: () => boolean;
                     can_change: (lord?: symbol & {
@@ -5222,8 +5222,8 @@ declare namespace $ {
                 lord_ref: () => symbol & {
                     $hyoo_crus_ref: symbol;
                 };
-                cast: <Node_5 extends typeof $hyoo_crus_node>(Node: Node_5) => InstanceType<Node_5>;
-                nodes: <Node_6 extends typeof $hyoo_crus_node>(Node: Node_6 | null) => readonly InstanceType<Node_6>[];
+                cast: <Node_4 extends typeof $hyoo_crus_node>(Node: Node_4) => InstanceType<Node_4>;
+                nodes: <Node_5 extends typeof $hyoo_crus_node>(Node: Node_5 | null) => readonly InstanceType<Node_5>[];
                 units: () => $hyoo_crus_gist[];
                 filled: () => boolean;
                 can_change: (lord?: symbol & {
@@ -5295,8 +5295,8 @@ declare namespace $ {
                 $hyoo_crus_ref: symbol;
             };
             toJSON(): string | undefined;
-            cast<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1): InstanceType<Node_1>;
-            nodes<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2 | null): readonly InstanceType<Node_2>[];
+            cast<Node extends typeof $hyoo_crus_node>(Node: Node): InstanceType<Node>;
+            nodes<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1 | null): readonly InstanceType<Node_1>[];
             units(): $hyoo_crus_gist[];
             filled(): boolean;
             can_change(lord?: symbol & {
@@ -5369,8 +5369,8 @@ declare namespace $ {
                     $hyoo_crus_ref: symbol;
                 };
                 toJSON(): string | undefined;
-                cast<Node_3 extends typeof $hyoo_crus_node>(Node: Node_3): InstanceType<Node_3>;
-                nodes<Node_4 extends typeof $hyoo_crus_node>(Node: Node_4 | null): readonly InstanceType<Node_4>[];
+                cast<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2): InstanceType<Node_2>;
+                nodes<Node_3 extends typeof $hyoo_crus_node>(Node: Node_3 | null): readonly InstanceType<Node_3>[];
                 units(): $hyoo_crus_gist[];
                 filled(): boolean;
                 can_change(lord?: symbol & {
@@ -5408,8 +5408,8 @@ declare namespace $ {
                     lord_ref: () => symbol & {
                         $hyoo_crus_ref: symbol;
                     };
-                    cast: <Node_5 extends typeof $hyoo_crus_node>(Node: Node_5) => InstanceType<Node_5>;
-                    nodes: <Node_6 extends typeof $hyoo_crus_node>(Node: Node_6 | null) => readonly InstanceType<Node_6>[];
+                    cast: <Node_4 extends typeof $hyoo_crus_node>(Node: Node_4) => InstanceType<Node_4>;
+                    nodes: <Node_5 extends typeof $hyoo_crus_node>(Node: Node_5 | null) => readonly InstanceType<Node_5>[];
                     units: () => $hyoo_crus_gist[];
                     filled: () => boolean;
                     can_change: (lord?: symbol & {
@@ -5473,8 +5473,8 @@ declare namespace $ {
                 lord_ref: () => symbol & {
                     $hyoo_crus_ref: symbol;
                 };
-                cast: <Node_5 extends typeof $hyoo_crus_node>(Node: Node_5) => InstanceType<Node_5>;
-                nodes: <Node_6 extends typeof $hyoo_crus_node>(Node: Node_6 | null) => readonly InstanceType<Node_6>[];
+                cast: <Node_4 extends typeof $hyoo_crus_node>(Node: Node_4) => InstanceType<Node_4>;
+                nodes: <Node_5 extends typeof $hyoo_crus_node>(Node: Node_5 | null) => readonly InstanceType<Node_5>[];
                 units: () => $hyoo_crus_gist[];
                 filled: () => boolean;
                 can_change: (lord?: symbol & {
@@ -5546,8 +5546,8 @@ declare namespace $ {
                 $hyoo_crus_ref: symbol;
             };
             toJSON(): string | undefined;
-            cast<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1): InstanceType<Node_1>;
-            nodes<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2 | null): readonly InstanceType<Node_2>[];
+            cast<Node extends typeof $hyoo_crus_node>(Node: Node): InstanceType<Node>;
+            nodes<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1 | null): readonly InstanceType<Node_1>[];
             units(): $hyoo_crus_gist[];
             filled(): boolean;
             can_change(lord?: symbol & {
@@ -5620,8 +5620,8 @@ declare namespace $ {
                     $hyoo_crus_ref: symbol;
                 };
                 toJSON(): string | undefined;
-                cast<Node_3 extends typeof $hyoo_crus_node>(Node: Node_3): InstanceType<Node_3>;
-                nodes<Node_4 extends typeof $hyoo_crus_node>(Node: Node_4 | null): readonly InstanceType<Node_4>[];
+                cast<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2): InstanceType<Node_2>;
+                nodes<Node_3 extends typeof $hyoo_crus_node>(Node: Node_3 | null): readonly InstanceType<Node_3>[];
                 units(): $hyoo_crus_gist[];
                 filled(): boolean;
                 can_change(lord?: symbol & {
@@ -5659,8 +5659,8 @@ declare namespace $ {
                     lord_ref: () => symbol & {
                         $hyoo_crus_ref: symbol;
                     };
-                    cast: <Node_5 extends typeof $hyoo_crus_node>(Node: Node_5) => InstanceType<Node_5>;
-                    nodes: <Node_6 extends typeof $hyoo_crus_node>(Node: Node_6 | null) => readonly InstanceType<Node_6>[];
+                    cast: <Node_4 extends typeof $hyoo_crus_node>(Node: Node_4) => InstanceType<Node_4>;
+                    nodes: <Node_5 extends typeof $hyoo_crus_node>(Node: Node_5 | null) => readonly InstanceType<Node_5>[];
                     units: () => $hyoo_crus_gist[];
                     filled: () => boolean;
                     can_change: (lord?: symbol & {
@@ -5724,8 +5724,8 @@ declare namespace $ {
                 lord_ref: () => symbol & {
                     $hyoo_crus_ref: symbol;
                 };
-                cast: <Node_5 extends typeof $hyoo_crus_node>(Node: Node_5) => InstanceType<Node_5>;
-                nodes: <Node_6 extends typeof $hyoo_crus_node>(Node: Node_6 | null) => readonly InstanceType<Node_6>[];
+                cast: <Node_4 extends typeof $hyoo_crus_node>(Node: Node_4) => InstanceType<Node_4>;
+                nodes: <Node_5 extends typeof $hyoo_crus_node>(Node: Node_5 | null) => readonly InstanceType<Node_5>[];
                 units: () => $hyoo_crus_gist[];
                 filled: () => boolean;
                 can_change: (lord?: symbol & {
@@ -5801,8 +5801,8 @@ declare namespace $ {
                 $hyoo_crus_ref: symbol;
             };
             toJSON(): string | undefined;
-            cast<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1): InstanceType<Node_1>;
-            nodes<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2 | null): readonly InstanceType<Node_2>[];
+            cast<Node extends typeof $hyoo_crus_node>(Node: Node): InstanceType<Node>;
+            nodes<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1 | null): readonly InstanceType<Node_1>[];
             units(): $hyoo_crus_gist[];
             filled(): boolean;
             can_change(lord?: symbol & {
@@ -5875,8 +5875,8 @@ declare namespace $ {
                     $hyoo_crus_ref: symbol;
                 };
                 toJSON(): string | undefined;
-                cast<Node_3 extends typeof $hyoo_crus_node>(Node: Node_3): InstanceType<Node_3>;
-                nodes<Node_4 extends typeof $hyoo_crus_node>(Node: Node_4 | null): readonly InstanceType<Node_4>[];
+                cast<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2): InstanceType<Node_2>;
+                nodes<Node_3 extends typeof $hyoo_crus_node>(Node: Node_3 | null): readonly InstanceType<Node_3>[];
                 units(): $hyoo_crus_gist[];
                 filled(): boolean;
                 can_change(lord?: symbol & {
@@ -5914,8 +5914,8 @@ declare namespace $ {
                     lord_ref: () => symbol & {
                         $hyoo_crus_ref: symbol;
                     };
-                    cast: <Node_5 extends typeof $hyoo_crus_node>(Node: Node_5) => InstanceType<Node_5>;
-                    nodes: <Node_6 extends typeof $hyoo_crus_node>(Node: Node_6 | null) => readonly InstanceType<Node_6>[];
+                    cast: <Node_4 extends typeof $hyoo_crus_node>(Node: Node_4) => InstanceType<Node_4>;
+                    nodes: <Node_5 extends typeof $hyoo_crus_node>(Node: Node_5 | null) => readonly InstanceType<Node_5>[];
                     units: () => $hyoo_crus_gist[];
                     filled: () => boolean;
                     can_change: (lord?: symbol & {
@@ -5979,8 +5979,8 @@ declare namespace $ {
                 lord_ref: () => symbol & {
                     $hyoo_crus_ref: symbol;
                 };
-                cast: <Node_5 extends typeof $hyoo_crus_node>(Node: Node_5) => InstanceType<Node_5>;
-                nodes: <Node_6 extends typeof $hyoo_crus_node>(Node: Node_6 | null) => readonly InstanceType<Node_6>[];
+                cast: <Node_4 extends typeof $hyoo_crus_node>(Node: Node_4) => InstanceType<Node_4>;
+                nodes: <Node_5 extends typeof $hyoo_crus_node>(Node: Node_5 | null) => readonly InstanceType<Node_5>[];
                 units: () => $hyoo_crus_gist[];
                 filled: () => boolean;
                 can_change: (lord?: symbol & {
@@ -6052,8 +6052,8 @@ declare namespace $ {
                 $hyoo_crus_ref: symbol;
             };
             toJSON(): string | undefined;
-            cast<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1): InstanceType<Node_1>;
-            nodes<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2 | null): readonly InstanceType<Node_2>[];
+            cast<Node extends typeof $hyoo_crus_node>(Node: Node): InstanceType<Node>;
+            nodes<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1 | null): readonly InstanceType<Node_1>[];
             units(): $hyoo_crus_gist[];
             filled(): boolean;
             can_change(lord?: symbol & {
@@ -6126,8 +6126,8 @@ declare namespace $ {
                     $hyoo_crus_ref: symbol;
                 };
                 toJSON(): string | undefined;
-                cast<Node_3 extends typeof $hyoo_crus_node>(Node: Node_3): InstanceType<Node_3>;
-                nodes<Node_4 extends typeof $hyoo_crus_node>(Node: Node_4 | null): readonly InstanceType<Node_4>[];
+                cast<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2): InstanceType<Node_2>;
+                nodes<Node_3 extends typeof $hyoo_crus_node>(Node: Node_3 | null): readonly InstanceType<Node_3>[];
                 units(): $hyoo_crus_gist[];
                 filled(): boolean;
                 can_change(lord?: symbol & {
@@ -6165,8 +6165,8 @@ declare namespace $ {
                     lord_ref: () => symbol & {
                         $hyoo_crus_ref: symbol;
                     };
-                    cast: <Node_5 extends typeof $hyoo_crus_node>(Node: Node_5) => InstanceType<Node_5>;
-                    nodes: <Node_6 extends typeof $hyoo_crus_node>(Node: Node_6 | null) => readonly InstanceType<Node_6>[];
+                    cast: <Node_4 extends typeof $hyoo_crus_node>(Node: Node_4) => InstanceType<Node_4>;
+                    nodes: <Node_5 extends typeof $hyoo_crus_node>(Node: Node_5 | null) => readonly InstanceType<Node_5>[];
                     units: () => $hyoo_crus_gist[];
                     filled: () => boolean;
                     can_change: (lord?: symbol & {
@@ -6230,8 +6230,8 @@ declare namespace $ {
                 lord_ref: () => symbol & {
                     $hyoo_crus_ref: symbol;
                 };
-                cast: <Node_5 extends typeof $hyoo_crus_node>(Node: Node_5) => InstanceType<Node_5>;
-                nodes: <Node_6 extends typeof $hyoo_crus_node>(Node: Node_6 | null) => readonly InstanceType<Node_6>[];
+                cast: <Node_4 extends typeof $hyoo_crus_node>(Node: Node_4) => InstanceType<Node_4>;
+                nodes: <Node_5 extends typeof $hyoo_crus_node>(Node: Node_5 | null) => readonly InstanceType<Node_5>[];
                 units: () => $hyoo_crus_gist[];
                 filled: () => boolean;
                 can_change: (lord?: symbol & {
@@ -6303,8 +6303,8 @@ declare namespace $ {
                 $hyoo_crus_ref: symbol;
             };
             toJSON(): string | undefined;
-            cast<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1): InstanceType<Node_1>;
-            nodes<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2 | null): readonly InstanceType<Node_2>[];
+            cast<Node extends typeof $hyoo_crus_node>(Node: Node): InstanceType<Node>;
+            nodes<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1 | null): readonly InstanceType<Node_1>[];
             units(): $hyoo_crus_gist[];
             filled(): boolean;
             can_change(lord?: symbol & {
@@ -6377,8 +6377,8 @@ declare namespace $ {
                     $hyoo_crus_ref: symbol;
                 };
                 toJSON(): string | undefined;
-                cast<Node_3 extends typeof $hyoo_crus_node>(Node: Node_3): InstanceType<Node_3>;
-                nodes<Node_4 extends typeof $hyoo_crus_node>(Node: Node_4 | null): readonly InstanceType<Node_4>[];
+                cast<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2): InstanceType<Node_2>;
+                nodes<Node_3 extends typeof $hyoo_crus_node>(Node: Node_3 | null): readonly InstanceType<Node_3>[];
                 units(): $hyoo_crus_gist[];
                 filled(): boolean;
                 can_change(lord?: symbol & {
@@ -6416,8 +6416,8 @@ declare namespace $ {
                     lord_ref: () => symbol & {
                         $hyoo_crus_ref: symbol;
                     };
-                    cast: <Node_5 extends typeof $hyoo_crus_node>(Node: Node_5) => InstanceType<Node_5>;
-                    nodes: <Node_6 extends typeof $hyoo_crus_node>(Node: Node_6 | null) => readonly InstanceType<Node_6>[];
+                    cast: <Node_4 extends typeof $hyoo_crus_node>(Node: Node_4) => InstanceType<Node_4>;
+                    nodes: <Node_5 extends typeof $hyoo_crus_node>(Node: Node_5 | null) => readonly InstanceType<Node_5>[];
                     units: () => $hyoo_crus_gist[];
                     filled: () => boolean;
                     can_change: (lord?: symbol & {
@@ -6481,8 +6481,8 @@ declare namespace $ {
                 lord_ref: () => symbol & {
                     $hyoo_crus_ref: symbol;
                 };
-                cast: <Node_5 extends typeof $hyoo_crus_node>(Node: Node_5) => InstanceType<Node_5>;
-                nodes: <Node_6 extends typeof $hyoo_crus_node>(Node: Node_6 | null) => readonly InstanceType<Node_6>[];
+                cast: <Node_4 extends typeof $hyoo_crus_node>(Node: Node_4) => InstanceType<Node_4>;
+                nodes: <Node_5 extends typeof $hyoo_crus_node>(Node: Node_5 | null) => readonly InstanceType<Node_5>[];
                 units: () => $hyoo_crus_gist[];
                 filled: () => boolean;
                 can_change: (lord?: symbol & {
@@ -6554,8 +6554,8 @@ declare namespace $ {
                 $hyoo_crus_ref: symbol;
             };
             toJSON(): string | undefined;
-            cast<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1): InstanceType<Node_1>;
-            nodes<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2 | null): readonly InstanceType<Node_2>[];
+            cast<Node extends typeof $hyoo_crus_node>(Node: Node): InstanceType<Node>;
+            nodes<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1 | null): readonly InstanceType<Node_1>[];
             units(): $hyoo_crus_gist[];
             filled(): boolean;
             can_change(lord?: symbol & {
@@ -6628,8 +6628,8 @@ declare namespace $ {
                     $hyoo_crus_ref: symbol;
                 };
                 toJSON(): string | undefined;
-                cast<Node_3 extends typeof $hyoo_crus_node>(Node: Node_3): InstanceType<Node_3>;
-                nodes<Node_4 extends typeof $hyoo_crus_node>(Node: Node_4 | null): readonly InstanceType<Node_4>[];
+                cast<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2): InstanceType<Node_2>;
+                nodes<Node_3 extends typeof $hyoo_crus_node>(Node: Node_3 | null): readonly InstanceType<Node_3>[];
                 units(): $hyoo_crus_gist[];
                 filled(): boolean;
                 can_change(lord?: symbol & {
@@ -6667,8 +6667,8 @@ declare namespace $ {
                     lord_ref: () => symbol & {
                         $hyoo_crus_ref: symbol;
                     };
-                    cast: <Node_5 extends typeof $hyoo_crus_node>(Node: Node_5) => InstanceType<Node_5>;
-                    nodes: <Node_6 extends typeof $hyoo_crus_node>(Node: Node_6 | null) => readonly InstanceType<Node_6>[];
+                    cast: <Node_4 extends typeof $hyoo_crus_node>(Node: Node_4) => InstanceType<Node_4>;
+                    nodes: <Node_5 extends typeof $hyoo_crus_node>(Node: Node_5 | null) => readonly InstanceType<Node_5>[];
                     units: () => $hyoo_crus_gist[];
                     filled: () => boolean;
                     can_change: (lord?: symbol & {
@@ -6732,8 +6732,8 @@ declare namespace $ {
                 lord_ref: () => symbol & {
                     $hyoo_crus_ref: symbol;
                 };
-                cast: <Node_5 extends typeof $hyoo_crus_node>(Node: Node_5) => InstanceType<Node_5>;
-                nodes: <Node_6 extends typeof $hyoo_crus_node>(Node: Node_6 | null) => readonly InstanceType<Node_6>[];
+                cast: <Node_4 extends typeof $hyoo_crus_node>(Node: Node_4) => InstanceType<Node_4>;
+                nodes: <Node_5 extends typeof $hyoo_crus_node>(Node: Node_5 | null) => readonly InstanceType<Node_5>[];
                 units: () => $hyoo_crus_gist[];
                 filled: () => boolean;
                 can_change: (lord?: symbol & {
@@ -6805,8 +6805,8 @@ declare namespace $ {
                 $hyoo_crus_ref: symbol;
             };
             toJSON(): string | undefined;
-            cast<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1): InstanceType<Node_1>;
-            nodes<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2 | null): readonly InstanceType<Node_2>[];
+            cast<Node extends typeof $hyoo_crus_node>(Node: Node): InstanceType<Node>;
+            nodes<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1 | null): readonly InstanceType<Node_1>[];
             units(): $hyoo_crus_gist[];
             filled(): boolean;
             can_change(lord?: symbol & {
@@ -6879,8 +6879,8 @@ declare namespace $ {
                     $hyoo_crus_ref: symbol;
                 };
                 toJSON(): string | undefined;
-                cast<Node_3 extends typeof $hyoo_crus_node>(Node: Node_3): InstanceType<Node_3>;
-                nodes<Node_4 extends typeof $hyoo_crus_node>(Node: Node_4 | null): readonly InstanceType<Node_4>[];
+                cast<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2): InstanceType<Node_2>;
+                nodes<Node_3 extends typeof $hyoo_crus_node>(Node: Node_3 | null): readonly InstanceType<Node_3>[];
                 units(): $hyoo_crus_gist[];
                 filled(): boolean;
                 can_change(lord?: symbol & {
@@ -6918,8 +6918,8 @@ declare namespace $ {
                     lord_ref: () => symbol & {
                         $hyoo_crus_ref: symbol;
                     };
-                    cast: <Node_5 extends typeof $hyoo_crus_node>(Node: Node_5) => InstanceType<Node_5>;
-                    nodes: <Node_6 extends typeof $hyoo_crus_node>(Node: Node_6 | null) => readonly InstanceType<Node_6>[];
+                    cast: <Node_4 extends typeof $hyoo_crus_node>(Node: Node_4) => InstanceType<Node_4>;
+                    nodes: <Node_5 extends typeof $hyoo_crus_node>(Node: Node_5 | null) => readonly InstanceType<Node_5>[];
                     units: () => $hyoo_crus_gist[];
                     filled: () => boolean;
                     can_change: (lord?: symbol & {
@@ -6983,8 +6983,8 @@ declare namespace $ {
                 lord_ref: () => symbol & {
                     $hyoo_crus_ref: symbol;
                 };
-                cast: <Node_5 extends typeof $hyoo_crus_node>(Node: Node_5) => InstanceType<Node_5>;
-                nodes: <Node_6 extends typeof $hyoo_crus_node>(Node: Node_6 | null) => readonly InstanceType<Node_6>[];
+                cast: <Node_4 extends typeof $hyoo_crus_node>(Node: Node_4) => InstanceType<Node_4>;
+                nodes: <Node_5 extends typeof $hyoo_crus_node>(Node: Node_5 | null) => readonly InstanceType<Node_5>[];
                 units: () => $hyoo_crus_gist[];
                 filled: () => boolean;
                 can_change: (lord?: symbol & {
@@ -7056,8 +7056,8 @@ declare namespace $ {
                 $hyoo_crus_ref: symbol;
             };
             toJSON(): string | undefined;
-            cast<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1): InstanceType<Node_1>;
-            nodes<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2 | null): readonly InstanceType<Node_2>[];
+            cast<Node extends typeof $hyoo_crus_node>(Node: Node): InstanceType<Node>;
+            nodes<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1 | null): readonly InstanceType<Node_1>[];
             units(): $hyoo_crus_gist[];
             filled(): boolean;
             can_change(lord?: symbol & {
@@ -7130,8 +7130,8 @@ declare namespace $ {
                     $hyoo_crus_ref: symbol;
                 };
                 toJSON(): string | undefined;
-                cast<Node_3 extends typeof $hyoo_crus_node>(Node: Node_3): InstanceType<Node_3>;
-                nodes<Node_4 extends typeof $hyoo_crus_node>(Node: Node_4 | null): readonly InstanceType<Node_4>[];
+                cast<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2): InstanceType<Node_2>;
+                nodes<Node_3 extends typeof $hyoo_crus_node>(Node: Node_3 | null): readonly InstanceType<Node_3>[];
                 units(): $hyoo_crus_gist[];
                 filled(): boolean;
                 can_change(lord?: symbol & {
@@ -7169,8 +7169,8 @@ declare namespace $ {
                     lord_ref: () => symbol & {
                         $hyoo_crus_ref: symbol;
                     };
-                    cast: <Node_5 extends typeof $hyoo_crus_node>(Node: Node_5) => InstanceType<Node_5>;
-                    nodes: <Node_6 extends typeof $hyoo_crus_node>(Node: Node_6 | null) => readonly InstanceType<Node_6>[];
+                    cast: <Node_4 extends typeof $hyoo_crus_node>(Node: Node_4) => InstanceType<Node_4>;
+                    nodes: <Node_5 extends typeof $hyoo_crus_node>(Node: Node_5 | null) => readonly InstanceType<Node_5>[];
                     units: () => $hyoo_crus_gist[];
                     filled: () => boolean;
                     can_change: (lord?: symbol & {
@@ -7234,8 +7234,8 @@ declare namespace $ {
                 lord_ref: () => symbol & {
                     $hyoo_crus_ref: symbol;
                 };
-                cast: <Node_5 extends typeof $hyoo_crus_node>(Node: Node_5) => InstanceType<Node_5>;
-                nodes: <Node_6 extends typeof $hyoo_crus_node>(Node: Node_6 | null) => readonly InstanceType<Node_6>[];
+                cast: <Node_4 extends typeof $hyoo_crus_node>(Node: Node_4) => InstanceType<Node_4>;
+                nodes: <Node_5 extends typeof $hyoo_crus_node>(Node: Node_5 | null) => readonly InstanceType<Node_5>[];
                 units: () => $hyoo_crus_gist[];
                 filled: () => boolean;
                 can_change: (lord?: symbol & {
@@ -7307,8 +7307,8 @@ declare namespace $ {
                 $hyoo_crus_ref: symbol;
             };
             toJSON(): string | undefined;
-            cast<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1): InstanceType<Node_1>;
-            nodes<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2 | null): readonly InstanceType<Node_2>[];
+            cast<Node extends typeof $hyoo_crus_node>(Node: Node): InstanceType<Node>;
+            nodes<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1 | null): readonly InstanceType<Node_1>[];
             units(): $hyoo_crus_gist[];
             filled(): boolean;
             can_change(lord?: symbol & {
@@ -7381,8 +7381,8 @@ declare namespace $ {
                     $hyoo_crus_ref: symbol;
                 };
                 toJSON(): string | undefined;
-                cast<Node_3 extends typeof $hyoo_crus_node>(Node: Node_3): InstanceType<Node_3>;
-                nodes<Node_4 extends typeof $hyoo_crus_node>(Node: Node_4 | null): readonly InstanceType<Node_4>[];
+                cast<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2): InstanceType<Node_2>;
+                nodes<Node_3 extends typeof $hyoo_crus_node>(Node: Node_3 | null): readonly InstanceType<Node_3>[];
                 units(): $hyoo_crus_gist[];
                 filled(): boolean;
                 can_change(lord?: symbol & {
@@ -7420,8 +7420,8 @@ declare namespace $ {
                     lord_ref: () => symbol & {
                         $hyoo_crus_ref: symbol;
                     };
-                    cast: <Node_5 extends typeof $hyoo_crus_node>(Node: Node_5) => InstanceType<Node_5>;
-                    nodes: <Node_6 extends typeof $hyoo_crus_node>(Node: Node_6 | null) => readonly InstanceType<Node_6>[];
+                    cast: <Node_4 extends typeof $hyoo_crus_node>(Node: Node_4) => InstanceType<Node_4>;
+                    nodes: <Node_5 extends typeof $hyoo_crus_node>(Node: Node_5 | null) => readonly InstanceType<Node_5>[];
                     units: () => $hyoo_crus_gist[];
                     filled: () => boolean;
                     can_change: (lord?: symbol & {
@@ -7485,8 +7485,8 @@ declare namespace $ {
                 lord_ref: () => symbol & {
                     $hyoo_crus_ref: symbol;
                 };
-                cast: <Node_5 extends typeof $hyoo_crus_node>(Node: Node_5) => InstanceType<Node_5>;
-                nodes: <Node_6 extends typeof $hyoo_crus_node>(Node: Node_6 | null) => readonly InstanceType<Node_6>[];
+                cast: <Node_4 extends typeof $hyoo_crus_node>(Node: Node_4) => InstanceType<Node_4>;
+                nodes: <Node_5 extends typeof $hyoo_crus_node>(Node: Node_5 | null) => readonly InstanceType<Node_5>[];
                 units: () => $hyoo_crus_gist[];
                 filled: () => boolean;
                 can_change: (lord?: symbol & {
