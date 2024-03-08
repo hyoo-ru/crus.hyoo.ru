@@ -6897,10 +6897,10 @@ var $;
                 $mol_mem
             ], Ref.prototype, "remote", null);
             __decorate([
-                $mol_action
+                $mol_mem
             ], Ref.prototype, "remote_ensure", null);
             __decorate([
-                $mol_action
+                $mol_mem
             ], Ref.prototype, "local_ensure", null);
             return Ref;
         }

@@ -4396,7 +4396,7 @@ declare namespace $ {
                     value: any;
                 };
                 tag: "keys" | "term" | "solo" | "vals";
-            }>>(this: This, schema: Schema): This & (new (...args: any[]) => InstanceType<This> & { [Key in keyof Schema]: InstanceType<Schema[Key]>; } & { readonly [Key_1 in keyof Schema as Uncapitalize<Extract<Key_1, string>>]: (next?: ReturnType<InstanceType<Schema[Key_1]>["value"]> | undefined) => ReturnType<InstanceType<Schema[Key_1]>["value"]> | null; });
+            }>>(this: This, schema: Schema): This & (new (...args: any[]) => InstanceType<This> & { [Key in keyof Schema]: InstanceType<Schema[Key]> | null; } & { readonly [Key_1 in keyof Schema as Uncapitalize<Extract<Key_1, string>>]: (next?: ReturnType<InstanceType<Schema[Key_1]>["value"]> | undefined) => ReturnType<InstanceType<Schema[Key_1]>["value"]> | null; });
             [Symbol.toPrimitive]: typeof $mol_object2.[ Symbol.toPrimitive ];
             destructor: typeof $mol_object2.destructor;
             $: typeof $$;
@@ -4411,7 +4411,7 @@ declare namespace $ {
             new (): {
                 value: any;
             };
-        }>>(this: This, schema: Schema): This & (new (...args: any[]) => InstanceType<This> & { [Key in keyof Schema]: InstanceType<Schema[Key]>; } & { readonly [Key_1 in keyof Schema as Uncapitalize<Extract<Key_1, string>>]: (next?: ReturnType<InstanceType<Schema[Key_1]>["value"]> | undefined) => ReturnType<InstanceType<Schema[Key_1]>["value"]> | null; });
+        }>>(this: This, schema: Schema): This & (new (...args: any[]) => InstanceType<This> & { [Key in keyof Schema]: InstanceType<Schema[Key]> | null; } & { readonly [Key_1 in keyof Schema as Uncapitalize<Extract<Key_1, string>>]: (next?: ReturnType<InstanceType<Schema[Key_1]>["value"]> | undefined) => ReturnType<InstanceType<Schema[Key_1]>["value"]> | null; });
     }
     export {};
 }
@@ -4457,7 +4457,7 @@ declare namespace $ {
             toString(): string;
             [Symbol.toStringTag]: string;
             [$mol_ambient_ref]: typeof $$;
-        };
+        } | null;
     } & {
         readonly inflow: (next?: readonly ((symbol & {
             $hyoo_crus_ref: symbol;
@@ -4646,8 +4646,8 @@ declare namespace $ {
                 new (): {
                     value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                     remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
-                    remote_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
-                    local_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
+                    remote_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
+                    local_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
                     toString: () => string;
                     [Symbol.toStringTag]: string;
                     head: () => string;
@@ -4711,8 +4711,8 @@ declare namespace $ {
             new (): {
                 value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                 remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
-                remote_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
-                local_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
+                remote_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
+                local_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
                 toString: () => string;
                 [Symbol.toStringTag]: string;
                 head: () => string;
@@ -4888,8 +4888,8 @@ declare namespace $ {
                 new (): {
                     value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                     remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
-                    remote_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
-                    local_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
+                    remote_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
+                    local_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
                     toString: () => string;
                     [Symbol.toStringTag]: string;
                     head: () => string;
@@ -4953,8 +4953,8 @@ declare namespace $ {
             new (): {
                 value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                 remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
-                remote_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
-                local_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
+                remote_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
+                local_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
                 toString: () => string;
                 [Symbol.toStringTag]: string;
                 head: () => string;
@@ -5139,8 +5139,8 @@ declare namespace $ {
                 new (): {
                     value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                     remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
-                    remote_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
-                    local_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
+                    remote_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
+                    local_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
                     toString: () => string;
                     [Symbol.toStringTag]: string;
                     head: () => string;
@@ -5204,8 +5204,8 @@ declare namespace $ {
             new (): {
                 value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                 remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
-                remote_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
-                local_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
+                remote_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
+                local_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
                 toString: () => string;
                 [Symbol.toStringTag]: string;
                 head: () => string;
@@ -5390,8 +5390,8 @@ declare namespace $ {
                 new (): {
                     value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                     remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
-                    remote_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
-                    local_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
+                    remote_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
+                    local_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
                     toString: () => string;
                     [Symbol.toStringTag]: string;
                     head: () => string;
@@ -5455,8 +5455,8 @@ declare namespace $ {
             new (): {
                 value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                 remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
-                remote_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
-                local_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
+                remote_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
+                local_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
                 toString: () => string;
                 [Symbol.toStringTag]: string;
                 head: () => string;
@@ -5641,8 +5641,8 @@ declare namespace $ {
                 new (): {
                     value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                     remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
-                    remote_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
-                    local_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
+                    remote_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
+                    local_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
                     toString: () => string;
                     [Symbol.toStringTag]: string;
                     head: () => string;
@@ -5706,8 +5706,8 @@ declare namespace $ {
             new (): {
                 value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                 remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
-                remote_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
-                local_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
+                remote_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
+                local_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
                 toString: () => string;
                 [Symbol.toStringTag]: string;
                 head: () => string;
@@ -5896,8 +5896,8 @@ declare namespace $ {
                 new (): {
                     value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                     remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
-                    remote_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
-                    local_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
+                    remote_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
+                    local_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
                     toString: () => string;
                     [Symbol.toStringTag]: string;
                     head: () => string;
@@ -5961,8 +5961,8 @@ declare namespace $ {
             new (): {
                 value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                 remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
-                remote_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
-                local_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
+                remote_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
+                local_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
                 toString: () => string;
                 [Symbol.toStringTag]: string;
                 head: () => string;
@@ -6147,8 +6147,8 @@ declare namespace $ {
                 new (): {
                     value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                     remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
-                    remote_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
-                    local_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
+                    remote_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
+                    local_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
                     toString: () => string;
                     [Symbol.toStringTag]: string;
                     head: () => string;
@@ -6212,8 +6212,8 @@ declare namespace $ {
             new (): {
                 value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                 remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
-                remote_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
-                local_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
+                remote_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
+                local_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
                 toString: () => string;
                 [Symbol.toStringTag]: string;
                 head: () => string;
@@ -6398,8 +6398,8 @@ declare namespace $ {
                 new (): {
                     value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                     remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
-                    remote_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
-                    local_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
+                    remote_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
+                    local_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
                     toString: () => string;
                     [Symbol.toStringTag]: string;
                     head: () => string;
@@ -6463,8 +6463,8 @@ declare namespace $ {
             new (): {
                 value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                 remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
-                remote_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
-                local_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
+                remote_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
+                local_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
                 toString: () => string;
                 [Symbol.toStringTag]: string;
                 head: () => string;
@@ -6649,8 +6649,8 @@ declare namespace $ {
                 new (): {
                     value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                     remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
-                    remote_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
-                    local_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
+                    remote_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
+                    local_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
                     toString: () => string;
                     [Symbol.toStringTag]: string;
                     head: () => string;
@@ -6714,8 +6714,8 @@ declare namespace $ {
             new (): {
                 value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                 remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
-                remote_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
-                local_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
+                remote_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
+                local_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
                 toString: () => string;
                 [Symbol.toStringTag]: string;
                 head: () => string;
@@ -6900,8 +6900,8 @@ declare namespace $ {
                 new (): {
                     value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                     remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
-                    remote_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
-                    local_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
+                    remote_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
+                    local_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
                     toString: () => string;
                     [Symbol.toStringTag]: string;
                     head: () => string;
@@ -6965,8 +6965,8 @@ declare namespace $ {
             new (): {
                 value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                 remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
-                remote_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
-                local_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
+                remote_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
+                local_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
                 toString: () => string;
                 [Symbol.toStringTag]: string;
                 head: () => string;
@@ -7151,8 +7151,8 @@ declare namespace $ {
                 new (): {
                     value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                     remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
-                    remote_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
-                    local_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
+                    remote_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
+                    local_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
                     toString: () => string;
                     [Symbol.toStringTag]: string;
                     head: () => string;
@@ -7216,8 +7216,8 @@ declare namespace $ {
             new (): {
                 value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                 remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
-                remote_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
-                local_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
+                remote_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
+                local_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
                 toString: () => string;
                 [Symbol.toStringTag]: string;
                 head: () => string;
@@ -7402,8 +7402,8 @@ declare namespace $ {
                 new (): {
                     value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                     remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
-                    remote_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
-                    local_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
+                    remote_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
+                    local_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
                     toString: () => string;
                     [Symbol.toStringTag]: string;
                     head: () => string;
@@ -7467,8 +7467,8 @@ declare namespace $ {
             new (): {
                 value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                 remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
-                remote_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
-                local_ensure(): NonNullable<$mol_type_result<$mol_type_result<Value>>>;
+                remote_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
+                local_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
                 toString: () => string;
                 [Symbol.toStringTag]: string;
                 head: () => string;
