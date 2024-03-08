@@ -54,7 +54,7 @@ namespace $ {
 			
 			const Entity = class Entity extends ( this as any ) {} as This & {
 				new( ...args: any[] ): InstanceType< This > & {
-					[ Key in keyof Schema ]: InstanceType< Schema[ Key ] >
+					[ Key in keyof Schema ]: InstanceType< Schema[ Key ] > | null
 				} & {
 					readonly [ Key in keyof Schema as Uncapitalize< Extract< Key, string > > ]:
 						( next?: ReturnType< InstanceType< Schema[ Key ] >[ 'value' ] > )=> ReturnType< InstanceType< Schema[ Key ] >[ 'value' ] > | null

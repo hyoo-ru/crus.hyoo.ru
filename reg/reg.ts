@@ -150,17 +150,17 @@ namespace $ {
 					return realm!.Node( ref, ( Value as any )() )
 				}
 				
-				@ $mol_action
+				@ $mol_mem
 				remote_ensure() {
 					this.yoke( this.ref(), null )
-					return this.remote()!
+					return this.remote()
 				}
 	
-				@ $mol_action
+				@ $mol_mem
 				local_ensure() {
 					if( this.value_ref() ) return this.remote()!
 					const node = this.land().Node( ( Value as any )() ).Item( this.land().self_make( $hyoo_crus_area_of( this.head() ) ) )
-					return this.remote( node )!
+					return this.remote( node )
 				}
 	
 			}

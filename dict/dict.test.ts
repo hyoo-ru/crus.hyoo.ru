@@ -74,32 +74,32 @@ namespace $.$$ {
 			const land = realm.home().base().land()
 			
 			const user = land.Node( User ).Item('11111111')
-			$mol_assert_equal( user.title(), user.Title.value(), null )
-			$mol_assert_equal( user.account(), user.Account.remote(), null )
-			$mol_assert_equal( user.articles() ?? [], user.Articles.remote_list(), [] )
+			$mol_assert_equal( user.title(), user.Title!.value(), null )
+			$mol_assert_equal( user.account(), user.Account!.remote(), null )
+			$mol_assert_equal( user.articles() ?? [], user.Articles!.remote_list(), [] )
 			
 			user.title( 'Jin' )
-			$mol_assert_equal( user.title() ?? '', user.Title.value(), 'Jin' )
+			$mol_assert_equal( user.title() ?? '', user.Title!.value(), 'Jin' )
 			
-			const account = user.Account.remote_ensure()
-			$mol_assert_equal( user.account(), user.Account.remote(), account )
-			$mol_assert_equal( account.user(), account.User.remote(), null )
+			const account = user.Account!.remote_ensure()!
+			$mol_assert_equal( user.account(), user.Account!.remote(), account )
+			$mol_assert_equal( account.user(), account.User!.remote(), null )
 			
 			account.user( user )
-			$mol_assert_equal( account.user(), account.User.remote(), user )
+			$mol_assert_equal( account.user(), account.User!.remote(), user )
 			
-			const articles = [ user.Articles.remote_make(), user.Articles.remote_make() ]
-			$mol_assert_equal( user.articles() ?? [], user.Articles.remote_list(), articles )
+			const articles = [ user.Articles!.remote_make(), user.Articles!.remote_make() ]
+			$mol_assert_equal( user.articles() ?? [], user.Articles!.remote_list(), articles )
 			
-			articles[0].Title.key( 'en' ).value( 'Hello!' )
+			articles[0].Title!.key( 'en' ).value( 'Hello!' )
 			$mol_assert_equal(
-				articles[0].Title.key( 'en' ).value(),
+				articles[0].Title!.key( 'en' ).value(),
 				articles[0].title()?.key( 'en' ).value(),
 				'Hello!',
 			)
 			$mol_assert_equal( articles[1].title()?.key( 'ru' ).value(), undefined )
 			$mol_assert_equal(
-				articles[1].Title.key( 'ru' ).value(),
+				articles[1].Title!.key( 'ru' ).value(),
 				articles[1].title()?.key( 'ru' ).value(),
 				null,
 			)

@@ -375,7 +375,7 @@ namespace $ {
 			if( !realm ) $mol_fail( new Error( 'Realm is required to fork' ) )
 			
 			const land = realm.home().Land_new(0)
-			land.Meta().Inflow.items([ this.ref() ])
+			land.Meta().Inflow!.items([ this.ref() ])
 			
 			return land
 		}
