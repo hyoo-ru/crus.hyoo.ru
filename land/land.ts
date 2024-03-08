@@ -77,7 +77,7 @@ namespace $ {
 			return new $hyoo_crus_fund( ( head: string )=> {
 				if( head === 'AAAAAAAA' ) return this.Node( Node ).Item( '' )
 				return ( Node as typeof $hyoo_crus_node ).make({
-					land: $mol_const( this ),
+					land: ()=> this.sync(),
 					head: $mol_const( head ),
 				}) as InstanceType< Node >
 			} )
@@ -634,6 +634,7 @@ namespace $ {
 			
 			this.realm()?.yard().sync_land( this.ref() )
 			
+			return this
 		}
 		
 		@ $mol_mem

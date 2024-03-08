@@ -81,14 +81,18 @@ namespace $ {
 		}
 		
 		;[ $mol_dev_format_head ]() {
-			const nodes = this.nodes(null)
+			
+			const keys = $mol_wire_probe( ()=> this.keys() )
+			const nodes = $mol_wire_probe( ()=> this.nodes(null) ) ?? []
+			
 			return $mol_dev_format_span( {} ,
 				$mol_dev_format_native( this ) ,
 				' ',
 				this.head(),
 				' ',
-				$mol_dev_format_auto( this.keys().map( ( key, index )=> new Pair( key, nodes[ index ] ) ) ),
+				$mol_dev_format_auto( keys?.map( ( key, index )=> new Pair( key, nodes[ index ] ) ) ),
 			)
+			
 		}
 		
 	}
