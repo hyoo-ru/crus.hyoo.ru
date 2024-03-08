@@ -6457,8 +6457,9 @@ var $;
         }
         ;
         [$mol_dev_format_head]() {
-            const nodes = this.nodes(null);
-            return $mol_dev_format_span({}, $mol_dev_format_native(this), ' ', this.head(), ' ', $mol_dev_format_auto(this.keys().map((key, index) => new Pair(key, nodes[index]))));
+            const keys = $mol_wire_probe(() => this.keys());
+            const nodes = $mol_wire_probe(() => this.nodes(null)) ?? [];
+            return $mol_dev_format_span({}, $mol_dev_format_native(this), ' ', this.head(), ' ', $mol_dev_format_auto(keys?.map((key, index) => new Pair(key, nodes[index]))));
         }
     }
     __decorate([
@@ -7047,7 +7048,7 @@ var $;
                 if (head === 'AAAAAAAA')
                     return this.Node(Node).Item('');
                 return Node.make({
-                    land: $mol_const(this),
+                    land: () => this.sync(),
                     head: $mol_const(head),
                 });
             });
@@ -7439,6 +7440,7 @@ var $;
                 $mol_fail_log(error);
             }
             this.realm()?.yard().sync_land(this.ref());
+            return this;
         }
         bus() {
             return new this.$.$mol_bus(`$hyoo_crus_land:${this.ref().description}`, $mol_wire_async(bins => {

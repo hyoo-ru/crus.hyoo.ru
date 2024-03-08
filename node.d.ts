@@ -7588,7 +7588,7 @@ declare namespace $ {
         gist_move(gist: $hyoo_crus_gist, head: string, seat: number): void;
         gist_wipe(gist: $hyoo_crus_gist): void;
         broadcast(): void;
-        sync(): void;
+        sync(): this;
         bus(): $mol_bus<ArrayBuffer[]>;
         loading(): void;
         saving(): void;
