@@ -16,7 +16,7 @@ namespace $ {
 			return this.dive( 'profiles', $hyoo_crus_dict )?.keys() ?? []
 		}
 		
-		@ $mol_mem_key
+		// @ $mol_mem_key
 		Profile( app: string, auto?: any ) {
 			return this.dive( 'profiles', $hyoo_crus_dict, auto )
 				?.dive( app, $hyoo_crus_reg, auto )
