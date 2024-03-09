@@ -7766,9 +7766,6 @@ var $;
     __decorate([
         $mol_mem
     ], $hyoo_crus_base.prototype, "profiles", null);
-    __decorate([
-        $mol_mem_key
-    ], $hyoo_crus_base.prototype, "Profile", null);
     $.$hyoo_crus_base = $hyoo_crus_base;
 })($ || ($ = {}));
 
