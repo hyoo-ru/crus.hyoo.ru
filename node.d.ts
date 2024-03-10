@@ -778,6 +778,7 @@ declare namespace $ {
         find(include?: RegExp, exclude?: RegExp): $mol_file[];
         size(): number;
         open(...modes: readonly ('create' | 'exists_truncate' | 'exists_fail' | 'read_only' | 'write_only' | 'read_write' | 'append')[]): number;
+        toJSON(): string;
     }
 }
 
@@ -1099,6 +1100,13 @@ declare namespace $ {
 }
 
 declare namespace $ {
+    class $mol_state_local_node<Value> extends $mol_state_local<Value> {
+        static dir(): $mol_file;
+        static value<Value>(key: string, next?: Value | null): Value | null;
+    }
+}
+
+declare namespace $ {
     enum $hyoo_crus_part {
         land = 219,
         pass = 255,
@@ -1173,7 +1181,7 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    enum $hyoo_crus_rang {
+    enum $hyoo_crus_rank {
         nil = 0,
         get = 1,
         add = 3,
@@ -1302,7 +1310,7 @@ declare namespace $ {
 
 declare namespace $ {
     class $hyoo_crus_gift extends $hyoo_crus_unit {
-        rang(next?: $hyoo_crus_rang): $hyoo_crus_rang;
+        rank(next?: $hyoo_crus_rank): $hyoo_crus_rank;
         time(next?: number): number;
         free(): Uint8Array;
         _dest: $hyoo_crus_ref;
@@ -7560,8 +7568,8 @@ declare namespace $ {
         joined_list(): (symbol & {
             $hyoo_crus_ref: symbol;
         })[];
-        lord_rang(lord: $hyoo_crus_ref): $hyoo_crus_rang;
-        peer_rang(peer: string): $hyoo_crus_rang;
+        lord_rank(lord: $hyoo_crus_ref): $hyoo_crus_rank;
+        peer_rank(peer: string): $hyoo_crus_rank;
         delta_unit(face?: $hyoo_crus_face_map): $hyoo_crus_unit[];
         delta_pack(face?: $hyoo_crus_face_map): $hyoo_crus_pack | null;
         delta_parts(face?: $hyoo_crus_face_map): {
@@ -7583,7 +7591,7 @@ declare namespace $ {
         fork(): $hyoo_crus_land;
         gists_ordered(head: string): $hyoo_crus_gist[];
         join(): $hyoo_crus_pass;
-        give(dest: $hyoo_crus_ref | null, rang: $hyoo_crus_rang): $hyoo_crus_gift;
+        give(dest: $hyoo_crus_ref | null, rank: $hyoo_crus_rank): $hyoo_crus_gift;
         post(lead: string, head: string, self: string, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): $hyoo_crus_gist;
         gist_move(gist: $hyoo_crus_gist, head: string, seat: number): void;
         gist_wipe(gist: $hyoo_crus_gist): void;

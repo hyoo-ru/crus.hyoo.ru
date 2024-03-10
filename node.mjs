@@ -2939,6 +2939,9 @@ var $;
         open(...modes) {
             return 0;
         }
+        toJSON() {
+            return this.path();
+        }
     }
     __decorate([
         $mol_mem
@@ -4427,6 +4430,35 @@ var $;
 "use strict";
 var $;
 (function ($) {
+    class $mol_state_local_node extends $mol_state_local {
+        static dir() {
+            const base = process.env.XDG_DATA_HOME || ($node.os.homedir() + '/.local/share');
+            return $mol_file.absolute(base).resolve('./hyoo_state_local');
+        }
+        static value(key, next) {
+            const file = this.dir().resolve(encodeURIComponent(key) + '.json');
+            if (next === null) {
+                file.exists(false);
+                return null;
+            }
+            const arg = next === undefined ? undefined : JSON.stringify(next);
+            return JSON.parse(file.text(arg) || 'null');
+        }
+    }
+    __decorate([
+        $mol_mem
+    ], $mol_state_local_node, "dir", null);
+    __decorate([
+        $mol_mem_key
+    ], $mol_state_local_node, "value", null);
+    $.$mol_state_local_node = $mol_state_local_node;
+    $.$mol_state_local = $mol_state_local_node;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
     let $hyoo_crus_part;
     (function ($hyoo_crus_part) {
         $hyoo_crus_part[$hyoo_crus_part["land"] = 219] = "land";
@@ -4641,14 +4673,14 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    let $hyoo_crus_rang;
-    (function ($hyoo_crus_rang) {
-        $hyoo_crus_rang[$hyoo_crus_rang["nil"] = 0] = "nil";
-        $hyoo_crus_rang[$hyoo_crus_rang["get"] = 1] = "get";
-        $hyoo_crus_rang[$hyoo_crus_rang["add"] = 3] = "add";
-        $hyoo_crus_rang[$hyoo_crus_rang["mod"] = 7] = "mod";
-        $hyoo_crus_rang[$hyoo_crus_rang["law"] = 15] = "law";
-    })($hyoo_crus_rang = $.$hyoo_crus_rang || ($.$hyoo_crus_rang = {}));
+    let $hyoo_crus_rank;
+    (function ($hyoo_crus_rank) {
+        $hyoo_crus_rank[$hyoo_crus_rank["nil"] = 0] = "nil";
+        $hyoo_crus_rank[$hyoo_crus_rank["get"] = 1] = "get";
+        $hyoo_crus_rank[$hyoo_crus_rank["add"] = 3] = "add";
+        $hyoo_crus_rank[$hyoo_crus_rank["mod"] = 7] = "mod";
+        $hyoo_crus_rank[$hyoo_crus_rank["law"] = 15] = "law";
+    })($hyoo_crus_rank = $.$hyoo_crus_rank || ($.$hyoo_crus_rank = {}));
 })($ || ($ = {}));
 
 ;
@@ -5213,12 +5245,12 @@ var $;
 var $;
 (function ($) {
     class $hyoo_crus_gift extends $hyoo_crus_unit {
-        rang(next) {
+        rank(next) {
             if (next !== undefined)
                 this.uint8(0, $hyoo_crus_unit_kind.gift);
             next = this.uint8(1, next);
-            if (next < $hyoo_crus_rang.get || next > $hyoo_crus_rang.law) {
-                $mol_fail(new RangeError(`Wrong rang ${next}`));
+            if (next < $hyoo_crus_rank.get || next > $hyoo_crus_rank.law) {
+                $mol_fail(new RangeError(`Wrong rank ${next}`));
             }
             return next;
         }
@@ -5245,7 +5277,7 @@ var $;
             return (right.time() - left.time()) || (right.peer() > left.peer() ? 1 : right.peer() < left.peer() ? -1 : 0);
         }
         [$mol_dev_format_head]() {
-            return $mol_dev_format_span({}, $mol_dev_format_native(this), ' ', this.peer(), ' 🏅 ', $mol_dev_format_span({}, this.dest().description), this.bill().some(v => v) ? ' 🔐' : ' 📢', $hyoo_crus_rang[this.rang()], ' ', $mol_dev_format_shade(new $mol_time_moment(this.time()).toString('YYYY-MM-DD hh:mm:ss.sss')));
+            return $mol_dev_format_span({}, $mol_dev_format_native(this), ' ', this.peer(), ' 🏅 ', $mol_dev_format_span({}, this.dest().description), this.bill().some(v => v) ? ' 🔐' : ' 📢', $hyoo_crus_rank[this.rank()], ' ', $mol_dev_format_shade(new $mol_time_moment(this.time()).toString('YYYY-MM-DD hh:mm:ss.sss')));
         }
     }
     $.$hyoo_crus_gift = $hyoo_crus_gift;
@@ -5758,7 +5790,7 @@ var $;
             return this.units().length > 0;
         }
         can_change(lord = this.land().auth().lord()) {
-            return this.land().lord_rang(lord) >= $hyoo_crus_rang.add;
+            return this.land().lord_rank(lord) >= $hyoo_crus_rank.add;
         }
         last_change() {
             const land = this.land();
@@ -7015,11 +7047,11 @@ var $;
         self_all = new $mol_wire_set();
         self_make(area, idea = Math.floor(Math.random() * 2 ** 48)) {
             const auth = this.auth();
-            const rang = this.lord_rang(auth.lord());
-            if (rang === $hyoo_crus_rang.add)
+            const rank = this.lord_rank(auth.lord());
+            if (rank === $hyoo_crus_rank.add)
                 return $hyoo_crus_area_to(auth.peer(), 'data');
-            if (rang === $hyoo_crus_rang.nil)
-                $mol_fail(new Error('Rang too low (nil)'));
+            if (rank === $hyoo_crus_rank.nil)
+                $mol_fail(new Error('Rank too low (nil)'));
             const numb = this.numb();
             for (let i = 0; i < 4096; ++i) {
                 idea = (idea + 1) % 2 ** 48;
@@ -7062,18 +7094,18 @@ var $;
         joined_list() {
             return [...this.passes.values()].map(unit => unit.lord());
         }
-        lord_rang(lord) {
+        lord_rank(lord) {
             if (lord === this.lord_ref())
-                return $hyoo_crus_rang.law;
-            return this.gifts.get(lord)?.rang()
-                ?? this.gifts.get($hyoo_crus_ref('FFFFFFFF_FFFFFFFF'))?.rang()
-                ?? $hyoo_crus_rang.get;
+                return $hyoo_crus_rank.law;
+            return this.gifts.get(lord)?.rank()
+                ?? this.gifts.get($hyoo_crus_ref('FFFFFFFF_FFFFFFFF'))?.rank()
+                ?? $hyoo_crus_rank.get;
         }
-        peer_rang(peer) {
+        peer_rank(peer) {
             const auth = this.passes.get(peer);
             if (!auth)
-                return $hyoo_crus_rang.get;
-            return this.lord_rang(auth.lord());
+                return $hyoo_crus_rank.get;
+            return this.lord_rank(auth.lord());
         }
         delta_unit(face = new $hyoo_crus_face_map) {
             this.loading();
@@ -7200,7 +7232,7 @@ var $;
                         this.faces.time_max(next.peer(), next.time());
                         if (!prev)
                             this.faces.total++;
-                        if ((prev?.rang() ?? $hyoo_crus_rang.get) > next.rang())
+                        if ((prev?.rank() ?? $hyoo_crus_rank.get) > next.rank())
                             need_recheck = true;
                     },
                     gist: next => {
@@ -7251,20 +7283,20 @@ var $;
         }
         check_unit(unit) {
             return unit.choose({
-                pass: next => this.lord_rang(next.lord()) < $hyoo_crus_rang.add ? 'Need add rang to join' : '',
-                gift: next => this.peer_rang(next.peer()) < $hyoo_crus_rang.law ? 'Need law rang to change rang' : '',
+                pass: next => this.lord_rank(next.lord()) < $hyoo_crus_rank.add ? 'Need add rank to join' : '',
+                gift: next => this.peer_rank(next.peer()) < $hyoo_crus_rank.law ? 'Need law rank to change rank' : '',
                 gist: next => {
                     if ($hyoo_crus_area_of(next.self()) !== $hyoo_crus_area_of(next.self()))
                         return 'Need same area';
                     if ($hyoo_crus_area_to(next.peer(), 'data') === next.self()) {
-                        return this.peer_rang(next.peer()) < $hyoo_crus_rang.add ? 'Need add rang to post self data' : '';
+                        return this.peer_rank(next.peer()) < $hyoo_crus_rank.add ? 'Need add rank to post self data' : '';
                     }
                     else {
                         if ($hyoo_crus_area_of(next.self()) === 'data') {
-                            return this.peer_rang(next.peer()) < $hyoo_crus_rang.mod ? 'Need mod rang to post any data' : '';
+                            return this.peer_rank(next.peer()) < $hyoo_crus_rank.mod ? 'Need mod rank to post any data' : '';
                         }
                         else {
-                            return this.peer_rang(next.peer()) < $hyoo_crus_rang.law ? 'Need law rang to post to meta area' : '';
+                            return this.peer_rank(next.peer()) < $hyoo_crus_rank.law ? 'Need law rank to post to meta area' : '';
                         }
                     }
                 },
@@ -7355,11 +7387,11 @@ var $;
             this.broadcast();
             return next;
         }
-        give(dest, rang) {
+        give(dest, rank) {
             this.join();
             const auth = this.auth();
             const unit = new $hyoo_crus_gift;
-            unit.rang(rang);
+            unit.rank(rank);
             unit.time(this.faces.tick());
             unit.peer(auth.peer());
             unit.dest(dest ?? $hyoo_crus_ref('FFFFFFFF_FFFFFFFF'));
@@ -7596,7 +7628,7 @@ var $;
             const secret_land = $mol_wire_sync(secret).serial();
             const secret_mutual = auth.secret_mutual(auth.public().toString());
             const unit = new $hyoo_crus_gift;
-            unit.rang($hyoo_crus_rang.law);
+            unit.rank($hyoo_crus_rank.law);
             unit.time(this.faces.tick());
             unit.peer(auth.peer());
             unit.dest(auth.lord());
@@ -7672,7 +7704,7 @@ var $;
     ], $hyoo_crus_land.prototype, "joined_list", null);
     __decorate([
         $mol_mem_key
-    ], $hyoo_crus_land.prototype, "lord_rang", null);
+    ], $hyoo_crus_land.prototype, "lord_rank", null);
     __decorate([
         $mol_action
     ], $hyoo_crus_land.prototype, "faces_pack", null);
