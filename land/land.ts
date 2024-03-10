@@ -38,10 +38,10 @@ namespace $ {
 		self_make( area: keyof typeof $hyoo_crus_area, idea = Math.floor( Math.random() * 2**48 ) ) {
 			
 			const auth = this.auth()
-			const rang = this.lord_rang( auth.lord() )
+			const rank = this.lord_rank( auth.lord() )
 			
-			if( rang === $hyoo_crus_rang.add ) return $hyoo_crus_area_to( auth.peer(), 'data' )
-			if( rang === $hyoo_crus_rang.nil ) $mol_fail( new Error( 'Rang too low (nil)' ) )
+			if( rank === $hyoo_crus_rank.add ) return $hyoo_crus_area_to( auth.peer(), 'data' )
+			if( rank === $hyoo_crus_rank.nil ) $mol_fail( new Error( 'Rank too low (nil)' ) )
 			
 			const numb = this.numb()
 			for( let i = 0; i < 4096; ++i ) {
@@ -96,17 +96,17 @@ namespace $ {
 		}
 		
 		@ $mol_mem_key
-		lord_rang( lord: $hyoo_crus_ref ) {
-			if( lord === this.lord_ref() ) return $hyoo_crus_rang.law
-			return this.gifts.get( lord )?.rang()
-				?? this.gifts.get( $hyoo_crus_ref( 'FFFFFFFF_FFFFFFFF' ) )?.rang()
-				?? $hyoo_crus_rang.get
+		lord_rank( lord: $hyoo_crus_ref ) {
+			if( lord === this.lord_ref() ) return $hyoo_crus_rank.law
+			return this.gifts.get( lord )?.rank()
+				?? this.gifts.get( $hyoo_crus_ref( 'FFFFFFFF_FFFFFFFF' ) )?.rank()
+				?? $hyoo_crus_rank.get
 		}
 		
-		peer_rang( peer: string ) {
+		peer_rank( peer: string ) {
 			const auth = this.passes.get( peer )!
-			if( !auth ) return $hyoo_crus_rang.get
-			return this.lord_rang( auth.lord() )
+			if( !auth ) return $hyoo_crus_rank.get
+			return this.lord_rank( auth.lord() )
 		}
 		
 		/** Picks units between Face and current state. */
@@ -286,7 +286,7 @@ namespace $ {
 						
 						if( !prev ) this.faces.total ++
 						
-						if( ( prev?.rang() ?? $hyoo_crus_rang.get ) > next.rang() ) need_recheck = true
+						if( ( prev?.rank() ?? $hyoo_crus_rank.get ) > next.rank() ) need_recheck = true
 						
 					},
 					
@@ -348,19 +348,19 @@ namespace $ {
 		check_unit( unit: $hyoo_crus_unit ): string {
 			return unit.choose({
 				
-				pass: next => this.lord_rang( next.lord() ) < $hyoo_crus_rang.add ? 'Need add rang to join' : '',
+				pass: next => this.lord_rank( next.lord() ) < $hyoo_crus_rank.add ? 'Need add rank to join' : '',
 				
-				gift: next => this.peer_rang( next.peer() ) < $hyoo_crus_rang.law ? 'Need law rang to change rang': '',
+				gift: next => this.peer_rank( next.peer() ) < $hyoo_crus_rank.law ? 'Need law rank to change rank': '',
 				
 				gist: next => {
 					if( $hyoo_crus_area_of( next.self() ) !== $hyoo_crus_area_of( next.self() ) ) return 'Need same area'
 					if( $hyoo_crus_area_to( next.peer(), 'data' ) === next.self() ) {
-						return this.peer_rang( next.peer() ) < $hyoo_crus_rang.add ? 'Need add rang to post self data' : ''
+						return this.peer_rank( next.peer() ) < $hyoo_crus_rank.add ? 'Need add rank to post self data' : ''
 					} else {
 						if( $hyoo_crus_area_of( next.self() ) === 'data' ) {
-							return this.peer_rang( next.peer() ) < $hyoo_crus_rang.mod ? 'Need mod rang to post any data' : ''
+							return this.peer_rank( next.peer() ) < $hyoo_crus_rank.mod ? 'Need mod rank to post any data' : ''
 						} else {
-							return this.peer_rang( next.peer() ) < $hyoo_crus_rang.law ? 'Need law rang to post to meta area' : ''
+							return this.peer_rank( next.peer() ) < $hyoo_crus_rank.law ? 'Need law rank to post to meta area' : ''
 						}
 					}
 				},
@@ -489,7 +489,7 @@ namespace $ {
 		@ $mol_action
 		give(
 			dest: $hyoo_crus_ref | null,
-			rang: $hyoo_crus_rang,
+			rank: $hyoo_crus_rank,
 		) {
 				
 			this.join()
@@ -497,7 +497,7 @@ namespace $ {
 			const auth = this.auth()
 			const unit = new $hyoo_crus_gift
 			
-			unit.rang( rang )
+			unit.rank( rank )
 			unit.time( this.faces.tick() )
 			unit.peer( auth.peer() )
 			unit.dest( dest ?? $hyoo_crus_ref( 'FFFFFFFF_FFFFFFFF' ) )
@@ -835,7 +835,7 @@ namespace $ {
 			
 			const unit = new $hyoo_crus_gift
 			
-			unit.rang( $hyoo_crus_rang.law )
+			unit.rank( $hyoo_crus_rank.law )
 			unit.time( this.faces.tick() )
 			unit.peer( auth.peer() )
 			unit.dest( auth.lord() )

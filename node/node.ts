@@ -63,7 +63,7 @@ namespace $ {
 		}
 		
 		can_change( lord = this.land().auth().lord() ) {
-			return this.land().lord_rang( lord ) >= $hyoo_crus_rang.add
+			return this.land().lord_rank( lord ) >= $hyoo_crus_rank.add
 		}
 		
 		@ $mol_mem

@@ -1,6 +1,6 @@
 namespace $ {
 	
-	export enum $hyoo_crus_rang {
+	export enum $hyoo_crus_rank {
 		nil = 0b0000,
 		get = 0b0001,
 		add = 0b0011,

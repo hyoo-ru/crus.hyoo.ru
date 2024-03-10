@@ -20,10 +20,10 @@ namespace $ {
 		'gift unit type'() {
 			
 			const gift = new $hyoo_crus_gift
-			gift.rang( $hyoo_crus_rang.law )
+			gift.rank( $hyoo_crus_rank.law )
 			
 			$mol_assert_equal( gift.kind(), 'gift' )
-			$mol_assert_equal( gift.rang(), $hyoo_crus_rang.law )
+			$mol_assert_equal( gift.rank(), $hyoo_crus_rank.law )
 			
 		},
 		

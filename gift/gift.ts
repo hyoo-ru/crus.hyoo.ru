@@ -2,13 +2,13 @@ namespace $ {
 	
 	export class $hyoo_crus_gift extends $hyoo_crus_unit {
 		
-		rang( next?: $hyoo_crus_rang ) {
+		rank( next?: $hyoo_crus_rank ) {
 			
 			if( next !== undefined ) this.uint8( 0, $hyoo_crus_unit_kind.gift )
 			next = this.uint8( 1, next )
 			
-			if( next < $hyoo_crus_rang.get || next > $hyoo_crus_rang.law ) {
-				$mol_fail( new RangeError( `Wrong rang ${ next }` ) )
+			if( next < $hyoo_crus_rank.get || next > $hyoo_crus_rank.law ) {
+				$mol_fail( new RangeError( `Wrong rank ${ next }` ) )
 			}
 			
 			return next
@@ -51,7 +51,7 @@ namespace $ {
 				' 🏅 ',
 				$mol_dev_format_span( {}, this.dest().description ),
 				this.bill().some( v => v ) ? ' 🔐' : ' 📢',
-				$hyoo_crus_rang[ this.rang() ],
+				$hyoo_crus_rank[ this.rank() ],
 				' ',
 				$mol_dev_format_shade( new $mol_time_moment( this.time() ).toString( 'YYYY-MM-DD hh:mm:ss.sss' ) ),
 			)
