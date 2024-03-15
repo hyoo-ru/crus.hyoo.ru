@@ -37,8 +37,81 @@ namespace $ {
 			return ( $mol_wire_probe( ()=> this.reconnects() ) ?? 0 ) + 1
 		}
 		
+		@ $mol_mem
 		master() {
-			return null as null | $mol_rest_port
+			
+			this.reconnects()
+			
+			const link = this.master_current()
+			if( !link ) return null
+			
+			const socket = new $mol_dom_context.WebSocket( link.replace( /^http/, 'ws' ) )
+			socket.binaryType = 'arraybuffer'
+			const port = $mol_rest_port_ws_web.make({ socket })
+			
+			socket.onmessage = async( event )=> {
+				
+				if( event.data instanceof ArrayBuffer ) {
+					if( !event.data.byteLength ) return
+					await $mol_wire_async( this ).port_income( port, new Uint8Array( event.data ) )
+				} else {
+					
+					this.$.$mol_log3_fail({	
+						place: this,
+						message: 'Wrong data',
+						data: event.data
+					})
+					
+				}
+				
+			}
+			
+			let interval: any
+
+			socket.onclose = ()=> {
+				clearInterval( interval )
+				setTimeout( ()=> this.reconnects( null ), 1000 )
+			}
+			
+			Object.assign( socket, {
+				destructor: ()=> {
+					socket.onclose = ()=> {}
+					clearInterval( interval )
+					socket.close()
+				}
+			} )
+			
+			return new Promise< $mol_rest_port >( ( done, fail )=> {
+				
+				socket.onopen = ()=> {
+					
+					this.$.$mol_log3_come({
+						place: this,
+						message: 'Connected',
+						port: $mol_key( port ),
+						server: link,
+					})
+					
+					interval = setInterval( ()=> socket.send( new Uint8Array ), 30000 )
+					
+					done( port )
+				}
+				
+				socket.onerror = ()=> {
+					
+					socket.onclose = event => {
+						fail( new Error( `Master (${link}) is unavailable (${ event.code })` ) )
+						clearInterval( interval )
+						interval = setTimeout( ()=> {
+							this.master_next()
+							this.reconnects( null )
+						}, 1000 )
+					}
+					
+				}
+				
+			} ) as any as $mol_rest_port
+			
 		}
 		
 		slaves = new $mol_wire_set< $mol_rest_port >()
