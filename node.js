@@ -7316,6 +7316,10 @@ var $;
         gists_ordered(head) {
             this.sync();
             const queue = [...this.gists.get(head)?.values() ?? []];
+            const res = [];
+            const slices = new WeakMap;
+            for (const gist of queue)
+                slices.set(gist, 0);
             merge: if (this.numb() && $hyoo_crus_area_of(head) === 'data') {
                 const inflow = (this.Meta().inflow()?.slice().reverse() ?? [])
                     .map($hyoo_crus_vary_cast_ref)
@@ -7324,21 +7328,26 @@ var $;
                     break merge;
                 const exists = new Set([...this.gists.get(head)?.keys() ?? []]);
                 const realm = this.realm();
+                let slice = 0;
                 if (realm)
                     for (const ref of inflow) {
+                        ++slice;
                         const land = realm.Land(ref);
                         for (const gist of land.gists_ordered(head)) {
                             if (exists.has(gist.self()))
                                 continue;
                             queue.push(gist);
                             exists.add(gist.self());
+                            slices.set(gist, slice);
                         }
                     }
             }
             if (queue.length < 2)
                 return queue.filter(unit => !unit.nil());
-            queue.sort($hyoo_crus_gist.compare);
-            const res = [];
+            const compare = (left, right) => {
+                return (slices.get(left) - slices.get(right)) || $hyoo_crus_gist.compare(left, right);
+            };
+            queue.sort(compare);
             const locate = (self) => {
                 for (let i = res.length - 1; i >= 0; --i) {
                     if (res[i].self() === self)
@@ -7356,7 +7365,7 @@ var $;
                         if (!index)
                             continue;
                     }
-                    while (res[index] && ($hyoo_crus_gist.compare(res[index], kid) < 0))
+                    while (res[index] && (compare(res[index], kid) < 0))
                         ++index;
                     const exists = locate(kid.self());
                     if (index === exists) {
