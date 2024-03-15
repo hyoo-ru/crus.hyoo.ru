@@ -386,6 +386,10 @@ namespace $ {
 			this.sync()
 			
 			const queue = [ ... this.gists.get( head )?.values() ?? [] ]
+			const res = [] as $hyoo_crus_gist[]
+			
+			const slices = new WeakMap
+			for( const gist of queue ) slices.set( gist, 0 )
 			
 			merge: if( this.numb() && $hyoo_crus_area_of( head ) === 'data' ) {
 				
@@ -397,14 +401,16 @@ namespace $ {
 				const exists = new Set([ ... this.gists.get( head )?.keys() ?? [] ])
 				
 				const realm  = this.realm()
+				let slice = 0
 				if( realm ) for( const ref of inflow ) {
-					
+					++ slice
 					const land = realm.Land( ref )
 					for( const gist of land.gists_ordered( head ) ) {
 						
 						if( exists.has( gist.self() ) ) continue
 						queue.push( gist )
 						exists.add( gist.self() )
+						slices.set( gist, slice )
 						
 					}
 					
@@ -414,9 +420,11 @@ namespace $ {
 			
 			if( queue.length < 2 ) return queue.filter( unit => !unit.nil() )
 			
-			queue.sort( $hyoo_crus_gist.compare )
+			const compare = ( left: $hyoo_crus_gist, right: $hyoo_crus_gist )=> {
+				return ( slices.get( left ) - slices.get( right ) ) || $hyoo_crus_gist.compare( left, right )
+			}
 			
-			const res = [] as $hyoo_crus_gist[]
+			queue.sort( compare )
 			
 			const locate = ( self: string )=> {
 				
@@ -441,7 +449,7 @@ namespace $ {
 						if( !index ) continue
 					}
 					
-					while( res[ index ] && ( $hyoo_crus_gist.compare( res[ index ], kid ) < 0 ) ) ++ index
+					while( res[ index ] && ( compare( res[ index ], kid ) < 0 ) ) ++ index
 					
 					const exists = locate( kid.self() )
 					if( index === exists ) {
