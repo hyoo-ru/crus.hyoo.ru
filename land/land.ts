@@ -471,7 +471,7 @@ namespace $ {
 				
 			}
 			
-			return res.filter( unit => !unit.nil() )
+			return res
 		}
 		
 		/** Register public key **/
@@ -568,7 +568,7 @@ namespace $ {
 			
 			if( gist.nil() ) $mol_fail( new RangeError( `Can't move wiped gist` ) )
 			
-			const units = this.gists_ordered( head )
+			const units = this.gists_ordered( head ).filter( unit => !unit.nil() )
 			if( seat > units.length ) $mol_fail( new RangeError( `Seat (${seat}) out of units length (${units.length})` ) )
 			
 			const lead = seat ? units[ seat - 1 ].self() : ''
@@ -611,7 +611,7 @@ namespace $ {
 		@ $mol_action
 		gist_wipe( gist: $hyoo_crus_gist ) {
 			
-			const units = this.gists_ordered( gist.head() )
+			const units = this.gists_ordered( gist.head() ).filter( unit => !unit.nil() )
 			const seat = units.indexOf( gist )
 			
 			this.post(

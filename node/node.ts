@@ -55,7 +55,7 @@ namespace $ {
 		
 		@ $mol_mem
 		units() {
-			return this.land().gists_ordered( this.head() )
+			return this.land().gists_ordered( this.head() ).filter( unit => !unit.nil() )
 		}
 		
 		filled() {
