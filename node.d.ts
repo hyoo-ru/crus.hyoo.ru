@@ -1447,7 +1447,7 @@ declare namespace $ {
 
 declare namespace $ {
     class $hyoo_crus_auth extends $mol_crypto_key_private {
-        static current(): $hyoo_crus_auth;
+        static current(next?: $hyoo_crus_auth | null): $hyoo_crus_auth;
         static generate(): Promise<$hyoo_crus_auth>;
         lord(): symbol & {
             $hyoo_crus_ref: symbol;
