@@ -5787,7 +5787,7 @@ var $;
             return this.units().map(unit => map[unit.tag()]().Item(unit.self()));
         }
         units() {
-            return this.land().gists_ordered(this.head());
+            return this.land().gists_ordered(this.head()).filter(unit => !unit.nil());
         }
         filled() {
             return this.units().length > 0;
@@ -7384,7 +7384,7 @@ var $;
                     cursor = queue.length;
                 }
             }
-            return res.filter(unit => !unit.nil());
+            return res;
         }
         join() {
             const auth = this.auth();
@@ -7445,7 +7445,7 @@ var $;
         gist_move(gist, head, seat) {
             if (gist.nil())
                 $mol_fail(new RangeError(`Can't move wiped gist`));
-            const units = this.gists_ordered(head);
+            const units = this.gists_ordered(head).filter(unit => !unit.nil());
             if (seat > units.length)
                 $mol_fail(new RangeError(`Seat (${seat}) out of units length (${units.length})`));
             const lead = seat ? units[seat - 1].self() : '';
@@ -7467,7 +7467,7 @@ var $;
             this.post(lead, head, gist.self(), vary, gist.tag());
         }
         gist_wipe(gist) {
-            const units = this.gists_ordered(gist.head());
+            const units = this.gists_ordered(gist.head()).filter(unit => !unit.nil());
             const seat = units.indexOf(gist);
             this.post(seat ? units[seat - 1].self() : '', gist.head(), gist.self(), null, 'term');
         }
