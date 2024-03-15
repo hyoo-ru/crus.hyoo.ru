@@ -3,13 +3,20 @@ namespace $ {
 	export class $hyoo_crus_auth extends $mol_crypto_key_private {
 		
 		@ $mol_mem
-		static current() {
+		static current( next?: $hyoo_crus_auth | null ) {
+			
 			$mol_wire_solid()
-			let key = String( $mol_state_local.value( '$hyoo_crus_auth' ) ?? '' )
-			if( key ) return $hyoo_crus_auth.from( key )
-			const auth = $mol_wire_sync( this as typeof $hyoo_crus_auth ).generate()
-			$mol_state_local.value( '$hyoo_crus_auth', auth.toString() )
-			return auth
+			
+			if( next === undefined ) {
+				const key = String( $mol_state_local.value( '$hyoo_crus_auth' ) ?? '' )
+				if( key ) return $hyoo_crus_auth.from( key )
+			}
+			
+			if( !next ) next = $mol_wire_sync( this as typeof $hyoo_crus_auth ).generate()
+			
+			$mol_state_local.value( '$hyoo_crus_auth', next.toString() )
+			
+			return next
 		}
 		
 		static async generate() {
