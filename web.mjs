@@ -13782,6 +13782,50 @@ var $;
 "use strict";
 var $;
 (function ($) {
+    class $mol_rest_port_ws extends $mol_rest_port {
+    }
+    $.$mol_rest_port_ws = $mol_rest_port_ws;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_rest_port_ws_std extends $mol_rest_port_ws {
+        socket;
+        send_nil() {
+            if (this.socket.readyState !== this.socket.OPEN)
+                return;
+            this.socket.send('');
+        }
+        send_bin(data) {
+            if (this.socket.readyState !== this.socket.OPEN)
+                return;
+            this.socket.send(data);
+        }
+        send_text(data) {
+            if (this.socket.readyState !== this.socket.OPEN)
+                return;
+            const bin = $mol_charset_encode(data);
+            this.socket.send(bin);
+        }
+    }
+    __decorate([
+        $mol_action
+    ], $mol_rest_port_ws_std.prototype, "send_nil", null);
+    __decorate([
+        $mol_action
+    ], $mol_rest_port_ws_std.prototype, "send_bin", null);
+    __decorate([
+        $mol_action
+    ], $mol_rest_port_ws_std.prototype, "send_text", null);
+    $.$mol_rest_port_ws_std = $mol_rest_port_ws_std;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
     class $hyoo_crus_yard extends $mol_object {
         realm() {
             return null;
@@ -13806,7 +13850,61 @@ var $;
             return ($mol_wire_probe(() => this.reconnects()) ?? 0) + 1;
         }
         master() {
-            return null;
+            this.reconnects();
+            const link = this.master_current();
+            if (!link)
+                return null;
+            const socket = new $mol_dom_context.WebSocket(link.replace(/^http/, 'ws'));
+            socket.binaryType = 'arraybuffer';
+            const port = $mol_rest_port_ws_std.make({ socket });
+            socket.onmessage = async (event) => {
+                if (event.data instanceof ArrayBuffer) {
+                    if (!event.data.byteLength)
+                        return;
+                    await $mol_wire_async(this).port_income(port, new Uint8Array(event.data));
+                }
+                else {
+                    this.$.$mol_log3_fail({
+                        place: this,
+                        message: 'Wrong data',
+                        data: event.data
+                    });
+                }
+            };
+            let interval;
+            socket.onclose = () => {
+                clearInterval(interval);
+                setTimeout(() => this.reconnects(null), 1000);
+            };
+            Object.assign(socket, {
+                destructor: () => {
+                    socket.onclose = () => { };
+                    clearInterval(interval);
+                    socket.close();
+                }
+            });
+            return new Promise((done, fail) => {
+                socket.onopen = () => {
+                    this.$.$mol_log3_come({
+                        place: this,
+                        message: 'Connected',
+                        port: $mol_key(port),
+                        server: link,
+                    });
+                    interval = setInterval(() => socket.send(new Uint8Array), 30000);
+                    done(port);
+                };
+                socket.onerror = () => {
+                    socket.onclose = event => {
+                        fail(new Error(`Master (${link}) is unavailable (${event.code})`));
+                        clearInterval(interval);
+                        interval = setTimeout(() => {
+                            this.master_next();
+                            this.reconnects(null);
+                        }, 1000);
+                    };
+                };
+            });
         }
         slaves = new $mol_wire_set();
         sync() {
@@ -13923,6 +14021,9 @@ var $;
     ], $hyoo_crus_yard.prototype, "reconnects", null);
     __decorate([
         $mol_mem
+    ], $hyoo_crus_yard.prototype, "master", null);
+    __decorate([
+        $mol_mem
     ], $hyoo_crus_yard.prototype, "sync", null);
     __decorate([
         $mol_mem
@@ -13946,51 +14047,6 @@ var $;
         $mol_mem_key
     ], $hyoo_crus_yard.prototype, "face_port_land", null);
     $.$hyoo_crus_yard = $hyoo_crus_yard;
-})($ || ($ = {}));
-
-;
-"use strict";
-var $;
-(function ($) {
-    class $mol_rest_port_ws extends $mol_rest_port {
-    }
-    $.$mol_rest_port_ws = $mol_rest_port_ws;
-})($ || ($ = {}));
-
-;
-"use strict";
-var $;
-(function ($) {
-    class $mol_rest_port_ws_web extends $mol_rest_port_ws {
-        socket;
-        send_nil() {
-            if (this.socket.readyState !== this.socket.OPEN)
-                return;
-            this.socket.send('');
-        }
-        send_bin(data) {
-            if (this.socket.readyState !== this.socket.OPEN)
-                return;
-            this.socket.send(data);
-        }
-        send_text(data) {
-            if (this.socket.readyState !== this.socket.OPEN)
-                return;
-            const bin = $mol_charset_encode(data);
-            this.socket.send(bin);
-        }
-    }
-    __decorate([
-        $mol_action
-    ], $mol_rest_port_ws_web.prototype, "send_nil", null);
-    __decorate([
-        $mol_action
-    ], $mol_rest_port_ws_web.prototype, "send_bin", null);
-    __decorate([
-        $mol_action
-    ], $mol_rest_port_ws_web.prototype, "send_text", null);
-    $.$mol_rest_port_ws_web = $mol_rest_port_ws_web;
-    $.$mol_rest_port_ws = $mol_rest_port_ws_web;
 })($ || ($ = {}));
 
 ;
@@ -14044,61 +14100,6 @@ var $;
                 mig.store_make('Gist');
             });
         }
-        master() {
-            this.reconnects();
-            const link = this.master_current();
-            const socket = new $mol_dom_context.WebSocket(link.replace(/^http/, 'ws'));
-            socket.binaryType = 'arraybuffer';
-            const port = $mol_rest_port_ws_web.make({ socket });
-            socket.onmessage = async (event) => {
-                if (event.data instanceof ArrayBuffer) {
-                    if (!event.data.byteLength)
-                        return;
-                    await $mol_wire_async(this).port_income(port, new Uint8Array(event.data));
-                }
-                else {
-                    this.$.$mol_log3_fail({
-                        place: this,
-                        message: 'Wrong data',
-                        data: event.data
-                    });
-                }
-            };
-            let interval;
-            socket.onclose = () => {
-                clearInterval(interval);
-                setTimeout(() => this.reconnects(null), 1000);
-            };
-            Object.assign(socket, {
-                destructor: () => {
-                    socket.onclose = () => { };
-                    clearInterval(interval);
-                    socket.close();
-                }
-            });
-            return new Promise((done, fail) => {
-                socket.onopen = () => {
-                    this.$.$mol_log3_come({
-                        place: this,
-                        message: 'Connected',
-                        port: $mol_key(port),
-                        server: link,
-                    });
-                    interval = setInterval(() => socket.send(new Uint8Array), 30000);
-                    done(port);
-                };
-                socket.onerror = () => {
-                    socket.onclose = event => {
-                        fail(new Error(`Master is unavailable (${event.code})`));
-                        clearInterval(interval);
-                        setTimeout(() => {
-                            this.master_next();
-                            this.reconnects(null);
-                        });
-                    };
-                };
-            });
-        }
     }
     __decorate([
         $mol_action
@@ -14106,9 +14107,6 @@ var $;
     __decorate([
         $mol_memo.method
     ], $hyoo_crus_yard_web.prototype, "db", null);
-    __decorate([
-        $mol_mem
-    ], $hyoo_crus_yard_web.prototype, "master", null);
     $.$hyoo_crus_yard_web = $hyoo_crus_yard_web;
     $.$hyoo_crus_yard = $hyoo_crus_yard_web;
 })($ || ($ = {}));
@@ -14683,6 +14681,8 @@ var $;
             }
             simple() {
                 const value = this.value();
+                if (typeof value === 'number')
+                    return value.toLocaleString('en').replaceAll(',', '_');
                 return value ? String(value) : JSON.stringify(value) ?? 'undefined';
             }
             expand_title() {

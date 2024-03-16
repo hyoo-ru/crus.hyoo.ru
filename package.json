@@ -1,5 +1,5 @@
 {
-  "name": "hyoo_crus_app",
+  "name": "hyoo_crus_app_run",
   "version": "0.0.1",
   "exports": {
     "node": {
@@ -15,6 +15,7 @@
   "browser": "./web.js",
   "types": "./web.d.ts",
   "keywords": [
+    "$hyoo_crus_app_run",
     "$hyoo_crus_app",
     "$hyoo_crus",
     "$hyoo",

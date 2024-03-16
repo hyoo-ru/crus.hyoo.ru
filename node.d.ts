@@ -936,6 +936,15 @@ declare namespace $ {
 }
 
 declare namespace $ {
+    class $mol_rest_port_ws_std extends $mol_rest_port_ws {
+        socket: WebSocket;
+        send_nil(): void;
+        send_bin(data: Uint8Array): void;
+        send_text(data: string): void;
+    }
+}
+
+declare namespace $ {
     class $mol_rest_port_ws_node extends $mol_rest_port_ws {
         socket: InstanceType<$node['stream']['Duplex']>;
         send_nil(): void;
@@ -7708,6 +7717,9 @@ declare namespace $ {
         POST(msg: $mol_rest_message): void;
         CLOSE(msg: $mol_rest_message): void;
     }
+}
+
+declare namespace $ {
 }
 
 export = $;
