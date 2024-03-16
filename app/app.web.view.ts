@@ -4,7 +4,7 @@ namespace $.$$ {
 		@ $mol_mem
 		realm() {
 			const realm = super.realm()
-			realm.home().base()
+			realm.home()
 			return realm
 		}
 		

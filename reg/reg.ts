@@ -84,20 +84,16 @@ namespace $ {
 			}
 		}
 		
-		@ $mol_mem_key
-		yoke( vary: $hyoo_crus_vary_type, auto?: any ) {
+		@ $mol_mem
+		yoke( preset?: $hyoo_crus_rank_preset ) {
 			
-			const realm = this.realm()
+			const realm = this.realm()!
 			
 			const ref = this.value_ref()
-			if( ref ) return realm!.Land( ref )
-			if( auto === undefined ) return null
+			if( ref ) return realm.Land( ref )
+			if( preset === undefined ) return null
 			
-			const hash = $mol_crypto_hash( $hyoo_crus_vary_encode( vary ).bin )
-			const numb = new Uint16Array( $mol_base64_ae_decode( this.land().numb() ).buffer )
-			const idea = new $mol_buffer( hash.buffer ).uint32(0) + numb[0] + numb[1] * 2**16 + numb[2] * 2**32
-
-			const land = realm!.Lord( this.land().auth().lord() ).Land_new( idea )
+			const land = realm.land_grab( preset )
 			this.value_ref( land.ref() )
 			
 			return land
@@ -150,9 +146,9 @@ namespace $ {
 					return realm!.Node( ref, ( Value as any )() )
 				}
 				
-				@ $mol_mem
-				remote_ensure() {
-					this.yoke( this.ref(), null )
+				// @ $mol_mem
+				remote_ensure( preset = $hyoo_crus_rank_public ) {
+					this.yoke( preset )
 					return this.remote()
 				}
 	

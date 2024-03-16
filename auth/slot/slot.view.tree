@@ -1,0 +1,22 @@
+$hyoo_crus_auth_slot $mol_page
+	title \🎰 Grab
+	realm $hyoo_crus_realm
+	prefix? \
+	found*? /string
+	body /
+		<= Input $mol_bar sub /
+			<= Prefix $mol_string
+				hint \Prefix
+				value? <=> prefix? \
+				submit? <=> run? null
+			<= Running $mol_check_icon
+				Icon <= Run_icon $mol_icon_play
+				checked? <=> running? false
+				enabled <= run_enabled false
+				label /
+					<= grabbing
+		<= Keys $mol_list
+			rows <= keys /
+				<= Key*0 $mol_button_copy
+					title <= ref* \
+					text <= key* \

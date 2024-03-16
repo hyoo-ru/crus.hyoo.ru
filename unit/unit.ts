@@ -115,6 +115,8 @@ namespace $ {
 			return this.sign().some( b => b )
 		}
 		
+		_land = null as null | $hyoo_crus_land
+		
 	}
 	
 }

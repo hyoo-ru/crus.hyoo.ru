@@ -17,6 +17,10 @@ $hyoo_crus_app $mol_book2_catalog
 			realm <= realm
 			addon_tools /
 				<= Spread_close
+		slot <= Slot $hyoo_crus_auth_slot
+			realm <= realm
+			tools /
+				<= Spread_close
 		casting <= Casting $hyoo_calc
 			title \🔀 Casting
 			editable false

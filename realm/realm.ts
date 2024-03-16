@@ -2,7 +2,7 @@ namespace $ {
 	
 	export class $hyoo_crus_realm extends $mol_object {
 		
-		lords = new $mol_wire_dict< $hyoo_crus_ref, $hyoo_crus_lord >()
+		lands = new $mol_wire_dict< $hyoo_crus_ref, $hyoo_crus_land >()
 		
 		@ $mol_mem
 		yard() {
@@ -12,32 +12,51 @@ namespace $ {
 		}
 		
 		home() {
-			return this.Lord( this.$.$hyoo_crus_auth.current().lord() )
+			return this.Land( this.$.$hyoo_crus_auth.current().lord() )
+		}
+		
+		@ $mol_action
+		land_grab( preset = $hyoo_crus_rank_public ) {
+			
+			const knight = this.$.$hyoo_crus_auth.grab()
+			const colony = ( $mol_wire_sync( $hyoo_crus_land ) as typeof $hyoo_crus_land ).make({
+				auth: ()=> knight,
+			})
+			
+			if( !preset.get.includes( $hyoo_crus_ref( '' ) ) ) {
+				colony.encrypted( true )
+			}
+			
+			const self = this.$.$hyoo_crus_auth.current().lord()
+			for( const ref of preset.get ) colony.give( ref ?? self, $hyoo_crus_rank.get )
+			for( const ref of preset.add ) colony.give( ref ?? self, $hyoo_crus_rank.add )
+			for( const ref of preset.mod ) colony.give( ref ?? self, $hyoo_crus_rank.mod )
+			for( const ref of preset.law ) colony.give( ref ?? self, $hyoo_crus_rank.law )
+			
+			const land = this.Land( colony.ref() )
+			land.apply_unit_trust( colony.delta_unit() )
+			
+			return land
 		}
 		
 		@ $mol_mem_key
-		Lord( numb: $hyoo_crus_ref ) {
+		Land( ref: $hyoo_crus_ref ): $hyoo_crus_land {
 			
-			let lord = this.lords.get( numb )
-			if( lord ) return lord
+			let land = this.lands.get( ref )
+			if( land ) return land
 			
-			lord = $hyoo_crus_lord.make({
+			land = $hyoo_crus_land.make({
 				realm: $mol_const( this ),
-				ref: $mol_const( numb ),
+				ref: $mol_const( ref ),
 			})
 			
-			this.lords.set( numb, lord )
-			return lord
+			this.lands.set( ref, land )
+			return land
 			
-		}
-		
-		Land( ref: $hyoo_crus_ref ) {
-			const lord = this.Lord( $hyoo_crus_ref_home( ref ) )
-			return lord.Land( $hyoo_crus_ref_land( ref ) )
 		}
 		
 		Node< Node extends typeof $hyoo_crus_node > ( ref: $hyoo_crus_ref, Node: Node ) {
-			const land = this.Land( $hyoo_crus_ref_root( ref ) )
+			const land = this.Land( $hyoo_crus_ref_land( ref ) )
 			return land.Node( Node ).Item( $hyoo_crus_ref_head( ref ) )
 		}
 		

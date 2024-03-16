@@ -13,21 +13,17 @@ namespace $ {
 			return ''
 		}
 		
-		lord() {
-			return this.land().lord()
-		}
-		
 		realm() {
-			return this.lord()?.realm() ?? null
+			return this.land()?.realm() ?? null
 		}
 		
-		lord_ref() {
-			return this.lord()?.ref() ?? this.$.$hyoo_crus_auth.current().lord()
+		land_ref() {
+			return this.land()?.ref() ?? this.$.$hyoo_crus_auth.current().lord()
 		}
 		
 		@ $mol_memo.method
 		ref() {
-			return $hyoo_crus_ref( this.lord_ref().description + '_' + ( this.land().numb() || '' ) + '_' + this.head() )
+			return $hyoo_crus_ref( this.land_ref().description + '_' + this.head() )
 		}
 		
 		toJSON() {

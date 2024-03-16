@@ -13,24 +13,8 @@ namespace $.$$ {
 		"Pick ref home only"( $ ) {
 			
 			$mol_assert_equal(
-				$hyoo_crus_ref_home( $hyoo_crus_ref( 'qwertyui_asdfghjk_zxcvbnm0_12345678' ) ),
-				$hyoo_crus_ref_home( $hyoo_crus_ref( 'qwertyui_asdfghjk_zxcvbnm0' ) ),
-				$hyoo_crus_ref_home( $hyoo_crus_ref( 'qwertyui_asdfghjk' ) ),
-				$hyoo_crus_ref( 'qwertyui_asdfghjk' ),
-			)
-			
-		},
-		
-		"Pick ref root only"( $ ) {
-			
-			$mol_assert_equal(
-				$hyoo_crus_ref_root( $hyoo_crus_ref( 'qwertyui_asdfghjk_zxcvbnm0_12345678' ) ),
-				$hyoo_crus_ref_root( $hyoo_crus_ref( 'qwertyui_asdfghjk_zxcvbnm0' ) ),
-				$hyoo_crus_ref( 'qwertyui_asdfghjk_zxcvbnm0' ),
-			)
-			
-			$mol_assert_equal(
-				$hyoo_crus_ref_root( $hyoo_crus_ref( 'qwertyui_asdfghjk' ) ),
+				$hyoo_crus_ref_land( $hyoo_crus_ref( 'qwertyui_asdfghjk_zxcvbnm0' ) ),
+				$hyoo_crus_ref_land( $hyoo_crus_ref( 'qwertyui_asdfghjk' ) ),
 				$hyoo_crus_ref( 'qwertyui_asdfghjk' ),
 			)
 			
@@ -39,12 +23,11 @@ namespace $.$$ {
 		"Pick ref head only"( $ ) {
 			
 			$mol_assert_equal(
-				$hyoo_crus_ref_head( $hyoo_crus_ref( 'qwertyui_asdfghjk_zxcvbnm0_12345678' ) ),
-				'12345678',
+				$hyoo_crus_ref_head( $hyoo_crus_ref( 'qwertyui_asdfghjk_zxcvbnm0' ) ),
+				'zxcvbnm0',
 			)
 			
 			$mol_assert_equal(
-				$hyoo_crus_ref_head( $hyoo_crus_ref( 'qwertyui_asdfghjk_zxcvbnm0' ) ),
 				$hyoo_crus_ref_head( $hyoo_crus_ref( 'qwertyui_asdfghjk' ) ),
 				'',
 			)
@@ -53,21 +36,19 @@ namespace $.$$ {
 		
 		"Ref encoding"( $ ) {
 			
-			const full = $hyoo_crus_ref_encode( $hyoo_crus_ref( 'qwertyui_asdfghjk_zxcvbnm0_12345678' ) )
-			const root = $hyoo_crus_ref_encode( $hyoo_crus_ref( 'qwertyui_asdfghjk_zxcvbnm0' ) )
-			const home = $hyoo_crus_ref_encode( $hyoo_crus_ref( 'qwertyui_asdfghjk' ) )
-			const rel_full = $hyoo_crus_ref_encode( $hyoo_crus_ref( '___12345678' ) )
-			const rel_root = $hyoo_crus_ref_encode( $hyoo_crus_ref( '___' ) )
+			const node = $hyoo_crus_ref_encode( $hyoo_crus_ref( 'qwertyui_asdfghjk_zxcvbnm0' ) )
+			const root = $hyoo_crus_ref_encode( $hyoo_crus_ref( 'qwertyui_asdfghjk' ) )
+			const rel_node = $hyoo_crus_ref_encode( $hyoo_crus_ref( '__zxcvbnm0' ) )
+			const rel_root = $hyoo_crus_ref_encode( $hyoo_crus_ref( '__' ) )
 			
-			$mol_assert_equal( full.length, 24 )
-			$mol_assert_equal( root.length, 18 )
-			$mol_assert_equal( home.length, 12 )
-			$mol_assert_equal( rel_full.length, 24 )
+			$mol_assert_equal( node.length, 18 )
+			$mol_assert_equal( root.length, 12 )
+			$mol_assert_equal( rel_node.length, 18 )
+			$mol_assert_equal( rel_node.length, 18 )
 			
-			$mol_assert_equal( $hyoo_crus_ref_decode( full ), $hyoo_crus_ref( 'qwertyui_asdfghjk_zxcvbnm0_12345678' ) )
-			$mol_assert_equal( $hyoo_crus_ref_decode( root ), $hyoo_crus_ref( 'qwertyui_asdfghjk_zxcvbnm0' ) )
-			$mol_assert_equal( $hyoo_crus_ref_decode( home ), $hyoo_crus_ref( 'qwertyui_asdfghjk' ) )
-			$mol_assert_equal( $hyoo_crus_ref_decode( rel_full ), $hyoo_crus_ref( '___12345678' ) )
+			$mol_assert_equal( $hyoo_crus_ref_decode( node ), $hyoo_crus_ref( 'qwertyui_asdfghjk_zxcvbnm0' ) )
+			$mol_assert_equal( $hyoo_crus_ref_decode( root ), $hyoo_crus_ref( 'qwertyui_asdfghjk' ) )
+			$mol_assert_equal( $hyoo_crus_ref_decode( rel_node ), $hyoo_crus_ref( '__zxcvbnm0' ) )
 			$mol_assert_equal( $hyoo_crus_ref_decode( rel_root ), $hyoo_crus_ref( '' ) )
 			
 		},
@@ -76,48 +57,32 @@ namespace $.$$ {
 			
 			$mol_assert_equal(
 				$hyoo_crus_ref_relate(
-					$hyoo_crus_ref( 'QWERTYUI_ASDFGHJK_ZXCVBNM0' ),
-					$hyoo_crus_ref( 'qwertyui_asdfghjk_zxcvbnm0_12345678' ),
-				),
-				$hyoo_crus_ref_relate(
-					$hyoo_crus_ref( 'QWERTYUI_ASDFGHJK_zxcvbnm0' ),
-					$hyoo_crus_ref( 'qwertyui_asdfghjk_zxcvbnm0_12345678' ),
-				),
-				$hyoo_crus_ref_relate(
 					$hyoo_crus_ref( 'QWERTYUI_ASDFGHJK' ),
-					$hyoo_crus_ref( 'qwertyui_asdfghjk_zxcvbnm0_12345678' ),
-				),
-				$hyoo_crus_ref_relate(
-					$hyoo_crus_ref( 'qwertyui_asdfghjk_ZXCVBNM0' ),
-					$hyoo_crus_ref( 'qwertyui_asdfghjk_zxcvbnm0_12345678' ),
-				),
-				$hyoo_crus_ref_relate(
-					$hyoo_crus_ref( 'qwertyui_asdfghjk' ),
-					$hyoo_crus_ref( 'qwertyui_asdfghjk_zxcvbnm0_12345678' ),
-				),
-				$hyoo_crus_ref( 'qwertyui_asdfghjk_zxcvbnm0_12345678' ),
-			)
-			
-			$mol_assert_equal(
-				$hyoo_crus_ref_relate(
 					$hyoo_crus_ref( 'qwertyui_asdfghjk_zxcvbnm0' ),
-					$hyoo_crus_ref( 'qwertyui_asdfghjk_zxcvbnm0_12345678' ),
 				),
-				$hyoo_crus_ref( '___12345678' ),
+				$hyoo_crus_ref_relate(
+					$hyoo_crus_ref( 'QWERTYUI_ASDFGHJK_ZXCVBNM0' ),
+					$hyoo_crus_ref( 'qwertyui_asdfghjk_zxcvbnm0' ),
+				),
+				$hyoo_crus_ref( 'qwertyui_asdfghjk_zxcvbnm0' ),
 			)
 			
 			$mol_assert_equal(
 				$hyoo_crus_ref_relate(
 					$hyoo_crus_ref( 'qwertyui_asdfghjk' ),
-					$hyoo_crus_ref( 'qwertyui_asdfghjk__12345678' ),
+					$hyoo_crus_ref( 'qwertyui_asdfghjk_zxcvbnm0' ),
 				),
-				$hyoo_crus_ref( '___12345678' ),
+				$hyoo_crus_ref_relate(
+					$hyoo_crus_ref( 'qwertyui_asdfghjk_12345678' ),
+					$hyoo_crus_ref( 'qwertyui_asdfghjk_zxcvbnm0' ),
+				),
+				$hyoo_crus_ref( '__zxcvbnm0' ),
 			)
 			
 			$mol_assert_equal(
 				$hyoo_crus_ref_relate(
 					$hyoo_crus_ref( 'qwertyui_asdfghjk_zxcvbnm0' ),
-					$hyoo_crus_ref( 'qwertyui_asdfghjk_zxcvbnm0' ),
+					$hyoo_crus_ref( 'qwertyui_asdfghjk' ),
 				),
 				$hyoo_crus_ref_relate(
 					$hyoo_crus_ref( 'qwertyui_asdfghjk' ),
@@ -133,47 +98,15 @@ namespace $.$$ {
 			$mol_assert_equal(
 				$hyoo_crus_ref_resolve(
 					$hyoo_crus_ref( 'QWERTYUI_ASDFGHJK_ZXCVBNM0' ),
-					$hyoo_crus_ref( 'qwertyui_asdfghjk_zxcvbnm0_12345678' ),
-				),
-				$hyoo_crus_ref_resolve(
-					$hyoo_crus_ref( 'QWERTYUI_ASDFGHJK_zxcvbnm0' ),
-					$hyoo_crus_ref( 'qwertyui_asdfghjk_zxcvbnm0_12345678' ),
+					$hyoo_crus_ref( 'qwertyui_asdfghjk_zxcvbnm0' ),
 				),
 				$hyoo_crus_ref_resolve(
 					$hyoo_crus_ref( 'QWERTYUI_ASDFGHJK' ),
-					$hyoo_crus_ref( 'qwertyui_asdfghjk_zxcvbnm0_12345678' ),
-				),
-				$hyoo_crus_ref_resolve(
-					$hyoo_crus_ref( 'qwertyui_asdfghjk_ZXCVBNM0' ),
-					$hyoo_crus_ref( 'qwertyui_asdfghjk_zxcvbnm0_12345678' ),
+					$hyoo_crus_ref( 'qwertyui_asdfghjk_zxcvbnm0' ),
 				),
 				$hyoo_crus_ref_resolve(
 					$hyoo_crus_ref( 'qwertyui_asdfghjk' ),
-					$hyoo_crus_ref( 'qwertyui_asdfghjk_zxcvbnm0_12345678' ),
-				),
-				$hyoo_crus_ref( 'qwertyui_asdfghjk_zxcvbnm0_12345678' ),
-			)
-			
-			$mol_assert_equal(
-				$hyoo_crus_ref_resolve(
 					$hyoo_crus_ref( 'qwertyui_asdfghjk_zxcvbnm0' ),
-					$hyoo_crus_ref( '___12345678' ),
-				),
-				$hyoo_crus_ref( 'qwertyui_asdfghjk_zxcvbnm0_12345678' ),
-			)
-			
-			$mol_assert_equal(
-				$hyoo_crus_ref_resolve(
-					$hyoo_crus_ref( 'qwertyui_asdfghjk' ),
-					$hyoo_crus_ref( '___12345678' ),
-				),
-				$hyoo_crus_ref( 'qwertyui_asdfghjk__12345678' ),
-			)
-			
-			$mol_assert_equal(
-				$hyoo_crus_ref_resolve(
-					$hyoo_crus_ref( 'qwertyui_asdfghjk_zxcvbnm0' ),
-					$hyoo_crus_ref( '' ),
 				),
 				$hyoo_crus_ref( 'qwertyui_asdfghjk_zxcvbnm0' ),
 			)
@@ -181,6 +114,22 @@ namespace $.$$ {
 			$mol_assert_equal(
 				$hyoo_crus_ref_resolve(
 					$hyoo_crus_ref( 'qwertyui_asdfghjk' ),
+					$hyoo_crus_ref( '__12345678' ),
+				),
+				$hyoo_crus_ref_resolve(
+					$hyoo_crus_ref( 'qwertyui_asdfghjk_zxcvbnm0' ),
+					$hyoo_crus_ref( '__12345678' ),
+				),
+				$hyoo_crus_ref( 'qwertyui_asdfghjk_12345678' ),
+			)
+			
+			$mol_assert_equal(
+				$hyoo_crus_ref_resolve(
+					$hyoo_crus_ref( 'qwertyui_asdfghjk' ),
+					$hyoo_crus_ref( '' ),
+				),
+				$hyoo_crus_ref_resolve(
+					$hyoo_crus_ref( 'qwertyui_asdfghjk_zxcvbnm0' ),
 					$hyoo_crus_ref( '' ),
 				),
 				$hyoo_crus_ref( 'qwertyui_asdfghjk' ),

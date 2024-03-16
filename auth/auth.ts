@@ -12,11 +12,18 @@ namespace $ {
 				if( key ) return $hyoo_crus_auth.from( key )
 			}
 			
-			if( !next ) next = $mol_wire_sync( this as typeof $hyoo_crus_auth ).generate()
+			if( !next ) next = this.grab()
 			
 			$mol_state_local.value( '$hyoo_crus_auth', next.toString() )
 			
 			return next
+		}
+		
+		static embryos = [] as string[]
+		
+		static grab() {
+			if( this.embryos.length ) return this.from( this.embryos.pop()! )
+			return $mol_wire_sync( this as typeof $hyoo_crus_auth ).generate()
 		}
 		
 		static async generate() {

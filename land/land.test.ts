@@ -9,19 +9,19 @@ namespace $ {
 			
 			const land = $hyoo_crus_land.make({ $ })
 			$mol_assert_equal( land.joined_list(), [] )
-			$mol_assert_equal( land.lord_rank( land.lord_ref() ), $hyoo_crus_rank.law )
+			$mol_assert_equal( land.lord_rank( land.ref() ), $hyoo_crus_rank.law )
 			
 			land.join()
-			$mol_assert_equal( land.joined_list(), [ land.lord_ref() ] )
+			$mol_assert_equal( land.joined_list(), [ land.ref() ] )
 			
 		},
 		
 		'Give rights'( $ ) {
 			
 			const land1 = $hyoo_crus_land.make({ $ })
-			const land2 = $hyoo_crus_land.make({ $, lord_ref: ()=> land1.lord_ref(), auth: ()=> auth1 })
+			const land2 = $hyoo_crus_land.make({ $, ref: ()=> land1.ref(), auth: ()=> auth1 })
 			
-			$mol_assert_equal( land1.lord_rank( land1.lord_ref() ), $hyoo_crus_rank.law )
+			$mol_assert_equal( land1.lord_rank( land1.ref() ), $hyoo_crus_rank.law )
 			$mol_assert_equal( land1.lord_rank( auth1.lord() ), $hyoo_crus_rank.get )
 			
 			$mol_assert_fail( ()=> land2.give( auth2.lord(), $hyoo_crus_rank.add ), 'Need add rank to join' )
@@ -49,6 +49,7 @@ namespace $ {
 			$mol_assert_equal( land1.lord_rank( auth1.lord() ), $hyoo_crus_rank.mod )
 			
 			land2.apply_unit_trust( land1.delta_unit() )
+			$mol_assert_equal( land2.lord_rank( auth1.lord() ), $hyoo_crus_rank.mod )
 			$mol_assert_fail( ()=> land2.give( auth2.lord(), $hyoo_crus_rank.add ), 'Need law rank to change rank' )
 			
 		},
@@ -56,7 +57,7 @@ namespace $ {
 		'Post Data and pick Delta'( $ ) {
 			
 			const land1 = $hyoo_crus_land.make({ $ })
-			const land2 = $hyoo_crus_land.make({ $, lord_ref: ()=> land1.lord_ref(), auth: ()=> auth1 })
+			const land2 = $hyoo_crus_land.make({ $, ref: ()=> land1.ref(), auth: ()=> auth1 })
 			
 			$mol_assert_equal( land1.delta_unit(), [] )
 			
@@ -105,7 +106,7 @@ namespace $ {
 		'Self restriction for Add Rank'( $ ) {
 			
 			const land1 = $hyoo_crus_land.make({ $ })
-			const land2 = $hyoo_crus_land.make({ $, lord_ref: ()=> land1.lord_ref(), auth: ()=> auth2 })
+			const land2 = $hyoo_crus_land.make({ $, ref: ()=> land1.ref(), auth: ()=> auth2 })
 			
 			$mol_assert_equal( land1.delta_unit(), [] )
 			
@@ -123,19 +124,9 @@ namespace $ {
 			
 		},
 		
-		'Home Land no encryption'( $ ) {
-			
-			const land = $hyoo_crus_land.make({ $ })
-			$mol_assert_equal( land.encrypted(), false )
-			
-			land.encrypted( true )
-			$mol_assert_equal( land.encrypted(), false )
-			
-		},
-		
 		async 'Land encryption'( $ ) {
 			
-			const land = $mol_wire_async( $hyoo_crus_land.make({ $, numb: ()=> 'AA111111' }) )
+			const land = $mol_wire_async( $hyoo_crus_land.make({ $ }) )
 			$mol_assert_equal( await land.encrypted(), false )
 			
 			await land.encrypted( true )
@@ -157,23 +148,23 @@ namespace $ {
 		'Land fork & merge'( $ ) {
 			
 			const realm = $hyoo_crus_realm.make({ $ })
-			const base = realm.home().base().land()
-			const left = base.fork()
+			const home = realm.home()
+			const left = home.fork()
 			
-			base.Data( $hyoo_crus_list ).items([ 'foo', 'xxx' ])
-			$mol_assert_equal( base.Data( $hyoo_crus_list ).items(), [ 'foo', 'xxx' ] )
+			home.Data( $hyoo_crus_list ).items([ 'foo', 'xxx' ])
+			$mol_assert_equal( home.Data( $hyoo_crus_list ).items(), [ 'foo', 'xxx' ] )
 			$mol_assert_equal( left.Data( $hyoo_crus_list ).items(), [ 'foo', 'xxx' ] )
 			
-			left.faces.sync( base.faces )
+			left.faces.sync( home.faces )
 			left.Data( $hyoo_crus_list ).items([ 'foo', 'yyy' ])
 			$mol_assert_equal( left.Data( $hyoo_crus_list ).items(), [ 'foo', 'yyy' ] )
 			
-			const right = base.fork()
+			const right = home.fork()
 			right.faces.sync( left.faces )
 			right.Data( $hyoo_crus_list ).items([ 'foo', 'zzz' ])
 			$mol_assert_equal( right.Data( $hyoo_crus_list ).items(), [ 'foo', 'zzz' ] )
 			
-			const both = base.fork()
+			const both = home.fork()
 			$mol_assert_equal( both.Data( $hyoo_crus_list ).items(), [ 'foo', 'xxx' ] )
 			
 			both.Meta().inflow([ right.ref() ])
@@ -193,7 +184,7 @@ namespace $ {
 		'Inner refs is relative to land'( $ ) {
 			
 			const realm = $hyoo_crus_realm.make({ $ })
-			const Alice = realm.home().base().land()
+			const Alice = realm.home()
 			const Bella = Alice.fork()
 			
 			const alice_val = Alice.Node( $hyoo_crus_reg_str ).Item( 'qwertyui' )

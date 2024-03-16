@@ -159,8 +159,8 @@ namespace $ {
 				}
 				
 				@ $mol_action
-				remote_make(): Vals[number] {
-					const land = this.realm()!.home().Land_new( 0 )
+				remote_make( preset = $hyoo_crus_rank_public ): Vals[number] {
+					const land = this.realm()!.land_grab( preset )
 					this.splice([ land.ref() ])
 					return land.Node( ( Value as any )() ).Item('')
 				}

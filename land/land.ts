@@ -2,28 +2,16 @@ namespace $ {
 	
 	export class $hyoo_crus_land extends $mol_object {
 		
-		lord() {
-			return null as null | $hyoo_crus_lord
-		}
-		
-		numb() {
-			return ''
-		}
-		
-		lord_ref() {
-			return this.lord()?.ref() ?? this.auth().lord()
-		}
-		
 		realm() {
-			return this.lord()?.realm() ?? null
+			return null as null | $hyoo_crus_realm
+		}
+		
+		ref() {
+			return this.auth().lord()
 		}
 		
 		auth() {
 			return this.$.$hyoo_crus_auth.current()
-		}
-		
-		ref() {
-			return $hyoo_crus_ref( this.lord_ref().description + '_' + this.numb() )
 		}
 		
 		faces = new $hyoo_crus_face_map
@@ -43,7 +31,6 @@ namespace $ {
 			if( rank === $hyoo_crus_rank.add ) return $hyoo_crus_area_to( auth.peer(), 'data' )
 			if( rank === $hyoo_crus_rank.nil ) $mol_fail( new Error( 'Rank too low (nil)' ) )
 			
-			const numb = this.numb()
 			for( let i = 0; i < 4096; ++i ) {
 				
 				idea = ( idea + 1 ) % 2**48
@@ -51,7 +38,6 @@ namespace $ {
 				if( $hyoo_crus_area[ idea % 2 ] !== area ) continue
 				
 				const idea_str = $mol_base64_ae_encode( new Uint8Array( new BigUint64Array([ BigInt( idea ) ]).buffer, 0, 6 ) )
-				if( idea_str === numb ) continue
 				if( this.self_all.has( idea_str ) ) continue
 				
 				this.self_all.add( idea_str )
@@ -62,14 +48,22 @@ namespace $ {
 			$mol_fail( new Error( `Too long self generation` ) )
 		}
 		
+		base() {
+			return this.Data( $hyoo_crus_base )
+		}
+		
+		Profile< Node extends typeof $hyoo_crus_node >( app: string, Node: Node, auto?: any ) {
+			return this.base().Profile( app, auto )?.Data( Node ) ?? null
+		}
+		
 		@ $mol_mem_key
 		Data< Node extends typeof $hyoo_crus_node >( Node: Node ) {
-			return this.Node( Node ).Item( '' )
+			return this.Node( Node ).Item( '' ) // 0
 		} 
 		
 		@ $mol_mem
 		Meta() {
-			return this.Node( $hyoo_crus_meta ).Item( 'AQAAAAAA' )
+			return this.Node( $hyoo_crus_meta ).Item( 'AQAAAAAA' ) // 1
 		} 
 		
 		@ $mol_mem_key
@@ -97,7 +91,7 @@ namespace $ {
 		
 		@ $mol_mem_key
 		lord_rank( lord: $hyoo_crus_ref ) {
-			if( lord === this.lord_ref() ) return $hyoo_crus_rank.law
+			if( lord === this.ref() ) return $hyoo_crus_rank.law
 			return this.gifts.get( lord )?.rank()
 				?? this.gifts.get( $hyoo_crus_ref( 'FFFFFFFF_FFFFFFFF' ) )?.rank()
 				?? $hyoo_crus_rank.get
@@ -369,12 +363,12 @@ namespace $ {
 		}
 		
 		@ $mol_action
-		fork() {
+		fork( preset = $hyoo_crus_rank_public ) {
 			const realm = this.realm()
 			
 			if( !realm ) $mol_fail( new Error( 'Realm is required to fork' ) )
 			
-			const land = realm.home().Land_new(0)
+			const land = realm.land_grab( preset )
 			land.Meta().Inflow!.items([ this.ref() ])
 			
 			return land
@@ -391,7 +385,7 @@ namespace $ {
 			const slices = new WeakMap
 			for( const gist of queue ) slices.set( gist, 0 )
 			
-			merge: if( this.numb() && $hyoo_crus_area_of( head ) === 'data' ) {
+			merge: if( $hyoo_crus_area_of( head ) === 'data' ) {
 				
 				const inflow = ( this.Meta().inflow()?.slice().reverse() ?? [] )
 					.map( $hyoo_crus_vary_cast_ref )
@@ -485,6 +479,7 @@ namespace $ {
 			
 			const next = new $hyoo_crus_pass
 			next.auth( auth.public().asArray() )
+			next._land = this
 			
 			const error = this.apply_unit_trust([ next ])[0]
 			if( error ) $mol_fail( new Error( error ) )
@@ -509,6 +504,7 @@ namespace $ {
 			unit.time( this.faces.tick() )
 			unit.peer( auth.peer() )
 			unit.dest( dest ?? $hyoo_crus_ref( 'FFFFFFFF_FFFFFFFF' ) )
+			unit._land = this
 			
 			const error = this.apply_unit_trust([ unit ])[0]
 			if( error ) $mol_fail( new Error( error ) )
@@ -539,6 +535,7 @@ namespace $ {
 			unit.lead( lead )
 			unit.head( head )
 			unit._vary = vary
+			unit._land = this
 			
 			let { tip, bin } = $hyoo_crus_vary_encode( vary )
 			unit._open = bin
@@ -668,7 +665,10 @@ namespace $ {
 			
 			$mol_wire_solid()
 			
-			const units = this.realm()?.yard().load( this ) ?? []
+			const realm = this.realm()
+			if( !realm ) return
+			
+			const units = realm.yard().load( this ) ?? []
 			
 			$mol_wire_sync( this.$ ).$mol_log3_rise({
 				place: this,
@@ -729,8 +729,8 @@ namespace $ {
 		unit_sign( unit: $hyoo_crus_unit ) {
 			if( unit.signed() ) return
 			
-			const key = $mol_wire_sync( this.auth() )
-			const mixin = $hyoo_crus_ref_encode( this.ref() )
+			const key = $mol_wire_sync( unit._land!.auth() )
+			const mixin = $hyoo_crus_ref_encode( unit._land!.ref() )
 			
 			const sens = unit.sens().slice()
 			for( let i = 0; i < mixin.length; ++i ) sens[i+14] ^= mixin[i+14]
@@ -747,7 +747,7 @@ namespace $ {
 			if( gist.nil() ) return gist
 			
 			let bin = gist._open
-			const secret = this.secret()!
+			const secret = gist._land!.secret()!
 			
 			if( secret ) bin = new Uint8Array( $mol_wire_sync( secret ).encrypt( bin, gist.salt() ) )
 			
@@ -824,9 +824,7 @@ namespace $ {
 			
 			$mol_wire_solid()
 			
-			if( !this.numb() ) return false // home land never encrypted
-			
-			const gift = this.gifts.get( this.lord_ref() )
+			const gift = this.gifts.get( this.ref() )
 			const prev = gift?.bill().some( b => b ) ?? false
 			
 			if( next === undefined ) return prev
@@ -905,12 +903,12 @@ namespace $ {
 		}
 		
 		;[ $mol_dev_format_head ]() {
-			return $mol_dev_format_span( {} ,
-				$mol_dev_format_native( this ) ,
+			return $mol_dev_format_span( {},
+		 		$mol_dev_format_native( this ),
 				' ',
-				this.numb(),
-			)
-		}
+				$mol_dev_format_auto( this.faces.total ),
+		 	)
+		 }
 		
 	}
 	

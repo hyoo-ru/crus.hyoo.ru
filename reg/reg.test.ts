@@ -193,7 +193,11 @@ namespace $.$$ {
 			$mol_assert_equal( reg.value_bool(), true )
 			$mol_assert_equal( reg.value_int(), null )//land.lord_ref().description + ( 123n << 96n ) )
 			$mol_assert_equal( reg.value_real(), null )
-			$mol_assert_equal( reg.value_bin(), new Uint8Array([ 213, 212, 219, 170, 109, 71, 174, 214, 197, 34, 45, 170, 0, 0, 0, 0, 0, 0, 215, 109, 248, 231, 174, 252 ]) )
+			$mol_assert_equal( reg.value_bin(), new Uint8Array([
+				213, 212, 219, 170, 109, 71,
+				174, 214, 197, 34, 45, 170,
+				215, 109, 248, 231, 174, 252,
+			]) )
 			$mol_assert_equal( reg.value_str(), reg.ref().description! )
 			$mol_assert_equal( reg.value_ref(), reg.ref() )
 			
@@ -220,21 +224,21 @@ namespace $.$$ {
 		"Hyper link to another land"( $ ) {
 			
 			const realm = $hyoo_crus_realm.make({ $ })
-			const land = realm.home().base().land()
+			const land = realm.home()
 			
-			const reg = land.Node( $hyoo_crus_reg ).Item('11111111')
-			const remote = reg.yoke( null, null )!.Data( $hyoo_crus_reg )
+			const reg = land.Node( $hyoo_crus_reg ).Item( '11111111' )
+			const remote = reg.yoke( $hyoo_crus_rank_public )!.Data( $hyoo_crus_reg )
 			
 			$mol_assert_unique( reg.land(), remote.land() )
 			$mol_assert_equal( reg.value_ref(), remote.ref() )
-			$mol_assert_equal( reg.yoke( null )!.Data( $hyoo_crus_reg ), remote )
+			$mol_assert_equal( reg.yoke( $hyoo_crus_rank_public )!.Data( $hyoo_crus_reg ), remote )
 			
 		},
 		
 		"Narrow registers"( $ ) {
 			
 			const realm = $hyoo_crus_realm.make({ $ })
-			const land = realm.home().base().land()
+			const land = realm.home()
 			
 			const bin = land.Node( $hyoo_crus_reg_bin ).Item('11111111')
 			$mol_assert_equal( bin.value(), null )
@@ -251,7 +255,7 @@ namespace $.$$ {
 		"Register with linked nodes"( $ ) {
 			
 			const realm = $hyoo_crus_realm.make({ $ })
-			const land = realm.home().base().land()
+			const land = realm.home()
 			
 			const str = land.Node( $hyoo_crus_reg_str ).Item('11111111')
 			const ref = land.Node( $hyoo_crus_reg.ref( ()=> $hyoo_crus_reg_str ) ).Item('11111111')
