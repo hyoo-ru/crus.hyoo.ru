@@ -47,7 +47,7 @@ namespace $ {
 			
 			const socket = new $mol_dom_context.WebSocket( link.replace( /^http/, 'ws' ) )
 			socket.binaryType = 'arraybuffer'
-			const port = $mol_rest_port_ws_web.make({ socket })
+			const port = $mol_rest_port_ws_std.make({ socket })
 			
 			socket.onmessage = async( event )=> {
 				
