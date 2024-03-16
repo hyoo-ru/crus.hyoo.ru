@@ -17,9 +17,9 @@ jobs:
     - uses: hyoo-ru/mam_build@master2
       with:
         package: 'hyoo/crus'
-        modules: 'app'
+        modules: 'app/run'
     
     - uses: hyoo-ru/gh-deploy@v4.4.1
       if: github.ref == 'refs/heads/master'
       with:
-        folder: 'hyoo/crus/app/-'
+        folder: 'hyoo/crus/app/run/-'
