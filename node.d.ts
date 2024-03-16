@@ -1025,16 +1025,9 @@ declare namespace $ {
         $hyoo_crus_ref: symbol;
     });
     type $hyoo_crus_ref = typeof $hyoo_crus_ref.Value;
-    function $hyoo_crus_ref_home(ref: $hyoo_crus_ref): symbol & {
+    function $hyoo_crus_ref_land(ref: $hyoo_crus_ref): symbol & {
         $hyoo_crus_ref: symbol;
     };
-    function $hyoo_crus_ref_root(ref: $hyoo_crus_ref): symbol & {
-        $hyoo_crus_ref: symbol;
-    };
-    function $hyoo_crus_ref_lord(ref: $hyoo_crus_ref): symbol & {
-        $hyoo_crus_ref: symbol;
-    };
-    function $hyoo_crus_ref_land(ref: $hyoo_crus_ref): string;
     function $hyoo_crus_ref_head(ref: $hyoo_crus_ref): string;
     function $hyoo_crus_ref_encode(ref: $hyoo_crus_ref): Uint8Array;
     function $hyoo_crus_ref_decode(bin: Uint8Array): symbol & {
@@ -1116,6 +1109,96 @@ declare namespace $ {
 }
 
 declare namespace $ {
+    class $mol_crypto_secret extends Object {
+        readonly native: CryptoKey & {
+            type: 'secret';
+        };
+        static size: number;
+        constructor(native: CryptoKey & {
+            type: 'secret';
+        });
+        static generate(): Promise<$mol_crypto_secret>;
+        static from(serial: BufferSource | string): Promise<$mol_crypto_secret>;
+        static derive(private_serial: string, public_serial: string): Promise<$mol_crypto_secret>;
+        serial(): Promise<ArrayBuffer>;
+        encrypt(open: BufferSource, salt: BufferSource): Promise<ArrayBuffer>;
+        decrypt(closed: BufferSource, salt: BufferSource): Promise<ArrayBuffer>;
+    }
+}
+
+declare namespace $ {
+    class $hyoo_crus_auth extends $mol_crypto_key_private {
+        static current(next?: $hyoo_crus_auth | null): $hyoo_crus_auth;
+        static embryos: string[];
+        static grab(): $hyoo_crus_auth;
+        static generate(): Promise<$hyoo_crus_auth>;
+        lord(): symbol & {
+            $hyoo_crus_ref: symbol;
+        };
+        peer(): string;
+        secret_mutual(pub: string): $mol_crypto_secret;
+    }
+}
+
+declare namespace $ {
+    type $hyoo_crus_face_data = Iterable<readonly [peer: string, time: number]>;
+    class $hyoo_crus_face_map extends Map<string, number> {
+        last: number;
+        total: number;
+        constructor(entries?: $hyoo_crus_face_data);
+        sync(right: $hyoo_crus_face_data): void;
+        time_max(peer: string, time: number): void;
+        tick(): number;
+    }
+}
+
+declare namespace $ {
+    class $mol_wire_set<Value> extends Set<Value> {
+        pub: $mol_wire_pub;
+        has(value: Value): boolean;
+        entries(): IterableIterator<[Value, Value]>;
+        keys(): IterableIterator<Value>;
+        values(): IterableIterator<Value>;
+        forEach(task: (value: Value, value2: Value, set: Set<Value>) => void, self?: any): void;
+        [Symbol.iterator](): IterableIterator<Value>;
+        get size(): number;
+        add(value: Value): this;
+        delete(value: Value): boolean;
+        clear(): void;
+        item(val: Value, next?: boolean): boolean;
+    }
+}
+
+declare namespace $ {
+    enum $hyoo_crus_area {
+        data = 0,
+        meta = 1
+    }
+    function $hyoo_crus_area_of(numb: string): "data" | "meta";
+    function $hyoo_crus_area_to(numb: string, area: keyof typeof $hyoo_crus_area): string;
+}
+
+declare namespace $ {
+    enum $hyoo_crus_rank {
+        nil = 0,
+        get = 1,
+        add = 3,
+        mod = 7,
+        law = 15
+    }
+    type $hyoo_crus_rank_preset = {
+        get: (null | $hyoo_crus_ref)[];
+        add: (null | $hyoo_crus_ref)[];
+        mod: (null | $hyoo_crus_ref)[];
+        law: (null | $hyoo_crus_ref)[];
+    };
+    let $hyoo_crus_rank_private: $hyoo_crus_rank_preset;
+    let $hyoo_crus_rank_public: $hyoo_crus_rank_preset;
+    let $hyoo_crus_rank_lobby: $hyoo_crus_rank_preset;
+    let $hyoo_crus_rank_orgy: $hyoo_crus_rank_preset;
+}
+
+declare namespace $ {
     enum $hyoo_crus_part {
         land = 219,
         pass = 255,
@@ -1143,7 +1226,7 @@ declare namespace $ {
             gift: (unit: $hyoo_crus_gift) => Res;
             gist: (unit: $hyoo_crus_gist) => Res;
         }): Res;
-        narrow(): $hyoo_crus_pass | $hyoo_crus_gift | $hyoo_crus_gist;
+        narrow(): $hyoo_crus_gist | $hyoo_crus_pass | $hyoo_crus_gift;
         key(): string;
         id6(offset: number, next?: string): string;
         id12(offset: number, next?: $hyoo_crus_ref): symbol & {
@@ -1156,46 +1239,7 @@ declare namespace $ {
         mix(mixin: Uint8Array): void;
         sign(next?: ArrayLike<number>): Uint8Array;
         signed(): boolean;
-    }
-}
-
-declare namespace $ {
-    class $mol_crypto_secret extends Object {
-        readonly native: CryptoKey & {
-            type: 'secret';
-        };
-        static size: number;
-        constructor(native: CryptoKey & {
-            type: 'secret';
-        });
-        static generate(): Promise<$mol_crypto_secret>;
-        static from(serial: BufferSource | string): Promise<$mol_crypto_secret>;
-        static derive(private_serial: string, public_serial: string): Promise<$mol_crypto_secret>;
-        serial(): Promise<ArrayBuffer>;
-        encrypt(open: BufferSource, salt: BufferSource): Promise<ArrayBuffer>;
-        decrypt(closed: BufferSource, salt: BufferSource): Promise<ArrayBuffer>;
-    }
-}
-
-declare namespace $ {
-    class $hyoo_crus_pass extends $hyoo_crus_unit {
-        work(): number;
-        _lord: $hyoo_crus_ref;
-        lord(next?: $hyoo_crus_ref): symbol & {
-            $hyoo_crus_ref: symbol;
-        };
-        key(): string;
-        auth(next?: ArrayLike<number>): Uint8Array;
-    }
-}
-
-declare namespace $ {
-    enum $hyoo_crus_rank {
-        nil = 0,
-        get = 1,
-        add = 3,
-        mod = 7,
-        law = 15
+        _land: $hyoo_crus_land | null;
     }
 }
 
@@ -1314,21 +1358,6 @@ declare namespace $ {
             sss: (moment: $mol_time_moment) => string;
             Z: (moment: $mol_time_moment) => string;
         };
-    }
-}
-
-declare namespace $ {
-    class $hyoo_crus_gift extends $hyoo_crus_unit {
-        rank(next?: $hyoo_crus_rank): $hyoo_crus_rank;
-        time(next?: number): number;
-        free(): Uint8Array;
-        _dest: $hyoo_crus_ref;
-        dest(next?: $hyoo_crus_ref): symbol & {
-            $hyoo_crus_ref: symbol;
-        };
-        key(): string;
-        bill(): Uint8Array;
-        static compare(left: $hyoo_crus_gift, right: $hyoo_crus_gift): number;
     }
 }
 
@@ -1455,63 +1484,12 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    class $hyoo_crus_auth extends $mol_crypto_key_private {
-        static current(next?: $hyoo_crus_auth | null): $hyoo_crus_auth;
-        static generate(): Promise<$hyoo_crus_auth>;
-        lord(): symbol & {
-            $hyoo_crus_ref: symbol;
-        };
-        peer(): string;
-        secret_mutual(pub: string): $mol_crypto_secret;
-    }
-}
-
-declare namespace $ {
-    type $hyoo_crus_face_data = Iterable<readonly [peer: string, time: number]>;
-    class $hyoo_crus_face_map extends Map<string, number> {
-        last: number;
-        total: number;
-        constructor(entries?: $hyoo_crus_face_data);
-        sync(right: $hyoo_crus_face_data): void;
-        time_max(peer: string, time: number): void;
-        tick(): number;
-    }
-}
-
-declare namespace $ {
-    class $mol_wire_set<Value> extends Set<Value> {
-        pub: $mol_wire_pub;
-        has(value: Value): boolean;
-        entries(): IterableIterator<[Value, Value]>;
-        keys(): IterableIterator<Value>;
-        values(): IterableIterator<Value>;
-        forEach(task: (value: Value, value2: Value, set: Set<Value>) => void, self?: any): void;
-        [Symbol.iterator](): IterableIterator<Value>;
-        get size(): number;
-        add(value: Value): this;
-        delete(value: Value): boolean;
-        clear(): void;
-        item(val: Value, next?: boolean): boolean;
-    }
-}
-
-declare namespace $ {
-    enum $hyoo_crus_area {
-        data = 0,
-        meta = 1
-    }
-    function $hyoo_crus_area_of(numb: string): "data" | "meta";
-    function $hyoo_crus_area_to(numb: string, area: keyof typeof $hyoo_crus_area): string;
-}
-
-declare namespace $ {
     class $hyoo_crus_node extends $mol_object {
         static tag: "keys" | "term" | "solo" | "vals";
         land(): $hyoo_crus_land;
         head(): string;
-        lord(): $hyoo_crus_lord | null;
         realm(): $hyoo_crus_realm | null;
-        lord_ref(): symbol & {
+        land_ref(): symbol & {
             $hyoo_crus_ref: symbol;
         };
         ref(): symbol & {
@@ -1656,9 +1634,8 @@ declare namespace $ {
                 node_make<Node extends typeof $hyoo_crus_node>(Node: Node, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): InstanceType<Node>;
                 land(): $hyoo_crus_land;
                 head(): string;
-                lord(): $hyoo_crus_lord | null;
                 realm(): $hyoo_crus_realm | null;
-                lord_ref(): symbol & {
+                land_ref(): symbol & {
                     $hyoo_crus_ref: symbol;
                 };
                 ref(): symbol & {
@@ -1686,7 +1663,7 @@ declare namespace $ {
                 new (): {
                     value(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
                     remote_list(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
-                    remote_make(): $mol_type_result<$mol_type_result<Value>>;
+                    remote_make(preset?: $hyoo_crus_rank_preset): $mol_type_result<$mol_type_result<Value>>;
                     local_make(idea?: number | undefined): $mol_type_result<$mol_type_result<Value>>;
                     toString: () => string;
                     splice: (next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: "keys" | "term" | "solo" | "vals") => void;
@@ -1708,9 +1685,8 @@ declare namespace $ {
                     wipe: (seat: number) => void;
                     node_make: <Node_3 extends typeof $hyoo_crus_node>(Node: Node_3, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => InstanceType<Node_3>;
                     land: () => $hyoo_crus_land;
-                    lord: () => $hyoo_crus_lord | null;
                     realm: () => $hyoo_crus_realm | null;
-                    lord_ref: () => symbol & {
+                    land_ref: () => symbol & {
                         $hyoo_crus_ref: symbol;
                     };
                     cast: <Node_4 extends typeof $hyoo_crus_node>(Node: Node_4) => InstanceType<Node_4>;
@@ -1746,7 +1722,7 @@ declare namespace $ {
             new (): {
                 value(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
                 remote_list(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
-                remote_make(): $mol_type_result<$mol_type_result<Value>>;
+                remote_make(preset?: $hyoo_crus_rank_preset): $mol_type_result<$mol_type_result<Value>>;
                 local_make(idea?: number): $mol_type_result<$mol_type_result<Value>>;
                 toString: () => string;
                 splice: (next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: "keys" | "term" | "solo" | "vals") => void;
@@ -1768,9 +1744,8 @@ declare namespace $ {
                 wipe: (seat: number) => void;
                 node_make: <Node extends typeof $hyoo_crus_node>(Node: Node, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => InstanceType<Node>;
                 land: () => $hyoo_crus_land;
-                lord: () => $hyoo_crus_lord | null;
                 realm: () => $hyoo_crus_realm | null;
-                lord_ref: () => symbol & {
+                land_ref: () => symbol & {
                     $hyoo_crus_ref: symbol;
                 };
                 cast: <Node_1 extends typeof $hyoo_crus_node>(Node: Node_1) => InstanceType<Node_1>;
@@ -1809,9 +1784,8 @@ declare namespace $ {
             node_make<Node extends typeof $hyoo_crus_node>(Node: Node, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): InstanceType<Node>;
             land(): $hyoo_crus_land;
             head(): string;
-            lord(): $hyoo_crus_lord | null;
             realm(): $hyoo_crus_realm | null;
-            lord_ref(): symbol & {
+            land_ref(): symbol & {
                 $hyoo_crus_ref: symbol;
             };
             ref(): symbol & {
@@ -1878,9 +1852,8 @@ declare namespace $ {
                 node_make<Node_3 extends typeof $hyoo_crus_node>(Node: Node_3, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): InstanceType<Node_3>;
                 land(): $hyoo_crus_land;
                 head(): string;
-                lord(): $hyoo_crus_lord | null;
                 realm(): $hyoo_crus_realm | null;
-                lord_ref(): symbol & {
+                land_ref(): symbol & {
                     $hyoo_crus_ref: symbol;
                 };
                 ref(): symbol & {
@@ -1908,7 +1881,7 @@ declare namespace $ {
                 new (): {
                     value(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
                     remote_list(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
-                    remote_make(): $mol_type_result<$mol_type_result<Value>>;
+                    remote_make(preset?: $hyoo_crus_rank_preset): $mol_type_result<$mol_type_result<Value>>;
                     local_make(idea?: number | undefined): $mol_type_result<$mol_type_result<Value>>;
                     toString: () => string;
                     splice: (next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: "keys" | "term" | "solo" | "vals") => void;
@@ -1930,9 +1903,8 @@ declare namespace $ {
                     wipe: (seat: number) => void;
                     node_make: <Node_6 extends typeof $hyoo_crus_node>(Node: Node_6, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => InstanceType<Node_6>;
                     land: () => $hyoo_crus_land;
-                    lord: () => $hyoo_crus_lord | null;
                     realm: () => $hyoo_crus_realm | null;
-                    lord_ref: () => symbol & {
+                    land_ref: () => symbol & {
                         $hyoo_crus_ref: symbol;
                     };
                     cast: <Node_7 extends typeof $hyoo_crus_node>(Node: Node_7) => InstanceType<Node_7>;
@@ -1968,7 +1940,7 @@ declare namespace $ {
             new (): {
                 value(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
                 remote_list(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
-                remote_make(): $mol_type_result<$mol_type_result<Value>>;
+                remote_make(preset?: $hyoo_crus_rank_preset): $mol_type_result<$mol_type_result<Value>>;
                 local_make(idea?: number | undefined): $mol_type_result<$mol_type_result<Value>>;
                 toString: () => string;
                 splice: (next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: "keys" | "term" | "solo" | "vals") => void;
@@ -1990,9 +1962,8 @@ declare namespace $ {
                 wipe: (seat: number) => void;
                 node_make: <Node_6 extends typeof $hyoo_crus_node>(Node: Node_6, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => InstanceType<Node_6>;
                 land: () => $hyoo_crus_land;
-                lord: () => $hyoo_crus_lord | null;
                 realm: () => $hyoo_crus_realm | null;
-                lord_ref: () => symbol & {
+                land_ref: () => symbol & {
                     $hyoo_crus_ref: symbol;
                 };
                 cast: <Node_7 extends typeof $hyoo_crus_node>(Node: Node_7) => InstanceType<Node_7>;
@@ -2040,9 +2011,8 @@ declare namespace $ {
             node_make<Node extends typeof $hyoo_crus_node>(Node: Node, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): InstanceType<Node>;
             land(): $hyoo_crus_land;
             head(): string;
-            lord(): $hyoo_crus_lord | null;
             realm(): $hyoo_crus_realm | null;
-            lord_ref(): symbol & {
+            land_ref(): symbol & {
                 $hyoo_crus_ref: symbol;
             };
             ref(): symbol & {
@@ -2109,9 +2079,8 @@ declare namespace $ {
                 node_make<Node_3 extends typeof $hyoo_crus_node>(Node: Node_3, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): InstanceType<Node_3>;
                 land(): $hyoo_crus_land;
                 head(): string;
-                lord(): $hyoo_crus_lord | null;
                 realm(): $hyoo_crus_realm | null;
-                lord_ref(): symbol & {
+                land_ref(): symbol & {
                     $hyoo_crus_ref: symbol;
                 };
                 ref(): symbol & {
@@ -2139,7 +2108,7 @@ declare namespace $ {
                 new (): {
                     value(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
                     remote_list(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
-                    remote_make(): $mol_type_result<$mol_type_result<Value>>;
+                    remote_make(preset?: $hyoo_crus_rank_preset): $mol_type_result<$mol_type_result<Value>>;
                     local_make(idea?: number | undefined): $mol_type_result<$mol_type_result<Value>>;
                     toString: () => string;
                     splice: (next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: "keys" | "term" | "solo" | "vals") => void;
@@ -2161,9 +2130,8 @@ declare namespace $ {
                     wipe: (seat: number) => void;
                     node_make: <Node_6 extends typeof $hyoo_crus_node>(Node: Node_6, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => InstanceType<Node_6>;
                     land: () => $hyoo_crus_land;
-                    lord: () => $hyoo_crus_lord | null;
                     realm: () => $hyoo_crus_realm | null;
-                    lord_ref: () => symbol & {
+                    land_ref: () => symbol & {
                         $hyoo_crus_ref: symbol;
                     };
                     cast: <Node_7 extends typeof $hyoo_crus_node>(Node: Node_7) => InstanceType<Node_7>;
@@ -2199,7 +2167,7 @@ declare namespace $ {
             new (): {
                 value(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
                 remote_list(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
-                remote_make(): $mol_type_result<$mol_type_result<Value>>;
+                remote_make(preset?: $hyoo_crus_rank_preset): $mol_type_result<$mol_type_result<Value>>;
                 local_make(idea?: number | undefined): $mol_type_result<$mol_type_result<Value>>;
                 toString: () => string;
                 splice: (next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: "keys" | "term" | "solo" | "vals") => void;
@@ -2221,9 +2189,8 @@ declare namespace $ {
                 wipe: (seat: number) => void;
                 node_make: <Node_6 extends typeof $hyoo_crus_node>(Node: Node_6, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => InstanceType<Node_6>;
                 land: () => $hyoo_crus_land;
-                lord: () => $hyoo_crus_lord | null;
                 realm: () => $hyoo_crus_realm | null;
-                lord_ref: () => symbol & {
+                land_ref: () => symbol & {
                     $hyoo_crus_ref: symbol;
                 };
                 cast: <Node_7 extends typeof $hyoo_crus_node>(Node: Node_7) => InstanceType<Node_7>;
@@ -2271,9 +2238,8 @@ declare namespace $ {
             node_make<Node extends typeof $hyoo_crus_node>(Node: Node, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): InstanceType<Node>;
             land(): $hyoo_crus_land;
             head(): string;
-            lord(): $hyoo_crus_lord | null;
             realm(): $hyoo_crus_realm | null;
-            lord_ref(): symbol & {
+            land_ref(): symbol & {
                 $hyoo_crus_ref: symbol;
             };
             ref(): symbol & {
@@ -2340,9 +2306,8 @@ declare namespace $ {
                 node_make<Node_3 extends typeof $hyoo_crus_node>(Node: Node_3, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): InstanceType<Node_3>;
                 land(): $hyoo_crus_land;
                 head(): string;
-                lord(): $hyoo_crus_lord | null;
                 realm(): $hyoo_crus_realm | null;
-                lord_ref(): symbol & {
+                land_ref(): symbol & {
                     $hyoo_crus_ref: symbol;
                 };
                 ref(): symbol & {
@@ -2370,7 +2335,7 @@ declare namespace $ {
                 new (): {
                     value(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
                     remote_list(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
-                    remote_make(): $mol_type_result<$mol_type_result<Value>>;
+                    remote_make(preset?: $hyoo_crus_rank_preset): $mol_type_result<$mol_type_result<Value>>;
                     local_make(idea?: number | undefined): $mol_type_result<$mol_type_result<Value>>;
                     toString: () => string;
                     splice: (next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: "keys" | "term" | "solo" | "vals") => void;
@@ -2392,9 +2357,8 @@ declare namespace $ {
                     wipe: (seat: number) => void;
                     node_make: <Node_6 extends typeof $hyoo_crus_node>(Node: Node_6, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => InstanceType<Node_6>;
                     land: () => $hyoo_crus_land;
-                    lord: () => $hyoo_crus_lord | null;
                     realm: () => $hyoo_crus_realm | null;
-                    lord_ref: () => symbol & {
+                    land_ref: () => symbol & {
                         $hyoo_crus_ref: symbol;
                     };
                     cast: <Node_7 extends typeof $hyoo_crus_node>(Node: Node_7) => InstanceType<Node_7>;
@@ -2430,7 +2394,7 @@ declare namespace $ {
             new (): {
                 value(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
                 remote_list(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
-                remote_make(): $mol_type_result<$mol_type_result<Value>>;
+                remote_make(preset?: $hyoo_crus_rank_preset): $mol_type_result<$mol_type_result<Value>>;
                 local_make(idea?: number | undefined): $mol_type_result<$mol_type_result<Value>>;
                 toString: () => string;
                 splice: (next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: "keys" | "term" | "solo" | "vals") => void;
@@ -2452,9 +2416,8 @@ declare namespace $ {
                 wipe: (seat: number) => void;
                 node_make: <Node_6 extends typeof $hyoo_crus_node>(Node: Node_6, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => InstanceType<Node_6>;
                 land: () => $hyoo_crus_land;
-                lord: () => $hyoo_crus_lord | null;
                 realm: () => $hyoo_crus_realm | null;
-                lord_ref: () => symbol & {
+                land_ref: () => symbol & {
                     $hyoo_crus_ref: symbol;
                 };
                 cast: <Node_7 extends typeof $hyoo_crus_node>(Node: Node_7) => InstanceType<Node_7>;
@@ -2502,9 +2465,8 @@ declare namespace $ {
             node_make<Node extends typeof $hyoo_crus_node>(Node: Node, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): InstanceType<Node>;
             land(): $hyoo_crus_land;
             head(): string;
-            lord(): $hyoo_crus_lord | null;
             realm(): $hyoo_crus_realm | null;
-            lord_ref(): symbol & {
+            land_ref(): symbol & {
                 $hyoo_crus_ref: symbol;
             };
             ref(): symbol & {
@@ -2571,9 +2533,8 @@ declare namespace $ {
                 node_make<Node_3 extends typeof $hyoo_crus_node>(Node: Node_3, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): InstanceType<Node_3>;
                 land(): $hyoo_crus_land;
                 head(): string;
-                lord(): $hyoo_crus_lord | null;
                 realm(): $hyoo_crus_realm | null;
-                lord_ref(): symbol & {
+                land_ref(): symbol & {
                     $hyoo_crus_ref: symbol;
                 };
                 ref(): symbol & {
@@ -2601,7 +2562,7 @@ declare namespace $ {
                 new (): {
                     value(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
                     remote_list(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
-                    remote_make(): $mol_type_result<$mol_type_result<Value>>;
+                    remote_make(preset?: $hyoo_crus_rank_preset): $mol_type_result<$mol_type_result<Value>>;
                     local_make(idea?: number | undefined): $mol_type_result<$mol_type_result<Value>>;
                     toString: () => string;
                     splice: (next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: "keys" | "term" | "solo" | "vals") => void;
@@ -2623,9 +2584,8 @@ declare namespace $ {
                     wipe: (seat: number) => void;
                     node_make: <Node_6 extends typeof $hyoo_crus_node>(Node: Node_6, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => InstanceType<Node_6>;
                     land: () => $hyoo_crus_land;
-                    lord: () => $hyoo_crus_lord | null;
                     realm: () => $hyoo_crus_realm | null;
-                    lord_ref: () => symbol & {
+                    land_ref: () => symbol & {
                         $hyoo_crus_ref: symbol;
                     };
                     cast: <Node_7 extends typeof $hyoo_crus_node>(Node: Node_7) => InstanceType<Node_7>;
@@ -2661,7 +2621,7 @@ declare namespace $ {
             new (): {
                 value(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
                 remote_list(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
-                remote_make(): $mol_type_result<$mol_type_result<Value>>;
+                remote_make(preset?: $hyoo_crus_rank_preset): $mol_type_result<$mol_type_result<Value>>;
                 local_make(idea?: number | undefined): $mol_type_result<$mol_type_result<Value>>;
                 toString: () => string;
                 splice: (next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: "keys" | "term" | "solo" | "vals") => void;
@@ -2683,9 +2643,8 @@ declare namespace $ {
                 wipe: (seat: number) => void;
                 node_make: <Node_6 extends typeof $hyoo_crus_node>(Node: Node_6, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => InstanceType<Node_6>;
                 land: () => $hyoo_crus_land;
-                lord: () => $hyoo_crus_lord | null;
                 realm: () => $hyoo_crus_realm | null;
-                lord_ref: () => symbol & {
+                land_ref: () => symbol & {
                     $hyoo_crus_ref: symbol;
                 };
                 cast: <Node_7 extends typeof $hyoo_crus_node>(Node: Node_7) => InstanceType<Node_7>;
@@ -2737,9 +2696,8 @@ declare namespace $ {
             node_make<Node extends typeof $hyoo_crus_node>(Node: Node, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): InstanceType<Node>;
             land(): $hyoo_crus_land;
             head(): string;
-            lord(): $hyoo_crus_lord | null;
             realm(): $hyoo_crus_realm | null;
-            lord_ref(): symbol & {
+            land_ref(): symbol & {
                 $hyoo_crus_ref: symbol;
             };
             ref(): symbol & {
@@ -2806,9 +2764,8 @@ declare namespace $ {
                 node_make<Node_3 extends typeof $hyoo_crus_node>(Node: Node_3, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): InstanceType<Node_3>;
                 land(): $hyoo_crus_land;
                 head(): string;
-                lord(): $hyoo_crus_lord | null;
                 realm(): $hyoo_crus_realm | null;
-                lord_ref(): symbol & {
+                land_ref(): symbol & {
                     $hyoo_crus_ref: symbol;
                 };
                 ref(): symbol & {
@@ -2836,7 +2793,7 @@ declare namespace $ {
                 new (): {
                     value(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
                     remote_list(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
-                    remote_make(): $mol_type_result<$mol_type_result<Value>>;
+                    remote_make(preset?: $hyoo_crus_rank_preset): $mol_type_result<$mol_type_result<Value>>;
                     local_make(idea?: number | undefined): $mol_type_result<$mol_type_result<Value>>;
                     toString: () => string;
                     splice: (next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: "keys" | "term" | "solo" | "vals") => void;
@@ -2858,9 +2815,8 @@ declare namespace $ {
                     wipe: (seat: number) => void;
                     node_make: <Node_6 extends typeof $hyoo_crus_node>(Node: Node_6, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => InstanceType<Node_6>;
                     land: () => $hyoo_crus_land;
-                    lord: () => $hyoo_crus_lord | null;
                     realm: () => $hyoo_crus_realm | null;
-                    lord_ref: () => symbol & {
+                    land_ref: () => symbol & {
                         $hyoo_crus_ref: symbol;
                     };
                     cast: <Node_7 extends typeof $hyoo_crus_node>(Node: Node_7) => InstanceType<Node_7>;
@@ -2896,7 +2852,7 @@ declare namespace $ {
             new (): {
                 value(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
                 remote_list(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
-                remote_make(): $mol_type_result<$mol_type_result<Value>>;
+                remote_make(preset?: $hyoo_crus_rank_preset): $mol_type_result<$mol_type_result<Value>>;
                 local_make(idea?: number | undefined): $mol_type_result<$mol_type_result<Value>>;
                 toString: () => string;
                 splice: (next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: "keys" | "term" | "solo" | "vals") => void;
@@ -2918,9 +2874,8 @@ declare namespace $ {
                 wipe: (seat: number) => void;
                 node_make: <Node_6 extends typeof $hyoo_crus_node>(Node: Node_6, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => InstanceType<Node_6>;
                 land: () => $hyoo_crus_land;
-                lord: () => $hyoo_crus_lord | null;
                 realm: () => $hyoo_crus_realm | null;
-                lord_ref: () => symbol & {
+                land_ref: () => symbol & {
                     $hyoo_crus_ref: symbol;
                 };
                 cast: <Node_7 extends typeof $hyoo_crus_node>(Node: Node_7) => InstanceType<Node_7>;
@@ -2968,9 +2923,8 @@ declare namespace $ {
             node_make<Node extends typeof $hyoo_crus_node>(Node: Node, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): InstanceType<Node>;
             land(): $hyoo_crus_land;
             head(): string;
-            lord(): $hyoo_crus_lord | null;
             realm(): $hyoo_crus_realm | null;
-            lord_ref(): symbol & {
+            land_ref(): symbol & {
                 $hyoo_crus_ref: symbol;
             };
             ref(): symbol & {
@@ -3037,9 +2991,8 @@ declare namespace $ {
                 node_make<Node_3 extends typeof $hyoo_crus_node>(Node: Node_3, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): InstanceType<Node_3>;
                 land(): $hyoo_crus_land;
                 head(): string;
-                lord(): $hyoo_crus_lord | null;
                 realm(): $hyoo_crus_realm | null;
-                lord_ref(): symbol & {
+                land_ref(): symbol & {
                     $hyoo_crus_ref: symbol;
                 };
                 ref(): symbol & {
@@ -3067,7 +3020,7 @@ declare namespace $ {
                 new (): {
                     value(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
                     remote_list(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
-                    remote_make(): $mol_type_result<$mol_type_result<Value>>;
+                    remote_make(preset?: $hyoo_crus_rank_preset): $mol_type_result<$mol_type_result<Value>>;
                     local_make(idea?: number | undefined): $mol_type_result<$mol_type_result<Value>>;
                     toString: () => string;
                     splice: (next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: "keys" | "term" | "solo" | "vals") => void;
@@ -3089,9 +3042,8 @@ declare namespace $ {
                     wipe: (seat: number) => void;
                     node_make: <Node_6 extends typeof $hyoo_crus_node>(Node: Node_6, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => InstanceType<Node_6>;
                     land: () => $hyoo_crus_land;
-                    lord: () => $hyoo_crus_lord | null;
                     realm: () => $hyoo_crus_realm | null;
-                    lord_ref: () => symbol & {
+                    land_ref: () => symbol & {
                         $hyoo_crus_ref: symbol;
                     };
                     cast: <Node_7 extends typeof $hyoo_crus_node>(Node: Node_7) => InstanceType<Node_7>;
@@ -3127,7 +3079,7 @@ declare namespace $ {
             new (): {
                 value(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
                 remote_list(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
-                remote_make(): $mol_type_result<$mol_type_result<Value>>;
+                remote_make(preset?: $hyoo_crus_rank_preset): $mol_type_result<$mol_type_result<Value>>;
                 local_make(idea?: number | undefined): $mol_type_result<$mol_type_result<Value>>;
                 toString: () => string;
                 splice: (next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: "keys" | "term" | "solo" | "vals") => void;
@@ -3149,9 +3101,8 @@ declare namespace $ {
                 wipe: (seat: number) => void;
                 node_make: <Node_6 extends typeof $hyoo_crus_node>(Node: Node_6, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => InstanceType<Node_6>;
                 land: () => $hyoo_crus_land;
-                lord: () => $hyoo_crus_lord | null;
                 realm: () => $hyoo_crus_realm | null;
-                lord_ref: () => symbol & {
+                land_ref: () => symbol & {
                     $hyoo_crus_ref: symbol;
                 };
                 cast: <Node_7 extends typeof $hyoo_crus_node>(Node: Node_7) => InstanceType<Node_7>;
@@ -3199,9 +3150,8 @@ declare namespace $ {
             node_make<Node extends typeof $hyoo_crus_node>(Node: Node, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): InstanceType<Node>;
             land(): $hyoo_crus_land;
             head(): string;
-            lord(): $hyoo_crus_lord | null;
             realm(): $hyoo_crus_realm | null;
-            lord_ref(): symbol & {
+            land_ref(): symbol & {
                 $hyoo_crus_ref: symbol;
             };
             ref(): symbol & {
@@ -3268,9 +3218,8 @@ declare namespace $ {
                 node_make<Node_3 extends typeof $hyoo_crus_node>(Node: Node_3, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): InstanceType<Node_3>;
                 land(): $hyoo_crus_land;
                 head(): string;
-                lord(): $hyoo_crus_lord | null;
                 realm(): $hyoo_crus_realm | null;
-                lord_ref(): symbol & {
+                land_ref(): symbol & {
                     $hyoo_crus_ref: symbol;
                 };
                 ref(): symbol & {
@@ -3298,7 +3247,7 @@ declare namespace $ {
                 new (): {
                     value(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
                     remote_list(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
-                    remote_make(): $mol_type_result<$mol_type_result<Value>>;
+                    remote_make(preset?: $hyoo_crus_rank_preset): $mol_type_result<$mol_type_result<Value>>;
                     local_make(idea?: number | undefined): $mol_type_result<$mol_type_result<Value>>;
                     toString: () => string;
                     splice: (next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: "keys" | "term" | "solo" | "vals") => void;
@@ -3320,9 +3269,8 @@ declare namespace $ {
                     wipe: (seat: number) => void;
                     node_make: <Node_6 extends typeof $hyoo_crus_node>(Node: Node_6, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => InstanceType<Node_6>;
                     land: () => $hyoo_crus_land;
-                    lord: () => $hyoo_crus_lord | null;
                     realm: () => $hyoo_crus_realm | null;
-                    lord_ref: () => symbol & {
+                    land_ref: () => symbol & {
                         $hyoo_crus_ref: symbol;
                     };
                     cast: <Node_7 extends typeof $hyoo_crus_node>(Node: Node_7) => InstanceType<Node_7>;
@@ -3358,7 +3306,7 @@ declare namespace $ {
             new (): {
                 value(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
                 remote_list(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
-                remote_make(): $mol_type_result<$mol_type_result<Value>>;
+                remote_make(preset?: $hyoo_crus_rank_preset): $mol_type_result<$mol_type_result<Value>>;
                 local_make(idea?: number | undefined): $mol_type_result<$mol_type_result<Value>>;
                 toString: () => string;
                 splice: (next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: "keys" | "term" | "solo" | "vals") => void;
@@ -3380,9 +3328,8 @@ declare namespace $ {
                 wipe: (seat: number) => void;
                 node_make: <Node_6 extends typeof $hyoo_crus_node>(Node: Node_6, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => InstanceType<Node_6>;
                 land: () => $hyoo_crus_land;
-                lord: () => $hyoo_crus_lord | null;
                 realm: () => $hyoo_crus_realm | null;
-                lord_ref: () => symbol & {
+                land_ref: () => symbol & {
                     $hyoo_crus_ref: symbol;
                 };
                 cast: <Node_7 extends typeof $hyoo_crus_node>(Node: Node_7) => InstanceType<Node_7>;
@@ -3430,9 +3377,8 @@ declare namespace $ {
             node_make<Node extends typeof $hyoo_crus_node>(Node: Node, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): InstanceType<Node>;
             land(): $hyoo_crus_land;
             head(): string;
-            lord(): $hyoo_crus_lord | null;
             realm(): $hyoo_crus_realm | null;
-            lord_ref(): symbol & {
+            land_ref(): symbol & {
                 $hyoo_crus_ref: symbol;
             };
             ref(): symbol & {
@@ -3499,9 +3445,8 @@ declare namespace $ {
                 node_make<Node_3 extends typeof $hyoo_crus_node>(Node: Node_3, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): InstanceType<Node_3>;
                 land(): $hyoo_crus_land;
                 head(): string;
-                lord(): $hyoo_crus_lord | null;
                 realm(): $hyoo_crus_realm | null;
-                lord_ref(): symbol & {
+                land_ref(): symbol & {
                     $hyoo_crus_ref: symbol;
                 };
                 ref(): symbol & {
@@ -3529,7 +3474,7 @@ declare namespace $ {
                 new (): {
                     value(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
                     remote_list(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
-                    remote_make(): $mol_type_result<$mol_type_result<Value>>;
+                    remote_make(preset?: $hyoo_crus_rank_preset): $mol_type_result<$mol_type_result<Value>>;
                     local_make(idea?: number | undefined): $mol_type_result<$mol_type_result<Value>>;
                     toString: () => string;
                     splice: (next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: "keys" | "term" | "solo" | "vals") => void;
@@ -3551,9 +3496,8 @@ declare namespace $ {
                     wipe: (seat: number) => void;
                     node_make: <Node_6 extends typeof $hyoo_crus_node>(Node: Node_6, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => InstanceType<Node_6>;
                     land: () => $hyoo_crus_land;
-                    lord: () => $hyoo_crus_lord | null;
                     realm: () => $hyoo_crus_realm | null;
-                    lord_ref: () => symbol & {
+                    land_ref: () => symbol & {
                         $hyoo_crus_ref: symbol;
                     };
                     cast: <Node_7 extends typeof $hyoo_crus_node>(Node: Node_7) => InstanceType<Node_7>;
@@ -3589,7 +3533,7 @@ declare namespace $ {
             new (): {
                 value(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
                 remote_list(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
-                remote_make(): $mol_type_result<$mol_type_result<Value>>;
+                remote_make(preset?: $hyoo_crus_rank_preset): $mol_type_result<$mol_type_result<Value>>;
                 local_make(idea?: number | undefined): $mol_type_result<$mol_type_result<Value>>;
                 toString: () => string;
                 splice: (next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: "keys" | "term" | "solo" | "vals") => void;
@@ -3611,9 +3555,8 @@ declare namespace $ {
                 wipe: (seat: number) => void;
                 node_make: <Node_6 extends typeof $hyoo_crus_node>(Node: Node_6, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => InstanceType<Node_6>;
                 land: () => $hyoo_crus_land;
-                lord: () => $hyoo_crus_lord | null;
                 realm: () => $hyoo_crus_realm | null;
-                lord_ref: () => symbol & {
+                land_ref: () => symbol & {
                     $hyoo_crus_ref: symbol;
                 };
                 cast: <Node_7 extends typeof $hyoo_crus_node>(Node: Node_7) => InstanceType<Node_7>;
@@ -3661,9 +3604,8 @@ declare namespace $ {
             node_make<Node extends typeof $hyoo_crus_node>(Node: Node, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): InstanceType<Node>;
             land(): $hyoo_crus_land;
             head(): string;
-            lord(): $hyoo_crus_lord | null;
             realm(): $hyoo_crus_realm | null;
-            lord_ref(): symbol & {
+            land_ref(): symbol & {
                 $hyoo_crus_ref: symbol;
             };
             ref(): symbol & {
@@ -3730,9 +3672,8 @@ declare namespace $ {
                 node_make<Node_3 extends typeof $hyoo_crus_node>(Node: Node_3, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): InstanceType<Node_3>;
                 land(): $hyoo_crus_land;
                 head(): string;
-                lord(): $hyoo_crus_lord | null;
                 realm(): $hyoo_crus_realm | null;
-                lord_ref(): symbol & {
+                land_ref(): symbol & {
                     $hyoo_crus_ref: symbol;
                 };
                 ref(): symbol & {
@@ -3760,7 +3701,7 @@ declare namespace $ {
                 new (): {
                     value(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
                     remote_list(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
-                    remote_make(): $mol_type_result<$mol_type_result<Value>>;
+                    remote_make(preset?: $hyoo_crus_rank_preset): $mol_type_result<$mol_type_result<Value>>;
                     local_make(idea?: number | undefined): $mol_type_result<$mol_type_result<Value>>;
                     toString: () => string;
                     splice: (next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: "keys" | "term" | "solo" | "vals") => void;
@@ -3782,9 +3723,8 @@ declare namespace $ {
                     wipe: (seat: number) => void;
                     node_make: <Node_6 extends typeof $hyoo_crus_node>(Node: Node_6, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => InstanceType<Node_6>;
                     land: () => $hyoo_crus_land;
-                    lord: () => $hyoo_crus_lord | null;
                     realm: () => $hyoo_crus_realm | null;
-                    lord_ref: () => symbol & {
+                    land_ref: () => symbol & {
                         $hyoo_crus_ref: symbol;
                     };
                     cast: <Node_7 extends typeof $hyoo_crus_node>(Node: Node_7) => InstanceType<Node_7>;
@@ -3820,7 +3760,7 @@ declare namespace $ {
             new (): {
                 value(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
                 remote_list(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
-                remote_make(): $mol_type_result<$mol_type_result<Value>>;
+                remote_make(preset?: $hyoo_crus_rank_preset): $mol_type_result<$mol_type_result<Value>>;
                 local_make(idea?: number | undefined): $mol_type_result<$mol_type_result<Value>>;
                 toString: () => string;
                 splice: (next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: "keys" | "term" | "solo" | "vals") => void;
@@ -3842,9 +3782,8 @@ declare namespace $ {
                 wipe: (seat: number) => void;
                 node_make: <Node_6 extends typeof $hyoo_crus_node>(Node: Node_6, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => InstanceType<Node_6>;
                 land: () => $hyoo_crus_land;
-                lord: () => $hyoo_crus_lord | null;
                 realm: () => $hyoo_crus_realm | null;
-                lord_ref: () => symbol & {
+                land_ref: () => symbol & {
                     $hyoo_crus_ref: symbol;
                 };
                 cast: <Node_7 extends typeof $hyoo_crus_node>(Node: Node_7) => InstanceType<Node_7>;
@@ -3892,9 +3831,8 @@ declare namespace $ {
             node_make<Node extends typeof $hyoo_crus_node>(Node: Node, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): InstanceType<Node>;
             land(): $hyoo_crus_land;
             head(): string;
-            lord(): $hyoo_crus_lord | null;
             realm(): $hyoo_crus_realm | null;
-            lord_ref(): symbol & {
+            land_ref(): symbol & {
                 $hyoo_crus_ref: symbol;
             };
             ref(): symbol & {
@@ -3961,9 +3899,8 @@ declare namespace $ {
                 node_make<Node_3 extends typeof $hyoo_crus_node>(Node: Node_3, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): InstanceType<Node_3>;
                 land(): $hyoo_crus_land;
                 head(): string;
-                lord(): $hyoo_crus_lord | null;
                 realm(): $hyoo_crus_realm | null;
-                lord_ref(): symbol & {
+                land_ref(): symbol & {
                     $hyoo_crus_ref: symbol;
                 };
                 ref(): symbol & {
@@ -3991,7 +3928,7 @@ declare namespace $ {
                 new (): {
                     value(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
                     remote_list(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
-                    remote_make(): $mol_type_result<$mol_type_result<Value>>;
+                    remote_make(preset?: $hyoo_crus_rank_preset): $mol_type_result<$mol_type_result<Value>>;
                     local_make(idea?: number | undefined): $mol_type_result<$mol_type_result<Value>>;
                     toString: () => string;
                     splice: (next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: "keys" | "term" | "solo" | "vals") => void;
@@ -4013,9 +3950,8 @@ declare namespace $ {
                     wipe: (seat: number) => void;
                     node_make: <Node_6 extends typeof $hyoo_crus_node>(Node: Node_6, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => InstanceType<Node_6>;
                     land: () => $hyoo_crus_land;
-                    lord: () => $hyoo_crus_lord | null;
                     realm: () => $hyoo_crus_realm | null;
-                    lord_ref: () => symbol & {
+                    land_ref: () => symbol & {
                         $hyoo_crus_ref: symbol;
                     };
                     cast: <Node_7 extends typeof $hyoo_crus_node>(Node: Node_7) => InstanceType<Node_7>;
@@ -4051,7 +3987,7 @@ declare namespace $ {
             new (): {
                 value(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
                 remote_list(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
-                remote_make(): $mol_type_result<$mol_type_result<Value>>;
+                remote_make(preset?: $hyoo_crus_rank_preset): $mol_type_result<$mol_type_result<Value>>;
                 local_make(idea?: number | undefined): $mol_type_result<$mol_type_result<Value>>;
                 toString: () => string;
                 splice: (next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: "keys" | "term" | "solo" | "vals") => void;
@@ -4073,9 +4009,8 @@ declare namespace $ {
                 wipe: (seat: number) => void;
                 node_make: <Node_6 extends typeof $hyoo_crus_node>(Node: Node_6, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => InstanceType<Node_6>;
                 land: () => $hyoo_crus_land;
-                lord: () => $hyoo_crus_lord | null;
                 realm: () => $hyoo_crus_realm | null;
-                lord_ref: () => symbol & {
+                land_ref: () => symbol & {
                     $hyoo_crus_ref: symbol;
                 };
                 cast: <Node_7 extends typeof $hyoo_crus_node>(Node: Node_7) => InstanceType<Node_7>;
@@ -4123,9 +4058,8 @@ declare namespace $ {
             node_make<Node extends typeof $hyoo_crus_node>(Node: Node, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): InstanceType<Node>;
             land(): $hyoo_crus_land;
             head(): string;
-            lord(): $hyoo_crus_lord | null;
             realm(): $hyoo_crus_realm | null;
-            lord_ref(): symbol & {
+            land_ref(): symbol & {
                 $hyoo_crus_ref: symbol;
             };
             ref(): symbol & {
@@ -4192,9 +4126,8 @@ declare namespace $ {
                 node_make<Node_3 extends typeof $hyoo_crus_node>(Node: Node_3, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): InstanceType<Node_3>;
                 land(): $hyoo_crus_land;
                 head(): string;
-                lord(): $hyoo_crus_lord | null;
                 realm(): $hyoo_crus_realm | null;
-                lord_ref(): symbol & {
+                land_ref(): symbol & {
                     $hyoo_crus_ref: symbol;
                 };
                 ref(): symbol & {
@@ -4222,7 +4155,7 @@ declare namespace $ {
                 new (): {
                     value(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
                     remote_list(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
-                    remote_make(): $mol_type_result<$mol_type_result<Value>>;
+                    remote_make(preset?: $hyoo_crus_rank_preset): $mol_type_result<$mol_type_result<Value>>;
                     local_make(idea?: number | undefined): $mol_type_result<$mol_type_result<Value>>;
                     toString: () => string;
                     splice: (next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: "keys" | "term" | "solo" | "vals") => void;
@@ -4244,9 +4177,8 @@ declare namespace $ {
                     wipe: (seat: number) => void;
                     node_make: <Node_6 extends typeof $hyoo_crus_node>(Node: Node_6, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => InstanceType<Node_6>;
                     land: () => $hyoo_crus_land;
-                    lord: () => $hyoo_crus_lord | null;
                     realm: () => $hyoo_crus_realm | null;
-                    lord_ref: () => symbol & {
+                    land_ref: () => symbol & {
                         $hyoo_crus_ref: symbol;
                     };
                     cast: <Node_7 extends typeof $hyoo_crus_node>(Node: Node_7) => InstanceType<Node_7>;
@@ -4282,7 +4214,7 @@ declare namespace $ {
             new (): {
                 value(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
                 remote_list(next?: $mol_type_result<$mol_type_result<Value>>[] | undefined): $mol_type_result<$mol_type_result<Value>>[];
-                remote_make(): $mol_type_result<$mol_type_result<Value>>;
+                remote_make(preset?: $hyoo_crus_rank_preset): $mol_type_result<$mol_type_result<Value>>;
                 local_make(idea?: number | undefined): $mol_type_result<$mol_type_result<Value>>;
                 toString: () => string;
                 splice: (next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: "keys" | "term" | "solo" | "vals") => void;
@@ -4304,9 +4236,8 @@ declare namespace $ {
                 wipe: (seat: number) => void;
                 node_make: <Node_6 extends typeof $hyoo_crus_node>(Node: Node_6, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => InstanceType<Node_6>;
                 land: () => $hyoo_crus_land;
-                lord: () => $hyoo_crus_lord | null;
                 realm: () => $hyoo_crus_realm | null;
-                lord_ref: () => symbol & {
+                land_ref: () => symbol & {
                     $hyoo_crus_ref: symbol;
                 };
                 cast: <Node_7 extends typeof $hyoo_crus_node>(Node: Node_7) => InstanceType<Node_7>;
@@ -4386,9 +4317,8 @@ declare namespace $ {
                 wipe: (seat: number) => void;
                 node_make: <Node_1 extends typeof $hyoo_crus_node>(Node: Node_1, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals") => InstanceType<Node_1>;
                 land: () => $hyoo_crus_land;
-                lord: () => $hyoo_crus_lord | null;
                 realm: () => $hyoo_crus_realm | null;
-                lord_ref: () => symbol & {
+                land_ref: () => symbol & {
                     $hyoo_crus_ref: symbol;
                 };
                 cast: <Node_2 extends typeof $hyoo_crus_node>(Node: Node_2) => InstanceType<Node_2>;
@@ -4452,9 +4382,8 @@ declare namespace $ {
             node_make<Node extends typeof $hyoo_crus_node>(Node: Node, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): InstanceType<Node>;
             land(): $hyoo_crus_land;
             head(): string;
-            lord(): $hyoo_crus_lord | null;
             realm(): $hyoo_crus_realm | null;
-            lord_ref(): symbol & {
+            land_ref(): symbol & {
                 $hyoo_crus_ref: symbol;
             };
             ref(): symbol & {
@@ -4492,6 +4421,33 @@ declare namespace $ {
         readonly item_make: (head: Key) => Node;
         constructor(item_make: (head: Key) => Node);
         Item(head: Key): Node;
+    }
+}
+
+declare namespace $ {
+    class $hyoo_crus_pass extends $hyoo_crus_unit {
+        work(): number;
+        _lord: $hyoo_crus_ref;
+        lord(next?: $hyoo_crus_ref): symbol & {
+            $hyoo_crus_ref: symbol;
+        };
+        key(): string;
+        auth(next?: ArrayLike<number>): Uint8Array;
+    }
+}
+
+declare namespace $ {
+    class $hyoo_crus_gift extends $hyoo_crus_unit {
+        rank(next?: $hyoo_crus_rank): $hyoo_crus_rank;
+        time(next?: number): number;
+        free(): Uint8Array;
+        _dest: $hyoo_crus_ref;
+        dest(next?: $hyoo_crus_ref): symbol & {
+            $hyoo_crus_ref: symbol;
+        };
+        key(): string;
+        bill(): Uint8Array;
+        static compare(left: $hyoo_crus_gift, right: $hyoo_crus_gift): number;
     }
 }
 
@@ -4583,7 +4539,7 @@ declare namespace $ {
         value_bin(next?: Uint8Array | null): Uint8Array | null;
         value_ref(next?: $hyoo_crus_ref): $hyoo_crus_ref | null;
         value_as<Decode extends $mol_data_value>(decode: Decode, next?: ReturnType<Decode>): any;
-        yoke(vary: $hyoo_crus_vary_type, auto?: any): $hyoo_crus_land | null;
+        yoke(preset?: $hyoo_crus_rank_preset): $hyoo_crus_land | null;
         static of<Tip extends keyof typeof $hyoo_crus_vary_tip>(tip: Tip): {
             new (): {
                 value(next?: ReturnType<{
@@ -4630,12 +4586,11 @@ declare namespace $ {
                     $hyoo_crus_ref: symbol;
                 }) | null;
                 value_as<Decode extends $mol_data_value<any, any>>(decode: Decode, next?: ReturnType<Decode> | undefined): any;
-                yoke(vary: $hyoo_crus_vary_type, auto?: any): $hyoo_crus_land | null;
+                yoke(preset?: $hyoo_crus_rank_preset | undefined): $hyoo_crus_land | null;
                 land(): $hyoo_crus_land;
                 head(): string;
-                lord(): $hyoo_crus_lord | null;
                 realm(): $hyoo_crus_realm | null;
-                lord_ref(): symbol & {
+                land_ref(): symbol & {
                     $hyoo_crus_ref: symbol;
                 };
                 ref(): symbol & {
@@ -4663,7 +4618,7 @@ declare namespace $ {
                 new (): {
                     value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                     remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
-                    remote_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
+                    remote_ensure(preset?: $hyoo_crus_rank_preset): $mol_type_result<$mol_type_result<Value>> | null;
                     local_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
                     toString: () => string;
                     [Symbol.toStringTag]: string;
@@ -4676,9 +4631,8 @@ declare namespace $ {
                         $hyoo_crus_ref: symbol;
                     };
                     land: () => $hyoo_crus_land;
-                    lord: () => $hyoo_crus_lord | null;
                     realm: () => $hyoo_crus_realm | null;
-                    lord_ref: () => symbol & {
+                    land_ref: () => symbol & {
                         $hyoo_crus_ref: symbol;
                     };
                     cast: <Node_2 extends typeof $hyoo_crus_node>(Node: Node_2) => InstanceType<Node_2>;
@@ -4702,7 +4656,7 @@ declare namespace $ {
                         $hyoo_crus_ref: symbol;
                     }) | null;
                     value_as: <Decode_1 extends $mol_data_value<any, any>>(decode: Decode_1, next?: ReturnType<Decode_1> | undefined) => any;
-                    yoke: (vary: $hyoo_crus_vary_type, auto?: any) => $hyoo_crus_land | null;
+                    yoke: (preset?: $hyoo_crus_rank_preset | undefined) => $hyoo_crus_land | null;
                 };
                 Value: Value;
                 toString(): string;
@@ -4728,7 +4682,7 @@ declare namespace $ {
             new (): {
                 value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                 remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
-                remote_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
+                remote_ensure(preset?: $hyoo_crus_rank_preset): $mol_type_result<$mol_type_result<Value>> | null;
                 local_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
                 toString: () => string;
                 [Symbol.toStringTag]: string;
@@ -4741,9 +4695,8 @@ declare namespace $ {
                     $hyoo_crus_ref: symbol;
                 };
                 land: () => $hyoo_crus_land;
-                lord: () => $hyoo_crus_lord | null;
                 realm: () => $hyoo_crus_realm | null;
-                lord_ref: () => symbol & {
+                land_ref: () => symbol & {
                     $hyoo_crus_ref: symbol;
                 };
                 cast: <Node extends typeof $hyoo_crus_node>(Node: Node) => InstanceType<Node>;
@@ -4767,7 +4720,7 @@ declare namespace $ {
                     $hyoo_crus_ref: symbol;
                 }) | null;
                 value_as: <Decode extends $mol_data_value<any, any>>(decode: Decode, next?: ReturnType<Decode> | undefined) => any;
-                yoke: (vary: $hyoo_crus_vary_type, auto?: any) => $hyoo_crus_land | null;
+                yoke: (preset?: $hyoo_crus_rank_preset | undefined) => $hyoo_crus_land | null;
             };
             Value: Value;
             toString(): string;
@@ -4798,12 +4751,11 @@ declare namespace $ {
                 $hyoo_crus_ref: symbol;
             }) | null;
             value_as<Decode extends $mol_data_value<any, any>>(decode: Decode, next?: ReturnType<Decode> | undefined): any;
-            yoke(vary: $hyoo_crus_vary_type, auto?: any): $hyoo_crus_land | null;
+            yoke(preset?: $hyoo_crus_rank_preset | undefined): $hyoo_crus_land | null;
             land(): $hyoo_crus_land;
             head(): string;
-            lord(): $hyoo_crus_lord | null;
             realm(): $hyoo_crus_realm | null;
-            lord_ref(): symbol & {
+            land_ref(): symbol & {
                 $hyoo_crus_ref: symbol;
             };
             ref(): symbol & {
@@ -4872,12 +4824,11 @@ declare namespace $ {
                     $hyoo_crus_ref: symbol;
                 }) | null;
                 value_as<Decode_1 extends $mol_data_value<any, any>>(decode: Decode_1, next?: ReturnType<Decode_1> | undefined): any;
-                yoke(vary: $hyoo_crus_vary_type, auto?: any): $hyoo_crus_land | null;
+                yoke(preset?: $hyoo_crus_rank_preset | undefined): $hyoo_crus_land | null;
                 land(): $hyoo_crus_land;
                 head(): string;
-                lord(): $hyoo_crus_lord | null;
                 realm(): $hyoo_crus_realm | null;
-                lord_ref(): symbol & {
+                land_ref(): symbol & {
                     $hyoo_crus_ref: symbol;
                 };
                 ref(): symbol & {
@@ -4905,7 +4856,7 @@ declare namespace $ {
                 new (): {
                     value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                     remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
-                    remote_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
+                    remote_ensure(preset?: $hyoo_crus_rank_preset): $mol_type_result<$mol_type_result<Value>> | null;
                     local_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
                     toString: () => string;
                     [Symbol.toStringTag]: string;
@@ -4918,9 +4869,8 @@ declare namespace $ {
                         $hyoo_crus_ref: symbol;
                     };
                     land: () => $hyoo_crus_land;
-                    lord: () => $hyoo_crus_lord | null;
                     realm: () => $hyoo_crus_realm | null;
-                    lord_ref: () => symbol & {
+                    land_ref: () => symbol & {
                         $hyoo_crus_ref: symbol;
                     };
                     cast: <Node_4 extends typeof $hyoo_crus_node>(Node: Node_4) => InstanceType<Node_4>;
@@ -4944,7 +4894,7 @@ declare namespace $ {
                         $hyoo_crus_ref: symbol;
                     }) | null;
                     value_as: <Decode_2 extends $mol_data_value<any, any>>(decode: Decode_2, next?: ReturnType<Decode_2> | undefined) => any;
-                    yoke: (vary: $hyoo_crus_vary_type, auto?: any) => $hyoo_crus_land | null;
+                    yoke: (preset?: $hyoo_crus_rank_preset | undefined) => $hyoo_crus_land | null;
                 };
                 Value: Value;
                 toString(): string;
@@ -4970,7 +4920,7 @@ declare namespace $ {
             new (): {
                 value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                 remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
-                remote_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
+                remote_ensure(preset?: $hyoo_crus_rank_preset): $mol_type_result<$mol_type_result<Value>> | null;
                 local_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
                 toString: () => string;
                 [Symbol.toStringTag]: string;
@@ -4983,9 +4933,8 @@ declare namespace $ {
                     $hyoo_crus_ref: symbol;
                 };
                 land: () => $hyoo_crus_land;
-                lord: () => $hyoo_crus_lord | null;
                 realm: () => $hyoo_crus_realm | null;
-                lord_ref: () => symbol & {
+                land_ref: () => symbol & {
                     $hyoo_crus_ref: symbol;
                 };
                 cast: <Node_4 extends typeof $hyoo_crus_node>(Node: Node_4) => InstanceType<Node_4>;
@@ -5009,7 +4958,7 @@ declare namespace $ {
                     $hyoo_crus_ref: symbol;
                 }) | null;
                 value_as: <Decode_2 extends $mol_data_value<any, any>>(decode: Decode_2, next?: ReturnType<Decode_2> | undefined) => any;
-                yoke: (vary: $hyoo_crus_vary_type, auto?: any) => $hyoo_crus_land | null;
+                yoke: (preset?: $hyoo_crus_rank_preset | undefined) => $hyoo_crus_land | null;
             };
             Value: Value;
             toString(): string;
@@ -5049,12 +4998,11 @@ declare namespace $ {
                 $hyoo_crus_ref: symbol;
             }) | null;
             value_as<Decode extends $mol_data_value<any, any>>(decode: Decode, next?: ReturnType<Decode> | undefined): any;
-            yoke(vary: $hyoo_crus_vary_type, auto?: any): $hyoo_crus_land | null;
+            yoke(preset?: $hyoo_crus_rank_preset | undefined): $hyoo_crus_land | null;
             land(): $hyoo_crus_land;
             head(): string;
-            lord(): $hyoo_crus_lord | null;
             realm(): $hyoo_crus_realm | null;
-            lord_ref(): symbol & {
+            land_ref(): symbol & {
                 $hyoo_crus_ref: symbol;
             };
             ref(): symbol & {
@@ -5123,12 +5071,11 @@ declare namespace $ {
                     $hyoo_crus_ref: symbol;
                 }) | null;
                 value_as<Decode_1 extends $mol_data_value<any, any>>(decode: Decode_1, next?: ReturnType<Decode_1> | undefined): any;
-                yoke(vary: $hyoo_crus_vary_type, auto?: any): $hyoo_crus_land | null;
+                yoke(preset?: $hyoo_crus_rank_preset | undefined): $hyoo_crus_land | null;
                 land(): $hyoo_crus_land;
                 head(): string;
-                lord(): $hyoo_crus_lord | null;
                 realm(): $hyoo_crus_realm | null;
-                lord_ref(): symbol & {
+                land_ref(): symbol & {
                     $hyoo_crus_ref: symbol;
                 };
                 ref(): symbol & {
@@ -5156,7 +5103,7 @@ declare namespace $ {
                 new (): {
                     value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                     remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
-                    remote_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
+                    remote_ensure(preset?: $hyoo_crus_rank_preset): $mol_type_result<$mol_type_result<Value>> | null;
                     local_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
                     toString: () => string;
                     [Symbol.toStringTag]: string;
@@ -5169,9 +5116,8 @@ declare namespace $ {
                         $hyoo_crus_ref: symbol;
                     };
                     land: () => $hyoo_crus_land;
-                    lord: () => $hyoo_crus_lord | null;
                     realm: () => $hyoo_crus_realm | null;
-                    lord_ref: () => symbol & {
+                    land_ref: () => symbol & {
                         $hyoo_crus_ref: symbol;
                     };
                     cast: <Node_4 extends typeof $hyoo_crus_node>(Node: Node_4) => InstanceType<Node_4>;
@@ -5195,7 +5141,7 @@ declare namespace $ {
                         $hyoo_crus_ref: symbol;
                     }) | null;
                     value_as: <Decode_2 extends $mol_data_value<any, any>>(decode: Decode_2, next?: ReturnType<Decode_2> | undefined) => any;
-                    yoke: (vary: $hyoo_crus_vary_type, auto?: any) => $hyoo_crus_land | null;
+                    yoke: (preset?: $hyoo_crus_rank_preset | undefined) => $hyoo_crus_land | null;
                 };
                 Value: Value;
                 toString(): string;
@@ -5221,7 +5167,7 @@ declare namespace $ {
             new (): {
                 value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                 remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
-                remote_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
+                remote_ensure(preset?: $hyoo_crus_rank_preset): $mol_type_result<$mol_type_result<Value>> | null;
                 local_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
                 toString: () => string;
                 [Symbol.toStringTag]: string;
@@ -5234,9 +5180,8 @@ declare namespace $ {
                     $hyoo_crus_ref: symbol;
                 };
                 land: () => $hyoo_crus_land;
-                lord: () => $hyoo_crus_lord | null;
                 realm: () => $hyoo_crus_realm | null;
-                lord_ref: () => symbol & {
+                land_ref: () => symbol & {
                     $hyoo_crus_ref: symbol;
                 };
                 cast: <Node_4 extends typeof $hyoo_crus_node>(Node: Node_4) => InstanceType<Node_4>;
@@ -5260,7 +5205,7 @@ declare namespace $ {
                     $hyoo_crus_ref: symbol;
                 }) | null;
                 value_as: <Decode_2 extends $mol_data_value<any, any>>(decode: Decode_2, next?: ReturnType<Decode_2> | undefined) => any;
-                yoke: (vary: $hyoo_crus_vary_type, auto?: any) => $hyoo_crus_land | null;
+                yoke: (preset?: $hyoo_crus_rank_preset | undefined) => $hyoo_crus_land | null;
             };
             Value: Value;
             toString(): string;
@@ -5300,12 +5245,11 @@ declare namespace $ {
                 $hyoo_crus_ref: symbol;
             }) | null;
             value_as<Decode extends $mol_data_value<any, any>>(decode: Decode, next?: ReturnType<Decode> | undefined): any;
-            yoke(vary: $hyoo_crus_vary_type, auto?: any): $hyoo_crus_land | null;
+            yoke(preset?: $hyoo_crus_rank_preset | undefined): $hyoo_crus_land | null;
             land(): $hyoo_crus_land;
             head(): string;
-            lord(): $hyoo_crus_lord | null;
             realm(): $hyoo_crus_realm | null;
-            lord_ref(): symbol & {
+            land_ref(): symbol & {
                 $hyoo_crus_ref: symbol;
             };
             ref(): symbol & {
@@ -5374,12 +5318,11 @@ declare namespace $ {
                     $hyoo_crus_ref: symbol;
                 }) | null;
                 value_as<Decode_1 extends $mol_data_value<any, any>>(decode: Decode_1, next?: ReturnType<Decode_1> | undefined): any;
-                yoke(vary: $hyoo_crus_vary_type, auto?: any): $hyoo_crus_land | null;
+                yoke(preset?: $hyoo_crus_rank_preset | undefined): $hyoo_crus_land | null;
                 land(): $hyoo_crus_land;
                 head(): string;
-                lord(): $hyoo_crus_lord | null;
                 realm(): $hyoo_crus_realm | null;
-                lord_ref(): symbol & {
+                land_ref(): symbol & {
                     $hyoo_crus_ref: symbol;
                 };
                 ref(): symbol & {
@@ -5407,7 +5350,7 @@ declare namespace $ {
                 new (): {
                     value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                     remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
-                    remote_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
+                    remote_ensure(preset?: $hyoo_crus_rank_preset): $mol_type_result<$mol_type_result<Value>> | null;
                     local_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
                     toString: () => string;
                     [Symbol.toStringTag]: string;
@@ -5420,9 +5363,8 @@ declare namespace $ {
                         $hyoo_crus_ref: symbol;
                     };
                     land: () => $hyoo_crus_land;
-                    lord: () => $hyoo_crus_lord | null;
                     realm: () => $hyoo_crus_realm | null;
-                    lord_ref: () => symbol & {
+                    land_ref: () => symbol & {
                         $hyoo_crus_ref: symbol;
                     };
                     cast: <Node_4 extends typeof $hyoo_crus_node>(Node: Node_4) => InstanceType<Node_4>;
@@ -5446,7 +5388,7 @@ declare namespace $ {
                         $hyoo_crus_ref: symbol;
                     }) | null;
                     value_as: <Decode_2 extends $mol_data_value<any, any>>(decode: Decode_2, next?: ReturnType<Decode_2> | undefined) => any;
-                    yoke: (vary: $hyoo_crus_vary_type, auto?: any) => $hyoo_crus_land | null;
+                    yoke: (preset?: $hyoo_crus_rank_preset | undefined) => $hyoo_crus_land | null;
                 };
                 Value: Value;
                 toString(): string;
@@ -5472,7 +5414,7 @@ declare namespace $ {
             new (): {
                 value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                 remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
-                remote_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
+                remote_ensure(preset?: $hyoo_crus_rank_preset): $mol_type_result<$mol_type_result<Value>> | null;
                 local_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
                 toString: () => string;
                 [Symbol.toStringTag]: string;
@@ -5485,9 +5427,8 @@ declare namespace $ {
                     $hyoo_crus_ref: symbol;
                 };
                 land: () => $hyoo_crus_land;
-                lord: () => $hyoo_crus_lord | null;
                 realm: () => $hyoo_crus_realm | null;
-                lord_ref: () => symbol & {
+                land_ref: () => symbol & {
                     $hyoo_crus_ref: symbol;
                 };
                 cast: <Node_4 extends typeof $hyoo_crus_node>(Node: Node_4) => InstanceType<Node_4>;
@@ -5511,7 +5452,7 @@ declare namespace $ {
                     $hyoo_crus_ref: symbol;
                 }) | null;
                 value_as: <Decode_2 extends $mol_data_value<any, any>>(decode: Decode_2, next?: ReturnType<Decode_2> | undefined) => any;
-                yoke: (vary: $hyoo_crus_vary_type, auto?: any) => $hyoo_crus_land | null;
+                yoke: (preset?: $hyoo_crus_rank_preset | undefined) => $hyoo_crus_land | null;
             };
             Value: Value;
             toString(): string;
@@ -5551,12 +5492,11 @@ declare namespace $ {
                 $hyoo_crus_ref: symbol;
             }) | null;
             value_as<Decode extends $mol_data_value<any, any>>(decode: Decode, next?: ReturnType<Decode> | undefined): any;
-            yoke(vary: $hyoo_crus_vary_type, auto?: any): $hyoo_crus_land | null;
+            yoke(preset?: $hyoo_crus_rank_preset | undefined): $hyoo_crus_land | null;
             land(): $hyoo_crus_land;
             head(): string;
-            lord(): $hyoo_crus_lord | null;
             realm(): $hyoo_crus_realm | null;
-            lord_ref(): symbol & {
+            land_ref(): symbol & {
                 $hyoo_crus_ref: symbol;
             };
             ref(): symbol & {
@@ -5625,12 +5565,11 @@ declare namespace $ {
                     $hyoo_crus_ref: symbol;
                 }) | null;
                 value_as<Decode_1 extends $mol_data_value<any, any>>(decode: Decode_1, next?: ReturnType<Decode_1> | undefined): any;
-                yoke(vary: $hyoo_crus_vary_type, auto?: any): $hyoo_crus_land | null;
+                yoke(preset?: $hyoo_crus_rank_preset | undefined): $hyoo_crus_land | null;
                 land(): $hyoo_crus_land;
                 head(): string;
-                lord(): $hyoo_crus_lord | null;
                 realm(): $hyoo_crus_realm | null;
-                lord_ref(): symbol & {
+                land_ref(): symbol & {
                     $hyoo_crus_ref: symbol;
                 };
                 ref(): symbol & {
@@ -5658,7 +5597,7 @@ declare namespace $ {
                 new (): {
                     value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                     remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
-                    remote_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
+                    remote_ensure(preset?: $hyoo_crus_rank_preset): $mol_type_result<$mol_type_result<Value>> | null;
                     local_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
                     toString: () => string;
                     [Symbol.toStringTag]: string;
@@ -5671,9 +5610,8 @@ declare namespace $ {
                         $hyoo_crus_ref: symbol;
                     };
                     land: () => $hyoo_crus_land;
-                    lord: () => $hyoo_crus_lord | null;
                     realm: () => $hyoo_crus_realm | null;
-                    lord_ref: () => symbol & {
+                    land_ref: () => symbol & {
                         $hyoo_crus_ref: symbol;
                     };
                     cast: <Node_4 extends typeof $hyoo_crus_node>(Node: Node_4) => InstanceType<Node_4>;
@@ -5697,7 +5635,7 @@ declare namespace $ {
                         $hyoo_crus_ref: symbol;
                     }) | null;
                     value_as: <Decode_2 extends $mol_data_value<any, any>>(decode: Decode_2, next?: ReturnType<Decode_2> | undefined) => any;
-                    yoke: (vary: $hyoo_crus_vary_type, auto?: any) => $hyoo_crus_land | null;
+                    yoke: (preset?: $hyoo_crus_rank_preset | undefined) => $hyoo_crus_land | null;
                 };
                 Value: Value;
                 toString(): string;
@@ -5723,7 +5661,7 @@ declare namespace $ {
             new (): {
                 value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                 remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
-                remote_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
+                remote_ensure(preset?: $hyoo_crus_rank_preset): $mol_type_result<$mol_type_result<Value>> | null;
                 local_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
                 toString: () => string;
                 [Symbol.toStringTag]: string;
@@ -5736,9 +5674,8 @@ declare namespace $ {
                     $hyoo_crus_ref: symbol;
                 };
                 land: () => $hyoo_crus_land;
-                lord: () => $hyoo_crus_lord | null;
                 realm: () => $hyoo_crus_realm | null;
-                lord_ref: () => symbol & {
+                land_ref: () => symbol & {
                     $hyoo_crus_ref: symbol;
                 };
                 cast: <Node_4 extends typeof $hyoo_crus_node>(Node: Node_4) => InstanceType<Node_4>;
@@ -5762,7 +5699,7 @@ declare namespace $ {
                     $hyoo_crus_ref: symbol;
                 }) | null;
                 value_as: <Decode_2 extends $mol_data_value<any, any>>(decode: Decode_2, next?: ReturnType<Decode_2> | undefined) => any;
-                yoke: (vary: $hyoo_crus_vary_type, auto?: any) => $hyoo_crus_land | null;
+                yoke: (preset?: $hyoo_crus_rank_preset | undefined) => $hyoo_crus_land | null;
             };
             Value: Value;
             toString(): string;
@@ -5806,12 +5743,11 @@ declare namespace $ {
                 $hyoo_crus_ref: symbol;
             }) | null;
             value_as<Decode extends $mol_data_value<any, any>>(decode: Decode, next?: ReturnType<Decode> | undefined): any;
-            yoke(vary: $hyoo_crus_vary_type, auto?: any): $hyoo_crus_land | null;
+            yoke(preset?: $hyoo_crus_rank_preset | undefined): $hyoo_crus_land | null;
             land(): $hyoo_crus_land;
             head(): string;
-            lord(): $hyoo_crus_lord | null;
             realm(): $hyoo_crus_realm | null;
-            lord_ref(): symbol & {
+            land_ref(): symbol & {
                 $hyoo_crus_ref: symbol;
             };
             ref(): symbol & {
@@ -5880,12 +5816,11 @@ declare namespace $ {
                     $hyoo_crus_ref: symbol;
                 }) | null;
                 value_as<Decode_1 extends $mol_data_value<any, any>>(decode: Decode_1, next?: ReturnType<Decode_1> | undefined): any;
-                yoke(vary: $hyoo_crus_vary_type, auto?: any): $hyoo_crus_land | null;
+                yoke(preset?: $hyoo_crus_rank_preset | undefined): $hyoo_crus_land | null;
                 land(): $hyoo_crus_land;
                 head(): string;
-                lord(): $hyoo_crus_lord | null;
                 realm(): $hyoo_crus_realm | null;
-                lord_ref(): symbol & {
+                land_ref(): symbol & {
                     $hyoo_crus_ref: symbol;
                 };
                 ref(): symbol & {
@@ -5913,7 +5848,7 @@ declare namespace $ {
                 new (): {
                     value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                     remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
-                    remote_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
+                    remote_ensure(preset?: $hyoo_crus_rank_preset): $mol_type_result<$mol_type_result<Value>> | null;
                     local_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
                     toString: () => string;
                     [Symbol.toStringTag]: string;
@@ -5926,9 +5861,8 @@ declare namespace $ {
                         $hyoo_crus_ref: symbol;
                     };
                     land: () => $hyoo_crus_land;
-                    lord: () => $hyoo_crus_lord | null;
                     realm: () => $hyoo_crus_realm | null;
-                    lord_ref: () => symbol & {
+                    land_ref: () => symbol & {
                         $hyoo_crus_ref: symbol;
                     };
                     cast: <Node_4 extends typeof $hyoo_crus_node>(Node: Node_4) => InstanceType<Node_4>;
@@ -5952,7 +5886,7 @@ declare namespace $ {
                         $hyoo_crus_ref: symbol;
                     }) | null;
                     value_as: <Decode_2 extends $mol_data_value<any, any>>(decode: Decode_2, next?: ReturnType<Decode_2> | undefined) => any;
-                    yoke: (vary: $hyoo_crus_vary_type, auto?: any) => $hyoo_crus_land | null;
+                    yoke: (preset?: $hyoo_crus_rank_preset | undefined) => $hyoo_crus_land | null;
                 };
                 Value: Value;
                 toString(): string;
@@ -5978,7 +5912,7 @@ declare namespace $ {
             new (): {
                 value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                 remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
-                remote_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
+                remote_ensure(preset?: $hyoo_crus_rank_preset): $mol_type_result<$mol_type_result<Value>> | null;
                 local_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
                 toString: () => string;
                 [Symbol.toStringTag]: string;
@@ -5991,9 +5925,8 @@ declare namespace $ {
                     $hyoo_crus_ref: symbol;
                 };
                 land: () => $hyoo_crus_land;
-                lord: () => $hyoo_crus_lord | null;
                 realm: () => $hyoo_crus_realm | null;
-                lord_ref: () => symbol & {
+                land_ref: () => symbol & {
                     $hyoo_crus_ref: symbol;
                 };
                 cast: <Node_4 extends typeof $hyoo_crus_node>(Node: Node_4) => InstanceType<Node_4>;
@@ -6017,7 +5950,7 @@ declare namespace $ {
                     $hyoo_crus_ref: symbol;
                 }) | null;
                 value_as: <Decode_2 extends $mol_data_value<any, any>>(decode: Decode_2, next?: ReturnType<Decode_2> | undefined) => any;
-                yoke: (vary: $hyoo_crus_vary_type, auto?: any) => $hyoo_crus_land | null;
+                yoke: (preset?: $hyoo_crus_rank_preset | undefined) => $hyoo_crus_land | null;
             };
             Value: Value;
             toString(): string;
@@ -6057,12 +5990,11 @@ declare namespace $ {
                 $hyoo_crus_ref: symbol;
             }) | null;
             value_as<Decode extends $mol_data_value<any, any>>(decode: Decode, next?: ReturnType<Decode> | undefined): any;
-            yoke(vary: $hyoo_crus_vary_type, auto?: any): $hyoo_crus_land | null;
+            yoke(preset?: $hyoo_crus_rank_preset | undefined): $hyoo_crus_land | null;
             land(): $hyoo_crus_land;
             head(): string;
-            lord(): $hyoo_crus_lord | null;
             realm(): $hyoo_crus_realm | null;
-            lord_ref(): symbol & {
+            land_ref(): symbol & {
                 $hyoo_crus_ref: symbol;
             };
             ref(): symbol & {
@@ -6131,12 +6063,11 @@ declare namespace $ {
                     $hyoo_crus_ref: symbol;
                 }) | null;
                 value_as<Decode_1 extends $mol_data_value<any, any>>(decode: Decode_1, next?: ReturnType<Decode_1> | undefined): any;
-                yoke(vary: $hyoo_crus_vary_type, auto?: any): $hyoo_crus_land | null;
+                yoke(preset?: $hyoo_crus_rank_preset | undefined): $hyoo_crus_land | null;
                 land(): $hyoo_crus_land;
                 head(): string;
-                lord(): $hyoo_crus_lord | null;
                 realm(): $hyoo_crus_realm | null;
-                lord_ref(): symbol & {
+                land_ref(): symbol & {
                     $hyoo_crus_ref: symbol;
                 };
                 ref(): symbol & {
@@ -6164,7 +6095,7 @@ declare namespace $ {
                 new (): {
                     value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                     remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
-                    remote_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
+                    remote_ensure(preset?: $hyoo_crus_rank_preset): $mol_type_result<$mol_type_result<Value>> | null;
                     local_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
                     toString: () => string;
                     [Symbol.toStringTag]: string;
@@ -6177,9 +6108,8 @@ declare namespace $ {
                         $hyoo_crus_ref: symbol;
                     };
                     land: () => $hyoo_crus_land;
-                    lord: () => $hyoo_crus_lord | null;
                     realm: () => $hyoo_crus_realm | null;
-                    lord_ref: () => symbol & {
+                    land_ref: () => symbol & {
                         $hyoo_crus_ref: symbol;
                     };
                     cast: <Node_4 extends typeof $hyoo_crus_node>(Node: Node_4) => InstanceType<Node_4>;
@@ -6203,7 +6133,7 @@ declare namespace $ {
                         $hyoo_crus_ref: symbol;
                     }) | null;
                     value_as: <Decode_2 extends $mol_data_value<any, any>>(decode: Decode_2, next?: ReturnType<Decode_2> | undefined) => any;
-                    yoke: (vary: $hyoo_crus_vary_type, auto?: any) => $hyoo_crus_land | null;
+                    yoke: (preset?: $hyoo_crus_rank_preset | undefined) => $hyoo_crus_land | null;
                 };
                 Value: Value;
                 toString(): string;
@@ -6229,7 +6159,7 @@ declare namespace $ {
             new (): {
                 value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                 remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
-                remote_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
+                remote_ensure(preset?: $hyoo_crus_rank_preset): $mol_type_result<$mol_type_result<Value>> | null;
                 local_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
                 toString: () => string;
                 [Symbol.toStringTag]: string;
@@ -6242,9 +6172,8 @@ declare namespace $ {
                     $hyoo_crus_ref: symbol;
                 };
                 land: () => $hyoo_crus_land;
-                lord: () => $hyoo_crus_lord | null;
                 realm: () => $hyoo_crus_realm | null;
-                lord_ref: () => symbol & {
+                land_ref: () => symbol & {
                     $hyoo_crus_ref: symbol;
                 };
                 cast: <Node_4 extends typeof $hyoo_crus_node>(Node: Node_4) => InstanceType<Node_4>;
@@ -6268,7 +6197,7 @@ declare namespace $ {
                     $hyoo_crus_ref: symbol;
                 }) | null;
                 value_as: <Decode_2 extends $mol_data_value<any, any>>(decode: Decode_2, next?: ReturnType<Decode_2> | undefined) => any;
-                yoke: (vary: $hyoo_crus_vary_type, auto?: any) => $hyoo_crus_land | null;
+                yoke: (preset?: $hyoo_crus_rank_preset | undefined) => $hyoo_crus_land | null;
             };
             Value: Value;
             toString(): string;
@@ -6308,12 +6237,11 @@ declare namespace $ {
                 $hyoo_crus_ref: symbol;
             }) | null;
             value_as<Decode extends $mol_data_value<any, any>>(decode: Decode, next?: ReturnType<Decode> | undefined): any;
-            yoke(vary: $hyoo_crus_vary_type, auto?: any): $hyoo_crus_land | null;
+            yoke(preset?: $hyoo_crus_rank_preset | undefined): $hyoo_crus_land | null;
             land(): $hyoo_crus_land;
             head(): string;
-            lord(): $hyoo_crus_lord | null;
             realm(): $hyoo_crus_realm | null;
-            lord_ref(): symbol & {
+            land_ref(): symbol & {
                 $hyoo_crus_ref: symbol;
             };
             ref(): symbol & {
@@ -6382,12 +6310,11 @@ declare namespace $ {
                     $hyoo_crus_ref: symbol;
                 }) | null;
                 value_as<Decode_1 extends $mol_data_value<any, any>>(decode: Decode_1, next?: ReturnType<Decode_1> | undefined): any;
-                yoke(vary: $hyoo_crus_vary_type, auto?: any): $hyoo_crus_land | null;
+                yoke(preset?: $hyoo_crus_rank_preset | undefined): $hyoo_crus_land | null;
                 land(): $hyoo_crus_land;
                 head(): string;
-                lord(): $hyoo_crus_lord | null;
                 realm(): $hyoo_crus_realm | null;
-                lord_ref(): symbol & {
+                land_ref(): symbol & {
                     $hyoo_crus_ref: symbol;
                 };
                 ref(): symbol & {
@@ -6415,7 +6342,7 @@ declare namespace $ {
                 new (): {
                     value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                     remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
-                    remote_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
+                    remote_ensure(preset?: $hyoo_crus_rank_preset): $mol_type_result<$mol_type_result<Value>> | null;
                     local_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
                     toString: () => string;
                     [Symbol.toStringTag]: string;
@@ -6428,9 +6355,8 @@ declare namespace $ {
                         $hyoo_crus_ref: symbol;
                     };
                     land: () => $hyoo_crus_land;
-                    lord: () => $hyoo_crus_lord | null;
                     realm: () => $hyoo_crus_realm | null;
-                    lord_ref: () => symbol & {
+                    land_ref: () => symbol & {
                         $hyoo_crus_ref: symbol;
                     };
                     cast: <Node_4 extends typeof $hyoo_crus_node>(Node: Node_4) => InstanceType<Node_4>;
@@ -6454,7 +6380,7 @@ declare namespace $ {
                         $hyoo_crus_ref: symbol;
                     }) | null;
                     value_as: <Decode_2 extends $mol_data_value<any, any>>(decode: Decode_2, next?: ReturnType<Decode_2> | undefined) => any;
-                    yoke: (vary: $hyoo_crus_vary_type, auto?: any) => $hyoo_crus_land | null;
+                    yoke: (preset?: $hyoo_crus_rank_preset | undefined) => $hyoo_crus_land | null;
                 };
                 Value: Value;
                 toString(): string;
@@ -6480,7 +6406,7 @@ declare namespace $ {
             new (): {
                 value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                 remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
-                remote_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
+                remote_ensure(preset?: $hyoo_crus_rank_preset): $mol_type_result<$mol_type_result<Value>> | null;
                 local_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
                 toString: () => string;
                 [Symbol.toStringTag]: string;
@@ -6493,9 +6419,8 @@ declare namespace $ {
                     $hyoo_crus_ref: symbol;
                 };
                 land: () => $hyoo_crus_land;
-                lord: () => $hyoo_crus_lord | null;
                 realm: () => $hyoo_crus_realm | null;
-                lord_ref: () => symbol & {
+                land_ref: () => symbol & {
                     $hyoo_crus_ref: symbol;
                 };
                 cast: <Node_4 extends typeof $hyoo_crus_node>(Node: Node_4) => InstanceType<Node_4>;
@@ -6519,7 +6444,7 @@ declare namespace $ {
                     $hyoo_crus_ref: symbol;
                 }) | null;
                 value_as: <Decode_2 extends $mol_data_value<any, any>>(decode: Decode_2, next?: ReturnType<Decode_2> | undefined) => any;
-                yoke: (vary: $hyoo_crus_vary_type, auto?: any) => $hyoo_crus_land | null;
+                yoke: (preset?: $hyoo_crus_rank_preset | undefined) => $hyoo_crus_land | null;
             };
             Value: Value;
             toString(): string;
@@ -6559,12 +6484,11 @@ declare namespace $ {
                 $hyoo_crus_ref: symbol;
             }) | null;
             value_as<Decode extends $mol_data_value<any, any>>(decode: Decode, next?: ReturnType<Decode> | undefined): any;
-            yoke(vary: $hyoo_crus_vary_type, auto?: any): $hyoo_crus_land | null;
+            yoke(preset?: $hyoo_crus_rank_preset | undefined): $hyoo_crus_land | null;
             land(): $hyoo_crus_land;
             head(): string;
-            lord(): $hyoo_crus_lord | null;
             realm(): $hyoo_crus_realm | null;
-            lord_ref(): symbol & {
+            land_ref(): symbol & {
                 $hyoo_crus_ref: symbol;
             };
             ref(): symbol & {
@@ -6633,12 +6557,11 @@ declare namespace $ {
                     $hyoo_crus_ref: symbol;
                 }) | null;
                 value_as<Decode_1 extends $mol_data_value<any, any>>(decode: Decode_1, next?: ReturnType<Decode_1> | undefined): any;
-                yoke(vary: $hyoo_crus_vary_type, auto?: any): $hyoo_crus_land | null;
+                yoke(preset?: $hyoo_crus_rank_preset | undefined): $hyoo_crus_land | null;
                 land(): $hyoo_crus_land;
                 head(): string;
-                lord(): $hyoo_crus_lord | null;
                 realm(): $hyoo_crus_realm | null;
-                lord_ref(): symbol & {
+                land_ref(): symbol & {
                     $hyoo_crus_ref: symbol;
                 };
                 ref(): symbol & {
@@ -6666,7 +6589,7 @@ declare namespace $ {
                 new (): {
                     value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                     remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
-                    remote_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
+                    remote_ensure(preset?: $hyoo_crus_rank_preset): $mol_type_result<$mol_type_result<Value>> | null;
                     local_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
                     toString: () => string;
                     [Symbol.toStringTag]: string;
@@ -6679,9 +6602,8 @@ declare namespace $ {
                         $hyoo_crus_ref: symbol;
                     };
                     land: () => $hyoo_crus_land;
-                    lord: () => $hyoo_crus_lord | null;
                     realm: () => $hyoo_crus_realm | null;
-                    lord_ref: () => symbol & {
+                    land_ref: () => symbol & {
                         $hyoo_crus_ref: symbol;
                     };
                     cast: <Node_4 extends typeof $hyoo_crus_node>(Node: Node_4) => InstanceType<Node_4>;
@@ -6705,7 +6627,7 @@ declare namespace $ {
                         $hyoo_crus_ref: symbol;
                     }) | null;
                     value_as: <Decode_2 extends $mol_data_value<any, any>>(decode: Decode_2, next?: ReturnType<Decode_2> | undefined) => any;
-                    yoke: (vary: $hyoo_crus_vary_type, auto?: any) => $hyoo_crus_land | null;
+                    yoke: (preset?: $hyoo_crus_rank_preset | undefined) => $hyoo_crus_land | null;
                 };
                 Value: Value;
                 toString(): string;
@@ -6731,7 +6653,7 @@ declare namespace $ {
             new (): {
                 value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                 remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
-                remote_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
+                remote_ensure(preset?: $hyoo_crus_rank_preset): $mol_type_result<$mol_type_result<Value>> | null;
                 local_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
                 toString: () => string;
                 [Symbol.toStringTag]: string;
@@ -6744,9 +6666,8 @@ declare namespace $ {
                     $hyoo_crus_ref: symbol;
                 };
                 land: () => $hyoo_crus_land;
-                lord: () => $hyoo_crus_lord | null;
                 realm: () => $hyoo_crus_realm | null;
-                lord_ref: () => symbol & {
+                land_ref: () => symbol & {
                     $hyoo_crus_ref: symbol;
                 };
                 cast: <Node_4 extends typeof $hyoo_crus_node>(Node: Node_4) => InstanceType<Node_4>;
@@ -6770,7 +6691,7 @@ declare namespace $ {
                     $hyoo_crus_ref: symbol;
                 }) | null;
                 value_as: <Decode_2 extends $mol_data_value<any, any>>(decode: Decode_2, next?: ReturnType<Decode_2> | undefined) => any;
-                yoke: (vary: $hyoo_crus_vary_type, auto?: any) => $hyoo_crus_land | null;
+                yoke: (preset?: $hyoo_crus_rank_preset | undefined) => $hyoo_crus_land | null;
             };
             Value: Value;
             toString(): string;
@@ -6810,12 +6731,11 @@ declare namespace $ {
                 $hyoo_crus_ref: symbol;
             }) | null;
             value_as<Decode extends $mol_data_value<any, any>>(decode: Decode, next?: ReturnType<Decode> | undefined): any;
-            yoke(vary: $hyoo_crus_vary_type, auto?: any): $hyoo_crus_land | null;
+            yoke(preset?: $hyoo_crus_rank_preset | undefined): $hyoo_crus_land | null;
             land(): $hyoo_crus_land;
             head(): string;
-            lord(): $hyoo_crus_lord | null;
             realm(): $hyoo_crus_realm | null;
-            lord_ref(): symbol & {
+            land_ref(): symbol & {
                 $hyoo_crus_ref: symbol;
             };
             ref(): symbol & {
@@ -6884,12 +6804,11 @@ declare namespace $ {
                     $hyoo_crus_ref: symbol;
                 }) | null;
                 value_as<Decode_1 extends $mol_data_value<any, any>>(decode: Decode_1, next?: ReturnType<Decode_1> | undefined): any;
-                yoke(vary: $hyoo_crus_vary_type, auto?: any): $hyoo_crus_land | null;
+                yoke(preset?: $hyoo_crus_rank_preset | undefined): $hyoo_crus_land | null;
                 land(): $hyoo_crus_land;
                 head(): string;
-                lord(): $hyoo_crus_lord | null;
                 realm(): $hyoo_crus_realm | null;
-                lord_ref(): symbol & {
+                land_ref(): symbol & {
                     $hyoo_crus_ref: symbol;
                 };
                 ref(): symbol & {
@@ -6917,7 +6836,7 @@ declare namespace $ {
                 new (): {
                     value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                     remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
-                    remote_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
+                    remote_ensure(preset?: $hyoo_crus_rank_preset): $mol_type_result<$mol_type_result<Value>> | null;
                     local_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
                     toString: () => string;
                     [Symbol.toStringTag]: string;
@@ -6930,9 +6849,8 @@ declare namespace $ {
                         $hyoo_crus_ref: symbol;
                     };
                     land: () => $hyoo_crus_land;
-                    lord: () => $hyoo_crus_lord | null;
                     realm: () => $hyoo_crus_realm | null;
-                    lord_ref: () => symbol & {
+                    land_ref: () => symbol & {
                         $hyoo_crus_ref: symbol;
                     };
                     cast: <Node_4 extends typeof $hyoo_crus_node>(Node: Node_4) => InstanceType<Node_4>;
@@ -6956,7 +6874,7 @@ declare namespace $ {
                         $hyoo_crus_ref: symbol;
                     }) | null;
                     value_as: <Decode_2 extends $mol_data_value<any, any>>(decode: Decode_2, next?: ReturnType<Decode_2> | undefined) => any;
-                    yoke: (vary: $hyoo_crus_vary_type, auto?: any) => $hyoo_crus_land | null;
+                    yoke: (preset?: $hyoo_crus_rank_preset | undefined) => $hyoo_crus_land | null;
                 };
                 Value: Value;
                 toString(): string;
@@ -6982,7 +6900,7 @@ declare namespace $ {
             new (): {
                 value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                 remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
-                remote_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
+                remote_ensure(preset?: $hyoo_crus_rank_preset): $mol_type_result<$mol_type_result<Value>> | null;
                 local_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
                 toString: () => string;
                 [Symbol.toStringTag]: string;
@@ -6995,9 +6913,8 @@ declare namespace $ {
                     $hyoo_crus_ref: symbol;
                 };
                 land: () => $hyoo_crus_land;
-                lord: () => $hyoo_crus_lord | null;
                 realm: () => $hyoo_crus_realm | null;
-                lord_ref: () => symbol & {
+                land_ref: () => symbol & {
                     $hyoo_crus_ref: symbol;
                 };
                 cast: <Node_4 extends typeof $hyoo_crus_node>(Node: Node_4) => InstanceType<Node_4>;
@@ -7021,7 +6938,7 @@ declare namespace $ {
                     $hyoo_crus_ref: symbol;
                 }) | null;
                 value_as: <Decode_2 extends $mol_data_value<any, any>>(decode: Decode_2, next?: ReturnType<Decode_2> | undefined) => any;
-                yoke: (vary: $hyoo_crus_vary_type, auto?: any) => $hyoo_crus_land | null;
+                yoke: (preset?: $hyoo_crus_rank_preset | undefined) => $hyoo_crus_land | null;
             };
             Value: Value;
             toString(): string;
@@ -7061,12 +6978,11 @@ declare namespace $ {
                 $hyoo_crus_ref: symbol;
             }) | null;
             value_as<Decode extends $mol_data_value<any, any>>(decode: Decode, next?: ReturnType<Decode> | undefined): any;
-            yoke(vary: $hyoo_crus_vary_type, auto?: any): $hyoo_crus_land | null;
+            yoke(preset?: $hyoo_crus_rank_preset | undefined): $hyoo_crus_land | null;
             land(): $hyoo_crus_land;
             head(): string;
-            lord(): $hyoo_crus_lord | null;
             realm(): $hyoo_crus_realm | null;
-            lord_ref(): symbol & {
+            land_ref(): symbol & {
                 $hyoo_crus_ref: symbol;
             };
             ref(): symbol & {
@@ -7135,12 +7051,11 @@ declare namespace $ {
                     $hyoo_crus_ref: symbol;
                 }) | null;
                 value_as<Decode_1 extends $mol_data_value<any, any>>(decode: Decode_1, next?: ReturnType<Decode_1> | undefined): any;
-                yoke(vary: $hyoo_crus_vary_type, auto?: any): $hyoo_crus_land | null;
+                yoke(preset?: $hyoo_crus_rank_preset | undefined): $hyoo_crus_land | null;
                 land(): $hyoo_crus_land;
                 head(): string;
-                lord(): $hyoo_crus_lord | null;
                 realm(): $hyoo_crus_realm | null;
-                lord_ref(): symbol & {
+                land_ref(): symbol & {
                     $hyoo_crus_ref: symbol;
                 };
                 ref(): symbol & {
@@ -7168,7 +7083,7 @@ declare namespace $ {
                 new (): {
                     value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                     remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
-                    remote_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
+                    remote_ensure(preset?: $hyoo_crus_rank_preset): $mol_type_result<$mol_type_result<Value>> | null;
                     local_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
                     toString: () => string;
                     [Symbol.toStringTag]: string;
@@ -7181,9 +7096,8 @@ declare namespace $ {
                         $hyoo_crus_ref: symbol;
                     };
                     land: () => $hyoo_crus_land;
-                    lord: () => $hyoo_crus_lord | null;
                     realm: () => $hyoo_crus_realm | null;
-                    lord_ref: () => symbol & {
+                    land_ref: () => symbol & {
                         $hyoo_crus_ref: symbol;
                     };
                     cast: <Node_4 extends typeof $hyoo_crus_node>(Node: Node_4) => InstanceType<Node_4>;
@@ -7207,7 +7121,7 @@ declare namespace $ {
                         $hyoo_crus_ref: symbol;
                     }) | null;
                     value_as: <Decode_2 extends $mol_data_value<any, any>>(decode: Decode_2, next?: ReturnType<Decode_2> | undefined) => any;
-                    yoke: (vary: $hyoo_crus_vary_type, auto?: any) => $hyoo_crus_land | null;
+                    yoke: (preset?: $hyoo_crus_rank_preset | undefined) => $hyoo_crus_land | null;
                 };
                 Value: Value;
                 toString(): string;
@@ -7233,7 +7147,7 @@ declare namespace $ {
             new (): {
                 value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                 remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
-                remote_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
+                remote_ensure(preset?: $hyoo_crus_rank_preset): $mol_type_result<$mol_type_result<Value>> | null;
                 local_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
                 toString: () => string;
                 [Symbol.toStringTag]: string;
@@ -7246,9 +7160,8 @@ declare namespace $ {
                     $hyoo_crus_ref: symbol;
                 };
                 land: () => $hyoo_crus_land;
-                lord: () => $hyoo_crus_lord | null;
                 realm: () => $hyoo_crus_realm | null;
-                lord_ref: () => symbol & {
+                land_ref: () => symbol & {
                     $hyoo_crus_ref: symbol;
                 };
                 cast: <Node_4 extends typeof $hyoo_crus_node>(Node: Node_4) => InstanceType<Node_4>;
@@ -7272,7 +7185,7 @@ declare namespace $ {
                     $hyoo_crus_ref: symbol;
                 }) | null;
                 value_as: <Decode_2 extends $mol_data_value<any, any>>(decode: Decode_2, next?: ReturnType<Decode_2> | undefined) => any;
-                yoke: (vary: $hyoo_crus_vary_type, auto?: any) => $hyoo_crus_land | null;
+                yoke: (preset?: $hyoo_crus_rank_preset | undefined) => $hyoo_crus_land | null;
             };
             Value: Value;
             toString(): string;
@@ -7312,12 +7225,11 @@ declare namespace $ {
                 $hyoo_crus_ref: symbol;
             }) | null;
             value_as<Decode extends $mol_data_value<any, any>>(decode: Decode, next?: ReturnType<Decode> | undefined): any;
-            yoke(vary: $hyoo_crus_vary_type, auto?: any): $hyoo_crus_land | null;
+            yoke(preset?: $hyoo_crus_rank_preset | undefined): $hyoo_crus_land | null;
             land(): $hyoo_crus_land;
             head(): string;
-            lord(): $hyoo_crus_lord | null;
             realm(): $hyoo_crus_realm | null;
-            lord_ref(): symbol & {
+            land_ref(): symbol & {
                 $hyoo_crus_ref: symbol;
             };
             ref(): symbol & {
@@ -7386,12 +7298,11 @@ declare namespace $ {
                     $hyoo_crus_ref: symbol;
                 }) | null;
                 value_as<Decode_1 extends $mol_data_value<any, any>>(decode: Decode_1, next?: ReturnType<Decode_1> | undefined): any;
-                yoke(vary: $hyoo_crus_vary_type, auto?: any): $hyoo_crus_land | null;
+                yoke(preset?: $hyoo_crus_rank_preset | undefined): $hyoo_crus_land | null;
                 land(): $hyoo_crus_land;
                 head(): string;
-                lord(): $hyoo_crus_lord | null;
                 realm(): $hyoo_crus_realm | null;
-                lord_ref(): symbol & {
+                land_ref(): symbol & {
                     $hyoo_crus_ref: symbol;
                 };
                 ref(): symbol & {
@@ -7419,7 +7330,7 @@ declare namespace $ {
                 new (): {
                     value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                     remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
-                    remote_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
+                    remote_ensure(preset?: $hyoo_crus_rank_preset): $mol_type_result<$mol_type_result<Value>> | null;
                     local_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
                     toString: () => string;
                     [Symbol.toStringTag]: string;
@@ -7432,9 +7343,8 @@ declare namespace $ {
                         $hyoo_crus_ref: symbol;
                     };
                     land: () => $hyoo_crus_land;
-                    lord: () => $hyoo_crus_lord | null;
                     realm: () => $hyoo_crus_realm | null;
-                    lord_ref: () => symbol & {
+                    land_ref: () => symbol & {
                         $hyoo_crus_ref: symbol;
                     };
                     cast: <Node_4 extends typeof $hyoo_crus_node>(Node: Node_4) => InstanceType<Node_4>;
@@ -7458,7 +7368,7 @@ declare namespace $ {
                         $hyoo_crus_ref: symbol;
                     }) | null;
                     value_as: <Decode_2 extends $mol_data_value<any, any>>(decode: Decode_2, next?: ReturnType<Decode_2> | undefined) => any;
-                    yoke: (vary: $hyoo_crus_vary_type, auto?: any) => $hyoo_crus_land | null;
+                    yoke: (preset?: $hyoo_crus_rank_preset | undefined) => $hyoo_crus_land | null;
                 };
                 Value: Value;
                 toString(): string;
@@ -7484,7 +7394,7 @@ declare namespace $ {
             new (): {
                 value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
                 remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
-                remote_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
+                remote_ensure(preset?: $hyoo_crus_rank_preset): $mol_type_result<$mol_type_result<Value>> | null;
                 local_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
                 toString: () => string;
                 [Symbol.toStringTag]: string;
@@ -7497,9 +7407,8 @@ declare namespace $ {
                     $hyoo_crus_ref: symbol;
                 };
                 land: () => $hyoo_crus_land;
-                lord: () => $hyoo_crus_lord | null;
                 realm: () => $hyoo_crus_realm | null;
-                lord_ref: () => symbol & {
+                land_ref: () => symbol & {
                     $hyoo_crus_ref: symbol;
                 };
                 cast: <Node_4 extends typeof $hyoo_crus_node>(Node: Node_4) => InstanceType<Node_4>;
@@ -7523,7 +7432,7 @@ declare namespace $ {
                     $hyoo_crus_ref: symbol;
                 }) | null;
                 value_as: <Decode_2 extends $mol_data_value<any, any>>(decode: Decode_2, next?: ReturnType<Decode_2> | undefined) => any;
-                yoke: (vary: $hyoo_crus_vary_type, auto?: any) => $hyoo_crus_land | null;
+                yoke: (preset?: $hyoo_crus_rank_preset | undefined) => $hyoo_crus_land | null;
             };
             Value: Value;
             toString(): string;
@@ -7552,16 +7461,11 @@ declare namespace $ {
 
 declare namespace $ {
     class $hyoo_crus_land extends $mol_object {
-        lord(): $hyoo_crus_lord | null;
-        numb(): string;
-        lord_ref(): symbol & {
-            $hyoo_crus_ref: symbol;
-        };
         realm(): $hyoo_crus_realm | null;
-        auth(): $hyoo_crus_auth;
         ref(): symbol & {
             $hyoo_crus_ref: symbol;
         };
+        auth(): $hyoo_crus_auth;
         faces: $hyoo_crus_face_map;
         passes: $mol_wire_dict<string, $hyoo_crus_pass>;
         gifts: $mol_wire_dict<symbol & {
@@ -7570,6 +7474,8 @@ declare namespace $ {
         gists: $mol_wire_dict<string, $mol_wire_dict<string, $hyoo_crus_gist>>;
         self_all: $mol_wire_set<string>;
         self_make(area: keyof typeof $hyoo_crus_area, idea?: number): string;
+        base(): $hyoo_crus_base;
+        Profile<Node extends typeof $hyoo_crus_node>(app: string, Node: Node, auto?: any): InstanceType<Node> | null;
         Data<Node extends typeof $hyoo_crus_node>(Node: Node): InstanceType<Node>;
         Meta(): $hyoo_crus_meta;
         Node<Node extends typeof $hyoo_crus_node>(Node: Node): $hyoo_crus_fund<string, InstanceType<Node>>;
@@ -7597,7 +7503,7 @@ declare namespace $ {
         apply_land(land: $hyoo_crus_land): string[];
         recheck(): void;
         check_unit(unit: $hyoo_crus_unit): string;
-        fork(): $hyoo_crus_land;
+        fork(preset?: $hyoo_crus_rank_preset): $hyoo_crus_land;
         gists_ordered(head: string): $hyoo_crus_gist[];
         join(): $hyoo_crus_pass;
         give(dest: $hyoo_crus_ref | null, rank: $hyoo_crus_rank): $hyoo_crus_gift;
@@ -7625,31 +7531,6 @@ declare namespace $ {
             units: $hyoo_crus_unit[];
             rocks: [Uint8Array, Uint8Array][];
         };
-    }
-}
-
-declare namespace $ {
-    class $hyoo_crus_base extends $hyoo_crus_dict {
-        title(next?: string): string;
-        selection(next?: string): string;
-        profiles(): readonly $hyoo_crus_vary_type[];
-        Profile(app: string, auto?: any): $hyoo_crus_land | null;
-    }
-}
-
-declare namespace $ {
-    class $hyoo_crus_lord extends $mol_object {
-        realm(): $hyoo_crus_realm | null;
-        ref(): symbol & {
-            $hyoo_crus_ref: symbol;
-        };
-        lands: $mol_wire_dict<string, $hyoo_crus_land>;
-        base(): $hyoo_crus_base;
-        toString(): string;
-        Land(numb: string): $hyoo_crus_land;
-        Land_new(idea: number): $hyoo_crus_land;
-        Profile<Node extends typeof $hyoo_crus_node>(app: string, Node: Node, auto?: any): InstanceType<Node> | null;
-        numb_make(idea?: number): string;
     }
 }
 
@@ -7695,13 +7576,22 @@ declare namespace $ {
 }
 
 declare namespace $ {
+    class $hyoo_crus_base extends $hyoo_crus_dict {
+        title(next?: string): string;
+        selection(next?: string): string;
+        profiles(): readonly $hyoo_crus_vary_type[];
+        Profile(app: string, auto?: any): $hyoo_crus_land | null;
+    }
+}
+
+declare namespace $ {
     class $hyoo_crus_realm extends $mol_object {
-        lords: $mol_wire_dict<symbol & {
+        lands: $mol_wire_dict<symbol & {
             $hyoo_crus_ref: symbol;
-        }, $hyoo_crus_lord>;
+        }, $hyoo_crus_land>;
         yard(): $hyoo_crus_yard;
-        home(): $hyoo_crus_lord;
-        Lord(numb: $hyoo_crus_ref): $hyoo_crus_lord;
+        home(): $hyoo_crus_land;
+        land_grab(preset?: $hyoo_crus_rank_preset): $hyoo_crus_land;
         Land(ref: $hyoo_crus_ref): $hyoo_crus_land;
         Node<Node extends typeof $hyoo_crus_node>(ref: $hyoo_crus_ref, Node: Node): InstanceType<Node>;
         apply_pack(pack: $hyoo_crus_pack): void;

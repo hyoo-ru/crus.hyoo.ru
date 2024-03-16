@@ -3241,44 +3241,35 @@ var $;
                 $mol_assert_fail(() => $hyoo_crus_ref('qwertyui_asdfghjk123'), 'Wrong ref (qwertyui_asdfghjk123)');
             },
             "Pick ref home only"($) {
-                $mol_assert_equal($hyoo_crus_ref_home($hyoo_crus_ref('qwertyui_asdfghjk_zxcvbnm0_12345678')), $hyoo_crus_ref_home($hyoo_crus_ref('qwertyui_asdfghjk_zxcvbnm0')), $hyoo_crus_ref_home($hyoo_crus_ref('qwertyui_asdfghjk')), $hyoo_crus_ref('qwertyui_asdfghjk'));
-            },
-            "Pick ref root only"($) {
-                $mol_assert_equal($hyoo_crus_ref_root($hyoo_crus_ref('qwertyui_asdfghjk_zxcvbnm0_12345678')), $hyoo_crus_ref_root($hyoo_crus_ref('qwertyui_asdfghjk_zxcvbnm0')), $hyoo_crus_ref('qwertyui_asdfghjk_zxcvbnm0'));
-                $mol_assert_equal($hyoo_crus_ref_root($hyoo_crus_ref('qwertyui_asdfghjk')), $hyoo_crus_ref('qwertyui_asdfghjk'));
+                $mol_assert_equal($hyoo_crus_ref_land($hyoo_crus_ref('qwertyui_asdfghjk_zxcvbnm0')), $hyoo_crus_ref_land($hyoo_crus_ref('qwertyui_asdfghjk')), $hyoo_crus_ref('qwertyui_asdfghjk'));
             },
             "Pick ref head only"($) {
-                $mol_assert_equal($hyoo_crus_ref_head($hyoo_crus_ref('qwertyui_asdfghjk_zxcvbnm0_12345678')), '12345678');
-                $mol_assert_equal($hyoo_crus_ref_head($hyoo_crus_ref('qwertyui_asdfghjk_zxcvbnm0')), $hyoo_crus_ref_head($hyoo_crus_ref('qwertyui_asdfghjk')), '');
+                $mol_assert_equal($hyoo_crus_ref_head($hyoo_crus_ref('qwertyui_asdfghjk_zxcvbnm0')), 'zxcvbnm0');
+                $mol_assert_equal($hyoo_crus_ref_head($hyoo_crus_ref('qwertyui_asdfghjk')), '');
             },
             "Ref encoding"($) {
-                const full = $hyoo_crus_ref_encode($hyoo_crus_ref('qwertyui_asdfghjk_zxcvbnm0_12345678'));
-                const root = $hyoo_crus_ref_encode($hyoo_crus_ref('qwertyui_asdfghjk_zxcvbnm0'));
-                const home = $hyoo_crus_ref_encode($hyoo_crus_ref('qwertyui_asdfghjk'));
-                const rel_full = $hyoo_crus_ref_encode($hyoo_crus_ref('___12345678'));
-                const rel_root = $hyoo_crus_ref_encode($hyoo_crus_ref('___'));
-                $mol_assert_equal(full.length, 24);
-                $mol_assert_equal(root.length, 18);
-                $mol_assert_equal(home.length, 12);
-                $mol_assert_equal(rel_full.length, 24);
-                $mol_assert_equal($hyoo_crus_ref_decode(full), $hyoo_crus_ref('qwertyui_asdfghjk_zxcvbnm0_12345678'));
-                $mol_assert_equal($hyoo_crus_ref_decode(root), $hyoo_crus_ref('qwertyui_asdfghjk_zxcvbnm0'));
-                $mol_assert_equal($hyoo_crus_ref_decode(home), $hyoo_crus_ref('qwertyui_asdfghjk'));
-                $mol_assert_equal($hyoo_crus_ref_decode(rel_full), $hyoo_crus_ref('___12345678'));
+                const node = $hyoo_crus_ref_encode($hyoo_crus_ref('qwertyui_asdfghjk_zxcvbnm0'));
+                const root = $hyoo_crus_ref_encode($hyoo_crus_ref('qwertyui_asdfghjk'));
+                const rel_node = $hyoo_crus_ref_encode($hyoo_crus_ref('__zxcvbnm0'));
+                const rel_root = $hyoo_crus_ref_encode($hyoo_crus_ref('__'));
+                $mol_assert_equal(node.length, 18);
+                $mol_assert_equal(root.length, 12);
+                $mol_assert_equal(rel_node.length, 18);
+                $mol_assert_equal(rel_node.length, 18);
+                $mol_assert_equal($hyoo_crus_ref_decode(node), $hyoo_crus_ref('qwertyui_asdfghjk_zxcvbnm0'));
+                $mol_assert_equal($hyoo_crus_ref_decode(root), $hyoo_crus_ref('qwertyui_asdfghjk'));
+                $mol_assert_equal($hyoo_crus_ref_decode(rel_node), $hyoo_crus_ref('__zxcvbnm0'));
                 $mol_assert_equal($hyoo_crus_ref_decode(rel_root), $hyoo_crus_ref(''));
             },
             "Relate ref to base"($) {
-                $mol_assert_equal($hyoo_crus_ref_relate($hyoo_crus_ref('QWERTYUI_ASDFGHJK_ZXCVBNM0'), $hyoo_crus_ref('qwertyui_asdfghjk_zxcvbnm0_12345678')), $hyoo_crus_ref_relate($hyoo_crus_ref('QWERTYUI_ASDFGHJK_zxcvbnm0'), $hyoo_crus_ref('qwertyui_asdfghjk_zxcvbnm0_12345678')), $hyoo_crus_ref_relate($hyoo_crus_ref('QWERTYUI_ASDFGHJK'), $hyoo_crus_ref('qwertyui_asdfghjk_zxcvbnm0_12345678')), $hyoo_crus_ref_relate($hyoo_crus_ref('qwertyui_asdfghjk_ZXCVBNM0'), $hyoo_crus_ref('qwertyui_asdfghjk_zxcvbnm0_12345678')), $hyoo_crus_ref_relate($hyoo_crus_ref('qwertyui_asdfghjk'), $hyoo_crus_ref('qwertyui_asdfghjk_zxcvbnm0_12345678')), $hyoo_crus_ref('qwertyui_asdfghjk_zxcvbnm0_12345678'));
-                $mol_assert_equal($hyoo_crus_ref_relate($hyoo_crus_ref('qwertyui_asdfghjk_zxcvbnm0'), $hyoo_crus_ref('qwertyui_asdfghjk_zxcvbnm0_12345678')), $hyoo_crus_ref('___12345678'));
-                $mol_assert_equal($hyoo_crus_ref_relate($hyoo_crus_ref('qwertyui_asdfghjk'), $hyoo_crus_ref('qwertyui_asdfghjk__12345678')), $hyoo_crus_ref('___12345678'));
-                $mol_assert_equal($hyoo_crus_ref_relate($hyoo_crus_ref('qwertyui_asdfghjk_zxcvbnm0'), $hyoo_crus_ref('qwertyui_asdfghjk_zxcvbnm0')), $hyoo_crus_ref_relate($hyoo_crus_ref('qwertyui_asdfghjk'), $hyoo_crus_ref('qwertyui_asdfghjk')), $hyoo_crus_ref(''));
+                $mol_assert_equal($hyoo_crus_ref_relate($hyoo_crus_ref('QWERTYUI_ASDFGHJK'), $hyoo_crus_ref('qwertyui_asdfghjk_zxcvbnm0')), $hyoo_crus_ref_relate($hyoo_crus_ref('QWERTYUI_ASDFGHJK_ZXCVBNM0'), $hyoo_crus_ref('qwertyui_asdfghjk_zxcvbnm0')), $hyoo_crus_ref('qwertyui_asdfghjk_zxcvbnm0'));
+                $mol_assert_equal($hyoo_crus_ref_relate($hyoo_crus_ref('qwertyui_asdfghjk'), $hyoo_crus_ref('qwertyui_asdfghjk_zxcvbnm0')), $hyoo_crus_ref_relate($hyoo_crus_ref('qwertyui_asdfghjk_12345678'), $hyoo_crus_ref('qwertyui_asdfghjk_zxcvbnm0')), $hyoo_crus_ref('__zxcvbnm0'));
+                $mol_assert_equal($hyoo_crus_ref_relate($hyoo_crus_ref('qwertyui_asdfghjk_zxcvbnm0'), $hyoo_crus_ref('qwertyui_asdfghjk')), $hyoo_crus_ref_relate($hyoo_crus_ref('qwertyui_asdfghjk'), $hyoo_crus_ref('qwertyui_asdfghjk')), $hyoo_crus_ref(''));
             },
             "Resolve ref from base"($) {
-                $mol_assert_equal($hyoo_crus_ref_resolve($hyoo_crus_ref('QWERTYUI_ASDFGHJK_ZXCVBNM0'), $hyoo_crus_ref('qwertyui_asdfghjk_zxcvbnm0_12345678')), $hyoo_crus_ref_resolve($hyoo_crus_ref('QWERTYUI_ASDFGHJK_zxcvbnm0'), $hyoo_crus_ref('qwertyui_asdfghjk_zxcvbnm0_12345678')), $hyoo_crus_ref_resolve($hyoo_crus_ref('QWERTYUI_ASDFGHJK'), $hyoo_crus_ref('qwertyui_asdfghjk_zxcvbnm0_12345678')), $hyoo_crus_ref_resolve($hyoo_crus_ref('qwertyui_asdfghjk_ZXCVBNM0'), $hyoo_crus_ref('qwertyui_asdfghjk_zxcvbnm0_12345678')), $hyoo_crus_ref_resolve($hyoo_crus_ref('qwertyui_asdfghjk'), $hyoo_crus_ref('qwertyui_asdfghjk_zxcvbnm0_12345678')), $hyoo_crus_ref('qwertyui_asdfghjk_zxcvbnm0_12345678'));
-                $mol_assert_equal($hyoo_crus_ref_resolve($hyoo_crus_ref('qwertyui_asdfghjk_zxcvbnm0'), $hyoo_crus_ref('___12345678')), $hyoo_crus_ref('qwertyui_asdfghjk_zxcvbnm0_12345678'));
-                $mol_assert_equal($hyoo_crus_ref_resolve($hyoo_crus_ref('qwertyui_asdfghjk'), $hyoo_crus_ref('___12345678')), $hyoo_crus_ref('qwertyui_asdfghjk__12345678'));
-                $mol_assert_equal($hyoo_crus_ref_resolve($hyoo_crus_ref('qwertyui_asdfghjk_zxcvbnm0'), $hyoo_crus_ref('')), $hyoo_crus_ref('qwertyui_asdfghjk_zxcvbnm0'));
-                $mol_assert_equal($hyoo_crus_ref_resolve($hyoo_crus_ref('qwertyui_asdfghjk'), $hyoo_crus_ref('')), $hyoo_crus_ref('qwertyui_asdfghjk'));
+                $mol_assert_equal($hyoo_crus_ref_resolve($hyoo_crus_ref('QWERTYUI_ASDFGHJK_ZXCVBNM0'), $hyoo_crus_ref('qwertyui_asdfghjk_zxcvbnm0')), $hyoo_crus_ref_resolve($hyoo_crus_ref('QWERTYUI_ASDFGHJK'), $hyoo_crus_ref('qwertyui_asdfghjk_zxcvbnm0')), $hyoo_crus_ref_resolve($hyoo_crus_ref('qwertyui_asdfghjk'), $hyoo_crus_ref('qwertyui_asdfghjk_zxcvbnm0')), $hyoo_crus_ref('qwertyui_asdfghjk_zxcvbnm0'));
+                $mol_assert_equal($hyoo_crus_ref_resolve($hyoo_crus_ref('qwertyui_asdfghjk'), $hyoo_crus_ref('__12345678')), $hyoo_crus_ref_resolve($hyoo_crus_ref('qwertyui_asdfghjk_zxcvbnm0'), $hyoo_crus_ref('__12345678')), $hyoo_crus_ref('qwertyui_asdfghjk_12345678'));
+                $mol_assert_equal($hyoo_crus_ref_resolve($hyoo_crus_ref('qwertyui_asdfghjk'), $hyoo_crus_ref('')), $hyoo_crus_ref_resolve($hyoo_crus_ref('qwertyui_asdfghjk_zxcvbnm0'), $hyoo_crus_ref('')), $hyoo_crus_ref('qwertyui_asdfghjk'));
             },
         });
     })($$ = $_1.$$ || ($_1.$$ = {}));
@@ -3325,6 +3316,192 @@ var $;
             $mol_assert_ok(await Catie.verify(data, sign));
             const Diana = $mol_crypto_key_public.from(Alice.asArray());
             $mol_assert_ok(await Diana.verify(data, sign));
+        },
+    });
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    function $mol_crypto_salt() {
+        return $mol_crypto_native.getRandomValues(new Uint8Array(16));
+    }
+    $.$mol_crypto_salt = $mol_crypto_salt;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    $mol_test({
+        async 'sizes'() {
+            const cipher = await $mol_crypto_secret.generate();
+            const key = await cipher.serial();
+            $mol_assert_equal(key.byteLength, $mol_crypto_secret.size);
+            const data = new Uint8Array([1, 2, 3]);
+            const salt = $mol_crypto_salt();
+            const closed = await cipher.encrypt(data, salt);
+            $mol_assert_equal(closed.byteLength, 16);
+        },
+        async 'decrypt self encrypted with auto generated key'() {
+            const cipher = await $mol_crypto_secret.generate();
+            const data = new Uint8Array([1, 2, 3]);
+            const salt = $mol_crypto_salt();
+            const closed = await cipher.encrypt(data, salt);
+            const opened = await cipher.decrypt(closed, salt);
+            $mol_assert_like(data, new Uint8Array(opened));
+        },
+        async 'decrypt encrypted with exported auto generated key'() {
+            const data = new Uint8Array([1, 2, 3]);
+            const salt = $mol_crypto_salt();
+            const Alice = await $mol_crypto_secret.generate();
+            const closed = await Alice.encrypt(data, salt);
+            const Bob = await $mol_crypto_secret.from(await Alice.serial());
+            const opened = await Bob.decrypt(closed, salt);
+            $mol_assert_like(data, new Uint8Array(opened));
+        },
+        async 'derivation from public & private keys'() {
+            const A = await $mol_crypto_key_private.generate();
+            const B = await $mol_crypto_key_private.generate();
+            const AK = await $mol_crypto_secret.derive(A.toString(), B.public().toString());
+            const BK = await $mol_crypto_secret.derive(B.toString(), A.public().toString());
+            $mol_assert_like(new Uint8Array(await AK.serial()), new Uint8Array(await BK.serial()));
+        },
+    });
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($_1) {
+    $mol_test_mocks.push($ => {
+        class $hyoo_crus_auth extends $.$hyoo_crus_auth {
+            static current() {
+                return this.from('_9nV1NuqbUeu1sUiLaq_KI_g1ViEjhM3-PNwxwl4t6AumN_FTqZzWpZ0T1ec64n418nazPbKmzimFyjEJST1cAMPU48vm3r966UVMmfXwrUCGXPHIcvsxSsP1x4Tf7R9c');
+            }
+            static embryos = [
+                '_8sVK0YEb5PoN899wl1_J_4RVtlKCBF3zx7qrNjtttgobBewLTIVZTZY_00kAXGopu7sxBMwtsSFPwLGWfCsHcWULiSWqUauxKa4WgH6NPFjerHWrvbICSuKyF97oIX-A',
+                '_-x55YK_NNRv27E3awWeWs9PmzKbqLhWGBFADEfgRmonOuHUmoyg0tgUdStHtDM9XyNF1zK1Q7r3wOfnDuRaYwtPD-Ke87FjnTjjGBIkYtsok-JsvM4E4Xx3GqSC9aNBU',
+                '_x0qgvnkiuJWWxOg2rJMdnqKdwWJ8S9HqP87-evKJmIgFyP9Yx44jYoGXlbVM-i-boXzALM90jsFB74doBQkDEqeSe1Fbwvvuy1mbdir8FPecODVqHo8Ex8-Ms85zafgs',
+                '_y2R-iKYhGNLnGzZAtF6ivtMp8SqS72i81eAoqe3BXsLYyQp4baGlcMkj3qiQf6uhjRZXrb9UuoxpYBraMvLzob-1h1xq0Dyk-_gFdM_osD9GFl6hcaVQ6UaE5jMJL-YE',
+                '__cZfKZc2YH8Gvl8mLkwcoiht7Z31S1Uw8yeC23kO9ctqA4QmvqSLJOxdup4XmQOj7tyrO9RRMluLWIMXhnv38jlQRziNkOBijgw0cNCthUkdctdwAgxJh-c8L8UV2M4E',
+                '__nWu6ndldmMALXiLD-nt0y1KsbDmmU7ER-zEBm8rcAtY_BfF4-VpTfVYvTBuPVFE18EgJYFRY4dbqpAnUbw-UcdzzLWB31gRF_TDqyvumtxClfEjz_OssaG8sALRnmHo',
+                '_72Hwx_sDNRiEgdMIlaixh55UWvWdSgknJD-EImNjHA475U4xYwplEYEbKMQZ7QD88SDXzwwAK5zolb--e-EmgNMJVkqWF3yGTjKxAy-o9esRRsICF-LZM4Hgs_F7vkxc',
+            ];
+        }
+        __decorate([
+            $mol_mem
+        ], $hyoo_crus_auth, "current", null);
+        $.$hyoo_crus_auth = $hyoo_crus_auth;
+    });
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($_1) {
+    $mol_test({
+        'Watch one value'($) {
+            class App extends $mol_object2 {
+                static $ = $;
+                static set = new $mol_wire_set();
+                static lucky() {
+                    return this.set.has(777);
+                }
+            }
+            __decorate([
+                $mol_wire_solo
+            ], App, "lucky", null);
+            $mol_assert_equal(App.lucky(), false);
+            App.set.add(666);
+            $mol_assert_equal(App.lucky(), false);
+            App.set.add(777);
+            $mol_assert_equal(App.lucky(), true);
+            App.set.delete(777);
+            $mol_assert_equal(App.lucky(), false);
+        },
+        'Watch item channel'($) {
+            class App extends $mol_object2 {
+                static $ = $;
+                static set = new $mol_wire_set();
+                static lucky() {
+                    return this.set.item(777);
+                }
+            }
+            __decorate([
+                $mol_wire_solo
+            ], App, "lucky", null);
+            $mol_assert_equal(App.lucky(), false);
+            App.set.item(666, true);
+            $mol_assert_equal(App.lucky(), false);
+            App.set.item(777, true);
+            $mol_assert_equal(App.lucky(), true);
+            App.set.item(777, false);
+            $mol_assert_equal(App.lucky(), false);
+        },
+        'Watch size'($) {
+            class App extends $mol_object2 {
+                static $ = $;
+                static set = new $mol_wire_set();
+                static size() {
+                    return this.set.size;
+                }
+            }
+            __decorate([
+                $mol_wire_solo
+            ], App, "size", null);
+            $mol_assert_equal(App.size(), 0);
+            App.set.add(666);
+            $mol_assert_equal(App.size(), 1);
+            App.set.add(777);
+            $mol_assert_equal(App.size(), 2);
+            App.set.delete(777);
+            $mol_assert_equal(App.size(), 1);
+        },
+        'Watch for-of'($) {
+            class App extends $mol_object2 {
+                static $ = $;
+                static set = new $mol_wire_set();
+                static sum() {
+                    let res = 0;
+                    for (const val of this.set) {
+                        res += val;
+                    }
+                    return res;
+                }
+            }
+            __decorate([
+                $mol_wire_solo
+            ], App, "sum", null);
+            $mol_assert_equal(App.sum(), 0);
+            App.set.add(111);
+            $mol_assert_equal(App.sum(), 111);
+            App.set.add(222);
+            $mol_assert_equal(App.sum(), 333);
+            App.set.delete(111);
+            $mol_assert_equal(App.sum(), 222);
+        },
+        'Watch forEach'($) {
+            class App extends $mol_object2 {
+                static $ = $;
+                static set = new $mol_wire_set();
+                static sum() {
+                    let res = 0;
+                    this.set.forEach(val => res += val);
+                    return res;
+                }
+            }
+            __decorate([
+                $mol_wire_solo
+            ], App, "sum", null);
+            $mol_assert_equal(App.sum(), 0);
+            App.set.add(111);
+            $mol_assert_equal(App.sum(), 111);
+            App.set.add(222);
+            $mol_assert_equal(App.sum(), 333);
+            App.set.delete(111);
+            $mol_assert_equal(App.sum(), 222);
         },
     });
 })($ || ($ = {}));
@@ -3461,57 +3638,6 @@ var $;
             const key = await $.$mol_crypto_auditor_pair();
             source.sign(new Uint8Array(await key.private.sign(source.sens())));
             $mol_assert_ok(await key.public.verify(source.sens(), source.sign()));
-        },
-    });
-})($ || ($ = {}));
-
-;
-"use strict";
-var $;
-(function ($) {
-    function $mol_crypto_salt() {
-        return $mol_crypto_native.getRandomValues(new Uint8Array(16));
-    }
-    $.$mol_crypto_salt = $mol_crypto_salt;
-})($ || ($ = {}));
-
-;
-"use strict";
-var $;
-(function ($) {
-    $mol_test({
-        async 'sizes'() {
-            const cipher = await $mol_crypto_secret.generate();
-            const key = await cipher.serial();
-            $mol_assert_equal(key.byteLength, $mol_crypto_secret.size);
-            const data = new Uint8Array([1, 2, 3]);
-            const salt = $mol_crypto_salt();
-            const closed = await cipher.encrypt(data, salt);
-            $mol_assert_equal(closed.byteLength, 16);
-        },
-        async 'decrypt self encrypted with auto generated key'() {
-            const cipher = await $mol_crypto_secret.generate();
-            const data = new Uint8Array([1, 2, 3]);
-            const salt = $mol_crypto_salt();
-            const closed = await cipher.encrypt(data, salt);
-            const opened = await cipher.decrypt(closed, salt);
-            $mol_assert_like(data, new Uint8Array(opened));
-        },
-        async 'decrypt encrypted with exported auto generated key'() {
-            const data = new Uint8Array([1, 2, 3]);
-            const salt = $mol_crypto_salt();
-            const Alice = await $mol_crypto_secret.generate();
-            const closed = await Alice.encrypt(data, salt);
-            const Bob = await $mol_crypto_secret.from(await Alice.serial());
-            const opened = await Bob.decrypt(closed, salt);
-            $mol_assert_like(data, new Uint8Array(opened));
-        },
-        async 'derivation from public & private keys'() {
-            const A = await $mol_crypto_key_private.generate();
-            const B = await $mol_crypto_key_private.generate();
-            const AK = await $mol_crypto_secret.derive(A.toString(), B.public().toString());
-            const BK = await $mol_crypto_secret.derive(B.toString(), A.public().toString());
-            $mol_assert_like(new Uint8Array(await AK.serial()), new Uint8Array(await BK.serial()));
         },
     });
 })($ || ($ = {}));
@@ -3871,132 +3997,6 @@ var $;
 "use strict";
 var $;
 (function ($_1) {
-    $mol_test_mocks.push($ => {
-        class $hyoo_crus_auth extends $.$hyoo_crus_auth {
-            static current() {
-                return this.from('_9nV1NuqbUeu1sUiLaq_KI_g1ViEjhM3-PNwxwl4t6AumN_FTqZzWpZ0T1ec64n418nazPbKmzimFyjEJST1cAMPU48vm3r966UVMmfXwrUCGXPHIcvsxSsP1x4Tf7R9c');
-            }
-        }
-        __decorate([
-            $mol_mem
-        ], $hyoo_crus_auth, "current", null);
-        $.$hyoo_crus_auth = $hyoo_crus_auth;
-    });
-})($ || ($ = {}));
-
-;
-"use strict";
-var $;
-(function ($_1) {
-    $mol_test({
-        'Watch one value'($) {
-            class App extends $mol_object2 {
-                static $ = $;
-                static set = new $mol_wire_set();
-                static lucky() {
-                    return this.set.has(777);
-                }
-            }
-            __decorate([
-                $mol_wire_solo
-            ], App, "lucky", null);
-            $mol_assert_equal(App.lucky(), false);
-            App.set.add(666);
-            $mol_assert_equal(App.lucky(), false);
-            App.set.add(777);
-            $mol_assert_equal(App.lucky(), true);
-            App.set.delete(777);
-            $mol_assert_equal(App.lucky(), false);
-        },
-        'Watch item channel'($) {
-            class App extends $mol_object2 {
-                static $ = $;
-                static set = new $mol_wire_set();
-                static lucky() {
-                    return this.set.item(777);
-                }
-            }
-            __decorate([
-                $mol_wire_solo
-            ], App, "lucky", null);
-            $mol_assert_equal(App.lucky(), false);
-            App.set.item(666, true);
-            $mol_assert_equal(App.lucky(), false);
-            App.set.item(777, true);
-            $mol_assert_equal(App.lucky(), true);
-            App.set.item(777, false);
-            $mol_assert_equal(App.lucky(), false);
-        },
-        'Watch size'($) {
-            class App extends $mol_object2 {
-                static $ = $;
-                static set = new $mol_wire_set();
-                static size() {
-                    return this.set.size;
-                }
-            }
-            __decorate([
-                $mol_wire_solo
-            ], App, "size", null);
-            $mol_assert_equal(App.size(), 0);
-            App.set.add(666);
-            $mol_assert_equal(App.size(), 1);
-            App.set.add(777);
-            $mol_assert_equal(App.size(), 2);
-            App.set.delete(777);
-            $mol_assert_equal(App.size(), 1);
-        },
-        'Watch for-of'($) {
-            class App extends $mol_object2 {
-                static $ = $;
-                static set = new $mol_wire_set();
-                static sum() {
-                    let res = 0;
-                    for (const val of this.set) {
-                        res += val;
-                    }
-                    return res;
-                }
-            }
-            __decorate([
-                $mol_wire_solo
-            ], App, "sum", null);
-            $mol_assert_equal(App.sum(), 0);
-            App.set.add(111);
-            $mol_assert_equal(App.sum(), 111);
-            App.set.add(222);
-            $mol_assert_equal(App.sum(), 333);
-            App.set.delete(111);
-            $mol_assert_equal(App.sum(), 222);
-        },
-        'Watch forEach'($) {
-            class App extends $mol_object2 {
-                static $ = $;
-                static set = new $mol_wire_set();
-                static sum() {
-                    let res = 0;
-                    this.set.forEach(val => res += val);
-                    return res;
-                }
-            }
-            __decorate([
-                $mol_wire_solo
-            ], App, "sum", null);
-            $mol_assert_equal(App.sum(), 0);
-            App.set.add(111);
-            $mol_assert_equal(App.sum(), 111);
-            App.set.add(222);
-            $mol_assert_equal(App.sum(), 333);
-            App.set.delete(111);
-            $mol_assert_equal(App.sum(), 222);
-        },
-    });
-})($ || ($ = {}));
-
-;
-"use strict";
-var $;
-(function ($_1) {
     var $$;
     (function ($$) {
         $mol_test({
@@ -4239,14 +4239,14 @@ var $;
         'Join'($) {
             const land = $hyoo_crus_land.make({ $ });
             $mol_assert_equal(land.joined_list(), []);
-            $mol_assert_equal(land.lord_rank(land.lord_ref()), $hyoo_crus_rank.law);
+            $mol_assert_equal(land.lord_rank(land.ref()), $hyoo_crus_rank.law);
             land.join();
-            $mol_assert_equal(land.joined_list(), [land.lord_ref()]);
+            $mol_assert_equal(land.joined_list(), [land.ref()]);
         },
         'Give rights'($) {
             const land1 = $hyoo_crus_land.make({ $ });
-            const land2 = $hyoo_crus_land.make({ $, lord_ref: () => land1.lord_ref(), auth: () => auth1 });
-            $mol_assert_equal(land1.lord_rank(land1.lord_ref()), $hyoo_crus_rank.law);
+            const land2 = $hyoo_crus_land.make({ $, ref: () => land1.ref(), auth: () => auth1 });
+            $mol_assert_equal(land1.lord_rank(land1.ref()), $hyoo_crus_rank.law);
             $mol_assert_equal(land1.lord_rank(auth1.lord()), $hyoo_crus_rank.get);
             $mol_assert_fail(() => land2.give(auth2.lord(), $hyoo_crus_rank.add), 'Need add rank to join');
             $mol_assert_equal(land1.lord_rank(auth1.lord()), $hyoo_crus_rank.get);
@@ -4265,11 +4265,12 @@ var $;
             land1.give(auth1.lord(), $hyoo_crus_rank.mod);
             $mol_assert_equal(land1.lord_rank(auth1.lord()), $hyoo_crus_rank.mod);
             land2.apply_unit_trust(land1.delta_unit());
+            $mol_assert_equal(land2.lord_rank(auth1.lord()), $hyoo_crus_rank.mod);
             $mol_assert_fail(() => land2.give(auth2.lord(), $hyoo_crus_rank.add), 'Need law rank to change rank');
         },
         'Post Data and pick Delta'($) {
             const land1 = $hyoo_crus_land.make({ $ });
-            const land2 = $hyoo_crus_land.make({ $, lord_ref: () => land1.lord_ref(), auth: () => auth1 });
+            const land2 = $hyoo_crus_land.make({ $, ref: () => land1.ref(), auth: () => auth1 });
             $mol_assert_equal(land1.delta_unit(), []);
             land1.post('', '', 'AA111111', new Uint8Array([1]));
             $mol_assert_equal(land1.delta_unit().length, 2);
@@ -4304,7 +4305,7 @@ var $;
         },
         'Self restriction for Add Rank'($) {
             const land1 = $hyoo_crus_land.make({ $ });
-            const land2 = $hyoo_crus_land.make({ $, lord_ref: () => land1.lord_ref(), auth: () => auth2 });
+            const land2 = $hyoo_crus_land.make({ $, ref: () => land1.ref(), auth: () => auth2 });
             $mol_assert_equal(land1.delta_unit(), []);
             land1.give(auth2.lord(), $hyoo_crus_rank.add);
             land2.apply_unit_trust(land1.delta_unit());
@@ -4316,14 +4317,8 @@ var $;
             $mol_assert_equal(gist2.self(), $hyoo_crus_area_to(auth2.peer(), 'data'));
             $mol_assert_equal(land2.delta_unit().length, 4);
         },
-        'Home Land no encryption'($) {
-            const land = $hyoo_crus_land.make({ $ });
-            $mol_assert_equal(land.encrypted(), false);
-            land.encrypted(true);
-            $mol_assert_equal(land.encrypted(), false);
-        },
         async 'Land encryption'($) {
-            const land = $mol_wire_async($hyoo_crus_land.make({ $, numb: () => 'AA111111' }));
+            const land = $mol_wire_async($hyoo_crus_land.make({ $ }));
             $mol_assert_equal(await land.encrypted(), false);
             await land.encrypted(true);
             $mol_assert_equal(await land.encrypted(), true);
@@ -4336,19 +4331,19 @@ var $;
         },
         'Land fork & merge'($) {
             const realm = $hyoo_crus_realm.make({ $ });
-            const base = realm.home().base().land();
-            const left = base.fork();
-            base.Data($hyoo_crus_list).items(['foo', 'xxx']);
-            $mol_assert_equal(base.Data($hyoo_crus_list).items(), ['foo', 'xxx']);
+            const home = realm.home();
+            const left = home.fork();
+            home.Data($hyoo_crus_list).items(['foo', 'xxx']);
+            $mol_assert_equal(home.Data($hyoo_crus_list).items(), ['foo', 'xxx']);
             $mol_assert_equal(left.Data($hyoo_crus_list).items(), ['foo', 'xxx']);
-            left.faces.sync(base.faces);
+            left.faces.sync(home.faces);
             left.Data($hyoo_crus_list).items(['foo', 'yyy']);
             $mol_assert_equal(left.Data($hyoo_crus_list).items(), ['foo', 'yyy']);
-            const right = base.fork();
+            const right = home.fork();
             right.faces.sync(left.faces);
             right.Data($hyoo_crus_list).items(['foo', 'zzz']);
             $mol_assert_equal(right.Data($hyoo_crus_list).items(), ['foo', 'zzz']);
-            const both = base.fork();
+            const both = home.fork();
             $mol_assert_equal(both.Data($hyoo_crus_list).items(), ['foo', 'xxx']);
             both.Meta().inflow([right.ref()]);
             $mol_assert_equal(both.Data($hyoo_crus_list).items(), ['foo', 'zzz']);
@@ -4361,7 +4356,7 @@ var $;
         },
         'Inner refs is relative to land'($) {
             const realm = $hyoo_crus_realm.make({ $ });
-            const Alice = realm.home().base().land();
+            const Alice = realm.home();
             const Bella = Alice.fork();
             const alice_val = Alice.Node($hyoo_crus_reg_str).Item('qwertyui');
             const bella_val = Bella.Node($hyoo_crus_reg_str).Item('qwertyui');
@@ -4375,6 +4370,28 @@ var $;
             $mol_assert_equal(bella_ref.value(), bella_val.ref());
         },
     });
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($_1) {
+    $mol_test_mocks.push($ => {
+        class $hyoo_crus_yard extends $.$hyoo_crus_yard {
+            load(land) {
+                return [];
+            }
+            async save(land, units) { }
+            ports() {
+                return [];
+            }
+        }
+        $.$hyoo_crus_yard = $hyoo_crus_yard;
+    });
+    $hyoo_crus_yard.masters = [
+        `http://localhost:9090/`,
+        $mol_dom_context.document.location.origin + '/',
+    ];
 })($ || ($ = {}));
 
 ;
@@ -5111,7 +5128,11 @@ var $;
                 $mol_assert_equal(reg.value_bool(), true);
                 $mol_assert_equal(reg.value_int(), null);
                 $mol_assert_equal(reg.value_real(), null);
-                $mol_assert_equal(reg.value_bin(), new Uint8Array([213, 212, 219, 170, 109, 71, 174, 214, 197, 34, 45, 170, 0, 0, 0, 0, 0, 0, 215, 109, 248, 231, 174, 252]));
+                $mol_assert_equal(reg.value_bin(), new Uint8Array([
+                    213, 212, 219, 170, 109, 71,
+                    174, 214, 197, 34, 45, 170,
+                    215, 109, 248, 231, 174, 252,
+                ]));
                 $mol_assert_equal(reg.value_str(), reg.ref().description);
                 $mol_assert_equal(reg.value_ref(), reg.ref());
             },
@@ -5128,16 +5149,16 @@ var $;
             },
             "Hyper link to another land"($) {
                 const realm = $hyoo_crus_realm.make({ $ });
-                const land = realm.home().base().land();
+                const land = realm.home();
                 const reg = land.Node($hyoo_crus_reg).Item('11111111');
-                const remote = reg.yoke(null, null).Data($hyoo_crus_reg);
+                const remote = reg.yoke($hyoo_crus_rank_public).Data($hyoo_crus_reg);
                 $mol_assert_unique(reg.land(), remote.land());
                 $mol_assert_equal(reg.value_ref(), remote.ref());
-                $mol_assert_equal(reg.yoke(null).Data($hyoo_crus_reg), remote);
+                $mol_assert_equal(reg.yoke($hyoo_crus_rank_public).Data($hyoo_crus_reg), remote);
             },
             "Narrow registers"($) {
                 const realm = $hyoo_crus_realm.make({ $ });
-                const land = realm.home().base().land();
+                const land = realm.home();
                 const bin = land.Node($hyoo_crus_reg_bin).Item('11111111');
                 $mol_assert_equal(bin.value(), null);
                 bin.value(new Uint8Array([1, 2, 3]));
@@ -5149,7 +5170,7 @@ var $;
             },
             "Register with linked nodes"($) {
                 const realm = $hyoo_crus_realm.make({ $ });
-                const land = realm.home().base().land();
+                const land = realm.home();
                 const str = land.Node($hyoo_crus_reg_str).Item('11111111');
                 const ref = land.Node($hyoo_crus_reg.ref(() => $hyoo_crus_reg_str)).Item('11111111');
                 $mol_assert_equal(ref.remote(), null);
@@ -5221,7 +5242,7 @@ var $;
                 }) {
                 }
                 const realm = $hyoo_crus_realm.make({ $ });
-                const land = realm.home().base().land();
+                const land = realm.home();
                 const user = land.Node(User).Item('11111111');
                 $mol_assert_equal(user.title(), user.Title.value(), null);
                 $mol_assert_equal(user.account(), user.Account.remote(), null);
@@ -5255,33 +5276,10 @@ var $;
             const base = realm.home().base();
             const profile1 = base.Profile('my_foo', null);
             const profile2 = base.Profile('my_bar', null);
-            $mol_assert_unique(base.lord().base().land(), profile1, profile2);
-            $mol_assert_equal(base.lord(), profile1.lord(), profile2.lord());
+            $mol_assert_unique(base.land(), profile1, profile2);
             $mol_assert_equal(base.profiles(), ['my_bar', 'my_foo']);
         },
     });
-})($ || ($ = {}));
-
-;
-"use strict";
-var $;
-(function ($_1) {
-    $mol_test_mocks.push($ => {
-        class $hyoo_crus_yard extends $.$hyoo_crus_yard {
-            load(land) {
-                return [];
-            }
-            async save(land, units) { }
-            ports() {
-                return [];
-            }
-        }
-        $.$hyoo_crus_yard = $hyoo_crus_yard;
-    });
-    $hyoo_crus_yard.masters = [
-        `http://localhost:9090/`,
-        $mol_dom_context.document.location.origin + '/',
-    ];
 })($ || ($ = {}));
 
 ;

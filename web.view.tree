@@ -1088,6 +1088,33 @@ $hyoo_crus_realm_book $mol_book2_catalog
 			bubble_content /
 				\Double to wipe database
 
+$mol_icon_play $mol_icon path \M8,5.14V19.14L19,12.14L8,5.14Z
+
+$mol_bar $mol_view
+
+$hyoo_crus_auth_slot $mol_page
+	title \🎰 Grab
+	realm $hyoo_crus_realm
+	prefix? \
+	found*? /string
+	body /
+		<= Input $mol_bar sub /
+			<= Prefix $mol_string
+				hint \Prefix
+				value? <=> prefix? \
+				submit? <=> run? null
+			<= Running $mol_check_icon
+				Icon <= Run_icon $mol_icon_play
+				checked? <=> running? false
+				enabled <= run_enabled false
+				label /
+					<= grabbing
+		<= Keys $mol_list
+			rows <= keys /
+				<= Key*0 $mol_button_copy
+					title <= ref* \
+					text <= key* \
+
 $mol_string_button $mol_string
 
 $mol_icon_directions $mol_icon path \M14,14.5V12H10V15H8V11C8,10.45 8.45,10 9,10H14V7.5L17.5,11M21.71,11.29L12.71,2.29H12.7C12.31,1.9 11.68,1.9 11.29,2.29L2.29,11.29C1.9,11.68 1.9,12.32 2.29,12.71L11.29,21.71C11.68,22.09 12.31,22.1 12.71,21.71L21.71,12.71C22.1,12.32 22.1,11.68 21.71,11.29Z
@@ -1133,8 +1160,6 @@ $hyoo_sync_online $mol_select
 			hint <= message <= hint \$hyoo_sync
 
 $mol_icon_hint $mol_icon path \M10,19H13V22H10V19M12,2C17.35,2.22 19.68,7.62 16.5,11.67C15.67,12.67 14.33,13.33 13.67,14.17C13,15 13,16 13,17H10C10,15.33 10,13.92 10.67,12.92C11.33,11.92 12.67,11.33 13.5,10.67C15.92,8.43 15.32,5.26 12,5A3,3 0 0,0 9,8H6A6,6 0 0,1 12,2Z
-
-$mol_bar $mol_view
 
 $mol_icon_chevron_down $mol_icon path \M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z
 
@@ -1308,6 +1333,10 @@ $hyoo_crus_app $mol_book2_catalog
 		realm <= Realm $hyoo_crus_realm_book
 			realm <= realm
 			addon_tools /
+				<= Spread_close
+		slot <= Slot $hyoo_crus_auth_slot
+			realm <= realm
+			tools /
 				<= Spread_close
 		casting <= Casting $hyoo_calc
 			title \🔀 Casting
