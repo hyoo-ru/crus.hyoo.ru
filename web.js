@@ -9110,6 +9110,10 @@ var $;
         return $.$hyoo_crus_ref(ref.description.slice(0, 17));
     }
     $.$hyoo_crus_ref_land = $hyoo_crus_ref_land;
+    function $hyoo_crus_ref_peer(ref) {
+        return ref.description.split('_')[0] ?? '';
+    }
+    $.$hyoo_crus_ref_peer = $hyoo_crus_ref_peer;
     function $hyoo_crus_ref_head(ref) {
         return ref.description.split('_')[2] ?? '';
     }
@@ -12888,6 +12892,12 @@ var $;
         joined_list() {
             return [...this.passes.values()].map(unit => unit.lord());
         }
+        key() {
+            const pass = this.passes.get($hyoo_crus_ref_peer(this.ref()));
+            if (!pass)
+                return null;
+            return $hyoo_crus_auth.from(pass.auth());
+        }
         lord_rank(lord, next) {
             if (lord === this.ref())
                 return $hyoo_crus_rank.law;
@@ -13515,6 +13525,9 @@ var $;
     __decorate([
         $mol_mem
     ], $hyoo_crus_land.prototype, "joined_list", null);
+    __decorate([
+        $mol_mem
+    ], $hyoo_crus_land.prototype, "key", null);
     __decorate([
         $mol_mem_key
     ], $hyoo_crus_land.prototype, "lord_rank", null);

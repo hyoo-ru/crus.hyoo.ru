@@ -1028,6 +1028,7 @@ declare namespace $ {
     function $hyoo_crus_ref_land(ref: $hyoo_crus_ref): symbol & {
         $hyoo_crus_ref: symbol;
     };
+    function $hyoo_crus_ref_peer(ref: $hyoo_crus_ref): string;
     function $hyoo_crus_ref_head(ref: $hyoo_crus_ref): string;
     function $hyoo_crus_ref_encode(ref: $hyoo_crus_ref): Uint8Array;
     function $hyoo_crus_ref_decode(bin: Uint8Array): symbol & {
@@ -11815,6 +11816,7 @@ declare namespace $ {
         joined_list(): (symbol & {
             $hyoo_crus_ref: symbol;
         })[];
+        key(): $hyoo_crus_auth | null;
         lord_rank(lord: $hyoo_crus_ref, next?: $hyoo_crus_rank): $hyoo_crus_rank;
         peer_rank(peer: string): $hyoo_crus_rank;
         delta_unit(face?: $hyoo_crus_face_map): $hyoo_crus_unit[];
