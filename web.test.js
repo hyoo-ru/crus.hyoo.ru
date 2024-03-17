@@ -3252,14 +3252,17 @@ var $;
                 const root = $hyoo_crus_ref_encode($hyoo_crus_ref('qwertyui_asdfghjk'));
                 const rel_node = $hyoo_crus_ref_encode($hyoo_crus_ref('__zxcvbnm0'));
                 const rel_root = $hyoo_crus_ref_encode($hyoo_crus_ref('__'));
+                const all = $hyoo_crus_ref_encode($hyoo_crus_ref(''));
                 $mol_assert_equal(node.length, 18);
                 $mol_assert_equal(root.length, 12);
                 $mol_assert_equal(rel_node.length, 18);
                 $mol_assert_equal(rel_node.length, 18);
+                $mol_assert_equal(all.length, 12);
                 $mol_assert_equal($hyoo_crus_ref_decode(node), $hyoo_crus_ref('qwertyui_asdfghjk_zxcvbnm0'));
                 $mol_assert_equal($hyoo_crus_ref_decode(root), $hyoo_crus_ref('qwertyui_asdfghjk'));
                 $mol_assert_equal($hyoo_crus_ref_decode(rel_node), $hyoo_crus_ref('__zxcvbnm0'));
                 $mol_assert_equal($hyoo_crus_ref_decode(rel_root), $hyoo_crus_ref(''));
+                $mol_assert_equal($hyoo_crus_ref_decode(all), $hyoo_crus_ref(''));
             },
             "Relate ref to base"($) {
                 $mol_assert_equal($hyoo_crus_ref_relate($hyoo_crus_ref('QWERTYUI_ASDFGHJK'), $hyoo_crus_ref('qwertyui_asdfghjk_zxcvbnm0')), $hyoo_crus_ref_relate($hyoo_crus_ref('QWERTYUI_ASDFGHJK_ZXCVBNM0'), $hyoo_crus_ref('qwertyui_asdfghjk_zxcvbnm0')), $hyoo_crus_ref('qwertyui_asdfghjk_zxcvbnm0'));

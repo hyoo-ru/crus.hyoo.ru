@@ -4188,7 +4188,7 @@ var $;
     }
     $.$hyoo_crus_ref_head = $hyoo_crus_ref_head;
     function $hyoo_crus_ref_encode(ref) {
-        return $mol_base64_ae_decode(ref.description
+        return $mol_base64_ae_decode((ref.description || '_')
             .split(/_/g)
             .map(numb => numb || 'AAAAAAAA')
             .join(''));
@@ -7133,7 +7133,7 @@ var $;
             if (lord === this.ref())
                 return $hyoo_crus_rank.law;
             return this.gifts.get(lord)?.rank()
-                ?? this.gifts.get($hyoo_crus_ref('FFFFFFFF_FFFFFFFF'))?.rank()
+                ?? this.gifts.get($hyoo_crus_ref(''))?.rank()
                 ?? $hyoo_crus_rank.get;
         }
         peer_rank(peer) {
@@ -7439,7 +7439,7 @@ var $;
             unit.rank(rank);
             unit.time(this.faces.tick());
             unit.peer(auth.peer());
-            unit.dest(dest ?? $hyoo_crus_ref('FFFFFFFF_FFFFFFFF'));
+            unit.dest(dest);
             unit._land = this;
             const error = this.apply_unit_trust([unit])[0];
             if (error)
@@ -10880,14 +10880,17 @@ var $;
                 const root = $hyoo_crus_ref_encode($hyoo_crus_ref('qwertyui_asdfghjk'));
                 const rel_node = $hyoo_crus_ref_encode($hyoo_crus_ref('__zxcvbnm0'));
                 const rel_root = $hyoo_crus_ref_encode($hyoo_crus_ref('__'));
+                const all = $hyoo_crus_ref_encode($hyoo_crus_ref(''));
                 $mol_assert_equal(node.length, 18);
                 $mol_assert_equal(root.length, 12);
                 $mol_assert_equal(rel_node.length, 18);
                 $mol_assert_equal(rel_node.length, 18);
+                $mol_assert_equal(all.length, 12);
                 $mol_assert_equal($hyoo_crus_ref_decode(node), $hyoo_crus_ref('qwertyui_asdfghjk_zxcvbnm0'));
                 $mol_assert_equal($hyoo_crus_ref_decode(root), $hyoo_crus_ref('qwertyui_asdfghjk'));
                 $mol_assert_equal($hyoo_crus_ref_decode(rel_node), $hyoo_crus_ref('__zxcvbnm0'));
                 $mol_assert_equal($hyoo_crus_ref_decode(rel_root), $hyoo_crus_ref(''));
+                $mol_assert_equal($hyoo_crus_ref_decode(all), $hyoo_crus_ref(''));
             },
             "Relate ref to base"($) {
                 $mol_assert_equal($hyoo_crus_ref_relate($hyoo_crus_ref('QWERTYUI_ASDFGHJK'), $hyoo_crus_ref('qwertyui_asdfghjk_zxcvbnm0')), $hyoo_crus_ref_relate($hyoo_crus_ref('QWERTYUI_ASDFGHJK_ZXCVBNM0'), $hyoo_crus_ref('qwertyui_asdfghjk_zxcvbnm0')), $hyoo_crus_ref('qwertyui_asdfghjk_zxcvbnm0'));

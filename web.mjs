@@ -9115,7 +9115,7 @@ var $;
     }
     $.$hyoo_crus_ref_head = $hyoo_crus_ref_head;
     function $hyoo_crus_ref_encode(ref) {
-        return $mol_base64_ae_decode(ref.description
+        return $mol_base64_ae_decode((ref.description || '_')
             .split(/_/g)
             .map(numb => numb || 'AAAAAAAA')
             .join(''));
@@ -12865,7 +12865,7 @@ var $;
             if (lord === this.ref())
                 return $hyoo_crus_rank.law;
             return this.gifts.get(lord)?.rank()
-                ?? this.gifts.get($hyoo_crus_ref('FFFFFFFF_FFFFFFFF'))?.rank()
+                ?? this.gifts.get($hyoo_crus_ref(''))?.rank()
                 ?? $hyoo_crus_rank.get;
         }
         peer_rank(peer) {
@@ -13171,7 +13171,7 @@ var $;
             unit.rank(rank);
             unit.time(this.faces.tick());
             unit.peer(auth.peer());
-            unit.dest(dest ?? $hyoo_crus_ref('FFFFFFFF_FFFFFFFF'));
+            unit.dest(dest);
             unit._land = this;
             const error = this.apply_unit_trust([unit])[0];
             if (error)
