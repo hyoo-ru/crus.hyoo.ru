@@ -90,11 +90,20 @@ namespace $ {
 		}
 		
 		@ $mol_mem_key
-		lord_rank( lord: $hyoo_crus_ref ) {
+		lord_rank( lord: $hyoo_crus_ref, next?: $hyoo_crus_rank ) {
+			
 			if( lord === this.ref() ) return $hyoo_crus_rank.law
-			return this.gifts.get( lord )?.rank()
+			
+			const prev = this.gifts.get( lord )?.rank()
 				?? this.gifts.get( $hyoo_crus_ref( '' ) )?.rank()
 				?? $hyoo_crus_rank.get
+			
+			if( next === undefined ) return prev
+			if( next === prev ) return prev
+			
+			this.give( lord, next )
+			return next
+			
 		}
 		
 		peer_rank( peer: string ) {
