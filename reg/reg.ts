@@ -110,9 +110,42 @@ namespace $ {
 
 				static tip = tip;
 
-				@$mol_mem
+				@ $mol_mem
 				value( next?: Value ): Value {
 					return $hyoo_crus_vary_cast_funcs[ tip ]( this.value_vary( next ) ) as any
+				}
+
+			}
+
+			return Narrow
+		}
+
+		@ $mol_memo.method
+		static enum<
+			Options extends readonly any[]
+		>( options: Options ) {
+
+			class Narrow extends $hyoo_crus_reg {
+
+				static options = options;
+
+				@ $mol_mem
+				value( next?: Options[number] ): Options[number] | null {
+					
+					validate: if( next !== undefined ) {
+						for( const option of options ) {
+							if( $mol_compare_deep( option, next ) ) break validate
+						}
+						$mol_fail( new Error( `Wrong value (${ next })` ) )
+					}
+					
+					const val = this.value_vary( next )
+					
+					for( const option of options ) {
+						if( $mol_compare_deep( option, val ) ) return val
+					}
+					
+					return null
 				}
 
 			}

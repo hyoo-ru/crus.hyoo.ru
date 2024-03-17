@@ -266,6 +266,32 @@ namespace $.$$ {
 			
 		},
 		
+		"Enuerated reg type"( $ ) {
+			
+			class FileType extends $hyoo_crus_reg.enum( [ 'file', 'dir', 'link' ] as const ) {}
+			
+			type Infered = $mol_type_assert<
+				ReturnType< FileType['value'] >,
+				'file' | 'dir' | 'link' | null
+			>
+			
+			const realm = $hyoo_crus_realm.make({ $ })
+			const land = realm.home()
+			
+			const type = land.Data( FileType )
+			$mol_assert_equal( type.value(), null )
+			
+			type.value( 'file' )
+			$mol_assert_equal( type.value(), 'file' )
+			
+			$mol_assert_fail( ()=> type.value( 'drive' as any ), 'Wrong value (drive)' )
+			$mol_assert_equal( type.value(), 'file' )
+			
+			type.value_str( 'drive' )
+			$mol_assert_equal( type.value(), null )
+			
+		},
+		
 	})
 	
 }
