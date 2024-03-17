@@ -18,7 +18,7 @@ namespace $ {
 
 	export function $hyoo_crus_ref_encode( ref: $hyoo_crus_ref ) {
 		return $mol_base64_ae_decode(
-			ref.description!
+			( ref.description! || '_' )
 				.split( /_/g )
 				.map( numb => numb || 'AAAAAAAA' )
 				.join( '' )

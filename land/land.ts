@@ -93,7 +93,7 @@ namespace $ {
 		lord_rank( lord: $hyoo_crus_ref ) {
 			if( lord === this.ref() ) return $hyoo_crus_rank.law
 			return this.gifts.get( lord )?.rank()
-				?? this.gifts.get( $hyoo_crus_ref( 'FFFFFFFF_FFFFFFFF' ) )?.rank()
+				?? this.gifts.get( $hyoo_crus_ref( '' ) )?.rank()
 				?? $hyoo_crus_rank.get
 		}
 		
@@ -491,7 +491,7 @@ namespace $ {
 		/** Places data to tree. */
 		@ $mol_action
 		give(
-			dest: $hyoo_crus_ref | null,
+			dest: $hyoo_crus_ref,
 			rank: $hyoo_crus_rank,
 		) {
 				
@@ -503,7 +503,7 @@ namespace $ {
 			unit.rank( rank )
 			unit.time( this.faces.tick() )
 			unit.peer( auth.peer() )
-			unit.dest( dest ?? $hyoo_crus_ref( 'FFFFFFFF_FFFFFFFF' ) )
+			unit.dest( dest )
 			unit._land = this
 			
 			const error = this.apply_unit_trust([ unit ])[0]
