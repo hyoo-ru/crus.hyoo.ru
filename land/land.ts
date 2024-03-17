@@ -77,6 +77,7 @@ namespace $ {
 			} )
 		} 
 		
+		/** Total count of Units inside Land. */
 		@ $mol_mem
 		total() {
 			let total = this.passes.size + this.gifts.size
@@ -84,11 +85,21 @@ namespace $ {
 			return total
 		}
 		
+		/** All joined Lords. */
 		@ $mol_mem
 		joined_list() {
 			return [ ... this.passes.values() ].map( unit => unit.lord() )
 		}
 		
+		/** Public key of Land Lord. */
+		@ $mol_mem
+		key() {
+			const pass = this.passes.get( $hyoo_crus_ref_peer( this.ref() ) )
+			if( !pass ) return null
+			return $hyoo_crus_auth.from( pass.auth() )
+		}
+		
+		/** Rights level of Lord for Land. */
 		@ $mol_mem_key
 		lord_rank( lord: $hyoo_crus_ref, next?: $hyoo_crus_rank ) {
 			
@@ -106,6 +117,7 @@ namespace $ {
 			
 		}
 		
+		/** Rights level of Peer for Land. */
 		peer_rank( peer: string ) {
 			const auth = this.passes.get( peer )!
 			if( !auth ) return $hyoo_crus_rank.get
