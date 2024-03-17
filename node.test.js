@@ -7129,12 +7129,18 @@ var $;
         joined_list() {
             return [...this.passes.values()].map(unit => unit.lord());
         }
-        lord_rank(lord) {
+        lord_rank(lord, next) {
             if (lord === this.ref())
                 return $hyoo_crus_rank.law;
-            return this.gifts.get(lord)?.rank()
+            const prev = this.gifts.get(lord)?.rank()
                 ?? this.gifts.get($hyoo_crus_ref(''))?.rank()
                 ?? $hyoo_crus_rank.get;
+            if (next === undefined)
+                return prev;
+            if (next === prev)
+                return prev;
+            this.give(lord, next);
+            return next;
         }
         peer_rank(peer) {
             const auth = this.passes.get(peer);
@@ -11555,25 +11561,25 @@ var $;
             const land2 = $hyoo_crus_land.make({ $, ref: () => land1.ref(), auth: () => auth1 });
             $mol_assert_equal(land1.lord_rank(land1.ref()), $hyoo_crus_rank.law);
             $mol_assert_equal(land1.lord_rank(auth1.lord()), $hyoo_crus_rank.get);
-            $mol_assert_fail(() => land2.give(auth2.lord(), $hyoo_crus_rank.add), 'Need add rank to join');
+            $mol_assert_fail(() => land2.lord_rank(auth2.lord(), $hyoo_crus_rank.add), 'Need add rank to join');
             $mol_assert_equal(land1.lord_rank(auth1.lord()), $hyoo_crus_rank.get);
-            land1.give(auth1.lord(), $hyoo_crus_rank.get);
+            land1.lord_rank(auth1.lord(), $hyoo_crus_rank.get);
             $mol_assert_equal(land1.lord_rank(auth1.lord()), $hyoo_crus_rank.get);
-            land1.give(auth1.lord(), $hyoo_crus_rank.add);
+            land1.lord_rank(auth1.lord(), $hyoo_crus_rank.add);
             $mol_assert_equal(land1.lord_rank(auth1.lord()), $hyoo_crus_rank.add);
-            land1.give(auth1.lord(), $hyoo_crus_rank.get);
+            land1.lord_rank(auth1.lord(), $hyoo_crus_rank.get);
             $mol_assert_equal(land1.lord_rank(auth1.lord()), $hyoo_crus_rank.get);
-            land1.give(auth1.lord(), $hyoo_crus_rank.mod);
+            land1.lord_rank(auth1.lord(), $hyoo_crus_rank.mod);
             $mol_assert_equal(land1.lord_rank(auth1.lord()), $hyoo_crus_rank.mod);
-            land1.give(auth1.lord(), $hyoo_crus_rank.add);
+            land1.lord_rank(auth1.lord(), $hyoo_crus_rank.add);
             $mol_assert_equal(land1.lord_rank(auth1.lord()), $hyoo_crus_rank.add);
-            land1.give(auth1.lord(), $hyoo_crus_rank.law);
+            land1.lord_rank(auth1.lord(), $hyoo_crus_rank.law);
             $mol_assert_equal(land1.lord_rank(auth1.lord()), $hyoo_crus_rank.law);
-            land1.give(auth1.lord(), $hyoo_crus_rank.mod);
+            land1.lord_rank(auth1.lord(), $hyoo_crus_rank.mod);
             $mol_assert_equal(land1.lord_rank(auth1.lord()), $hyoo_crus_rank.mod);
             land2.apply_unit_trust(land1.delta_unit());
             $mol_assert_equal(land2.lord_rank(auth1.lord()), $hyoo_crus_rank.mod);
-            $mol_assert_fail(() => land2.give(auth2.lord(), $hyoo_crus_rank.add), 'Need law rank to change rank');
+            $mol_assert_fail(() => land2.lord_rank(auth2.lord(), $hyoo_crus_rank.add), 'Need law rank to change rank');
         },
         'Post Data and pick Delta'($) {
             const land1 = $hyoo_crus_land.make({ $ });
@@ -11589,7 +11595,7 @@ var $;
             $mol_assert_fail(() => land2.post('AA222222', '', 'AA333333', new Uint8Array([3])), 'Need add rank to join');
             $mol_assert_equal(land2.delta_unit().length, 3);
             $mol_assert_equal(land2.delta_unit(face).length, 1);
-            land1.give(auth1.lord(), $hyoo_crus_rank.add);
+            land1.lord_rank(auth1.lord(), $hyoo_crus_rank.add);
             land2.apply_unit_trust(land1.delta_unit());
             $mol_assert_fail(() => land2.post('AA222222', '', 'AA333333', new Uint8Array([3])), 'Need mod rank to post any data');
             $mol_assert_equal(land2.delta_unit().length, 4);
@@ -11597,16 +11603,16 @@ var $;
             land2.post('AA222222', '', $hyoo_crus_area_to(auth1.peer(), 'data'), new Uint8Array([4]));
             $mol_assert_equal(land2.delta_unit().length, 6);
             $mol_assert_equal(land2.delta_unit(face).length, 4);
-            land1.give(auth1.lord(), $hyoo_crus_rank.mod);
+            land1.lord_rank(auth1.lord(), $hyoo_crus_rank.mod);
             land2.apply_unit_trust(land1.delta_unit());
             $mol_assert_fail(() => land2.post('AA222222', '', '33333333', new Uint8Array([3])), 'Need law rank to post to meta area');
             land2.post('AA222222', '', 'AA333333', new Uint8Array([3]));
             $mol_assert_equal(land2.delta_unit().length, 7);
             $mol_assert_equal(land2.delta_unit(face).length, 5);
-            land1.give(auth1.lord(), $hyoo_crus_rank.add);
+            land1.lord_rank(auth1.lord(), $hyoo_crus_rank.add);
             land2.apply_unit_trust(land1.delta_unit());
             $mol_assert_equal(land2.delta_unit().length, 6);
-            land1.give(auth1.lord(), $hyoo_crus_rank.get);
+            land1.lord_rank(auth1.lord(), $hyoo_crus_rank.get);
             land2.apply_unit_trust(land1.delta_unit());
             $mol_assert_equal(land2.delta_unit().length, 4);
         },
@@ -11614,7 +11620,7 @@ var $;
             const land1 = $hyoo_crus_land.make({ $ });
             const land2 = $hyoo_crus_land.make({ $, ref: () => land1.ref(), auth: () => auth2 });
             $mol_assert_equal(land1.delta_unit(), []);
-            land1.give(auth2.lord(), $hyoo_crus_rank.add);
+            land1.lord_rank(auth2.lord(), $hyoo_crus_rank.add);
             land2.apply_unit_trust(land1.delta_unit());
             $mol_assert_equal(land2.delta_unit().length, 2);
             const gist1 = land2.post('', '', '', 'foo');
