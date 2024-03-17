@@ -6952,6 +6952,30 @@ var $;
             ], Narrow.prototype, "value", null);
             return Narrow;
         }
+        static enum(options) {
+            class Narrow extends $hyoo_crus_reg {
+                static options = options;
+                value(next) {
+                    validate: if (next !== undefined) {
+                        for (const option of options) {
+                            if ($mol_compare_deep(option, next))
+                                break validate;
+                        }
+                        $mol_fail(new Error(`Wrong value (${next})`));
+                    }
+                    const val = this.value_vary(next);
+                    for (const option of options) {
+                        if ($mol_compare_deep(option, val))
+                            return val;
+                    }
+                    return null;
+                }
+            }
+            __decorate([
+                $mol_mem
+            ], Narrow.prototype, "value", null);
+            return Narrow;
+        }
         static ref(Value) {
             class Ref extends $hyoo_crus_reg {
                 static Value = Value;
@@ -7022,6 +7046,9 @@ var $;
     __decorate([
         $mol_memo.method
     ], $hyoo_crus_reg, "of", null);
+    __decorate([
+        $mol_memo.method
+    ], $hyoo_crus_reg, "enum", null);
     $.$hyoo_crus_reg = $hyoo_crus_reg;
     class $hyoo_crus_reg_bin extends $hyoo_crus_reg.of('bin') {
     }
@@ -12502,6 +12529,20 @@ var $;
                 $mol_assert_equal(ref.remote(), null);
                 ref.remote(str);
                 $mol_assert_equal(ref.value_ref(), ref.remote().ref(), str.ref());
+            },
+            "Enuerated reg type"($) {
+                class FileType extends $hyoo_crus_reg.enum(['file', 'dir', 'link']) {
+                }
+                const realm = $hyoo_crus_realm.make({ $ });
+                const land = realm.home();
+                const type = land.Data(FileType);
+                $mol_assert_equal(type.value(), null);
+                type.value('file');
+                $mol_assert_equal(type.value(), 'file');
+                $mol_assert_fail(() => type.value('drive'), 'Wrong value (drive)');
+                $mol_assert_equal(type.value(), 'file');
+                type.value_str('drive');
+                $mol_assert_equal(type.value(), null);
             },
         });
     })($$ = $_1.$$ || ($_1.$$ = {}));

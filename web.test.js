@@ -5180,6 +5180,20 @@ var $;
                 ref.remote(str);
                 $mol_assert_equal(ref.value_ref(), ref.remote().ref(), str.ref());
             },
+            "Enuerated reg type"($) {
+                class FileType extends $hyoo_crus_reg.enum(['file', 'dir', 'link']) {
+                }
+                const realm = $hyoo_crus_realm.make({ $ });
+                const land = realm.home();
+                const type = land.Data(FileType);
+                $mol_assert_equal(type.value(), null);
+                type.value('file');
+                $mol_assert_equal(type.value(), 'file');
+                $mol_assert_fail(() => type.value('drive'), 'Wrong value (drive)');
+                $mol_assert_equal(type.value(), 'file');
+                type.value_str('drive');
+                $mol_assert_equal(type.value(), null);
+            },
         });
     })($$ = $_1.$$ || ($_1.$$ = {}));
 })($ || ($ = {}));

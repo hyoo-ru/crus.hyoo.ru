@@ -2067,10 +2067,10 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    function $mol_style_prop(prefix, postfixes) {
-        const record = postfixes.reduce((record_obj, postfix) => {
-            record_obj[postfix] = $mol_style_func.vary(`--${prefix}_${postfix}`);
-            return record_obj;
+    function $mol_style_prop(prefix, keys) {
+        const record = keys.reduce((rec, key) => {
+            rec[key] = $mol_style_func.vary(`--${prefix}_${key}`);
+            return rec;
         }, {});
         return record;
     }
@@ -12684,6 +12684,30 @@ var $;
             ], Narrow.prototype, "value", null);
             return Narrow;
         }
+        static enum(options) {
+            class Narrow extends $hyoo_crus_reg {
+                static options = options;
+                value(next) {
+                    validate: if (next !== undefined) {
+                        for (const option of options) {
+                            if ($mol_compare_deep(option, next))
+                                break validate;
+                        }
+                        $mol_fail(new Error(`Wrong value (${next})`));
+                    }
+                    const val = this.value_vary(next);
+                    for (const option of options) {
+                        if ($mol_compare_deep(option, val))
+                            return val;
+                    }
+                    return null;
+                }
+            }
+            __decorate([
+                $mol_mem
+            ], Narrow.prototype, "value", null);
+            return Narrow;
+        }
         static ref(Value) {
             class Ref extends $hyoo_crus_reg {
                 static Value = Value;
@@ -12754,6 +12778,9 @@ var $;
     __decorate([
         $mol_memo.method
     ], $hyoo_crus_reg, "of", null);
+    __decorate([
+        $mol_memo.method
+    ], $hyoo_crus_reg, "enum", null);
     $.$hyoo_crus_reg = $hyoo_crus_reg;
     class $hyoo_crus_reg_bin extends $hyoo_crus_reg.of('bin') {
     }
