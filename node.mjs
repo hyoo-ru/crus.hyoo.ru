@@ -757,17 +757,13 @@ var $;
                         result = this.task.call(this.host, ...this.args);
                         break;
                 }
-                if ($mol_promise_like(result)) {
+                if ($mol_promise_like(result) && !handled.has(result)) {
                     const put = (res) => {
                         if (this.cache === result)
                             this.put(res);
                         return res;
                     };
-                    result = Object.assign(result.then(put, put), {
-                        destructor: result['destructor'] ?? (() => { })
-                    });
-                    Error.captureStackTrace(result);
-                    handled.add(result);
+                    result = result.then(put, put);
                 }
             }
             catch (error) {
@@ -778,15 +774,19 @@ var $;
                     result = new Error(String(error), { cause: error });
                 }
                 if ($mol_promise_like(result) && !handled.has(result)) {
-                    result = Object.assign(result.finally(() => {
+                    result = result.finally(() => {
                         if (this.cache === result)
                             this.absorb();
-                    }), {
-                        destructor: result['destructor'] ?? (() => { })
                     });
-                    Error.captureStackTrace(result);
-                    handled.add(result);
                 }
+            }
+            if ($mol_promise_like(result) && !handled.has(result)) {
+                result = Object.assign(result, {
+                    destructor: result['destructor'] ?? (() => { })
+                });
+                handled.add(result);
+                const error = new Error();
+                Object.defineProperty(result, 'stack', { get: () => error.stack });
             }
             if (!$mol_promise_like(result)) {
                 this.track_cut();
@@ -3364,7 +3364,7 @@ var $;
             return this.input.method ?? super.method();
         }
         uri() {
-            const addr = this.input.socket?.localAddress ?? 'localhost';
+            const addr = this.input.socket?.localAddress ?? '::1';
             const port = this.input.socket?.localPort ?? '80';
             return new URL(this.input.url, `http://[${addr}]:${port}/`);
         }
@@ -3916,7 +3916,7 @@ var $;
                 socket.end();
                 return;
             }
-            socket.on('end', $mol_wire_async(() => {
+            const onclose = $mol_wire_async(() => {
                 $mol_wire_sync(this.$).$mol_log3_done({
                     place: this,
                     message: 'CLOSE',
@@ -3936,7 +3936,9 @@ var $;
                     });
                     return;
                 }
-            }));
+            });
+            socket.on('end', onclose);
+            socket.on('error', onclose);
             socket.on('data', (chunk) => this.ws_income(chunk, upgrade, socket));
             const key_in = req.headers["sec-websocket-key"];
             const magic = '258EAFA5-E914-47DA-95CA-C5AB0DC85B11';
