@@ -1772,11 +1772,14 @@ var $node = new Proxy({ require }, {
             }
         }
         try {
-            return $.$mol_wire_sync(target).require(name);
+            return target.require(name);
         }
         catch (error) {
             if (error.code === 'ERR_REQUIRE_ESM') {
-                return importSync(name);
+                const module = cache.get(name);
+                if (module)
+                    return module;
+                throw import(name).then(module => cache.set(name, module));
             }
             $.$mol_fail_log(error);
             return null;
@@ -1787,8 +1790,7 @@ var $node = new Proxy({ require }, {
         return true;
     },
 });
-const importAsync = async (uri) => import(uri);
-const importSync = $.$mol_wire_sync(importAsync);
+const cache = new Map();
 require = (req => Object.assign(function require(name) {
     return $node[name];
 }, req))(require);
@@ -4329,7 +4331,7 @@ var $;
             return new $mol_crypto_key_public(this.buffer, this.byteOffset, this.byteOffset + 64);
         }
         async sign(data) {
-            return await $mol_crypto_native.subtle.sign(algorithm, await this.native(), data);
+            return new Uint8Array(await $mol_crypto_native.subtle.sign(algorithm, await this.native(), data));
         }
     }
     __decorate([
@@ -4502,11 +4504,15 @@ var $;
             return new this(await $mol_crypto_native.subtle.generateKey(algorithm, true, ['encrypt', 'decrypt']));
         }
         static async from(serial) {
-            if (typeof serial === 'string') {
-                serial = $mol_charset_encode(serial);
-                serial = await $mol_crypto_native.subtle.digest('SHA-256', serial);
-            }
             return new this(await $mol_crypto_native.subtle.importKey('raw', serial, algorithm, true, ['encrypt', 'decrypt']));
+        }
+        static async pass(pass, salt) {
+            return new this(await $mol_crypto_native.subtle.deriveKey({
+                name: "PBKDF2",
+                salt,
+                iterations: 10_000,
+                hash: "SHA-256",
+            }, await $mol_crypto_native.subtle.importKey("raw", $mol_charset_encode(pass), "PBKDF2", false, ["deriveKey"]), algorithm, true, ['encrypt', 'decrypt']));
         }
         static async derive(private_serial, public_serial) {
             const ecdh = { name: "ECDH", namedCurve: "P-256" };
@@ -4531,19 +4537,19 @@ var $;
             return new this(secret);
         }
         async serial() {
-            return await $mol_crypto_native.subtle.exportKey('raw', this.native);
+            return new Uint8Array(await $mol_crypto_native.subtle.exportKey('raw', this.native));
         }
         async encrypt(open, salt) {
-            return await $mol_crypto_native.subtle.encrypt({
+            return new Uint8Array(await $mol_crypto_native.subtle.encrypt({
                 ...algorithm,
                 iv: salt,
-            }, this.native, open);
+            }, this.native, open));
         }
         async decrypt(closed, salt) {
-            return await $mol_crypto_native.subtle.decrypt({
+            return new Uint8Array(await $mol_crypto_native.subtle.decrypt({
                 ...algorithm,
                 iv: salt,
-            }, this.native, closed);
+            }, this.native, closed));
         }
     }
     $.$mol_crypto_secret = $mol_crypto_secret;
@@ -8448,42 +8454,6 @@ var $;
 
 ;
 "use strict";
-
-;
-"use strict";
-
-;
-"use strict";
-
-;
-"use strict";
-var $;
-(function ($_1) {
-    $mol_test({
-        'test types'($) {
-            class A {
-                static a() {
-                    return Promise.resolve('');
-                }
-                static b() {
-                    return $mol_wire_sync(this).a();
-                }
-            }
-        },
-    });
-})($ || ($ = {}));
-
-;
-"use strict";
-
-;
-"use strict";
-
-;
-"use strict";
-
-;
-"use strict";
 var $;
 (function ($_1) {
     $mol_test_mocks.push($ => $.$mol_fail_log = () => false);
@@ -8502,6 +8472,15 @@ var $;
         $.$mol_log3_area = () => () => { };
     });
 })($ || ($ = {}));
+
+;
+"use strict";
+
+;
+"use strict";
+
+;
+"use strict";
 
 ;
 "use strict";
@@ -9120,6 +9099,15 @@ var $;
 
 ;
 "use strict";
+
+;
+"use strict";
+
+;
+"use strict";
+
+;
+"use strict";
 var $;
 (function ($_1) {
     $mol_test({
@@ -9128,25 +9116,6 @@ var $;
             $mol_assert_equal($$.$mol_func_name_test.name, '');
             $mol_assert_equal($$.$mol_func_name($$.$mol_func_name_test), '$mol_func_name_test');
             $mol_assert_equal($$.$mol_func_name_test.name, '$mol_func_name_test');
-        },
-    });
-})($ || ($ = {}));
-
-;
-"use strict";
-var $;
-(function ($) {
-    $mol_test({
-        'init with overload'() {
-            class X extends $mol_object {
-                foo() {
-                    return 1;
-                }
-            }
-            var x = X.make({
-                foo: () => 2,
-            });
-            $mol_assert_equal(x.foo(), 2);
         },
     });
 })($ || ($ = {}));
@@ -9640,6 +9609,43 @@ var $;
             await promise;
             $mol_assert_like(first, ['john', 'jin']);
             $mol_assert_like(last, ['jin']);
+        },
+    });
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($_1) {
+    $mol_test({
+        'test types'($) {
+            class A {
+                static a() {
+                    return Promise.resolve('');
+                }
+                static b() {
+                    return $mol_wire_sync(this).a();
+                }
+            }
+        },
+    });
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    $mol_test({
+        'init with overload'() {
+            class X extends $mol_object {
+                foo() {
+                    return 1;
+                }
+            }
+            var x = X.make({
+                foo: () => 2,
+            });
+            $mol_assert_equal(x.foo(), 2);
         },
     });
 })($ || ($ = {}));
@@ -11001,6 +11007,7 @@ var $;
         return $mol_crypto_native.getRandomValues(new Uint8Array(16));
     }
     $.$mol_crypto_salt = $mol_crypto_salt;
+    $.$mol_crypto_salt_once = new Uint8Array([1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6]);
 })($ || ($ = {}));
 
 ;
@@ -11009,21 +11016,21 @@ var $;
 (function ($) {
     $mol_test({
         async 'sizes'() {
-            const cipher = await $mol_crypto_secret.generate();
-            const key = await cipher.serial();
+            const secret = await $mol_crypto_secret.generate();
+            const key = await secret.serial();
             $mol_assert_equal(key.byteLength, $mol_crypto_secret.size);
             const data = new Uint8Array([1, 2, 3]);
             const salt = $mol_crypto_salt();
-            const closed = await cipher.encrypt(data, salt);
+            const closed = await secret.encrypt(data, salt);
             $mol_assert_equal(closed.byteLength, 16);
         },
         async 'decrypt self encrypted with auto generated key'() {
-            const cipher = await $mol_crypto_secret.generate();
+            const secret = await $mol_crypto_secret.generate();
             const data = new Uint8Array([1, 2, 3]);
             const salt = $mol_crypto_salt();
-            const closed = await cipher.encrypt(data, salt);
-            const opened = await cipher.decrypt(closed, salt);
-            $mol_assert_like(data, new Uint8Array(opened));
+            const closed = await secret.encrypt(data, salt);
+            const opened = await secret.decrypt(closed, salt);
+            $mol_assert_equal(data, opened);
         },
         async 'decrypt encrypted with exported auto generated key'() {
             const data = new Uint8Array([1, 2, 3]);
@@ -11032,14 +11039,23 @@ var $;
             const closed = await Alice.encrypt(data, salt);
             const Bob = await $mol_crypto_secret.from(await Alice.serial());
             const opened = await Bob.decrypt(closed, salt);
-            $mol_assert_like(data, new Uint8Array(opened));
+            $mol_assert_equal(data, opened);
         },
         async 'derivation from public & private keys'() {
             const A = await $mol_crypto_key_private.generate();
             const B = await $mol_crypto_key_private.generate();
             const AK = await $mol_crypto_secret.derive(A.toString(), B.public().toString());
             const BK = await $mol_crypto_secret.derive(B.toString(), A.public().toString());
-            $mol_assert_like(new Uint8Array(await AK.serial()), new Uint8Array(await BK.serial()));
+            $mol_assert_equal(await AK.serial(), await BK.serial());
+        },
+        async 'derivation from passwod'() {
+            const data = new Uint8Array([1, 2, 3]);
+            const salt1 = $mol_crypto_salt();
+            const secret = await $mol_crypto_secret.pass('hello', salt1);
+            const salt2 = $mol_crypto_salt();
+            const closed = await secret.encrypt(data, salt2);
+            const opened = await secret.decrypt(closed, salt2);
+            $mol_assert_equal(data, opened);
         },
     });
 })($ || ($ = {}));

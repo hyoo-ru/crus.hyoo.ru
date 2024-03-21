@@ -4753,7 +4753,7 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    $mol_style_attach("mol/button/button.view.css", "[mol_button] {\n\tborder: none;\n\tfont: inherit;\n\tdisplay: inline-flex;\n\tflex-shrink: 0;\n\ttext-decoration: inherit;\n\tcursor: inherit;\n\tposition: relative;\n\tbox-sizing: border-box;\n\tword-break: normal;\n\tcursor: default;\n\tuser-select: none;\n\tborder-radius: var(--mol_gap_round);\n}\n\n[mol_button]:where(:not(:disabled)):hover {\n\tz-index: var(--mol_layer_hover);\n}\n\n[mol_button]:focus-visible {\n\toutline: none;\n\tz-index: var(--mol_layer_focus);\n}\n");
+    $mol_style_attach("mol/button/button.view.css", "[mol_button] {\n\tborder: none;\n\tfont: inherit;\n\tdisplay: inline-flex;\n\tflex-shrink: 0;\n\ttext-decoration: inherit;\n\tcursor: inherit;\n\tposition: relative;\n\tbox-sizing: border-box;\n\tword-break: normal;\n\tcursor: default;\n\tuser-select: none;\n\tborder-radius: var(--mol_gap_round);\n\tbackground: transparent;\n\tcolor: inherit;\n}\n\n[mol_button]:where(:not(:disabled)):hover {\n\tz-index: var(--mol_layer_hover);\n}\n\n[mol_button]:focus-visible {\n\toutline: none;\n\tz-index: var(--mol_layer_focus);\n}\n");
 })($ || ($ = {}));
 
 ;
@@ -9365,7 +9365,7 @@ var $;
             return new $mol_crypto_key_public(this.buffer, this.byteOffset, this.byteOffset + 64);
         }
         async sign(data) {
-            return await $mol_crypto_native.subtle.sign(algorithm, await this.native(), data);
+            return new Uint8Array(await $mol_crypto_native.subtle.sign(algorithm, await this.native(), data));
         }
     }
     __decorate([
@@ -9397,11 +9397,15 @@ var $;
             return new this(await $mol_crypto_native.subtle.generateKey(algorithm, true, ['encrypt', 'decrypt']));
         }
         static async from(serial) {
-            if (typeof serial === 'string') {
-                serial = $mol_charset_encode(serial);
-                serial = await $mol_crypto_native.subtle.digest('SHA-256', serial);
-            }
             return new this(await $mol_crypto_native.subtle.importKey('raw', serial, algorithm, true, ['encrypt', 'decrypt']));
+        }
+        static async pass(pass, salt) {
+            return new this(await $mol_crypto_native.subtle.deriveKey({
+                name: "PBKDF2",
+                salt,
+                iterations: 10_000,
+                hash: "SHA-256",
+            }, await $mol_crypto_native.subtle.importKey("raw", $mol_charset_encode(pass), "PBKDF2", false, ["deriveKey"]), algorithm, true, ['encrypt', 'decrypt']));
         }
         static async derive(private_serial, public_serial) {
             const ecdh = { name: "ECDH", namedCurve: "P-256" };
@@ -9426,19 +9430,19 @@ var $;
             return new this(secret);
         }
         async serial() {
-            return await $mol_crypto_native.subtle.exportKey('raw', this.native);
+            return new Uint8Array(await $mol_crypto_native.subtle.exportKey('raw', this.native));
         }
         async encrypt(open, salt) {
-            return await $mol_crypto_native.subtle.encrypt({
+            return new Uint8Array(await $mol_crypto_native.subtle.encrypt({
                 ...algorithm,
                 iv: salt,
-            }, this.native, open);
+            }, this.native, open));
         }
         async decrypt(closed, salt) {
-            return await $mol_crypto_native.subtle.decrypt({
+            return new Uint8Array(await $mol_crypto_native.subtle.decrypt({
                 ...algorithm,
                 iv: salt,
-            }, this.native, closed);
+            }, this.native, closed));
         }
     }
     $.$mol_crypto_secret = $mol_crypto_secret;

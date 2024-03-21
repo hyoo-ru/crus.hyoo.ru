@@ -1781,11 +1781,14 @@ var $node = new Proxy({ require }, {
             }
         }
         try {
-            return $.$mol_wire_sync(target).require(name);
+            return target.require(name);
         }
         catch (error) {
             if (error.code === 'ERR_REQUIRE_ESM') {
-                return importSync(name);
+                const module = cache.get(name);
+                if (module)
+                    return module;
+                throw import(name).then(module => cache.set(name, module));
             }
             $.$mol_fail_log(error);
             return null;
@@ -1796,8 +1799,7 @@ var $node = new Proxy({ require }, {
         return true;
     },
 });
-const importAsync = async (uri) => import(uri);
-const importSync = $.$mol_wire_sync(importAsync);
+const cache = new Map();
 require = (req => Object.assign(function require(name) {
     return $node[name];
 }, req))(require);
@@ -4338,7 +4340,7 @@ var $;
             return new $mol_crypto_key_public(this.buffer, this.byteOffset, this.byteOffset + 64);
         }
         async sign(data) {
-            return await $mol_crypto_native.subtle.sign(algorithm, await this.native(), data);
+            return new Uint8Array(await $mol_crypto_native.subtle.sign(algorithm, await this.native(), data));
         }
     }
     __decorate([
@@ -4511,11 +4513,15 @@ var $;
             return new this(await $mol_crypto_native.subtle.generateKey(algorithm, true, ['encrypt', 'decrypt']));
         }
         static async from(serial) {
-            if (typeof serial === 'string') {
-                serial = $mol_charset_encode(serial);
-                serial = await $mol_crypto_native.subtle.digest('SHA-256', serial);
-            }
             return new this(await $mol_crypto_native.subtle.importKey('raw', serial, algorithm, true, ['encrypt', 'decrypt']));
+        }
+        static async pass(pass, salt) {
+            return new this(await $mol_crypto_native.subtle.deriveKey({
+                name: "PBKDF2",
+                salt,
+                iterations: 10_000,
+                hash: "SHA-256",
+            }, await $mol_crypto_native.subtle.importKey("raw", $mol_charset_encode(pass), "PBKDF2", false, ["deriveKey"]), algorithm, true, ['encrypt', 'decrypt']));
         }
         static async derive(private_serial, public_serial) {
             const ecdh = { name: "ECDH", namedCurve: "P-256" };
@@ -4540,19 +4546,19 @@ var $;
             return new this(secret);
         }
         async serial() {
-            return await $mol_crypto_native.subtle.exportKey('raw', this.native);
+            return new Uint8Array(await $mol_crypto_native.subtle.exportKey('raw', this.native));
         }
         async encrypt(open, salt) {
-            return await $mol_crypto_native.subtle.encrypt({
+            return new Uint8Array(await $mol_crypto_native.subtle.encrypt({
                 ...algorithm,
                 iv: salt,
-            }, this.native, open);
+            }, this.native, open));
         }
         async decrypt(closed, salt) {
-            return await $mol_crypto_native.subtle.decrypt({
+            return new Uint8Array(await $mol_crypto_native.subtle.decrypt({
                 ...algorithm,
                 iv: salt,
-            }, this.native, closed);
+            }, this.native, closed));
         }
     }
     $.$mol_crypto_secret = $mol_crypto_secret;
