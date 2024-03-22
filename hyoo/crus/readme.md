@@ -169,10 +169,10 @@
 - **Next** - Next Node id in the siblings list.
 - **Seat** - Position in the list.
 - **Tag** - Hint how interpretate inner Units.
-  - **term** - irnore.
-  - **solo** - ignore all after first.
-  - **vals** - list of values.
-  - **keys** - list of keys.
+  - **💼term** - irnore.
+  - **1️⃣solo** - ignore all after first.
+  - **🎹vals** - list of values.
+  - **🔑keys** - list of keys.
 
 - **Time** - Monotonic time as count of ms from unix epoch.
 - **Data** - Serialized inforation. Up to 32B.
@@ -181,20 +181,20 @@
 
 - **Vary** - Supported primitive types.
 - **Tip** - Hint how to interpretate Data.
-  - **Nil** - No data.
-  - **Bin** - Binary.
-  - **bool** - Boolean.
-  - **int** - int64.
-  - **real** - float64.
-  - **ref** - Reference to Node/Land/Lord.
-  - **str** - String.
-  - **time** - iso8601 moment.
-  - **dur** - iso8601 duration.
-  - **range** - iso8601 range.
-  - **json** - Plain Old JS Object.
-  - **jsan** - Plain Old JS Array.
-  - **dom** - Document Object Model.
-  - **tree** - Abstract Syntax Tree.
+  - **💢Nil** - No data.
+  - **💠bin** - Binary.
+  - **🏁bool** - Boolean.
+  - **🔢int** - int64.
+  - **💫real** - float64.
+  - **🎯ref** - Reference to Node/Land/Lord.
+  - **🔠str** - String.
+  - **⏰time** - iso8601 moment.
+  - **⏲dur** - iso8601 duration.
+  - **⌚range** - iso8601 range.
+  - **🌜json** - Plain Old JS Object.
+  - **💬jsan** - Plain Old JS Array.
+  - **🪒xml** - XML.
+  - **🎄tree** - Abstract Syntax Tree.
 
 - **Rank** - Access level.
   - **law** - Full administration.
