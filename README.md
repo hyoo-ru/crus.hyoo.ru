@@ -148,7 +148,7 @@ export class $my_organ extends $hyoo_crus_entity.with({
 	Weight: $hyoo_crus_reg_real, // atomic double size float
 	Photo: $hyoo_crus_reg_bin, // atoic blob
 	Description: $hyoo_crus_text, // mergeable long text
-	Contains: $hyoo_crus_list.ref( ()=> $my_organ ), // reference to same Model
+	Contains: $hyoo_crus_list_ref_to( ()=> $my_organ ), // reference to same Model type
 }) {}
 
 /** Person Model */
@@ -157,9 +157,9 @@ export class $my_person extends $hyoo_crus_entity.with({
 	Sex: $hyoo_crus_reg_str, // atomic short string
 	Birthday: $hyoo_crus_reg_time, // atomic time moment
 	Heart: $my_organ, // embedded Model
-	Parent: $hyoo_crus_reg.ref( ()=> $my_person ), // reference to Model
-	Kids: $hyoo_crus_list.ref( ()=> $my_person ), // list of references to Models
-	/** @deprecated Use Parent */ Father: $hyoo_crus_reg.ref( ()=> $my_person ),
+	Parent: $hyoo_crus_reg_ref_to( ()=> $my_person ), // reference to Model
+	Kids: $hyoo_crus_list_ref_to( ()=> $my_person ), // list of references to Models
+	/** @deprecated Use Parent */ Father: $hyoo_crus_reg_ref_to( ()=> $my_person ),
 }) {
 	
 	// Override default implementation
@@ -191,10 +191,10 @@ export class $my_app extends $mol_object {
 	// Current user profile for current application
 	@ $mol_mem
 	Profile() {
-		return this.Realm().home().Profile( '$my_app', $my_person )
+		return this.Realm().home().Profile( '$my_app', $my_person, $hyoo_crus_rank_public )
 	}
 	
-	// Use existed entity by reference
+	// Use existen entity by reference
 	@ $mol_mem_key
 	Person( ref: $hyoo_crus_ref ) {
 		return this.Realm().Node( ref, $my_person )
@@ -207,7 +207,7 @@ export class $my_app extends $mol_object {
 		const me = this.Profile()
 		
 		// Populate external entity
-		const kid = me.Kids.remote_make()
+		const kid = me.Kids.remote_make( $hyoo_crus_rank_public )
 		kid.parent( me )
 		
 		// Fill self fields
@@ -240,11 +240,33 @@ export class $my_app extends $mol_object {
 
 ![](diagram/crus-units.png)
 
+- `$hyoo_crus_unit` - base class
+- `$hyoo_crus_pass` - public key
+- `$hyoo_crus_gift` - given rank and secret
+- `$hyoo_crus_gist` - data
+
 ### LWW-Register
 
 Регистр - хранит одно последнее установленное значение. Если базе актуально находится список, то работает с первым элементом этого списка.
 
 ![](diagram/crus-reg.png)
+
+- `$hyoo_crus_reg` - atomic dynamic register
+- `$hyoo_crus_reg_vary` - atomic narrowed register factory
+- `$hyoo_crus_reg_bin` - atomic non empty binary
+- `$hyoo_crus_reg_bool` - atomic boolean
+- `$hyoo_crus_reg_int` - atomic int64
+- `$hyoo_crus_reg_real` - atomic float64
+- `$hyoo_crus_reg_ref` - atomic some reference
+- `$hyoo_crus_reg_ref_to` - atomic reference to some Node type
+- `$hyoo_crus_reg_str` - atomic string
+- `$hyoo_crus_reg_time` - atomic iso8601 time moment
+- `$hyoo_crus_reg_dur` - atomic iso8601 time duration
+- `$hyoo_crus_reg_range` - atomic iso8601 time interval
+- `$hyoo_crus_reg_json` - atomic plain old js object
+- `$hyoo_crus_reg_jsan` - atomic plain old js array
+- `$hyoo_crus_reg_xml` - atomic DOM
+- `$hyoo_crus_reg_tree` - atomic Tree
 
 ### Ordered List
 
@@ -252,11 +274,32 @@ export class $my_app extends $mol_object {
 
 ![](diagram/crus-list.png)
 
+- `$hyoo_crus_list` - mergeable list of atomic vary types
+- `$hyoo_crus_list_vary` - mergeable list of atomic narrowed list factory
+- `$hyoo_crus_list_bin` - mergeable list of atomic non empty binaries
+- `$hyoo_crus_list_bool` - mergeable list of atomic booleans
+- `$hyoo_crus_list_int` - mergeable list of atomic int64s
+- `$hyoo_crus_list_real` - mergeable list of atomic float64s
+- `$hyoo_crus_list_ref` - mergeable list of atomic some references
+- `$hyoo_crus_list_ref_to` - mergeable list of atomic references to some Node type
+- `$hyoo_crus_list_str` - mergeable list of atomic strings
+- `$hyoo_crus_list_time` - mergeable list of atomic iso8601 time moments
+- `$hyoo_crus_list_dur` - mergeable list of atomic iso8601 time durations
+- `$hyoo_crus_list_range` - mergeable list of atomic iso8601 time intervals
+- `$hyoo_crus_list_json` - mergeable list of atomic plain old js objects
+- `$hyoo_crus_list_jsan` - mergeable list of atomic plain old js arrays
+- `$hyoo_crus_list_xml` - mergeable list of atomic DOMs
+- `$hyoo_crus_list_tree` - mergeable list of atomic Trees
+
 ### Ordered Dictionary
 
 Словарь актуально является упорядоченным множеством ключей, внутри каждого из которых хранится произволный CRUS тип данных.
 
 ![](diagram/crus-dict.png)
+
+- `$hyoo_crus_dict` - mergeable dictionary with any keys mapped to any embedded Node types
+- `$hyoo_crus_dict_to` - mergeable dictionary with any keys mapped to some embeded Node type
+- `$hyoo_crus_dict.with` - mergeable dictionary with defined keys mapped to different embeded Node types
 
 ### Tree
 
@@ -267,6 +310,8 @@ export class $my_app extends $mol_object {
 Плоский текст является списком параграфов, каждый из которых хранит список токенов. Является частным случаем DOM.
 
 ![](diagram/crus-text.png)
+
+- `$hyoo_crus_text` - mergeable text
 
 ### DOM
 
