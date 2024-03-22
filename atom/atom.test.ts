@@ -5,7 +5,7 @@ namespace $.$$ {
 		"Empty representation"( $ ) {
 			
 			const land = $hyoo_crus_land.make({ $ })
-			const reg = land.Node( $hyoo_crus_reg_time ).Item('')
+			const reg = land.Node( $hyoo_crus_atom_time ).Item('')
 			
 			$mol_assert_equal( reg.value(), null )
 			
@@ -19,12 +19,12 @@ namespace $.$$ {
 			const realm = $hyoo_crus_realm.make({ $ })
 			const land = realm.home()
 			
-			const bin = land.Node( $hyoo_crus_reg_bin ).Item('11111111')
+			const bin = land.Node( $hyoo_crus_atom_bin ).Item('11111111')
 			$mol_assert_equal( bin.value(), null )
 			bin.value( new Uint8Array([ 1, 2, 3 ]) )
 			$mol_assert_equal( bin.value(), new Uint8Array([ 1, 2, 3 ]) )
 			
-			const str = land.Node( $hyoo_crus_reg_str ).Item('22222222')
+			const str = land.Node( $hyoo_crus_atom_str ).Item('22222222')
 			$mol_assert_equal( str.value(), null )
 			str.value( 'foo' )
 			$mol_assert_equal( str.value(), 'foo' )
@@ -33,7 +33,7 @@ namespace $.$$ {
 		
 		"Store custom types"( $ ) {
 			
-			class Email extends $hyoo_crus_reg( $mol_data_email ) {}
+			class Email extends $hyoo_crus_atom( $mol_data_email ) {}
 			
 			const land = $hyoo_crus_land.make({ $ })
 			const reg = land.Node( Email ).Item('')
@@ -56,7 +56,7 @@ namespace $.$$ {
 			const realm = $hyoo_crus_realm.make({ $ })
 			const land = realm.home()
 			
-			const reg = land.Node( $hyoo_crus_reg_ref_to( ()=> $hyoo_crus_reg_vary ) ).Item( '11111111' )
+			const reg = land.Node( $hyoo_crus_atom_ref_to( ()=> $hyoo_crus_atom_vary ) ).Item( '11111111' )
 			const remote = reg.remote_ensure( $hyoo_crus_rank_public )!
 			
 			$mol_assert_unique( reg.land(), remote.land() )
@@ -70,8 +70,8 @@ namespace $.$$ {
 			const realm = $hyoo_crus_realm.make({ $ })
 			const land = realm.home()
 			
-			const str = land.Node( $hyoo_crus_reg_str ).Item('11111111')
-			const ref = land.Node( $hyoo_crus_reg_ref_to( ()=> $hyoo_crus_reg_str ) ).Item('11111111')
+			const str = land.Node( $hyoo_crus_atom_str ).Item('11111111')
+			const ref = land.Node( $hyoo_crus_atom_ref_to( ()=> $hyoo_crus_atom_str ) ).Item('11111111')
 			$mol_assert_equal( ref.remote(), null )
 			
 			ref.remote( str )
@@ -81,7 +81,7 @@ namespace $.$$ {
 		
 		"Enumerated reg type"( $ ) {
 			
-			class FileType extends $hyoo_crus_reg_enum( [ 'file', 'dir', 'link' ] as const ) {}
+			class FileType extends $hyoo_crus_atom_enum( [ 'file', 'dir', 'link' ] as const ) {}
 			
 			type Infered = $mol_type_assert<
 				ReturnType< FileType['value'] >,

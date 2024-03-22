@@ -1,7 +1,7 @@
 namespace $ {
 	export class $hyoo_crus_file extends $hyoo_crus_dict.with({
-		Name: $hyoo_crus_reg_str,
-		Type: $hyoo_crus_reg_str,
+		Name: $hyoo_crus_atom_str,
+		Type: $hyoo_crus_atom_str,
 		Chunks: $hyoo_crus_list_bin,
 	}) {
 		

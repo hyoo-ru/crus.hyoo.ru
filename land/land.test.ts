@@ -187,14 +187,14 @@ namespace $ {
 			const Alice = realm.home()
 			const Bella = Alice.fork()
 			
-			const alice_val = Alice.Node( $hyoo_crus_reg_str ).Item( 'qwertyui' )
-			const bella_val = Bella.Node( $hyoo_crus_reg_str ).Item( 'qwertyui' )
+			const alice_val = Alice.Node( $hyoo_crus_atom_str ).Item( 'qwertyui' )
+			const bella_val = Bella.Node( $hyoo_crus_atom_str ).Item( 'qwertyui' )
 			
 			alice_val.value( 'Alice' )
 			bella_val.value( 'Bella' )
 			
-			const alice_ref = Alice.Node( $hyoo_crus_reg_ref ).Item( 'asdfghjk' )
-			const bella_ref = Bella.Node( $hyoo_crus_reg_ref ).Item( 'asdfghjk' )
+			const alice_ref = Alice.Node( $hyoo_crus_atom_ref ).Item( 'asdfghjk' )
+			const bella_ref = Bella.Node( $hyoo_crus_atom_ref ).Item( 'asdfghjk' )
 			
 			alice_ref.value( alice_val.ref() )
 			$mol_assert_equal( alice_ref.value(), alice_val.ref() )

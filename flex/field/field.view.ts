@@ -12,11 +12,11 @@ namespace $.$$ {
 		}
 		
 		str( next?: string ) {
-			return this.node( next as any )?.cast( $hyoo_crus_reg_str ).value( next ) ?? ''
+			return this.node( next as any )?.cast( $hyoo_crus_atom_str ).value( next ) ?? ''
 		}
 		
 		ref( next?: $hyoo_crus_ref ) {
-			return this.node( next as any )?.cast( $hyoo_crus_reg_vary ).value( next ) ?? null
+			return this.node( next as any )?.cast( $hyoo_crus_atom_vary ).value( next ) ?? null
 		}
 		
 		ref_options() {

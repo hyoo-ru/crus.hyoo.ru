@@ -1,8 +1,8 @@
 namespace $ {
 	
 	export class $hyoo_crus_flex_thing extends $hyoo_crus_dict.with({
-		Kind: $hyoo_crus_reg_ref_to( ()=> $hyoo_crus_flex_kind ), // Schema of fields
-		Title: $hyoo_crus_reg_str,
+		Kind: $hyoo_crus_atom_ref_to( ()=> $hyoo_crus_flex_kind ), // Schema of fields
+		Title: $hyoo_crus_atom_str,
 	}) {}
 	
 	export class $hyoo_crus_flex_kind extends $hyoo_crus_flex_thing.with({
@@ -10,11 +10,11 @@ namespace $ {
 	}) {}
 	
 	export class $hyoo_crus_flex_prop extends $hyoo_crus_flex_thing.with({
-		Key: $hyoo_crus_reg_str, // Key to store value
-		Type: $hyoo_crus_reg_str, // Type of value
-		Target: $hyoo_crus_reg_ref_to( ()=> $hyoo_crus_flex_kind ), // Target kind
-		Enum: $hyoo_crus_reg_ref_to( ()=> $hyoo_crus_list_vary ), // Variants of values
-		Base: $hyoo_crus_reg_vary, // Base value
+		Key: $hyoo_crus_atom_str, // Key to store value
+		Type: $hyoo_crus_atom_str, // Type of value
+		Target: $hyoo_crus_atom_ref_to( ()=> $hyoo_crus_flex_kind ), // Target kind
+		Enum: $hyoo_crus_atom_ref_to( ()=> $hyoo_crus_list_vary ), // Variants of values
+		Base: $hyoo_crus_atom_vary, // Base value
 	}) {}
 	
 	export class $hyoo_crus_flex_domain extends $hyoo_crus_flex_thing.with({

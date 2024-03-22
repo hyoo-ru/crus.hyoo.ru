@@ -1,8 +1,8 @@
 namespace $ {
 	export class $hyoo_crus_base extends $hyoo_crus_dict.with({
-		Title: $hyoo_crus_reg_str,
-		Selection: $hyoo_crus_reg_str,
-		Profiles: $hyoo_crus_dict_to( $hyoo_crus_reg_ref_to( ()=> $hyoo_crus_dict ) ),
+		Title: $hyoo_crus_atom_str,
+		Selection: $hyoo_crus_atom_str,
+		Profiles: $hyoo_crus_dict_to( $hyoo_crus_atom_ref_to( ()=> $hyoo_crus_dict ) ),
 	}) {
 		
 		// @ $mol_mem_key

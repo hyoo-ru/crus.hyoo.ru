@@ -41,8 +41,8 @@ namespace $ {
 		nodes< Node extends typeof $hyoo_crus_node >( Node: Node | null ): readonly InstanceType< Node >[] {
 			const land = this.land()
 			const map = {
-				term: ()=> land.Node( Node || $hyoo_crus_reg_vary ),
-				solo: ()=> land.Node( Node || $hyoo_crus_reg_vary ),
+				term: ()=> land.Node( Node || $hyoo_crus_atom_vary ),
+				solo: ()=> land.Node( Node || $hyoo_crus_atom_vary ),
 				vals: ()=> land.Node( Node || $hyoo_crus_list_vary ),
 				keys: ()=> land.Node( Node || $hyoo_crus_dict ),
 			}
@@ -70,7 +70,7 @@ namespace $ {
 			
 			const map = {
 				term: ()=> null,
-				solo: ()=> land.Node( $hyoo_crus_reg_vary ),
+				solo: ()=> land.Node( $hyoo_crus_atom_vary ),
 				vals: ()=> land.Node( $hyoo_crus_list_vary ),
 				keys: ()=> land.Node( $hyoo_crus_dict ),
 			}

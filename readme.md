@@ -142,24 +142,24 @@
 ```ts
 /** Organ Model */
 export class $my_organ extends $hyoo_crus_entity.with({
-	// Title: $hyoo_crus_reg_str, - inherited from $hyoo_crus_entity
-	Critical: $hyoo_crus_reg_bool, // atomic boolean
-	Count: $hyoo_crus_reg_int, // atomic big integer
-	Weight: $hyoo_crus_reg_real, // atomic double size float
-	Photo: $hyoo_crus_reg_bin, // atoic blob
+	// Title: $hyoo_crus_atom_str, - inherited from $hyoo_crus_entity
+	Critical: $hyoo_crus_atom_bool, // atomic boolean
+	Count: $hyoo_crus_atom_int, // atomic big integer
+	Weight: $hyoo_crus_atom_real, // atomic double size float
+	Photo: $hyoo_crus_atom_bin, // atoic blob
 	Description: $hyoo_crus_text, // mergeable long text
 	Contains: $hyoo_crus_list_ref_to( ()=> $my_organ ), // reference to same Model type
 }) {}
 
 /** Person Model */
 export class $my_person extends $hyoo_crus_entity.with({
-	// Title: $hyoo_crus_reg_str, - inherited from $hyoo_crus_entity
-	Sex: $hyoo_crus_reg_str, // atomic short string
-	Birthday: $hyoo_crus_reg_time, // atomic time moment
+	// Title: $hyoo_crus_atom_str, - inherited from $hyoo_crus_entity
+	Sex: $hyoo_crus_atom_str, // atomic short string
+	Birthday: $hyoo_crus_atom_time, // atomic time moment
 	Heart: $my_organ, // embedded Model
-	Parent: $hyoo_crus_reg_ref_to( ()=> $my_person ), // reference to Model
+	Parent: $hyoo_crus_atom_ref_to( ()=> $my_person ), // reference to Model
 	Kids: $hyoo_crus_list_ref_to( ()=> $my_person ), // list of references to Models
-	/** @deprecated Use Parent */ Father: $hyoo_crus_reg_ref_to( ()=> $my_person ),
+	/** @deprecated Use Parent */ Father: $hyoo_crus_atom_ref_to( ()=> $my_person ),
 }) {
 	
 	// Override default implementation
@@ -245,28 +245,28 @@ export class $my_app extends $mol_object {
 - `$hyoo_crus_gift` - given rank and secret
 - `$hyoo_crus_gist` - data
 
-### LWW-Register
+### Atomic LWW-Register
 
-Регистр - хранит одно последнее установленное значение. Если базе актуально находится список, то работает с первым элементом этого списка.
+Атомарный регистр - хранит одно последнее установленное значение. Если базе актуально находится несколько юнитов, то работает с первым из них.
 
 ![](diagram/crus-reg.png)
 
-- `$hyoo_crus_reg` - atomic narrowed register factory
-- `$hyoo_crus_reg_vary` - atomic dynamic register
-- `$hyoo_crus_reg_bin` - atomic non empty binary
-- `$hyoo_crus_reg_bool` - atomic boolean
-- `$hyoo_crus_reg_int` - atomic int64
-- `$hyoo_crus_reg_real` - atomic float64
-- `$hyoo_crus_reg_ref` - atomic some reference
-- `$hyoo_crus_reg_ref_to` - atomic reference to some Node type
-- `$hyoo_crus_reg_str` - atomic string
-- `$hyoo_crus_reg_time` - atomic iso8601 time moment
-- `$hyoo_crus_reg_dur` - atomic iso8601 time duration
-- `$hyoo_crus_reg_range` - atomic iso8601 time interval
-- `$hyoo_crus_reg_json` - atomic plain old js object
-- `$hyoo_crus_reg_jsan` - atomic plain old js array
-- `$hyoo_crus_reg_xml` - atomic DOM
-- `$hyoo_crus_reg_tree` - atomic Tree
+- `$hyoo_crus_atom` - atomic narrowed register factory
+- `$hyoo_crus_atom_vary` - atomic dynamic register
+- `$hyoo_crus_atom_bin` - atomic non empty binary register
+- `$hyoo_crus_atom_bool` - atomic boolean register
+- `$hyoo_crus_atom_int` - atomic int64 register
+- `$hyoo_crus_atom_real` - atomic float64 register
+- `$hyoo_crus_atom_ref` - atomic some reference register
+- `$hyoo_crus_atom_ref_to` - atomic reference to some Node type register
+- `$hyoo_crus_atom_str` - atomic string register
+- `$hyoo_crus_atom_time` - atomic iso8601 time moment register
+- `$hyoo_crus_atom_dur` - atomic iso8601 time duration register
+- `$hyoo_crus_atom_range` - atomic iso8601 time interval register
+- `$hyoo_crus_atom_json` - atomic plain old js object register
+- `$hyoo_crus_atom_jsan` - atomic plain old js array register
+- `$hyoo_crus_atom_xml` - atomic DOM register
+- `$hyoo_crus_atom_tree` - atomic Tree register
 
 ### Ordered List
 
@@ -297,9 +297,9 @@ export class $my_app extends $mol_object {
 
 ![](diagram/crus-dict.png)
 
-- `$hyoo_crus_dict` - mergeable dictionary with any keys mapped to any embedded Node types
-- `$hyoo_crus_dict_to` - mergeable dictionary with any keys mapped to some embeded Node type
-- `$hyoo_crus_dict.with` - mergeable dictionary with defined keys mapped to different embeded Node types
+- `$hyoo_crus_dict` - mergeable dictionary node with any keys mapped to any embedded Node types
+- `$hyoo_crus_dict_to` - mergeable dictionary node with any keys mapped to some embeded Node type
+- `$hyoo_crus_dict.with` - mergeable dictionary node with defined keys mapped to different embeded Node types
 
 ### Tree
 
@@ -311,7 +311,7 @@ export class $my_app extends $mol_object {
 
 ![](diagram/crus-text.png)
 
-- `$hyoo_crus_text` - mergeable text
+- `$hyoo_crus_text` - mergeable text node
 
 ### DOM
 
