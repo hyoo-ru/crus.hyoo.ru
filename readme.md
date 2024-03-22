@@ -159,9 +159,9 @@
   - **Tree** - Mergeable Abstract Syntax Tree.
 
 - **Unit** - Minimal independent stable part of information. Actually it's edge between nodes in graph model.
-  - **Pass** - 🔑 Public key of Peer.
-  - **Give** - 🏅 Rights and secret key given to Peer.
-  - **Gist** - 📦 (Meta) Data.
+  - **🔑Pass** - Public key of Peer.
+  - **🏅Give** - Rights and secret key given to Peer.
+  - **📦Gist** - (Meta) Data.
 
 - **Self** - Self Node id
 - **Head** - Parent Node id.
@@ -181,7 +181,7 @@
 
 - **Vary** - Supported primitive types.
 - **Tip** - Hint how to interpretate Data.
-  - **💢Nil** - No data.
+  - **💢nil** - No data.
   - **💠bin** - Binary.
   - **🏁bool** - Boolean.
   - **🔢int** - int64.
@@ -189,12 +189,12 @@
   - **🎯ref** - Reference to Node/Land/Lord.
   - **🔠str** - String.
   - **⏰time** - iso8601 moment.
-  - **⏲dur** - iso8601 duration.
-  - **⌚range** - iso8601 range.
-  - **🌜json** - Plain Old JS Object.
-  - **💬jsan** - Plain Old JS Array.
-  - **🪒xml** - XML.
-  - **🎄tree** - Abstract Syntax Tree.
+  - **🕓dur** - iso8601 duration.
+  - **🎬range** - iso8601 range.
+  - **📚json** - Plain Old JS Object.
+  - **🧾jsan** - Plain Old JS Array.
+  - **🛐xml** - XML.
+  - **🌴tree** - Abstract Syntax Tree.
 
 - **Rank** - Access level.
   - **law** - Full administration.
