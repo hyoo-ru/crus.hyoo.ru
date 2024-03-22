@@ -170,7 +170,7 @@
 - **Seat** - Position in the list.
 - **Tag** - Hint how interpretate inner Units.
   - **💼term** - irnore.
-  - **1️⃣solo** - ignore all after first.
+  - **🔝solo** - ignore all after first.
   - **🎹vals** - list of values.
   - **🔑keys** - list of keys.
 
