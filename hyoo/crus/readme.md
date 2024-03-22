@@ -135,6 +135,68 @@
 
 Популярные модели данных являются частными случаями используемой в базе данных.
 
+## Vocabulary
+
+- **Realm** - Whole global graph database which contains Lands.
+- **Land** - Standalone part of Realm which syncs separately, have own rights, and contains Units.
+  - **Home** - Land where Lord is King.
+- **Lord** - Independent actor with global unique id generated from Auth key.
+  - **King** - Lord who have ful rights to Land (with same id).
+- **Auth** - Private key generated with Proof of Work.
+- **Peer** - Land local unique identifier of independent actor (first half of Lord).
+- **Node** - High level representation of stored data.
+  - **Atom** - Atomic LWW-register.
+  - **List** - Mergeable ordered list.
+  - **Dict** - Mergeable ordered dictionary.
+  - **Text** - Mergeable plain text.
+  - **DOM** - Mergeable Docuent Object Model.
+  - **Tree** - Mergeable Abstract Syntax Tree.
+- **Unit** - Minimal independent stable part of information. Actually it's edge between nodes in graph model.
+  - **Pass** - 🔑 Public key of Peer.
+  - **Give** - 🏅 Rights and secret key given to Peer.
+  - **Gist** - 📦 (Meta) Data.
+- **Self** - Self Node id
+- **Head** - Parent Node id.
+- **Prev** - Previous Node id in the siblings list.
+- **Next** - Next Node id in the siblings list.
+- **Seat** - Position in the list.
+- **Time** - Monotonic time as count of ms from unix epoch.
+- **Data** - Serialized inforation. Up to 32B.
+- **Hash** - SHA-1 hash of large info.
+- **Rock** - BLOB identified by Hash.
+- **Vary** - Supported primitive types.
+  - **Nil** - No data.
+  - **Bin** - Binary.
+  - **bool** - Boolean.
+  - **int** - int64.
+  - **real** - float64.
+  - **ref** - Reference to Node/Land/Lord.
+  - **str** - String.
+  - **time** - iso8601 moment.
+  - **dur** - iso8601 duration.
+  - **range** - iso8601 range.
+  - **json** - Plain Old JS Object.
+  - **jsan** - Plain Old JS Array.
+  - **dom** - Document Object Model.
+  - **tree** - Abstract Syntax Tree.
+- **Sign** - Crypto sign of whole Unit data xored with Land id.
+- **Area** - Land local Node id namespace.
+  - **Data** - Common user info.
+  - **Meta** - Land meta info.
+- **Rank** - Access level.
+  - `law` - Full administration.
+  - `mod` - Data modification.
+  - `add` - Data adding with fixed Node id
+  - `get` - Read only.
+  - `nil` - Forbidden.
+- **Delta** - Difference of two Land states as list of Units.
+- **Face** - Statistics about Units in Land. it's total Units count & dictionary which maps Peer to Time.
+- **Token** - Minimal meaningfull part of text (space + single word / spaces / punctuation etc).
+- **Point** - Place inside Unit. Usefull for caret position.
+- **Range** - Range between two Points. Usefull for selection.
+- **Offset** - Count of letters from beginning.
+- **Channel** - Geter/Setter method. `foo()` - read. `foo(123)` - write and return written.
+
 ## TypeScript API
 
 ### Entity Models
