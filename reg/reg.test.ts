@@ -33,7 +33,7 @@ namespace $.$$ {
 		
 		"Store custom types"( $ ) {
 			
-			class Email extends $hyoo_crus_reg_vary( $mol_data_email ) {}
+			class Email extends $hyoo_crus_reg( $mol_data_email ) {}
 			
 			const land = $hyoo_crus_land.make({ $ })
 			const reg = land.Node( Email ).Item('')
@@ -56,7 +56,7 @@ namespace $.$$ {
 			const realm = $hyoo_crus_realm.make({ $ })
 			const land = realm.home()
 			
-			const reg = land.Node( $hyoo_crus_reg_ref_to( ()=> $hyoo_crus_reg ) ).Item( '11111111' )
+			const reg = land.Node( $hyoo_crus_reg_ref_to( ()=> $hyoo_crus_reg_vary ) ).Item( '11111111' )
 			const remote = reg.remote_ensure( $hyoo_crus_rank_public )!
 			
 			$mol_assert_unique( reg.land(), remote.land() )

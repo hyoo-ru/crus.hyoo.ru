@@ -1,7 +1,7 @@
 
 namespace $ {
 
-	export class $hyoo_crus_reg extends $hyoo_crus_node {
+	export class $hyoo_crus_reg_vary extends $hyoo_crus_node {
 
 		static tag = $hyoo_crus_gist_tag[ $hyoo_crus_gist_tag.solo ] as keyof typeof $hyoo_crus_gist_tag;
 
@@ -48,7 +48,7 @@ namespace $ {
 		Options extends readonly $hyoo_crus_vary_type[]
 	>( options: Options ) {
 
-		abstract class Narrow extends $hyoo_crus_reg {
+		abstract class Narrow extends $hyoo_crus_reg_vary {
 
 			static options = options;
 
@@ -76,11 +76,11 @@ namespace $ {
 		return Narrow
 	}
 
-	export function $hyoo_crus_reg_vary<
+	export function $hyoo_crus_reg<
 		Parse extends $mol_data_value
 	>( parse: Parse ) {
 
-		abstract class Narrow extends $hyoo_crus_reg {
+		abstract class Narrow extends $hyoo_crus_reg_vary {
 
 			static parse = parse;
 
@@ -102,20 +102,20 @@ namespace $ {
 		return Narrow
 	}
 	
-	export class $hyoo_crus_reg_bin extends $hyoo_crus_reg_vary( $hyoo_crus_vary_cast_bin ) {}
-	export class $hyoo_crus_reg_bool extends $hyoo_crus_reg_vary( $hyoo_crus_vary_cast_bool ) {}
-	export class $hyoo_crus_reg_int extends $hyoo_crus_reg_vary( $hyoo_crus_vary_cast_int ) {}
-	export class $hyoo_crus_reg_real extends $hyoo_crus_reg_vary( $hyoo_crus_vary_cast_real ) {}
-	export class $hyoo_crus_reg_ref extends $hyoo_crus_reg_vary( $hyoo_crus_vary_cast_ref ) {}
+	export class $hyoo_crus_reg_bin extends $hyoo_crus_reg( $hyoo_crus_vary_cast_bin ) {}
+	export class $hyoo_crus_reg_bool extends $hyoo_crus_reg( $hyoo_crus_vary_cast_bool ) {}
+	export class $hyoo_crus_reg_int extends $hyoo_crus_reg( $hyoo_crus_vary_cast_int ) {}
+	export class $hyoo_crus_reg_real extends $hyoo_crus_reg( $hyoo_crus_vary_cast_real ) {}
+	export class $hyoo_crus_reg_ref extends $hyoo_crus_reg( $hyoo_crus_vary_cast_ref ) {}
 	
-	export class $hyoo_crus_reg_str extends $hyoo_crus_reg_vary( $hyoo_crus_vary_cast_str ) {}
-	export class $hyoo_crus_reg_time extends $hyoo_crus_reg_vary( $hyoo_crus_vary_cast_time ) {}
-	export class $hyoo_crus_reg_dur extends $hyoo_crus_reg_vary( $hyoo_crus_vary_cast_dur ) {}
-	export class $hyoo_crus_reg_range extends $hyoo_crus_reg_vary( $hyoo_crus_vary_cast_range ) {}
-	export class $hyoo_crus_reg_json extends $hyoo_crus_reg_vary( $hyoo_crus_vary_cast_json ) {}
-	export class $hyoo_crus_reg_jsan extends $hyoo_crus_reg_vary( $hyoo_crus_vary_cast_jsan ) {}
-	export class $hyoo_crus_reg_xml extends $hyoo_crus_reg_vary( $hyoo_crus_vary_cast_dom ) {}
-	export class $hyoo_crus_reg_tree extends $hyoo_crus_reg_vary( $hyoo_crus_vary_cast_tree ) {}
+	export class $hyoo_crus_reg_str extends $hyoo_crus_reg( $hyoo_crus_vary_cast_str ) {}
+	export class $hyoo_crus_reg_time extends $hyoo_crus_reg( $hyoo_crus_vary_cast_time ) {}
+	export class $hyoo_crus_reg_dur extends $hyoo_crus_reg( $hyoo_crus_vary_cast_dur ) {}
+	export class $hyoo_crus_reg_range extends $hyoo_crus_reg( $hyoo_crus_vary_cast_range ) {}
+	export class $hyoo_crus_reg_json extends $hyoo_crus_reg( $hyoo_crus_vary_cast_json ) {}
+	export class $hyoo_crus_reg_jsan extends $hyoo_crus_reg( $hyoo_crus_vary_cast_jsan ) {}
+	export class $hyoo_crus_reg_xml extends $hyoo_crus_reg( $hyoo_crus_vary_cast_dom ) {}
+	export class $hyoo_crus_reg_tree extends $hyoo_crus_reg( $hyoo_crus_vary_cast_tree ) {}
 	
 	export function $hyoo_crus_reg_ref_to< Value extends any >( Value: Value ) {
 

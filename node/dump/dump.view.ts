@@ -6,11 +6,11 @@ namespace $.$$ {
 		}
 		
 		value() {
-			return this.node().cast( $hyoo_crus_reg ).value_vary()
+			return this.node().cast( $hyoo_crus_reg_vary ).value_vary()
 		}
 		
 		items() {
-			return this.node().cast( $hyoo_crus_list ).items()
+			return this.node().cast( $hyoo_crus_list_vary ).items()
 		}
 		
 		nodes() {
@@ -52,7 +52,7 @@ namespace $.$$ {
 		}
 		
 		unit_value( index: number ) {
-			return this.node().cast( $hyoo_crus_list ).items()[ index ]
+			return this.node().cast( $hyoo_crus_list_vary ).items()[ index ]
 		}
 		
 		@ $mol_mem_key
@@ -80,7 +80,7 @@ namespace $.$$ {
 		}
 		
 		unit_wipe( index: number, event?: Event ) {
-			this.node().cast( $hyoo_crus_list ).wipe( index )
+			this.node().cast( $hyoo_crus_list_vary ).wipe( index )
 		}
 		
 		node_inner( index: number ) {
@@ -102,13 +102,13 @@ namespace $.$$ {
 		
 		add_key( event: Event ) {
 			if( !this.expandable() ) this.expanded( true )
-			this.node().cast( $hyoo_crus_list ).has( this.key_new(), true, 'solo' )
+			this.node().cast( $hyoo_crus_list_vary ).has( this.key_new(), true, 'solo' )
 			this.key_new( '' )
 		}
 		
 		add_value( event: Event ) {
 			if( !this.expandable() ) this.expanded( true )
-			this.node().cast( $hyoo_crus_list ).splice([ this.value_new() ])
+			this.node().cast( $hyoo_crus_list_vary ).splice([ this.value_new() ])
 			this.value_new( '' )
 		}
 		

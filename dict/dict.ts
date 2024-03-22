@@ -1,6 +1,6 @@
 namespace $ {
 	export class $hyoo_crus_dict extends (
-		$hyoo_crus_list as $mol_type_erase< typeof $hyoo_crus_list, 'value' >
+		$hyoo_crus_list_vary as $mol_type_erase< typeof $hyoo_crus_list_vary, 'value' >
 	) {
 		
 		static tag = $hyoo_crus_gist_tag[ $hyoo_crus_gist_tag.keys ] as keyof typeof $hyoo_crus_gist_tag

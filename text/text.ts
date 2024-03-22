@@ -119,7 +119,7 @@ namespace $ {
 			}
 			
 			const words = next.match( $hyoo_crus_text_tokens ) ?? []
-			this.cast( $hyoo_crus_list ).splice( words, from, to )
+			this.cast( $hyoo_crus_list_vary ).splice( words, from, to )
 			
 			return this
 		}

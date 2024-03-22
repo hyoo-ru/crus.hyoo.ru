@@ -1,7 +1,7 @@
 namespace $ {
 
 	/** Reactive convergent list. */
-	export class $hyoo_crus_list extends $hyoo_crus_node {
+	export class $hyoo_crus_list_vary extends $hyoo_crus_node {
 		
 		static tag = $hyoo_crus_gist_tag[ $hyoo_crus_gist_tag.vals ] as keyof typeof $hyoo_crus_gist_tag
 		
@@ -130,11 +130,11 @@ namespace $ {
 		
 	}
 
-	export function $hyoo_crus_list_vary<
+	export function $hyoo_crus_list<
 		Parse extends $mol_data_value
 	>( parse: Parse ) {
 
-		abstract class Narrow extends $hyoo_crus_list {
+		abstract class Narrow extends $hyoo_crus_list_vary {
 
 			static parse = parse;
 
@@ -148,27 +148,27 @@ namespace $ {
 		return Narrow
 	}
 
-	export class $hyoo_crus_list_bin extends $hyoo_crus_list_vary( $hyoo_crus_vary_cast_bin ) {}
-	export class $hyoo_crus_list_bool extends $hyoo_crus_list_vary( $hyoo_crus_vary_cast_bool ) {}
-	export class $hyoo_crus_list_int extends $hyoo_crus_list_vary( $hyoo_crus_vary_cast_int ) {}
-	export class $hyoo_crus_list_real extends $hyoo_crus_list_vary( $hyoo_crus_vary_cast_real ) {}
-	export class $hyoo_crus_list_ref extends $hyoo_crus_list_vary( $hyoo_crus_vary_cast_ref ) {}
+	export class $hyoo_crus_list_bin extends $hyoo_crus_list( $hyoo_crus_vary_cast_bin ) {}
+	export class $hyoo_crus_list_bool extends $hyoo_crus_list( $hyoo_crus_vary_cast_bool ) {}
+	export class $hyoo_crus_list_int extends $hyoo_crus_list( $hyoo_crus_vary_cast_int ) {}
+	export class $hyoo_crus_list_real extends $hyoo_crus_list( $hyoo_crus_vary_cast_real ) {}
+	export class $hyoo_crus_list_ref extends $hyoo_crus_list( $hyoo_crus_vary_cast_ref ) {}
 	
-	export class $hyoo_crus_list_str extends $hyoo_crus_list_vary( $hyoo_crus_vary_cast_str ) {}
-	export class $hyoo_crus_list_time extends $hyoo_crus_list_vary( $hyoo_crus_vary_cast_time ) {}
-	export class $hyoo_crus_list_dur extends $hyoo_crus_list_vary( $hyoo_crus_vary_cast_dur ) {}
-	export class $hyoo_crus_list_range extends $hyoo_crus_list_vary( $hyoo_crus_vary_cast_range ) {}
-	export class $hyoo_crus_list_json extends $hyoo_crus_list_vary( $hyoo_crus_vary_cast_json ) {}
-	export class $hyoo_crus_list_jsan extends $hyoo_crus_list_vary( $hyoo_crus_vary_cast_jsan ) {}
-	export class $hyoo_crus_list_xml extends $hyoo_crus_list_vary( $hyoo_crus_vary_cast_dom ) {}
-	export class $hyoo_crus_list_tree extends $hyoo_crus_list_vary( $hyoo_crus_vary_cast_tree ) {}
+	export class $hyoo_crus_list_str extends $hyoo_crus_list( $hyoo_crus_vary_cast_str ) {}
+	export class $hyoo_crus_list_time extends $hyoo_crus_list( $hyoo_crus_vary_cast_time ) {}
+	export class $hyoo_crus_list_dur extends $hyoo_crus_list( $hyoo_crus_vary_cast_dur ) {}
+	export class $hyoo_crus_list_range extends $hyoo_crus_list( $hyoo_crus_vary_cast_range ) {}
+	export class $hyoo_crus_list_json extends $hyoo_crus_list( $hyoo_crus_vary_cast_json ) {}
+	export class $hyoo_crus_list_jsan extends $hyoo_crus_list( $hyoo_crus_vary_cast_jsan ) {}
+	export class $hyoo_crus_list_xml extends $hyoo_crus_list( $hyoo_crus_vary_cast_dom ) {}
+	export class $hyoo_crus_list_tree extends $hyoo_crus_list( $hyoo_crus_vary_cast_tree ) {}
 
 	export function $hyoo_crus_list_ref_to< Value extends any >( Value: Value ) {
 			
 		type Vals = readonly $mol_type_result< $mol_type_result< Value > >[]
 		
 		class Ref extends (
-			$hyoo_crus_list as $mol_type_erase< typeof $hyoo_crus_list, 'value' >
+			$hyoo_crus_list_vary as $mol_type_erase< typeof $hyoo_crus_list_vary, 'value' >
 		) {
 			
 			static Value = Value

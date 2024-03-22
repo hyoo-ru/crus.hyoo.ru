@@ -16,7 +16,7 @@ namespace $.$$ {
 		}
 		
 		ref( next?: $hyoo_crus_ref ) {
-			return this.node( next as any )?.cast( $hyoo_crus_reg ).value( next ) ?? null
+			return this.node( next as any )?.cast( $hyoo_crus_reg_vary ).value( next ) ?? null
 		}
 		
 		ref_options() {
@@ -32,7 +32,7 @@ namespace $.$$ {
 		@ $mol_mem
 		rows() {
 			return [
-				... this.node()?.cast( $hyoo_crus_list ).items().map( ( vary, i )=> {
+				... this.node()?.cast( $hyoo_crus_list_vary ).items().map( ( vary, i )=> {
 					return typeof vary === 'symbol' ? this.Row_ref( i ) : this.Row( i )
 				} ) ?? [],
 				this.Row_add(),
@@ -50,7 +50,7 @@ namespace $.$$ {
 		
 		@ $mol_mem_key
 		row_value( index: number ) {
-			return this.node().cast( $hyoo_crus_list ).items()[ index ]
+			return this.node().cast( $hyoo_crus_list_vary ).items()[ index ]
 		}
 		
 		@ $mol_mem_key

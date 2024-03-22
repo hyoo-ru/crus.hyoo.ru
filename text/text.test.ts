@@ -5,7 +5,7 @@ namespace $ {
 			
 			const land = $hyoo_crus_land.make({ $ })
 			const text = land.Data( $hyoo_crus_text )
-			const list = land.Data( $hyoo_crus_list )
+			const list = land.Data( $hyoo_crus_list_vary )
 			$mol_assert_equal( text.str(), '' )
 			$mol_assert_equal( list.items(), [] )
 			
