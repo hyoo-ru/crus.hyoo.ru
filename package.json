@@ -156,7 +156,7 @@
     "$hyoo_crus_dict",
     "$hyoo_crus_list",
     "$hyoo_crus_node",
-    "$hyoo_crus_reg",
+    "$hyoo_crus_atom",
     "$hyoo_crus_vary_cast",
     "$mol_tree2_bin",
     "$mol_tree2_xml_from_dom",

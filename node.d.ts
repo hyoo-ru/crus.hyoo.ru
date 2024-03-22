@@ -2513,13 +2513,13 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    export class $hyoo_crus_reg_vary extends $hyoo_crus_node {
+    export class $hyoo_crus_atom_vary extends $hyoo_crus_node {
         static tag: "keys" | "term" | "solo" | "vals";
         pick_unit(): $hyoo_crus_gist | undefined;
         value(next?: $hyoo_crus_vary_type): $hyoo_crus_vary_type;
         value_vary(next?: $hyoo_crus_vary_type): $hyoo_crus_vary_type;
     }
-    export function $hyoo_crus_reg_enum<Options extends readonly $hyoo_crus_vary_type[]>(options: Options): (abstract new () => {
+    export function $hyoo_crus_atom_enum<Options extends readonly $hyoo_crus_vary_type[]>(options: Options): (abstract new () => {
         value(next?: Options[number]): Options[number] | null;
         pick_unit(): $hyoo_crus_gist | undefined;
         value_vary(next?: $hyoo_crus_vary_type | undefined): $hyoo_crus_vary_type;
@@ -2557,7 +2557,7 @@ declare namespace $ {
         destructor(): void;
         [Symbol.toPrimitive](): any;
     };
-    export function $hyoo_crus_reg<Parse extends $mol_data_value>(parse: Parse): (abstract new () => {
+    export function $hyoo_crus_atom<Parse extends $mol_data_value>(parse: Parse): (abstract new () => {
         value(next?: ReturnType<Parse>): ReturnType<Parse> | null;
         pick_unit(): $hyoo_crus_gist | undefined;
         value_vary(next?: $hyoo_crus_vary_type | undefined): $hyoo_crus_vary_type;
@@ -2595,7 +2595,7 @@ declare namespace $ {
         destructor(): void;
         [Symbol.toPrimitive](): any;
     };
-    const $hyoo_crus_reg_bin_base: (abstract new () => {
+    const $hyoo_crus_atom_bin_base: (abstract new () => {
         value(next?: Uint8Array | null | undefined): Uint8Array | null;
         pick_unit(): $hyoo_crus_gist | undefined;
         value_vary(next?: $hyoo_crus_vary_type | undefined): $hyoo_crus_vary_type;
@@ -2633,9 +2633,9 @@ declare namespace $ {
         destructor(): void;
         [Symbol.toPrimitive](): any;
     };
-    export class $hyoo_crus_reg_bin extends $hyoo_crus_reg_bin_base {
+    export class $hyoo_crus_atom_bin extends $hyoo_crus_atom_bin_base {
     }
-    const $hyoo_crus_reg_bool_base: (abstract new () => {
+    const $hyoo_crus_atom_bool_base: (abstract new () => {
         value(next?: boolean | null | undefined): boolean | null;
         pick_unit(): $hyoo_crus_gist | undefined;
         value_vary(next?: $hyoo_crus_vary_type | undefined): $hyoo_crus_vary_type;
@@ -2673,9 +2673,9 @@ declare namespace $ {
         destructor(): void;
         [Symbol.toPrimitive](): any;
     };
-    export class $hyoo_crus_reg_bool extends $hyoo_crus_reg_bool_base {
+    export class $hyoo_crus_atom_bool extends $hyoo_crus_atom_bool_base {
     }
-    const $hyoo_crus_reg_int_base: (abstract new () => {
+    const $hyoo_crus_atom_int_base: (abstract new () => {
         value(next?: bigint | null | undefined): bigint | null;
         pick_unit(): $hyoo_crus_gist | undefined;
         value_vary(next?: $hyoo_crus_vary_type | undefined): $hyoo_crus_vary_type;
@@ -2713,9 +2713,9 @@ declare namespace $ {
         destructor(): void;
         [Symbol.toPrimitive](): any;
     };
-    export class $hyoo_crus_reg_int extends $hyoo_crus_reg_int_base {
+    export class $hyoo_crus_atom_int extends $hyoo_crus_atom_int_base {
     }
-    const $hyoo_crus_reg_real_base: (abstract new () => {
+    const $hyoo_crus_atom_real_base: (abstract new () => {
         value(next?: number | null | undefined): number | null;
         pick_unit(): $hyoo_crus_gist | undefined;
         value_vary(next?: $hyoo_crus_vary_type | undefined): $hyoo_crus_vary_type;
@@ -2753,9 +2753,9 @@ declare namespace $ {
         destructor(): void;
         [Symbol.toPrimitive](): any;
     };
-    export class $hyoo_crus_reg_real extends $hyoo_crus_reg_real_base {
+    export class $hyoo_crus_atom_real extends $hyoo_crus_atom_real_base {
     }
-    const $hyoo_crus_reg_ref_base: (abstract new () => {
+    const $hyoo_crus_atom_ref_base: (abstract new () => {
         value(next?: (symbol & {
             $hyoo_crus_ref: symbol;
         }) | null | undefined): (symbol & {
@@ -2797,9 +2797,9 @@ declare namespace $ {
         destructor(): void;
         [Symbol.toPrimitive](): any;
     };
-    export class $hyoo_crus_reg_ref extends $hyoo_crus_reg_ref_base {
+    export class $hyoo_crus_atom_ref extends $hyoo_crus_atom_ref_base {
     }
-    const $hyoo_crus_reg_str_base: (abstract new () => {
+    const $hyoo_crus_atom_str_base: (abstract new () => {
         value(next?: string | null | undefined): string | null;
         pick_unit(): $hyoo_crus_gist | undefined;
         value_vary(next?: $hyoo_crus_vary_type | undefined): $hyoo_crus_vary_type;
@@ -2837,9 +2837,9 @@ declare namespace $ {
         destructor(): void;
         [Symbol.toPrimitive](): any;
     };
-    export class $hyoo_crus_reg_str extends $hyoo_crus_reg_str_base {
+    export class $hyoo_crus_atom_str extends $hyoo_crus_atom_str_base {
     }
-    const $hyoo_crus_reg_time_base: (abstract new () => {
+    const $hyoo_crus_atom_time_base: (abstract new () => {
         value(next?: $mol_time_moment | null | undefined): $mol_time_moment | null;
         pick_unit(): $hyoo_crus_gist | undefined;
         value_vary(next?: $hyoo_crus_vary_type | undefined): $hyoo_crus_vary_type;
@@ -2877,9 +2877,9 @@ declare namespace $ {
         destructor(): void;
         [Symbol.toPrimitive](): any;
     };
-    export class $hyoo_crus_reg_time extends $hyoo_crus_reg_time_base {
+    export class $hyoo_crus_atom_time extends $hyoo_crus_atom_time_base {
     }
-    const $hyoo_crus_reg_dur_base: (abstract new () => {
+    const $hyoo_crus_atom_dur_base: (abstract new () => {
         value(next?: $mol_time_duration | $mol_time_moment | null | undefined): $mol_time_duration | $mol_time_moment | null;
         pick_unit(): $hyoo_crus_gist | undefined;
         value_vary(next?: $hyoo_crus_vary_type | undefined): $hyoo_crus_vary_type;
@@ -2917,9 +2917,9 @@ declare namespace $ {
         destructor(): void;
         [Symbol.toPrimitive](): any;
     };
-    export class $hyoo_crus_reg_dur extends $hyoo_crus_reg_dur_base {
+    export class $hyoo_crus_atom_dur extends $hyoo_crus_atom_dur_base {
     }
-    const $hyoo_crus_reg_range_base: (abstract new () => {
+    const $hyoo_crus_atom_range_base: (abstract new () => {
         value(next?: $mol_time_interval | null | undefined): $mol_time_interval | null;
         pick_unit(): $hyoo_crus_gist | undefined;
         value_vary(next?: $hyoo_crus_vary_type | undefined): $hyoo_crus_vary_type;
@@ -2957,9 +2957,9 @@ declare namespace $ {
         destructor(): void;
         [Symbol.toPrimitive](): any;
     };
-    export class $hyoo_crus_reg_range extends $hyoo_crus_reg_range_base {
+    export class $hyoo_crus_atom_range extends $hyoo_crus_atom_range_base {
     }
-    const $hyoo_crus_reg_json_base: (abstract new () => {
+    const $hyoo_crus_atom_json_base: (abstract new () => {
         value(next?: any): any;
         pick_unit(): $hyoo_crus_gist | undefined;
         value_vary(next?: $hyoo_crus_vary_type | undefined): $hyoo_crus_vary_type;
@@ -2997,9 +2997,9 @@ declare namespace $ {
         destructor(): void;
         [Symbol.toPrimitive](): any;
     };
-    export class $hyoo_crus_reg_json extends $hyoo_crus_reg_json_base {
+    export class $hyoo_crus_atom_json extends $hyoo_crus_atom_json_base {
     }
-    const $hyoo_crus_reg_jsan_base: (abstract new () => {
+    const $hyoo_crus_atom_jsan_base: (abstract new () => {
         value(next?: any[] | string[] | number[] | boolean[] | {}[] | null | undefined): any[] | string[] | number[] | boolean[] | {}[] | null;
         pick_unit(): $hyoo_crus_gist | undefined;
         value_vary(next?: $hyoo_crus_vary_type | undefined): $hyoo_crus_vary_type;
@@ -3037,9 +3037,9 @@ declare namespace $ {
         destructor(): void;
         [Symbol.toPrimitive](): any;
     };
-    export class $hyoo_crus_reg_jsan extends $hyoo_crus_reg_jsan_base {
+    export class $hyoo_crus_atom_jsan extends $hyoo_crus_atom_jsan_base {
     }
-    const $hyoo_crus_reg_xml_base: (abstract new () => {
+    const $hyoo_crus_atom_xml_base: (abstract new () => {
         value(next?: Element | HTMLElement | $mol_jsx.JSX.Element | null | undefined): Element | HTMLElement | $mol_jsx.JSX.Element | null;
         pick_unit(): $hyoo_crus_gist | undefined;
         value_vary(next?: $hyoo_crus_vary_type | undefined): $hyoo_crus_vary_type;
@@ -3077,9 +3077,9 @@ declare namespace $ {
         destructor(): void;
         [Symbol.toPrimitive](): any;
     };
-    export class $hyoo_crus_reg_xml extends $hyoo_crus_reg_xml_base {
+    export class $hyoo_crus_atom_xml extends $hyoo_crus_atom_xml_base {
     }
-    const $hyoo_crus_reg_tree_base: (abstract new () => {
+    const $hyoo_crus_atom_tree_base: (abstract new () => {
         value(next?: $mol_tree2 | null | undefined): $mol_tree2 | null;
         pick_unit(): $hyoo_crus_gist | undefined;
         value_vary(next?: $hyoo_crus_vary_type | undefined): $hyoo_crus_vary_type;
@@ -3117,9 +3117,9 @@ declare namespace $ {
         destructor(): void;
         [Symbol.toPrimitive](): any;
     };
-    export class $hyoo_crus_reg_tree extends $hyoo_crus_reg_tree_base {
+    export class $hyoo_crus_atom_tree extends $hyoo_crus_atom_tree_base {
     }
-    export function $hyoo_crus_reg_ref_to<Value extends any>(Value: Value): {
+    export function $hyoo_crus_atom_ref_to<Value extends any>(Value: Value): {
         new (): {
             value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
             yoke(preset?: $hyoo_crus_rank_preset): $hyoo_crus_land | null;
@@ -3286,8 +3286,8 @@ declare namespace $ {
 
 declare namespace $ {
     const $hyoo_crus_base_base: typeof $hyoo_crus_dict & (new (...args: any[]) => $hyoo_crus_dict & {
-        Title: $hyoo_crus_reg_str | null;
-        Selection: $hyoo_crus_reg_str | null;
+        Title: $hyoo_crus_atom_str | null;
+        Selection: $hyoo_crus_atom_str | null;
         Profiles: {
             Value: {
                 new (): {

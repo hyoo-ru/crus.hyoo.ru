@@ -5771,8 +5771,8 @@ var $;
         nodes(Node) {
             const land = this.land();
             const map = {
-                term: () => land.Node(Node || $hyoo_crus_reg_vary),
-                solo: () => land.Node(Node || $hyoo_crus_reg_vary),
+                term: () => land.Node(Node || $hyoo_crus_atom_vary),
+                solo: () => land.Node(Node || $hyoo_crus_atom_vary),
                 vals: () => land.Node(Node || $hyoo_crus_list_vary),
                 keys: () => land.Node(Node || $hyoo_crus_dict),
             };
@@ -5792,7 +5792,7 @@ var $;
             let last = 0;
             const map = {
                 term: () => null,
-                solo: () => land.Node($hyoo_crus_reg_vary),
+                solo: () => land.Node($hyoo_crus_atom_vary),
                 vals: () => land.Node($hyoo_crus_list_vary),
                 keys: () => land.Node($hyoo_crus_dict),
             };
@@ -6998,7 +6998,7 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    class $hyoo_crus_reg_vary extends $hyoo_crus_node {
+    class $hyoo_crus_atom_vary extends $hyoo_crus_node {
         static tag = $hyoo_crus_gist_tag[$hyoo_crus_gist_tag.solo];
         pick_unit() {
             return this.units().at(0);
@@ -7023,10 +7023,10 @@ var $;
     }
     __decorate([
         $mol_mem
-    ], $hyoo_crus_reg_vary.prototype, "value_vary", null);
-    $.$hyoo_crus_reg_vary = $hyoo_crus_reg_vary;
-    function $hyoo_crus_reg_enum(options) {
-        class Narrow extends $hyoo_crus_reg_vary {
+    ], $hyoo_crus_atom_vary.prototype, "value_vary", null);
+    $.$hyoo_crus_atom_vary = $hyoo_crus_atom_vary;
+    function $hyoo_crus_atom_enum(options) {
+        class Narrow extends $hyoo_crus_atom_vary {
             static options = options;
             value(next) {
                 validate: if (next !== undefined) {
@@ -7049,9 +7049,9 @@ var $;
         ], Narrow.prototype, "value", null);
         return Narrow;
     }
-    $.$hyoo_crus_reg_enum = $hyoo_crus_reg_enum;
-    function $hyoo_crus_reg(parse) {
-        class Narrow extends $hyoo_crus_reg_vary {
+    $.$hyoo_crus_atom_enum = $hyoo_crus_atom_enum;
+    function $hyoo_crus_atom(parse) {
+        class Narrow extends $hyoo_crus_atom_vary {
             static parse = parse;
             value(next) {
                 if (next !== undefined)
@@ -7067,58 +7067,58 @@ var $;
         }
         return Narrow;
     }
-    $.$hyoo_crus_reg = $hyoo_crus_reg;
-    class $hyoo_crus_reg_bin extends $hyoo_crus_reg($hyoo_crus_vary_cast_bin) {
+    $.$hyoo_crus_atom = $hyoo_crus_atom;
+    class $hyoo_crus_atom_bin extends $hyoo_crus_atom($hyoo_crus_vary_cast_bin) {
     }
-    $.$hyoo_crus_reg_bin = $hyoo_crus_reg_bin;
-    class $hyoo_crus_reg_bool extends $hyoo_crus_reg($hyoo_crus_vary_cast_bool) {
+    $.$hyoo_crus_atom_bin = $hyoo_crus_atom_bin;
+    class $hyoo_crus_atom_bool extends $hyoo_crus_atom($hyoo_crus_vary_cast_bool) {
     }
-    $.$hyoo_crus_reg_bool = $hyoo_crus_reg_bool;
-    class $hyoo_crus_reg_int extends $hyoo_crus_reg($hyoo_crus_vary_cast_int) {
+    $.$hyoo_crus_atom_bool = $hyoo_crus_atom_bool;
+    class $hyoo_crus_atom_int extends $hyoo_crus_atom($hyoo_crus_vary_cast_int) {
     }
-    $.$hyoo_crus_reg_int = $hyoo_crus_reg_int;
-    class $hyoo_crus_reg_real extends $hyoo_crus_reg($hyoo_crus_vary_cast_real) {
+    $.$hyoo_crus_atom_int = $hyoo_crus_atom_int;
+    class $hyoo_crus_atom_real extends $hyoo_crus_atom($hyoo_crus_vary_cast_real) {
     }
-    $.$hyoo_crus_reg_real = $hyoo_crus_reg_real;
-    class $hyoo_crus_reg_ref extends $hyoo_crus_reg($hyoo_crus_vary_cast_ref) {
+    $.$hyoo_crus_atom_real = $hyoo_crus_atom_real;
+    class $hyoo_crus_atom_ref extends $hyoo_crus_atom($hyoo_crus_vary_cast_ref) {
     }
-    $.$hyoo_crus_reg_ref = $hyoo_crus_reg_ref;
-    class $hyoo_crus_reg_str extends $hyoo_crus_reg($hyoo_crus_vary_cast_str) {
+    $.$hyoo_crus_atom_ref = $hyoo_crus_atom_ref;
+    class $hyoo_crus_atom_str extends $hyoo_crus_atom($hyoo_crus_vary_cast_str) {
     }
-    $.$hyoo_crus_reg_str = $hyoo_crus_reg_str;
-    class $hyoo_crus_reg_time extends $hyoo_crus_reg($hyoo_crus_vary_cast_time) {
+    $.$hyoo_crus_atom_str = $hyoo_crus_atom_str;
+    class $hyoo_crus_atom_time extends $hyoo_crus_atom($hyoo_crus_vary_cast_time) {
     }
-    $.$hyoo_crus_reg_time = $hyoo_crus_reg_time;
-    class $hyoo_crus_reg_dur extends $hyoo_crus_reg($hyoo_crus_vary_cast_dur) {
+    $.$hyoo_crus_atom_time = $hyoo_crus_atom_time;
+    class $hyoo_crus_atom_dur extends $hyoo_crus_atom($hyoo_crus_vary_cast_dur) {
     }
-    $.$hyoo_crus_reg_dur = $hyoo_crus_reg_dur;
-    class $hyoo_crus_reg_range extends $hyoo_crus_reg($hyoo_crus_vary_cast_range) {
+    $.$hyoo_crus_atom_dur = $hyoo_crus_atom_dur;
+    class $hyoo_crus_atom_range extends $hyoo_crus_atom($hyoo_crus_vary_cast_range) {
     }
-    $.$hyoo_crus_reg_range = $hyoo_crus_reg_range;
-    class $hyoo_crus_reg_json extends $hyoo_crus_reg($hyoo_crus_vary_cast_json) {
+    $.$hyoo_crus_atom_range = $hyoo_crus_atom_range;
+    class $hyoo_crus_atom_json extends $hyoo_crus_atom($hyoo_crus_vary_cast_json) {
     }
-    $.$hyoo_crus_reg_json = $hyoo_crus_reg_json;
-    class $hyoo_crus_reg_jsan extends $hyoo_crus_reg($hyoo_crus_vary_cast_jsan) {
+    $.$hyoo_crus_atom_json = $hyoo_crus_atom_json;
+    class $hyoo_crus_atom_jsan extends $hyoo_crus_atom($hyoo_crus_vary_cast_jsan) {
     }
-    $.$hyoo_crus_reg_jsan = $hyoo_crus_reg_jsan;
-    class $hyoo_crus_reg_xml extends $hyoo_crus_reg($hyoo_crus_vary_cast_dom) {
+    $.$hyoo_crus_atom_jsan = $hyoo_crus_atom_jsan;
+    class $hyoo_crus_atom_xml extends $hyoo_crus_atom($hyoo_crus_vary_cast_dom) {
     }
-    $.$hyoo_crus_reg_xml = $hyoo_crus_reg_xml;
-    class $hyoo_crus_reg_tree extends $hyoo_crus_reg($hyoo_crus_vary_cast_tree) {
+    $.$hyoo_crus_atom_xml = $hyoo_crus_atom_xml;
+    class $hyoo_crus_atom_tree extends $hyoo_crus_atom($hyoo_crus_vary_cast_tree) {
     }
-    $.$hyoo_crus_reg_tree = $hyoo_crus_reg_tree;
-    function $hyoo_crus_reg_ref_to(Value) {
-        class Ref extends $hyoo_crus_reg_ref {
+    $.$hyoo_crus_atom_tree = $hyoo_crus_atom_tree;
+    function $hyoo_crus_atom_ref_to(Value) {
+        class Ref extends $hyoo_crus_atom_ref {
             static Value = Value;
             static toString() {
-                return '$hyoo_crus_reg_ref_to(()=>' + Value() + ')';
+                return '$hyoo_crus_atom_ref_to(()=>' + Value() + ')';
             }
             value(next) {
                 return this.remote(next);
             }
             yoke(preset) {
                 const realm = this.realm();
-                const Ref = this.cast($hyoo_crus_reg_ref);
+                const Ref = this.cast($hyoo_crus_atom_ref);
                 const ref = Ref.value();
                 if (ref)
                     return realm.Land(ref);
@@ -7158,7 +7158,7 @@ var $;
         ], Ref.prototype, "local_ensure", null);
         return Ref;
     }
-    $.$hyoo_crus_reg_ref_to = $hyoo_crus_reg_ref_to;
+    $.$hyoo_crus_atom_ref_to = $hyoo_crus_atom_ref_to;
 })($ || ($ = {}));
 
 ;
@@ -8257,9 +8257,9 @@ var $;
 var $;
 (function ($) {
     class $hyoo_crus_base extends $hyoo_crus_dict.with({
-        Title: $hyoo_crus_reg_str,
-        Selection: $hyoo_crus_reg_str,
-        Profiles: $hyoo_crus_dict_to($hyoo_crus_reg_ref_to(() => $hyoo_crus_dict)),
+        Title: $hyoo_crus_atom_str,
+        Selection: $hyoo_crus_atom_str,
+        Profiles: $hyoo_crus_dict_to($hyoo_crus_atom_ref_to(() => $hyoo_crus_dict)),
     }) {
         profile(app, preset) {
             return this.Profiles?.key(app, null)?.remote_ensure(preset)?.land() ?? null;
@@ -10833,6 +10833,9 @@ var $;
                     .replace(/^(?!    +at )(.*)/gm, '    at | $1 (#)')).join('\n')
             });
         }
+        static make(...params) {
+            return new this(...params);
+        }
     }
     $.$mol_error_mix = $mol_error_mix;
 })($ || ($ = {}));
@@ -12004,12 +12007,12 @@ var $;
             const realm = $hyoo_crus_realm.make({ $ });
             const Alice = realm.home();
             const Bella = Alice.fork();
-            const alice_val = Alice.Node($hyoo_crus_reg_str).Item('qwertyui');
-            const bella_val = Bella.Node($hyoo_crus_reg_str).Item('qwertyui');
+            const alice_val = Alice.Node($hyoo_crus_atom_str).Item('qwertyui');
+            const bella_val = Bella.Node($hyoo_crus_atom_str).Item('qwertyui');
             alice_val.value('Alice');
             bella_val.value('Bella');
-            const alice_ref = Alice.Node($hyoo_crus_reg_ref).Item('asdfghjk');
-            const bella_ref = Bella.Node($hyoo_crus_reg_ref).Item('asdfghjk');
+            const alice_ref = Alice.Node($hyoo_crus_atom_ref).Item('asdfghjk');
+            const bella_ref = Bella.Node($hyoo_crus_atom_ref).Item('asdfghjk');
             alice_ref.value(alice_val.ref());
             $mol_assert_equal(alice_ref.value(), alice_val.ref());
             $mol_assert_unique(alice_ref.value(), bella_ref.value());
@@ -12635,7 +12638,7 @@ var $;
         $mol_test({
             "Empty representation"($) {
                 const land = $hyoo_crus_land.make({ $ });
-                const reg = land.Node($hyoo_crus_reg_time).Item('');
+                const reg = land.Node($hyoo_crus_atom_time).Item('');
                 $mol_assert_equal(reg.value(), null);
                 reg.value_vary(null);
                 $mol_assert_equal(reg.value(), null);
@@ -12643,17 +12646,17 @@ var $;
             "Narrow registers"($) {
                 const realm = $hyoo_crus_realm.make({ $ });
                 const land = realm.home();
-                const bin = land.Node($hyoo_crus_reg_bin).Item('11111111');
+                const bin = land.Node($hyoo_crus_atom_bin).Item('11111111');
                 $mol_assert_equal(bin.value(), null);
                 bin.value(new Uint8Array([1, 2, 3]));
                 $mol_assert_equal(bin.value(), new Uint8Array([1, 2, 3]));
-                const str = land.Node($hyoo_crus_reg_str).Item('22222222');
+                const str = land.Node($hyoo_crus_atom_str).Item('22222222');
                 $mol_assert_equal(str.value(), null);
                 str.value('foo');
                 $mol_assert_equal(str.value(), 'foo');
             },
             "Store custom types"($) {
-                class Email extends $hyoo_crus_reg($mol_data_email) {
+                class Email extends $hyoo_crus_atom($mol_data_email) {
                 }
                 const land = $hyoo_crus_land.make({ $ });
                 const reg = land.Node(Email).Item('');
@@ -12668,7 +12671,7 @@ var $;
             "Hyper link to another land"($) {
                 const realm = $hyoo_crus_realm.make({ $ });
                 const land = realm.home();
-                const reg = land.Node($hyoo_crus_reg_ref_to(() => $hyoo_crus_reg_vary)).Item('11111111');
+                const reg = land.Node($hyoo_crus_atom_ref_to(() => $hyoo_crus_atom_vary)).Item('11111111');
                 const remote = reg.remote_ensure($hyoo_crus_rank_public);
                 $mol_assert_unique(reg.land(), remote.land());
                 $mol_assert_equal(reg.value_vary(), remote.ref());
@@ -12677,14 +12680,14 @@ var $;
             "Register with linked nodes"($) {
                 const realm = $hyoo_crus_realm.make({ $ });
                 const land = realm.home();
-                const str = land.Node($hyoo_crus_reg_str).Item('11111111');
-                const ref = land.Node($hyoo_crus_reg_ref_to(() => $hyoo_crus_reg_str)).Item('11111111');
+                const str = land.Node($hyoo_crus_atom_str).Item('11111111');
+                const ref = land.Node($hyoo_crus_atom_ref_to(() => $hyoo_crus_atom_str)).Item('11111111');
                 $mol_assert_equal(ref.remote(), null);
                 ref.remote(str);
                 $mol_assert_equal(ref.value_vary(), ref.remote().ref(), str.ref());
             },
             "Enumerated reg type"($) {
-                class FileType extends $hyoo_crus_reg_enum(['file', 'dir', 'link']) {
+                class FileType extends $hyoo_crus_atom_enum(['file', 'dir', 'link']) {
                 }
                 const realm = $hyoo_crus_realm.make({ $ });
                 const land = realm.home();
@@ -12713,16 +12716,16 @@ var $;
                 const land = $hyoo_crus_land.make({ $ });
                 const dict = land.Node($hyoo_crus_dict).Item('');
                 $mol_assert_equal(dict.keys(), []);
-                dict.dive(123, $hyoo_crus_reg_vary, null);
-                dict.dive('xxx', $hyoo_crus_reg_vary, null);
+                dict.dive(123, $hyoo_crus_atom_vary, null);
+                dict.dive('xxx', $hyoo_crus_atom_vary, null);
                 $mol_assert_equal(dict.keys(), ['xxx', 123]);
                 $mol_assert_equal(dict.has(123), true);
                 $mol_assert_equal(dict.has('xxx'), true);
                 $mol_assert_equal(dict.has('yyy'), false);
-                $mol_assert_equal(dict.dive(123, $hyoo_crus_reg_vary).value_vary(), null);
-                $mol_assert_equal(dict.dive('xxx', $hyoo_crus_reg_vary).value_vary(), null);
-                dict.dive(123, $hyoo_crus_reg_vary).value_vary(777);
-                $mol_assert_equal(dict.dive(123, $hyoo_crus_reg_vary).value_vary(), 777);
+                $mol_assert_equal(dict.dive(123, $hyoo_crus_atom_vary).value_vary(), null);
+                $mol_assert_equal(dict.dive('xxx', $hyoo_crus_atom_vary).value_vary(), null);
+                dict.dive(123, $hyoo_crus_atom_vary).value_vary(777);
+                $mol_assert_equal(dict.dive(123, $hyoo_crus_atom_vary).value_vary(), 777);
                 dict.dive('xxx', $hyoo_crus_list_vary).items(['foo', 'bar']);
                 $mol_assert_equal(dict.dive('xxx', $hyoo_crus_list_vary).items(), ['foo', 'bar']);
                 dict.has(123, false);
@@ -12733,11 +12736,11 @@ var $;
                 const land2 = $hyoo_crus_land.make({ $ });
                 const dict1 = land1.Node($hyoo_crus_dict).Item('');
                 const dict2 = land2.Node($hyoo_crus_dict).Item('');
-                dict1.dive(123, $hyoo_crus_reg_vary, null).value_vary(666);
+                dict1.dive(123, $hyoo_crus_atom_vary, null).value_vary(666);
                 land2.faces.tick();
-                dict2.dive(123, $hyoo_crus_reg_vary, null).value_vary(777);
+                dict2.dive(123, $hyoo_crus_atom_vary, null).value_vary(777);
                 land1.apply_unit_trust(land2.delta_unit());
-                $mol_assert_equal(dict1.dive(123, $hyoo_crus_reg_vary).value_vary(), 777);
+                $mol_assert_equal(dict1.dive(123, $hyoo_crus_atom_vary).value_vary(), 777);
                 dict1.dive('xxx', $hyoo_crus_list_vary, null).items(['foo']);
                 land2.faces.tick();
                 dict2.dive('xxx', $hyoo_crus_list_vary, null).items(['bar']);
@@ -12746,19 +12749,19 @@ var $;
             },
             "Narrowed Dictionary with linked Dictionaries and others"($) {
                 class User extends $hyoo_crus_dict.with({
-                    Title: $hyoo_crus_reg_str,
-                    Account: $hyoo_crus_reg_ref_to(() => Account),
+                    Title: $hyoo_crus_atom_str,
+                    Account: $hyoo_crus_atom_ref_to(() => Account),
                     Articles: $hyoo_crus_list_ref_to(() => Article),
                 }) {
                 }
                 class Account extends $hyoo_crus_dict.with({
-                    Title: $hyoo_crus_reg_str,
-                    User: $hyoo_crus_reg_ref_to(() => User),
+                    Title: $hyoo_crus_atom_str,
+                    User: $hyoo_crus_atom_ref_to(() => User),
                 }) {
                 }
                 class Article extends $hyoo_crus_dict.with({
-                    Title: $hyoo_crus_dict_to($hyoo_crus_reg_str),
-                    Author: $hyoo_crus_reg_ref_to(() => User),
+                    Title: $hyoo_crus_dict_to($hyoo_crus_atom_str),
+                    Author: $hyoo_crus_atom_ref_to(() => User),
                 }) {
                 }
                 const realm = $hyoo_crus_realm.make({ $ });
