@@ -142,8 +142,14 @@
   - **Home** - Land where Lord is King.
 - **Lord** - Independent actor with global unique id generated from Auth key.
   - **King** - Lord who have ful rights to Land (with same id).
+- **Area** - Land local Node id namespace.
+  - **Data** - Common user info.
+  - **Meta** - Land meta info.
+
 - **Auth** - Private key generated with Proof of Work.
 - **Peer** - Land local unique identifier of independent actor (first half of Lord).
+- **Sign** - Crypto sign of whole Unit data xored with Land id.
+
 - **Node** - High level representation of stored data.
   - **Atom** - Atomic LWW-register.
   - **List** - Mergeable ordered list.
@@ -151,19 +157,23 @@
   - **Text** - Mergeable plain text.
   - **DOM** - Mergeable Docuent Object Model.
   - **Tree** - Mergeable Abstract Syntax Tree.
+
 - **Unit** - Minimal independent stable part of information. Actually it's edge between nodes in graph model.
   - **Pass** - 🔑 Public key of Peer.
   - **Give** - 🏅 Rights and secret key given to Peer.
   - **Gist** - 📦 (Meta) Data.
+
 - **Self** - Self Node id
 - **Head** - Parent Node id.
 - **Prev** - Previous Node id in the siblings list.
 - **Next** - Next Node id in the siblings list.
 - **Seat** - Position in the list.
+
 - **Time** - Monotonic time as count of ms from unix epoch.
 - **Data** - Serialized inforation. Up to 32B.
 - **Hash** - SHA-1 hash of large info.
 - **Rock** - BLOB identified by Hash.
+
 - **Vary** - Supported primitive types.
   - **Nil** - No data.
   - **Bin** - Binary.
@@ -179,23 +189,33 @@
   - **jsan** - Plain Old JS Array.
   - **dom** - Document Object Model.
   - **tree** - Abstract Syntax Tree.
-- **Sign** - Crypto sign of whole Unit data xored with Land id.
-- **Area** - Land local Node id namespace.
-  - **Data** - Common user info.
-  - **Meta** - Land meta info.
+
 - **Rank** - Access level.
-  - `law` - Full administration.
-  - `mod` - Data modification.
-  - `add` - Data adding with fixed Node id
-  - `get` - Read only.
-  - `nil` - Forbidden.
+  - **law** - Full administration.
+  - **mod** - Data modification.
+  - **add** - Data adding with fixed Node id
+  - **get** - Read only.
+  - **nil** - Forbidden.
+
+- **Mine** - Units/Rocks storage.
+- **Yard** - Real synchronizer.
+- **Port** - Communicaion link with other peer.
 - **Delta** - Difference of two Land states as list of Units.
 - **Face** - Statistics about Units in Land. it's total Units count & dictionary which maps Peer to Time.
+- **Pack** - Universal binary package which contains some Faces/Units/Rocks.
+
 - **Token** - Minimal meaningfull part of text (space + single word / spaces / punctuation etc).
 - **Point** - Place inside Unit. Usefull for caret position.
 - **Range** - Range between two Points. Usefull for selection.
 - **Offset** - Count of letters from beginning.
+
 - **Channel** - Geter/Setter method. `foo()` - read. `foo(123)` - write and return written.
+
+- **Flex** - User interface which fored by storen in CRUS schema.
+  - **Thing** - Schema of schema.
+  - **Kind** - Entiry schema.
+  - **Prop** - Property schema.
+  - **Domain** - Set of Kinds, Props, and Types.
 
 ## TypeScript API
 
