@@ -211,7 +211,7 @@
 
 - **Channel** - Geter/Setter method. `foo()` - read. `foo(123)` - write and return written.
 
-- **Flex** - User interface which fored by storen in CRUS schema.
+- **Flex** - User interface which formed by Domain.
   - **Thing** - Schema of schema.
   - **Kind** - Entiry schema.
   - **Prop** - Property schema.
