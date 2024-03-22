@@ -7,7 +7,7 @@ namespace $.$$ {
 			const land = this.node().realm()!.home().Profile( '$hyoo_crus_flex', $hyoo_crus_dict, !!'auto' )!.land()
 			const domain = $hyoo_crus_flex_domain.ensure( land )
 
-			return this.node().cast( $hyoo_crus_flex_thing ).kind() ?? domain.kinds()![2]
+			return this.node().cast( $hyoo_crus_flex_thing ).kind() ?? domain.kinds()?.[2] ?? null!
 		}
 		
 		@ $mol_mem

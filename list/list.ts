@@ -1,5 +1,6 @@
 namespace $ {
 
+	/** Reactive convergent list. */
 	export class $hyoo_crus_list extends $hyoo_crus_node {
 		
 		static tag = $hyoo_crus_gist_tag[ $hyoo_crus_gist_tag.vals ] as keyof typeof $hyoo_crus_gist_tag
@@ -11,7 +12,7 @@ namespace $ {
 			return this.items( next, tag )
 		}
 		
-		/** Data list representation. */
+		/** All Vary in the list. */
 		@ $mol_mem
 		items(
 			next?: readonly $hyoo_crus_vary_type[],
@@ -26,6 +27,7 @@ namespace $ {
 			
 		}
 		
+		/** Replace sublist by  new one with reconcilation. */
 		splice(
 			next: readonly $hyoo_crus_vary_type[],
 			from = this.units().length,
@@ -45,6 +47,7 @@ namespace $ {
 			})
 		}
 		
+		/** Unit by Vary. */
 		find( vary: $hyoo_crus_vary_type ) {
 			for( const unit of this.units() ) {
 				if( $mol_compare_deep( this.land().gist_decode( unit ), vary ) ) return unit
@@ -52,6 +55,7 @@ namespace $ {
 			return null
 		}
 		
+		/** Existance of Vary in the list. */
 		has(
 			vary: $hyoo_crus_vary_type,
 			next?: boolean,
@@ -63,6 +67,7 @@ namespace $ {
 			return next
 		}
 		
+		/** Add Vary a the beginnig if it doesn't exists. */
 		add(
 			vary: $hyoo_crus_vary_type,
 			tag = 'term' as keyof typeof $hyoo_crus_gist_tag,
@@ -71,6 +76,7 @@ namespace $ {
 			this.land().post( '', this.head(), '', vary, tag )
 		}
 		
+		/** Removes all Vary presence. */
 		cut( vary: $hyoo_crus_vary_type ) {
 			
 			const units = [ ... this.units() ]
@@ -92,14 +98,17 @@ namespace $ {
 			
 		}
 		
+		/** Moves item from one Seat to another. */
 		move( from: number, to: number ) {
 			this.land().gist_move( this.units()[ from ], this.head(), to )
 		}
 		
+		/** Remove item by Seat. */
 		wipe( seat: number ) {
 			this.land().gist_wipe( this.units()[ seat ] )
 		}
 		
+		/** Add vary at the end and use maked Self as Node Head. */
 		node_make< Node extends typeof $hyoo_crus_node >(
 			Node: Node,
 			vary: $hyoo_crus_vary_type,
@@ -107,76 +116,6 @@ namespace $ {
 		) {
 			this.splice( [ vary ], undefined, undefined, tag )
 			return this.land().Node( Node ).Item( this.units().at(-1)!.self() )
-		}
-		
-		@ $mol_memo.method
-		static of<
-			Tip extends keyof typeof $hyoo_crus_vary_tip
-		>( tip: Tip ) {
-
-			type Value = ReturnType<typeof $hyoo_crus_vary_cast_funcs[ Tip ]>
-
-			class Narrow extends $hyoo_crus_list {
-
-				static tip = tip;
-
-				@ $mol_mem
-				value( next?: readonly Value[] ): readonly Value[] {
-					return this.items( next ).map( $hyoo_crus_vary_cast_funcs[ tip ] )
-				}
-
-			}
-
-			return Narrow
-		}
-
-		static ref< Value extends any >( Value: Value ) {
-			
-			type Vals = $mol_type_result< $mol_type_result< Value > >[]
-			
-			class Ref extends (
-				$hyoo_crus_list as $mol_type_erase< typeof $hyoo_crus_list, 'value' >
-			) {
-				
-				static Value = Value
-				
-				static toJSON() {
-					return '$hyoo_crus_list.ref(()=>' + ( Value as any )() + ')'
-				}
-				
-				value( next?: Vals ): Vals {
-					return this.remote_list( next )
-				}
-				
-				@ $mol_mem
-				remote_list( next?: Vals ): Vals {
-					const realm = this.realm()
-					const Node = ( Value as any )()
-					return this.items( next?.map( item => ( item as $hyoo_crus_node ).ref() ) )
-						.map( $hyoo_crus_vary_cast_ref )
-						.filter( $mol_guard_defined )
-						.map( ref => realm!.Node( ref, Node ) )
-				}
-				
-				@ $mol_action
-				remote_make( preset = $hyoo_crus_rank_public ): Vals[number] {
-					const land = this.realm()!.land_grab( preset )
-					this.splice([ land.ref() ])
-					return land.Node( ( Value as any )() ).Item('')
-				}
-				
-				@ $mol_action
-				local_make( idea?: number ): Vals[number] {
-					const area = $hyoo_crus_area_of( this.head() )
-					const self = this.land().self_make( area, idea )
-					const node = this.land().Node( ( Value as any )() ).Item( self )
-					this.splice([ node.ref() ])
-					return node
-				}
-				
-			}
-			
-			return Ref
 		}
 		
 		;[ $mol_dev_format_head ]() {
@@ -191,16 +130,89 @@ namespace $ {
 		
 	}
 
-	export class $hyoo_crus_list_bin extends $hyoo_crus_list.of( 'bin' ) {}
-	export class $hyoo_crus_list_bool extends $hyoo_crus_list.of( 'bool' ) {}
-	export class $hyoo_crus_list_int extends $hyoo_crus_list.of( 'int' ) {}
-	export class $hyoo_crus_list_real extends $hyoo_crus_list.of( 'real' ) {}
-	export class $hyoo_crus_list_ref extends $hyoo_crus_list.of( 'ref' ) {}
-	export class $hyoo_crus_list_str extends $hyoo_crus_list.of( 'str' ) {}
-	export class $hyoo_crus_list_time extends $hyoo_crus_list.of( 'time' ) {}
-	export class $hyoo_crus_list_json extends $hyoo_crus_list.of( 'json' ) {}
-	export class $hyoo_crus_list_jsan extends $hyoo_crus_list.of( 'jsan' ) {}
-	export class $hyoo_crus_list_xml extends $hyoo_crus_list.of( 'dom' ) {}
-	export class $hyoo_crus_list_tree extends $hyoo_crus_list.of( 'tree' ) {}
+	export function $hyoo_crus_list_vary<
+		Parse extends $mol_data_value
+	>( parse: Parse ) {
 
+		abstract class Narrow extends $hyoo_crus_list {
+
+			static parse = parse;
+
+			@ $mol_mem
+			value( next?: readonly ReturnType< Parse >[] ): readonly ReturnType< Parse >[] {
+				return this.items( next?.map( parse ) ).map( parse )
+			}
+
+		}
+
+		return Narrow
+	}
+
+	export class $hyoo_crus_list_bin extends $hyoo_crus_list_vary( $hyoo_crus_vary_cast_bin ) {}
+	export class $hyoo_crus_list_bool extends $hyoo_crus_list_vary( $hyoo_crus_vary_cast_bool ) {}
+	export class $hyoo_crus_list_int extends $hyoo_crus_list_vary( $hyoo_crus_vary_cast_int ) {}
+	export class $hyoo_crus_list_real extends $hyoo_crus_list_vary( $hyoo_crus_vary_cast_real ) {}
+	export class $hyoo_crus_list_ref extends $hyoo_crus_list_vary( $hyoo_crus_vary_cast_ref ) {}
+	
+	export class $hyoo_crus_list_str extends $hyoo_crus_list_vary( $hyoo_crus_vary_cast_str ) {}
+	export class $hyoo_crus_list_time extends $hyoo_crus_list_vary( $hyoo_crus_vary_cast_time ) {}
+	export class $hyoo_crus_list_dur extends $hyoo_crus_list_vary( $hyoo_crus_vary_cast_dur ) {}
+	export class $hyoo_crus_list_range extends $hyoo_crus_list_vary( $hyoo_crus_vary_cast_range ) {}
+	export class $hyoo_crus_list_json extends $hyoo_crus_list_vary( $hyoo_crus_vary_cast_json ) {}
+	export class $hyoo_crus_list_jsan extends $hyoo_crus_list_vary( $hyoo_crus_vary_cast_jsan ) {}
+	export class $hyoo_crus_list_xml extends $hyoo_crus_list_vary( $hyoo_crus_vary_cast_dom ) {}
+	export class $hyoo_crus_list_tree extends $hyoo_crus_list_vary( $hyoo_crus_vary_cast_tree ) {}
+
+	export function $hyoo_crus_list_ref_to< Value extends any >( Value: Value ) {
+			
+		type Vals = readonly $mol_type_result< $mol_type_result< Value > >[]
+		
+		class Ref extends (
+			$hyoo_crus_list as $mol_type_erase< typeof $hyoo_crus_list, 'value' >
+		) {
+			
+			static Value = Value
+			
+			static toJSON() {
+				return '$hyoo_crus_list_to(()=>' + ( Value as any )() + ')'
+			}
+			
+			value( next?: Vals ): Vals {
+				return this.remote_list( next )
+			}
+			
+			/** List of referenced Nodes */
+			@ $mol_mem
+			remote_list( next?: Vals ): Vals {
+				const realm = this.realm()
+				const Node = ( Value as any )()
+				return this.items( next?.map( item => ( item as $hyoo_crus_node ).ref() ) )
+					.map( $hyoo_crus_vary_cast_ref )
+					.filter( $mol_guard_defined )
+					.map( ref => realm!.Node( ref, Node ) )
+			}
+			
+			/** Add new Node which placed in new Land */
+			@ $mol_action
+			remote_make( preset: $hyoo_crus_rank_preset ): Vals[number] {
+				const land = this.realm()!.land_grab( preset )
+				this.splice([ land.ref() ])
+				return land.Node( ( Value as any )() ).Item('')
+			}
+			
+			/** Add new Node which placed in same Land */
+			@ $mol_action
+			local_make( idea?: number ): Vals[number] {
+				const area = $hyoo_crus_area_of( this.head() )
+				const self = this.land().self_make( area, idea )
+				const node = this.land().Node( ( Value as any )() ).Item( self )
+				this.splice([ node.ref() ])
+				return node
+			}
+			
+		}
+		
+		return Ref
+	}
+	
 }

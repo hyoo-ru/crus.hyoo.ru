@@ -9,11 +9,13 @@ namespace $ {
 			return this
 		}
 		
+		/** List of Vary keys. */
 		@ $mol_mem
 		keys(): readonly $hyoo_crus_vary_type[] {
 			return this.items()
 		}
 		
+		/** Inner Node by key. */
 		dive< Node extends typeof $hyoo_crus_node >(
 			key: $hyoo_crus_vary_type,
 			Node: Node,
@@ -22,29 +24,6 @@ namespace $ {
 			if( this.can_change() && auto !== undefined ) this.has( key, true, Node.tag )
 			const unit = this.find( key )
 			return unit ? this.land().Node( Node ).Item( unit.self() ) : null
-		}
-		
-		// @ $mol_mem_key
-		static to<
-			Value extends { tag: keyof typeof $hyoo_crus_gist_tag, new(): { value: any } }
-		>( Value: Value ) {
-			
-			return class Dict extends $hyoo_crus_dict {
-				
-				Value = Value
-				
-				key( key: $hyoo_crus_vary_type ) {
-					this.has( key, true, Value.tag )
-					const unit = this.find( key )!
-					return this.land().Node( this.Value as any as typeof $hyoo_crus_node ).Item( unit.self() ) as InstanceType< Value >
-				}
-				
-				static toString() {
-					return '$hyoo_crus_dict.to(' + Value + ')'
-				}
-				
-			}
-			
 		}
 		
 		static with<
@@ -56,8 +35,9 @@ namespace $ {
 				new( ...args: any[] ): InstanceType< This > & {
 					[ Key in keyof Schema ]: InstanceType< Schema[ Key ] > | null
 				} & {
-					readonly [ Key in keyof Schema as Uncapitalize< Extract< Key, string > > ]:
-						( next?: ReturnType< InstanceType< Schema[ Key ] >[ 'value' ] > )=> ReturnType< InstanceType< Schema[ Key ] >[ 'value' ] > | null
+					readonly [ Key in keyof Schema as Uncapitalize< Extract< Key, string > > ]: (
+						next?: ReturnType< InstanceType< Schema[ Key ] >[ 'value' ] >
+					)=> ReturnType< InstanceType< Schema[ Key ] >[ 'value' ] > | null
 				}
 			}
 
@@ -70,7 +50,11 @@ namespace $ {
 				} } )
 				
 				Object.defineProperty( Entity.prototype, field, {
-					value: function( next?: any ){ return ( next === undefined && !this.has( field ) ) ? null : this[ Field ].value( next ) }
+					value: function( next?: any ){
+						return ( next === undefined && !this.has( field ) )
+							? null 
+							: this[ Field ].value( next )
+					}
 				} )
 				
 				$mol_wire_field( Entity.prototype, Field as any )
@@ -107,6 +91,29 @@ namespace $ {
 				$mol_dev_format_td( {}, $mol_dev_format_auto(this.val) ),
 			)
 		}
+	}
+	
+	export function $hyoo_crus_dict_to<
+		Value extends { tag: keyof typeof $hyoo_crus_gist_tag, new(): { value: any } }
+	>( Value: Value ) {
+		
+		return class Dict extends $hyoo_crus_dict {
+			
+			Value = Value
+			
+			key( key: $hyoo_crus_vary_type, auto?: any ) {
+				this.has( key, auto === undefined ? undefined : true, Value.tag )
+				const unit = this.find( key )!
+				if( !unit ) return null
+				return this.land().Node( this.Value as any as typeof $hyoo_crus_node ).Item( unit.self() ) as InstanceType< Value >
+			}
+			
+			static toString() {
+				return '$hyoo_crus_dict_to(' + Value + ')'
+			}
+			
+		}
+		
 	}
 	
 }

@@ -52,8 +52,12 @@ namespace $ {
 			return this.Data( $hyoo_crus_base )
 		}
 		
-		Profile< Node extends typeof $hyoo_crus_node >( app: string, Node: Node, auto?: any ) {
-			return this.base().Profile( app, auto )?.Data( Node ) ?? null
+		Profile< Node extends typeof $hyoo_crus_node >(
+			app: string,
+			Node: Node,
+			preset?: $hyoo_crus_rank_preset
+		) {
+			return this.base().profile( app, preset )?.Data( Node ) ?? null
 		}
 		
 		@ $mol_mem_key
@@ -697,7 +701,7 @@ namespace $ {
 				units: units.length,
 			})
 			
-			const errors = this.apply_unit( units, !!'skip_check' ).filter( Boolean )
+			const errors = this.apply_unit_trust( units, !!'skip_check' ).filter( Boolean )
 			
 			if( errors.length ) this.$.$mol_log3_fail({
 				place: this,
@@ -708,8 +712,11 @@ namespace $ {
 		
 		@ $mol_mem
 		saving() {
-			
 			this.$.$mol_wait_timeout(250)
+			this.save()
+		}
+		
+		save() {
 			
 			const yard = this.realm()?.yard()
 			if( !yard ) return

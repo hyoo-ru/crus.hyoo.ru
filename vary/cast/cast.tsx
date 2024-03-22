@@ -34,12 +34,12 @@ namespace $ {
 			bin: vary => BigInt( vary.length ),
 			bool: vary => BigInt( vary ),
 			int: vary => vary,
-			real: vary => Number.isFinite( vary ) ? BigInt( Math.trunc( vary ) ) : 0n,
+			real: vary => Number.isFinite( vary ) ? BigInt( Math.trunc( vary ) ) : null,
 			ref: vary => null,//$mol_base64_ae_decode( vary.description!.slice( 0, 16 ) ) + ( BigInt( vary.land() ) << 64n ) + ( BigInt( vary.head() ) << 96n ),
 			
 			str: vary => {
 				try {
-					return BigInt( vary )
+					return vary ? BigInt( vary ) : null
 				} catch {
 					return null
 				}
@@ -138,14 +138,32 @@ namespace $ {
 			bin:   vary => null,
 			bool:  vary => null,
 			int:   vary => new $mol_time_moment( Number( vary & 0xFFFFFFFFFFFFn ) ),
-			real:  vary => new $mol_time_moment( vary ),
+			real:  vary => {
+				try {
+					return new $mol_time_moment( vary )
+				} catch {
+					return null
+				}
+			},
 			ref:   vary => null,
 			
-			str:   vary => new $mol_time_moment( vary ),
+			str:   vary => {
+				try {
+					return vary ? new $mol_time_moment( vary ) : null
+				} catch {
+					return null
+				}
+			},
 			time:  vary => vary,
 			dur:   vary => null,
 			range: vary => null,
-			json:  vary => new $mol_time_moment( vary as any ),
+			json:  vary => {
+				try {
+					return new $mol_time_moment( vary )
+				} catch {
+					return null
+				}
+			},
 			jsan:  vary => null,
 			dom:   vary => null,
 			tree:  vary => null,
@@ -160,10 +178,22 @@ namespace $ {
 			bin:   vary => null,
 			bool:  vary => null,
 			int:   vary => new $mol_time_duration( Number( vary & 0xFFFFFFFFFFFFn ) ),
-			real:  vary => new $mol_time_duration( vary ),
+			real:  vary => {
+				try {
+					return new $mol_time_duration( vary )
+				} catch {
+					return null
+				}
+			},
 			ref:   vary => null,
 			
-			str:   vary => new $mol_time_duration( vary ),
+			str:   vary => {
+				try {
+					return new $mol_time_duration( vary )
+				} catch {
+					return null
+				}
+			},
 			time:  vary => vary,
 			dur:   vary => null,
 			range: vary => null,
@@ -185,11 +215,23 @@ namespace $ {
 			real:  vary => null,
 			ref:   vary => null,
 			
-			str:   vary => new $mol_time_interval( vary ),
+			str:   vary => {
+				try {
+					return vary ? new $mol_time_interval( vary ) : null
+				} catch {
+					return null
+				}
+			},
 			time:  vary => new $mol_time_interval({ start: vary, duration: 0 }),
 			dur:   vary => null,
 			range: vary => vary,
-			json:  vary => new $mol_time_moment( vary as any ),
+			json:  vary => {
+				try {
+					return new $mol_time_interval( vary )
+				} catch {
+					return null
+				}
+			},
 			jsan:  vary => null,
 			dom:   vary => null,
 			tree:  vary => null,
@@ -201,20 +243,29 @@ namespace $ {
 		return $hyoo_crus_vary_switch( vary, {
 			
 			nil:   vary => null,
-			bin:   vary => { bin: [ ... vary ] },
-			bool:  vary => { bool: vary },
-			int:   vary => { int: Number( vary ) },
-			real:  vary => { real: vary },
-			ref:   vary => { ref: vary.description! },
+			bin:   vary => null,
+			bool:  vary => null,
+			int:   vary => null,
+			real:  vary => null,
+			ref:   vary => null,
 			
-			str:   vary => Object( JSON.parse( vary ) ),
+			str:   vary => {
+				if( !vary ) return null
+				try {
+					const res = JSON.parse( vary )
+					if( typeof res === 'object' ) return res
+					return null
+				} catch {
+					return null
+				}
+			},
 			time:  vary => ({ ... vary }),
 			dur:   vary => ({ ... vary }),
 			range: vary => ({ ... vary }),
 			json:  vary => vary,
 			jsan:  vary => Object( vary[0] ),
-			dom:   vary => { dom: $mol_dom_serialize( vary ) },
-			tree:  vary => { tree: vary.toString() },
+			dom:   vary => null,
+			tree:  vary => null,
 			
 		})
 	}
@@ -226,10 +277,17 @@ namespace $ {
 			bin:   vary => [ ... vary ],
 			bool:  vary => [ vary ],
 			int:   vary => [ vary.toString() ],
-			real:  vary => [ vary ],
+			real:  vary => Number.isFinite( vary ) ? [ vary ] : null,
 			ref:   vary => [ vary.description! ],
 			
-			str:   vary => [].concat( JSON.parse( vary ) ),
+			str:   vary => {
+				if( !vary ) return null
+				try {
+					return [].concat( JSON.parse( vary ) )
+				} catch {
+					return [ vary ]
+				}
+			},
 			time:  vary => [ vary.toJSON() ],
 			dur:   vary => [ vary.toJSON() ],
 			range: vary => [ vary.toJSON() ],
@@ -251,7 +309,14 @@ namespace $ {
 			real:  vary => <body>{ vary }</body>,
 			ref:   vary => <body>{ vary.description }</body>,
 			
-			str:   vary => $mol_dom_parse( vary, 'application/xhtml+xml' ).documentElement,
+			str:   vary => {
+				if( !vary ) return null
+				try {
+					return vary ? $mol_dom_parse( vary, 'application/xhtml+xml' ).documentElement : null
+				} catch {
+					return <body>{ vary }</body>
+				}
+			},
 			time:  vary => <body>{ vary }</body>,
 			dur:   vary => <body>{ vary }</body>,
 			range: vary => <body>{ vary }</body>,
@@ -273,7 +338,14 @@ namespace $ {
 			real:  vary => $mol_tree2.struct( vary.toString() ),
 			ref:   vary => $mol_tree2.struct( vary.description! ),
 			
-			str:   vary => $$.$mol_tree2_from_string( vary ),
+			str:   vary => {
+				if( !vary ) return null
+				try {
+					return $$.$mol_tree2_from_string( vary )
+				} catch {
+					return $$.$mol_tree2.data( vary )
+				}
+			},
 			time:  vary => $mol_tree2.struct( vary.toString() ),
 			dur:   vary => $mol_tree2.struct( vary.toString() ),
 			range: vary => $mol_tree2.struct( vary.toString() ),

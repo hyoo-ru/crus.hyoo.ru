@@ -1,25 +1,25 @@
 namespace $ {
 	
 	export class $hyoo_crus_flex_thing extends $hyoo_crus_dict.with({
-		Kind: $hyoo_crus_reg.ref( ()=> $hyoo_crus_flex_kind ), // Schema of fields
+		Kind: $hyoo_crus_reg_ref_to( ()=> $hyoo_crus_flex_kind ), // Schema of fields
 		Title: $hyoo_crus_reg_str,
 	}) {}
 	
 	export class $hyoo_crus_flex_kind extends $hyoo_crus_flex_thing.with({
-		Props: $hyoo_crus_list.ref( ()=> $hyoo_crus_flex_prop ),
+		Props: $hyoo_crus_list_ref_to( ()=> $hyoo_crus_flex_prop ),
 	}) {}
 	
 	export class $hyoo_crus_flex_prop extends $hyoo_crus_flex_thing.with({
 		Key: $hyoo_crus_reg_str, // Key to store value
 		Type: $hyoo_crus_reg_str, // Type of value
-		Target: $hyoo_crus_reg.ref( ()=> $hyoo_crus_flex_kind ), // Target kind
-		Enum: $hyoo_crus_reg.ref( ()=> $hyoo_crus_list ), // Variants of values
+		Target: $hyoo_crus_reg_ref_to( ()=> $hyoo_crus_flex_kind ), // Target kind
+		Enum: $hyoo_crus_reg_ref_to( ()=> $hyoo_crus_list ), // Variants of values
 		Base: $hyoo_crus_reg, // Base value
 	}) {}
 	
 	export class $hyoo_crus_flex_domain extends $hyoo_crus_flex_thing.with({
-		Kinds: $hyoo_crus_list.ref( ()=> $hyoo_crus_flex_kind ),
-		Props: $hyoo_crus_list.ref( ()=> $hyoo_crus_flex_prop ),
+		Kinds: $hyoo_crus_list_ref_to( ()=> $hyoo_crus_flex_kind ),
+		Props: $hyoo_crus_list_ref_to( ()=> $hyoo_crus_flex_prop ),
 		Types: $hyoo_crus_list_str,
 	}) {
 		
@@ -28,6 +28,7 @@ namespace $ {
 			
 			const domain = land.Data( this )
 			if( domain.units().length ) return domain
+			// if( land.auth().lord() !== $hyoo_crus_ref( 'JinYqktA_qNR7zÆe8' ) ) return domain
 			
 			domain.title( 'Base Domain' )
 			domain.types([ 'reg', 'str', 'ref', 'list', 'dict' ])
@@ -138,10 +139,10 @@ namespace $ {
 			domain_kinds.target( Kind )
 			domain_props.target( Prop )
 			
-			thing_kind.Enum!.value_ref( domain.Kinds!.ref() )
-			prop_type.Enum!.value_ref( domain.Types!.ref() )
-			prop_target.Enum!.value_ref( domain.Kinds!.ref() )
-			prop_enum.Enum!.value_ref( domain.ref() )
+			thing_kind.Enum!.value_vary( domain.Kinds!.ref() )
+			prop_type.Enum!.value_vary( domain.Types!.ref() )
+			prop_target.Enum!.value_vary( domain.Kinds!.ref() )
+			prop_enum.Enum!.value_vary( domain.ref() )
 			
 			thing_title.base( '' )
 			thing_kind.base( Thing.ref() )

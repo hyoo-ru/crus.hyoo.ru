@@ -40,7 +40,7 @@ namespace $ {
 		bool  = 0b00010, // 1b * 32 * 8
 		int   = 0b00011, // 8B * 4
 		real  = 0b00100, // 8B * 4
-		ref   = 0b00101, // 12B + 6B + 6B = 24B
+		ref   = 0b00101, // 12B + 6B = 18B
 		
 		str   = 0b10000,
 		time  = 0b10001, // iso8601 moment
