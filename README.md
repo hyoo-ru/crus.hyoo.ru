@@ -168,6 +168,11 @@
 - **Prev** - Previous Node id in the siblings list.
 - **Next** - Next Node id in the siblings list.
 - **Seat** - Position in the list.
+- **Tag** - Hint how interpretate inner Units.
+  - **term** - irnore.
+  - **solo** - ignore all after first.
+  - **vals** - list of values.
+  - **keys** - list of keys.
 
 - **Time** - Monotonic time as count of ms from unix epoch.
 - **Data** - Serialized inforation. Up to 32B.
@@ -175,6 +180,7 @@
 - **Rock** - BLOB identified by Hash.
 
 - **Vary** - Supported primitive types.
+- **Tip** - Hint how to interpretate Data.
   - **Nil** - No data.
   - **Bin** - Binary.
   - **bool** - Boolean.
