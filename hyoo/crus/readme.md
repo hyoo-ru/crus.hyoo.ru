@@ -251,8 +251,8 @@ export class $my_app extends $mol_object {
 
 ![](diagram/crus-reg.png)
 
-- `$hyoo_crus_reg` - atomic dynamic register
-- `$hyoo_crus_reg_vary` - atomic narrowed register factory
+- `$hyoo_crus_reg` - atomic narrowed register factory
+- `$hyoo_crus_reg_vary` - atomic dynamic register
 - `$hyoo_crus_reg_bin` - atomic non empty binary
 - `$hyoo_crus_reg_bool` - atomic boolean
 - `$hyoo_crus_reg_int` - atomic int64
@@ -274,8 +274,8 @@ export class $my_app extends $mol_object {
 
 ![](diagram/crus-list.png)
 
-- `$hyoo_crus_list` - mergeable list of atomic vary types
-- `$hyoo_crus_list_vary` - mergeable list of atomic narrowed list factory
+- `$hyoo_crus_list` - mergeable list of atomic vary type factory
+- `$hyoo_crus_list_vary` - mergeable list of atomic vary types
 - `$hyoo_crus_list_bin` - mergeable list of atomic non empty binaries
 - `$hyoo_crus_list_bool` - mergeable list of atomic booleans
 - `$hyoo_crus_list_int` - mergeable list of atomic int64s
