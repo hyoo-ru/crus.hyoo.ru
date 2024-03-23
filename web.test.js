@@ -4572,7 +4572,7 @@ var $;
         },
         'Land fork & merge'($) {
             const realm = $hyoo_crus_realm.make({ $ });
-            const home = realm.home();
+            const home = realm.home().land();
             const left = home.fork();
             home.Data($hyoo_crus_list_vary).items(['foo', 'xxx']);
             $mol_assert_equal(home.Data($hyoo_crus_list_vary).items(), ['foo', 'xxx']);
@@ -4597,7 +4597,7 @@ var $;
         },
         'Inner refs is relative to land'($) {
             const realm = $hyoo_crus_realm.make({ $ });
-            const Alice = realm.home();
+            const Alice = realm.home().land();
             const Bella = Alice.fork();
             const alice_val = Alice.Node($hyoo_crus_atom_str).Item('qwertyui');
             const bella_val = Bella.Node($hyoo_crus_atom_str).Item('qwertyui');
@@ -5224,7 +5224,7 @@ var $;
             },
             "Narrow registers"($) {
                 const realm = $hyoo_crus_realm.make({ $ });
-                const land = realm.home();
+                const land = realm.home().land();
                 const bin = land.Node($hyoo_crus_atom_bin).Item('11111111');
                 $mol_assert_equal(bin.value(), null);
                 bin.value(new Uint8Array([1, 2, 3]));
@@ -5249,7 +5249,7 @@ var $;
             },
             "Hyper link to another land"($) {
                 const realm = $hyoo_crus_realm.make({ $ });
-                const land = realm.home();
+                const land = realm.home().land();
                 const reg = land.Node($hyoo_crus_atom_ref_to(() => $hyoo_crus_atom_vary)).Item('11111111');
                 const remote = reg.remote_ensure($hyoo_crus_rank_public);
                 $mol_assert_unique(reg.land(), remote.land());
@@ -5258,7 +5258,7 @@ var $;
             },
             "Register with linked nodes"($) {
                 const realm = $hyoo_crus_realm.make({ $ });
-                const land = realm.home();
+                const land = realm.home().land();
                 const str = land.Node($hyoo_crus_atom_str).Item('11111111');
                 const ref = land.Node($hyoo_crus_atom_ref_to(() => $hyoo_crus_atom_str)).Item('11111111');
                 $mol_assert_equal(ref.remote(), null);
@@ -5269,7 +5269,7 @@ var $;
                 class FileType extends $hyoo_crus_atom_enum(['file', 'dir', 'link']) {
                 }
                 const realm = $hyoo_crus_realm.make({ $ });
-                const land = realm.home();
+                const land = realm.home().land();
                 const type = land.Data(FileType);
                 $mol_assert_equal(type.value(), null);
                 type.value('file');
@@ -5344,7 +5344,7 @@ var $;
                 }) {
                 }
                 const realm = $hyoo_crus_realm.make({ $ });
-                const land = realm.home();
+                const land = realm.home().land();
                 const user = land.Node(User).Item('11111111');
                 $mol_assert_equal(user.title(), user.Title.value(), null);
                 $mol_assert_equal(user.account(), user.Account.remote(), null);
@@ -5378,11 +5378,11 @@ var $;
     $mol_test({
         'Per app profiles'($) {
             const realm = $hyoo_crus_realm.make({ $ });
-            const base = realm.home().base();
-            const profile1 = base.profile('my_foo', $hyoo_crus_rank_public);
-            const profile2 = base.profile('my_bar', $hyoo_crus_rank_public);
+            const base = realm.home();
+            const profile1 = base.room('my_foo', $hyoo_crus_dict, $hyoo_crus_rank_public);
+            const profile2 = base.room('my_bar', $hyoo_crus_dict, $hyoo_crus_rank_public);
             $mol_assert_unique(base.land(), profile1, profile2);
-            $mol_assert_equal(base.Profiles?.keys(), ['my_bar', 'my_foo']);
+            $mol_assert_equal(base.Rooms?.keys(), ['my_bar', 'my_foo']);
         },
     });
 })($ || ($ = {}));

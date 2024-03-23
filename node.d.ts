@@ -3181,8 +3181,7 @@ declare namespace $ {
         gists: $mol_wire_dict<string, $mol_wire_dict<string, $hyoo_crus_gist>>;
         self_all: $mol_wire_set<string>;
         self_make(area: keyof typeof $hyoo_crus_area, idea?: number): string;
-        base(): $hyoo_crus_base;
-        Profile<Node extends typeof $hyoo_crus_node>(app: string, Node: Node, preset?: $hyoo_crus_rank_preset): InstanceType<Node> | null;
+        home(): $hyoo_crus_home;
         Data<Node extends typeof $hyoo_crus_node>(Node: Node): InstanceType<Node>;
         Meta(): $hyoo_crus_meta;
         Node<Node extends typeof $hyoo_crus_node>(Node: Node): $hyoo_crus_fund<string, InstanceType<Node>>;
@@ -3285,10 +3284,10 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    const $hyoo_crus_base_base: typeof $hyoo_crus_dict & (new (...args: any[]) => $hyoo_crus_dict & {
+    const $hyoo_crus_home_base: typeof $hyoo_crus_dict & (new (...args: any[]) => $hyoo_crus_dict & {
         Title: $hyoo_crus_atom_str | null;
         Selection: $hyoo_crus_atom_str | null;
-        Profiles: {
+        Rooms: {
             Value: {
                 new (): {
                     value(next?: $hyoo_crus_dict | null | undefined): $hyoo_crus_dict | null;
@@ -3404,7 +3403,7 @@ declare namespace $ {
     } & {
         readonly title: (next?: string | null | undefined) => string | null;
         readonly selection: (next?: string | null | undefined) => string | null;
-        readonly profiles: (next?: {
+        readonly rooms: (next?: {
             Value: {
                 new (): {
                     value(next?: $hyoo_crus_dict | null | undefined): $hyoo_crus_dict | null;
@@ -3630,8 +3629,8 @@ declare namespace $ {
             last_change: () => $mol_time_moment | null;
         } | null;
     });
-    export class $hyoo_crus_base extends $hyoo_crus_base_base {
-        profile(app: string, preset?: $hyoo_crus_rank_preset): $hyoo_crus_land | null;
+    export class $hyoo_crus_home extends $hyoo_crus_home_base {
+        room<Node extends typeof $hyoo_crus_node>(app: string, Node: Node, preset?: $hyoo_crus_rank_preset): InstanceType<Node> | null;
     }
     export {};
 }
@@ -3642,7 +3641,7 @@ declare namespace $ {
             $hyoo_crus_ref: symbol;
         }, $hyoo_crus_land>;
         yard(): $hyoo_crus_yard;
-        home(): $hyoo_crus_land;
+        home(): $hyoo_crus_home;
         land_grab(preset?: $hyoo_crus_rank_preset): $hyoo_crus_land;
         Land(ref: $hyoo_crus_ref): $hyoo_crus_land;
         Node<Node extends typeof $hyoo_crus_node>(ref: $hyoo_crus_ref, Node: Node): InstanceType<Node>;

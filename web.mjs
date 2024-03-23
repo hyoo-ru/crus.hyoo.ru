@@ -12927,11 +12927,8 @@ var $;
             }
             $mol_fail(new Error(`Too long self generation`));
         }
-        base() {
-            return this.Data($hyoo_crus_base);
-        }
-        Profile(app, Node, preset) {
-            return this.base().profile(app, preset)?.Data(Node) ?? null;
+        home() {
+            return this.Data($hyoo_crus_home);
         }
         Data(Node) {
             return this.Node(Node).Item('');
@@ -14143,16 +14140,16 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    class $hyoo_crus_base extends $hyoo_crus_dict.with({
+    class $hyoo_crus_home extends $hyoo_crus_dict.with({
         Title: $hyoo_crus_atom_str,
         Selection: $hyoo_crus_atom_str,
-        Profiles: $hyoo_crus_dict_to($hyoo_crus_atom_ref_to(() => $hyoo_crus_dict)),
+        Rooms: $hyoo_crus_dict_to($hyoo_crus_atom_ref_to(() => $hyoo_crus_dict)),
     }) {
-        profile(app, preset) {
-            return this.Profiles?.key(app, null)?.remote_ensure(preset)?.land() ?? null;
+        room(app, Node, preset) {
+            return this.Rooms?.key(app, null)?.remote_ensure(preset)?.cast(Node) ?? null;
         }
     }
-    $.$hyoo_crus_base = $hyoo_crus_base;
+    $.$hyoo_crus_home = $hyoo_crus_home;
 })($ || ($ = {}));
 
 ;
@@ -14167,7 +14164,7 @@ var $;
             });
         }
         home() {
-            return this.Land(this.$.$hyoo_crus_auth.current().lord());
+            return this.Land(this.$.$hyoo_crus_auth.current().lord()).home();
         }
         land_grab(preset = $hyoo_crus_rank_public) {
             const knight = this.$.$hyoo_crus_auth.grab();
@@ -15957,7 +15954,7 @@ var $;
     (function ($$) {
         class $hyoo_crus_flex_form extends $.$hyoo_crus_flex_form {
             kind() {
-                const land = this.node().realm().home().Profile('$hyoo_crus_flex', $hyoo_crus_dict, $hyoo_crus_rank_public).land();
+                const land = this.node().realm().home().room('$hyoo_crus_flex', $hyoo_crus_flex_domain, $hyoo_crus_rank_public).land();
                 const domain = $hyoo_crus_flex_domain.ensure(land);
                 return this.node().cast($hyoo_crus_flex_thing).kind() ?? domain.kinds()?.[2] ?? null;
             }
@@ -16434,7 +16431,7 @@ var $;
             return ['', offset];
         }
         selection(lord, next) {
-            const base = this.realm().Land(lord).Data($hyoo_crus_base);
+            const base = this.realm().Land(lord).Data($hyoo_crus_home);
             if (next) {
                 base.selection(next.map(offset => this.point_by_offset(offset).join(':')).join('|'));
                 return next;

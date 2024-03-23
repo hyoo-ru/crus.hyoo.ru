@@ -7213,11 +7213,8 @@ var $;
             }
             $mol_fail(new Error(`Too long self generation`));
         }
-        base() {
-            return this.Data($hyoo_crus_base);
-        }
-        Profile(app, Node, preset) {
-            return this.base().profile(app, preset)?.Data(Node) ?? null;
+        home() {
+            return this.Data($hyoo_crus_home);
         }
         Data(Node) {
             return this.Node(Node).Item('');
@@ -8269,16 +8266,16 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    class $hyoo_crus_base extends $hyoo_crus_dict.with({
+    class $hyoo_crus_home extends $hyoo_crus_dict.with({
         Title: $hyoo_crus_atom_str,
         Selection: $hyoo_crus_atom_str,
-        Profiles: $hyoo_crus_dict_to($hyoo_crus_atom_ref_to(() => $hyoo_crus_dict)),
+        Rooms: $hyoo_crus_dict_to($hyoo_crus_atom_ref_to(() => $hyoo_crus_dict)),
     }) {
-        profile(app, preset) {
-            return this.Profiles?.key(app, null)?.remote_ensure(preset)?.land() ?? null;
+        room(app, Node, preset) {
+            return this.Rooms?.key(app, null)?.remote_ensure(preset)?.cast(Node) ?? null;
         }
     }
-    $.$hyoo_crus_base = $hyoo_crus_base;
+    $.$hyoo_crus_home = $hyoo_crus_home;
 })($ || ($ = {}));
 
 ;
@@ -8293,7 +8290,7 @@ var $;
             });
         }
         home() {
-            return this.Land(this.$.$hyoo_crus_auth.current().lord());
+            return this.Land(this.$.$hyoo_crus_auth.current().lord()).home();
         }
         land_grab(preset = $hyoo_crus_rank_public) {
             const knight = this.$.$hyoo_crus_auth.grab();
