@@ -1,0 +1,24 @@
+[hyoo_crus_status_option_row] {
+	padding: var(--mol_gap_text);
+}
+
+[hyoo_crus_status_well] {
+	color: var(--mol_theme_current);
+}
+
+[hyoo_crus_status_fail] {
+	color: var(--mol_theme_focus);
+}
+
+[hyoo_crus_status][mol_view_error="Promise"] {
+	animation: hyoo_crus_status_wait 1s linear infinite;
+}
+
+@keyframes hyoo_crus_status_wait {
+	from {
+		opacity: 1;
+	}
+	to {
+		opacity: .5;
+	}
+}

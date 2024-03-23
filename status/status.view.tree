@@ -1,0 +1,17 @@
+$hyoo_crus_status $mol_select
+	minimal_width 40
+	minimal_height 40
+	realm $hyoo_crus_realm
+	Filter null
+	option_content* /
+		<= Option_logo* $mol_avatar
+			id <= master_id* \
+		<= option_label*
+	trigger_content /
+		<= Link $mol_link
+			uri <= master_link \
+			sub <= link_content /
+				<= Well $mol_avatar
+					id <= master_link \
+				<= Fail $mol_icon_sync_off
+			hint <= message <= hint \Sync status
