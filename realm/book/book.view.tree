@@ -7,8 +7,21 @@ $hyoo_crus_realm_book $mol_book2_catalog
 		node <= node* $hyoo_crus_node
 		Close <= Spread_close
 	menu_foot /
+		<= Wipe_pick $mol_pick
+			hint \Wipe database
+			clicks? <=> wipe? null
+			align_hor \right
+			trigger_content /
+				<= Wipe_icon $mol_icon_delete_forever
+			bubble_content /
+				\Double to wipe database
+		<= Update $mol_button_open
+			hint \Upload dump
+			files? <=> update? /
 		<= Land_add $mol_select
 			hint \Grab new Land
+			Filter null
+			align_hor \left
 			trigger_content /
 				<= Land_adding_icon $mol_icon_plus
 			dictionary *
@@ -17,14 +30,3 @@ $hyoo_crus_realm_book $mol_book2_catalog
 				lobby \📢 Public Lobby
 				orgy \✍ Public Orgy
 			value? <=> land_add? \
-		<= Update $mol_button_open
-			hint \Upload dump
-			files? <=> update? /
-		<= Wipe_pick $mol_pick
-			hint \Wipe database
-			clicks? <=> wipe? null
-			align_hor \left
-			trigger_content /
-				<= Wipe_icon $mol_icon_delete_forever
-			bubble_content /
-				\Double to wipe database

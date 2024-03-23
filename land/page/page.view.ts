@@ -6,7 +6,7 @@ namespace $.$$ {
 		}
 		
 		override theme() {
-			return this.encrypted() ? '$mol_theme_special' : '$mol_theme_base'
+			return this.encrypted() ? '$mol_theme_special' : null
 		}
 		
 		override encrypted() {
