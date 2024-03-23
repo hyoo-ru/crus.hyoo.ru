@@ -139,7 +139,8 @@
 
 - **🌌Realm** - Whole global graph database which contains Lands.
 - **🌍Land** - Standalone part of Realm which syncs separately, have own rights, and contains Units.
-  - **🏠Home** - Land where Lord is King.
+  - **🏠Home** - Land where Lord is King. Contains only ain info.
+  - **🎶Hall** - Lord's profile with full info.
 - **Lord** - Independent actor with global unique id generated from Auth key.
   - **🤴King** - Lord who have ful rights to Land (with same id).
 - **Area** - Land local Node id namespace.
