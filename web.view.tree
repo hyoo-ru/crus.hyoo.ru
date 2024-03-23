@@ -1066,6 +1066,17 @@ $mol_button_open_native $mol_view
 
 $mol_icon_plus $mol_icon path \M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z
 
+$hyoo_crus_land_grab $mol_select
+	Filter null
+	trigger_content /
+		<= Trigger_icon $mol_icon_plus
+	dictionary *
+		orgy @ \✍ All write
+		lobby @ \📢 All add
+		public @ \🔎 All read
+		private @ \🔐 Private
+	grab? null $hyoo_crus_rank_preset
+
 $hyoo_crus_realm_book $mol_book2_catalog
 	menu_title \🌌 Realm
 	param \ref
@@ -1086,18 +1097,10 @@ $hyoo_crus_realm_book $mol_book2_catalog
 		<= Update $mol_button_open
 			hint \Upload dump
 			files? <=> update? /
-		<= Land_add $mol_select
+		<= Land_add $hyoo_crus_land_grab
 			hint \Grab new Land
-			Filter null
 			align_hor \left
-			trigger_content /
-				<= Land_adding_icon $mol_icon_plus
-			dictionary *
-				private \🔐 Private
-				public \🔎 Public
-				lobby \📢 Public Lobby
-				orgy \✍ Public Orgy
-			value? <=> land_add? \
+			grab? <=> land_add? null $hyoo_crus_rank_preset
 
 $mol_icon_play $mol_icon path \M8,5.14V19.14L19,12.14L8,5.14Z
 

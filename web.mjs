@@ -13524,6 +13524,7 @@ var $;
             unit.time(this.faces.tick());
             unit.peer(auth.peer());
             unit.dest(auth.lord());
+            unit._land = this;
             const secret_closed = $mol_wire_sync(secret_mutual).encrypt(secret_land, unit.salt());
             unit.bill().set(new Uint8Array(secret_closed));
             const error = this.apply_unit_trust([unit])[0];
@@ -17214,6 +17215,61 @@ var $;
 "use strict";
 
 ;
+	($.$hyoo_crus_land_grab) = class $hyoo_crus_land_grab extends ($.$mol_select) {
+		Trigger_icon(){
+			const obj = new this.$.$mol_icon_plus();
+			return obj;
+		}
+		Filter(){
+			return null;
+		}
+		trigger_content(){
+			return [(this.Trigger_icon())];
+		}
+		dictionary(){
+			return {
+				"orgy": (this.$.$mol_locale.text("$hyoo_crus_land_grab_dictionary_orgy")), 
+				"lobby": (this.$.$mol_locale.text("$hyoo_crus_land_grab_dictionary_lobby")), 
+				"public": (this.$.$mol_locale.text("$hyoo_crus_land_grab_dictionary_public")), 
+				"private": (this.$.$mol_locale.text("$hyoo_crus_land_grab_dictionary_private"))
+			};
+		}
+		grab(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+	};
+	($mol_mem(($.$hyoo_crus_land_grab.prototype), "Trigger_icon"));
+	($mol_mem(($.$hyoo_crus_land_grab.prototype), "grab"));
+
+
+;
+"use strict";
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $hyoo_crus_land_grab extends $.$hyoo_crus_land_grab {
+            value(rights) {
+                const preset = {
+                    private: $hyoo_crus_rank_private,
+                    public: $hyoo_crus_rank_public,
+                    lobby: $hyoo_crus_rank_lobby,
+                    orgy: $hyoo_crus_rank_orgy,
+                }[rights];
+                if (preset)
+                    this.grab(preset);
+                return '';
+            }
+        }
+        $$.$hyoo_crus_land_grab = $hyoo_crus_land_grab;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
 	($.$hyoo_crus_realm_book) = class $hyoo_crus_realm_book extends ($.$mol_book2_catalog) {
 		land(id){
 			const obj = new this.$.$hyoo_crus_land();
@@ -17257,27 +17313,15 @@ var $;
 			(obj.files) = (next) => ((this.update(next)));
 			return obj;
 		}
-		Land_adding_icon(){
-			const obj = new this.$.$mol_icon_plus();
-			return obj;
-		}
 		land_add(next){
 			if(next !== undefined) return next;
-			return "";
+			return null;
 		}
 		Land_add(){
-			const obj = new this.$.$mol_select();
+			const obj = new this.$.$hyoo_crus_land_grab();
 			(obj.hint) = () => ("Grab new Land");
-			(obj.Filter) = () => (null);
 			(obj.align_hor) = () => ("left");
-			(obj.trigger_content) = () => ([(this.Land_adding_icon())]);
-			(obj.dictionary) = () => ({
-				"private": "🔐 Private", 
-				"public": "🔎 Public", 
-				"lobby": "📢 Public Lobby", 
-				"orgy": "✍ Public Orgy"
-			});
-			(obj.value) = (next) => ((this.land_add(next)));
+			(obj.grab) = (next) => ((this.land_add(next)));
 			return obj;
 		}
 		menu_title(){
@@ -17309,7 +17353,6 @@ var $;
 	($mol_mem(($.$hyoo_crus_realm_book.prototype), "Wipe_pick"));
 	($mol_mem(($.$hyoo_crus_realm_book.prototype), "update"));
 	($mol_mem(($.$hyoo_crus_realm_book.prototype), "Update"));
-	($mol_mem(($.$hyoo_crus_realm_book.prototype), "Land_adding_icon"));
 	($mol_mem(($.$hyoo_crus_realm_book.prototype), "land_add"));
 	($mol_mem(($.$hyoo_crus_realm_book.prototype), "Land_add"));
 	($mol_mem(($.$hyoo_crus_realm_book.prototype), "realm"));
@@ -17353,19 +17396,11 @@ var $;
                 ][chunks.length];
                 return prefix + suffix;
             }
-            land_add(rights) {
-                const preset = {
-                    private: $hyoo_crus_rank_private,
-                    public: $hyoo_crus_rank_public,
-                    lobby: $hyoo_crus_rank_lobby,
-                    orgy: $hyoo_crus_rank_orgy,
-                }[rights];
-                if (!preset)
-                    return '';
+            land_add(preset) {
                 this.$.$mol_dom_context.location.href = this.$.$mol_state_arg.link({
                     [this.param()]: this.realm().land_grab(preset).ref().description
                 });
-                return '';
+                return null;
             }
             update(files) {
                 const realm = this.realm();
