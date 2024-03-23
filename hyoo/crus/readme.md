@@ -278,8 +278,8 @@ export class $my_app extends $mol_object {
 	
 	// Current user profile for current application
 	@ $mol_mem
-	room() {
-		return this.realm().home().room( '$my_app', $my_person, $hyoo_crus_rank_public )
+	hall() {
+		return this.realm().home().hall_by( $my_person, $hyoo_crus_rank_public )
 	}
 	
 	// Use existen entity by reference
@@ -292,7 +292,7 @@ export class $my_app extends $mol_object {
 	@ $mol_action
 	kid_add( name: string ) {
 		
-		const me = this.room()
+		const me = this.hall()
 		
 		// Populate external entity
 		const kid = me.Kids.remote_make( $hyoo_crus_rank_public )
