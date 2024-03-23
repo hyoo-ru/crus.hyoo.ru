@@ -21,6 +21,7 @@ namespace $ {
 		
 		static embryos = [] as string[]
 		
+		@ $mol_action
 		static grab() {
 			if( this.embryos.length ) return this.from( this.embryos.pop()! )
 			return $mol_wire_sync( this as typeof $hyoo_crus_auth ).generate()

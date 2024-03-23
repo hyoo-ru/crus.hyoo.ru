@@ -15,6 +15,14 @@ namespace $.$$ {
 			}
 		},
 		
+		Land_add: {
+			Trigger: {
+				justify: {
+					content: 'center',
+				},
+			},
+		},
+		
 	} )
 	
 }

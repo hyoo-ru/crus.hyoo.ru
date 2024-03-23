@@ -34,10 +34,22 @@ namespace $.$$ {
 			return prefix + suffix
 		}
 		
-		override land_new() {
+		override land_add( rights?: string ) {
+			
+			const preset = ( {
+				private: $hyoo_crus_rank_private,
+				public: $hyoo_crus_rank_public,
+				lobby: $hyoo_crus_rank_lobby,
+				orgy: $hyoo_crus_rank_orgy,
+			} as Record< string, $hyoo_crus_rank_preset > )[ rights as any ]
+			
+			if( !preset ) return ''
+			
 			this.$.$mol_dom_context.location.href = this.$.$mol_state_arg.link({
-				[ this.param() ]: this.realm().land_grab().ref().description!
+				[ this.param() ]: this.realm().land_grab( preset ).ref().description!
 			})
+			
+			return ''
 		}
 		
 		@ $mol_action
