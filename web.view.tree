@@ -672,6 +672,10 @@ $mol_text_span $mol_paragraph
 		^
 		mol_text_type <= type \
 
+$mol_icon_lock $mol_icon path \M12,17C13.1,17 14,16.1 14,15C14,13.89 13.1,13 12,13C10.9,13 10,13.9 10,15C10,16.1 10.9,17 12,17M18,8C19.1,8 20,8.9 20,10V20C20,21.1 19.1,22 18,22H6C4.9,22 4,21.1 4,20V10C4,8.89 4.9,8 6,8H7V6C7,3.24 9.24,1 12,1C14.76,1 17,3.24 17,6V8H18M12,3C10.34,3 9,4.34 9,6V8H15V6C15,4.34 13.66,3 12,3Z
+
+$mol_check_icon $mol_check
+
 $mol_ghost $mol_view
 	Sub $mol_view
 
@@ -957,21 +961,24 @@ $hyoo_crus_node_dump $mol_expander
 						enabled <= can_change
 						dictionary *
 							bin \💠bin
-							bool \🚩bool
+							bool \🏁bool
 							int \🔢int
 							real \💫real
 							ref \🎯ref
 							str \🔠str
-							time \⏳time
-							json \🌜json
-							xml \🪒xml
-							tree \🎄tree
+							time \⏰time
+							dur \🕓dur
+							range \🎬range
+							json \📚json
+							jsan \🧾jsan
+							xml \🛐xml
+							tree \🌴tree
 					<= Unit_tag* $mol_select
 						value? <=> unit_tag*? \term
 						enabled <= can_change
 						dictionary *
 							term \💼term
-							solo \1️⃣solo
+							solo \🔝solo
 							vals \🎹vals
 							keys \🔑keys
 					<= Unit_time* $mol_view sub / <= unit_time* \
@@ -980,10 +987,6 @@ $hyoo_crus_node_dump $mol_expander
 						enabled <= can_change
 						click? <=> unit_wipe*? null
 				node <= node_inner* $hyoo_crus_node
-
-$mol_icon_lock $mol_icon path \M12,17C13.1,17 14,16.1 14,15C14,13.89 13.1,13 12,13C10.9,13 10,13.9 10,15C10,16.1 10.9,17 12,17M18,8C19.1,8 20,8.9 20,10V20C20,21.1 19.1,22 18,22H6C4.9,22 4,21.1 4,20V10C4,8.89 4.9,8 6,8H7V6C7,3.24 9.24,1 12,1C14.76,1 17,3.24 17,6V8H18M12,3C10.34,3 9,4.34 9,6V8H15V6C15,4.34 13.66,3 12,3Z
-
-$mol_check_icon $mol_check
 
 $mol_icon_source $mol_icon path \M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z
 
@@ -1003,6 +1006,11 @@ $hyoo_crus_land_page $mol_page
 	land $hyoo_crus_land
 	node $hyoo_crus_node
 	tools /
+		<= Encrypted $mol_check_icon
+			hint \Encryption
+			Icon <= Encrypted_icon $mol_icon_lock
+			checked <= encrypted false
+			enabled <= encrypted false
 		<= Close null
 	body /
 		<= Flex $hyoo_crus_flex_form
@@ -1021,11 +1029,6 @@ $hyoo_crus_land_page $mol_page
 				0
 				0
 	foot /
-		<= Encrypted $mol_check_icon
-			hint \Encrypt forever
-			Icon <= Encrypted_icon $mol_icon_lock
-			checked? <=> encrypted? false
-			enabled <= encryptable true
 		<= Fork $mol_button_minor
 			hint \Fork this land
 			sub / <= Fork_icon $mol_icon_source_fork
@@ -1035,7 +1038,7 @@ $hyoo_crus_land_page $mol_page
 			<= Dump $mol_button_download
 				hint \Download dump
 				blob <= dump $mol_blob
-				file_name <= dump_name \AAAAAAAAAAAAAAAAAAAAAAAA.land
+				file_name <= dump_name \AAAAAAAA_AAAAAAAA.land
 
 $mol_icon_plus $mol_icon path \M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z
 

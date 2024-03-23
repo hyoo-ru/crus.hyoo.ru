@@ -14235,6 +14235,31 @@ var $;
 })($ || ($ = {}));
 
 ;
+	($.$mol_icon_lock) = class $mol_icon_lock extends ($.$mol_icon) {
+		path(){
+			return "M12,17C13.1,17 14,16.1 14,15C14,13.89 13.1,13 12,13C10.9,13 10,13.9 10,15C10,16.1 10.9,17 12,17M18,8C19.1,8 20,8.9 20,10V20C20,21.1 19.1,22 18,22H6C4.9,22 4,21.1 4,20V10C4,8.89 4.9,8 6,8H7V6C7,3.24 9.24,1 12,1C14.76,1 17,3.24 17,6V8H18M12,3C10.34,3 9,4.34 9,6V8H15V6C15,4.34 13.66,3 12,3Z";
+		}
+	};
+
+
+;
+"use strict";
+
+;
+	($.$mol_check_icon) = class $mol_check_icon extends ($.$mol_check) {};
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    $mol_style_attach("mol/check/icon/icon.view.css", "[mol_check_icon]:where([mol_check_checked]) {\n\tcolor: var(--mol_theme_current);\n}\n");
+})($ || ($ = {}));
+
+;
+"use strict";
+
+;
 "use strict";
 var $;
 (function ($) {
@@ -16054,15 +16079,18 @@ var $;
 			(obj.enabled) = () => ((this.can_change()));
 			(obj.dictionary) = () => ({
 				"bin": "💠bin", 
-				"bool": "🚩bool", 
+				"bool": "🏁bool", 
 				"int": "🔢int", 
 				"real": "💫real", 
 				"ref": "🎯ref", 
 				"str": "🔠str", 
-				"time": "⏳time", 
-				"json": "🌜json", 
-				"xml": "🪒xml", 
-				"tree": "🎄tree"
+				"time": "⏰time", 
+				"dur": "🕓dur", 
+				"range": "🎬range", 
+				"json": "📚json", 
+				"jsan": "🧾jsan", 
+				"xml": "🛐xml", 
+				"tree": "🌴tree"
 			});
 			return obj;
 		}
@@ -16076,7 +16104,7 @@ var $;
 			(obj.enabled) = () => ((this.can_change()));
 			(obj.dictionary) = () => ({
 				"term": "💼term", 
-				"solo": "1️⃣solo", 
+				"solo": "🔝solo", 
 				"vals": "🎹vals", 
 				"keys": "🔑keys"
 			});
@@ -16663,31 +16691,6 @@ var $;
 })($ || ($ = {}));
 
 ;
-	($.$mol_icon_lock) = class $mol_icon_lock extends ($.$mol_icon) {
-		path(){
-			return "M12,17C13.1,17 14,16.1 14,15C14,13.89 13.1,13 12,13C10.9,13 10,13.9 10,15C10,16.1 10.9,17 12,17M18,8C19.1,8 20,8.9 20,10V20C20,21.1 19.1,22 18,22H6C4.9,22 4,21.1 4,20V10C4,8.89 4.9,8 6,8H7V6C7,3.24 9.24,1 12,1C14.76,1 17,3.24 17,6V8H18M12,3C10.34,3 9,4.34 9,6V8H15V6C15,4.34 13.66,3 12,3Z";
-		}
-	};
-
-
-;
-"use strict";
-
-;
-	($.$mol_check_icon) = class $mol_check_icon extends ($.$mol_check) {};
-
-
-;
-"use strict";
-var $;
-(function ($) {
-    $mol_style_attach("mol/check/icon/icon.view.css", "[mol_check_icon]:where([mol_check_checked]) {\n\tcolor: var(--mol_theme_current);\n}\n");
-})($ || ($ = {}));
-
-;
-"use strict";
-
-;
 	($.$mol_icon_source) = class $mol_icon_source extends ($.$mol_icon) {
 		path(){
 			return "M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z";
@@ -16772,6 +16775,21 @@ var $;
 
 ;
 	($.$hyoo_crus_land_page) = class $hyoo_crus_land_page extends ($.$mol_page) {
+		Encrypted_icon(){
+			const obj = new this.$.$mol_icon_lock();
+			return obj;
+		}
+		encrypted(){
+			return false;
+		}
+		Encrypted(){
+			const obj = new this.$.$mol_check_icon();
+			(obj.hint) = () => ("Encryption");
+			(obj.Icon) = () => ((this.Encrypted_icon()));
+			(obj.checked) = () => ((this.encrypted()));
+			(obj.enabled) = () => ((this.encrypted()));
+			return obj;
+		}
 		Close(){
 			return null;
 		}
@@ -16806,25 +16824,6 @@ var $;
 			(obj.Content) = () => ((this.Raw_content()));
 			return obj;
 		}
-		Encrypted_icon(){
-			const obj = new this.$.$mol_icon_lock();
-			return obj;
-		}
-		encrypted(next){
-			if(next !== undefined) return next;
-			return false;
-		}
-		encryptable(){
-			return true;
-		}
-		Encrypted(){
-			const obj = new this.$.$mol_check_icon();
-			(obj.hint) = () => ("Encrypt forever");
-			(obj.Icon) = () => ((this.Encrypted_icon()));
-			(obj.checked) = (next) => ((this.encrypted(next)));
-			(obj.enabled) = () => ((this.encryptable()));
-			return obj;
-		}
 		Fork_icon(){
 			const obj = new this.$.$mol_icon_source_fork();
 			return obj;
@@ -16853,7 +16852,7 @@ var $;
 			return obj;
 		}
 		dump_name(){
-			return "AAAAAAAAAAAAAAAAAAAAAAAA.land";
+			return "AAAAAAAA_AAAAAAAA.land";
 		}
 		Dump(){
 			const obj = new this.$.$mol_button_download();
@@ -16876,28 +16875,23 @@ var $;
 			return obj;
 		}
 		tools(){
-			return [(this.Close())];
+			return [(this.Encrypted()), (this.Close())];
 		}
 		body(){
 			return [(this.Flex()), (this.Raw())];
 		}
 		foot(){
-			return [
-				(this.Encrypted()), 
-				(this.Fork()), 
-				(this.Dumping())
-			];
+			return [(this.Fork()), (this.Dumping())];
 		}
 	};
+	($mol_mem(($.$hyoo_crus_land_page.prototype), "Encrypted_icon"));
+	($mol_mem(($.$hyoo_crus_land_page.prototype), "Encrypted"));
 	($mol_mem(($.$hyoo_crus_land_page.prototype), "Flex"));
 	($mol_mem(($.$hyoo_crus_land_page.prototype), "Raw_data"));
 	($mol_mem(($.$hyoo_crus_land_page.prototype), "node_meta"));
 	($mol_mem(($.$hyoo_crus_land_page.prototype), "Raw_meta"));
 	($mol_mem(($.$hyoo_crus_land_page.prototype), "Raw_content"));
 	($mol_mem(($.$hyoo_crus_land_page.prototype), "Raw"));
-	($mol_mem(($.$hyoo_crus_land_page.prototype), "Encrypted_icon"));
-	($mol_mem(($.$hyoo_crus_land_page.prototype), "encrypted"));
-	($mol_mem(($.$hyoo_crus_land_page.prototype), "Encrypted"));
 	($mol_mem(($.$hyoo_crus_land_page.prototype), "Fork_icon"));
 	($mol_mem(($.$hyoo_crus_land_page.prototype), "fork"));
 	($mol_mem(($.$hyoo_crus_land_page.prototype), "Fork"));
@@ -17015,14 +17009,14 @@ var $;
             title() {
                 return '🌍 ' + this.land().ref().description;
             }
+            theme() {
+                return this.encrypted() ? '$mol_theme_special' : '$mol_theme_base';
+            }
+            encrypted() {
+                return this.land().encrypted();
+            }
             node_meta() {
                 return this.land().Node($hyoo_crus_node).Item('AQAAAAAA');
-            }
-            encryptable() {
-                return this.land().encrypted() || this.land().encryptable();
-            }
-            encrypted(next) {
-                return this.land().encrypted(next);
             }
             dump_data_node() {
                 return this.node();
@@ -17046,12 +17040,6 @@ var $;
                 return `${this.land().ref().description}.crus`;
             }
         }
-        __decorate([
-            $mol_mem
-        ], $hyoo_crus_land_page.prototype, "encryptable", null);
-        __decorate([
-            $mol_mem
-        ], $hyoo_crus_land_page.prototype, "encrypted", null);
         __decorate([
             $mol_mem
         ], $hyoo_crus_land_page.prototype, "pack", null);
