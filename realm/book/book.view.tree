@@ -18,15 +18,7 @@ $hyoo_crus_realm_book $mol_book2_catalog
 		<= Update $mol_button_open
 			hint \Upload dump
 			files? <=> update? /
-		<= Land_add $mol_select
+		<= Land_add $hyoo_crus_land_grab
 			hint \Grab new Land
-			Filter null
 			align_hor \left
-			trigger_content /
-				<= Land_adding_icon $mol_icon_plus
-			dictionary *
-				private \🔐 Private
-				public \🔎 Public
-				lobby \📢 Public Lobby
-				orgy \✍ Public Orgy
-			value? <=> land_add? \
+			grab? <=> land_add? null $hyoo_crus_rank_preset

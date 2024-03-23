@@ -1,0 +1,10 @@
+$hyoo_crus_land_grab $mol_select
+	Filter null
+	trigger_content /
+		<= Trigger_icon $mol_icon_plus
+	dictionary *
+		orgy @ \✍ All write
+		lobby @ \📢 All add
+		public @ \🔎 All read
+		private @ \🔐 Private
+	grab? null $hyoo_crus_rank_preset

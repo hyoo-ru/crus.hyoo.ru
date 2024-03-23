@@ -20,7 +20,7 @@ namespace $ {
 			
 			const knight = this.$.$hyoo_crus_auth.grab()
 			const colony = ( $mol_wire_sync( $hyoo_crus_land ) as typeof $hyoo_crus_land ).make({})
-			colony.auth = $mol_const(  knight )
+			colony.auth = $mol_const( knight )
 			
 			if( !preset.get.includes( $hyoo_crus_ref( '' ) ) ) {
 				colony.encrypted( true )

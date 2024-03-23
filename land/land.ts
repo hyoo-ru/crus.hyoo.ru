@@ -873,6 +873,7 @@ namespace $ {
 			unit.time( this.faces.tick() )
 			unit.peer( auth.peer() )
 			unit.dest( auth.lord() )
+			unit._land = this
 			
 			const secret_closed = $mol_wire_sync( secret_mutual ).encrypt( secret_land, unit.salt() )
 			unit.bill().set( new Uint8Array( secret_closed ) )
