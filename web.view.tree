@@ -1040,7 +1040,9 @@ $hyoo_crus_land_page $mol_page
 				blob <= dump $mol_blob
 				file_name <= dump_name \AAAAAAAA_AAAAAAAA.land
 
-$mol_icon_plus $mol_icon path \M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z
+$mol_icon_delete $mol_icon path \M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19C6,20.1 6.9,21 8,21H16C17.1,21 18,20.1 18,19V7H6V19Z
+
+$mol_icon_delete_forever $mol_icon path \M6,19C6,20.1 6.9,21 8,21H16C17.1,21 18,20.1 18,19V7H6V19M8.46,11.88L9.87,10.47L12,12.59L14.12,10.47L15.53,11.88L13.41,14L15.53,16.12L14.12,17.53L12,15.41L9.88,17.53L8.47,16.12L10.59,14L8.46,11.88M15.5,4L14.5,3H9.5L8.5,4H5V6H19V4H15.5Z
 
 $mol_icon_upload $mol_icon path \M9,16V10H5L12,3L19,10H15V16H9M5,20V18H19V20H5Z
 
@@ -1062,9 +1064,7 @@ $mol_button_open_native $mol_view
 	event *
 		change?next <=> picked?next null
 
-$mol_icon_delete $mol_icon path \M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19C6,20.1 6.9,21 8,21H16C17.1,21 18,20.1 18,19V7H6V19Z
-
-$mol_icon_delete_forever $mol_icon path \M6,19C6,20.1 6.9,21 8,21H16C17.1,21 18,20.1 18,19V7H6V19M8.46,11.88L9.87,10.47L12,12.59L14.12,10.47L15.53,11.88L13.41,14L15.53,16.12L14.12,17.53L12,15.41L9.88,17.53L8.47,16.12L10.59,14L8.46,11.88M15.5,4L14.5,3H9.5L8.5,4H5V6H19V4H15.5Z
+$mol_icon_plus $mol_icon path \M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z
 
 $hyoo_crus_realm_book $mol_book2_catalog
 	menu_title \🌌 Realm
@@ -1075,8 +1075,21 @@ $hyoo_crus_realm_book $mol_book2_catalog
 		node <= node* $hyoo_crus_node
 		Close <= Spread_close
 	menu_foot /
+		<= Wipe_pick $mol_pick
+			hint \Wipe database
+			clicks? <=> wipe? null
+			align_hor \right
+			trigger_content /
+				<= Wipe_icon $mol_icon_delete_forever
+			bubble_content /
+				\Double to wipe database
+		<= Update $mol_button_open
+			hint \Upload dump
+			files? <=> update? /
 		<= Land_add $mol_select
 			hint \Grab new Land
+			Filter null
+			align_hor \left
 			trigger_content /
 				<= Land_adding_icon $mol_icon_plus
 			dictionary *
@@ -1085,17 +1098,6 @@ $hyoo_crus_realm_book $mol_book2_catalog
 				lobby \📢 Public Lobby
 				orgy \✍ Public Orgy
 			value? <=> land_add? \
-		<= Update $mol_button_open
-			hint \Upload dump
-			files? <=> update? /
-		<= Wipe_pick $mol_pick
-			hint \Wipe database
-			clicks? <=> wipe? null
-			align_hor \left
-			trigger_content /
-				<= Wipe_icon $mol_icon_delete_forever
-			bubble_content /
-				\Double to wipe database
 
 $mol_icon_play $mol_icon path \M8,5.14V19.14L19,12.14L8,5.14Z
 
