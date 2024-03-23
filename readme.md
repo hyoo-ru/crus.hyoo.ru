@@ -137,11 +137,11 @@
 
 ## Vocabulary
 
-- **Realm** - Whole global graph database which contains Lands.
-- **Land** - Standalone part of Realm which syncs separately, have own rights, and contains Units.
-  - **Home** - Land where Lord is King.
+- **🌌Realm** - Whole global graph database which contains Lands.
+- **🌍Land** - Standalone part of Realm which syncs separately, have own rights, and contains Units.
+  - **🏠Home** - Land where Lord is King.
 - **Lord** - Independent actor with global unique id generated from Auth key.
-  - **King** - Lord who have ful rights to Land (with same id).
+  - **🤴King** - Lord who have ful rights to Land (with same id).
 - **Area** - Land local Node id namespace.
   - **Data** - Common user info.
   - **Meta** - Land meta info.
@@ -150,7 +150,7 @@
 - **Peer** - Land local unique identifier of independent actor (first half of Lord).
 - **Sign** - Crypto sign of whole Unit data xored with Land id.
 
-- **Node** - High level representation of stored data.
+- **🧩Node** - High level representation of stored data.
   - **Atom** - Atomic LWW-register.
   - **List** - Mergeable ordered list.
   - **Dict** - Mergeable ordered dictionary.
@@ -163,12 +163,12 @@
   - **🏅Give** - Rights and secret key given to Peer.
   - **📦Gist** - (Meta) Data.
 
-- **Self** - Self Node id
-- **Head** - Parent Node id.
-- **Prev** - Previous Node id in the siblings list.
-- **Next** - Next Node id in the siblings list.
-- **Seat** - Position in the list.
-- **Tag** - Hint how interpretate inner Units.
+- **🆔Self** - Self Node id
+- **🎃Head** - Parent Node id.
+- **👈Prev** - Previous Node id in the siblings list.
+- **👉Next** - Next Node id in the siblings list.
+- **💺Seat** - Position in the list.
+- **#️⃣Tag** - Hint how interpretate inner Units.
   - **💼term** - irnore.
   - **🔝solo** - ignore all after first.
   - **🎹vals** - list of values.
@@ -176,11 +176,11 @@
 
 - **Time** - Monotonic time as count of ms from unix epoch.
 - **Data** - Serialized inforation. Up to 32B.
-- **Hash** - SHA-1 hash of large info.
-- **Rock** - BLOB identified by Hash.
+- **#️⃣Hash** - SHA-1 hash of large info.
+- **🥌Rock** - BLOB identified by Hash.
 
-- **Vary** - Supported primitive types.
-- **Tip** - Hint how to interpretate Data.
+- **🎡Vary** - Supported primitive types.
+- **🔖Tip** - Hint how to interpretate Data.
   - **💢nil** - No data.
   - **💠bin** - Binary.
   - **🏁bool** - Boolean.
@@ -197,11 +197,11 @@
   - **🌴tree** - Abstract Syntax Tree.
 
 - **Rank** - Access level.
-  - **law** - Full administration.
-  - **mod** - Data modification.
-  - **add** - Data adding with fixed Node id
-  - **get** - Read only.
-  - **nil** - Forbidden.
+  - **🛑nil** - Forbidden.
+  - **🔍get** - Read only.
+  - **📢add** - Data adding with fixed Node id
+  - **✍mod** - Data modification.
+  - **👑law** - Full administration.
 
 - **Mine** - Units/Rocks storage.
 - **Yard** - Real synchronizer.

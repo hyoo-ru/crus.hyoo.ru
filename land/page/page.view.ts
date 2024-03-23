@@ -5,6 +5,14 @@ namespace $.$$ {
 			return '🌍 ' + this.land().ref().description
 		}
 		
+		override theme() {
+			return this.encrypted() ? '$mol_theme_special' : '$mol_theme_base'
+		}
+		
+		override encrypted() {
+			return this.land().encrypted()
+		}
+		
 		// override node_title( head: string ) {
 		// 	const id = this.node_dump( head ).head()
 		// 	if( id === 'AQAAAAAA' ) return 'Meta'
@@ -13,16 +21,6 @@ namespace $.$$ {
 		
 		override node_meta() {
 			return this.land().Node( $hyoo_crus_node ).Item( 'AQAAAAAA' )
-		}
-		
-		@ $mol_mem
-		override encryptable() {
-			return this.land().encrypted() || this.land().encryptable()
-		}
-		
-		@ $mol_mem
-		override encrypted( next?: boolean ) {
-			return this.land().encrypted( next )
 		}
 		
 		// @ $mol_mem

@@ -2,6 +2,11 @@ $hyoo_crus_land_page $mol_page
 	land $hyoo_crus_land
 	node $hyoo_crus_node
 	tools /
+		<= Encrypted $mol_check_icon
+			hint \Encryption
+			Icon <= Encrypted_icon $mol_icon_lock
+			checked <= encrypted false
+			enabled <= encrypted false
 		<= Close null
 	body /
 		<= Flex $hyoo_crus_flex_form
@@ -20,11 +25,6 @@ $hyoo_crus_land_page $mol_page
 				0
 				0
 	foot /
-		<= Encrypted $mol_check_icon
-			hint \Encrypt forever
-			Icon <= Encrypted_icon $mol_icon_lock
-			checked? <=> encrypted? false
-			enabled <= encryptable true
 		<= Fork $mol_button_minor
 			hint \Fork this land
 			sub / <= Fork_icon $mol_icon_source_fork
@@ -34,4 +34,4 @@ $hyoo_crus_land_page $mol_page
 			<= Dump $mol_button_download
 				hint \Download dump
 				blob <= dump $mol_blob
-				file_name <= dump_name \AAAAAAAAAAAAAAAAAAAAAAAA.land
+				file_name <= dump_name \AAAAAAAA_AAAAAAAA.land

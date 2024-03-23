@@ -40,21 +40,24 @@ $hyoo_crus_node_dump $mol_expander
 						enabled <= can_change
 						dictionary *
 							bin \💠bin
-							bool \🚩bool
+							bool \🏁bool
 							int \🔢int
 							real \💫real
 							ref \🎯ref
 							str \🔠str
-							time \⏳time
-							json \🌜json
-							xml \🪒xml
-							tree \🎄tree
+							time \⏰time
+							dur \🕓dur
+							range \🎬range
+							json \📚json
+							jsan \🧾jsan
+							xml \🛐xml
+							tree \🌴tree
 					<= Unit_tag* $mol_select
 						value? <=> unit_tag*? \term
 						enabled <= can_change
 						dictionary *
 							term \💼term
-							solo \1️⃣solo
+							solo \🔝solo
 							vals \🎹vals
 							keys \🔑keys
 					<= Unit_time* $mol_view sub / <= unit_time* \

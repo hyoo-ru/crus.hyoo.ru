@@ -50,7 +50,7 @@ namespace $ {
 				} } )
 				
 				Object.defineProperty( Entity.prototype, field, {
-					value: function( next?: any ){
+					value: function( next?: any ) {
 						return ( next === undefined && !this.has( field ) )
 							? null 
 							: this[ Field ].value( next )
