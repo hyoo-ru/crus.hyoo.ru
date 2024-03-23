@@ -304,7 +304,7 @@ export class $my_app extends $mol_object {
 		kid.birthday( new $mol_time_moment( '1984-08-04' ) )
 		
 		// Fill embedded entities
-		const heart = kid.Heart
+		const heart = kid.Heart!
 		heart.critical( true )
 		heart.count( 1n )
 		heart.weight( 1.4 )
