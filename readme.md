@@ -169,7 +169,7 @@
 - **👈Prev** - Previous Node id in the siblings list.
 - **👉Next** - Next Node id in the siblings list.
 - **💺Seat** - Position in the list.
-- **#️⃣Tag** - Hint how interpretate inner Units.
+- **🎭Tag** - Hint how interpretate inner Units.
   - **💼term** - irnore.
   - **🔝solo** - ignore all after first.
   - **🎹vals** - list of values.
@@ -177,8 +177,8 @@
 
 - **Time** - Monotonic time as count of ms from unix epoch.
 - **Data** - Serialized inforation. Up to 32B.
-- **#️⃣Hash** - SHA-1 hash of large info.
-- **🥌Rock** - BLOB identified by Hash.
+- **💎Hash** - SHA-1 hash of large info.
+- **🗻Rock** - BLOB identified by Hash.
 
 - **🎡Vary** - Supported primitive types.
 - **🔖Tip** - Hint how to interpretate Data.
