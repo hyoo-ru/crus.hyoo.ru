@@ -12,7 +12,7 @@ namespace $ {
 		}
 		
 		home() {
-			return this.Land( this.$.$hyoo_crus_auth.current().lord() )
+			return this.Land( this.$.$hyoo_crus_auth.current().lord() ).home()
 		}
 		
 		@ $mol_action

@@ -272,27 +272,27 @@ export class $my_app extends $mol_object {
 
 	// Whole database
 	@ $mol_mem
-	Realm() {
+	realm() {
 		return new $hyoo_crus_realm
 	}
 	
 	// Current user profile for current application
 	@ $mol_mem
-	Profile() {
-		return this.Realm().home().Profile( '$my_app', $my_person, $hyoo_crus_rank_public )
+	room() {
+		return this.realm().home().room( '$my_app', $my_person, $hyoo_crus_rank_public )
 	}
 	
 	// Use existen entity by reference
 	@ $mol_mem_key
-	Person( ref: $hyoo_crus_ref ) {
-		return this.Realm().Node( ref, $my_person )
+	person( ref: $hyoo_crus_ref ) {
+		return this.realm().Node( ref, $my_person )
 	}
 	
 	// Add new linked entity
 	@ $mol_action
 	kid_add( name: string ) {
 		
-		const me = this.Profile()
+		const me = this.room()
 		
 		// Populate external entity
 		const kid = me.Kids.remote_make( $hyoo_crus_rank_public )

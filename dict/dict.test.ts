@@ -71,7 +71,7 @@ namespace $.$$ {
 			}) {}
 			
 			const realm = $hyoo_crus_realm.make({ $ })
-			const land = realm.home()
+			const land = realm.home().land()
 			
 			const user = land.Node( User ).Item('11111111')
 			$mol_assert_equal( user.title(), user.Title!.value(), null )

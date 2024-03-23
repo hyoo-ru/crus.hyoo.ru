@@ -48,16 +48,8 @@ namespace $ {
 			$mol_fail( new Error( `Too long self generation` ) )
 		}
 		
-		base() {
-			return this.Data( $hyoo_crus_base )
-		}
-		
-		Profile< Node extends typeof $hyoo_crus_node >(
-			app: string,
-			Node: Node,
-			preset?: $hyoo_crus_rank_preset
-		) {
-			return this.base().profile( app, preset )?.Data( Node ) ?? null
+		home() {
+			return this.Data( $hyoo_crus_home )
 		}
 		
 		@ $mol_mem_key
