@@ -9502,6 +9502,9 @@ var $;
     __decorate([
         $mol_mem
     ], $hyoo_crus_auth, "current", null);
+    __decorate([
+        $mol_action
+    ], $hyoo_crus_auth, "grab", null);
     $.$hyoo_crus_auth = $hyoo_crus_auth;
 })($ || ($ = {}));
 
@@ -14167,21 +14170,20 @@ var $;
         }
         land_grab(preset = $hyoo_crus_rank_public) {
             const knight = this.$.$hyoo_crus_auth.grab();
-            const colony = $mol_wire_sync($hyoo_crus_land).make({
-                auth: () => knight,
-            });
+            const colony = $mol_wire_sync($hyoo_crus_land).make({});
+            colony.auth = $mol_const(knight);
             if (!preset.get.includes($hyoo_crus_ref(''))) {
                 colony.encrypted(true);
             }
             const self = this.$.$hyoo_crus_auth.current().lord();
             for (const ref of preset.get)
-                colony.give(ref ?? self, $hyoo_crus_rank.get);
+                colony.lord_rank(ref ?? self, $hyoo_crus_rank.get);
             for (const ref of preset.add)
-                colony.give(ref ?? self, $hyoo_crus_rank.add);
+                colony.lord_rank(ref ?? self, $hyoo_crus_rank.add);
             for (const ref of preset.mod)
-                colony.give(ref ?? self, $hyoo_crus_rank.mod);
+                colony.lord_rank(ref ?? self, $hyoo_crus_rank.mod);
             for (const ref of preset.law)
-                colony.give(ref ?? self, $hyoo_crus_rank.law);
+                colony.lord_rank(ref ?? self, $hyoo_crus_rank.law);
             const land = this.Land(colony.ref());
             land.apply_unit_trust(colony.delta_unit());
             return land;
@@ -17228,19 +17230,25 @@ var $;
 			(obj.Close) = () => ((this.Spread_close()));
 			return obj;
 		}
-		Land_new_icon(){
+		Land_adding_icon(){
 			const obj = new this.$.$mol_icon_plus();
 			return obj;
 		}
-		land_new(next){
+		land_add(next){
 			if(next !== undefined) return next;
-			return null;
+			return "";
 		}
-		Land_new(){
-			const obj = new this.$.$mol_button_minor();
+		Land_add(){
+			const obj = new this.$.$mol_select();
 			(obj.hint) = () => ("Grab new Land");
-			(obj.sub) = () => ([(this.Land_new_icon())]);
-			(obj.click) = (next) => ((this.land_new(next)));
+			(obj.trigger_content) = () => ([(this.Land_adding_icon())]);
+			(obj.dictionary) = () => ({
+				"private": "🔐 Private", 
+				"public": "🔎 Public", 
+				"lobby": "📢 Public Lobby", 
+				"orgy": "✍ Public Orgy"
+			});
+			(obj.value) = (next) => ((this.land_add(next)));
 			return obj;
 		}
 		update(next){
@@ -17285,7 +17293,7 @@ var $;
 		}
 		menu_foot(){
 			return [
-				(this.Land_new()), 
+				(this.Land_add()), 
 				(this.Update()), 
 				(this.Wipe_pick())
 			];
@@ -17294,9 +17302,9 @@ var $;
 	($mol_mem_key(($.$hyoo_crus_realm_book.prototype), "land"));
 	($mol_mem_key(($.$hyoo_crus_realm_book.prototype), "node"));
 	($mol_mem_key(($.$hyoo_crus_realm_book.prototype), "Land"));
-	($mol_mem(($.$hyoo_crus_realm_book.prototype), "Land_new_icon"));
-	($mol_mem(($.$hyoo_crus_realm_book.prototype), "land_new"));
-	($mol_mem(($.$hyoo_crus_realm_book.prototype), "Land_new"));
+	($mol_mem(($.$hyoo_crus_realm_book.prototype), "Land_adding_icon"));
+	($mol_mem(($.$hyoo_crus_realm_book.prototype), "land_add"));
+	($mol_mem(($.$hyoo_crus_realm_book.prototype), "Land_add"));
 	($mol_mem(($.$hyoo_crus_realm_book.prototype), "update"));
 	($mol_mem(($.$hyoo_crus_realm_book.prototype), "Update"));
 	($mol_mem(($.$hyoo_crus_realm_book.prototype), "wipe"));
@@ -17343,10 +17351,19 @@ var $;
                 ][chunks.length];
                 return prefix + suffix;
             }
-            land_new() {
+            land_add(rights) {
+                const preset = {
+                    private: $hyoo_crus_rank_private,
+                    public: $hyoo_crus_rank_public,
+                    lobby: $hyoo_crus_rank_lobby,
+                    orgy: $hyoo_crus_rank_orgy,
+                }[rights];
+                if (!preset)
+                    return '';
                 this.$.$mol_dom_context.location.href = this.$.$mol_state_arg.link({
-                    [this.param()]: this.realm().land_grab().ref().description
+                    [this.param()]: this.realm().land_grab(preset).ref().description
                 });
+                return '';
             }
             update(files) {
                 const realm = this.realm();
@@ -17392,6 +17409,13 @@ var $;
                 font: {
                     family: 'monospace',
                 }
+            },
+            Land_add: {
+                Trigger: {
+                    justify: {
+                        content: 'center',
+                    },
+                },
             },
         });
     })($$ = $.$$ || ($.$$ = {}));

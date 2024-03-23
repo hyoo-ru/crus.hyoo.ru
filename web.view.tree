@@ -1075,10 +1075,16 @@ $hyoo_crus_realm_book $mol_book2_catalog
 		node <= node* $hyoo_crus_node
 		Close <= Spread_close
 	menu_foot /
-		<= Land_new $mol_button_minor
+		<= Land_add $mol_select
 			hint \Grab new Land
-			sub / <= Land_new_icon $mol_icon_plus
-			click? <=> land_new? null
+			trigger_content /
+				<= Land_adding_icon $mol_icon_plus
+			dictionary *
+				private \🔐 Private
+				public \🔎 Public
+				lobby \📢 Public Lobby
+				orgy \✍ Public Orgy
+			value? <=> land_add? \
 		<= Update $mol_button_open
 			hint \Upload dump
 			files? <=> update? /
