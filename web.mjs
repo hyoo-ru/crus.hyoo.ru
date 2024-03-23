@@ -14143,10 +14143,10 @@ var $;
     class $hyoo_crus_home extends $hyoo_crus_dict.with({
         Title: $hyoo_crus_atom_str,
         Selection: $hyoo_crus_atom_str,
-        Rooms: $hyoo_crus_dict_to($hyoo_crus_atom_ref_to(() => $hyoo_crus_dict)),
+        Hall: $hyoo_crus_atom_ref_to(() => $hyoo_crus_dict),
     }) {
-        room(app, Node, preset) {
-            return this.Rooms?.key(app, null)?.remote_ensure(preset)?.cast(Node) ?? null;
+        hall_by(Node, preset) {
+            return this.Hall?.remote_ensure(preset)?.cast(Node) ?? null;
         }
     }
     $.$hyoo_crus_home = $hyoo_crus_home;
@@ -15954,7 +15954,7 @@ var $;
     (function ($$) {
         class $hyoo_crus_flex_form extends $.$hyoo_crus_flex_form {
             kind() {
-                const land = this.node().realm().home().room('$hyoo_crus_flex', $hyoo_crus_flex_domain, $hyoo_crus_rank_public).land();
+                const land = this.node().realm().home().hall_by($hyoo_crus_flex_domain, $hyoo_crus_rank_public).land();
                 const domain = $hyoo_crus_flex_domain.ensure(land);
                 return this.node().cast($hyoo_crus_flex_thing).kind() ?? domain.kinds()?.[2] ?? null;
             }
