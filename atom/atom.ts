@@ -4,7 +4,7 @@ namespace $ {
 	export class $hyoo_crus_atom_vary extends $hyoo_crus_node {
 
 		static tag = $hyoo_crus_gist_tag[ $hyoo_crus_gist_tag.solo ] as keyof typeof $hyoo_crus_gist_tag;
-
+		
 		pick_unit() {
 			return this.units().at(0)
 		}
@@ -44,11 +44,18 @@ namespace $ {
 		
 	}
 	
+
+	export class $hyoo_crus_atom_enum_base extends $hyoo_crus_atom_vary {
+
+		static options = [] as readonly $hyoo_crus_vary_type[]
+		
+	}
+	
 	export function $hyoo_crus_atom_enum<
 		Options extends readonly $hyoo_crus_vary_type[]
 	>( options: Options ) {
 
-		abstract class Narrow extends $hyoo_crus_atom_vary {
+		abstract class Narrow extends $hyoo_crus_atom_enum_base {
 
 			static options = options;
 
@@ -112,10 +119,34 @@ namespace $ {
 	export class $hyoo_crus_atom_time extends $hyoo_crus_atom( $hyoo_crus_vary_cast_time ) {}
 	export class $hyoo_crus_atom_dur extends $hyoo_crus_atom( $hyoo_crus_vary_cast_dur ) {}
 	export class $hyoo_crus_atom_range extends $hyoo_crus_atom( $hyoo_crus_vary_cast_range ) {}
+	
 	export class $hyoo_crus_atom_json extends $hyoo_crus_atom( $hyoo_crus_vary_cast_json ) {}
 	export class $hyoo_crus_atom_jsan extends $hyoo_crus_atom( $hyoo_crus_vary_cast_jsan ) {}
 	export class $hyoo_crus_atom_xml extends $hyoo_crus_atom( $hyoo_crus_vary_cast_dom ) {}
 	export class $hyoo_crus_atom_tree extends $hyoo_crus_atom( $hyoo_crus_vary_cast_tree ) {}
+	
+	export class $hyoo_crus_atom_ref_base extends $hyoo_crus_atom_ref {
+		
+		static Value = $hyoo_crus_dict;
+		
+		@ $mol_mem
+		remote( next?: null | $hyoo_crus_dict ): null | $hyoo_crus_dict {
+			const realm = this.realm()
+			let ref: $hyoo_crus_ref | null = ( next as $hyoo_crus_node )?.ref() ?? next
+			ref = $hyoo_crus_vary_cast_ref( this.value_vary( ref ) )
+			if( !ref ) return null
+			return realm!.Node( ref, $hyoo_crus_dict )
+		}
+		
+		remote_ensure( preset?: $hyoo_crus_rank_preset ) {
+			return null as $hyoo_crus_dict | null
+		}
+		
+		local_ensure() {
+			return null as $hyoo_crus_dict | null
+		}
+		
+	}
 	
 	export function $hyoo_crus_atom_ref_to< Value extends any >( Value: Value ) {
 
@@ -152,11 +183,15 @@ namespace $ {
 			
 			@ $mol_mem
 			remote( next?: null | Val ): null | Val {
+				
 				const realm = this.realm()
-				let ref: $hyoo_crus_ref | null = ( next as $hyoo_crus_node )?.ref()
+				
+				let ref: $hyoo_crus_ref | null = ( next as $hyoo_crus_node )?.ref() ?? next
 				ref = $hyoo_crus_vary_cast_ref( this.value_vary( ref ) )
 				if( !ref ) return null
+				
 				return realm!.Node( ref, ( Value as any )() )
+				
 			}
 			
 			// @ $mol_mem
