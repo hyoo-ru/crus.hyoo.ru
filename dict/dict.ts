@@ -26,12 +26,16 @@ namespace $ {
 			return unit ? this.land().Node( Node ).Item( unit.self() ) : null
 		}
 		
+		static schema = {} as Record< string, typeof $hyoo_crus_node >
+		
 		static with<
 			This extends typeof $hyoo_crus_dict,
 			Schema extends Record< string, { tag: keyof typeof $hyoo_crus_gist_tag, new(): { value: any } } >
 		>( this: This, schema: Schema ) {
 			
-			const Entity = class Entity extends ( this as any ) {} as This & {
+			const Entity = class Entity extends ( this as any ) {
+				// static get schema() { return { ... this.schema, ... schema } }
+			} as This & {
 				new( ...args: any[] ): InstanceType< This > & {
 					[ Key in keyof Schema ]: InstanceType< Schema[ Key ] > | null
 				} & {
@@ -60,7 +64,7 @@ namespace $ {
 				$mol_wire_field( Entity.prototype, Field as any )
 			}
 			
-			return Entity
+			return Object.assign( Entity, { schema: { ... this.schema, ... schema } } )
 			
 		}
 		
