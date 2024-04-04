@@ -163,12 +163,15 @@ namespace $ {
 	export class $hyoo_crus_list_xml extends $hyoo_crus_list( $hyoo_crus_vary_cast_dom ) {}
 	export class $hyoo_crus_list_tree extends $hyoo_crus_list( $hyoo_crus_vary_cast_tree ) {}
 
+	export class $hyoo_crus_list_ref_base extends $hyoo_crus_list_ref {
+	}
+		
 	export function $hyoo_crus_list_ref_to< Value extends any >( Value: Value ) {
 			
 		type Vals = readonly $mol_type_result< $mol_type_result< Value > >[]
 		
 		class Ref extends (
-			$hyoo_crus_list_vary as $mol_type_erase< typeof $hyoo_crus_list_vary, 'value' >
+			$hyoo_crus_list_ref_base as $mol_type_erase< typeof $hyoo_crus_list_ref_base, 'value' >
 		) {
 			
 			static Value = Value
