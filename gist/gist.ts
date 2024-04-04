@@ -14,7 +14,7 @@ namespace $ {
 	export class $hyoo_crus_gist extends $hyoo_crus_unit {
 		
 		_vary = undefined as undefined | $hyoo_crus_vary_type
-		_open = undefined as undefined | Uint8Array
+		_open = null as null | Uint8Array
 		
 		hint(
 			tip = 'null' as keyof typeof $hyoo_crus_vary_tip,

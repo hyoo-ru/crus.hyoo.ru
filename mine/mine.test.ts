@@ -4,7 +4,7 @@ namespace $ {
 			
 			@ $mol_mem_key
 			static rock( hash: Uint8Array, next?: Uint8Array ) {
-				return next
+				return next ?? null
 			}
 			
 		}

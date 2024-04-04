@@ -2,7 +2,7 @@ namespace $ {
 	export class $hyoo_crus_mine_web extends $hyoo_crus_mine {
 		
 		@ $mol_mem_key
-		static rock( hash: Uint8Array, next?: Uint8Array ): Uint8Array | undefined {
+		static rock( hash: Uint8Array, next?: Uint8Array ): Uint8Array | null {
 			$mol_wire_solid()
 			
 			const prev = $mol_mem_cached( ()=> this.rock( hash ) )
@@ -13,7 +13,7 @@ namespace $ {
 				return next
 			} else {
 				const buf = $mol_wire_sync( this.read() ).get([ hash ])
-				return buf ? new Uint8Array( buf ) : undefined
+				return buf ? new Uint8Array( buf ) : null
 			}
 			
 		}

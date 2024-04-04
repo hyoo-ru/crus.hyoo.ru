@@ -763,7 +763,7 @@ namespace $ {
 		@ $mol_mem_key
 		gist_encode( gist: $hyoo_crus_gist ) {
 			
-			if( gist._open === undefined ) return gist
+			if( gist._open === null ) return gist
 			if( gist.nil() ) return gist
 			
 			let bin = gist._open
@@ -796,7 +796,7 @@ namespace $ {
 			}
 			
 			if( gist._vary !== undefined ) return gist._vary
-			if( gist._open !== undefined ) return gist._vary = $hyoo_crus_vary_decode({ tip: gist.tip(), bin: gist._open })
+			if( gist._open !== null ) return gist._vary = $hyoo_crus_vary_decode({ tip: gist.tip(), bin: gist._open })
 			
 			let bin = gist.size() > 32 ? this.$.$hyoo_crus_mine.rock( gist.hash() ) : gist.data()
 			if( bin && !gist.nil() && this.secret() ) {
