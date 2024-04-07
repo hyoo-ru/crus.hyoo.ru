@@ -17,7 +17,7 @@ namespace $.$$ {
 		}
 		
 		override node( id: string ) {
-			return this.realm().Node( $hyoo_crus_ref( id ), $hyoo_crus_node )
+			return this.realm().Node( $hyoo_crus_ref( id ), $hyoo_crus_dict )
 		}
 		
 		override spread_title( id: string ) {
