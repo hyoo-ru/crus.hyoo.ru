@@ -52,31 +52,7 @@ namespace $.$$ {
 		}
 		
 		unit_value( index: number ) {
-			return this.node().cast( $hyoo_crus_list_vary ).items()[ index ]
-		}
-		
-		@ $mol_mem_key
-		unit_title( index: number ) {
-			const ref = this.unit_value( index ) as $hyoo_crus_ref
-			return this.node().realm()?.Node( ref, $hyoo_crus_entity ).title() || ref.description
-		}
-		
-		unit_ref_arg( index: number ) {
-			return {
-				ref: $hyoo_crus_vary_cast_str( this.unit_value( index ) )
-			}
-		}
-		
-		@ $mol_mem_key
-		unit_ref_like( index: number ) {
-			const val = this.unit_value( index )
-			if( typeof val !== 'symbol' ) return false
-			try {
-				$hyoo_crus_ref_encode( val )
-				return true
-			} catch {
-				return false
-			}
+			return this.node().units()[ index ]
 		}
 		
 		unit_wipe( index: number, event?: Event ) {
@@ -85,19 +61,6 @@ namespace $.$$ {
 		
 		node_inner( index: number ) {
 			return this.node().nodes(null)[ index ]
-		}
-		
-		@ $mol_mem_key
-		node_addons( index: number ) {
-			return [
-				this.Unit_tip( index ),
-				... this.unit_ref_like( index )
-					? [ this.Unit_ref( index ) ]
-					: [ this.Unit_value( index ) ],
-				this.Unit_tag( index ),
-				this.Unit_time( index ),
-				this.Unit_wipe( index ),
-			]
 		}
 		
 		add_key( event: Event ) {
@@ -128,7 +91,7 @@ namespace $.$$ {
 					this.Add_value(),
 					// this.Value_text(),
 				] : [],
-				... this.tag() === 'solo' ? [ this.Value_str() ] : [],
+				// ... this.tag() === 'solo' ? [ this.Value_str() ] : [],
 			]
 		}
 		

@@ -1,0 +1,8 @@
+$hyoo_crus_gist_dump $mol_ghost
+	land $hyoo_crus_land
+	gist $hyoo_crus_gist
+	Ref $mol_link
+		title <= title
+		arg <= arg *
+	Other $mol_dump_value
+		value <= value null

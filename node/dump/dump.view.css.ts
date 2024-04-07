@@ -97,21 +97,7 @@ namespace $.$$ {
 			align: {
 				self: 'flex-start',
 			},
-			color: $mol_theme.text,
-			background: {
-				color: $mol_theme.card,
-			},
 		},
-		
-		Unit_ref: {
-			background: {
-				color: $mol_theme.card,
-			},
-		},
-		
-		// Value: {
-		// 	color: $mol_theme.text,
-		// },
 		
 		Content: {
 			padding: {

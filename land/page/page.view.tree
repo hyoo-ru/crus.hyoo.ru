@@ -1,6 +1,6 @@
 $hyoo_crus_land_page $mol_page
 	land $hyoo_crus_land
-	node $hyoo_crus_node
+	node $hyoo_crus_dict
 	tools /
 		<= Encrypted $mol_check_icon
 			hint \Encryption

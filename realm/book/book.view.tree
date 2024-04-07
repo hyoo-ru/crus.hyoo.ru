@@ -4,7 +4,7 @@ $hyoo_crus_realm_book $mol_book2_catalog
 	realm $hyoo_crus_realm
 	Spread* <= Land* $hyoo_crus_land_page
 		land <= land* $hyoo_crus_land
-		node <= node* $hyoo_crus_node
+		node <= node* $hyoo_crus_dict
 		Close <= Spread_close
 	menu_foot /
 		<= Wipe_pick $mol_pick

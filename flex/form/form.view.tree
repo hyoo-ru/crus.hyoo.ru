@@ -1,10 +1,10 @@
 $hyoo_crus_flex_form $mol_list
-	node $hyoo_crus_node
+	node $hyoo_crus_dict
 	kind $hyoo_crus_flex_kind
 	rows <= fields /
 		<= Field*0 $mol_form_field
-			name <= field_name* \xxx
-			Content <= Field_control* $hyoo_crus_flex_field
+			name <= field_name* \
+			Content <= Field_content* $mol_view sub / <= Field_control* $hyoo_crus_flex_field
 				node? <=> field_node*? $hyoo_crus_node
 				prop <= field_prop* $hyoo_crus_flex_prop
 				enabled <= enabled true

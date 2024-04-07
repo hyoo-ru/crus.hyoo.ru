@@ -1,22 +1,67 @@
-$hyoo_crus_flex_field $mol_ghost
+$hyoo_crus_flex_field $mol_view
+	sub / <= Sub $mol_view
 	node? $hyoo_crus_node
+	land = node land
 	prop $hyoo_crus_flex_prop
+	Enum $mol_select
+		enabled <= enabled true
+		value? <=> enum? null
+		options <= enum_options /
+		option_label* <= enum_label* \
+	Bool $mol_check_box
+		enabled <= enabled true
+		checked? <=> bool? false
+	Int $mol_number
+		enabled <= enabled true
+		value? <=> int? +NaN
+	Real $mol_number
+		enabled <= enabled true
+		value? <=> real? +NaN
+	Ref $mol_bar sub <= ref_content /
+		<= Ref_dump $hyoo_crus_gist_dump
+			land <= land
+			value <= ref_value null
+		<= Ref_pick $mol_select
+			enabled <= enabled true
+			value? <=> ref? null
+			options <= ref_options /
+			option_label* <= ref_label* \
+		<= Ref_new $mol_select
+			Filter null
+			trigger_content /
+				<= Ref_new_icon $mol_icon_plus
+			value? <=> ref_new? null
+			dictionary *
+				local @ \💼 Local
+				orgy @ \✍ All write
+				lobby @ \📢 All add
+				public @ \🔎 All read
+				private @ \🔐 Private
 	Str $mol_textarea
 		enabled <= enabled true
 		value? <=> str? \
-	Ref $mol_select
+	Time $mol_date
 		enabled <= enabled true
-		value? <=> ref? null
-		options <= ref_options /
-		option_label* <= ref_label* \
-	Items $mol_view
-		sub <= rows /
-			<= Row_add $mol_button_minor
+		value_moment? <=> time? $mol_time_moment
+	Dict $mol_expander
+		title <= dict_title \
+		content / <= Dict_form $hyoo_crus_flex_form
+			enabled <= enabled true
+			node <= dict_node $hyoo_crus_dict
+	Text $mol_textarea
+		enabled <= enabled true
+		value? <=> text? \
+	List $mol_view
+		sub <= list_items /
+			<= List_item_dump*0 $hyoo_crus_gist_dump
+				land <= land
+				gist <= list_gist* $hyoo_crus_gist
+			<= List_pick $mol_select
 				enabled <= enabled true
-				click? <=> row_add? null
+				value? <=> list_pick? null
+				options <= ref_options
+				option_label* <= ref_label* \
+			<= List_item_add $mol_button_minor
+				enabled <= enabled true
+				click? <=> list_item_add? null
 				title \+
-			<= Row*0 $mol_dump_value
-				value <= row_value* null
-			<= Row_ref*0 $mol_link
-				arg <= row_arg* *
-				title <= row_title* \
