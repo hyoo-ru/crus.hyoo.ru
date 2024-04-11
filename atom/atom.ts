@@ -150,19 +150,19 @@ namespace $ {
 	
 	export function $hyoo_crus_atom_ref_to< Value extends any >( Value: Value ) {
 
-		type Val = $mol_type_result< $mol_type_result< Value > >
-
 		class Ref extends (
 			$hyoo_crus_atom_ref as $mol_type_erase< typeof $hyoo_crus_atom_ref, 'value' >
 		) {
 
-			static Value = Value;
+			Value = Value;
 
 			static toString() {
 				return '$hyoo_crus_atom_ref_to(()=>' + ( Value as any )() + ')'
 			}
 			
-			value( next?: null | Val ): null | Val {
+			value(
+				next?: null | $mol_type_result< $mol_type_result< this['Value'] > >
+			): null | $mol_type_result< $mol_type_result< this['Value'] > > {
 				return this.remote( next )
 			}
 
@@ -182,7 +182,9 @@ namespace $ {
 			}
 			
 			@ $mol_mem
-			remote( next?: null | Val ): null | Val {
+			remote(
+				next?: null | $mol_type_result< $mol_type_result< this['Value'] > >
+			): null | $mol_type_result< $mol_type_result< this['Value'] > > {
 				
 				const realm = this.realm()
 				

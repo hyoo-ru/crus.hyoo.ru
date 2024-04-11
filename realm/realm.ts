@@ -16,11 +16,11 @@ namespace $ {
 		}
 		
 		@ $mol_action
-		land_grab( preset = $hyoo_crus_rank_public ) {
+		king_grab( preset = $hyoo_crus_rank_public ) {
 			
-			const knight = this.$.$hyoo_crus_auth.grab()
+			const king = this.$.$hyoo_crus_auth.grab()
 			const colony = ( $mol_wire_sync( $hyoo_crus_land ) as typeof $hyoo_crus_land ).make({})
-			colony.auth = $mol_const( knight )
+			colony.auth = $mol_const( king )
 			
 			if( !preset.get.includes( $hyoo_crus_ref( '' ) ) ) {
 				colony.encrypted( true )
@@ -32,10 +32,14 @@ namespace $ {
 			for( const ref of preset.mod ) colony.lord_rank( ref ?? self, $hyoo_crus_rank.mod )
 			for( const ref of preset.law ) colony.lord_rank( ref ?? self, $hyoo_crus_rank.law )
 			
-			const land = this.Land( colony.ref() )
-			land.apply_unit_trust( colony.delta_unit() )
+			this.Land( colony.ref() ).apply_unit_trust( colony.delta_unit() )
 			
-			return land
+			return king
+		}
+		
+		@ $mol_action
+		land_grab( preset = $hyoo_crus_rank_public ) {
+			return this.Land( this.king_grab( preset ).lord() )
 		}
 		
 		@ $mol_mem_key
