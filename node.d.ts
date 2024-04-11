@@ -3149,6 +3149,7 @@ declare namespace $ {
     }
     export function $hyoo_crus_atom_ref_to<Value extends any>(Value: Value): {
         new (): {
+            Value: Value;
             value(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
             yoke(preset?: $hyoo_crus_rank_preset): $hyoo_crus_land | null;
             remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
@@ -3180,7 +3181,6 @@ declare namespace $ {
             pick_unit: () => $hyoo_crus_gist | undefined;
             value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
         };
-        Value: Value;
         toString(): string;
         [Symbol.toPrimitive]: typeof $mol_object2.[ Symbol.toPrimitive ];
         destructor: typeof $mol_object2.destructor;
@@ -3316,6 +3316,7 @@ declare namespace $ {
         Title: $hyoo_crus_atom_str | null;
         Selection: $hyoo_crus_atom_str | null;
         Hall: {
+            Value: () => typeof $hyoo_crus_dict;
             value(next?: $hyoo_crus_dict | null | undefined): $hyoo_crus_dict | null;
             yoke(preset?: $hyoo_crus_rank_preset | undefined): $hyoo_crus_land | null;
             remote(next?: $hyoo_crus_dict | null | undefined): $hyoo_crus_dict | null;
@@ -3359,6 +3360,7 @@ declare namespace $ {
             Selection: typeof $hyoo_crus_atom_str;
             Hall: {
                 new (): {
+                    Value: () => typeof $hyoo_crus_dict;
                     value(next?: $hyoo_crus_dict | null | undefined): $hyoo_crus_dict | null;
                     yoke(preset?: $hyoo_crus_rank_preset | undefined): $hyoo_crus_land | null;
                     remote(next?: $hyoo_crus_dict | null | undefined): $hyoo_crus_dict | null;
@@ -3390,7 +3392,6 @@ declare namespace $ {
                     pick_unit: () => $hyoo_crus_gist | undefined;
                     value_vary: (next?: $hyoo_crus_vary_type | undefined) => $hyoo_crus_vary_type;
                 };
-                Value: () => typeof $hyoo_crus_dict;
                 toString(): string;
                 [Symbol.toPrimitive]: typeof $mol_object2.[ Symbol.toPrimitive ];
                 destructor: typeof $mol_object2.destructor;
@@ -3416,6 +3417,7 @@ declare namespace $ {
         }, $hyoo_crus_land>;
         yard(): $hyoo_crus_yard;
         home(): $hyoo_crus_home;
+        king_grab(preset?: $hyoo_crus_rank_preset): $hyoo_crus_auth;
         land_grab(preset?: $hyoo_crus_rank_preset): $hyoo_crus_land;
         Land(ref: $hyoo_crus_ref): $hyoo_crus_land;
         Node<Node extends typeof $hyoo_crus_node>(ref: $hyoo_crus_ref, Node: Node): InstanceType<Node>;

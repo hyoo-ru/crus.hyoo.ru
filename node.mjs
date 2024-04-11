@@ -7155,7 +7155,7 @@ var $;
     $.$hyoo_crus_atom_ref_base = $hyoo_crus_atom_ref_base;
     function $hyoo_crus_atom_ref_to(Value) {
         class Ref extends $hyoo_crus_atom_ref {
-            static Value = Value;
+            Value = Value;
             static toString() {
                 return '$hyoo_crus_atom_ref_to(()=>' + Value() + ')';
             }
@@ -8326,10 +8326,10 @@ var $;
         home() {
             return this.Land(this.$.$hyoo_crus_auth.current().lord()).home();
         }
-        land_grab(preset = $hyoo_crus_rank_public) {
-            const knight = this.$.$hyoo_crus_auth.grab();
+        king_grab(preset = $hyoo_crus_rank_public) {
+            const king = this.$.$hyoo_crus_auth.grab();
             const colony = $mol_wire_sync($hyoo_crus_land).make({});
-            colony.auth = $mol_const(knight);
+            colony.auth = $mol_const(king);
             if (!preset.get.includes($hyoo_crus_ref(''))) {
                 colony.encrypted(true);
             }
@@ -8342,9 +8342,11 @@ var $;
                 colony.lord_rank(ref ?? self, $hyoo_crus_rank.mod);
             for (const ref of preset.law)
                 colony.lord_rank(ref ?? self, $hyoo_crus_rank.law);
-            const land = this.Land(colony.ref());
-            land.apply_unit_trust(colony.delta_unit());
-            return land;
+            this.Land(colony.ref()).apply_unit_trust(colony.delta_unit());
+            return king;
+        }
+        land_grab(preset = $hyoo_crus_rank_public) {
+            return this.Land(this.king_grab(preset).lord());
         }
         Land(ref) {
             let land = this.lands.get(ref);
@@ -8382,6 +8384,9 @@ var $;
     __decorate([
         $mol_mem
     ], $hyoo_crus_realm.prototype, "yard", null);
+    __decorate([
+        $mol_action
+    ], $hyoo_crus_realm.prototype, "king_grab", null);
     __decorate([
         $mol_action
     ], $hyoo_crus_realm.prototype, "land_grab", null);
