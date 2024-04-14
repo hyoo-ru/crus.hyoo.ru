@@ -151,33 +151,33 @@ namespace $ {
 			const home = realm.home().land()
 			const left = home.fork()
 			
-			home.Data( $hyoo_crus_list_vary ).items([ 'foo', 'xxx' ])
-			$mol_assert_equal( home.Data( $hyoo_crus_list_vary ).items(), [ 'foo', 'xxx' ] )
-			$mol_assert_equal( left.Data( $hyoo_crus_list_vary ).items(), [ 'foo', 'xxx' ] )
+			home.Data( $hyoo_crus_list_vary ).items_vary([ 'foo', 'xxx' ])
+			$mol_assert_equal( home.Data( $hyoo_crus_list_vary ).items_vary(), [ 'foo', 'xxx' ] )
+			$mol_assert_equal( left.Data( $hyoo_crus_list_vary ).items_vary(), [ 'foo', 'xxx' ] )
 			
 			left.faces.sync( home.faces )
-			left.Data( $hyoo_crus_list_vary ).items([ 'foo', 'yyy' ])
-			$mol_assert_equal( left.Data( $hyoo_crus_list_vary ).items(), [ 'foo', 'yyy' ] )
+			left.Data( $hyoo_crus_list_vary ).items_vary([ 'foo', 'yyy' ])
+			$mol_assert_equal( left.Data( $hyoo_crus_list_vary ).items_vary(), [ 'foo', 'yyy' ] )
 			
 			const right = home.fork()
 			right.faces.sync( left.faces )
-			right.Data( $hyoo_crus_list_vary ).items([ 'foo', 'zzz' ])
-			$mol_assert_equal( right.Data( $hyoo_crus_list_vary ).items(), [ 'foo', 'zzz' ] )
+			right.Data( $hyoo_crus_list_vary ).items_vary([ 'foo', 'zzz' ])
+			$mol_assert_equal( right.Data( $hyoo_crus_list_vary ).items_vary(), [ 'foo', 'zzz' ] )
 			
 			const both = home.fork()
-			$mol_assert_equal( both.Data( $hyoo_crus_list_vary ).items(), [ 'foo', 'xxx' ] )
+			$mol_assert_equal( both.Data( $hyoo_crus_list_vary ).items_vary(), [ 'foo', 'xxx' ] )
 			
-			both.Meta().inflow([ right.ref() ])
-			$mol_assert_equal( both.Data( $hyoo_crus_list_vary ).items(), [ 'foo', 'zzz' ] )
+			both.Meta().inflow!.items_vary([ right.ref() ])
+			$mol_assert_equal( both.Data( $hyoo_crus_list_vary ).items_vary(), [ 'foo', 'zzz' ] )
 			
-			both.Meta().inflow([ left.ref() ])
-			$mol_assert_equal( both.Data( $hyoo_crus_list_vary ).items(), [ 'foo', 'yyy' ] )
+			both.Meta().inflow!.items_vary([ left.ref() ])
+			$mol_assert_equal( both.Data( $hyoo_crus_list_vary ).items_vary(), [ 'foo', 'yyy' ] )
 			
-			both.Meta().inflow([ right.ref(), left.ref() ])
-			$mol_assert_equal( both.Data( $hyoo_crus_list_vary ).items(), [ 'foo', 'yyy' ] )
+			both.Meta().inflow!.items_vary([ right.ref(), left.ref() ])
+			$mol_assert_equal( both.Data( $hyoo_crus_list_vary ).items_vary(), [ 'foo', 'yyy' ] )
 			
-			both.Meta().inflow([ left.ref(), right.ref() ])
-			$mol_assert_equal( both.Data( $hyoo_crus_list_vary ).items(), [ 'foo', 'zzz' ] )
+			both.Meta().inflow!.items_vary([ left.ref(), right.ref() ])
+			$mol_assert_equal( both.Data( $hyoo_crus_list_vary ).items_vary(), [ 'foo', 'zzz' ] )
 			
 		},
 		
@@ -190,16 +190,16 @@ namespace $ {
 			const alice_val = Alice.Node( $hyoo_crus_atom_str ).Item( 'qwertyui' )
 			const bella_val = Bella.Node( $hyoo_crus_atom_str ).Item( 'qwertyui' )
 			
-			alice_val.value( 'Alice' )
-			bella_val.value( 'Bella' )
+			alice_val.val( 'Alice' )
+			bella_val.val( 'Bella' )
 			
 			const alice_ref = Alice.Node( $hyoo_crus_atom_ref ).Item( 'asdfghjk' )
 			const bella_ref = Bella.Node( $hyoo_crus_atom_ref ).Item( 'asdfghjk' )
 			
-			alice_ref.value( alice_val.ref() )
-			$mol_assert_equal( alice_ref.value(), alice_val.ref() )
-			$mol_assert_unique( alice_ref.value(), bella_ref.value() )
-			$mol_assert_equal( bella_ref.value(), bella_val.ref() )
+			alice_ref.val( alice_val.ref() )
+			$mol_assert_equal( alice_ref.val(), alice_val.ref() )
+			$mol_assert_unique( alice_ref.val(), bella_ref.val() )
+			$mol_assert_equal( bella_ref.val(), bella_val.ref() )
 			
 		},
 		

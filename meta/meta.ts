@@ -1,7 +1,7 @@
 namespace $ {
 	
 	export class $hyoo_crus_meta extends $hyoo_crus_dict.with({
-		Inflow: $hyoo_crus_list_ref,
+		inflow: $hyoo_crus_list_ref,
 	}) {}
 
 }

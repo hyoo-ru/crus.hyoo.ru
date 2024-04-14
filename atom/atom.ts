@@ -9,12 +9,8 @@ namespace $ {
 			return this.units().at(0)
 		}
 		
-		value( next?: $hyoo_crus_vary_type ) {
-			return this.value_vary( next )
-		}
-		
 		@ $mol_mem
-		value_vary( next?: $hyoo_crus_vary_type ): $hyoo_crus_vary_type {
+		vary( next?: $hyoo_crus_vary_type ): $hyoo_crus_vary_type {
 			
 			let unit_prev = this.pick_unit()
 			let prev = unit_prev ? this.land().gist_decode( unit_prev ) : null
@@ -29,7 +25,7 @@ namespace $ {
 				next
 			)
 			
-			return this.value_vary()
+			return this.vary()
 		}
 		
 		;[ $mol_dev_format_head ]() {
@@ -38,7 +34,7 @@ namespace $ {
 				' ',
 				this.head(),
 				' ',
-				$mol_dev_format_auto( this.value_vary() ),
+				$mol_dev_format_auto( this.vary() ),
 			)
 		}
 		
@@ -60,7 +56,7 @@ namespace $ {
 			static options = options;
 
 			@ $mol_mem
-			value( next?: Options[number] ): Options[number] | null {
+			val( next?: Options[number] ): Options[number] | null {
 				
 				validate: if( next !== undefined ) {
 					for( const option of options ) {
@@ -69,7 +65,7 @@ namespace $ {
 					$mol_fail( new Error( `Wrong value (${ $hyoo_crus_vary_cast_str( next ) })` ) )
 				}
 				
-				const val = this.value_vary( next )
+				const val = this.vary( next )
 				
 				for( const option of options ) {
 					if( $mol_compare_deep( option, val ) ) return val
@@ -91,11 +87,11 @@ namespace $ {
 
 			static parse = parse;
 
-			value( next?: ReturnType< Parse > ): ReturnType< Parse > | null {
+			val( next?: ReturnType< Parse > ): ReturnType< Parse > | null {
 				
 				if( next !== undefined ) parse( next )
 				
-				const res = this.value_vary( next )
+				const res = this.vary( next )
 				try {
 					return parse( res )
 				} catch {
@@ -129,54 +125,29 @@ namespace $ {
 		
 		static Value = $hyoo_crus_dict;
 		
-		@ $mol_mem
-		remote( next?: null | $hyoo_crus_dict ): null | $hyoo_crus_dict {
-			const realm = this.realm()
-			let ref: $hyoo_crus_ref | null = ( next as $hyoo_crus_node )?.ref() ?? next
-			ref = $hyoo_crus_vary_cast_ref( this.value_vary( ref ) )
-			if( !ref ) return null
-			return realm!.Node( ref, $hyoo_crus_dict )
-		}
-		
-		remote_ensure( preset?: $hyoo_crus_rank_preset ) {
-			return null as $hyoo_crus_dict | null
-		}
-		
-		local_ensure() {
-			return null as $hyoo_crus_dict | null
-		}
-		
 	}
 	
 	export function $hyoo_crus_atom_ref_to< Value extends any >( Value: Value ) {
 
-		class Ref extends (
-			$hyoo_crus_atom_ref as $mol_type_erase< typeof $hyoo_crus_atom_ref, 'value' >
-		) {
+		class Ref extends $hyoo_crus_atom_ref_base {
 
 			Value = Value;
 
 			static toString() {
-				return '$hyoo_crus_atom_ref_to(()=>' + ( Value as any )() + ')'
+				return '$hyoo_crus_atom_ref_to<' + ( Value as any )() + '>'
 			}
 			
-			value(
-				next?: null | $mol_type_result< $mol_type_result< this['Value'] > >
-			): null | $mol_type_result< $mol_type_result< this['Value'] > > {
-				return this.remote( next )
-			}
-
 			@ $mol_mem
 			yoke( preset?: $hyoo_crus_rank_preset ) {
 				
 				const realm = this.realm()!
 				const Ref = this.cast( $hyoo_crus_atom_ref )
-				const ref = Ref.value()
+				const ref = Ref.val()
 				if( ref ) return realm.Land( ref )
 				if( preset === undefined ) return null
 				
 				const land = realm.land_grab( preset )
-				Ref.value( land.ref() )
+				Ref.val( land.ref() )
 				
 				return land
 			}
@@ -189,7 +160,7 @@ namespace $ {
 				const realm = this.realm()
 				
 				let ref: $hyoo_crus_ref | null = ( next as $hyoo_crus_node )?.ref() ?? next
-				ref = $hyoo_crus_vary_cast_ref( this.value_vary( ref ) )
+				ref = $hyoo_crus_vary_cast_ref( this.vary( ref ) )
 				if( !ref ) return null
 				
 				return realm!.Node( ref, ( Value as any )() )

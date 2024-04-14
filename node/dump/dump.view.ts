@@ -6,11 +6,11 @@ namespace $.$$ {
 		}
 		
 		value() {
-			return this.node().cast( $hyoo_crus_atom_vary ).value_vary()
+			return this.node().cast( $hyoo_crus_atom_vary ).vary()
 		}
 		
 		items() {
-			return this.node().cast( $hyoo_crus_list_vary ).items()
+			return this.node().cast( $hyoo_crus_list_vary ).items_vary()
 		}
 		
 		nodes() {
@@ -76,7 +76,7 @@ namespace $.$$ {
 		}
 		
 		value_str( next?: string ) {
-			return this.node().cast( $hyoo_crus_atom_str ).value( next ) ?? ''
+			return this.node().cast( $hyoo_crus_atom_str ).val( next ) ?? ''
 		}
 		
 		text( next?: string ) {

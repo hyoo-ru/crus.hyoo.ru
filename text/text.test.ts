@@ -7,35 +7,35 @@ namespace $ {
 			const text = land.Data( $hyoo_crus_text )
 			const list = land.Data( $hyoo_crus_list_vary )
 			$mol_assert_equal( text.str(), '' )
-			$mol_assert_equal( list.items(), [] )
+			$mol_assert_equal( list.items_vary(), [] )
 			
 			text.str( 'foo' )
 			$mol_assert_equal( text.str(), 'foo' )
-			$mol_assert_equal( list.items(), [ 'foo' ] )
+			$mol_assert_equal( list.items_vary(), [ 'foo' ] )
 			
 			text.str( 'foo bar' )
 			$mol_assert_equal( text.str(), 'foo bar' )
-			$mol_assert_equal( list.items(), [ 'foo', ' bar' ] )
+			$mol_assert_equal( list.items_vary(), [ 'foo', ' bar' ] )
 			
 			text.str( 'foo lol bar' )
 			$mol_assert_equal( text.str(), 'foo lol bar' )
-			$mol_assert_equal( list.items(), [ 'foo', ' lol', ' bar' ] )
+			$mol_assert_equal( list.items_vary(), [ 'foo', ' lol', ' bar' ] )
 			
 			text.str( 'lol bar' )
 			$mol_assert_equal( text.str(), 'lol bar' )
-			$mol_assert_equal( list.items(), [ 'lol', ' bar' ] )
+			$mol_assert_equal( list.items_vary(), [ 'lol', ' bar' ] )
 			
 			text.str( 'foo bar' )
 			$mol_assert_equal( text.str(), 'foo bar' )
-			$mol_assert_equal( list.items(), [ 'foo', ' bar' ] )
+			$mol_assert_equal( list.items_vary(), [ 'foo', ' bar' ] )
 			
 			text.str( 'foo  bar' )
 			$mol_assert_equal( text.str(), 'foo  bar' )
-			$mol_assert_equal( list.items(), [ 'foo', ' ', ' bar' ] )
+			$mol_assert_equal( list.items_vary(), [ 'foo', ' ', ' bar' ] )
 			
 			text.str( 'foo  BarBar' )
 			$mol_assert_equal( text.str(), 'foo  BarBar' )
-			$mol_assert_equal( list.items(), [ 'foo', ' ', ' Bar', 'Bar' ] )
+			$mol_assert_equal( list.items_vary(), [ 'foo', ' ', ' Bar', 'Bar' ] )
 			
 		},
 		

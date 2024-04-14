@@ -7,7 +7,7 @@ namespace $.$$ {
 		
 		@ $mol_mem
 		Sub() {
-			const type = this.prop().type()
+			const type = this.prop().type?.val()
 			switch( type ) {
 				case 'vary': return this.Str()
 				case 'enum': return this.Enum()
@@ -25,12 +25,12 @@ namespace $.$$ {
 		}
 		
 		override enum( next?: $hyoo_crus_vary_type ) {
-			return this.node( next as any )?.cast( $hyoo_crus_atom_vary ).value( next ) ?? null
+			return this.node( next as any )?.cast( $hyoo_crus_atom_vary ).vary( next ) ?? null
 		}
 		
 		@ $mol_mem
 		override enum_options() {
-			return this.prop().enum()?.value() ?? []
+			return this.prop().enum?.remote()?.items_vary() ?? []
 		}
 		
 		@ $mol_mem_key
@@ -39,27 +39,27 @@ namespace $.$$ {
 		}
 		
 		bool( next?: boolean ) {
-			return this.node( next as any )?.cast( $hyoo_crus_atom_bool ).value( next ) ?? false
+			return this.node( next as any )?.cast( $hyoo_crus_atom_bool ).val( next ) ?? false
 		}
 		
 		int( next?: number ) {
-			return Number( this.node( next as any )?.cast( $hyoo_crus_atom_int ).value( next === undefined ? undefined : BigInt( next ) ) ?? Number.NaN )
+			return Number( this.node( next as any )?.cast( $hyoo_crus_atom_int ).val( next === undefined ? undefined : BigInt( next ) ) ?? Number.NaN )
 		}
 		
 		real( next?: number ) {
-			return this.node( next as any )?.cast( $hyoo_crus_atom_real ).value( next ) ?? Number.NaN
+			return this.node( next as any )?.cast( $hyoo_crus_atom_real ).val( next ) ?? Number.NaN
 		}
 		
 		str( next?: string ) {
-			return this.node( next as any )?.cast( $hyoo_crus_atom_str ).value( next ) ?? ''
+			return this.node( next as any )?.cast( $hyoo_crus_atom_str ).val( next ) ?? ''
 		}
 		
 		time( next?: $mol_time_moment ) {
-			return this.node( next as any )?.cast( $hyoo_crus_atom_time ).value( next ) ?? null!
+			return this.node( next as any )?.cast( $hyoo_crus_atom_time ).val( next ) ?? null!
 		}
 		
 		ref( next?: $hyoo_crus_ref ) {
-			this.node( next as any )?.cast( $hyoo_crus_atom_vary ).value( next ) ?? null
+			this.node( next as any )?.cast( $hyoo_crus_atom_ref ).val( next ) ?? null
 			return null
 		}
 		
@@ -74,20 +74,20 @@ namespace $.$$ {
 		
 		@ $mol_mem
 		ref_value() {
-			return this.node()?.cast( $hyoo_crus_atom_vary ).value_vary() ?? null
+			return this.node()?.cast( $hyoo_crus_atom_vary ).vary() ?? null
 		}
 		
 		ref_options() {
-			return this.prop().enum()?.items() ?? []
+			return this.prop().enum?.remote()?.items_vary() ?? []
 		}
 		
 		ref_label( ref: $hyoo_crus_vary_type ) {
-			if( typeof ref === 'symbol' ) return this.prop()?.realm()!.Node( ref, $hyoo_crus_flex_thing ).title() ?? ref.description!
+			if( typeof ref === 'symbol' ) return this.prop()?.realm()!.Node( ref, $hyoo_crus_flex_thing ).title?.val() ?? ref.description!
 			return $hyoo_crus_vary_cast_str( ref ) ?? ''
 		}
 		
 		ref_remote() {
-			return ( this.node() as $hyoo_crus_atom_ref_base ).remote()!
+			return ( this.node().cast( $hyoo_crus_atom_ref_to( ()=> $hyoo_crus_dict ) ) ).remote()!
 		}
 		
 		@ $mol_action
@@ -96,11 +96,11 @@ namespace $.$$ {
 			if( !rights ) return null
 			
 			const node =  this.node( 'auto' as any ).cast( $hyoo_crus_flex_thing_ref )
-			const Target = this.prop().target()
+			const Target = this.prop().target?.remote()
 			
 			if( rights === 'local' ) {
 				const remote = node.local_ensure()!
-				if( Target ) remote.kind( Target )
+				if( Target ) remote.kind?.remote( Target )
 				return null
 			}
 			
@@ -113,7 +113,7 @@ namespace $.$$ {
 			
 			if( preset ) {
 				const remote = node.remote_ensure( preset )!
-				if( Target ) remote.kind( Target )
+				if( Target ) remote.kind?.remote( Target )
 				return null
 			}
 			
@@ -126,7 +126,7 @@ namespace $.$$ {
 		
 		@ $mol_mem
 		dict_title() {
-			return this.node().cast( $hyoo_crus_entity ).title() || this.node().ref().description!
+			return this.node().cast( $hyoo_crus_entity ).title?.val() || this.node().ref().description!
 		}
 		
 		@ $mol_mem
@@ -147,7 +147,7 @@ namespace $.$$ {
 		@ $mol_mem
 		list_item_add() {
 			const target = this.node( null as any ).cast( $hyoo_crus_list_ref_to( ()=> $hyoo_crus_flex_thing ) ).local_make()
-			target.kind( this.prop().target() )
+			target.kind?.remote( this.prop().target?.remote() )
 		}
 		
 		@ $mol_mem_key

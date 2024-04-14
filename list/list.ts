@@ -5,16 +5,9 @@ namespace $ {
 		
 		static tag = $hyoo_crus_gist_tag[ $hyoo_crus_gist_tag.vals ] as keyof typeof $hyoo_crus_gist_tag
 		
-		value(
-			next?: readonly $hyoo_crus_vary_type[],
-			tag = 'term' as keyof typeof $hyoo_crus_gist_tag,
-		) {
-			return this.items( next, tag )
-		}
-		
 		/** All Vary in the list. */
 		@ $mol_mem
-		items(
+		items_vary(
 			next?: readonly $hyoo_crus_vary_type[],
 			tag = 'term' as keyof typeof $hyoo_crus_gist_tag,
 		): readonly $hyoo_crus_vary_type[] {
@@ -23,7 +16,7 @@ namespace $ {
 			if( next === undefined ) return units.map( unit => this.land().gist_decode( unit ) )
 			
 			this.splice( next, 0, units.length, tag )
-			return this.items()
+			return this.items_vary()
 			
 		}
 		
@@ -124,7 +117,7 @@ namespace $ {
 				' ',
 				this.head(),
 				' ',
-				$mol_dev_format_auto( this.items() ),
+				$mol_dev_format_auto( this.items_vary() ),
 			)
 		}
 		
@@ -139,8 +132,8 @@ namespace $ {
 			static parse = parse;
 
 			@ $mol_mem
-			value( next?: readonly ReturnType< Parse >[] ): readonly ReturnType< Parse >[] {
-				return this.items( next?.map( parse ) ).map( parse )
+			items( next?: readonly ReturnType< Parse >[] ): readonly ReturnType< Parse >[] {
+				return this.items_vary( next?.map( parse ) ).map( parse )
 			}
 
 		}
@@ -170,18 +163,12 @@ namespace $ {
 			
 		type Vals = readonly $mol_type_result< $mol_type_result< Value > >[]
 		
-		class Ref extends (
-			$hyoo_crus_list_ref_base as $mol_type_erase< typeof $hyoo_crus_list_ref_base, 'value' >
-		) {
+		class Ref extends $hyoo_crus_list_ref_base {
 			
 			static Value = Value
 			
 			static toJSON() {
-				return '$hyoo_crus_list_to(()=>' + ( Value as any )() + ')'
-			}
-			
-			value( next?: Vals ): Vals {
-				return this.remote_list( next )
+				return '$hyoo_crus_list_to<' + ( Value as any )() + '>'
 			}
 			
 			/** List of referenced Nodes */
@@ -189,7 +176,7 @@ namespace $ {
 			remote_list( next?: Vals ): Vals {
 				const realm = this.realm()
 				const Node = ( Value as any )()
-				return this.items( next?.map( item => ( item as $hyoo_crus_node ).ref() ) )
+				return this.items_vary( next?.map( item => ( item as $hyoo_crus_node ).ref() ) )
 					.map( $hyoo_crus_vary_cast_ref )
 					.filter( $mol_guard_defined )
 					.map( ref => realm!.Node( ref, Node ) )

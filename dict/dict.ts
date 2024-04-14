@@ -1,18 +1,14 @@
 namespace $ {
 	export class $hyoo_crus_dict extends (
-		$hyoo_crus_list_vary as $mol_type_erase< typeof $hyoo_crus_list_vary, 'value' >
+		$hyoo_crus_list_vary
 	) {
 		
 		static tag = $hyoo_crus_gist_tag[ $hyoo_crus_gist_tag.keys ] as keyof typeof $hyoo_crus_gist_tag
 		
-		value() {
-			return this
-		}
-		
 		/** List of Vary keys. */
 		@ $mol_mem
 		keys(): readonly $hyoo_crus_vary_type[] {
-			return this.items()
+			return this.items_vary()
 		}
 		
 		/** Inner Node by key. */
@@ -30,18 +26,14 @@ namespace $ {
 		
 		static with<
 			This extends typeof $hyoo_crus_dict,
-			Schema extends Record< string, { tag: keyof typeof $hyoo_crus_gist_tag, new(): { value: any } } >
+			Schema extends Record< string, { tag: keyof typeof $hyoo_crus_gist_tag, new(): {} } >
 		>( this: This, schema: Schema ) {
 			
 			const Entity = class Entity extends ( this as any ) {
 				// static get schema() { return { ... this.schema, ... schema } }
 			} as This & {
 				new( ...args: any[] ): InstanceType< This > & {
-					[ Key in keyof Schema ]: InstanceType< Schema[ Key ] > | null
-				} & {
-					readonly [ Key in keyof Schema as Uncapitalize< Extract< Key, string > > ]: (
-						next?: ReturnType< InstanceType< Schema[ Key ] >[ 'value' ] >
-					)=> ReturnType< InstanceType< Schema[ Key ] >[ 'value' ] > | null
+					readonly [ Key in keyof Schema ]: InstanceType< Schema[ Key ] > | null
 				}
 			}
 
@@ -49,19 +41,13 @@ namespace $ {
 				
 				const field = Field[0].toLowerCase() + Field.slice(1)
 				
-				Object.defineProperty( Entity.prototype, Field, { get: function() {
-					return ( this as any as $hyoo_crus_dict ).dive( field, schema[ Field ] as any, null )
-				} } )
-				
 				Object.defineProperty( Entity.prototype, field, {
-					value: function( next?: any ) {
-						return ( next === undefined && !this.has( field ) )
-							? null 
-							: this[ Field ].value( next )
+					get: function( this: InstanceType< This > ) {
+						return this.dive( field, schema[ Field ] as any, 'auto' )
 					}
 				} )
 				
-				$mol_wire_field( Entity.prototype, Field as any )
+				// $mol_wire_field( Entity.prototype, Field as any )
 			}
 			
 			return Object.assign( Entity, { schema: { ... this.schema, ... schema } } )
@@ -98,7 +84,7 @@ namespace $ {
 	}
 	
 	export function $hyoo_crus_dict_to<
-		Value extends { tag: keyof typeof $hyoo_crus_gist_tag, new(): { value: any } }
+		Value extends { tag: keyof typeof $hyoo_crus_gist_tag, new(): {} }
 	>( Value: Value ) {
 		
 		return class Dict extends $hyoo_crus_dict {

@@ -15,7 +15,7 @@ namespace $.$$ {
 		@ $mol_mem
 		title() {
 			const ref = this.value() as $hyoo_crus_ref
-			return this.land().realm()!.Node( ref , $hyoo_crus_flex_thing ).title() || ref?.description!
+			return this.land().realm()!.Node( ref , $hyoo_crus_flex_thing ).title?.val() || ref?.description!
 		}
 		
 		@ $mol_mem

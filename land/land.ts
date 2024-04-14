@@ -386,7 +386,7 @@ namespace $ {
 			if( !realm ) $mol_fail( new Error( 'Realm is required to fork' ) )
 			
 			const land = realm.land_grab( preset )
-			land.Meta().Inflow!.items([ this.ref() ])
+			land.Meta().inflow!.items_vary([ this.ref() ])
 			
 			return land
 		}
@@ -404,7 +404,7 @@ namespace $ {
 			
 			merge: if( $hyoo_crus_area_of( head ) === 'data' ) {
 				
-				const inflow = ( this.Meta().inflow()?.slice().reverse() ?? [] )
+				const inflow = ( this.Meta().inflow?.items_vary().slice().reverse() ?? [] )
 					.map( $hyoo_crus_vary_cast_ref )
 					.filter( $mol_guard_defined )
 				if( !inflow.length ) break merge
@@ -522,6 +522,16 @@ namespace $ {
 			unit.peer( auth.peer() )
 			unit.dest( dest )
 			unit._land = this
+			
+			const secret_land = this.secret()
+			if( secret_land ) {
+				const secret_mutual = this.secret_mutual( $hyoo_crus_ref_peer( dest ) )
+				if( secret_mutual ) {
+					const secret_bin = $mol_wire_sync( secret_land ).serial()
+					const bill = $mol_wire_sync( secret_mutual ).encrypt( secret_bin, unit.salt() )
+					unit.bill().set( bill )
+				}
+			}
 			
 			const error = this.apply_unit_trust([ unit ])[0]
 			if( error ) $mol_fail( new Error( error ) )
@@ -788,8 +798,8 @@ namespace $ {
 		gist_decode_raw( gist: $hyoo_crus_gist ): $hyoo_crus_vary_type {
 			
 			if( this.gists.get( gist.head() )?.get( gist.self() ) !== gist ) {
-				for( const id of this.Meta().inflow() ?? [] ) {
-					const vary = this.realm()?.Land( id! ).gist_decode_raw( gist )
+				for( const id of this.Meta().inflow?.items_vary() ?? [] ) {
+					const vary = this.realm()?.Land( $hyoo_crus_vary_cast_ref( id! )! ).gist_decode_raw( gist )
 					if( vary !== undefined ) return vary
 				}
 				return undefined!
