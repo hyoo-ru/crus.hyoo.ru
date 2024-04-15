@@ -7,20 +7,20 @@ namespace $.$$ {
 			const land = this.node().realm()!.home().hall_by( $hyoo_crus_flex_domain, $hyoo_crus_rank_public )!.land()
 			const domain = $hyoo_crus_flex_domain.ensure( land ) 
 
-			return this.node().cast( $hyoo_crus_flex_thing ).kind?.remote() ?? domain.kinds?.remote_list()[0] ?? null!
+			return this.node().cast( $hyoo_crus_flex_thing ).Kind()?.remote() ?? domain.Kinds()?.remote_list()[0] ?? null!
 		}
 		
 		@ $mol_mem
 		fields() {
-			return this.kind()?.props?.remote_list().slice().reverse().map( key => this.Field( key ) ) ?? []
+			return this.kind()?.Props()?.remote_list().slice().reverse().map( key => this.Field( key ) ) ?? []
 		}
 		
 		field_name( prop: $hyoo_crus_flex_prop ) {
-			return prop.title?.val() ?? prop.ref().description!
+			return prop.Title()?.val() ?? prop.ref().description!
 		}
 		
 		field_node( prop: $hyoo_crus_flex_prop, auto?: any ) {
-			return this.node().cast( $hyoo_crus_dict ).dive( prop.key?.val() ?? prop.ref(), $hyoo_crus_node, auto )!
+			return this.node().cast( $hyoo_crus_dict ).dive( prop.Key(auto)?.val() ?? prop.ref(), $hyoo_crus_node, auto )!
 		}
 		
 		field_prop( prop: $hyoo_crus_flex_prop ) {

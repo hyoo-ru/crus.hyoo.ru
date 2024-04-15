@@ -159,7 +159,7 @@ namespace $ {
 	export class $hyoo_crus_list_ref_base extends $hyoo_crus_list_ref {
 	}
 		
-	export function $hyoo_crus_list_ref_to< Value extends any >( Value: Value ) {
+	export function $hyoo_crus_list_ref_to< const Value extends any >( Value: Value ) {
 			
 		type Vals = readonly $mol_type_result< $mol_type_result< Value > >[]
 		

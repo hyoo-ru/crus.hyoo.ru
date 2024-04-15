@@ -187,13 +187,13 @@ namespace $ {
 			
 			if( next ) {
 				
-				base.selection?.val( next.map( offset => this.point_by_offset( offset ).join( ':' ) ).join( '|' ) )
+				base.Selection(null)?.val( next.map( offset => this.point_by_offset( offset ).join( ':' ) ).join( '|' ) )
 				return next
 				
 			} else {
 				
 				this.text() // track text to recalc selection on its change
-				return base.selection?.val()?.split( '|' ).map( point => {
+				return base.Selection()?.val()?.split( '|' ).map( point => {
 					const chunks = point.split( ':' )
 					return this.offset_by_point([ chunks[0], Number( chunks[1] ) || 0 ])[1]
 				} ) ?? [ 0, 0 ]

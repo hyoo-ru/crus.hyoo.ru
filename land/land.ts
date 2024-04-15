@@ -386,7 +386,7 @@ namespace $ {
 			if( !realm ) $mol_fail( new Error( 'Realm is required to fork' ) )
 			
 			const land = realm.land_grab( preset )
-			land.Meta().inflow!.items_vary([ this.ref() ])
+			land.Meta().Inflow(null)!.items_vary([ this.ref() ])
 			
 			return land
 		}
@@ -404,7 +404,7 @@ namespace $ {
 			
 			merge: if( $hyoo_crus_area_of( head ) === 'data' ) {
 				
-				const inflow = ( this.Meta().inflow?.items_vary().slice().reverse() ?? [] )
+				const inflow = ( this.Meta().Inflow()?.items_vary().slice().reverse() ?? [] )
 					.map( $hyoo_crus_vary_cast_ref )
 					.filter( $mol_guard_defined )
 				if( !inflow.length ) break merge
@@ -798,7 +798,7 @@ namespace $ {
 		gist_decode_raw( gist: $hyoo_crus_gist ): $hyoo_crus_vary_type {
 			
 			if( this.gists.get( gist.head() )?.get( gist.self() ) !== gist ) {
-				for( const id of this.Meta().inflow?.items_vary() ?? [] ) {
+				for( const id of this.Meta().Inflow()?.items_vary() ?? [] ) {
 					const vary = this.realm()?.Land( $hyoo_crus_vary_cast_ref( id! )! ).gist_decode_raw( gist )
 					if( vary !== undefined ) return vary
 				}

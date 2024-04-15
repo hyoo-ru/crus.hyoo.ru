@@ -26,24 +26,22 @@ namespace $ {
 		
 		static with<
 			This extends typeof $hyoo_crus_dict,
-			Schema extends Record< string, { tag: keyof typeof $hyoo_crus_gist_tag, new(): {} } >
+			const Schema extends Record< string, { tag: keyof typeof $hyoo_crus_gist_tag, new(): {} } >
 		>( this: This, schema: Schema ) {
 			
 			const Entity = class Entity extends ( this as any ) {
 				// static get schema() { return { ... this.schema, ... schema } }
 			} as This & {
 				new( ...args: any[] ): InstanceType< This > & {
-					readonly [ Key in keyof Schema ]: InstanceType< Schema[ Key ] > | null
+					readonly [ Key in keyof Schema ]: ( auto?: any )=> InstanceType< Schema[ Key ] > | null
 				}
 			}
 
 			for( const Field in schema ) {
 				
-				const field = Field[0].toLowerCase() + Field.slice(1)
-				
-				Object.defineProperty( Entity.prototype, field, {
-					get: function( this: InstanceType< This > ) {
-						return this.dive( field, schema[ Field ] as any, 'auto' )
+				Object.defineProperty( Entity.prototype, Field, {
+					value: function( this: InstanceType< This >, auto?: any ) {
+						return this.dive( Field, schema[ Field ] as any, auto )
 					}
 				} )
 				

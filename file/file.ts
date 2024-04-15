@@ -11,17 +11,17 @@ namespace $ {
 		}
 		
 		/** File name */
-		get name() {
+		name( next?: string | null ) {
 			const ext = {
 				'text/plain': 'txt',
 				'application/json': 'json',
 			}[ this.type() ] ?? 'bin'
-			return ( next?: string | null )=> super.name( next ) ?? `${ this.ref().description }.${ ext }`
+			return this.Name( next )?.val( next ) ?? `${ this.ref().description }.${ ext }`
 		}
 		
 		/** Mime type */
-		get type() {
-			return ( next?: string | null )=> super.type( next ) ?? 'application/octet-stream'
+		type( next?: string | null ) {
+			return this.Type( next )?.val( next ) ?? 'application/octet-stream'
 		}
 		
 		/** Blob, File etc. */
@@ -71,8 +71,8 @@ namespace $ {
 			
 		}
 		
-		get chunks() {
-			return ( next?: readonly ( Uint8Array | null )[] )=> super.chunks( next )?.filter( $mol_guard_defined ) ?? []
+		chunks( next?: readonly ( Uint8Array | null )[] ) {
+			return this.Chunks( next )?.items( next )?.filter( $mol_guard_defined ) ?? []
 		}
 		
 		str( next?: string, type = 'text/plain' ) {

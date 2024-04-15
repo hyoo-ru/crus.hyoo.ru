@@ -127,7 +127,7 @@ namespace $ {
 		
 	}
 	
-	export function $hyoo_crus_atom_ref_to< Value extends any >( Value: Value ) {
+	export function $hyoo_crus_atom_ref_to< const Value extends any >( Value: Value ) {
 
 		class Ref extends $hyoo_crus_atom_ref_base {
 
