@@ -256,12 +256,12 @@ export class $my_person extends $hyoo_crus_entity.with({
 	
 	// Alias with custom logic
 	sex( next?: typeof $my_sex.options[number] ) {
-		return this.Sex?.val( next ) ?? 'male'
+		return this.Sex( next )?.val( next ) ?? 'male'
 	}
 	
 	// Fallack to old field
 	parent( next?: $my_person | null ) {
-		return this.Parent?.remote( next ) ?? this.Father?.remote() ?? null
+		return this.Parent( next )?.remote( next ) ?? this.Father()?.remote() ?? null
 	}
 	
 }
@@ -298,20 +298,20 @@ export class $my_app extends $mol_object {
 		const me = this.hall()
 		
 		// Populate external entity
-		const kid = me.Kids!.remote_make( $hyoo_crus_rank_public )
-		kid.Parent!.remote( me )
+		const kid = me.Kids(null)!.remote_make( $hyoo_crus_rank_public )
+		kid.Parent(null)!.remote( me )
 		
 		// Fill self fields
-		kid.Title!.val( name )
-		kid.Birthday!.val( new $mol_time_moment( '1984-08-04' ) )
-		kid.Sex!.val( 'male' )
+		kid.Title(null)!.val( name )
+		kid.Birthday(null)!.val( new $mol_time_moment( '1984-08-04' ) )
+		kid.Sex(null)!.val( 'male' )
 		
 		// Fill embedded entities
-		const heart = kid.Heart!
-		heart.Critical!.val( true )
-		heart.Count!.val( 1n )
-		heart.Weight!.val( 1.4 )
-		heart.Description!.text( 'Pumps blood!' )
+		const heart = kid.Heart(null)!
+		heart.Critical(null)!.val( true )
+		heart.Count(null)!.val( 1n )
+		heart.Weight(null)!.val( 1.4 )
+		heart.Description(null)!.text( 'Pumps blood!' )
 		
 		return kid
 	}
