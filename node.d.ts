@@ -2247,7 +2247,7 @@ declare namespace $ {
     }
     export class $hyoo_crus_list_ref_base extends $hyoo_crus_list_ref {
     }
-    export function $hyoo_crus_list_ref_to<Value extends any>(Value: Value): {
+    export function $hyoo_crus_list_ref_to<const Value extends any>(Value: Value): {
         new (): {
             remote_list(next?: readonly $mol_type_result<$mol_type_result<Value>>[] | undefined): readonly $mol_type_result<$mol_type_result<Value>>[];
             remote_make(preset: $hyoo_crus_rank_preset): $mol_type_result<$mol_type_result<Value>>;
@@ -2311,10 +2311,10 @@ declare namespace $ {
         keys(): readonly $hyoo_crus_vary_type[];
         dive<Node extends typeof $hyoo_crus_node>(key: $hyoo_crus_vary_type, Node: Node, auto?: any): InstanceType<Node> | null;
         static schema: Record<string, typeof $hyoo_crus_node>;
-        static with<This extends typeof $hyoo_crus_dict, Schema extends Record<string, {
+        static with<This extends typeof $hyoo_crus_dict, const Schema extends Record<string, {
             tag: keyof typeof $hyoo_crus_gist_tag;
             new (): {};
-        }>>(this: This, schema: Schema): This & (new (...args: any[]) => InstanceType<This> & { readonly [Key in keyof Schema]: InstanceType<Schema[Key]> | null; }) & {
+        }>>(this: This, schema: Schema): This & (new (...args: any[]) => InstanceType<This> & { readonly [Key in keyof Schema]: (auto?: any) => InstanceType<Schema[Key]> | null; }) & {
             schema: {
                 [x: string]: typeof $hyoo_crus_node;
             } & Schema;
@@ -2365,10 +2365,10 @@ declare namespace $ {
         toString(): string;
         tag: "keys" | "term" | "solo" | "vals";
         schema: Record<string, typeof $hyoo_crus_node>;
-        with<This extends typeof $hyoo_crus_dict, Schema extends Record<string, {
+        with<This extends typeof $hyoo_crus_dict, const Schema extends Record<string, {
             new (): {};
             tag: "keys" | "term" | "solo" | "vals";
-        }>>(this: This, schema: Schema): This & (new (...args: any[]) => InstanceType<This> & { readonly [Key in keyof Schema]: InstanceType<Schema[Key]> | null; }) & {
+        }>>(this: This, schema: Schema): This & (new (...args: any[]) => InstanceType<This> & { readonly [Key in keyof Schema]: (auto?: any) => InstanceType<Schema[Key]> | null; }) & {
             schema: {
                 [x: string]: typeof $hyoo_crus_node;
             } & Schema;
@@ -2385,12 +2385,12 @@ declare namespace $ {
 
 declare namespace $ {
     const $hyoo_crus_meta_base: typeof $hyoo_crus_dict & (new (...args: any[]) => $hyoo_crus_dict & {
-        readonly inflow: $hyoo_crus_list_ref | null;
+        readonly Inflow: (auto?: any) => $hyoo_crus_list_ref | null;
     }) & {
         schema: {
             [x: string]: typeof $hyoo_crus_node;
         } & {
-            inflow: typeof $hyoo_crus_list_ref;
+            readonly Inflow: typeof $hyoo_crus_list_ref;
         };
     };
     export class $hyoo_crus_meta extends $hyoo_crus_meta_base {
@@ -3120,7 +3120,7 @@ declare namespace $ {
     export class $hyoo_crus_atom_ref_base extends $hyoo_crus_atom_ref {
         static Value: typeof $hyoo_crus_dict;
     }
-    export function $hyoo_crus_atom_ref_to<Value extends any>(Value: Value): {
+    export function $hyoo_crus_atom_ref_to<const Value extends any>(Value: Value): {
         new (): {
             Value: Value;
             yoke(preset?: $hyoo_crus_rank_preset): $hyoo_crus_land | null;
@@ -3291,9 +3291,9 @@ declare namespace $ {
 
 declare namespace $ {
     const $hyoo_crus_home_base: typeof $hyoo_crus_dict & (new (...args: any[]) => $hyoo_crus_dict & {
-        readonly title: $hyoo_crus_atom_str | null;
-        readonly selection: $hyoo_crus_atom_str | null;
-        readonly hall: {
+        readonly Title: (auto?: any) => $hyoo_crus_atom_str | null;
+        readonly Selection: (auto?: any) => $hyoo_crus_atom_str | null;
+        readonly Hall: (auto?: any) => {
             Value: () => typeof $hyoo_crus_dict;
             yoke(preset?: $hyoo_crus_rank_preset | undefined): $hyoo_crus_land | null;
             remote(next?: $hyoo_crus_dict | null | undefined): $hyoo_crus_dict | null;
@@ -3334,9 +3334,9 @@ declare namespace $ {
         schema: {
             [x: string]: typeof $hyoo_crus_node;
         } & {
-            title: typeof $hyoo_crus_atom_str;
-            selection: typeof $hyoo_crus_atom_str;
-            hall: {
+            readonly Title: typeof $hyoo_crus_atom_str;
+            readonly Selection: typeof $hyoo_crus_atom_str;
+            readonly Hall: {
                 new (): {
                     Value: () => typeof $hyoo_crus_dict;
                     yoke(preset?: $hyoo_crus_rank_preset | undefined): $hyoo_crus_land | null;

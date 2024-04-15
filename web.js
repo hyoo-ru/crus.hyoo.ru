@@ -10063,10 +10063,9 @@ var $;
             const Entity = class Entity extends this {
             };
             for (const Field in schema) {
-                const field = Field[0].toLowerCase() + Field.slice(1);
-                Object.defineProperty(Entity.prototype, field, {
-                    get: function () {
-                        return this.dive(field, schema[Field], 'auto');
+                Object.defineProperty(Entity.prototype, Field, {
+                    value: function (auto) {
+                        return this.dive(Field, schema[Field], auto);
                     }
                 });
             }
@@ -10118,7 +10117,7 @@ var $;
 var $;
 (function ($) {
     class $hyoo_crus_meta extends $hyoo_crus_dict.with({
-        inflow: $hyoo_crus_list_ref,
+        Inflow: $hyoo_crus_list_ref,
     }) {
     }
     $.$hyoo_crus_meta = $hyoo_crus_meta;
@@ -11200,7 +11199,7 @@ var $;
             if (!realm)
                 $mol_fail(new Error('Realm is required to fork'));
             const land = realm.land_grab(preset);
-            land.Meta().inflow.items_vary([this.ref()]);
+            land.Meta().Inflow(null).items_vary([this.ref()]);
             return land;
         }
         gists_ordered(head) {
@@ -11211,7 +11210,7 @@ var $;
             for (const gist of queue)
                 slices.set(gist, 0);
             merge: if ($hyoo_crus_area_of(head) === 'data') {
-                const inflow = (this.Meta().inflow?.items_vary().slice().reverse() ?? [])
+                const inflow = (this.Meta().Inflow()?.items_vary().slice().reverse() ?? [])
                     .map($hyoo_crus_vary_cast_ref)
                     .filter($mol_guard_defined);
                 if (!inflow.length)
@@ -11489,7 +11488,7 @@ var $;
         }
         gist_decode_raw(gist) {
             if (this.gists.get(gist.head())?.get(gist.self()) !== gist) {
-                for (const id of this.Meta().inflow?.items_vary() ?? []) {
+                for (const id of this.Meta().Inflow()?.items_vary() ?? []) {
                     const vary = this.realm()?.Land($hyoo_crus_vary_cast_ref(id)).gist_decode_raw(gist);
                     if (vary !== undefined)
                         return vary;
@@ -12170,12 +12169,12 @@ var $;
 var $;
 (function ($) {
     class $hyoo_crus_home extends $hyoo_crus_dict.with({
-        title: $hyoo_crus_atom_str,
-        selection: $hyoo_crus_atom_str,
-        hall: $hyoo_crus_atom_ref_to(() => $hyoo_crus_dict),
+        Title: $hyoo_crus_atom_str,
+        Selection: $hyoo_crus_atom_str,
+        Hall: $hyoo_crus_atom_ref_to(() => $hyoo_crus_dict),
     }) {
         hall_by(Node, preset) {
-            return this.hall?.remote_ensure(preset)?.cast(Node) ?? null;
+            return this.Hall(null)?.remote_ensure(preset)?.cast(Node) ?? null;
         }
     }
     $.$hyoo_crus_home = $hyoo_crus_home;
@@ -14778,8 +14777,8 @@ var $;
 var $;
 (function ($) {
     class $hyoo_crus_flex_thing extends $hyoo_crus_dict.with({
-        kind: $hyoo_crus_atom_ref_to(() => $hyoo_crus_flex_kind),
-        title: $hyoo_crus_atom_str,
+        Kind: $hyoo_crus_atom_ref_to(() => $hyoo_crus_flex_kind),
+        Title: $hyoo_crus_atom_str,
     }) {
     }
     $.$hyoo_crus_flex_thing = $hyoo_crus_flex_thing;
@@ -14787,131 +14786,131 @@ var $;
     }
     $.$hyoo_crus_flex_thing_ref = $hyoo_crus_flex_thing_ref;
     class $hyoo_crus_flex_kind extends $hyoo_crus_flex_thing.with({
-        props: $hyoo_crus_list_ref_to(() => $hyoo_crus_flex_prop),
+        Props: $hyoo_crus_list_ref_to(() => $hyoo_crus_flex_prop),
     }) {
     }
     $.$hyoo_crus_flex_kind = $hyoo_crus_flex_kind;
     class $hyoo_crus_flex_prop extends $hyoo_crus_flex_thing.with({
-        key: $hyoo_crus_atom_str,
-        type: $hyoo_crus_atom_str,
-        target: $hyoo_crus_atom_ref_to(() => $hyoo_crus_flex_kind),
-        enum: $hyoo_crus_atom_ref_to(() => $hyoo_crus_list_vary),
-        base: $hyoo_crus_atom_vary,
+        Key: $hyoo_crus_atom_str,
+        Type: $hyoo_crus_atom_str,
+        Target: $hyoo_crus_atom_ref_to(() => $hyoo_crus_flex_kind),
+        Enum: $hyoo_crus_atom_ref_to(() => $hyoo_crus_list_vary),
+        Base: $hyoo_crus_atom_vary,
     }) {
     }
     $.$hyoo_crus_flex_prop = $hyoo_crus_flex_prop;
     class $hyoo_crus_flex_domain extends $hyoo_crus_flex_thing.with({
-        kinds: $hyoo_crus_list_ref_to(() => $hyoo_crus_flex_kind),
-        props: $hyoo_crus_list_ref_to(() => $hyoo_crus_flex_prop),
-        types: $hyoo_crus_list_str,
+        Kinds: $hyoo_crus_list_ref_to(() => $hyoo_crus_flex_kind),
+        Props: $hyoo_crus_list_ref_to(() => $hyoo_crus_flex_prop),
+        Types: $hyoo_crus_list_str,
     }) {
         static ensure(land) {
             const domain = land.Data(this);
             if (domain.units().length)
                 return domain;
-            domain.title.val('Base Domain');
-            domain.types.items_vary(['vary', 'enum', 'bool', 'int', 'real', 'str', 'ref', 'time', 'dict', 'text', 'list']);
-            const Thing = domain.kinds.local_make();
-            const Kind = domain.kinds.local_make();
-            const Prop = domain.kinds.local_make();
-            const Domain = domain.kinds.local_make();
-            Kind.title.val('Kind');
-            Prop.title.val('Property');
-            Thing.title.val('Thing');
-            Domain.title.val('Domain');
-            Kind.kind.remote(Kind);
-            Prop.kind.remote(Kind);
-            Thing.kind.remote(Kind);
-            Domain.kind.remote(Kind);
-            domain.kind.remote(Domain);
-            const thing_kind = domain.props.local_make();
-            const thing_title = domain.props.local_make();
-            const kind_props = domain.props.local_make();
-            const prop_key = domain.props.local_make();
-            const prop_type = domain.props.local_make();
-            const prop_target = domain.props.local_make();
-            const prop_enum = domain.props.local_make();
-            const prop_base = domain.props.local_make();
-            const domain_kinds = domain.props.local_make();
-            const domain_props = domain.props.local_make();
-            const domain_types = domain.props.local_make();
-            thing_kind.key.val('kind');
-            thing_title.key.val('title');
-            kind_props.key.val('props');
-            prop_key.key.val('key');
-            prop_type.key.val('type');
-            prop_target.key.val('target');
-            prop_enum.key.val('enum');
-            prop_base.key.val('base');
-            domain_kinds.key.val('kinds');
-            domain_props.key.val('props');
-            domain_types.key.val('types');
-            thing_kind.title.val('Kind');
-            thing_title.title.val('Title');
-            kind_props.title.val('Props');
-            prop_key.title.val('Key');
-            prop_type.title.val('Type');
-            prop_target.title.val('Target kind');
-            prop_enum.title.val('Variants');
-            prop_base.title.val('Default');
-            domain_kinds.title.val('Kinds');
-            domain_props.title.val('Props');
-            domain_types.title.val('Types');
-            thing_kind.kind.remote(Prop);
-            thing_title.kind.remote(Prop);
-            kind_props.kind.remote(Prop);
-            prop_key.kind.remote(Prop);
-            prop_type.kind.remote(Prop);
-            prop_target.kind.remote(Prop);
-            prop_enum.kind.remote(Prop);
-            prop_base.kind.remote(Prop);
-            domain_kinds.kind.remote(Prop);
-            domain_props.kind.remote(Prop);
-            domain_types.kind.remote(Prop);
-            Kind.props.add(thing_kind.ref());
-            Prop.props.add(thing_kind.ref());
-            Thing.props.add(thing_kind.ref());
-            Domain.props.add(thing_kind.ref());
-            Kind.props.add(thing_title.ref());
-            Prop.props.add(thing_title.ref());
-            Thing.props.add(thing_title.ref());
-            Domain.props.add(thing_title.ref());
-            Kind.props.add(kind_props.ref());
-            Prop.props.add(prop_key.ref());
-            Prop.props.add(prop_type.ref());
-            Prop.props.add(prop_target.ref());
-            Prop.props.add(prop_enum.ref());
-            Prop.props.add(prop_base.ref());
-            Domain.props.add(domain_kinds.ref());
-            Domain.props.add(domain_props.ref());
-            Domain.props.add(domain_types.ref());
-            thing_kind.type.val('ref');
-            thing_title.type.val('str');
-            kind_props.type.val('list');
-            prop_key.type.val('str');
-            prop_type.type.val('enum');
-            prop_target.type.val('ref');
-            prop_enum.type.val('ref');
-            prop_base.type.val('vary');
-            domain_kinds.type.val('list');
-            domain_props.type.val('list');
-            domain_types.type.val('list');
-            thing_kind.target.remote(Thing);
-            kind_props.target.remote(Prop);
-            prop_target.target.remote(Kind);
-            prop_enum.target.remote(Thing);
-            prop_base.target.remote(Thing);
-            domain_kinds.target.remote(Kind);
-            domain_props.target.remote(Prop);
-            thing_kind.enum.vary(domain.kinds.ref());
-            kind_props.enum.vary(domain.props.ref());
-            prop_type.enum.vary(domain.types.ref());
-            prop_target.enum.vary(domain.kinds.ref());
-            prop_enum.enum.vary(domain.ref());
-            thing_title.base.vary('');
-            thing_kind.base.vary(Thing.ref());
-            prop_type.base.vary('vary');
-            prop_target.base.vary(Thing.ref());
+            domain.Title(null).val('Base Domain');
+            domain.Types(null).items_vary(['vary', 'enum', 'bool', 'int', 'real', 'str', 'ref', 'time', 'dict', 'text', 'list']);
+            const Thing = domain.Kinds(null).local_make();
+            const Kind = domain.Kinds(null).local_make();
+            const Prop = domain.Kinds(null).local_make();
+            const Domain = domain.Kinds(null).local_make();
+            Kind.Title(null).val('Kind');
+            Prop.Title(null).val('Property');
+            Thing.Title(null).val('Thing');
+            Domain.Title(null).val('Domain');
+            Kind.Kind(null).remote(Kind);
+            Prop.Kind(null).remote(Kind);
+            Thing.Kind(null).remote(Kind);
+            Domain.Kind(null).remote(Kind);
+            domain.Kind(null).remote(Domain);
+            const thing_kind = domain.Props(null).local_make();
+            const thing_title = domain.Props(null).local_make();
+            const kind_props = domain.Props(null).local_make();
+            const prop_key = domain.Props(null).local_make();
+            const prop_type = domain.Props(null).local_make();
+            const prop_target = domain.Props(null).local_make();
+            const prop_enum = domain.Props(null).local_make();
+            const prop_base = domain.Props(null).local_make();
+            const domain_kinds = domain.Props(null).local_make();
+            const domain_props = domain.Props(null).local_make();
+            const domain_types = domain.Props(null).local_make();
+            thing_kind.Key(null).val('kind');
+            thing_title.Key(null).val('title');
+            kind_props.Key(null).val('props');
+            prop_key.Key(null).val('key');
+            prop_type.Key(null).val('type');
+            prop_target.Key(null).val('target');
+            prop_enum.Key(null).val('enum');
+            prop_base.Key(null).val('base');
+            domain_kinds.Key(null).val('kinds');
+            domain_props.Key(null).val('props');
+            domain_types.Key(null).val('types');
+            thing_kind.Title(null).val('Kind');
+            thing_title.Title(null).val('Title');
+            kind_props.Title(null).val('Props');
+            prop_key.Title(null).val('Key');
+            prop_type.Title(null).val('Type');
+            prop_target.Title(null).val('Target kind');
+            prop_enum.Title(null).val('Variants');
+            prop_base.Title(null).val('Default');
+            domain_kinds.Title(null).val('Kinds');
+            domain_props.Title(null).val('Props');
+            domain_types.Title(null).val('Types');
+            thing_kind.Kind(null).remote(Prop);
+            thing_title.Kind(null).remote(Prop);
+            kind_props.Kind(null).remote(Prop);
+            prop_key.Kind(null).remote(Prop);
+            prop_type.Kind(null).remote(Prop);
+            prop_target.Kind(null).remote(Prop);
+            prop_enum.Kind(null).remote(Prop);
+            prop_base.Kind(null).remote(Prop);
+            domain_kinds.Kind(null).remote(Prop);
+            domain_props.Kind(null).remote(Prop);
+            domain_types.Kind(null).remote(Prop);
+            Kind.Props(null).add(thing_kind.ref());
+            Prop.Props(null).add(thing_kind.ref());
+            Thing.Props(null).add(thing_kind.ref());
+            Domain.Props(null).add(thing_kind.ref());
+            Kind.Props(null).add(thing_title.ref());
+            Prop.Props(null).add(thing_title.ref());
+            Thing.Props(null).add(thing_title.ref());
+            Domain.Props(null).add(thing_title.ref());
+            Kind.Props(null).add(kind_props.ref());
+            Prop.Props(null).add(prop_key.ref());
+            Prop.Props(null).add(prop_type.ref());
+            Prop.Props(null).add(prop_target.ref());
+            Prop.Props(null).add(prop_enum.ref());
+            Prop.Props(null).add(prop_base.ref());
+            Domain.Props(null).add(domain_kinds.ref());
+            Domain.Props(null).add(domain_props.ref());
+            Domain.Props(null).add(domain_types.ref());
+            thing_kind.Type(null).val('ref');
+            thing_title.Type(null).val('str');
+            kind_props.Type(null).val('list');
+            prop_key.Type(null).val('str');
+            prop_type.Type(null).val('enum');
+            prop_target.Type(null).val('ref');
+            prop_enum.Type(null).val('ref');
+            prop_base.Type(null).val('vary');
+            domain_kinds.Type(null).val('list');
+            domain_props.Type(null).val('list');
+            domain_types.Type(null).val('list');
+            thing_kind.Target(null).remote(Thing);
+            kind_props.Target(null).remote(Prop);
+            prop_target.Target(null).remote(Kind);
+            prop_enum.Target(null).remote(Thing);
+            prop_base.Target(null).remote(Thing);
+            domain_kinds.Target(null).remote(Kind);
+            domain_props.Target(null).remote(Prop);
+            thing_kind.Enum(null).vary(domain.Kinds().ref());
+            kind_props.Enum(null).vary(domain.Props().ref());
+            prop_type.Enum(null).vary(domain.Types().ref());
+            prop_target.Enum(null).vary(domain.Kinds().ref());
+            prop_enum.Enum(null).vary(domain.ref());
+            thing_title.Base(null).vary('');
+            thing_kind.Base(null).vary(Thing.ref());
+            prop_type.Base(null).vary('vary');
+            prop_target.Base(null).vary(Thing.ref());
             return domain;
         }
     }
@@ -15487,7 +15486,7 @@ var $;
             }
             title() {
                 const ref = this.value();
-                return this.land().realm().Node(ref, $hyoo_crus_flex_thing).title?.val() || ref?.description;
+                return this.land().realm().Node(ref, $hyoo_crus_flex_thing).Title()?.val() || ref?.description;
             }
             arg() {
                 const ref = this.value().description;
@@ -17273,12 +17272,12 @@ var $;
         selection(lord, next) {
             const base = this.realm().Land(lord).Data($hyoo_crus_home);
             if (next) {
-                base.selection?.val(next.map(offset => this.point_by_offset(offset).join(':')).join('|'));
+                base.Selection(null)?.val(next.map(offset => this.point_by_offset(offset).join(':')).join('|'));
                 return next;
             }
             else {
                 this.text();
-                return base.selection?.val()?.split('|').map(point => {
+                return base.Selection()?.val()?.split('|').map(point => {
                     const chunks = point.split(':');
                     return this.offset_by_point([chunks[0], Number(chunks[1]) || 0])[1];
                 }) ?? [0, 0];
@@ -17311,7 +17310,7 @@ var $;
 var $;
 (function ($) {
     class $hyoo_crus_entity extends $hyoo_crus_dict.with({
-        title: $hyoo_crus_atom_str,
+        Title: $hyoo_crus_atom_str,
     }) {
     }
     $.$hyoo_crus_entity = $hyoo_crus_entity;
@@ -17331,7 +17330,7 @@ var $;
                 return this.node();
             }
             Sub() {
-                const type = this.prop().type?.val();
+                const type = this.prop().Type()?.val();
                 switch (type) {
                     case 'vary': return this.Str();
                     case 'enum': return this.Enum();
@@ -17351,7 +17350,7 @@ var $;
                 return this.node(next)?.cast($hyoo_crus_atom_vary).vary(next) ?? null;
             }
             enum_options() {
-                return this.prop().enum?.remote()?.items_vary() ?? [];
+                return this.prop().Enum()?.remote()?.items_vary() ?? [];
             }
             enum_label(option) {
                 return $hyoo_crus_vary_cast_str(option) ?? '';
@@ -17386,11 +17385,11 @@ var $;
                 return this.node()?.cast($hyoo_crus_atom_vary).vary() ?? null;
             }
             ref_options() {
-                return this.prop().enum?.remote()?.items_vary() ?? [];
+                return this.prop().Enum()?.remote()?.items_vary() ?? [];
             }
             ref_label(ref) {
                 if (typeof ref === 'symbol')
-                    return this.prop()?.realm().Node(ref, $hyoo_crus_flex_thing).title?.val() ?? ref.description;
+                    return this.prop()?.realm().Node(ref, $hyoo_crus_flex_thing).Title()?.val() ?? ref.description;
                 return $hyoo_crus_vary_cast_str(ref) ?? '';
             }
             ref_remote() {
@@ -17400,11 +17399,11 @@ var $;
                 if (!rights)
                     return null;
                 const node = this.node('auto').cast($hyoo_crus_flex_thing_ref);
-                const Target = this.prop().target?.remote();
+                const Target = this.prop().Target()?.remote();
                 if (rights === 'local') {
                     const remote = node.local_ensure();
                     if (Target)
-                        remote.kind?.remote(Target);
+                        remote.Kind(null)?.remote(Target);
                     return null;
                 }
                 const preset = {
@@ -17416,7 +17415,7 @@ var $;
                 if (preset) {
                     const remote = node.remote_ensure(preset);
                     if (Target)
-                        remote.kind?.remote(Target);
+                        remote.Kind(null)?.remote(Target);
                     return null;
                 }
                 return null;
@@ -17425,7 +17424,7 @@ var $;
                 return this.node(next)?.cast($hyoo_crus_text).value(next) ?? '';
             }
             dict_title() {
-                return this.node().cast($hyoo_crus_entity).title?.val() || this.node().ref().description;
+                return this.node().cast($hyoo_crus_entity).Title()?.val() || this.node().ref().description;
             }
             list_items() {
                 return [
@@ -17442,7 +17441,7 @@ var $;
             }
             list_item_add() {
                 const target = this.node(null).cast($hyoo_crus_list_ref_to(() => $hyoo_crus_flex_thing)).local_make();
-                target.kind?.remote(this.prop().target?.remote());
+                target.Kind(null)?.remote(this.prop().Target()?.remote());
             }
             list_gist(index) {
                 return this.node().units()[index];
@@ -17801,16 +17800,16 @@ var $;
             kind() {
                 const land = this.node().realm().home().hall_by($hyoo_crus_flex_domain, $hyoo_crus_rank_public).land();
                 const domain = $hyoo_crus_flex_domain.ensure(land);
-                return this.node().cast($hyoo_crus_flex_thing).kind?.remote() ?? domain.kinds?.remote_list()[0] ?? null;
+                return this.node().cast($hyoo_crus_flex_thing).Kind()?.remote() ?? domain.Kinds()?.remote_list()[0] ?? null;
             }
             fields() {
-                return this.kind()?.props?.remote_list().slice().reverse().map(key => this.Field(key)) ?? [];
+                return this.kind()?.Props()?.remote_list().slice().reverse().map(key => this.Field(key)) ?? [];
             }
             field_name(prop) {
-                return prop.title?.val() ?? prop.ref().description;
+                return prop.Title()?.val() ?? prop.ref().description;
             }
             field_node(prop, auto) {
-                return this.node().cast($hyoo_crus_dict).dive(prop.key?.val() ?? prop.ref(), $hyoo_crus_node, auto);
+                return this.node().cast($hyoo_crus_dict).dive(prop.Key(auto)?.val() ?? prop.ref(), $hyoo_crus_node, auto);
             }
             field_prop(prop) {
                 return prop;
@@ -18909,7 +18908,7 @@ var $;
             }
             spread_title(id) {
                 const ref = $hyoo_crus_ref(id);
-                const title = this.realm().Node(ref, $hyoo_crus_entity).title?.val();
+                const title = this.realm().Node(ref, $hyoo_crus_entity).Title()?.val();
                 const chunks = id.split('_');
                 const suffix = title || (chunks.length >= 3 ? $hyoo_crus_ref_head(ref) : ref.description);
                 const prefix = [

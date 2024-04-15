@@ -6522,10 +6522,9 @@ var $;
             const Entity = class Entity extends this {
             };
             for (const Field in schema) {
-                const field = Field[0].toLowerCase() + Field.slice(1);
-                Object.defineProperty(Entity.prototype, field, {
-                    get: function () {
-                        return this.dive(field, schema[Field], 'auto');
+                Object.defineProperty(Entity.prototype, Field, {
+                    value: function (auto) {
+                        return this.dive(Field, schema[Field], auto);
                     }
                 });
             }
@@ -6577,7 +6576,7 @@ var $;
 var $;
 (function ($) {
     class $hyoo_crus_meta extends $hyoo_crus_dict.with({
-        inflow: $hyoo_crus_list_ref,
+        Inflow: $hyoo_crus_list_ref,
     }) {
     }
     $.$hyoo_crus_meta = $hyoo_crus_meta;
@@ -7426,7 +7425,7 @@ var $;
             if (!realm)
                 $mol_fail(new Error('Realm is required to fork'));
             const land = realm.land_grab(preset);
-            land.Meta().inflow.items_vary([this.ref()]);
+            land.Meta().Inflow(null).items_vary([this.ref()]);
             return land;
         }
         gists_ordered(head) {
@@ -7437,7 +7436,7 @@ var $;
             for (const gist of queue)
                 slices.set(gist, 0);
             merge: if ($hyoo_crus_area_of(head) === 'data') {
-                const inflow = (this.Meta().inflow?.items_vary().slice().reverse() ?? [])
+                const inflow = (this.Meta().Inflow()?.items_vary().slice().reverse() ?? [])
                     .map($hyoo_crus_vary_cast_ref)
                     .filter($mol_guard_defined);
                 if (!inflow.length)
@@ -7715,7 +7714,7 @@ var $;
         }
         gist_decode_raw(gist) {
             if (this.gists.get(gist.head())?.get(gist.self()) !== gist) {
-                for (const id of this.Meta().inflow?.items_vary() ?? []) {
+                for (const id of this.Meta().Inflow()?.items_vary() ?? []) {
                     const vary = this.realm()?.Land($hyoo_crus_vary_cast_ref(id)).gist_decode_raw(gist);
                     if (vary !== undefined)
                         return vary;
@@ -8236,12 +8235,12 @@ var $;
 var $;
 (function ($) {
     class $hyoo_crus_home extends $hyoo_crus_dict.with({
-        title: $hyoo_crus_atom_str,
-        selection: $hyoo_crus_atom_str,
-        hall: $hyoo_crus_atom_ref_to(() => $hyoo_crus_dict),
+        Title: $hyoo_crus_atom_str,
+        Selection: $hyoo_crus_atom_str,
+        Hall: $hyoo_crus_atom_ref_to(() => $hyoo_crus_dict),
     }) {
         hall_by(Node, preset) {
-            return this.hall?.remote_ensure(preset)?.cast(Node) ?? null;
+            return this.Hall(null)?.remote_ensure(preset)?.cast(Node) ?? null;
         }
     }
     $.$hyoo_crus_home = $hyoo_crus_home;

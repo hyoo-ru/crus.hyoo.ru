@@ -6513,10 +6513,9 @@ var $;
             const Entity = class Entity extends this {
             };
             for (const Field in schema) {
-                const field = Field[0].toLowerCase() + Field.slice(1);
-                Object.defineProperty(Entity.prototype, field, {
-                    get: function () {
-                        return this.dive(field, schema[Field], 'auto');
+                Object.defineProperty(Entity.prototype, Field, {
+                    value: function (auto) {
+                        return this.dive(Field, schema[Field], auto);
                     }
                 });
             }
@@ -6568,7 +6567,7 @@ var $;
 var $;
 (function ($) {
     class $hyoo_crus_meta extends $hyoo_crus_dict.with({
-        inflow: $hyoo_crus_list_ref,
+        Inflow: $hyoo_crus_list_ref,
     }) {
     }
     $.$hyoo_crus_meta = $hyoo_crus_meta;
@@ -7417,7 +7416,7 @@ var $;
             if (!realm)
                 $mol_fail(new Error('Realm is required to fork'));
             const land = realm.land_grab(preset);
-            land.Meta().inflow.items_vary([this.ref()]);
+            land.Meta().Inflow(null).items_vary([this.ref()]);
             return land;
         }
         gists_ordered(head) {
@@ -7428,7 +7427,7 @@ var $;
             for (const gist of queue)
                 slices.set(gist, 0);
             merge: if ($hyoo_crus_area_of(head) === 'data') {
-                const inflow = (this.Meta().inflow?.items_vary().slice().reverse() ?? [])
+                const inflow = (this.Meta().Inflow()?.items_vary().slice().reverse() ?? [])
                     .map($hyoo_crus_vary_cast_ref)
                     .filter($mol_guard_defined);
                 if (!inflow.length)
@@ -7706,7 +7705,7 @@ var $;
         }
         gist_decode_raw(gist) {
             if (this.gists.get(gist.head())?.get(gist.self()) !== gist) {
-                for (const id of this.Meta().inflow?.items_vary() ?? []) {
+                for (const id of this.Meta().Inflow()?.items_vary() ?? []) {
                     const vary = this.realm()?.Land($hyoo_crus_vary_cast_ref(id)).gist_decode_raw(gist);
                     if (vary !== undefined)
                         return vary;
@@ -8227,12 +8226,12 @@ var $;
 var $;
 (function ($) {
     class $hyoo_crus_home extends $hyoo_crus_dict.with({
-        title: $hyoo_crus_atom_str,
-        selection: $hyoo_crus_atom_str,
-        hall: $hyoo_crus_atom_ref_to(() => $hyoo_crus_dict),
+        Title: $hyoo_crus_atom_str,
+        Selection: $hyoo_crus_atom_str,
+        Hall: $hyoo_crus_atom_ref_to(() => $hyoo_crus_dict),
     }) {
         hall_by(Node, preset) {
-            return this.hall?.remote_ensure(preset)?.cast(Node) ?? null;
+            return this.Hall(null)?.remote_ensure(preset)?.cast(Node) ?? null;
         }
     }
     $.$hyoo_crus_home = $hyoo_crus_home;
@@ -11974,13 +11973,13 @@ var $;
             $mol_assert_equal(right.Data($hyoo_crus_list_vary).items_vary(), ['foo', 'zzz']);
             const both = home.fork();
             $mol_assert_equal(both.Data($hyoo_crus_list_vary).items_vary(), ['foo', 'xxx']);
-            both.Meta().inflow.items_vary([right.ref()]);
+            both.Meta().Inflow(null).items_vary([right.ref()]);
             $mol_assert_equal(both.Data($hyoo_crus_list_vary).items_vary(), ['foo', 'zzz']);
-            both.Meta().inflow.items_vary([left.ref()]);
+            both.Meta().Inflow(null).items_vary([left.ref()]);
             $mol_assert_equal(both.Data($hyoo_crus_list_vary).items_vary(), ['foo', 'yyy']);
-            both.Meta().inflow.items_vary([right.ref(), left.ref()]);
+            both.Meta().Inflow(null).items_vary([right.ref(), left.ref()]);
             $mol_assert_equal(both.Data($hyoo_crus_list_vary).items_vary(), ['foo', 'yyy']);
-            both.Meta().inflow.items_vary([left.ref(), right.ref()]);
+            both.Meta().Inflow(null).items_vary([left.ref(), right.ref()]);
             $mol_assert_equal(both.Data($hyoo_crus_list_vary).items_vary(), ['foo', 'zzz']);
         },
         'Inner refs is relative to land'($) {
@@ -12498,43 +12497,43 @@ var $;
             },
             "Narrowed Dictionary with linked Dictionaries and others"($) {
                 class User extends $hyoo_crus_dict.with({
-                    title: $hyoo_crus_atom_str,
-                    account: $hyoo_crus_atom_ref_to(() => Account),
-                    articles: $hyoo_crus_list_ref_to(() => Article),
+                    Title: $hyoo_crus_atom_str,
+                    Account: $hyoo_crus_atom_ref_to(() => Account),
+                    Articles: $hyoo_crus_list_ref_to(() => Article),
                 }) {
                 }
                 class Account extends $hyoo_crus_dict.with({
-                    title: $hyoo_crus_atom_str,
-                    user: $hyoo_crus_atom_ref_to(() => User),
+                    Title: $hyoo_crus_atom_str,
+                    User: $hyoo_crus_atom_ref_to(() => User),
                 }) {
                 }
                 class Article extends $hyoo_crus_dict.with({
-                    title: $hyoo_crus_dict_to($hyoo_crus_atom_str),
-                    author: $hyoo_crus_atom_ref_to(() => User),
+                    Title: $hyoo_crus_dict_to($hyoo_crus_atom_str),
+                    Author: $hyoo_crus_atom_ref_to(() => User),
                 }) {
                 }
                 const realm = $hyoo_crus_realm.make({ $ });
                 const land = realm.home().land();
                 const user = land.Node(User).Item('11111111');
-                $mol_assert_equal(user.title.val(), null);
-                $mol_assert_equal(user.account.remote(), null);
-                $mol_assert_equal(user.articles.remote_list(), []);
-                user.title.val('Jin');
-                $mol_assert_equal(user.title.val() ?? '', 'Jin');
-                const account = user.account.remote_ensure($hyoo_crus_rank_public);
-                $mol_assert_equal(user.account.remote(), account);
-                $mol_assert_equal(account.user.remote(), null);
-                account.user.remote(user);
-                $mol_assert_equal(account.user.remote(), user);
+                $mol_assert_equal(user.Title()?.val() ?? null, null);
+                $mol_assert_equal(user.Account()?.remote() ?? null, null);
+                $mol_assert_equal(user.Articles()?.remote_list() ?? [], []);
+                user.Title(null).val('Jin');
+                $mol_assert_equal(user.Title().val() ?? '', 'Jin');
+                const account = user.Account(null).remote_ensure($hyoo_crus_rank_public);
+                $mol_assert_equal(user.Account()?.remote() ?? null, account);
+                $mol_assert_equal(account.User()?.remote() ?? null, null);
+                account.User(null).remote(user);
+                $mol_assert_equal(account.User()?.remote(), user);
                 const articles = [
-                    user.articles.remote_make($hyoo_crus_rank_public),
-                    user.articles.remote_make($hyoo_crus_rank_public),
+                    user.Articles(null).remote_make($hyoo_crus_rank_public),
+                    user.Articles(null).remote_make($hyoo_crus_rank_public),
                 ];
-                $mol_assert_equal(user.articles.remote_list(), articles);
-                articles[0].title.key('en', 'auto').val('Hello!');
-                $mol_assert_equal(articles[0].title.key('en', 'auto').val(), 'Hello!');
-                $mol_assert_equal(articles[1].title?.key('ru', 'auto').val(), null);
-                $mol_assert_equal(articles[1].title?.key('ru', 'auto').val(), null);
+                $mol_assert_equal(user.Articles()?.remote_list(), articles);
+                articles[0].Title(null).key('en', 'auto').val('Hello!');
+                $mol_assert_equal(articles[0].Title()?.key('en').val(), 'Hello!');
+                $mol_assert_equal(articles[1].Title()?.key('ru')?.val() ?? null, null);
+                $mol_assert_equal(articles[1].Title()?.key('ru')?.val() ?? null, null);
                 $mol_assert_unique(user.land(), account.land(), ...articles.map(article => article.land()));
             },
         });
