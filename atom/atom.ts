@@ -48,7 +48,7 @@ namespace $ {
 	}
 	
 	export function $hyoo_crus_atom_enum<
-		Options extends readonly $hyoo_crus_vary_type[]
+		const Options extends readonly $hyoo_crus_vary_type[]
 	>( options: Options ) {
 
 		abstract class Narrow extends $hyoo_crus_atom_enum_base {

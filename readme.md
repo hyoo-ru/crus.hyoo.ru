@@ -240,26 +240,28 @@ export class $my_organ extends $hyoo_crus_entity.with({
 	Contains: $hyoo_crus_list_ref_to( ()=> $my_organ ), // reference to same Model type
 }) {}
 
+/** Sex Model */
+export class $my_sex extends $hyoo_crus_atom_enum([ 'male', 'female' ]) {}  // atomic enumerated value
+
 /** Person Model */
 export class $my_person extends $hyoo_crus_entity.with({
 	// Title: $hyoo_crus_atom_str, - inherited from $hyoo_crus_entity
-	Sex: $hyoo_crus_atom_str, // atomic short string
 	Birthday: $hyoo_crus_atom_time, // atomic time moment
+	Sex: $my_sex, // narrowed custom type
 	Heart: $my_organ, // embedded Model
 	Parent: $hyoo_crus_atom_ref_to( ()=> $my_person ), // reference to Model
 	Kids: $hyoo_crus_list_ref_to( ()=> $my_person ), // list of references to Models
 	/** @deprecated Use Parent */ Father: $hyoo_crus_atom_ref_to( ()=> $my_person ),
 }) {
 	
-	// Override default implementation
-	// Workaround for https://github.com/microsoft/TypeScript/issues/27689
-	get sex() {
-		return ( next?: string )=> super.sex( next ) ?? 'male'
+	// Alias with custom logic
+	sex( next?: typeof $my_sex.options[number] ) {
+		return this.Sex?.val( next ) ?? 'male'
 	}
 	
 	// Fallack to old field
-	get parent() {
-		return ( next?: $my_person | null )=> super.parent( next ) ?? super.father()
+	parent( next?: $my_person | null ) {
+		return this.Parent?.remote( next ) ?? this.Father?.remote() ?? null
 	}
 	
 }
@@ -296,19 +298,20 @@ export class $my_app extends $mol_object {
 		const me = this.hall()
 		
 		// Populate external entity
-		const kid = me.Kids.remote_make( $hyoo_crus_rank_public )
-		kid.parent( me )
+		const kid = me.Kids!.remote_make( $hyoo_crus_rank_public )
+		kid.Parent!.remote( me )
 		
 		// Fill self fields
-		kid.title( name )
-		kid.birthday( new $mol_time_moment( '1984-08-04' ) )
+		kid.Title!.val( name )
+		kid.Birthday!.val( new $mol_time_moment( '1984-08-04' ) )
+		kid.Sex!.val( 'male' )
 		
 		// Fill embedded entities
 		const heart = kid.Heart!
-		heart.critical( true )
-		heart.count( 1n )
-		heart.weight( 1.4 )
-		heart.description( 'Pumps blood!' )
+		heart.Critical!.val( true )
+		heart.Count!.val( 1n )
+		heart.Weight!.val( 1.4 )
+		heart.Description!.text( 'Pumps blood!' )
 		
 		return kid
 	}
