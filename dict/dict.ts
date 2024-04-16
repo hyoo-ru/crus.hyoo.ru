@@ -31,10 +31,10 @@ namespace $ {
 			
 			const Entity = class Entity extends ( this as any ) {
 				// static get schema() { return { ... this.schema, ... schema } }
-			} as This & {
-				new( ...args: any[] ): InstanceType< This > & {
+			} as Omit< This, 'prototype' > & {
+				new( ...args: any[] ): $mol_type_override< InstanceType< This >, {
 					readonly [ Key in keyof Schema ]: ( auto?: any )=> InstanceType< Schema[ Key ] > | null
-				}
+				} >
 			}
 
 			for( const Field in schema ) {
