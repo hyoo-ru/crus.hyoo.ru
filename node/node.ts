@@ -1,6 +1,6 @@
 namespace $ {
 	
-	/** Adapter to CROWDS tree. */
+	/** Virtual Node that represents contained units as high-level data types. */
 	export class $hyoo_crus_node extends $mol_object {
 		
 		static tag = $hyoo_crus_gist_tag[ $hyoo_crus_gist_tag.vals ] as keyof typeof $hyoo_crus_gist_tag
@@ -9,6 +9,7 @@ namespace $ {
 			return null as any as $hyoo_crus_land
 		}
 		
+		/** Land local Node id */
 		head() {
 			return ''
 		}
@@ -49,6 +50,7 @@ namespace $ {
 			return this.units().map( unit => map[ unit.tag() ]().Item( unit.self() ) ) as any
 		}
 		
+		/** All ordered alive Units */
 		@ $mol_mem
 		units() {
 			return this.land().gists_ordered( this.head() ).filter( unit => !unit.nil() )
@@ -58,10 +60,12 @@ namespace $ {
 			return this.units().length > 0
 		}
 		
+		/** Ability to make changes inside Land */
 		can_change( lord = this.land().auth().lord() ) {
 			return this.land().lord_rank( lord ) >= $hyoo_crus_rank.add
 		}
 		
+		/** Time of last changed unit inside Node subtree */
 		@ $mol_mem
 		last_change() {
 			
