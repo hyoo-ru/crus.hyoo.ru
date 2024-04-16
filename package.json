@@ -164,6 +164,7 @@
     "$mol_tree2_xml",
     "$mol_reconcile",
     "$mol_guard",
+    "$mol_type_override",
     "$hyoo_crus_meta",
     "$hyoo_crus_fund",
     "$hyoo_crus_pack",

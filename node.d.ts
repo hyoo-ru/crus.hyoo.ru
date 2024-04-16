@@ -2305,6 +2305,10 @@ declare namespace $ {
 }
 
 declare namespace $ {
+    type $mol_type_override<Base, Over> = Omit<Base, keyof Over> & Over;
+}
+
+declare namespace $ {
     const $hyoo_crus_dict_base: typeof $hyoo_crus_list_vary;
     export class $hyoo_crus_dict extends $hyoo_crus_dict_base {
         static tag: "keys" | "term" | "solo" | "vals";
@@ -2314,7 +2318,7 @@ declare namespace $ {
         static with<This extends typeof $hyoo_crus_dict, const Schema extends Record<string, {
             tag: keyof typeof $hyoo_crus_gist_tag;
             new (): {};
-        }>>(this: This, schema: Schema): This & (new (...args: any[]) => InstanceType<This> & { readonly [Key in keyof Schema]: (auto?: any) => InstanceType<Schema[Key]> | null; }) & {
+        }>>(this: This, schema: Schema): Omit<This, "prototype"> & (new (...args: any[]) => $mol_type_override<InstanceType<This>, { readonly [Key in keyof Schema]: (auto?: any) => InstanceType<Schema[Key]> | null; }>) & {
             schema: {
                 [x: string]: typeof $hyoo_crus_node;
             } & Schema;
@@ -2368,7 +2372,7 @@ declare namespace $ {
         with<This extends typeof $hyoo_crus_dict, const Schema extends Record<string, {
             new (): {};
             tag: "keys" | "term" | "solo" | "vals";
-        }>>(this: This, schema: Schema): This & (new (...args: any[]) => InstanceType<This> & { readonly [Key in keyof Schema]: (auto?: any) => InstanceType<Schema[Key]> | null; }) & {
+        }>>(this: This, schema: Schema): Omit<This, "prototype"> & (new (...args: any[]) => $mol_type_override<InstanceType<This>, { readonly [Key in keyof Schema]: (auto?: any) => InstanceType<Schema[Key]> | null; }>) & {
             schema: {
                 [x: string]: typeof $hyoo_crus_node;
             } & Schema;
@@ -2384,9 +2388,9 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    const $hyoo_crus_meta_base: typeof $hyoo_crus_dict & (new (...args: any[]) => $hyoo_crus_dict & {
+    const $hyoo_crus_meta_base: Omit<typeof $hyoo_crus_dict, "prototype"> & (new (...args: any[]) => $mol_type_override<$hyoo_crus_dict, {
         readonly Inflow: (auto?: any) => $hyoo_crus_list_ref | null;
-    }) & {
+    }>) & {
         schema: {
             [x: string]: typeof $hyoo_crus_node;
         } & {
@@ -3290,7 +3294,7 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    const $hyoo_crus_home_base: typeof $hyoo_crus_dict & (new (...args: any[]) => $hyoo_crus_dict & {
+    const $hyoo_crus_home_base: Omit<typeof $hyoo_crus_dict, "prototype"> & (new (...args: any[]) => $mol_type_override<$hyoo_crus_dict, {
         readonly Title: (auto?: any) => $hyoo_crus_atom_str | null;
         readonly Selection: (auto?: any) => $hyoo_crus_atom_str | null;
         readonly Hall: (auto?: any) => {
@@ -3330,7 +3334,7 @@ declare namespace $ {
             [Symbol.toStringTag]: string;
             [$mol_ambient_ref]: typeof $$;
         } | null;
-    }) & {
+    }>) & {
         schema: {
             [x: string]: typeof $hyoo_crus_node;
         } & {

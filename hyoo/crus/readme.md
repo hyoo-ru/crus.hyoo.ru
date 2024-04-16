@@ -192,8 +192,8 @@
   - **⏰time** - iso8601 moment.
   - **🕓dur** - iso8601 duration.
   - **🎬range** - iso8601 range.
-  - **📚json** - Plain Old JS Object.
-  - **🧾jsan** - Plain Old JS Array.
+  - **📖json** - Plain Old JS Object.
+  - **📚jsan** - Plain Old JS Array.
   - **🛐dom** - Document Object Model (xml, xhtml etc).
   - **🌴tree** - Abstract Syntax Tree.
 
