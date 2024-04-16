@@ -153,7 +153,7 @@ namespace $ {
 	export class $hyoo_crus_list_range extends $hyoo_crus_list( $hyoo_crus_vary_cast_range ) {}
 	export class $hyoo_crus_list_json extends $hyoo_crus_list( $hyoo_crus_vary_cast_json ) {}
 	export class $hyoo_crus_list_jsan extends $hyoo_crus_list( $hyoo_crus_vary_cast_jsan ) {}
-	export class $hyoo_crus_list_xml extends $hyoo_crus_list( $hyoo_crus_vary_cast_dom ) {}
+	export class $hyoo_crus_list_dom extends $hyoo_crus_list( $hyoo_crus_vary_cast_dom ) {}
 	export class $hyoo_crus_list_tree extends $hyoo_crus_list( $hyoo_crus_vary_cast_tree ) {}
 
 	export class $hyoo_crus_list_ref_base extends $hyoo_crus_list_ref {

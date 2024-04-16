@@ -118,7 +118,7 @@ namespace $ {
 	
 	export class $hyoo_crus_atom_json extends $hyoo_crus_atom( $hyoo_crus_vary_cast_json ) {}
 	export class $hyoo_crus_atom_jsan extends $hyoo_crus_atom( $hyoo_crus_vary_cast_jsan ) {}
-	export class $hyoo_crus_atom_xml extends $hyoo_crus_atom( $hyoo_crus_vary_cast_dom ) {}
+	export class $hyoo_crus_atom_dom extends $hyoo_crus_atom( $hyoo_crus_vary_cast_dom ) {}
 	export class $hyoo_crus_atom_tree extends $hyoo_crus_atom( $hyoo_crus_vary_cast_tree ) {}
 	
 	export class $hyoo_crus_atom_ref_base extends $hyoo_crus_atom_ref {
