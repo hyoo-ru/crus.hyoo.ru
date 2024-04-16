@@ -9993,9 +9993,9 @@ var $;
     class $hyoo_crus_list_jsan extends $hyoo_crus_list($hyoo_crus_vary_cast_jsan) {
     }
     $.$hyoo_crus_list_jsan = $hyoo_crus_list_jsan;
-    class $hyoo_crus_list_xml extends $hyoo_crus_list($hyoo_crus_vary_cast_dom) {
+    class $hyoo_crus_list_dom extends $hyoo_crus_list($hyoo_crus_vary_cast_dom) {
     }
-    $.$hyoo_crus_list_xml = $hyoo_crus_list_xml;
+    $.$hyoo_crus_list_dom = $hyoo_crus_list_dom;
     class $hyoo_crus_list_tree extends $hyoo_crus_list($hyoo_crus_vary_cast_tree) {
     }
     $.$hyoo_crus_list_tree = $hyoo_crus_list_tree;
@@ -10845,9 +10845,9 @@ var $;
     class $hyoo_crus_atom_jsan extends $hyoo_crus_atom($hyoo_crus_vary_cast_jsan) {
     }
     $.$hyoo_crus_atom_jsan = $hyoo_crus_atom_jsan;
-    class $hyoo_crus_atom_xml extends $hyoo_crus_atom($hyoo_crus_vary_cast_dom) {
+    class $hyoo_crus_atom_dom extends $hyoo_crus_atom($hyoo_crus_vary_cast_dom) {
     }
-    $.$hyoo_crus_atom_xml = $hyoo_crus_atom_xml;
+    $.$hyoo_crus_atom_dom = $hyoo_crus_atom_dom;
     class $hyoo_crus_atom_tree extends $hyoo_crus_atom($hyoo_crus_vary_cast_tree) {
     }
     $.$hyoo_crus_atom_tree = $hyoo_crus_atom_tree;

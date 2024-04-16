@@ -194,7 +194,7 @@
   - **🎬range** - iso8601 range.
   - **📚json** - Plain Old JS Object.
   - **🧾jsan** - Plain Old JS Array.
-  - **🛐xml** - XML.
+  - **🛐dom** - Document Object Model (xml, xhtml etc).
   - **🌴tree** - Abstract Syntax Tree.
 
 - **Rank** - Access level.
@@ -357,7 +357,7 @@ export class $my_app extends $mol_object {
 - `$hyoo_crus_atom_range` - atomic iso8601 time interval register
 - `$hyoo_crus_atom_json` - atomic plain old js object register
 - `$hyoo_crus_atom_jsan` - atomic plain old js array register
-- `$hyoo_crus_atom_xml` - atomic DOM register
+- `$hyoo_crus_atom_dom` - atomic DOM register
 - `$hyoo_crus_atom_tree` - atomic Tree register
 
 ### Ordered List
@@ -380,7 +380,7 @@ export class $my_app extends $mol_object {
 - `$hyoo_crus_list_range` - mergeable list of atomic iso8601 time intervals
 - `$hyoo_crus_list_json` - mergeable list of atomic plain old js objects
 - `$hyoo_crus_list_jsan` - mergeable list of atomic plain old js arrays
-- `$hyoo_crus_list_xml` - mergeable list of atomic DOMs
+- `$hyoo_crus_list_dom` - mergeable list of atomic DOMs
 - `$hyoo_crus_list_tree` - mergeable list of atomic Trees
 
 ### Ordered Dictionary

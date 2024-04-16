@@ -2151,7 +2151,7 @@ declare namespace $ {
     };
     export class $hyoo_crus_list_jsan extends $hyoo_crus_list_jsan_base {
     }
-    const $hyoo_crus_list_xml_base: (abstract new () => {
+    const $hyoo_crus_list_dom_base: (abstract new () => {
         items(next?: readonly (Element | HTMLElement | $mol_jsx.JSX.Element | null)[] | undefined): readonly (Element | HTMLElement | $mol_jsx.JSX.Element | null)[];
         items_vary(next?: readonly $hyoo_crus_vary_type[] | undefined, tag?: "keys" | "term" | "solo" | "vals"): readonly $hyoo_crus_vary_type[];
         splice(next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: "keys" | "term" | "solo" | "vals"): void;
@@ -2196,7 +2196,7 @@ declare namespace $ {
         destructor(): void;
         [Symbol.toPrimitive](): any;
     };
-    export class $hyoo_crus_list_xml extends $hyoo_crus_list_xml_base {
+    export class $hyoo_crus_list_dom extends $hyoo_crus_list_dom_base {
     }
     const $hyoo_crus_list_tree_base: (abstract new () => {
         items(next?: readonly ($mol_tree2 | null)[] | undefined): readonly ($mol_tree2 | null)[];
@@ -3037,7 +3037,7 @@ declare namespace $ {
     };
     export class $hyoo_crus_atom_jsan extends $hyoo_crus_atom_jsan_base {
     }
-    const $hyoo_crus_atom_xml_base: (abstract new () => {
+    const $hyoo_crus_atom_dom_base: (abstract new () => {
         val(next?: Element | HTMLElement | $mol_jsx.JSX.Element | null | undefined): Element | HTMLElement | $mol_jsx.JSX.Element | null;
         pick_unit(): $hyoo_crus_gist | undefined;
         vary(next?: $hyoo_crus_vary_type | undefined): $hyoo_crus_vary_type;
@@ -3075,7 +3075,7 @@ declare namespace $ {
         destructor(): void;
         [Symbol.toPrimitive](): any;
     };
-    export class $hyoo_crus_atom_xml extends $hyoo_crus_atom_xml_base {
+    export class $hyoo_crus_atom_dom extends $hyoo_crus_atom_dom_base {
     }
     const $hyoo_crus_atom_tree_base: (abstract new () => {
         val(next?: $mol_tree2 | null | undefined): $mol_tree2 | null;
