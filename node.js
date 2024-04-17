@@ -4763,30 +4763,10 @@ var $;
         $hyoo_crus_rank[$hyoo_crus_rank["mod"] = 7] = "mod";
         $hyoo_crus_rank[$hyoo_crus_rank["law"] = 15] = "law";
     })($hyoo_crus_rank = $.$hyoo_crus_rank || ($.$hyoo_crus_rank = {}));
-    $.$hyoo_crus_rank_private = {
-        get: [],
-        add: [],
-        mod: [],
-        law: [null],
-    };
-    $.$hyoo_crus_rank_public = {
-        get: [$hyoo_crus_ref('')],
-        add: [],
-        mod: [],
-        law: [null],
-    };
-    $.$hyoo_crus_rank_lobby = {
-        get: [$hyoo_crus_ref('')],
-        add: [$hyoo_crus_ref('')],
-        mod: [],
-        law: [null],
-    };
-    $.$hyoo_crus_rank_orgy = {
-        get: [$hyoo_crus_ref('')],
-        add: [],
-        mod: [$hyoo_crus_ref('')],
-        law: [null],
-    };
+    $.$hyoo_crus_rank_private = {};
+    $.$hyoo_crus_rank_public = { '': $hyoo_crus_rank.get };
+    $.$hyoo_crus_rank_lobby = { '': $hyoo_crus_rank.add };
+    $.$hyoo_crus_rank_orgy = { '': $hyoo_crus_rank.mod };
 })($ || ($ = {}));
 
 ;
@@ -5005,6 +4985,26 @@ var $;
         hour = 0;
         minute = 0;
         second = 0;
+        get normal() {
+            let second = this.second ?? 0;
+            let minute = this.minute ?? 0;
+            let hour = this.hour ?? 0;
+            let day = this.day ?? 0;
+            minute += Math.floor(second / 60);
+            second = second % 60;
+            hour += Math.floor(minute / 60);
+            minute = minute % 60;
+            day += Math.floor(hour / 24);
+            hour = hour % 24;
+            return new $mol_time_duration({
+                year: this.year,
+                month: this.month,
+                day: day,
+                hour: hour,
+                minute: minute,
+                second: second,
+            });
+        }
         summ(config) {
             const duration = new $mol_time_duration(config);
             return new $mol_time_duration({
@@ -5072,6 +5072,57 @@ var $;
                 if (!duration.second)
                     return '';
                 return duration.second + 'S';
+            },
+            'hh': (moment) => {
+                if (moment.hour == null)
+                    return '';
+                return String(100 + moment.hour).slice(1);
+            },
+            'h': (moment) => {
+                if (moment.hour == null)
+                    return '';
+                return String(moment.hour);
+            },
+            ':mm': (moment) => {
+                if (moment.minute == null)
+                    return '';
+                return ':' + $mol_time_moment.patterns['mm'](moment);
+            },
+            'mm': (moment) => {
+                if (moment.minute == null)
+                    return '';
+                return String(100 + moment.minute).slice(1);
+            },
+            'm': (moment) => {
+                if (moment.minute == null)
+                    return '';
+                return String(moment.minute);
+            },
+            ':ss': (moment) => {
+                if (moment.second == null)
+                    return '';
+                return ':' + $mol_time_moment.patterns['ss'](moment);
+            },
+            'ss': (moment) => {
+                if (moment.second == null)
+                    return '';
+                return String(100 + moment.second | 0).slice(1);
+            },
+            's': (moment) => {
+                if (moment.second == null)
+                    return '';
+                return String(moment.second | 0);
+            },
+            '.sss': (moment) => {
+                if (moment.second == null)
+                    return '';
+                return '.' + $mol_time_moment.patterns['sss'](moment);
+            },
+            'sss': (moment) => {
+                if (moment.second == null)
+                    return '';
+                const millisecond = (moment.second - Math.trunc(moment.second)).toFixed(3);
+                return millisecond.slice(2);
             },
         };
     }
@@ -6645,7 +6696,7 @@ var $;
             if (next !== undefined)
                 this.uint8(0, $hyoo_crus_unit_kind.gift);
             next = this.uint8(1, next);
-            if (next < $hyoo_crus_rank.get || next > $hyoo_crus_rank.law) {
+            if (next < $hyoo_crus_rank.nil || next > $hyoo_crus_rank.law) {
                 $mol_fail(new RangeError(`Wrong rank ${next}`));
             }
             return next;
@@ -7219,7 +7270,10 @@ var $;
                 return prev;
             if (next === prev)
                 return prev;
-            this.give(lord, next);
+            const key = this.passes.get($hyoo_crus_ref_peer(lord))?.auth();
+            if (!key)
+                $mol_fail(new Error(`No pub key for lord (${lord.description})`));
+            this.give($hyoo_crus_auth.from(key), next);
             return next;
         }
         peer_rank(peer) {
@@ -7238,6 +7292,8 @@ var $;
                 if (face.get(peer))
                     return;
                 const pass = this.passes.get(peer);
+                if (!pass)
+                    $mol_fail(new Error(`No pass for Peer (${peer})`));
                 delta.push(pass);
                 passed.add(peer);
             };
@@ -7353,7 +7409,7 @@ var $;
                         this.faces.time_max(next.peer(), next.time());
                         if (!prev)
                             this.faces.total++;
-                        if ((prev?.rank() ?? $hyoo_crus_rank.get) > next.rank())
+                        if ((prev?.rank() ?? $hyoo_crus_rank.nil) > next.rank())
                             need_recheck = true;
                     },
                     gist: next => {
@@ -7525,15 +7581,19 @@ var $;
             unit.rank(rank);
             unit.time(this.faces.tick());
             unit.peer(auth.peer());
-            unit.dest(dest);
+            unit.dest(dest ? dest.lord() : $hyoo_crus_ref(''));
             unit._land = this;
-            const secret_land = this.secret();
-            if (secret_land) {
-                const secret_mutual = this.secret_mutual($hyoo_crus_ref_peer(dest));
-                if (secret_mutual) {
-                    const secret_bin = $mol_wire_sync(secret_land).serial();
-                    const bill = $mol_wire_sync(secret_mutual).encrypt(secret_bin, unit.salt());
-                    unit.bill().set(bill);
+            if (rank >= $hyoo_crus_rank.get) {
+                const secret_land = this.secret();
+                if (secret_land) {
+                    if (!dest)
+                        $mol_fail(new Error(`Encrypted land can't be shared to everyone`));
+                    const secret_mutual = this.secret_mutual(dest.toString());
+                    if (secret_mutual) {
+                        const secret_bin = $mol_wire_sync(secret_land).serial();
+                        const bill = $mol_wire_sync(secret_mutual).encrypt(secret_bin, unit.salt());
+                        unit.bill().set(bill);
+                    }
                 }
             }
             const error = this.apply_unit_trust([unit])[0];
@@ -7724,14 +7784,15 @@ var $;
                 }
                 return undefined;
             }
+            const secret = this.secret();
             if (gist._vary !== undefined)
                 return gist._vary;
             if (gist._open !== null)
                 return gist._vary = $hyoo_crus_vary_decode({ tip: gist.tip(), bin: gist._open });
             let bin = gist.size() > 32 ? this.$.$hyoo_crus_mine.rock(gist.hash()) : gist.data();
-            if (bin && !gist.nil() && this.secret()) {
+            if (secret && bin && !gist.nil()) {
                 try {
-                    bin = new Uint8Array($mol_wire_sync(this.secret()).decrypt(bin, gist.salt()));
+                    bin = new Uint8Array($mol_wire_sync(secret).decrypt(bin, gist.salt()));
                 }
                 catch (error) {
                     if ($mol_fail_catch(error)) {
@@ -7749,11 +7810,8 @@ var $;
             const key = this.passes.get(peer)?.auth();
             return key ? $mol_crypto_key_public.from(key) : null;
         }
-        secret_mutual(peer) {
-            const key = this.key_public(peer);
-            if (!key)
-                return null;
-            return $mol_wire_sync($mol_crypto_secret).derive(this.auth().toString(), key.toString());
+        secret_mutual(key_public) {
+            return $mol_wire_sync($mol_crypto_secret).derive(this.auth().toString(), key_public);
         }
         encryptable() {
             return !this.gists.size;
@@ -8267,18 +8325,13 @@ var $;
             const king = this.$.$hyoo_crus_auth.grab();
             const colony = $mol_wire_sync($hyoo_crus_land).make({});
             colony.auth = $mol_const(king);
-            if (!preset.get.includes($hyoo_crus_ref(''))) {
+            if ((preset[''] ?? $hyoo_crus_rank.nil) === $hyoo_crus_rank.nil) {
                 colony.encrypted(true);
             }
-            const self = this.$.$hyoo_crus_auth.current().lord();
-            for (const ref of preset.get)
-                colony.lord_rank(ref ?? self, $hyoo_crus_rank.get);
-            for (const ref of preset.add)
-                colony.lord_rank(ref ?? self, $hyoo_crus_rank.add);
-            for (const ref of preset.mod)
-                colony.lord_rank(ref ?? self, $hyoo_crus_rank.mod);
-            for (const ref of preset.law)
-                colony.lord_rank(ref ?? self, $hyoo_crus_rank.law);
+            const self = this.$.$hyoo_crus_auth.current();
+            colony.give(self, $hyoo_crus_rank.law);
+            for (const key in preset)
+                colony.give(key ? $hyoo_crus_auth.from(key) : null, preset[key]);
             this.Land(colony.ref()).apply_unit_trust(colony.delta_unit());
             return king;
         }

@@ -1189,12 +1189,7 @@ declare namespace $ {
         mod = 7,
         law = 15
     }
-    type $hyoo_crus_rank_preset = {
-        get: (null | $hyoo_crus_ref)[];
-        add: (null | $hyoo_crus_ref)[];
-        mod: (null | $hyoo_crus_ref)[];
-        law: (null | $hyoo_crus_ref)[];
-    };
+    type $hyoo_crus_rank_preset = Record<string, $hyoo_crus_rank>;
     let $hyoo_crus_rank_private: $hyoo_crus_rank_preset;
     let $hyoo_crus_rank_public: $hyoo_crus_rank_preset;
     let $hyoo_crus_rank_lobby: $hyoo_crus_rank_preset;
@@ -1271,6 +1266,7 @@ declare namespace $ {
         readonly hour: number;
         readonly minute: number;
         readonly second: number;
+        get normal(): $mol_time_duration;
         summ(config: $mol_time_duration_config): $mol_time_duration;
         mult(numb: number): $mol_time_duration;
         count(config: $mol_time_duration_config): number;
@@ -1285,6 +1281,16 @@ declare namespace $ {
             '#h': (duration: $mol_time_duration) => string;
             '#m': (duration: $mol_time_duration) => string;
             '#s': (duration: $mol_time_duration) => string;
+            hh: (moment: $mol_time_moment) => string;
+            h: (moment: $mol_time_moment) => string;
+            ':mm': (moment: $mol_time_moment) => string;
+            mm: (moment: $mol_time_moment) => string;
+            m: (moment: $mol_time_moment) => string;
+            ':ss': (moment: $mol_time_moment) => string;
+            ss: (moment: $mol_time_moment) => string;
+            s: (moment: $mol_time_moment) => string;
+            '.sss': (moment: $mol_time_moment) => string;
+            sss: (moment: $mol_time_moment) => string;
         };
     }
 }
@@ -3223,7 +3229,7 @@ declare namespace $ {
         fork(preset?: $hyoo_crus_rank_preset): $hyoo_crus_land;
         gists_ordered(head: string): $hyoo_crus_gist[];
         join(): $hyoo_crus_pass;
-        give(dest: $hyoo_crus_ref, rank: $hyoo_crus_rank): $hyoo_crus_gift;
+        give(dest: $hyoo_crus_auth | null, rank: $hyoo_crus_rank): $hyoo_crus_gift;
         post(lead: string, head: string, self: string, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): $hyoo_crus_gist;
         gist_move(gist: $hyoo_crus_gist, head: string, seat: number): void;
         gist_wipe(gist: $hyoo_crus_gist): void;
@@ -3238,7 +3244,7 @@ declare namespace $ {
         gist_decode(gist: $hyoo_crus_gist): $hyoo_crus_vary_type;
         gist_decode_raw(gist: $hyoo_crus_gist): $hyoo_crus_vary_type;
         key_public(peer: string): $mol_crypto_key_public | null;
-        secret_mutual(peer: string): $mol_crypto_secret | null;
+        secret_mutual(key_public: string): $mol_crypto_secret;
         encryptable(): boolean;
         encrypted(next?: boolean): boolean;
         secret(): $mol_crypto_secret | null;
