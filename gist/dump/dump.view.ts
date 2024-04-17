@@ -6,10 +6,10 @@ namespace $.$$ {
 		}
 		
 		@ $mol_mem
-		Sub() {
+		sub() {
 			const value = this.value()
-			if( typeof value === 'symbol' ) return this.Ref()
-			return this.Other()
+			if( typeof value === 'symbol' ) return [ this.Ref() ]
+			return [ this.Other() ]
 		}
 		
 		@ $mol_mem

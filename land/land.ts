@@ -108,7 +108,10 @@ namespace $ {
 			if( next === undefined ) return prev
 			if( next === prev ) return prev
 			
-			this.give( lord, next )
+			const key = this.passes.get( $hyoo_crus_ref_peer( lord ) )?.auth()
+			if( !key ) $mol_fail( new Error( `No pub key for lord (${ lord.description })` ) )
+			
+			this.give( $hyoo_crus_auth.from( key ), next )
 			return next
 			
 		}
@@ -133,7 +136,8 @@ namespace $ {
 				if( passed.has( peer ) ) return
 				if( face.get( peer ) ) return
 				
-				const pass = this.passes.get( peer )!
+				const pass = this.passes.get( peer )
+				if( !pass ) $mol_fail( new Error( `No pass for Peer (${ peer })` ) )
 				
 				delta.push( pass )
 				passed.add( peer )
@@ -297,7 +301,7 @@ namespace $ {
 						
 						if( !prev ) this.faces.total ++
 						
-						if( ( prev?.rank() ?? $hyoo_crus_rank.get ) > next.rank() ) need_recheck = true
+						if( ( prev?.rank() ?? $hyoo_crus_rank.nil ) > next.rank() ) need_recheck = true
 						
 					},
 					
@@ -505,10 +509,13 @@ namespace $ {
 			return next
 		}
 		
-		/** Places data to tree. */
+		/**
+		 * Gives access rights to Lord by Auth key.
+		 * `null` - gives rights for all Peers.
+		 */
 		@ $mol_action
 		give(
-			dest: $hyoo_crus_ref,
+			dest: $hyoo_crus_auth | null,
 			rank: $hyoo_crus_rank,
 		) {
 				
@@ -520,17 +527,25 @@ namespace $ {
 			unit.rank( rank )
 			unit.time( this.faces.tick() )
 			unit.peer( auth.peer() )
-			unit.dest( dest )
+			unit.dest( dest ? dest.lord() : $hyoo_crus_ref('') )
 			unit._land = this
 			
-			const secret_land = this.secret()
-			if( secret_land ) {
-				const secret_mutual = this.secret_mutual( $hyoo_crus_ref_peer( dest ) )
-				if( secret_mutual ) {
-					const secret_bin = $mol_wire_sync( secret_land ).serial()
-					const bill = $mol_wire_sync( secret_mutual ).encrypt( secret_bin, unit.salt() )
-					unit.bill().set( bill )
+			if( rank >= $hyoo_crus_rank.get ) {
+				
+				const secret_land = this.secret()
+				if( secret_land ) {
+					
+					if( !dest ) $mol_fail( new Error( `Encrypted land can't be shared to everyone` ) )
+					
+					const secret_mutual = this.secret_mutual( dest.toString() )
+					if( secret_mutual ) {
+						const secret_bin = $mol_wire_sync( secret_land ).serial()
+						const bill = $mol_wire_sync( secret_mutual ).encrypt( secret_bin, unit.salt() )
+						unit.bill().set( bill )
+					}
+					
 				}
+				
 			}
 			
 			const error = this.apply_unit_trust([ unit ])[0]
@@ -805,13 +820,15 @@ namespace $ {
 				return undefined!
 			}
 			
+			const secret = this.secret()
+			
 			if( gist._vary !== undefined ) return gist._vary
 			if( gist._open !== null ) return gist._vary = $hyoo_crus_vary_decode({ tip: gist.tip(), bin: gist._open })
 			
 			let bin = gist.size() > 32 ? this.$.$hyoo_crus_mine.rock( gist.hash() ) : gist.data()
-			if( bin && !gist.nil() && this.secret() ) {
+			if( secret && bin && !gist.nil() ) {
 				try {
-					bin = new Uint8Array( $mol_wire_sync( this.secret()! ).decrypt( bin, gist.salt() ) )
+					bin = new Uint8Array( $mol_wire_sync( secret ).decrypt( bin, gist.salt() ) )
 				} catch( error: any ) {
 					if( $mol_fail_catch( error ) ) {
 						if( error.message ) $mol_fail_hidden( error )
@@ -832,16 +849,11 @@ namespace $ {
 		}
 		
 		@ $mol_mem_key
-		secret_mutual( peer: string ) {
-			
-			const key = this.key_public( peer )
-			if( !key ) return null
-			
+		secret_mutual( key_public: string ) {
 			return $mol_wire_sync( $mol_crypto_secret ).derive(
 				this.auth().toString(),
-				key.toString(),
+				key_public,
 			)
-			
 		}
 		
 		@ $mol_mem

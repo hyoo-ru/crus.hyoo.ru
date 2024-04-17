@@ -22,15 +22,14 @@ namespace $ {
 			const colony = ( $mol_wire_sync( $hyoo_crus_land ) as typeof $hyoo_crus_land ).make({})
 			colony.auth = $mol_const( king )
 			
-			if( !preset.get.includes( $hyoo_crus_ref( '' ) ) ) {
+			if( ( preset[''] ?? $hyoo_crus_rank.nil ) === $hyoo_crus_rank.nil ) {
 				colony.encrypted( true )
 			}
 			
-			const self = this.$.$hyoo_crus_auth.current().lord()
-			for( const ref of preset.get ) colony.lord_rank( ref ?? self, $hyoo_crus_rank.get )
-			for( const ref of preset.add ) colony.lord_rank( ref ?? self, $hyoo_crus_rank.add )
-			for( const ref of preset.mod ) colony.lord_rank( ref ?? self, $hyoo_crus_rank.mod )
-			for( const ref of preset.law ) colony.lord_rank( ref ?? self, $hyoo_crus_rank.law )
+			const self = this.$.$hyoo_crus_auth.current()
+			colony.give( self, $hyoo_crus_rank.law )
+			
+			for( const key in preset ) colony.give( key ? $hyoo_crus_auth.from( key ) : null, preset[ key ] )
 			
 			this.Land( colony.ref() ).apply_unit_trust( colony.delta_unit() )
 			

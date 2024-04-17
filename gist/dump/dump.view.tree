@@ -1,4 +1,4 @@
-$hyoo_crus_gist_dump $mol_ghost
+$hyoo_crus_gist_dump $mol_view
 	land $hyoo_crus_land
 	gist $hyoo_crus_gist
 	Ref $mol_link

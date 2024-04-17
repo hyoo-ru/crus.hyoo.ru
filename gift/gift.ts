@@ -7,7 +7,7 @@ namespace $ {
 			if( next !== undefined ) this.uint8( 0, $hyoo_crus_unit_kind.gift )
 			next = this.uint8( 1, next )
 			
-			if( next < $hyoo_crus_rank.get || next > $hyoo_crus_rank.law ) {
+			if( next < $hyoo_crus_rank.nil || next > $hyoo_crus_rank.law ) {
 				$mol_fail( new RangeError( `Wrong rank ${ next }` ) )
 			}
 			

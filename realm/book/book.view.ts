@@ -22,7 +22,11 @@ namespace $.$$ {
 		
 		override spread_title( id: string ) {
 			const ref = $hyoo_crus_ref( id )
-			const title = this.realm().Node( ref, $hyoo_crus_entity ).Title()?.val()
+			try {
+				var title = this.realm().Node( ref, $hyoo_crus_entity ).Title()?.val()
+			} catch( error ) {
+				$mol_fail_log( error )
+			}
 			const chunks = id.split( '_' )
 			const suffix = title || ( chunks.length >= 3 ? $hyoo_crus_ref_head( ref ) : ref.description! )
 			const prefix = [
