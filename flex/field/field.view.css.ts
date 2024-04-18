@@ -23,7 +23,7 @@ namespace $.$$ {
 		},
 		
 		List_item_dump: {
-			padding: $mol_gap.text,
+			// padding: $mol_gap.text,
 		},
 		
 		$hyoo_crus_flex_form: {
