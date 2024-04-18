@@ -14891,17 +14891,17 @@ var $;
             const domain_kinds = domain.Props(null).local_make();
             const domain_props = domain.Props(null).local_make();
             const domain_types = domain.Props(null).local_make();
-            thing_kind.Key(null).val('kind');
-            thing_title.Key(null).val('title');
-            kind_props.Key(null).val('props');
-            prop_key.Key(null).val('key');
-            prop_type.Key(null).val('type');
-            prop_target.Key(null).val('target');
-            prop_enum.Key(null).val('enum');
-            prop_base.Key(null).val('base');
-            domain_kinds.Key(null).val('kinds');
-            domain_props.Key(null).val('props');
-            domain_types.Key(null).val('types');
+            thing_kind.Key(null).val('Kind');
+            thing_title.Key(null).val('Title');
+            kind_props.Key(null).val('Props');
+            prop_key.Key(null).val('Key');
+            prop_type.Key(null).val('Type');
+            prop_target.Key(null).val('Target');
+            prop_enum.Key(null).val('Enum');
+            prop_base.Key(null).val('Base');
+            domain_kinds.Key(null).val('Kinds');
+            domain_props.Key(null).val('Props');
+            domain_types.Key(null).val('Types');
             thing_kind.Title(null).val('Kind');
             thing_title.Title(null).val('Title');
             kind_props.Title(null).val('Props');
@@ -17499,9 +17499,7 @@ var $;
                     shrink: 1,
                 },
             },
-            List_item_dump: {
-                padding: $mol_gap.text,
-            },
+            List_item_dump: {},
             $hyoo_crus_flex_form: {
                 padding: $mol_gap.block,
                 flex: {
