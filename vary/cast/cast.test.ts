@@ -200,7 +200,7 @@ namespace $.$$ {
 			$mol_assert_equal( $hyoo_crus_vary_cast_bool( vary ), false )
 			$mol_assert_equal( $hyoo_crus_vary_cast_int( vary ), null )
 			$mol_assert_equal( $hyoo_crus_vary_cast_real( vary ), null )
-			$mol_assert_equal( $hyoo_crus_vary_cast_ref( vary ), null )
+			$mol_assert_equal( $hyoo_crus_vary_cast_ref( vary ), $hyoo_crus_ref('') )
 			
 			$mol_assert_equal( $hyoo_crus_vary_cast_str( vary ), '' )
 			$mol_assert_equal( $hyoo_crus_vary_cast_time( vary ), null )
