@@ -51,17 +51,35 @@ $hyoo_crus_flex_field $mol_view
 	Text $mol_textarea
 		enabled <= enabled true
 		value? <=> text? \
-	List $mol_view
-		sub <= list_items /
-			<= List_item_dump*0 $hyoo_crus_gist_dump
-				land <= land
-				gist <= list_gist* $hyoo_crus_gist
-			<= List_pick $mol_select
-				enabled <= enabled true
-				value? <=> list_pick? null
-				options <= ref_options
-				option_label* <= ref_label* \
-			<= List_item_add $mol_button_minor
-				enabled <= enabled true
-				click? <=> list_item_add? null
-				title \+
+	List <= List_drop $mol_drop
+		adopt? <=> list_item_adopt? null
+		receive? <=> list_receive? null
+		allow /
+			\move
+			\copy
+		Sub <= List_items $mol_view
+			sub <= list_items /
+				<= List_item*0 <= List_item_drop* $mol_drop
+					adopt? <=> list_item_adopt? null
+					receive? <=> list_item_receive*? null
+					allow /
+						\move
+						\copy
+					Sub <= List_item_drag* $mol_drag
+						end? <=> list_item_drag_end*? null
+						transfer *
+							text/plain <= list_item_value* \
+							text/html <= list_item_html* \
+							text/uri-list <= list_item_uri* \
+						Sub <= List_item_dump* $hyoo_crus_gist_dump
+							land <= land
+							gist <= list_gist* $hyoo_crus_gist
+				<= List_pick $mol_select
+					enabled <= enabled true
+					value? <=> list_pick? null
+					options <= ref_options
+					option_label* <= ref_label* \
+				<= List_item_add $mol_button_minor
+					enabled <= enabled true
+					click? <=> list_item_add? null
+					title \+

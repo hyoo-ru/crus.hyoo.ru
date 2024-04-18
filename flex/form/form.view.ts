@@ -12,7 +12,7 @@ namespace $.$$ {
 		
 		@ $mol_mem
 		fields() {
-			return this.kind()?.Props()?.remote_list().slice().reverse().map( key => this.Field( key ) ) ?? []
+			return this.kind()?.Props()?.remote_list().map( key => this.Field( key ) ) ?? []
 		}
 		
 		field_name( prop: $hyoo_crus_flex_prop ) {

@@ -132,7 +132,7 @@ namespace $.$$ {
 		@ $mol_mem
 		list_items() {
 			return [
-				... this.node()?.units().map( ( gist, i )=> this.List_item_dump( i ) ) ?? [],
+				... this.node()?.units().map( ( gist, i )=> this.List_item( gist ) ) ?? [],
 				... this.ref_options().length ? [ this.List_pick() ] : [],
 				this.List_item_add(),
 			]
@@ -151,8 +151,33 @@ namespace $.$$ {
 		}
 		
 		@ $mol_mem_key
-		list_gist( index: number ) {
-			return this.node().units()[ index ]!
+		list_gist( gist: $hyoo_crus_gist ) {
+			return gist
+		}
+		
+		list_item_value( gist: $hyoo_crus_gist ) {
+			return $hyoo_crus_vary_cast_str( this.land().gist_decode( gist ) ) ?? ''
+		}
+		
+		list_item_adopt( transfer : DataTransfer ) {
+			let val: $hyoo_crus_vary_type = transfer.getData( "text/plain" )
+			if( this.prop().Target()?.val() ) val = $hyoo_crus_vary_cast_ref( val )
+			return val
+		}
+
+		list_item_receive( gist: $hyoo_crus_gist, value: string ) {
+			const list = this.node()!.cast( $hyoo_crus_list_vary )
+			this.node()?.cast( $hyoo_crus_list_vary ).splice( [ value ], list.units().indexOf( gist ) )
+		}
+		
+		list_receive( value: string ) {
+			const list = this.node()!.cast( $hyoo_crus_list_vary )
+			this.node()?.cast( $hyoo_crus_list_vary ).splice( [ value ] )
+		}
+		
+		list_item_drag_end( gist: $hyoo_crus_gist, event: DragEvent ) {
+			if( event.dataTransfer?.dropEffect !== 'move' ) return
+			this.land().gist_wipe( gist )
 		}
 		
 	}
