@@ -6098,14 +6098,28 @@ var $;
             int: vary => null,
             real: vary => null,
             ref: vary => vary,
-            str: vary => (!vary || vary.length % 8) ? null : $hyoo_crus_ref(vary),
+            str: vary => {
+                try {
+                    return $hyoo_crus_ref(vary);
+                }
+                catch {
+                    return null;
+                }
+            },
             time: vary => null,
             dur: vary => null,
             range: vary => null,
             json: vary => null,
             jsan: vary => null,
             dom: vary => null,
-            tree: vary => (!vary.type || vary.type.length % 8) ? null : $hyoo_crus_ref(vary.type),
+            tree: vary => {
+                try {
+                    return $hyoo_crus_ref(vary.type);
+                }
+                catch {
+                    return null;
+                }
+            },
         });
     }
     $.$hyoo_crus_vary_cast_ref = $hyoo_crus_vary_cast_ref;

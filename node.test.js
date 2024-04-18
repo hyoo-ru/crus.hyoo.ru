@@ -6089,14 +6089,28 @@ var $;
             int: vary => null,
             real: vary => null,
             ref: vary => vary,
-            str: vary => (!vary || vary.length % 8) ? null : $hyoo_crus_ref(vary),
+            str: vary => {
+                try {
+                    return $hyoo_crus_ref(vary);
+                }
+                catch {
+                    return null;
+                }
+            },
             time: vary => null,
             dur: vary => null,
             range: vary => null,
             json: vary => null,
             jsan: vary => null,
             dom: vary => null,
-            tree: vary => (!vary.type || vary.type.length % 8) ? null : $hyoo_crus_ref(vary.type),
+            tree: vary => {
+                try {
+                    return $hyoo_crus_ref(vary.type);
+                }
+                catch {
+                    return null;
+                }
+            },
         });
     }
     $.$hyoo_crus_vary_cast_ref = $hyoo_crus_vary_cast_ref;
@@ -11836,7 +11850,7 @@ var $;
                 $mol_assert_equal($hyoo_crus_vary_cast_bool(vary), false);
                 $mol_assert_equal($hyoo_crus_vary_cast_int(vary), null);
                 $mol_assert_equal($hyoo_crus_vary_cast_real(vary), null);
-                $mol_assert_equal($hyoo_crus_vary_cast_ref(vary), null);
+                $mol_assert_equal($hyoo_crus_vary_cast_ref(vary), $hyoo_crus_ref(''));
                 $mol_assert_equal($hyoo_crus_vary_cast_str(vary), '');
                 $mol_assert_equal($hyoo_crus_vary_cast_time(vary), null);
                 $mol_assert_equal($hyoo_crus_vary_cast_dur(vary), null);
