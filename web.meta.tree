@@ -59,6 +59,7 @@
 	pack studio git \https://github.com/hyoo-ru/studio.hyoo.ru.git
 	pack sporno git \https://github.com/hyoo-ru/hyoo_sporno.git
 	pack static git \https://github.com/hyoo-ru/hyoo_static.git
+	pack survey git \https://github.com/hyoo-ru/survey.hyoo.ru.git
 	pack talks git \https://github.com/hyoo-ru/talks.hyoo.ru.git
 	pack todomvc git \https://github.com/hyoo-ru/todomvc.hyoo.ru.git
 	pack toys git \https://github.com/hyoo-ru/toys.hyoo.ru.git
