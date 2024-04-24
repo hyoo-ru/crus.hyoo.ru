@@ -61,7 +61,7 @@ $hyoo_crus_node_dump $mol_expander
 							keys \🔑keys
 					<= Unit_time* $mol_view sub / <= unit_time* \
 					<= Unit_wipe* $mol_button_minor
-						sub / <= Unit_wipe_icon* $mol_icon_cross
+						sub / <= Unit_wipe_icon* $mol_icon_close
 						enabled <= can_change
 						click? <=> unit_wipe*? null
 				node <= node_inner* $hyoo_crus_node
