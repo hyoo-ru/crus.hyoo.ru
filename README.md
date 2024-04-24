@@ -9,6 +9,8 @@
 - **Decentralized**: Local First, Oracle Free, 🔜Peer to Peer
 - **Brilliant**: Reactive Architecture, Graph Structure, First Class ISO8601/JSON/DOM/Tree
 
+--[Крутящийся в проде текущий прототип](https://idea.hyoo.ru/#!=projects/project=8wfe0s_h6lo22)--
+
 ## Features
 
 ### 🔆 Convergent
