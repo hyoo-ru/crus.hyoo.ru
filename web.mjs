@@ -23170,7 +23170,7 @@ var $;
 	($.$hyoo_crus_app) = class $hyoo_crus_app extends ($.$mol_book2_catalog) {
 		Source(){
 			const obj = new this.$.$mol_link_source();
-			(obj.uri) = () => ("https://github.com/hyoo-ru/cras.hyoo.ru");
+			(obj.uri) = () => ("https://github.com/hyoo-ru/crus.hyoo.ru");
 			return obj;
 		}
 		Status(){
