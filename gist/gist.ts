@@ -120,7 +120,9 @@ namespace $ {
 			left: $hyoo_crus_gist,
 			right: $hyoo_crus_gist,
 		) {
-			return ( right.time() - left.time() ) || ( right.peer() > left.peer() ? 1 : right.peer() < left.peer() ? -1 : 0 )
+			return ( Math.floor( right.time() / 65536 ) - Math.floor( left.time() / 65536 ) )
+			|| ( right.peer() > left.peer() ? 1 : right.peer() < left.peer() ? -1 : 0 )
+			|| ( right.time() - left.time() )
 		}
 		
 		[ $mol_dev_format_head ]() {

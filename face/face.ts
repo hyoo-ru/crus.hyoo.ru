@@ -39,7 +39,7 @@ namespace $ {
 		/** Gererates new time for peer that greater then other seen. */
 		@ $mol_action
 		tick() {
-			return this.last = Math.max( this.last + 1, Date.now() )
+			return this.last = Math.max( this.last + 1, Math.floor( Date.now() * 65.536 ) )
 		}
 		
 		[ $mol_dev_format_head ]() {
