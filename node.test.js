@@ -569,35 +569,24 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    class $mol_after_timeout extends $mol_object2 {
-        delay;
+    class $mol_after_tick extends $mol_object2 {
         task;
-        id;
-        constructor(delay, task) {
+        promise;
+        cancelled = false;
+        constructor(task) {
             super();
-            this.delay = delay;
             this.task = task;
-            this.id = setTimeout(task, delay);
+            this.promise = Promise.resolve().then(() => {
+                if (this.cancelled)
+                    return;
+                task();
+            });
         }
         destructor() {
-            clearTimeout(this.id);
+            this.cancelled = true;
         }
     }
-    $.$mol_after_timeout = $mol_after_timeout;
-})($ || ($ = {}));
-
-;
-"use strict";
-var $;
-(function ($) {
-    class $mol_after_frame extends $mol_after_timeout {
-        task;
-        constructor(task) {
-            super(16, task);
-            this.task = task;
-        }
-    }
-    $.$mol_after_frame = $mol_after_frame;
+    $.$mol_after_tick = $mol_after_tick;
 })($ || ($ = {}));
 
 ;
@@ -625,7 +614,7 @@ var $;
         static plan() {
             if (this.plan_task)
                 return;
-            this.plan_task = new $mol_after_frame(() => {
+            this.plan_task = new $mol_after_tick(() => {
                 try {
                     this.sync();
                 }
@@ -827,7 +816,7 @@ var $;
                 sub.track_off(prev);
                 sub.absorb = () => {
                     done(null);
-                    sub.destructor();
+                    setTimeout(() => sub.destructor());
                 };
             });
         }
@@ -2000,6 +1989,41 @@ var $;
         });
     }
     $.$mol_key = $mol_key;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_after_timeout extends $mol_object2 {
+        delay;
+        task;
+        id;
+        constructor(delay, task) {
+            super();
+            this.delay = delay;
+            this.task = task;
+            this.id = setTimeout(task, delay);
+        }
+        destructor() {
+            clearTimeout(this.id);
+        }
+    }
+    $.$mol_after_timeout = $mol_after_timeout;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_after_frame extends $mol_after_timeout {
+        task;
+        constructor(task) {
+            super(16, task);
+            this.task = task;
+        }
+    }
+    $.$mol_after_frame = $mol_after_frame;
 })($ || ($ = {}));
 
 ;
@@ -4641,7 +4665,7 @@ var $;
                 this.set(peer, time);
         }
         tick() {
-            return this.last = Math.max(this.last + 1, Date.now());
+            return this.last = Math.max(this.last + 1, Math.floor(Date.now() * 65.536));
         }
         [$mol_dev_format_head]() {
             return $mol_dev_format_span({}, $mol_dev_format_native(this), $mol_dev_format_shade(' ', this.total), $mol_dev_format_shade(' ', new Date(this.last)));
@@ -5781,7 +5805,9 @@ var $;
             return buf.uint48(0);
         }
         static compare(left, right) {
-            return (right.time() - left.time()) || (right.peer() > left.peer() ? 1 : right.peer() < left.peer() ? -1 : 0);
+            return (Math.floor(right.time() / 65536) - Math.floor(left.time() / 65536))
+                || (right.peer() > left.peer() ? 1 : right.peer() < left.peer() ? -1 : 0)
+                || (right.time() - left.time());
         }
         [$mol_dev_format_head]() {
             return $mol_dev_format_span({}, $mol_dev_format_native(this), ' ', this.peer(), ' ', this.lead() || 'AAAAAAAA', $mol_dev_format_shade('\\'), $mol_dev_format_accent(this.head() || 'AAAAAAAA'), $mol_dev_format_shade('/'), this.self() || 'AAAAAAAA', ' ', $mol_dev_format_shade(new $mol_time_moment(this.time()).toString('YYYY-MM-DD hh:mm:ss.sss')), ' ', {
@@ -9550,16 +9576,7 @@ var $;
 var $;
 (function ($_1) {
     $mol_test_mocks.push($ => {
-        $.$mol_after_timeout = $mol_after_mock_timeout;
-    });
-})($ || ($ = {}));
-
-;
-"use strict";
-var $;
-(function ($_1) {
-    $mol_test_mocks.push($ => {
-        $.$mol_after_frame = $mol_after_mock_commmon;
+        $.$mol_after_tick = $mol_after_mock_commmon;
     });
 })($ || ($ = {}));
 
@@ -9750,6 +9767,15 @@ var $;
 
 ;
 "use strict";
+
+;
+"use strict";
+var $;
+(function ($_1) {
+    $mol_test_mocks.push($ => {
+        $.$mol_after_timeout = $mol_after_mock_timeout;
+    });
+})($ || ($ = {}));
 
 ;
 "use strict";
@@ -10454,6 +10480,15 @@ var $;
             $mol_assert_equal($mol_key(/./), '"/./"');
             $mol_assert_equal($mol_key(/\./gimsu), '"/\\\\./gimsu"');
         },
+    });
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($_1) {
+    $mol_test_mocks.push($ => {
+        $.$mol_after_frame = $mol_after_mock_commmon;
     });
 })($ || ($ = {}));
 

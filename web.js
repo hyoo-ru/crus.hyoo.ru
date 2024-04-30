@@ -598,31 +598,14 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    class $mol_after_frame extends $mol_object2 {
+    class $mol_after_tick extends $mol_object2 {
         task;
-        static _promise = null;
-        static get promise() {
-            if (this._promise)
-                return this._promise;
-            return this._promise = new Promise(done => {
-                const complete = () => {
-                    this._promise = null;
-                    done();
-                };
-                if (typeof requestAnimationFrame === 'function') {
-                    requestAnimationFrame(complete);
-                }
-                else {
-                    setTimeout(complete, 16);
-                }
-            });
-        }
-        cancelled = false;
         promise;
+        cancelled = false;
         constructor(task) {
             super();
             this.task = task;
-            this.promise = $mol_after_frame.promise.then(() => {
+            this.promise = Promise.resolve().then(() => {
                 if (this.cancelled)
                     return;
                 task();
@@ -632,7 +615,7 @@ var $;
             this.cancelled = true;
         }
     }
-    $.$mol_after_frame = $mol_after_frame;
+    $.$mol_after_tick = $mol_after_tick;
 })($ || ($ = {}));
 
 ;
@@ -660,7 +643,7 @@ var $;
         static plan() {
             if (this.plan_task)
                 return;
-            this.plan_task = new $mol_after_frame(() => {
+            this.plan_task = new $mol_after_tick(() => {
                 try {
                     this.sync();
                 }
@@ -862,7 +845,7 @@ var $;
                 sub.track_off(prev);
                 sub.absorb = () => {
                     done(null);
-                    sub.destructor();
+                    setTimeout(() => sub.destructor());
                 };
             });
         }
@@ -930,6 +913,47 @@ var $;
         });
     }
     $.$mol_key = $mol_key;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_after_frame extends $mol_object2 {
+        task;
+        static _promise = null;
+        static get promise() {
+            if (this._promise)
+                return this._promise;
+            return this._promise = new Promise(done => {
+                const complete = () => {
+                    this._promise = null;
+                    done();
+                };
+                if (typeof requestAnimationFrame === 'function') {
+                    requestAnimationFrame(complete);
+                }
+                else {
+                    setTimeout(complete, 16);
+                }
+            });
+        }
+        cancelled = false;
+        promise;
+        constructor(task) {
+            super();
+            this.task = task;
+            this.promise = $mol_after_frame.promise.then(() => {
+                if (this.cancelled)
+                    return;
+                task();
+            });
+        }
+        destructor() {
+            this.cancelled = true;
+        }
+    }
+    $.$mol_after_frame = $mol_after_frame;
 })($ || ($ = {}));
 
 ;
@@ -1508,30 +1532,6 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    class $mol_after_tick extends $mol_object2 {
-        task;
-        promise;
-        cancelled = false;
-        constructor(task) {
-            super();
-            this.task = task;
-            this.promise = Promise.resolve().then(() => {
-                if (this.cancelled)
-                    return;
-                task();
-            });
-        }
-        destructor() {
-            this.cancelled = true;
-        }
-    }
-    $.$mol_after_tick = $mol_after_tick;
-})($ || ($ = {}));
-
-;
-"use strict";
-var $;
-(function ($) {
     class $mol_view_selection extends $mol_object {
         static focused(next, notify) {
             const parents = [];
@@ -1879,29 +1879,19 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    let all = [];
-    let el = null;
-    let timer = null;
-    function $mol_style_attach_force() {
-        if (all.length) {
-            el.innerHTML += '\n' + all.join('\n\n');
-            all = [];
-        }
-        timer = null;
-        return el;
-    }
-    $.$mol_style_attach_force = $mol_style_attach_force;
     function $mol_style_attach(id, text) {
-        all.push(`/* ${id} */\n\n${text}`);
-        if (timer)
-            return el;
         const doc = $mol_dom_context.document;
         if (!doc)
             return null;
-        el = doc.createElement('style');
-        el.id = `$mol_style_attach`;
-        doc.head.appendChild(el);
-        timer = new $mol_after_tick($mol_style_attach_force);
+        const elid = `$mol_style_attach:${id}`;
+        let el = doc.getElementById(elid);
+        if (!el) {
+            el = doc.createElement('style');
+            el.id = elid;
+            doc.head.appendChild(el);
+        }
+        if (el.innerHTML != text)
+            el.innerHTML = text;
         return el;
     }
     $.$mol_style_attach = $mol_style_attach;
@@ -7567,7 +7557,7 @@ var $;
                 this.set(peer, time);
         }
         tick() {
-            return this.last = Math.max(this.last + 1, Date.now());
+            return this.last = Math.max(this.last + 1, Math.floor(Date.now() * 65.536));
         }
         [$mol_dev_format_head]() {
             return $mol_dev_format_span({}, $mol_dev_format_native(this), $mol_dev_format_shade(' ', this.total), $mol_dev_format_shade(' ', new Date(this.last)));
@@ -9162,7 +9152,9 @@ var $;
             return buf.uint48(0);
         }
         static compare(left, right) {
-            return (right.time() - left.time()) || (right.peer() > left.peer() ? 1 : right.peer() < left.peer() ? -1 : 0);
+            return (Math.floor(right.time() / 65536) - Math.floor(left.time() / 65536))
+                || (right.peer() > left.peer() ? 1 : right.peer() < left.peer() ? -1 : 0)
+                || (right.time() - left.time());
         }
         [$mol_dev_format_head]() {
             return $mol_dev_format_span({}, $mol_dev_format_native(this), ' ', this.peer(), ' ', this.lead() || 'AAAAAAAA', $mol_dev_format_shade('\\'), $mol_dev_format_accent(this.head() || 'AAAAAAAA'), $mol_dev_format_shade('/'), this.self() || 'AAAAAAAA', ' ', $mol_dev_format_shade(new $mol_time_moment(this.time()).toString('YYYY-MM-DD hh:mm:ss.sss')), ' ', {
