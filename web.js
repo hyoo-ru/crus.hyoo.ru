@@ -22557,13 +22557,15 @@ var $;
                     return;
                 if (request.cache === 'no-store')
                     return;
-                const fresh = fetch(request).then(response => {
+                const fetch_data = () => fetch(request).then(response => {
                     if (response.status !== 200)
                         return response;
                     event.waitUntil(caches.open('$mol_offline').then(cache => cache.put(request, response)));
                     return response.clone();
                 });
-                event.waitUntil(fresh);
+                const fresh = request.cache === 'force-cache' ? null : fetch_data();
+                if (fresh)
+                    event.waitUntil(fresh);
                 event.respondWith(caches.match(request).then(cached => request.cache === 'no-cache' || request.cache === 'reload'
                     ? (cached
                         ? fresh
@@ -22579,7 +22581,7 @@ var $;
                             return cloned;
                         })
                         : fresh)
-                    : (cached || fresh)));
+                    : (cached || fresh || fetch_data())));
             });
             self.addEventListener('beforeinstallprompt', (event) => {
                 console.log(event);
