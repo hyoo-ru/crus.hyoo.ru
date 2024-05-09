@@ -2263,11 +2263,11 @@ declare namespace $ {
     }
     export class $hyoo_crus_list_ref_base extends $hyoo_crus_list_ref {
     }
-    export function $hyoo_crus_list_ref_to<const Value extends any>(Value: Value): {
+    export function $hyoo_crus_list_ref_to<const Value extends any, Vals extends readonly any[] = readonly $mol_type_result<$mol_type_result<Value>>[]>(Value: Value): {
         new (): {
-            remote_list(next?: readonly $mol_type_result<$mol_type_result<Value>>[] | undefined): readonly $mol_type_result<$mol_type_result<Value>>[];
-            remote_make(preset: $hyoo_crus_rank_preset): $mol_type_result<$mol_type_result<Value>>;
-            local_make(idea?: number): $mol_type_result<$mol_type_result<Value>>;
+            remote_list(next?: Vals): Vals;
+            remote_make(preset: $hyoo_crus_rank_preset): Vals[number];
+            local_make(idea?: number): Vals[number];
             items(next?: readonly ((symbol & {
                 $hyoo_crus_ref: symbol;
             }) | null)[] | undefined): readonly ((symbol & {
