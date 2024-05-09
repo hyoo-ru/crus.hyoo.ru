@@ -159,9 +159,10 @@ namespace $ {
 	export class $hyoo_crus_list_ref_base extends $hyoo_crus_list_ref {
 	}
 		
-	export function $hyoo_crus_list_ref_to< const Value extends any >( Value: Value ) {
-			
-		type Vals = readonly $mol_type_result< $mol_type_result< Value > >[]
+	export function $hyoo_crus_list_ref_to<
+		const Value extends any,
+		Vals extends readonly any[] = readonly $mol_type_result< $mol_type_result< Value > >[]
+	>( Value: Value ) {
 		
 		class Ref extends $hyoo_crus_list_ref_base {
 			
@@ -173,13 +174,13 @@ namespace $ {
 			
 			/** List of referenced Nodes */
 			@ $mol_mem
-			remote_list( next?: Vals ): Vals {
+			remote_list( next?: Vals ) {
 				const realm = this.realm()
 				const Node = ( Value as any )()
 				return this.items_vary( next?.map( item => ( item as $hyoo_crus_node ).ref() ) )
 					.map( $hyoo_crus_vary_cast_ref )
 					.filter( $mol_guard_defined )
-					.map( ref => realm!.Node( ref, Node ) )
+					.map( ref => realm!.Node( ref, Node ) ) as readonly any[] as Vals
 			}
 			
 			/** Add new Node which placed in new Land */
