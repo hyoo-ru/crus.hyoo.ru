@@ -115,7 +115,10 @@ namespace $ {
 			return buf.uint48(0)
 		}
 		
-		/** Compare gists on timeline ( right - left ) */
+		/**
+		 * Compare gists on timeline ( right - left )
+		 * Priority: time > peer > tick
+		 */
 		static compare(
 			left: $hyoo_crus_gist,
 			right: $hyoo_crus_gist,

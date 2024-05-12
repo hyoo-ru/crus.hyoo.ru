@@ -90,14 +90,11 @@ namespace $ {
 			Value = Value
 			
 			key( key: $hyoo_crus_vary_type, auto?: any ) {
-				this.has( key, auto === undefined ? undefined : true, Value.tag )
-				const unit = this.find( key )!
-				if( !unit ) return null
-				return this.land().Node( this.Value as any as typeof $hyoo_crus_node ).Item( unit.self() ) as InstanceType< Value >
+				return this.dive( key, this.Value as any as typeof $hyoo_crus_node, auto )
 			}
 			
 			static toString() {
-				return '$hyoo_crus_dict_to(' + Value + ')'
+				return this === Dict ? '$hyoo_crus_dict_to<' + Value + '>' : super.toString()
 			}
 			
 		}

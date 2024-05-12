@@ -399,6 +399,7 @@ namespace $ {
 		gists_ordered( head: string ) {
 			
 			this.sync()
+			this.secret() // early async to prevent async on put
 			
 			const queue = [ ... this.gists.get( head )?.values() ?? [] ]
 			const res = [] as $hyoo_crus_gist[]
