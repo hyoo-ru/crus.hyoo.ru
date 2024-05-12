@@ -2346,7 +2346,7 @@ declare namespace $ {
     }>(Value: Value): {
         new (): {
             Value: Value;
-            key(key: $hyoo_crus_vary_type, auto?: any): InstanceType<Value> | null;
+            key(key: $hyoo_crus_vary_type, auto?: any): InstanceType<Value>;
             keys(): readonly $hyoo_crus_vary_type[];
             dive<Node extends typeof $hyoo_crus_node>(key: $hyoo_crus_vary_type, Node: Node, auto?: any): InstanceType<Node> | null;
             items_vary(next?: readonly $hyoo_crus_vary_type[] | undefined, tag?: "keys" | "term" | "solo" | "vals"): readonly $hyoo_crus_vary_type[];
@@ -2382,7 +2382,7 @@ declare namespace $ {
             [Symbol.toStringTag]: string;
             [$mol_ambient_ref]: typeof $$;
         };
-        toString(): string;
+        toString(): any;
         tag: "keys" | "term" | "solo" | "vals";
         schema: Record<string, typeof $hyoo_crus_node>;
         with<This extends typeof $hyoo_crus_dict, const Schema extends Record<string, {

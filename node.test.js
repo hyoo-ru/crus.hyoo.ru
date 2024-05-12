@@ -6642,14 +6642,10 @@ var $;
         return class Dict extends $hyoo_crus_dict {
             Value = Value;
             key(key, auto) {
-                this.has(key, auto === undefined ? undefined : true, Value.tag);
-                const unit = this.find(key);
-                if (!unit)
-                    return null;
-                return this.land().Node(this.Value).Item(unit.self());
+                return this.dive(key, this.Value, auto);
             }
             static toString() {
-                return '$hyoo_crus_dict_to(' + Value + ')';
+                return this === Dict ? '$hyoo_crus_dict_to<' + Value + '>' : super.toString();
             }
         };
     }
@@ -7520,6 +7516,7 @@ var $;
         }
         gists_ordered(head) {
             this.sync();
+            this.secret();
             const queue = [...this.gists.get(head)?.values() ?? []];
             const res = [];
             const slices = new WeakMap;
