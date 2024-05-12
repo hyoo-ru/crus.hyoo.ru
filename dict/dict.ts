@@ -90,7 +90,7 @@ namespace $ {
 			Value = Value
 			
 			key( key: $hyoo_crus_vary_type, auto?: any ) {
-				return this.dive( key, this.Value as any as typeof $hyoo_crus_node, auto )
+				return this.dive( key, this.Value as any as typeof $hyoo_crus_node, auto ) as InstanceType< Value >
 			}
 			
 			static toString() {
