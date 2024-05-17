@@ -6,7 +6,7 @@
 	"$hyoo_calc_New_hint": "New spreadsheet",
 	"$hyoo_calc_Row_down_hint": "Move Down",
 	"$hyoo_calc_Row_ins_hint": "Insert Row",
-	"$hyoo_calc_hint": "",
+	"$hyoo_calc_hint": "`$.A1` - result of A1, `$$.A1` - formula of A1, `a=` - define variable, `_.a` - value of variable, `__.a` - cell id of variable, `A1:C3` - range of cells, use [**JavaScript**](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference) for other.\n**Available funcs**: {funcs}.\nUse Alt + Arrows to switch between cells.",
 	"$hyoo_calc_title_default": "Spreedsheet",
 	"$hyoo_crus_flex_field_Ref_new_dictionary_lobby": "📢 All add",
 	"$hyoo_crus_flex_field_Ref_new_dictionary_local": "💼 Local",
