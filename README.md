@@ -207,7 +207,7 @@
   - **👑law** - Full administration.
 
 - **Mine** - Units/Rocks storage.
-- **Yard** - Real synchronizer.
+- **Yard** - Realm synchronizer.
 - **Port** - Communication link with other peer.
 - **Delta** - Difference of two Land states as list of Units.
 - **Face** - Statistics about Units in Land. it's total Units count & dictionary which maps Peer to Time.
