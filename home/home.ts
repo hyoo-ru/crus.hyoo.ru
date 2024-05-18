@@ -1,4 +1,6 @@
 namespace $ {
+
+	/** Land where Lord is King. Contains only ain info. */
 	export class $hyoo_crus_home extends $hyoo_crus_dict.with({
 		Title: $hyoo_crus_atom_str,
 		Selection: $hyoo_crus_atom_str,

@@ -1,6 +1,8 @@
 namespace $ {
+	/** Realm synchronizer */
 	export class $hyoo_crus_yard extends $mol_object {
 		
+		/** Whole global graph database which contains Lands */
 		@ $mol_mem
 		realm() {
 			return null! as $hyoo_crus_realm

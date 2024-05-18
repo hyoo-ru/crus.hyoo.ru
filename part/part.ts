@@ -9,7 +9,7 @@ namespace $ {
 		pass = 0b1111_1111,
 		/** Rights/Keys sharing. Last writes wins. */
 		gift = 0b1111_0111,
-		/** Changable data. Last writes wins. */
+		/** Changeable data. Last writes wins. */
 		gist = 0b0000_0000,
 		
 		/** Blob request. */

@@ -1,5 +1,6 @@
 namespace $ {
 	
+	/** Public key of Peer */
 	export class $hyoo_crus_pass extends $hyoo_crus_unit {
 		
 		work() {

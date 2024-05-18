@@ -1,7 +1,10 @@
 namespace $ {
-	export class $hyoo_crus_file extends $hyoo_crus_dict.with({
+	export class $hyoo_crus_file extends $hyoo_crus_dict.with( {
+		/** File name */
 		Name: $hyoo_crus_atom_str,
+		/** File Content-Type */
 		Type: $hyoo_crus_atom_str,
+		/** File content in chunks - list of binaries */
 		Chunks: $hyoo_crus_list_bin,
 	}) {
 		

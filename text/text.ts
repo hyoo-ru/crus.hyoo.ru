@@ -1,4 +1,5 @@
 namespace $ {
+	/** Mergeable text node */
 	export class $hyoo_crus_text extends $hyoo_crus_node {
 		
 		static tag = $hyoo_crus_gist_tag[ $hyoo_crus_gist_tag.vals ] as keyof typeof $hyoo_crus_gist_tag

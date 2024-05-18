@@ -2,6 +2,7 @@ namespace $ {
 	
 	export type $hyoo_crus_face_data = Iterable< readonly [ peer: string, time: number ] >
 	
+	/** Statistics about Units in Land. it's total Units count & dictionary which maps Peer to Time */
 	export class $hyoo_crus_face_map extends Map< string, number > {
 		
 		/** Maximum time for all peers. */
@@ -36,7 +37,7 @@ namespace $ {
 			
 		}
 		
-		/** Gererates new time for peer that greater then other seen. */
+		/** Generates new time for peer that greater then other seen. */
 		@ $mol_action
 		tick() {
 			return this.last = Math.max( this.last + 1, Math.floor( Date.now() * 65.536 ) )

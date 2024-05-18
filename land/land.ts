@@ -1,15 +1,19 @@
 namespace $ {
 	
+	/** Standalone part of Realm which syncs separately, have own rights, and contains Units */
 	export class $hyoo_crus_land extends $mol_object {
 		
+		/** Whole global graph database which contains Lands. */
 		realm() {
 			return null as null | $hyoo_crus_realm
 		}
 		
+		/** Auth Independent actor with global unique id generated from Auth key */
 		ref() {
 			return this.auth().lord()
 		}
 		
+		/** Auth Private key generated with Proof of Work  */
 		auth() {
 			return this.$.$hyoo_crus_auth.current()
 		}
@@ -48,20 +52,24 @@ namespace $ {
 			$mol_fail( new Error( `Too long self generation` ) )
 		}
 		
+		/** Land where Lord is King. Contains only ain info */
 		home() {
 			return this.Data( $hyoo_crus_home )
 		}
 		
+		/** */
 		@ $mol_mem_key
 		Data< Node extends typeof $hyoo_crus_node >( Node: Node ) {
 			return this.Node( Node ).Item( '' ) // 0
 		} 
 		
+		/** Land meta info */
 		@ $mol_mem
 		Meta() {
 			return this.Node( $hyoo_crus_meta ).Item( 'AQAAAAAA' ) // 1
 		} 
 		
+		/** High level representation of stored data */
 		@ $mol_mem_key
 		Node< Node extends typeof $hyoo_crus_node >( Node: Node ): $hyoo_crus_fund< string, InstanceType< Node > > {
 			return new $hyoo_crus_fund( ( head: string )=> {

@@ -20,7 +20,7 @@ namespace $ {
 			
 		}
 		
-		/** Replace sublist by  new one with reconcilation. */
+		/** Replace sublist by  new one with reconciliation. */
 		splice(
 			next: readonly $hyoo_crus_vary_type[],
 			from = this.units().length,
@@ -48,7 +48,7 @@ namespace $ {
 			return null
 		}
 		
-		/** Existance of Vary in the list. */
+		/** Existence of Vary in the list. */
 		has(
 			vary: $hyoo_crus_vary_type,
 			next?: boolean,
@@ -60,7 +60,7 @@ namespace $ {
 			return next
 		}
 		
-		/** Add Vary a the beginnig if it doesn't exists. */
+		/** Add Vary a the beginning if it doesn't exists. */
 		add(
 			vary: $hyoo_crus_vary_type,
 			tag = 'term' as keyof typeof $hyoo_crus_gist_tag,
@@ -123,6 +123,7 @@ namespace $ {
 		
 	}
 
+	/** Mergeable list of atomic vary type factory */
 	export function $hyoo_crus_list<
 		Parse extends $mol_data_value
 	>( parse: Parse ) {
@@ -141,24 +142,38 @@ namespace $ {
 		return Narrow
 	}
 
+	/** Mergeable list of atomic non empty binaries */
 	export class $hyoo_crus_list_bin extends $hyoo_crus_list( $hyoo_crus_vary_cast_bin ) {}
+	/** Mergeable list of atomic booleans */
 	export class $hyoo_crus_list_bool extends $hyoo_crus_list( $hyoo_crus_vary_cast_bool ) {}
+	/** Mergeable list of atomic int64s */
 	export class $hyoo_crus_list_int extends $hyoo_crus_list( $hyoo_crus_vary_cast_int ) {}
+	/** Mergeable list of atomic float64s */
 	export class $hyoo_crus_list_real extends $hyoo_crus_list( $hyoo_crus_vary_cast_real ) {}
+	/** Mergeable list of atomic some references */
 	export class $hyoo_crus_list_ref extends $hyoo_crus_list( $hyoo_crus_vary_cast_ref ) {}
-	
+
+	/** Mergeable list of atomic strings */
 	export class $hyoo_crus_list_str extends $hyoo_crus_list( $hyoo_crus_vary_cast_str ) {}
+	/** Mergeable list of atomic iso8601 time moments */
 	export class $hyoo_crus_list_time extends $hyoo_crus_list( $hyoo_crus_vary_cast_time ) {}
+	/** Mergeable list of atomic iso8601 time durations */
 	export class $hyoo_crus_list_dur extends $hyoo_crus_list( $hyoo_crus_vary_cast_dur ) {}
+	/** Mergeable list of atomic iso8601 time intervals */
 	export class $hyoo_crus_list_range extends $hyoo_crus_list( $hyoo_crus_vary_cast_range ) {}
+	/** Mergeable list of atomic plain old js objects */
 	export class $hyoo_crus_list_json extends $hyoo_crus_list( $hyoo_crus_vary_cast_json ) {}
+	/** Mergeable list of atomic plain old js arrays */
 	export class $hyoo_crus_list_jsan extends $hyoo_crus_list( $hyoo_crus_vary_cast_jsan ) {}
+	/** Mergeable list of atomic DOMs */
 	export class $hyoo_crus_list_dom extends $hyoo_crus_list( $hyoo_crus_vary_cast_dom ) {}
+	/** Mergeable list of atomic Trees*/
 	export class $hyoo_crus_list_tree extends $hyoo_crus_list( $hyoo_crus_vary_cast_tree ) {}
 
 	export class $hyoo_crus_list_ref_base extends $hyoo_crus_list_ref {
 	}
-		
+	
+	/** mergeable list of atomic references to some Node type */
 	export function $hyoo_crus_list_ref_to<
 		const Value extends any,
 		Vals extends readonly any[] = readonly $mol_type_result< $mol_type_result< Value > >[]

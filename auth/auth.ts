@@ -1,7 +1,9 @@
 namespace $ {
 	
+	/** Private key generated with Proof of Work */
 	export class $hyoo_crus_auth extends $mol_crypto_key_private {
 		
+		/** Current Private key generated with Proof of Work  */
 		@ $mol_mem
 		static current( next?: $hyoo_crus_auth | null ) {
 			
@@ -36,11 +38,13 @@ namespace $ {
 			$mol_fail( new Error( `Too long key generation` ) )
 		}
 		
+		/** Independent actor with global unique id generated from Auth key */
 		@ $mol_memo.method
 		lord() {
 			return $hyoo_crus_ref_decode( new Uint8Array( this.buffer, 2, 12 ) )
 		}
 		
+		/** Land local unique identifier of independent actor (first half of Lord) */
 		@ $mol_memo.method
 		peer() {
 			return $mol_base64_ae_encode( new Uint8Array( this.buffer, 2, 6 ) )

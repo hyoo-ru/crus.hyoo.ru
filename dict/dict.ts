@@ -1,4 +1,5 @@
 namespace $ {
+	/** Mergeable dictionary node with any keys mapped to any embedded Node types */
 	export class $hyoo_crus_dict extends (
 		$hyoo_crus_list_vary
 	) {
@@ -24,6 +25,7 @@ namespace $ {
 		
 		static schema = {} as Record< string, typeof $hyoo_crus_node >
 		
+		/** Mergeable dictionary node with defined keys mapped to different embedded Node types */
 		static with<
 			This extends typeof $hyoo_crus_dict,
 			const Schema extends Record< string, { tag: keyof typeof $hyoo_crus_gist_tag, new(): {} } >
@@ -81,6 +83,7 @@ namespace $ {
 		}
 	}
 	
+	/** Mergeable dictionary with any keys mapped to any embedded Node types */
 	export function $hyoo_crus_dict_to<
 		Value extends { tag: keyof typeof $hyoo_crus_gist_tag, new(): {} }
 	>( Value: Value ) {

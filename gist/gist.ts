@@ -1,9 +1,10 @@
 namespace $ {
 	
+	/** Hint how interpret inner Units: term, solo, vals, keys */
 	export enum $hyoo_crus_gist_tag {
-		/** Itself value */
+		/** Itself value. Ignore */
 		term = 0b00,
-		/** Value in first sub node */
+		/** Value in first sub node. Ignore all after first */
 		solo = 0b01,
 		/** List of values */
 		vals = 0b10,
@@ -11,6 +12,7 @@ namespace $ {
 		keys = 0b11,
 	}
 	
+	/**  (Meta) Data */
 	export class $hyoo_crus_gist extends $hyoo_crus_unit {
 		
 		_vary = undefined as undefined | $hyoo_crus_vary_type
