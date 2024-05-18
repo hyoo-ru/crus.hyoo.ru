@@ -1,5 +1,6 @@
 namespace $ {
 	
+	/** Entity schema: pass, gift, gist */
 	export enum $hyoo_crus_unit_kind {
 		
 		/** Public key. First writes wins. */
@@ -8,11 +9,12 @@ namespace $ {
 		/** Rights sharing. More power wins. */
 		gift = $hyoo_crus_part.gift,
 		
-		/** Changable data. Last writes wins. */
+		/** Changeable data. Last writes wins. */
 		gist = $hyoo_crus_part.gist,
 		
 	}
 	
+	/** Minimal independent stable part of information. Actually it's edge between nodes in graph model */
 	export class $hyoo_crus_unit extends $mol_buffer {
 		
 		static size = 128 as const

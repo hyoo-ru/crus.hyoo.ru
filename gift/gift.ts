@@ -1,5 +1,6 @@
 namespace $ {
 	
+	/** Given Rank and Secret */
 	export class $hyoo_crus_gift extends $hyoo_crus_unit {
 		
 		rank( next?: $hyoo_crus_rank ) {

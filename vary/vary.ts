@@ -1,6 +1,7 @@
 namespace $ {
 	
 	type json = null | boolean | number | string | { [ key in string ]: json } | readonly json[]
+	/** Supported primitive types. */
 	export type $hyoo_crus_vary_type =
 	| Uint8Array | bigint | $hyoo_crus_ref
 	| $mol_time_moment | $mol_time_duration | $mol_time_interval
@@ -28,29 +29,44 @@ namespace $ {
 	
 	export type $hyoo_crus_vary_classes = typeof $hyoo_crus_vary_mapping[ keyof typeof $hyoo_crus_vary_mapping ]
 	
+	/** Universal binary package which contains some TIP and bin */
 	export type $hyoo_crus_vary_pack = {
 		tip: keyof typeof $hyoo_crus_vary_tip,
 		bin: Uint8Array,
 	}
 	
+	/** Hint how to interpret Data: nil, bin, bool, int, real, ref, str, time, dur, range, json, jsan, dom, tree */
 	export enum $hyoo_crus_vary_tip {
 		
-		nil   = 0b00000, // 0
-		bin   = 0b00001, // 0
-		bool  = 0b00010, // 1b * 32 * 8
-		int   = 0b00011, // 8B * 4
-		real  = 0b00100, // 8B * 4
-		ref   = 0b00101, // 12B + 6B = 18B
-		
-		str   = 0b10000,
-		time  = 0b10001, // iso8601 moment
-		dur   = 0b10010, // iso8601 duration
-		range = 0b10011, // iso8601 interval
-		json  = 0b10100, // json object
-		jsan  = 0b10101, // json array
-		dom   = 0b10110, // dom tree
-		tree  = 0b10111, // tree
-		
+		/** 0. No Data */
+		nil = 0b00000, // 0
+		/** 0. Binary */
+		bin = 0b00001,
+		/** 1b * 32 * 8. Boolean */
+		bool = 0b00010,
+		/** 8B * 4. int64 */
+		int = 0b00011,
+		/** 8B * 4. float64 */
+		real = 0b00100,
+		/** 12B + 6B = 18B. Reference to Node/Land/Lord. */
+		ref   = 0b00101,
+
+		/** String */
+		str = 0b10000,
+		/** iso8601 moment*/
+		time = 0b10001,
+		/** iso8601 duration */
+		dur = 0b10010,
+		/** iso8601 interval */
+		range = 0b10011,
+		/** Plain Old JS Object. */
+		json = 0b10100, // json object
+		/** Plain Old JS Array. */
+		jsan = 0b10101,
+		/** Document Object Model (xml, xhtml etc). */
+		dom = 0b10110,
+		/** Abstract Syntax Tree. */
+		tree  = 0b10111,
 	}
 	
 	export function $hyoo_crus_vary_switch< Ways extends {

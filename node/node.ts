@@ -5,6 +5,7 @@ namespace $ {
 		
 		static tag = $hyoo_crus_gist_tag[ $hyoo_crus_gist_tag.vals ] as keyof typeof $hyoo_crus_gist_tag
 		
+		/** Standalone part of Realm which syncs separately, have own rights, and contains Units */
 		land() {
 			return null as any as $hyoo_crus_land
 		}
@@ -14,14 +15,17 @@ namespace $ {
 			return ''
 		}
 		
+		/** Whole global graph database which contains Lands */
 		realm() {
 			return this.land()?.realm() ?? null
 		}
 		
+		/** Reference to Land/Lord. */
 		land_ref() {
 			return this.land()?.ref() ?? this.$.$hyoo_crus_auth.current().lord()
 		}
 		
+		/** Reference to Node/Land/Lord. */
 		@ $mol_memo.method
 		ref() {
 			return $hyoo_crus_ref( this.land_ref().description + '_' + this.head() )

@@ -1,9 +1,11 @@
 namespace $ {
 	
+	/** Whole global graph database which contains Lands. */
 	export class $hyoo_crus_realm extends $mol_object {
 		
 		lands = new $mol_wire_dict< $hyoo_crus_ref, $hyoo_crus_land >()
 		
+		/** Realm synchronizer. */
 		@ $mol_mem
 		yard() {
 			return this.$.$hyoo_crus_yard.make({
@@ -11,6 +13,7 @@ namespace $ {
 			})
 		}
 		
+		/** Land where Lord is King. Contains only ain info */
 		home() {
 			return this.Land( this.$.$hyoo_crus_auth.current().lord() ).home()
 		}
@@ -41,6 +44,7 @@ namespace $ {
 			return this.Land( this.king_grab( preset ).lord() )
 		}
 		
+		/** Standalone part of Realm which syncs separately, have own rights, and contains Units */
 		@ $mol_mem_key
 		Land( ref: $hyoo_crus_ref ): $hyoo_crus_land {
 			
@@ -57,6 +61,7 @@ namespace $ {
 			
 		}
 		
+		/** High level representation of stored data. */
 		Node< Node extends typeof $hyoo_crus_node > ( ref: $hyoo_crus_ref, Node: Node ) {
 			const land = this.Land( $hyoo_crus_ref_land( ref ) )
 			return land.Node( Node ).Item( $hyoo_crus_ref_head( ref ) )

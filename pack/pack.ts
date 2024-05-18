@@ -1,5 +1,6 @@
 namespace $ {
 	
+	/** Universal binary package which contains some Faces/Units/Rocks */
 	export type $hyoo_crus_pack_parts = {
 		
 		lands: Record< $hyoo_crus_ref, {
@@ -7,10 +8,12 @@ namespace $ {
 			units: $hyoo_crus_unit[],
 		} >,
 		
+		/** List of BLOB identified by Hash. */
 		rocks: [ Uint8Array, null | Uint8Array ][],
 		
 	}
 	
+	/** Universal binary package which contains some Faces/Units/Rocks */
 	export class $hyoo_crus_pack extends $mol_buffer {
 		
 		toBlob() {

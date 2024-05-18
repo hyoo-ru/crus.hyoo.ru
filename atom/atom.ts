@@ -1,6 +1,7 @@
 
 namespace $ {
 
+	/** Atomic dynamic register */
 	export class $hyoo_crus_atom_vary extends $hyoo_crus_node {
 
 		static tag = $hyoo_crus_gist_tag[ $hyoo_crus_gist_tag.solo ] as keyof typeof $hyoo_crus_gist_tag;
@@ -79,6 +80,7 @@ namespace $ {
 		return Narrow
 	}
 
+	/** Atomic narrowed register factory */
 	export function $hyoo_crus_atom<
 		Parse extends $mol_data_value
 	>( parse: Parse ) {
@@ -87,6 +89,7 @@ namespace $ {
 
 			static parse = parse;
 
+			/** Get/Set value of Node field */
 			val( next?: ReturnType< Parse > ): ReturnType< Parse > | null {
 				
 				if( next !== undefined ) parse( next )
@@ -105,20 +108,33 @@ namespace $ {
 		return Narrow
 	}
 	
+	/** Atomic non empty binary register */
 	export class $hyoo_crus_atom_bin extends $hyoo_crus_atom( $hyoo_crus_vary_cast_bin ) {}
+	/** Atomic boolean register */
 	export class $hyoo_crus_atom_bool extends $hyoo_crus_atom( $hyoo_crus_vary_cast_bool ) {}
+	/** Atomic int64 register */
 	export class $hyoo_crus_atom_int extends $hyoo_crus_atom( $hyoo_crus_vary_cast_int ) {}
+	/** Atomic float64 register */
 	export class $hyoo_crus_atom_real extends $hyoo_crus_atom( $hyoo_crus_vary_cast_real ) {}
+	/** Atomic some reference register */
 	export class $hyoo_crus_atom_ref extends $hyoo_crus_atom( $hyoo_crus_vary_cast_ref ) {}
-	
+
+	/** Atomic string register */
 	export class $hyoo_crus_atom_str extends $hyoo_crus_atom( $hyoo_crus_vary_cast_str ) {}
+	/** Atomic iso8601 time moment register*/
 	export class $hyoo_crus_atom_time extends $hyoo_crus_atom( $hyoo_crus_vary_cast_time ) {}
+	/** Atomic iso8601 time duration register */
 	export class $hyoo_crus_atom_dur extends $hyoo_crus_atom( $hyoo_crus_vary_cast_dur ) {}
+	/** Atomic iso8601 time interval register */
 	export class $hyoo_crus_atom_range extends $hyoo_crus_atom( $hyoo_crus_vary_cast_range ) {}
-	
+
+	/** Atomic plain old js object register */
 	export class $hyoo_crus_atom_json extends $hyoo_crus_atom( $hyoo_crus_vary_cast_json ) {}
+	/** Atomic plain old js array register */
 	export class $hyoo_crus_atom_jsan extends $hyoo_crus_atom( $hyoo_crus_vary_cast_jsan ) {}
+	/** Atomic DOM register */
 	export class $hyoo_crus_atom_dom extends $hyoo_crus_atom( $hyoo_crus_vary_cast_dom ) {}
+	/** Atomic Tree register */
 	export class $hyoo_crus_atom_tree extends $hyoo_crus_atom( $hyoo_crus_vary_cast_tree ) {}
 	
 	export class $hyoo_crus_atom_ref_base extends $hyoo_crus_atom_ref {
@@ -127,6 +143,7 @@ namespace $ {
 		
 	}
 	
+	/** Atomic reference to some Node type register */
 	export function $hyoo_crus_atom_ref_to< const Value extends any >( Value: Value ) {
 
 		class Ref extends $hyoo_crus_atom_ref_base {
@@ -152,6 +169,7 @@ namespace $ {
 				return land
 			}
 			
+			/** Reference atom Node */
 			@ $mol_mem
 			remote(
 				next?: null | $mol_type_result< $mol_type_result< this['Value'] > >
@@ -167,6 +185,7 @@ namespace $ {
 				
 			}
 			
+			/** Reference atom Node. Create if not exists */
 			// @ $mol_mem
 			remote_ensure( preset?: $hyoo_crus_rank_preset ) {
 				this.yoke( preset )

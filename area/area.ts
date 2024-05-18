@@ -1,7 +1,10 @@
 namespace $ {
 	
+	/** Land local Node id namespace: data, meta */
 	export enum $hyoo_crus_area {
+		/** Common user info */
 		data = 0,
+		/** Land meta info */
 		meta = 1,
 	}
 	
