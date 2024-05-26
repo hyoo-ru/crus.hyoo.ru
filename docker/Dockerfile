@@ -19,4 +19,4 @@ COPY ./ hyoo/crus
 RUN npm start hyoo/crus/app/run
 
 WORKDIR ./hyoo/crus/app/run/-
-ENTRYPOINT node node.js port=3000
+ENTRYPOINT node node.js port=9090

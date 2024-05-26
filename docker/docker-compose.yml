@@ -5,7 +5,7 @@ services:
     build:
       context: .
     ports:
-      - "3000:3000"
+      - "9090:9090"
     logging:
     	driver: "local"
     volumes:
