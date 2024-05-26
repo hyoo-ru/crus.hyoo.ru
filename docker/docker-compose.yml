@@ -1,21 +1,15 @@
 version: '3'
+
 services:
-  server:
+  crus:
     build:
       context: .
-      dockerfile: ./Dockerfile
     ports:
       - "3000:3000"
-    networks:
-        network:
-            ipv4_address: 172.28.1.1
-volumes:
-  db:
-    driver: local
+    logging:
+    	driver: "local"
+    volumes:
+      - dotcrus:/mam/hyoo/crus/app/run/-/.crus
 
-networks:
-    network:
-        ipam:
-            driver: default
-            config:
-            - subnet: 172.28.0.0/16
+volumes:
+  dotcrus:
