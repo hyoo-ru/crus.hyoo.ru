@@ -14,7 +14,9 @@ namespace $ {
 			return dir.resolve( `${ id }.crus` )
 		}
 		
+		@ $mol_mem_key
 		land_offsets( land: $hyoo_crus_land ) {
+			$mol_wire_solid() 
 			return new Map< string, number >()
 		}
 		
@@ -33,7 +35,7 @@ namespace $ {
 					if( off === undefined ) {
 						append.push( unit )
 					} else {
-						$node.fs.write( descr, unit, 0, unit.byteLength, off, ()=> {} )
+						$node.fs.writeSync( descr, unit, 0, unit.byteLength, off )
 					}
 				}
 				
@@ -45,9 +47,9 @@ namespace $ {
 				
 				$node.fs.ftruncateSync( descr, size )
 				this.file_sizes.set( land, size )
-							
+				
 				for( const unit of append ) {
-					$node.fs.write( descr, unit, 0, unit.byteLength, offset, ()=> {} )
+					$node.fs.writeSync( descr, unit, 0, unit.byteLength, offset )
 					offsets.set( unit.key(), offset )
 					offset += unit.byteLength
 				}
