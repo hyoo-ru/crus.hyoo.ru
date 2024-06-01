@@ -8264,6 +8264,7 @@ var $;
             return dir.resolve(`${id}.crus`);
         }
         land_offsets(land) {
+            $mol_wire_solid();
             return new Map();
         }
         file_sizes = new Map();
@@ -8278,7 +8279,7 @@ var $;
                         append.push(unit);
                     }
                     else {
-                        $node.fs.write(descr, unit, 0, unit.byteLength, off, () => { });
+                        $node.fs.writeSync(descr, unit, 0, unit.byteLength, off);
                     }
                 }
                 if (!append.length)
@@ -8289,7 +8290,7 @@ var $;
                 $node.fs.ftruncateSync(descr, size);
                 this.file_sizes.set(land, size);
                 for (const unit of append) {
-                    $node.fs.write(descr, unit, 0, unit.byteLength, offset, () => { });
+                    $node.fs.writeSync(descr, unit, 0, unit.byteLength, offset);
                     offsets.set(unit.key(), offset);
                     offset += unit.byteLength;
                 }
@@ -8325,6 +8326,9 @@ var $;
     __decorate([
         $mol_mem_key
     ], $hyoo_crus_yard_node.prototype, "land_file", null);
+    __decorate([
+        $mol_mem_key
+    ], $hyoo_crus_yard_node.prototype, "land_offsets", null);
     __decorate([
         $mol_action
     ], $hyoo_crus_yard_node.prototype, "load", null);
