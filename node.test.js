@@ -8274,11 +8274,11 @@ var $;
                 }
                 if (!append.length)
                     return;
-                let size = this.file_sizes.get(descr) ?? 0;
+                let size = this.file_sizes.get(land) ?? 0;
                 let offset = size;
                 size += append.length * $hyoo_crus_unit.size;
                 $node.fs.ftruncateSync(descr, size);
-                this.file_sizes.set(descr, size);
+                this.file_sizes.set(land, size);
                 for (const unit of append) {
                     $node.fs.write(descr, unit, 0, unit.byteLength, offset, () => { });
                     offsets.set(unit.key(), offset);
@@ -8295,7 +8295,7 @@ var $;
                 const buf = $node.fs.readFileSync(descr);
                 if (!buf.length)
                     return [];
-                this.file_sizes.set(descr, buf.length);
+                this.file_sizes.set(land, buf.length);
                 const pack = $hyoo_crus_pack.from(buf);
                 const { lands, rocks } = pack.parts(land.ref());
                 const units = lands[land.ref()]?.units ?? [];

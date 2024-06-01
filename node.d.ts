@@ -3302,7 +3302,7 @@ declare namespace $ {
         root(): $mol_file;
         land_file(land: $hyoo_crus_land): $mol_file;
         land_offsets(land: $hyoo_crus_land): Map<string, number>;
-        file_sizes: Map<number, number>;
+        file_sizes: Map<$hyoo_crus_land, number>;
         save(land: $hyoo_crus_land, units: readonly $hyoo_crus_unit[]): Promise<void>;
         load(land: $hyoo_crus_land): $hyoo_crus_unit[];
     }
