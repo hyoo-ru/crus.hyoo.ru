@@ -8258,49 +8258,56 @@ var $;
             return new Map();
         }
         file_sizes = new Map();
-        land_descr(land) {
-            return this.land_file(land).open('create', 'read_write');
-        }
         async save(land, units) {
-            const descr = this.land_descr(land);
-            const offsets = this.land_offsets(land);
-            const append = [];
-            for (const unit of units) {
-                const off = offsets.get(unit.key());
-                if (off === undefined) {
-                    append.push(unit);
+            const descr = this.land_file(land).open('create', 'read_write');
+            try {
+                const offsets = this.land_offsets(land);
+                const append = [];
+                for (const unit of units) {
+                    const off = offsets.get(unit.key());
+                    if (off === undefined) {
+                        append.push(unit);
+                    }
+                    else {
+                        $node.fs.write(descr, unit, 0, unit.byteLength, off, () => { });
+                    }
                 }
-                else {
-                    $node.fs.write(descr, unit, 0, unit.byteLength, off, () => { });
+                if (!append.length)
+                    return;
+                let size = this.file_sizes.get(descr) ?? 0;
+                let offset = size;
+                size += append.length * $hyoo_crus_unit.size;
+                $node.fs.ftruncateSync(descr, size);
+                this.file_sizes.set(descr, size);
+                for (const unit of append) {
+                    $node.fs.write(descr, unit, 0, unit.byteLength, offset, () => { });
+                    offsets.set(unit.key(), offset);
+                    offset += unit.byteLength;
                 }
             }
-            if (!append.length)
-                return;
-            let size = this.file_sizes.get(descr) ?? 0;
-            let offset = size;
-            size += append.length * $hyoo_crus_unit.size;
-            $node.fs.ftruncateSync(descr, size);
-            this.file_sizes.set(descr, size);
-            for (const unit of append) {
-                $node.fs.write(descr, unit, 0, unit.byteLength, offset, () => { });
-                offsets.set(unit.key(), offset);
-                offset += unit.byteLength;
+            finally {
+                $node.fs.closeSync(descr);
             }
         }
         load(land) {
-            const descr = this.land_descr(land);
-            const buf = $node.fs.readFileSync(descr);
-            if (!buf.length)
-                return [];
-            this.file_sizes.set(descr, buf.length);
-            const pack = $hyoo_crus_pack.from(buf);
-            const { lands, rocks } = pack.parts(land.ref());
-            const units = lands[land.ref()]?.units ?? [];
-            const offsets = this.land_offsets(land);
-            for (let i = 0; i < units.length; ++i) {
-                offsets.set(units[i].key(), i * $hyoo_crus_unit.size);
+            const descr = this.land_file(land).open('create', 'read_write');
+            try {
+                const buf = $node.fs.readFileSync(descr);
+                if (!buf.length)
+                    return [];
+                this.file_sizes.set(descr, buf.length);
+                const pack = $hyoo_crus_pack.from(buf);
+                const { lands, rocks } = pack.parts(land.ref());
+                const units = lands[land.ref()]?.units ?? [];
+                const offsets = this.land_offsets(land);
+                for (let i = 0; i < units.length; ++i) {
+                    offsets.set(units[i].key(), i * $hyoo_crus_unit.size);
+                }
+                return units;
             }
-            return units;
+            finally {
+                $node.fs.closeSync(descr);
+            }
         }
     }
     __decorate([
@@ -8309,9 +8316,6 @@ var $;
     __decorate([
         $mol_mem_key
     ], $hyoo_crus_yard_node.prototype, "land_file", null);
-    __decorate([
-        $mol_mem_key
-    ], $hyoo_crus_yard_node.prototype, "land_descr", null);
     __decorate([
         $mol_action
     ], $hyoo_crus_yard_node.prototype, "load", null);
