@@ -171,9 +171,6 @@
     "$hyoo_crus_pack",
     "$hyoo_crus_mine",
     "$mol_bus",
-    "$mol_wait_timeout",
-    "$mol_wait",
-    "$mol_promise_promise",
     "$mol_wire_race",
     "$hyoo_crus_yard"
   ],

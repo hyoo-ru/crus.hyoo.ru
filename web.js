@@ -10739,43 +10739,6 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    function $mol_promise() {
-        let done;
-        let fail;
-        const promise = new Promise((d, f) => {
-            done = d;
-            fail = f;
-        });
-        return Object.assign(promise, {
-            done,
-            fail,
-        });
-    }
-    $.$mol_promise = $mol_promise;
-})($ || ($ = {}));
-
-;
-"use strict";
-var $;
-(function ($) {
-    function $mol_wait_timeout_async(timeout) {
-        const promise = $mol_promise();
-        const task = new this.$mol_after_timeout(timeout, () => promise.done());
-        return Object.assign(promise, {
-            destructor: () => task.destructor()
-        });
-    }
-    $.$mol_wait_timeout_async = $mol_wait_timeout_async;
-    function $mol_wait_timeout(timeout) {
-        return this.$mol_wire_sync(this).$mol_wait_timeout_async(timeout);
-    }
-    $.$mol_wait_timeout = $mol_wait_timeout;
-})($ || ($ = {}));
-
-;
-"use strict";
-var $;
-(function ($) {
     function $mol_wire_race(...tasks) {
         const results = tasks.map(task => {
             try {
@@ -11270,7 +11233,7 @@ var $;
             this.sync();
             this.secret();
             const queue = [...this.gists.get(head)?.values() ?? []];
-            const slices = new WeakMap;
+            const slices = new Map;
             for (const gist of queue)
                 slices.set(gist, 0);
             merge: if ($hyoo_crus_area_of(head) === 'data') {
@@ -11454,15 +11417,24 @@ var $;
         }
         sync() {
             this.loading();
-            try {
-                this.saving();
-                this.bus();
-            }
-            catch (error) {
-                $mol_fail_log(error);
-            }
-            this.realm()?.yard().sync_land(this.ref());
+            this.sync_mine();
+            this.sync_yard();
+            this.bus();
             return this;
+        }
+        sync_mine() {
+            const atom = new $mol_wire_atom(`${this}.sync2<>`, () => {
+                this.save();
+            });
+            atom.fresh();
+            return atom;
+        }
+        sync_yard() {
+            const atom = new $mol_wire_atom(`${this}.sync2<>`, () => {
+                this.realm()?.yard().sync_land(this.ref());
+            });
+            atom.fresh();
+            return atom;
         }
         bus() {
             return new this.$.$mol_bus(`$hyoo_crus_land:${this.ref().description}`, $mol_wire_async(bins => {
@@ -11493,7 +11465,6 @@ var $;
                 });
         }
         saving() {
-            this.$.$mol_wait_timeout(250);
             this.save();
         }
         save() {
@@ -11734,6 +11705,12 @@ var $;
     __decorate([
         $mol_mem
     ], $hyoo_crus_land.prototype, "sync", null);
+    __decorate([
+        $mol_mem
+    ], $hyoo_crus_land.prototype, "sync_mine", null);
+    __decorate([
+        $mol_mem
+    ], $hyoo_crus_land.prototype, "sync_yard", null);
     __decorate([
         $mol_mem
     ], $hyoo_crus_land.prototype, "bus", null);
@@ -13870,6 +13847,43 @@ var $;
 	($mol_mem(($.$mol_embed_native.prototype), "uri_change"));
 	($mol_mem(($.$mol_embed_native.prototype), "uri"));
 
+
+;
+"use strict";
+var $;
+(function ($) {
+    function $mol_promise() {
+        let done;
+        let fail;
+        const promise = new Promise((d, f) => {
+            done = d;
+            fail = f;
+        });
+        return Object.assign(promise, {
+            done,
+            fail,
+        });
+    }
+    $.$mol_promise = $mol_promise;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    function $mol_wait_timeout_async(timeout) {
+        const promise = $mol_promise();
+        const task = new this.$mol_after_timeout(timeout, () => promise.done());
+        return Object.assign(promise, {
+            destructor: () => task.destructor()
+        });
+    }
+    $.$mol_wait_timeout_async = $mol_wait_timeout_async;
+    function $mol_wait_timeout(timeout) {
+        return this.$mol_wire_sync(this).$mol_wait_timeout_async(timeout);
+    }
+    $.$mol_wait_timeout = $mol_wait_timeout;
+})($ || ($ = {}));
 
 ;
 "use strict";
