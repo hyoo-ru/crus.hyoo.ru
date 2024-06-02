@@ -410,7 +410,6 @@ namespace $ {
 			this.secret() // early async to prevent async on put
 			
 			const queue = [ ... this.gists.get( head )?.values() ?? [] ]
-			const res = [] as $hyoo_crus_gist[]
 			
 			const slices = new WeakMap
 			for( const gist of queue ) slices.set( gist, 0 )
@@ -442,7 +441,8 @@ namespace $ {
 				
 			}
 			
-			if( queue.length < 2 ) return queue.filter( unit => !unit.nil() )
+			if( queue.length === 0 ) return queue
+			if( queue.length === 1 ) return queue[0].nil() ? [] : queue
 			
 			const compare = ( left: $hyoo_crus_gist, right: $hyoo_crus_gist )=> {
 				return ( slices.get( left ) - slices.get( right ) ) || $hyoo_crus_gist.compare( left, right )
@@ -450,49 +450,61 @@ namespace $ {
 			
 			queue.sort( compare )
 			
-			const locate = ( self: string )=> {
-				
-				for( let i = res.length - 1; i >= 0; --i ) {
-					if( res[i].self() === self ) return i
-				}
-				
-				return -1
+			let entry = {
+				gist: null as null | $hyoo_crus_gist,
+				next: '',
+				prev: '',
 			}
+			
+			const graph = new Map([ [ '', entry  ] ])
 			
 			while( queue.length ) {
 				
-				res.push( queue.pop()! )
+				const last = queue.pop()!
+				graph.get( entry.prev )!.next = last.self()
+				graph.set( last.self(), { gist: last, next: '', prev: entry.prev } )
+				entry.prev = last.self()
 				
 				for( let cursor = queue.length - 1; cursor >= 0; --cursor ) {
 					
 					const kid = queue[cursor]
-					let index = 0
-
-					if( kid.lead() ) {
-						index = locate( kid.lead() ) + 1
-						if( !index ) continue
+					
+					let lead = graph.get( kid.lead() )
+					if( !lead ) continue
+					
+					while( lead.next && ( compare( graph.get( lead.next )!.gist!, kid ) < 0 ) ) lead = graph.get( lead.next )!
+					
+					const exists = graph.get( kid.self() )
+					if( exists ) {
+						
+						if( ( lead.gist?.self() ?? '' )  === exists.prev ) {
+							exists.gist = kid
+							if( cursor === queue.length - 1 ) queue.pop()
+							continue
+						}
+						
+						graph.get( exists.prev )!.next = exists.next
+						graph.get( exists.next )!.prev = exists.prev
+						
 					}
 					
-					while( res[ index ] && ( compare( res[ index ], kid ) < 0 ) ) ++ index
-					
-					const exists = locate( kid.self() )
-					if( index === exists ) {
-						if( cursor === queue.length - 1 ) queue.pop()
-						continue
-					}
-
-					if( exists >= 0 ) {
-						res.splice( exists, 1 )
-						if( exists < index ) -- index
-					}
-					
-					res.splice( index, 0, kid )
+					const follower = graph.get( lead.next )!
+					follower.prev = kid.self()
+					graph.set( kid.self(), { gist: kid, next: lead.next, prev: lead.gist?.self() ?? '' } )
+					lead.next = kid.self()
 					
 					if( cursor === queue.length - 1 ) queue.pop()
 					cursor = queue.length
-
+					
 				}
 				
+			}
+			
+			const res = [] as $hyoo_crus_gist[]
+			
+			while( entry.next ) {
+				entry = graph.get( entry.next )!
+				res.push( entry.gist! )
 			}
 			
 			return res
