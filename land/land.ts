@@ -411,7 +411,7 @@ namespace $ {
 			
 			const queue = [ ... this.gists.get( head )?.values() ?? [] ]
 			
-			const slices = new WeakMap
+			const slices = new Map
 			for( const gist of queue ) slices.set( gist, 0 )
 			
 			merge: if( $hyoo_crus_area_of( head ) === 'data' ) {
@@ -690,19 +690,29 @@ namespace $ {
 		
 		@ $mol_mem
 		sync() {
-			
 			this.loading()
-			
-			try {
-				this.saving()
-				this.bus()
-			} catch( error ) {
-				$mol_fail_log( error )
-			}
-			
-			this.realm()?.yard().sync_land( this.ref() )
-			
+			this.sync_mine()
+			this.sync_yard()
+			this.bus()
 			return this
+		}
+		
+		@ $mol_mem
+		sync_mine() {
+			const atom = new $mol_wire_atom( `${this}.sync2<>`, ()=> {
+				this.save()
+			} )
+			atom.fresh()
+			return atom
+		}
+		
+		@ $mol_mem
+		sync_yard() {
+			const atom = new $mol_wire_atom( `${this}.sync2<>`, ()=> {
+				this.realm()?.yard().sync_land( this.ref() )
+			} )
+			atom.fresh()
+			return atom
 		}
 		
 		@ $mol_mem
@@ -750,7 +760,7 @@ namespace $ {
 		
 		@ $mol_mem
 		saving() {
-			this.$.$mol_wait_timeout(250)
+			// this.$.$mol_wait_timeout(250)
 			this.save()
 		}
 		
