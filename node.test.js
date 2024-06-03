@@ -674,6 +674,7 @@ var $;
         plan() {
             $mol_wire_fiber.planning.add(this);
             $mol_wire_fiber.plan();
+            return this;
         }
         reap() {
             $mol_wire_fiber.reaping.add(this);
@@ -773,6 +774,7 @@ var $;
             }
             this.track_off(bu);
             this.put(result);
+            return this;
         }
         refresh() {
             this.cursor = $mol_wire_cursor.stale;
@@ -7671,18 +7673,10 @@ var $;
             return this;
         }
         sync_mine() {
-            const atom = new $mol_wire_atom(`${this}.sync2<>`, () => {
-                this.save();
-            });
-            atom.fresh();
-            return atom;
+            return new $mol_wire_atom('', () => this.save()).plan();
         }
         sync_yard() {
-            const atom = new $mol_wire_atom(`${this}.sync2<>`, () => {
-                this.realm()?.yard().sync_land(this.ref());
-            });
-            atom.fresh();
-            return atom;
+            return new $mol_wire_atom('', () => this.realm()?.yard().sync_land(this.ref())).plan();
         }
         bus() {
             return new this.$.$mol_bus(`$hyoo_crus_land:${this.ref().description}`, $mol_wire_async(bins => {

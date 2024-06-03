@@ -200,13 +200,13 @@ declare namespace $ {
         get incompleted(): boolean;
         field(): string;
         constructor(id: string, task: (this: Host, ...args: Args) => Result, host?: Host | undefined, args?: Args);
-        plan(): void;
+        plan(): this;
         reap(): void;
         toString(): string;
         toJSON(): string;
         get $(): any;
         emit(quant?: $mol_wire_cursor): void;
-        fresh(): void;
+        fresh(): this | undefined;
         refresh(): void;
         abstract put(next: Result | Error | Promise<Result | Error>): Result | Error | Promise<Result | Error>;
         sync(): Awaited<Result>;
@@ -3229,7 +3229,7 @@ declare namespace $ {
         broadcast(): void;
         sync(): this;
         sync_mine(): $mol_wire_atom<unknown, [], void>;
-        sync_yard(): $mol_wire_atom<unknown, [], void>;
+        sync_yard(): $mol_wire_atom<unknown, [], void | undefined>;
         bus(): $mol_bus<ArrayBuffer[]>;
         loading(): void;
         saving(): void;
