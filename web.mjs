@@ -11425,10 +11425,10 @@ var $;
             return this;
         }
         sync_mine() {
-            return new $mol_wire_atom('', () => this.save()).plan();
+            return new $mol_wire_atom('', () => this.save()).fresh();
         }
         sync_yard() {
-            return new $mol_wire_atom('', () => this.realm()?.yard().sync_land(this.ref())).plan();
+            return new $mol_wire_atom('', () => this.realm()?.yard().sync_land(this.ref())).fresh();
         }
         bus() {
             return new this.$.$mol_bus(`$hyoo_crus_land:${this.ref().description}`, $mol_wire_async(bins => {
@@ -11714,6 +11714,9 @@ var $;
     __decorate([
         $mol_mem
     ], $hyoo_crus_land.prototype, "saving", null);
+    __decorate([
+        $mol_mem
+    ], $hyoo_crus_land.prototype, "save", null);
     __decorate([
         $mol_mem_key
     ], $hyoo_crus_land.prototype, "unit_sign", null);

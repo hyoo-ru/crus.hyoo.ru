@@ -3228,8 +3228,8 @@ declare namespace $ {
         gist_wipe(gist: $hyoo_crus_gist): void;
         broadcast(): void;
         sync(): this;
-        sync_mine(): $mol_wire_atom<unknown, [], void>;
-        sync_yard(): $mol_wire_atom<unknown, [], void | undefined>;
+        sync_mine(): $mol_wire_atom<unknown, [], void> | undefined;
+        sync_yard(): $mol_wire_atom<unknown, [], void | undefined> | undefined;
         bus(): $mol_bus<ArrayBuffer[]>;
         loading(): void;
         saving(): void;
