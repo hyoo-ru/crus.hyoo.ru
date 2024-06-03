@@ -699,12 +699,12 @@ namespace $ {
 		
 		@ $mol_mem
 		sync_mine() {
-			return new $mol_wire_atom( '', ()=> this.save() ).plan()
+			return new $mol_wire_atom( '', ()=> this.save() ).fresh()
 		}
 		
 		@ $mol_mem
 		sync_yard() {
-			return new $mol_wire_atom( '', ()=> this.realm()?.yard().sync_land( this.ref() ) ).plan()
+			return new $mol_wire_atom( '', ()=> this.realm()?.yard().sync_land( this.ref() ) ).fresh()
 		}
 		
 		@ $mol_mem
@@ -756,6 +756,7 @@ namespace $ {
 			this.save()
 		}
 		
+		@ $mol_mem
 		save() {
 			
 			const yard = this.realm()?.yard()
