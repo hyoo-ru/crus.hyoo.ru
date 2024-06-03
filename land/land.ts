@@ -699,20 +699,12 @@ namespace $ {
 		
 		@ $mol_mem
 		sync_mine() {
-			const atom = new $mol_wire_atom( `${this}.sync2<>`, ()=> {
-				this.save()
-			} )
-			atom.fresh()
-			return atom
+			return new $mol_wire_atom( '', ()=> this.save() ).plan()
 		}
 		
 		@ $mol_mem
 		sync_yard() {
-			const atom = new $mol_wire_atom( `${this}.sync2<>`, ()=> {
-				this.realm()?.yard().sync_land( this.ref() )
-			} )
-			atom.fresh()
-			return atom
+			return new $mol_wire_atom( '', ()=> this.realm()?.yard().sync_land( this.ref() ) ).plan()
 		}
 		
 		@ $mol_mem
