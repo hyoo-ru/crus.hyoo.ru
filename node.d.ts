@@ -2479,22 +2479,6 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    class $hyoo_crus_mine extends $mol_object {
-        static hash(blob: Uint8Array): Uint8Array;
-        static rock(hash: Uint8Array, next?: Uint8Array): Uint8Array | null;
-        static save(blob: Uint8Array): Uint8Array;
-    }
-}
-
-declare namespace $ {
-    class $hyoo_crus_mine_node extends $hyoo_crus_mine {
-        static root(): $mol_file;
-        static rock_file(hash: Uint8Array): $mol_file;
-        static rock(hash: Uint8Array, next?: Uint8Array): Uint8Array | null;
-    }
-}
-
-declare namespace $ {
     class $mol_bus<Data> extends $mol_object {
         readonly name: string;
         readonly handle: (data: Data) => void;
@@ -3256,12 +3240,9 @@ declare namespace $ {
 declare namespace $ {
     class $hyoo_crus_yard extends $mol_object {
         realm(): $hyoo_crus_realm;
-        persisted: WeakSet<$hyoo_crus_unit>;
-        neonatals: $mol_wire_set<symbol & {
+        units_neonatals: $mol_wire_set<symbol & {
             $hyoo_crus_ref: symbol;
         }>;
-        load(land: $hyoo_crus_land): readonly $hyoo_crus_unit[];
-        save(land: $hyoo_crus_land, units: readonly $hyoo_crus_unit[]): Promise<void>;
         static masters: string[];
         master_cursor(next?: number): number;
         master_current(): string;
@@ -3283,14 +3264,30 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    class $hyoo_crus_yard_node extends $.$hyoo_crus_yard {
-        root(): $mol_file;
-        land_file(land: $hyoo_crus_land): $mol_file;
-        land_offsets(land: $hyoo_crus_land): Map<string, number>;
-        file_sizes: Map<$hyoo_crus_land, number>;
-        save(land: $hyoo_crus_land, units: readonly $hyoo_crus_unit[]): Promise<void>;
-        load(land: $hyoo_crus_land): $hyoo_crus_unit[];
+    class $hyoo_crus_mine extends $mol_object {
+        static hash(blob: Uint8Array): Uint8Array;
+        static rock(hash: Uint8Array, next?: Uint8Array): Uint8Array | null;
+        static rock_save(blob: Uint8Array): Uint8Array;
+        static units_persisted: WeakSet<$hyoo_crus_unit>;
+        static units_load(land: $hyoo_crus_land): readonly $hyoo_crus_unit[];
+        static units_save(land: $hyoo_crus_land, units: readonly $hyoo_crus_unit[]): Promise<void>;
     }
+}
+
+declare namespace $ {
+    class $hyoo_crus_mine_fs extends $hyoo_crus_mine {
+        static root(): $mol_file;
+        static rock_file(hash: Uint8Array): $mol_file;
+        static rock(hash: Uint8Array, next?: Uint8Array): Uint8Array | null;
+        static units_file(land: $hyoo_crus_land): $mol_file;
+        static units_offsets(land: $hyoo_crus_land): Map<string, number>;
+        static units_sizes: Map<$hyoo_crus_land, number>;
+        static units_save(land: $hyoo_crus_land, units: readonly $hyoo_crus_unit[]): Promise<void>;
+        static units_load(land: $hyoo_crus_land): $hyoo_crus_unit[];
+    }
+}
+
+declare namespace $ {
 }
 
 declare namespace $ {

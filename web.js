@@ -10417,304 +10417,6 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    class $hyoo_crus_mine extends $mol_object {
-        static hash(blob) {
-            return $mol_crypto_hash(blob);
-        }
-        static rock(hash, next) {
-            $mol_wire_solid();
-            return next ?? null;
-        }
-        static save(blob) {
-            const hash = this.hash(blob);
-            this.rock(hash, blob);
-            return hash;
-        }
-    }
-    __decorate([
-        $mol_mem_key
-    ], $hyoo_crus_mine, "hash", null);
-    __decorate([
-        $mol_mem_key
-    ], $hyoo_crus_mine, "rock", null);
-    __decorate([
-        $mol_action
-    ], $hyoo_crus_mine, "save", null);
-    $.$hyoo_crus_mine = $hyoo_crus_mine;
-})($ || ($ = {}));
-
-;
-"use strict";
-var $;
-(function ($) {
-    function $mol_db_response(request) {
-        return new Promise((done, fail) => {
-            request.onerror = () => fail(new Error(request.error.message));
-            request.onsuccess = () => done(request.result);
-        });
-    }
-    $.$mol_db_response = $mol_db_response;
-})($ || ($ = {}));
-
-;
-"use strict";
-var $;
-(function ($) {
-    class $mol_db_store {
-        native;
-        constructor(native) {
-            this.native = native;
-        }
-        get name() {
-            return this.native.name;
-        }
-        get path() {
-            return this.native.keyPath;
-        }
-        get incremental() {
-            return this.native.autoIncrement;
-        }
-        get indexes() {
-            return new Proxy({}, {
-                ownKeys: () => [...this.native.indexNames],
-                has: (_, name) => this.native.indexNames.contains(name),
-                get: (_, name) => new $mol_db_index(this.native.index(name))
-            });
-        }
-        index_make(name, path = [], unique = false, multiEntry = false) {
-            return this.native.createIndex(name, path, { multiEntry, unique });
-        }
-        index_drop(name) {
-            this.native.deleteIndex(name);
-            return this;
-        }
-        get transaction() {
-            return new $mol_db_transaction(this.native.transaction);
-        }
-        get db() {
-            return this.transaction.db;
-        }
-        clear() {
-            return $mol_db_response(this.native.clear());
-        }
-        count(keys) {
-            return $mol_db_response(this.native.count(keys));
-        }
-        put(doc, key) {
-            return $mol_db_response(this.native.put(doc, key));
-        }
-        get(key) {
-            return $mol_db_response(this.native.get(key));
-        }
-        select(key, count) {
-            return $mol_db_response(this.native.getAll(key, count));
-        }
-        drop(keys) {
-            return $mol_db_response(this.native.delete(keys));
-        }
-    }
-    $.$mol_db_store = $mol_db_store;
-})($ || ($ = {}));
-
-;
-"use strict";
-
-;
-"use strict";
-var $;
-(function ($) {
-    class $mol_db_index {
-        native;
-        constructor(native) {
-            this.native = native;
-        }
-        get name() {
-            return this.native.name;
-        }
-        get paths() {
-            return this.native.keyPath;
-        }
-        get unique() {
-            return this.native.unique;
-        }
-        get multiple() {
-            return this.native.multiEntry;
-        }
-        get store() {
-            return new $mol_db_store(this.native.objectStore);
-        }
-        get transaction() {
-            return this.store.transaction;
-        }
-        get db() {
-            return this.store.db;
-        }
-        count(keys) {
-            return $mol_db_response(this.native.count(keys));
-        }
-        get(key) {
-            return $mol_db_response(this.native.get(key));
-        }
-        select(key, count) {
-            return $mol_db_response(this.native.getAll(key, count));
-        }
-    }
-    $.$mol_db_index = $mol_db_index;
-})($ || ($ = {}));
-
-;
-"use strict";
-
-;
-"use strict";
-var $;
-(function ($) {
-    async function $mol_db(name, ...migrations) {
-        const request = this.$mol_dom_context.indexedDB.open(name, migrations.length ? migrations.length + 1 : undefined);
-        request.onupgradeneeded = event => {
-            migrations.splice(0, event.oldVersion - 1);
-            const transaction = new $mol_db_transaction(request.transaction);
-            for (const migrate of migrations)
-                migrate(transaction);
-        };
-        const db = await $mol_db_response(request);
-        return new $mol_db_database(db);
-    }
-    $.$mol_db = $mol_db;
-})($ || ($ = {}));
-
-;
-"use strict";
-
-;
-"use strict";
-var $;
-(function ($) {
-    class $mol_db_database {
-        native;
-        constructor(native) {
-            this.native = native;
-        }
-        get name() {
-            return this.native.name;
-        }
-        get version() {
-            return this.native.version;
-        }
-        get stores() {
-            return [...this.native.objectStoreNames];
-        }
-        read(...names) {
-            return new $mol_db_transaction(this.native.transaction(names, 'readonly', { durability: 'relaxed' })).stores;
-        }
-        change(...names) {
-            return new $mol_db_transaction(this.native.transaction(names, 'readwrite', { durability: 'relaxed' }));
-        }
-        kill() {
-            this.native.close();
-            const request = $mol_dom_context.indexedDB.deleteDatabase(this.name);
-            request.onblocked = console.warn;
-            return $mol_db_response(request);
-        }
-        destructor() {
-            this.native.close();
-        }
-    }
-    $.$mol_db_database = $mol_db_database;
-})($ || ($ = {}));
-
-;
-"use strict";
-var $;
-(function ($) {
-    class $mol_db_transaction {
-        native;
-        constructor(native) {
-            this.native = native;
-        }
-        get stores() {
-            return new Proxy({}, {
-                ownKeys: () => [...this.native.objectStoreNames],
-                has: (_, name) => this.native.objectStoreNames.contains(name),
-                get: (_, name, proxy) => (name in proxy)
-                    ? new $mol_db_store(this.native.objectStore(name))
-                    : undefined,
-            });
-        }
-        store_make(name) {
-            return this.native.db.createObjectStore(name, { autoIncrement: true });
-        }
-        store_drop(name) {
-            this.native.db.deleteObjectStore(name);
-            return this;
-        }
-        abort() {
-            if (this.native.error)
-                return;
-            this.native.abort();
-        }
-        commit() {
-            this.native.commit?.();
-            return new Promise((done, fail) => {
-                this.native.onerror = () => fail(new Error(this.native.error.message));
-                this.native.oncomplete = () => done();
-            });
-        }
-        get db() {
-            return new $mol_db_database(this.native.db);
-        }
-    }
-    $.$mol_db_transaction = $mol_db_transaction;
-})($ || ($ = {}));
-
-;
-"use strict";
-var $;
-(function ($) {
-    class $hyoo_crus_mine_web extends $hyoo_crus_mine {
-        static rock(hash, next) {
-            $mol_wire_solid();
-            const prev = $mol_mem_cached(() => this.rock(hash));
-            if (prev)
-                return prev;
-            if (next) {
-                this.change().then(Rock => Rock.put(next.buffer, [hash]));
-                return next;
-            }
-            else {
-                const buf = $mol_wire_sync(this.read()).get([hash]);
-                return buf ? new Uint8Array(buf) : null;
-            }
-        }
-        static read() {
-            const db = $mol_wire_sync(this).db();
-            return $mol_wire_sync(db).read('Rock').Rock;
-        }
-        static async change() {
-            const db = await this.db();
-            return db.change('Rock').stores.Rock;
-        }
-        static async db() {
-            return await this.$.$mol_db('$hyoo_crus_mine', mig => mig.store_make('Rock'));
-        }
-    }
-    __decorate([
-        $mol_mem_key
-    ], $hyoo_crus_mine_web, "rock", null);
-    __decorate([
-        $mol_action
-    ], $hyoo_crus_mine_web, "read", null);
-    __decorate([
-        $mol_memo.method
-    ], $hyoo_crus_mine_web, "db", null);
-    $.$hyoo_crus_mine_web = $hyoo_crus_mine_web;
-    $.$hyoo_crus_mine = $hyoo_crus_mine_web;
-})($ || ($ = {}));
-
-;
-"use strict";
-var $;
-(function ($) {
     class $mol_bus extends $mol_object {
         name;
         handle;
@@ -11415,7 +11117,7 @@ var $;
             this.post(seat ? units[seat - 1].self() : '', gist.head(), gist.self(), null, 'term');
         }
         broadcast() {
-            this.realm()?.yard().neonatals.add(this.ref());
+            this.realm()?.yard().units_neonatals.add(this.ref());
         }
         sync() {
             this.loading();
@@ -11432,10 +11134,9 @@ var $;
         }
         bus() {
             return new this.$.$mol_bus(`$hyoo_crus_land:${this.ref().description}`, $mol_wire_async(bins => {
-                const yard = this.realm().yard();
                 this.apply_unit_trust(bins.map(bin => {
                     const unit = new $hyoo_crus_unit(bin).narrow();
-                    yard.persisted.add(unit);
+                    this.$.$hyoo_crus_mine.units_persisted.add(unit);
                     return unit;
                 }));
             }));
@@ -11445,7 +11146,7 @@ var $;
             const realm = this.realm();
             if (!realm)
                 return;
-            const units = realm.yard().load(this) ?? [];
+            const units = realm.$.$hyoo_crus_mine.units_load(this) ?? [];
             $mol_wire_sync(this.$).$mol_log3_rise({
                 place: this,
                 message: 'Load Unit',
@@ -11462,8 +11163,8 @@ var $;
             this.save();
         }
         save() {
-            const yard = this.realm()?.yard();
-            if (!yard)
+            const mine = this.$.$hyoo_crus_mine;
+            if (!mine)
                 return;
             const encoding = [];
             const signing = [];
@@ -11471,13 +11172,13 @@ var $;
             for (const pass of this.passes.values()) {
                 if (!pass.signed())
                     signing.push(pass);
-                if (!yard.persisted.has(pass))
+                if (!mine.units_persisted.has(pass))
                     persisting.push(pass);
             }
             for (const gift of this.gifts.values()) {
                 if (!gift.signed())
                     signing.push(gift);
-                if (!yard.persisted.has(gift))
+                if (!mine.units_persisted.has(gift))
                     persisting.push(gift);
             }
             for (const kids of this.gists.values()) {
@@ -11486,14 +11187,14 @@ var $;
                         encoding.push(gist);
                         signing.push(gist);
                     }
-                    if (!yard.persisted.has(gist))
+                    if (!mine.units_persisted.has(gist))
                         persisting.push(gist);
                 }
             }
             $mol_wire_race(...encoding.map(unit => () => this.gist_encode(unit)));
             $mol_wire_race(...signing.map(unit => () => this.unit_sign(unit)));
             if (persisting.length)
-                $mol_wire_sync(yard).save(this, persisting);
+                $mol_wire_sync(mine).units_save(this, persisting);
             this.bus().send(persisting.map(unit => unit.buffer));
         }
         unit_sign(unit) {
@@ -11517,7 +11218,7 @@ var $;
             if (secret)
                 bin = new Uint8Array($mol_wire_sync(secret).encrypt(bin, gist.salt()));
             if (bin.byteLength > 32)
-                gist.hash(this.$.$hyoo_crus_mine.save(bin), gist.tip(), gist.tag());
+                gist.hash(this.$.$hyoo_crus_mine.rock_save(bin), gist.tip(), gist.tag());
             else
                 gist.data(bin, gist.tip(), gist.tag());
             return gist;
@@ -11935,12 +11636,7 @@ var $;
         realm() {
             return null;
         }
-        persisted = new WeakSet();
-        neonatals = new $mol_wire_set();
-        load(land) {
-            return [];
-        }
-        async save(land, units) { }
+        units_neonatals = new $mol_wire_set();
         static masters = [];
         master_cursor(next = 0) {
             return next;
@@ -12014,14 +11710,14 @@ var $;
         slaves = new $mol_wire_set();
         sync() {
             for (const port of this.ports()) {
-                for (const land of this.neonatals) {
+                for (const land of this.units_neonatals) {
                     this.sync_port_land([port, land]);
                 }
                 for (const land of this.port_lands(port)) {
                     this.sync_port_land([port, land]);
                 }
             }
-            this.neonatals.clear();
+            this.units_neonatals.clear();
         }
         ports() {
             try {
@@ -12158,12 +11854,300 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    class $hyoo_crus_yard_web extends $.$hyoo_crus_yard {
-        static masters = [
-            'https://crus.onrender.com/',
-            'https://crus.hyoo.ru/',
-        ];
-        async save(land, units) {
+    $.$hyoo_crus_yard.masters = [
+        'https://crus.onrender.com/',
+        'https://crus.hyoo.ru/',
+    ];
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    class $hyoo_crus_mine extends $mol_object {
+        static hash(blob) {
+            return $mol_crypto_hash(blob);
+        }
+        static rock(hash, next) {
+            $mol_wire_solid();
+            return next ?? null;
+        }
+        static rock_save(blob) {
+            const hash = this.hash(blob);
+            this.rock(hash, blob);
+            return hash;
+        }
+        static units_persisted = new WeakSet();
+        static units_load(land) {
+            return [];
+        }
+        static async units_save(land, units) {
+        }
+    }
+    __decorate([
+        $mol_mem_key
+    ], $hyoo_crus_mine, "hash", null);
+    __decorate([
+        $mol_mem_key
+    ], $hyoo_crus_mine, "rock", null);
+    __decorate([
+        $mol_action
+    ], $hyoo_crus_mine, "rock_save", null);
+    $.$hyoo_crus_mine = $hyoo_crus_mine;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    function $mol_db_response(request) {
+        return new Promise((done, fail) => {
+            request.onerror = () => fail(new Error(request.error.message));
+            request.onsuccess = () => done(request.result);
+        });
+    }
+    $.$mol_db_response = $mol_db_response;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_db_store {
+        native;
+        constructor(native) {
+            this.native = native;
+        }
+        get name() {
+            return this.native.name;
+        }
+        get path() {
+            return this.native.keyPath;
+        }
+        get incremental() {
+            return this.native.autoIncrement;
+        }
+        get indexes() {
+            return new Proxy({}, {
+                ownKeys: () => [...this.native.indexNames],
+                has: (_, name) => this.native.indexNames.contains(name),
+                get: (_, name) => new $mol_db_index(this.native.index(name))
+            });
+        }
+        index_make(name, path = [], unique = false, multiEntry = false) {
+            return this.native.createIndex(name, path, { multiEntry, unique });
+        }
+        index_drop(name) {
+            this.native.deleteIndex(name);
+            return this;
+        }
+        get transaction() {
+            return new $mol_db_transaction(this.native.transaction);
+        }
+        get db() {
+            return this.transaction.db;
+        }
+        clear() {
+            return $mol_db_response(this.native.clear());
+        }
+        count(keys) {
+            return $mol_db_response(this.native.count(keys));
+        }
+        put(doc, key) {
+            return $mol_db_response(this.native.put(doc, key));
+        }
+        get(key) {
+            return $mol_db_response(this.native.get(key));
+        }
+        select(key, count) {
+            return $mol_db_response(this.native.getAll(key, count));
+        }
+        drop(keys) {
+            return $mol_db_response(this.native.delete(keys));
+        }
+    }
+    $.$mol_db_store = $mol_db_store;
+})($ || ($ = {}));
+
+;
+"use strict";
+
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_db_index {
+        native;
+        constructor(native) {
+            this.native = native;
+        }
+        get name() {
+            return this.native.name;
+        }
+        get paths() {
+            return this.native.keyPath;
+        }
+        get unique() {
+            return this.native.unique;
+        }
+        get multiple() {
+            return this.native.multiEntry;
+        }
+        get store() {
+            return new $mol_db_store(this.native.objectStore);
+        }
+        get transaction() {
+            return this.store.transaction;
+        }
+        get db() {
+            return this.store.db;
+        }
+        count(keys) {
+            return $mol_db_response(this.native.count(keys));
+        }
+        get(key) {
+            return $mol_db_response(this.native.get(key));
+        }
+        select(key, count) {
+            return $mol_db_response(this.native.getAll(key, count));
+        }
+    }
+    $.$mol_db_index = $mol_db_index;
+})($ || ($ = {}));
+
+;
+"use strict";
+
+;
+"use strict";
+var $;
+(function ($) {
+    async function $mol_db(name, ...migrations) {
+        const request = this.$mol_dom_context.indexedDB.open(name, migrations.length ? migrations.length + 1 : undefined);
+        request.onupgradeneeded = event => {
+            migrations.splice(0, event.oldVersion - 1);
+            const transaction = new $mol_db_transaction(request.transaction);
+            for (const migrate of migrations)
+                migrate(transaction);
+        };
+        const db = await $mol_db_response(request);
+        return new $mol_db_database(db);
+    }
+    $.$mol_db = $mol_db;
+})($ || ($ = {}));
+
+;
+"use strict";
+
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_db_database {
+        native;
+        constructor(native) {
+            this.native = native;
+        }
+        get name() {
+            return this.native.name;
+        }
+        get version() {
+            return this.native.version;
+        }
+        get stores() {
+            return [...this.native.objectStoreNames];
+        }
+        read(...names) {
+            return new $mol_db_transaction(this.native.transaction(names, 'readonly', { durability: 'relaxed' })).stores;
+        }
+        change(...names) {
+            return new $mol_db_transaction(this.native.transaction(names, 'readwrite', { durability: 'relaxed' }));
+        }
+        kill() {
+            this.native.close();
+            const request = $mol_dom_context.indexedDB.deleteDatabase(this.name);
+            request.onblocked = console.warn;
+            return $mol_db_response(request);
+        }
+        destructor() {
+            this.native.close();
+        }
+    }
+    $.$mol_db_database = $mol_db_database;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_db_transaction {
+        native;
+        constructor(native) {
+            this.native = native;
+        }
+        get stores() {
+            return new Proxy({}, {
+                ownKeys: () => [...this.native.objectStoreNames],
+                has: (_, name) => this.native.objectStoreNames.contains(name),
+                get: (_, name, proxy) => (name in proxy)
+                    ? new $mol_db_store(this.native.objectStore(name))
+                    : undefined,
+            });
+        }
+        store_make(name) {
+            return this.native.db.createObjectStore(name, { autoIncrement: true });
+        }
+        store_drop(name) {
+            this.native.db.deleteObjectStore(name);
+            return this;
+        }
+        abort() {
+            if (this.native.error)
+                return;
+            this.native.abort();
+        }
+        commit() {
+            this.native.commit?.();
+            return new Promise((done, fail) => {
+                this.native.onerror = () => fail(new Error(this.native.error.message));
+                this.native.oncomplete = () => done();
+            });
+        }
+        get db() {
+            return new $mol_db_database(this.native.db);
+        }
+    }
+    $.$mol_db_transaction = $mol_db_transaction;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    class $hyoo_crus_mine_idb extends $hyoo_crus_mine {
+        static rock(hash, next) {
+            $mol_wire_solid();
+            const prev = $mol_mem_cached(() => this.rock(hash));
+            if (prev)
+                return prev;
+            if (next) {
+                this.rock_change().then(Rock => Rock.put(next.buffer, [hash]));
+                return next;
+            }
+            else {
+                const buf = $mol_wire_sync(this.rock_read()).get([hash]);
+                return buf ? new Uint8Array(buf) : null;
+            }
+        }
+        static rock_read() {
+            const db = $mol_wire_sync(this).db();
+            return $mol_wire_sync(db).read('Rock').Rock;
+        }
+        static async rock_change() {
+            const db = await this.db();
+            return db.change('Rock').stores.Rock;
+        }
+        static async units_save(land, units) {
             const db = await this.db();
             const change = db.change('Pass', 'Gift', 'Gist');
             const { Pass, Gift, Gist } = change.stores;
@@ -12173,44 +12157,57 @@ var $;
                     gift: gift => Gift.put(gift.buffer, [land.ref().description, gift.dest().description || 'AAAAAAAAAAAAAAAA']),
                     gist: gist => Gist.put(gist.buffer, [land.ref().description, gist.head() || 'AAAAAAAA', gist.self() || 'AAAAAAAA']),
                 });
-                this.persisted.add(unit);
+                this.units_persisted.add(unit);
             }
             await change.commit();
         }
-        load(land) {
+        static units_load(land) {
             const land_ref = land.ref().description;
             const key = $mol_wire_sync(IDBKeyRange).bound([land_ref], [land_ref + '\uFFFF']);
-            const [pass, gift, gist] = $mol_wire_sync(this).query(key);
+            const [pass, gift, gist] = $mol_wire_sync(this).units_query(key);
             const units = [
                 ...pass.map(bin => new $hyoo_crus_pass(bin)),
                 ...gift.map(bin => new $hyoo_crus_gift(bin)),
                 ...gist.map(bin => new $hyoo_crus_gist(bin)),
             ];
             for (const unit of units)
-                this.persisted.add(unit);
+                this.units_persisted.add(unit);
             return units;
         }
-        async query(key) {
+        static async units_query(key) {
             const db = await this.db();
             const { Pass, Gift, Gist } = db.read('Pass', 'Gift', 'Gist');
             return Promise.all([Pass.select(key), Gift.select(key), Gist.select(key)]);
         }
-        async db() {
-            return await this.$.$mol_db('$hyoo_crus_yard', mig => {
-                mig.store_make('Pass');
+        static async db() {
+            return await this.$.$mol_db('$hyoo_crus', mig => {
+                mig.store_make('Rock'),
+                    mig.store_make('Pass');
                 mig.store_make('Gift');
                 mig.store_make('Gist');
             });
         }
     }
     __decorate([
+        $mol_mem_key
+    ], $hyoo_crus_mine_idb, "rock", null);
+    __decorate([
         $mol_action
-    ], $hyoo_crus_yard_web.prototype, "load", null);
+    ], $hyoo_crus_mine_idb, "rock_read", null);
+    __decorate([
+        $mol_action
+    ], $hyoo_crus_mine_idb, "units_load", null);
     __decorate([
         $mol_memo.method
-    ], $hyoo_crus_yard_web.prototype, "db", null);
-    $.$hyoo_crus_yard_web = $hyoo_crus_yard_web;
-    $.$hyoo_crus_yard = $hyoo_crus_yard_web;
+    ], $hyoo_crus_mine_idb, "db", null);
+    $.$hyoo_crus_mine_idb = $hyoo_crus_mine_idb;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    $.$hyoo_crus_mine = $hyoo_crus_mine_idb;
 })($ || ($ = {}));
 
 ;
@@ -12289,7 +12286,7 @@ var $;
             for (const [hash, rock] of rocks) {
                 if (!rock)
                     continue;
-                this.$.$hyoo_crus_mine.save(rock);
+                this.$.$hyoo_crus_mine.rock_save(rock);
             }
         }
     }
