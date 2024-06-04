@@ -8,14 +8,7 @@ namespace $ {
 			return null! as $hyoo_crus_realm
 		}
 		
-		persisted = new WeakSet< $hyoo_crus_unit >()
-		neonatals = new $mol_wire_set< $hyoo_crus_ref >()
-		
-		load( land: $hyoo_crus_land ) {
-			return [] as readonly $hyoo_crus_unit[]
-		}
-		
-		async save( land: $hyoo_crus_land, units: readonly $hyoo_crus_unit[] ) {}
+		units_neonatals = new $mol_wire_set< $hyoo_crus_ref >()
 		
 		static masters = [] as string[]
 		
@@ -122,7 +115,7 @@ namespace $ {
 		sync() {
 			for( const port of this.ports() ) {
 				
-				for( const land of this.neonatals ) {
+				for( const land of this.units_neonatals ) {
 					this.sync_port_land([ port, land ])
 				}
 				
@@ -131,7 +124,7 @@ namespace $ {
 				}
 				
 			}
-			this.neonatals.clear()
+			this.units_neonatals.clear()
 		}
 		
 		@ $mol_mem

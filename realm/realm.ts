@@ -86,7 +86,7 @@ namespace $ {
 			
 			for( const [ hash, rock ] of rocks ) {
 				if( !rock ) continue
-				this.$.$hyoo_crus_mine.save( rock )
+				this.$.$hyoo_crus_mine.rock_save( rock )
 			}
 
 		}
