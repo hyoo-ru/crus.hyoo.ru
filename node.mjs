@@ -8272,7 +8272,7 @@ var $;
             await db.connect();
             await db.query(`
 				CREATE TABLE IF NOT EXISTS Rock (
-					hash bytea NOT NULL
+					hash bytea NOT NULL,
 					rock bytea NOT NULL
 				);
 			`);
