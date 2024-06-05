@@ -1,7 +1,7 @@
 namespace $ {
 	export class $hyoo_crus_mine_fs extends $hyoo_crus_mine {
 		
-		@ $mol_mem
+		@ $mol_memo.method
 		static root() {
 			
 			const root = $mol_file.relative( '.crus' )
@@ -75,6 +75,7 @@ namespace $ {
 				for( const unit of append ) {
 					$node.fs.writeSync( descr, unit, 0, unit.byteLength, offset )
 					offsets.set( unit.key(), offset )
+					this.units_persisted.add( unit )
 					offset += unit.byteLength
 				}
 			
@@ -102,6 +103,7 @@ namespace $ {
 				
 				for( let i = 0; i < units.length; ++i ) {
 					offsets.set( units[i].key(), i * $hyoo_crus_unit.size )
+					this.units_persisted.add( units[i] )
 				}
 				
 				return units

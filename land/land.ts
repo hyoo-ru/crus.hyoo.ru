@@ -760,6 +760,8 @@ namespace $ {
 			const mine = this.$.$hyoo_crus_mine
 			if( !mine ) return
 			
+			this.loading()
+			
 			const encoding = [] as $hyoo_crus_gist[]
 			const signing = [] as $hyoo_crus_unit[]
 			const persisting = [] as $hyoo_crus_unit[]
@@ -787,8 +789,18 @@ namespace $ {
 			$mol_wire_race( ... encoding.map( unit => ()=> this.gist_encode( unit ) ) )
 			$mol_wire_race( ... signing.map( unit => ()=> this.unit_sign( unit ) ) )
 			
-			if( persisting.length )	mine.units( this, persisting )
-			this.bus().send( persisting.map( unit => unit.buffer ) )
+			if( persisting.length )	{
+				
+				mine.units( this, persisting )
+				this.bus().send( persisting.map( unit => unit.buffer ) )
+			
+				$mol_wire_sync( this.$ ).$mol_log3_done({
+					place: this,
+					message: 'Saved Units',
+					units: persisting.length,
+				})
+
+			}
 			
 		}
 		
