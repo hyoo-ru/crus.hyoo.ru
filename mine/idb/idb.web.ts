@@ -31,20 +31,14 @@ namespace $ {
 		
 		static async units_save( land: $hyoo_crus_land, units: readonly $hyoo_crus_unit[] ) {
 			
+			const land_ref = land.ref().description!
 			const db = await this.db()
-			const change = db.change( 'Pass', 'Gift', 'Gist' )
-			const { Pass, Gift, Gist } = change.stores
+			const change = db.change( 'Land' )
+			const { Land } = change.stores
 			
 			for( const unit of units ) {
-				
-				unit.choose({
-					pass: pass => Pass.put( pass.buffer, [ land.ref().description!, pass.peer() || 'AAAAAAAA' ] ),
-					gift: gift => Gift.put( gift.buffer, [ land.ref().description!, gift.dest().description || 'AAAAAAAAAAAAAAAA' ] ),
-					gist: gist => Gist.put( gist.buffer, [ land.ref().description!, gist.head() || 'AAAAAAAA', gist.self() || 'AAAAAAAA' ] ),
-				})
-				
+				Land.put( unit.buffer, [ land_ref, unit.key() ] )
 				this.units_persisted.add( unit )
-				
 			}
 			
 			await change.commit()
@@ -53,26 +47,16 @@ namespace $ {
 		
 		static async units_load( land: $hyoo_crus_land ) {
 			
+			const db = await this.db()
+			const { Land } = db.read( 'Land' )
 			const land_ref = land.ref().description
-			const key = IDBKeyRange.bound( [ land_ref ], [ land_ref + '\uFFFF' ] )
+			const land_key = IDBKeyRange.bound( [ land_ref ], [ land_ref + '\uFFFF' ] )
+			const res = await Land.select( land_key )
 			
-			const [ pass, gift, gist ] = await this.units_query( key )
-			
-			const units = [
-				... pass.map( bin => new $hyoo_crus_pass( bin ) ),
-				... gift.map( bin => new $hyoo_crus_gift( bin ) ),
-				... gist.map( bin => new $hyoo_crus_gist( bin ) ),
-			]
-			
+			const units = res.map( bin => new $hyoo_crus_unit( bin ).narrow() )
 			for( const unit of units ) this.units_persisted.add( unit )
 			
 			return units
-		}
-		
-		static async units_query( key: IDBKeyRange ) {
-			const db = await this.db()
-			const { Pass, Gift, Gist } = db.read( 'Pass', 'Gift', 'Gist' )
-			return Promise.all([ Pass.select( key ), Gift.select( key ), Gist.select( key ) ])
 		}
 		
 		@ $mol_memo.method
@@ -84,28 +68,14 @@ namespace $ {
 					Doc: ArrayBuffer
 					Indexes: {}
 				}
-				Pass: {
-					Key: [ land: string, peer: string ]
-					Doc: ArrayBuffer
-					Indexes: {}
-				}
-				Gift: {
-					Key: [ land: string, dest: string ]
-					Doc: ArrayBuffer
-					Indexes: {}
-				}
-				Gist: {
-					Key: [ land: string, head: string, self: string ]
+				Land: {
+					Key: [ land: string, path: string ]
 					Doc: ArrayBuffer
 					Indexes: {}
 				}
 			}>( '$hyoo_crus',
-				mig => {
-					mig.store_make( 'Rock' ),
-					mig.store_make( 'Pass' )
-					mig.store_make( 'Gift' )
-					mig.store_make( 'Gist' )
-				},
+				mig => mig.store_make( 'Rock' ),
+				mig => mig.store_make( 'Land' ),
 			)
 			
 		}

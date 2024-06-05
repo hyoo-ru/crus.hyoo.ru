@@ -21,9 +21,7 @@ namespace $ {
 			
 			$mol_wire_sync( this ).db()?.query(
 				`
-					INSERT INTO Pass VALUES(
-						$1::bytea, $2::bytea
-					)
+					INSERT INTO Pass VALUES( $1::bytea, $2::bytea )
 					ON CONFLICT( hash ) DO NOTHING
 				`,
 				[ hash, blob ]
@@ -53,38 +51,13 @@ namespace $ {
 			const tasks = units.map( unit => {
 				const ref = land.ref().description
 				const buf = Buffer.from( unit.buffer, unit.byteOffset, unit.byteLength )
-				return unit.choose({
-					pass: unit => db.query(
-						`
-							INSERT INTO Pass VALUES(
-								$1::varchar(17), $2::varchar(8), $3::bytea
-							)
-							ON CONFLICT( land, peer ) DO UPDATE
-							SET unit = $3::bytea;
-						`,
-						[ ref, unit.peer, buf ]
-					),
-					gift: unit => db.query(
-						`
-							INSERT INTO Gift VALUES(
-								$1::varchar(17), $2::varchar(17), $3::bytea
-							)
-							ON CONFLICT( land, dest ) DO UPDATE
-							SET unit = $3::bytea;
-						`,
-						[ ref, unit.dest, buf ]
-					),
-					gist: unit => db.query(
-						`
-							INSERT INTO Gist VALUES(
-								$1::varchar(17), $2::varchar(8), $2::varchar(8), $3::bytea
-							)
-							ON CONFLICT( land, head, self ) DO UPDATE
-							SET unit = $3::bytea;
-						`,
-						[ ref, unit.head, unit.self, buf ]
-					),
-				})
+				return db.query(
+					`
+						INSERT INTO Land VALUES( $1::varchar(17), $2::varchar(17), $3::bytea )
+						ON CONFLICT( land, path ) DO UPDATE SET unit = $3::bytea;
+					`,
+					[ ref, unit.key, buf ]
+				)
 			} )
 			
 			await Promise.all( tasks )
@@ -97,13 +70,7 @@ namespace $ {
 			if( !db ) return []
 
 			const res = await db.query<{ unit: Uint8Array }>(
-				`
-					SELECT unit FROM Pass WHERE land = $1::varchar(17)
-						UNION
-					SELECT unit FROM Gift WHERE land = $1::varchar(17)
-						UNION
-					SELECT unit FROM Gist WHERE land = $1::varchar(17)
-				`,
+				`SELECT unit FROM Land WHERE land = $1::varchar(17)`,
 				[ land.ref().description ]
 			)
 			
@@ -141,26 +108,9 @@ namespace $ {
 			`)
 			
 			await db.query(`
-				CREATE TABLE IF NOT EXISTS Pass (
+				CREATE TABLE IF NOT EXISTS Land (
 					land varchar(17) NOT NULL,
-					peer varchar(8) NOT NULL,
-					unit bytea NOT NULL
-				);
-			`)
-			
-			await db.query(`
-				CREATE TABLE IF NOT EXISTS Gift (
-					land varchar(17) NOT NULL,
-					dest varchar(17) NOT NULL,
-					uint bytea NOT NULL
-				);
-			`)
-			
-			await db.query(`
-				CREATE TABLE IF NOT EXISTS Gist (
-					land varchar(17) NOT NULL,
-					head varchar(8) NOT NULL,
-					self varchar(8) NOT NULL,
+					path varchar(17) NOT NULL,
 					uint bytea NOT NULL
 				);
 			`)
@@ -170,15 +120,7 @@ namespace $ {
 			`)
 			
 			await db.query(`
-				CREATE UNIQUE INDEX IF NOT EXISTS Pass ON Pass ( land, peer );
-			`)
-			
-			await db.query(`
-				CREATE UNIQUE INDEX IF NOT EXISTS Gift ON Gift ( land, dest );
-			`)
-			
-			await db.query(`
-				CREATE UNIQUE INDEX IF NOT EXISTS Gist ON Gist ( land, head, self );
+				CREATE UNIQUE INDEX IF NOT EXISTS Land ON Land ( land, path );
 			`)
 			
 			this.$.$mol_log3_rise({

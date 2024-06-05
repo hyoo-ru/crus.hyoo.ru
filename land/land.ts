@@ -392,7 +392,7 @@ namespace $ {
 		}
 		
 		@ $mol_action
-		fork( preset = $hyoo_crus_rank_public ) {
+		fork( preset = { '': $hyoo_crus_rank.get } ) {
 			const realm = this.realm()
 			
 			if( !realm ) $mol_fail( new Error( 'Realm is required to fork' ) )

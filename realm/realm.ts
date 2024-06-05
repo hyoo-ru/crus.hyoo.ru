@@ -19,7 +19,7 @@ namespace $ {
 		}
 		
 		@ $mol_action
-		king_grab( preset = $hyoo_crus_rank_public ) {
+		king_grab( preset = { '': $hyoo_crus_rank.get } ) {
 			
 			const king = this.$.$hyoo_crus_auth.grab()
 			const colony = ( $mol_wire_sync( $hyoo_crus_land ) as typeof $hyoo_crus_land ).make({})
@@ -40,7 +40,7 @@ namespace $ {
 		}
 		
 		@ $mol_action
-		land_grab( preset = $hyoo_crus_rank_public ) {
+		land_grab( preset = { '': $hyoo_crus_rank.get } ) {
 			return this.Land( this.king_grab( preset ).lord() )
 		}
 		
