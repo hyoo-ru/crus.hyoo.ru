@@ -11146,7 +11146,7 @@ var $;
             const realm = this.realm();
             if (!realm)
                 return;
-            const units = realm.$.$hyoo_crus_mine.units_load(this) ?? [];
+            const units = realm.$.$hyoo_crus_mine.units(this) ?? [];
             $mol_wire_sync(this.$).$mol_log3_rise({
                 place: this,
                 message: 'Load Unit',
@@ -11194,7 +11194,7 @@ var $;
             $mol_wire_race(...encoding.map(unit => () => this.gist_encode(unit)));
             $mol_wire_race(...signing.map(unit => () => this.unit_sign(unit)));
             if (persisting.length)
-                $mol_wire_sync(mine).units_save(this, persisting);
+                mine.units(this, persisting);
             this.bus().send(persisting.map(unit => unit.buffer));
         }
         unit_sign(unit) {
@@ -11878,7 +11878,13 @@ var $;
             return hash;
         }
         static units_persisted = new WeakSet();
-        static units_load(land) {
+        static units(land, next) {
+            if (next)
+                return $mol_wire_sync(this).units_save(land, next), next;
+            else
+                return $mol_wire_sync(this).units_load(land);
+        }
+        static async units_load(land) {
             return [];
         }
         static async units_save(land, units) {
@@ -12161,10 +12167,10 @@ var $;
             }
             await change.commit();
         }
-        static units_load(land) {
+        static async units_load(land) {
             const land_ref = land.ref().description;
-            const key = $mol_wire_sync(IDBKeyRange).bound([land_ref], [land_ref + '\uFFFF']);
-            const [pass, gift, gist] = $mol_wire_sync(this).units_query(key);
+            const key = IDBKeyRange.bound([land_ref], [land_ref + '\uFFFF']);
+            const [pass, gift, gist] = await this.units_query(key);
             const units = [
                 ...pass.map(bin => new $hyoo_crus_pass(bin)),
                 ...gift.map(bin => new $hyoo_crus_gift(bin)),
@@ -12194,9 +12200,6 @@ var $;
     __decorate([
         $mol_action
     ], $hyoo_crus_mine_idb, "rock_read", null);
-    __decorate([
-        $mol_action
-    ], $hyoo_crus_mine_idb, "units_load", null);
     __decorate([
         $mol_memo.method
     ], $hyoo_crus_mine_idb, "db", null);

@@ -7627,7 +7627,7 @@ var $;
             const realm = this.realm();
             if (!realm)
                 return;
-            const units = realm.$.$hyoo_crus_mine.units_load(this) ?? [];
+            const units = realm.$.$hyoo_crus_mine.units(this) ?? [];
             $mol_wire_sync(this.$).$mol_log3_rise({
                 place: this,
                 message: 'Load Unit',
@@ -7675,7 +7675,7 @@ var $;
             $mol_wire_race(...encoding.map(unit => () => this.gist_encode(unit)));
             $mol_wire_race(...signing.map(unit => () => this.unit_sign(unit)));
             if (persisting.length)
-                $mol_wire_sync(mine).units_save(this, persisting);
+                mine.units(this, persisting);
             this.bus().send(persisting.map(unit => unit.buffer));
         }
         unit_sign(unit) {
@@ -8169,7 +8169,13 @@ var $;
             return hash;
         }
         static units_persisted = new WeakSet();
-        static units_load(land) {
+        static units(land, next) {
+            if (next)
+                return $mol_wire_sync(this).units_save(land, next), next;
+            else
+                return $mol_wire_sync(this).units_load(land);
+        }
+        static async units_load(land) {
             return [];
         }
         static async units_save(land, units) {
@@ -8250,7 +8256,7 @@ var $;
                 $node.fs.closeSync(descr);
             }
         }
-        static units_load(land) {
+        static async units_load(land) {
             const descr = this.units_file(land).open('create', 'read_write');
             try {
                 const buf = $node.fs.readFileSync(descr);
@@ -12135,7 +12141,10 @@ var $;
             static rock(hash, next) {
                 return next ?? null;
             }
-            static units_load(land) {
+            static units(land, next) {
+                return next ?? [];
+            }
+            static async units_load(land) {
                 return [];
             }
             static async units_save(land, units) { }
@@ -12143,6 +12152,9 @@ var $;
         __decorate([
             $mol_mem_key
         ], $hyoo_crus_mine_mock, "rock", null);
+        __decorate([
+            $mol_mem_key
+        ], $hyoo_crus_mine_mock, "units", null);
         $.$hyoo_crus_mine = $hyoo_crus_mine_mock;
     });
 })($ || ($ = {}));

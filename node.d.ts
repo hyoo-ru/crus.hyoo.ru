@@ -3269,7 +3269,8 @@ declare namespace $ {
         static rock(hash: Uint8Array, next?: Uint8Array): Uint8Array | null;
         static rock_save(blob: Uint8Array): Uint8Array;
         static units_persisted: WeakSet<$hyoo_crus_unit>;
-        static units_load(land: $hyoo_crus_land): readonly $hyoo_crus_unit[];
+        static units(land: $hyoo_crus_land, next?: readonly $hyoo_crus_unit[]): readonly $hyoo_crus_unit[];
+        static units_load(land: $hyoo_crus_land): Promise<readonly $hyoo_crus_unit[]>;
         static units_save(land: $hyoo_crus_land, units: readonly $hyoo_crus_unit[]): Promise<void>;
     }
 }
@@ -3283,7 +3284,7 @@ declare namespace $ {
         static units_offsets(land: $hyoo_crus_land): Map<string, number>;
         static units_sizes: Map<$hyoo_crus_land, number>;
         static units_save(land: $hyoo_crus_land, units: readonly $hyoo_crus_unit[]): Promise<void>;
-        static units_load(land: $hyoo_crus_land): $hyoo_crus_unit[];
+        static units_load(land: $hyoo_crus_land): Promise<$hyoo_crus_unit[]>;
     }
 }
 

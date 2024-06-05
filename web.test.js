@@ -4575,7 +4575,10 @@ var $;
             static rock(hash, next) {
                 return next ?? null;
             }
-            static units_load(land) {
+            static units(land, next) {
+                return next ?? [];
+            }
+            static async units_load(land) {
                 return [];
             }
             static async units_save(land, units) { }
@@ -4583,6 +4586,9 @@ var $;
         __decorate([
             $mol_mem_key
         ], $hyoo_crus_mine_mock, "rock", null);
+        __decorate([
+            $mol_mem_key
+        ], $hyoo_crus_mine_mock, "units", null);
         $.$hyoo_crus_mine = $hyoo_crus_mine_mock;
     });
 })($ || ($ = {}));
