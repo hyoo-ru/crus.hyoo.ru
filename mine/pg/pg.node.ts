@@ -2,8 +2,13 @@ namespace $ {
 	export class $hyoo_crus_mine_pg extends $hyoo_crus_mine {
 		
 		@ $mol_memo.method
+		static urn() {
+			return $mol_state_arg.value( 'db' ) || process.env.DATABASE_URL || ''
+		}
+		
+		@ $mol_memo.method
 		static url() {
-			return new URL( $mol_state_arg.value( 'db' )! || process.env.DATABASE_URL! )
+			return new URL( this.urn() )
 		}
 		
 		@ $mol_mem_key
@@ -90,11 +95,11 @@ namespace $ {
 		@ $mol_memo.method
 		static async db() {
 			
-			const url = this.url()
-			if( !url ) return null
+			const urn = this.urn()
+			if( !urn ) return null
 			
 			const db = new $node.pg.Pool({
-				connectionString: url.toString(),
+				connectionString: urn,
 				ssl: { rejectUnauthorized: false },
 			})
 			
