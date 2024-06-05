@@ -27,7 +27,7 @@ namespace $ {
 			$mol_wire_sync( this ).db()?.query(
 				`
 					INSERT INTO Rock VALUES( $1::bytea, $2::bytea )
-					ON CONFLICT( hash ) DO NOTHING
+					ON CONFLICT DO NOTHING
 				`,
 				[ hash, blob ]
 			)
