@@ -116,7 +116,7 @@ namespace $ {
 				CREATE TABLE IF NOT EXISTS Land (
 					land varchar(17) NOT NULL,
 					path varchar(17) NOT NULL,
-					uint bytea NOT NULL
+					unit bytea NOT NULL
 				);
 			`)
 			
