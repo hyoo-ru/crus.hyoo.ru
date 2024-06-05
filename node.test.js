@@ -8215,7 +8215,7 @@ var $;
             const hash = this.hash(blob);
             this.rock(hash, blob);
             $mol_wire_sync(this).db()?.query(`
-					INSERT INTO Pass VALUES( $1::bytea, $2::bytea )
+					INSERT INTO Rock VALUES( $1::bytea, $2::bytea )
 					ON CONFLICT( hash ) DO NOTHING
 				`, [hash, blob]);
             return hash;
