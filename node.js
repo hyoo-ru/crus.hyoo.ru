@@ -8224,7 +8224,8 @@ var $;
             const hash = this.hash(blob);
             this.rock(hash, blob);
             $mol_wire_sync(this).db()?.query(`
-					INSERT INTO Rock VALUES( $1::bytea, $2::bytea )
+					INSERT INTO Rock( hash, rock )
+					VALUES( $1::bytea, $2::bytea )
 					ON CONFLICT DO NOTHING
 				`, [hash, blob]);
             return hash;
@@ -8244,7 +8245,8 @@ var $;
                 const ref = land.ref().description;
                 const buf = Buffer.from(unit.buffer, unit.byteOffset, unit.byteLength);
                 return db.query(`
-						INSERT INTO Land VALUES( $1::varchar(17), $2::varchar(17), $3::bytea )
+						INSERT INTO Land( land, path, unit )
+						VALUES( $1::varchar(17), $2::varchar(17), $3::bytea )
 						ON CONFLICT( land, path ) DO UPDATE SET unit = $3::bytea;
 					`, [ref, unit.key, buf]);
             });
