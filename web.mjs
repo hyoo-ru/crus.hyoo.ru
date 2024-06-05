@@ -10925,7 +10925,7 @@ var $;
                 },
             });
         }
-        fork(preset = $hyoo_crus_rank_public) {
+        fork(preset = { '': $hyoo_crus_rank.get }) {
             const realm = this.realm();
             if (!realm)
                 $mol_fail(new Error('Realm is required to fork'));
@@ -11127,7 +11127,7 @@ var $;
             return this;
         }
         sync_mine() {
-            return new $mol_wire_atom('', () => this.save()).fresh();
+            return new $mol_wire_atom('', () => this.saving()).fresh();
         }
         sync_yard() {
             return new $mol_wire_atom('', () => this.realm()?.yard().sync_land(this.ref())).fresh();
@@ -11160,12 +11160,10 @@ var $;
                 });
         }
         saving() {
-            this.save();
-        }
-        save() {
             const mine = this.$.$hyoo_crus_mine;
             if (!mine)
                 return;
+            this.loading();
             const encoding = [];
             const signing = [];
             const persisting = [];
@@ -11193,9 +11191,15 @@ var $;
             }
             $mol_wire_race(...encoding.map(unit => () => this.gist_encode(unit)));
             $mol_wire_race(...signing.map(unit => () => this.unit_sign(unit)));
-            if (persisting.length)
+            if (persisting.length) {
                 mine.units(this, persisting);
-            this.bus().send(persisting.map(unit => unit.buffer));
+                this.bus().send(persisting.map(unit => unit.buffer));
+                $mol_wire_sync(this.$).$mol_log3_done({
+                    place: this,
+                    message: 'Saved Units',
+                    units: persisting.length,
+                });
+            }
         }
         unit_sign(unit) {
             if (unit.signed())
@@ -11415,9 +11419,6 @@ var $;
     __decorate([
         $mol_mem
     ], $hyoo_crus_land.prototype, "saving", null);
-    __decorate([
-        $mol_mem
-    ], $hyoo_crus_land.prototype, "save", null);
     __decorate([
         $mol_mem_key
     ], $hyoo_crus_land.prototype, "unit_sign", null);
@@ -12154,44 +12155,29 @@ var $;
             return db.change('Rock').stores.Rock;
         }
         static async units_save(land, units) {
+            const land_ref = land.ref().description;
             const db = await this.db();
-            const change = db.change('Pass', 'Gift', 'Gist');
-            const { Pass, Gift, Gist } = change.stores;
+            const change = db.change('Land');
+            const { Land } = change.stores;
             for (const unit of units) {
-                unit.choose({
-                    pass: pass => Pass.put(pass.buffer, [land.ref().description, pass.peer() || 'AAAAAAAA']),
-                    gift: gift => Gift.put(gift.buffer, [land.ref().description, gift.dest().description || 'AAAAAAAAAAAAAAAA']),
-                    gist: gist => Gist.put(gist.buffer, [land.ref().description, gist.head() || 'AAAAAAAA', gist.self() || 'AAAAAAAA']),
-                });
+                Land.put(unit.buffer, [land_ref, unit.key()]);
                 this.units_persisted.add(unit);
             }
             await change.commit();
         }
         static async units_load(land) {
+            const db = await this.db();
+            const { Land } = db.read('Land');
             const land_ref = land.ref().description;
-            const key = IDBKeyRange.bound([land_ref], [land_ref + '\uFFFF']);
-            const [pass, gift, gist] = await this.units_query(key);
-            const units = [
-                ...pass.map(bin => new $hyoo_crus_pass(bin)),
-                ...gift.map(bin => new $hyoo_crus_gift(bin)),
-                ...gist.map(bin => new $hyoo_crus_gist(bin)),
-            ];
+            const land_key = IDBKeyRange.bound([land_ref], [land_ref + '\uFFFF']);
+            const res = await Land.select(land_key);
+            const units = res.map(bin => new $hyoo_crus_unit(bin).narrow());
             for (const unit of units)
                 this.units_persisted.add(unit);
             return units;
         }
-        static async units_query(key) {
-            const db = await this.db();
-            const { Pass, Gift, Gist } = db.read('Pass', 'Gift', 'Gist');
-            return Promise.all([Pass.select(key), Gift.select(key), Gist.select(key)]);
-        }
         static async db() {
-            return await this.$.$mol_db('$hyoo_crus', mig => {
-                mig.store_make('Rock'),
-                    mig.store_make('Pass');
-                mig.store_make('Gift');
-                mig.store_make('Gist');
-            });
+            return await this.$.$mol_db('$hyoo_crus', mig => mig.store_make('Rock'), mig => mig.store_make('Land'));
         }
     }
     __decorate([
@@ -12243,7 +12229,7 @@ var $;
         home() {
             return this.Land(this.$.$hyoo_crus_auth.current().lord()).home();
         }
-        king_grab(preset = $hyoo_crus_rank_public) {
+        king_grab(preset = { '': $hyoo_crus_rank.get }) {
             const king = this.$.$hyoo_crus_auth.grab();
             const colony = $mol_wire_sync($hyoo_crus_land).make({});
             colony.auth = $mol_const(king);
@@ -12257,7 +12243,7 @@ var $;
             this.Land(colony.ref()).apply_unit_trust(colony.delta_unit());
             return king;
         }
-        land_grab(preset = $hyoo_crus_rank_public) {
+        land_grab(preset = { '': $hyoo_crus_rank.get }) {
             return this.Land(this.king_grab(preset).lord());
         }
         Land(ref) {
@@ -17791,10 +17777,10 @@ var $;
                     return null;
                 }
                 const preset = {
-                    private: $hyoo_crus_rank_private,
-                    public: $hyoo_crus_rank_public,
-                    lobby: $hyoo_crus_rank_lobby,
-                    orgy: $hyoo_crus_rank_orgy,
+                    private: {},
+                    public: { '': $hyoo_crus_rank.get },
+                    lobby: { '': $hyoo_crus_rank.add },
+                    orgy: { '': $hyoo_crus_rank.mod },
                 }[rights];
                 if (preset) {
                     const remote = node.remote_ensure(preset);
@@ -18220,7 +18206,7 @@ var $;
     (function ($$) {
         class $hyoo_crus_flex_form extends $.$hyoo_crus_flex_form {
             kind() {
-                const land = this.node().realm().home().hall_by($hyoo_crus_flex_domain, $hyoo_crus_rank_public).land();
+                const land = this.node().realm().home().hall_by($hyoo_crus_flex_domain, { '': $hyoo_crus_rank.get }).land();
                 const domain = $hyoo_crus_flex_domain.ensure(land);
                 return this.node().cast($hyoo_crus_flex_thing).Kind()?.remote() ?? domain.Kinds()?.remote_list()[0] ?? null;
             }
@@ -19199,10 +19185,10 @@ var $;
         class $hyoo_crus_land_grab extends $.$hyoo_crus_land_grab {
             value(rights) {
                 const preset = {
-                    private: $hyoo_crus_rank_private,
-                    public: $hyoo_crus_rank_public,
-                    lobby: $hyoo_crus_rank_lobby,
-                    orgy: $hyoo_crus_rank_orgy,
+                    private: {},
+                    public: { '': $hyoo_crus_rank.get },
+                    lobby: { '': $hyoo_crus_rank.add },
+                    orgy: { '': $hyoo_crus_rank.mod },
                 }[rights];
                 if (preset)
                     this.grab(preset);

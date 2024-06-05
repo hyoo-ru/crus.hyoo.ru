@@ -1228,7 +1228,7 @@ declare namespace $ {
     class $hyoo_crus_unit extends $mol_buffer {
         static size: 128;
         constructor(buffer?: ArrayBuffer, byteOffset?: number, byteLength?: number);
-        kind(): "pass" | "gist" | "gift";
+        kind(): "gist" | "pass" | "gift";
         choose<Res>(ways: {
             pass: (unit: $hyoo_crus_pass) => Res;
             gift: (unit: $hyoo_crus_gift) => Res;
@@ -3203,7 +3203,9 @@ declare namespace $ {
         apply_land(land: $hyoo_crus_land): string[];
         recheck(): void;
         check_unit(unit: $hyoo_crus_unit): string;
-        fork(preset?: $hyoo_crus_rank_preset): $hyoo_crus_land;
+        fork(preset?: {
+            '': $hyoo_crus_rank;
+        }): $hyoo_crus_land;
         gists_ordered(head: string): $hyoo_crus_gist[];
         join(): $hyoo_crus_pass;
         give(dest: $hyoo_crus_auth | null, rank: $hyoo_crus_rank): $hyoo_crus_gift;
@@ -3217,7 +3219,6 @@ declare namespace $ {
         bus(): $mol_bus<ArrayBuffer[]>;
         loading(): void;
         saving(): void;
-        save(): void;
         unit_sign(unit: $hyoo_crus_unit): void;
         gist_encode(gist: $hyoo_crus_gist): $hyoo_crus_gist;
         gist_decode(gist: $hyoo_crus_gist): $hyoo_crus_vary_type;
@@ -3272,6 +3273,19 @@ declare namespace $ {
         static units(land: $hyoo_crus_land, next?: readonly $hyoo_crus_unit[]): readonly $hyoo_crus_unit[];
         static units_load(land: $hyoo_crus_land): Promise<readonly $hyoo_crus_unit[]>;
         static units_save(land: $hyoo_crus_land, units: readonly $hyoo_crus_unit[]): Promise<void>;
+    }
+}
+
+declare namespace $ {
+    class $hyoo_crus_mine_pg extends $hyoo_crus_mine {
+        static urn(): string | null;
+        static url(): URL;
+        static rock(hash: Uint8Array, next?: Uint8Array): Uint8Array | null;
+        static rock_save(blob: Uint8Array): Uint8Array;
+        static rock_load(hash: Uint8Array): Promise<Uint8Array | null>;
+        static units_save(land: $hyoo_crus_land, units: readonly $hyoo_crus_unit[]): Promise<void>;
+        static units_load(land: $hyoo_crus_land): Promise<($hyoo_crus_gist | $hyoo_crus_pass | $hyoo_crus_gift)[]>;
+        static db(): Promise<import("pg").Pool | null>;
     }
 }
 

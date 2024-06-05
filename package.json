@@ -170,6 +170,7 @@
     "$hyoo_crus_fund",
     "$hyoo_crus_pack",
     "$hyoo_crus_mine",
+    "$hyoo_crus_mine_pg",
     "$hyoo_crus_mine_fs",
     "$mol_bus",
     "$mol_wire_race",
@@ -177,6 +178,7 @@
   ],
   "dependencies": {
     "jsdom": "*",
-    "chokidar": "*"
+    "chokidar": "*",
+    "pg": "*"
   }
 }
