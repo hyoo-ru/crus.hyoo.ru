@@ -3,12 +3,12 @@ namespace $ {
 		
 		@ $mol_memo.method
 		static urn() {
-			return $mol_state_arg.value( 'db' ) || process.env.DATABASE_URL || ''
+			return $mol_state_arg.value( 'db' )
 		}
 		
 		@ $mol_memo.method
 		static url() {
-			return new URL( this.urn() )
+			return new URL( this.urn()! )
 		}
 		
 		@ $mol_mem_key
@@ -130,7 +130,10 @@ namespace $ {
 			
 			this.$.$mol_log3_rise({
 				place: this,
-				message: 'Base Ready',
+				message: 'Data Base Ready',
+				type: this.url().protocol,
+				origin: this.url().origin,
+				database: this.url().pathname,
 			})
 			
 			return db

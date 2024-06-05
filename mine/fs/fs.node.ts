@@ -3,7 +3,16 @@ namespace $ {
 		
 		@ $mol_mem
 		static root() {
-			return $mol_file.relative( '.crus' )
+			
+			const root = $mol_file.relative( '.crus' )
+			
+			this.$.$mol_log3_rise({
+				place: this,
+				message: 'File Storage Ready',
+				path: root.path()
+			})
+			
+			return root
 		}
 		
 		@ $mol_mem_key
