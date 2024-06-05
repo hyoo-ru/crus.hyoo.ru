@@ -7,7 +7,12 @@ namespace $ {
 				return next ?? null
 			}
 			
-			static units_load( land: $hyoo_crus_land ) {
+			@ $mol_mem_key
+			static units( land: $hyoo_crus_land, next?: readonly $hyoo_crus_unit[] ) {
+				return next ?? []
+			}
+				
+			static async units_load( land: $hyoo_crus_land ) {
 				return []
 			}
 			

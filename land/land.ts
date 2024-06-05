@@ -731,7 +731,7 @@ namespace $ {
 			const realm = this.realm()
 			if( !realm ) return
 			
-			const units = realm.$.$hyoo_crus_mine.units_load( this ) ?? []
+			const units = realm.$.$hyoo_crus_mine.units( this ) ?? []
 			
 			$mol_wire_sync( this.$ ).$mol_log3_rise({
 				place: this,
@@ -787,7 +787,7 @@ namespace $ {
 			$mol_wire_race( ... encoding.map( unit => ()=> this.gist_encode( unit ) ) )
 			$mol_wire_race( ... signing.map( unit => ()=> this.unit_sign( unit ) ) )
 			
-			if( persisting.length )	$mol_wire_sync( mine ).units_save( this, persisting )
+			if( persisting.length )	mine.units( this, persisting )
 			this.bus().send( persisting.map( unit => unit.buffer ) )
 			
 		}

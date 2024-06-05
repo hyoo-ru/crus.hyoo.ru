@@ -51,13 +51,12 @@ namespace $ {
 			
 		}
 		
-		@ $mol_action
-		static units_load( land: $hyoo_crus_land ) {
+		static async units_load( land: $hyoo_crus_land ) {
 			
 			const land_ref = land.ref().description
-			const key = $mol_wire_sync( IDBKeyRange ).bound( [ land_ref ], [ land_ref + '\uFFFF' ] )
+			const key = IDBKeyRange.bound( [ land_ref ], [ land_ref + '\uFFFF' ] )
 			
-			const [ pass, gift, gist ] = $mol_wire_sync( this ).units_query( key )
+			const [ pass, gift, gist ] = await this.units_query( key )
 			
 			const units = [
 				... pass.map( bin => new $hyoo_crus_pass( bin ) ),

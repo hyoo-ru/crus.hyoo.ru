@@ -76,7 +76,7 @@ namespace $ {
 		}
 		
 		@ $mol_action
-		static units_load( land: $hyoo_crus_land ) {
+		static async units_load( land: $hyoo_crus_land ) {
 			
 			const descr = this.units_file( land ).open( 'create', 'read_write' )
 			try {
