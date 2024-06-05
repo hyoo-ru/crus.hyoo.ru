@@ -699,7 +699,7 @@ namespace $ {
 		
 		@ $mol_mem
 		sync_mine() {
-			return new $mol_wire_atom( '', ()=> this.save() ).fresh()
+			return new $mol_wire_atom( '', ()=> this.saving() ).fresh()
 		}
 		
 		@ $mol_mem
@@ -750,12 +750,6 @@ namespace $ {
 		
 		@ $mol_mem
 		saving() {
-			// this.$.$mol_wait_timeout(250)
-			this.save()
-		}
-		
-		@ $mol_mem
-		save() {
 			
 			const mine = this.$.$hyoo_crus_mine
 			if( !mine ) return
