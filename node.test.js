@@ -8217,7 +8217,7 @@ var $;
             $mol_wire_sync(this).db()?.query(`
 					INSERT INTO Rock( hash, rock )
 					VALUES( $1::bytea, $2::bytea )
-					ON CONFLICT DO NOTHING
+					ON CONFLICT( hash ) DO NOTHING
 				`, [hash, blob]);
             return hash;
         }
@@ -8266,21 +8266,17 @@ var $;
             await db.query(`
 				CREATE TABLE IF NOT EXISTS Rock (
 					hash bytea NOT NULL,
-					rock bytea NOT NULL
+					rock bytea NOT NULL,
+					primary key( hash )
 				);
 			`);
             await db.query(`
 				CREATE TABLE IF NOT EXISTS Land (
 					land varchar(17) NOT NULL,
 					path varchar(17) NOT NULL,
-					unit bytea NOT NULL
+					unit bytea NOT NULL,
+					primary key( land, path )
 				);
-			`);
-            await db.query(`
-				CREATE UNIQUE INDEX IF NOT EXISTS Rock ON Rock ( hash );
-			`);
-            await db.query(`
-				CREATE UNIQUE INDEX IF NOT EXISTS Land ON Land ( land, path );
 			`);
             this.$.$mol_log3_rise({
                 place: this,
