@@ -8282,8 +8282,8 @@ var $;
                 place: this,
                 message: 'Data Base Ready',
                 type: this.url().protocol,
-                origin: this.url().origin,
-                database: this.url().pathname,
+                host: this.url().host,
+                name: this.url().pathname,
             });
             return db;
         }
