@@ -739,7 +739,7 @@ namespace $ {
 				units: units.length,
 			})
 			
-			const { pass, gift, gist } = $mol_array_groups( units, unit => unit.kind() )
+			const { pass = [], gift = [], gist = [] } = $mol_array_groups( units, unit => unit.kind() )
 			
 			const errors = this.apply_unit_trust( [ ... pass!, ... gift!, ... gist! ], !!'skip_check' ).filter( Boolean )
 			
