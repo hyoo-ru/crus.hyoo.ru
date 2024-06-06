@@ -731,7 +731,7 @@ namespace $ {
 			const realm = this.realm()
 			if( !realm ) return
 			
-			const units = realm.$.$hyoo_crus_mine.units( this ) ?? []
+			let units = realm.$.$hyoo_crus_mine.units( this ) ?? []
 			
 			$mol_wire_sync( this.$ ).$mol_log3_rise({
 				place: this,
@@ -739,7 +739,9 @@ namespace $ {
 				units: units.length,
 			})
 			
-			const errors = this.apply_unit_trust( units, !!'skip_check' ).filter( Boolean )
+			const { pass, gift, gist } = $mol_array_groups( units, unit => unit.kind() )
+			
+			const errors = this.apply_unit_trust( [ ... pass!, ... gift!, ... gist! ], !!'skip_check' ).filter( Boolean )
 			
 			if( errors.length ) this.$.$mol_log3_fail({
 				place: this,
