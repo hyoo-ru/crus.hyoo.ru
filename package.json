@@ -173,6 +173,8 @@
     "$hyoo_crus_mine_pg",
     "$hyoo_crus_mine_fs",
     "$mol_bus",
+    "$mol_array_groups",
+    "$mol_array",
     "$mol_wire_race",
     "$hyoo_crus_yard"
   ],

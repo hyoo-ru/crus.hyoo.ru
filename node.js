@@ -6933,6 +6933,21 @@ var $;
 "use strict";
 var $;
 (function ($) {
+    function $mol_array_groups(all, group) {
+        const res = {};
+        for (const item of all) {
+            const list = (res[group(item)] ||= []);
+            list.push(item);
+        }
+        return res;
+    }
+    $.$mol_array_groups = $mol_array_groups;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
     function $mol_wire_race(...tasks) {
         const results = tasks.map(task => {
             try {
@@ -7636,13 +7651,14 @@ var $;
             const realm = this.realm();
             if (!realm)
                 return;
-            const units = realm.$.$hyoo_crus_mine.units(this) ?? [];
+            let units = realm.$.$hyoo_crus_mine.units(this) ?? [];
             $mol_wire_sync(this.$).$mol_log3_rise({
                 place: this,
                 message: 'Load Unit',
                 units: units.length,
             });
-            const errors = this.apply_unit_trust(units, !!'skip_check').filter(Boolean);
+            const { pass = [], gift = [], gist = [] } = $mol_array_groups(units, unit => unit.kind());
+            const errors = this.apply_unit_trust([...pass, ...gift, ...gist], !!'skip_check').filter(Boolean);
             if (errors.length)
                 this.$.$mol_log3_fail({
                     place: this,
