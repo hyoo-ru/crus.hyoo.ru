@@ -758,7 +758,7 @@ namespace $ {
 			}
 			
 			graph.acyclic( ()=> 1 )
-			units = [ ... graph.sorted ].map( key => dict.get( key )! )
+			units = [ ... graph.sorted ].map( key => dict.get( key )! ).filter( Boolean )
 			
 			const errors = this.apply_unit_trust( units, !!'skip_check' ).filter( Boolean )
 			
