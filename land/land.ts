@@ -739,9 +739,28 @@ namespace $ {
 				units: units.length,
 			})
 			
-			const { pass = [], gift = [], gist = [] } = $mol_array_groups( units, unit => unit.kind() )
+			const dict = new Map< string, $hyoo_crus_unit >()
+			for( const unit of units ) dict.set( unit.key(), unit )
 			
-			const errors = this.apply_unit_trust( [ ... pass!, ... gift!, ... gist! ], !!'skip_check' ).filter( Boolean )
+			const graph = new $mol_graph< string, void >()
+			for( const unit of units ) {
+				unit.choose({
+					pass: pass => {
+						graph.nodes.add( pass.key() )
+					},
+					gift: gift => {
+						graph.link( $hyoo_crus_ref_peer( gift.dest() ), gift.key() )
+					},
+					gist: gist=> {
+						graph.link( gist.key(), gist.peer() )
+					},
+				})
+			}
+			
+			graph.acyclic( ()=> 1 )
+			units = [ ... graph.sorted ].map( key => dict.get( key )! )
+			
+			const errors = this.apply_unit_trust( units, !!'skip_check' ).filter( Boolean )
 			
 			if( errors.length ) this.$.$mol_log3_fail({
 				place: this,
