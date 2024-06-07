@@ -8279,6 +8279,7 @@ var $;
             port.send_bin(Land.faces_pack().asArray());
         }
         face_port_land([port, land], next = null) {
+            $mol_wire_solid();
             return next;
         }
     }
