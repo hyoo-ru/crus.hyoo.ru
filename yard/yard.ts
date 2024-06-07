@@ -165,8 +165,11 @@ namespace $ {
 				const faces = parts.lands[ land ].faces
 				let port_faces = this.face_port_land([ port, land ])
 				
-				if( port_faces ) port_faces.sync( faces )
-				else this.face_port_land( [ port, land ], port_faces = faces )
+				if( !port_faces ) this.face_port_land(
+					[ port, land ],
+					port_faces = new $hyoo_crus_face_map,
+				)
+				port_faces.sync( faces )
 			
 				const units = parts.lands[ land ].units
 				for( let unit of units ) {
@@ -177,7 +180,7 @@ namespace $ {
 				
 			}
 			
-			this.realm().apply_pack( pack )
+			this.realm().apply_parts( parts.lands, parts.rocks )
 		}
 		
 		@ $mol_mem_key
@@ -224,14 +227,16 @@ namespace $ {
 		@ $mol_mem_key
 		init_port_land( [ port, land ]: [ $mol_rest_port, $hyoo_crus_ref ] ) {
 			// $mol_wire_solid()
+			const Land = this.realm().Land( land )
+			Land.loading()
 			this.$.$mol_log3_rise({
 				place: this,
 				message: 'Send Face',
 				port: $mol_key( port ),
 				land: land,
-				faces: this.realm().Land( land ).faces,
+				faces: Land.faces,
 			})
-			port.send_bin( this.realm().Land( land ).faces_pack().asArray() )
+			port.send_bin( Land.faces_pack().asArray() )
 		}
 		
 		@ $mol_mem_key

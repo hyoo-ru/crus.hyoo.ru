@@ -44,11 +44,17 @@ namespace $ {
 		}
 		
 		[ $mol_dev_format_head ]() {
+			
+			const stamp = Math.floor( this.last / 65536 ) * 1000
+			const time = new $mol_time_moment( stamp ).toString( 'YYYY-MM-DD hh:mm:ss' )
+			
 			return $mol_dev_format_span( {} ,
 				$mol_dev_format_native( this ) ,
-				$mol_dev_format_shade( ' ', this.total ) ,
-				$mol_dev_format_shade( ' ', new Date( this.last ) ) ,
+				$mol_dev_format_shade( ' ', time ) ,
+				$mol_dev_format_shade( ' @', this.last % 65536 ),
+				$mol_dev_format_shade( ' #', this.total ) ,
 			)
+			
 		}
 		
 	}

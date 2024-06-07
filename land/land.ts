@@ -175,6 +175,14 @@ namespace $ {
 			}
 			
 			if( delta.length || this.faces.total <= this.faces.total ) return delta
+			
+			this.$.$mol_log3_warn({
+				place: this,
+				message: 'Unit Absent',
+				hint: 'Relax, Delta contains all Units to restore',
+				face,
+			})
+			
 			return this.delta_unit()
 			
 		}
@@ -757,7 +765,7 @@ namespace $ {
 				})
 			}
 			
-			graph.acyclic( ()=> 1 )
+			graph.acyclic( ()=> 1 ) 
 			units = [ ... graph.sorted ].map( key => dict.get( key )! ).filter( Boolean )
 			
 			const errors = this.apply_unit_trust( units, !!'skip_check' ).filter( Boolean )

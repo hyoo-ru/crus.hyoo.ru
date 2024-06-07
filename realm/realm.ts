@@ -69,8 +69,18 @@ namespace $ {
 		
 		@ $mol_action
 		apply_pack( pack: $hyoo_crus_pack ) {
-			
 			const { lands, rocks } = pack.parts()
+			return this.apply_parts( lands, rocks )
+		}
+		
+		@ $mol_action
+		apply_parts(
+			lands: Record< $hyoo_crus_ref, {
+				faces: $hyoo_crus_face_map
+				units: $hyoo_crus_unit[]
+			}>,
+			rocks: [ Uint8Array, Uint8Array | null ][],
+		) {
 			
 			for( const land of Reflect.ownKeys( lands ) as $hyoo_crus_ref[] ) {
 				
