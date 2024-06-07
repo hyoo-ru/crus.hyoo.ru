@@ -1154,104 +1154,6 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    type $hyoo_crus_face_data = Iterable<readonly [peer: string, time: number]>;
-    class $hyoo_crus_face_map extends Map<string, number> {
-        last: number;
-        total: number;
-        constructor(entries?: $hyoo_crus_face_data);
-        sync(right: $hyoo_crus_face_data): void;
-        time_max(peer: string, time: number): void;
-        tick(): number;
-    }
-}
-
-declare namespace $ {
-    class $mol_wire_set<Value> extends Set<Value> {
-        pub: $mol_wire_pub;
-        has(value: Value): boolean;
-        entries(): IterableIterator<[Value, Value]>;
-        keys(): IterableIterator<Value>;
-        values(): IterableIterator<Value>;
-        forEach(task: (value: Value, value2: Value, set: Set<Value>) => void, self?: any): void;
-        [Symbol.iterator](): IterableIterator<Value>;
-        get size(): number;
-        add(value: Value): this;
-        delete(value: Value): boolean;
-        clear(): void;
-        item(val: Value, next?: boolean): boolean;
-    }
-}
-
-declare namespace $ {
-    enum $hyoo_crus_area {
-        data = 0,
-        meta = 1
-    }
-    function $hyoo_crus_area_of(numb: string): "data" | "meta";
-    function $hyoo_crus_area_to(numb: string, area: keyof typeof $hyoo_crus_area): string;
-}
-
-declare namespace $ {
-    enum $hyoo_crus_rank {
-        nil = 0,
-        get = 1,
-        add = 3,
-        mod = 7,
-        law = 15
-    }
-    type $hyoo_crus_rank_preset = Record<string, $hyoo_crus_rank>;
-    let $hyoo_crus_rank_private: $hyoo_crus_rank_preset;
-    let $hyoo_crus_rank_public: $hyoo_crus_rank_preset;
-    let $hyoo_crus_rank_lobby: $hyoo_crus_rank_preset;
-    let $hyoo_crus_rank_orgy: $hyoo_crus_rank_preset;
-}
-
-declare namespace $ {
-    enum $hyoo_crus_part {
-        land = 219,
-        pass = 255,
-        gift = 247,
-        gist = 0,
-        hash = 253,
-        rock = 245,
-        root = 1,
-        buck = 9
-    }
-}
-
-declare namespace $ {
-    enum $hyoo_crus_unit_kind {
-        pass = 255,
-        gift = 247,
-        gist = 0
-    }
-    class $hyoo_crus_unit extends $mol_buffer {
-        static size: 128;
-        constructor(buffer?: ArrayBuffer, byteOffset?: number, byteLength?: number);
-        kind(): "gist" | "pass" | "gift";
-        choose<Res>(ways: {
-            pass: (unit: $hyoo_crus_pass) => Res;
-            gift: (unit: $hyoo_crus_gift) => Res;
-            gist: (unit: $hyoo_crus_gist) => Res;
-        }): Res;
-        narrow(): $hyoo_crus_gist | $hyoo_crus_pass | $hyoo_crus_gift;
-        key(): string;
-        id6(offset: number, next?: string): string;
-        id12(offset: number, next?: $hyoo_crus_ref): symbol & {
-            $hyoo_crus_ref: symbol;
-        };
-        _peer: string;
-        peer(next?: string): string;
-        salt(): Uint8Array;
-        sens(next?: ArrayLike<number>): Uint8Array;
-        mix(mixin: Uint8Array): void;
-        sign(next?: ArrayLike<number>): Uint8Array;
-        signed(): boolean;
-        _land: $hyoo_crus_land | null;
-    }
-}
-
-declare namespace $ {
     class $mol_time_base {
         static patterns: Record<string, (arg: any) => string>;
         static formatter(pattern: string): (arg: any) => string;
@@ -1377,6 +1279,104 @@ declare namespace $ {
             sss: (moment: $mol_time_moment) => string;
             Z: (moment: $mol_time_moment) => string;
         };
+    }
+}
+
+declare namespace $ {
+    type $hyoo_crus_face_data = Iterable<readonly [peer: string, time: number]>;
+    class $hyoo_crus_face_map extends Map<string, number> {
+        last: number;
+        total: number;
+        constructor(entries?: $hyoo_crus_face_data);
+        sync(right: $hyoo_crus_face_data): void;
+        time_max(peer: string, time: number): void;
+        tick(): number;
+    }
+}
+
+declare namespace $ {
+    class $mol_wire_set<Value> extends Set<Value> {
+        pub: $mol_wire_pub;
+        has(value: Value): boolean;
+        entries(): IterableIterator<[Value, Value]>;
+        keys(): IterableIterator<Value>;
+        values(): IterableIterator<Value>;
+        forEach(task: (value: Value, value2: Value, set: Set<Value>) => void, self?: any): void;
+        [Symbol.iterator](): IterableIterator<Value>;
+        get size(): number;
+        add(value: Value): this;
+        delete(value: Value): boolean;
+        clear(): void;
+        item(val: Value, next?: boolean): boolean;
+    }
+}
+
+declare namespace $ {
+    enum $hyoo_crus_area {
+        data = 0,
+        meta = 1
+    }
+    function $hyoo_crus_area_of(numb: string): "data" | "meta";
+    function $hyoo_crus_area_to(numb: string, area: keyof typeof $hyoo_crus_area): string;
+}
+
+declare namespace $ {
+    enum $hyoo_crus_rank {
+        nil = 0,
+        get = 1,
+        add = 3,
+        mod = 7,
+        law = 15
+    }
+    type $hyoo_crus_rank_preset = Record<string, $hyoo_crus_rank>;
+    let $hyoo_crus_rank_private: $hyoo_crus_rank_preset;
+    let $hyoo_crus_rank_public: $hyoo_crus_rank_preset;
+    let $hyoo_crus_rank_lobby: $hyoo_crus_rank_preset;
+    let $hyoo_crus_rank_orgy: $hyoo_crus_rank_preset;
+}
+
+declare namespace $ {
+    enum $hyoo_crus_part {
+        land = 219,
+        pass = 255,
+        gift = 247,
+        gist = 0,
+        hash = 253,
+        rock = 245,
+        root = 1,
+        buck = 9
+    }
+}
+
+declare namespace $ {
+    enum $hyoo_crus_unit_kind {
+        pass = 255,
+        gift = 247,
+        gist = 0
+    }
+    class $hyoo_crus_unit extends $mol_buffer {
+        static size: 128;
+        constructor(buffer?: ArrayBuffer, byteOffset?: number, byteLength?: number);
+        kind(): "gist" | "pass" | "gift";
+        choose<Res>(ways: {
+            pass: (unit: $hyoo_crus_pass) => Res;
+            gift: (unit: $hyoo_crus_gift) => Res;
+            gist: (unit: $hyoo_crus_gist) => Res;
+        }): Res;
+        narrow(): $hyoo_crus_gist | $hyoo_crus_pass | $hyoo_crus_gift;
+        key(): string;
+        id6(offset: number, next?: string): string;
+        id12(offset: number, next?: $hyoo_crus_ref): symbol & {
+            $hyoo_crus_ref: symbol;
+        };
+        _peer: string;
+        peer(next?: string): string;
+        salt(): Uint8Array;
+        sens(next?: ArrayLike<number>): Uint8Array;
+        mix(mixin: Uint8Array): void;
+        sign(next?: ArrayLike<number>): Uint8Array;
+        signed(): boolean;
+        _land: $hyoo_crus_land | null;
     }
 }
 
@@ -3441,6 +3441,10 @@ declare namespace $ {
         Land(ref: $hyoo_crus_ref): $hyoo_crus_land;
         Node<Node extends typeof $hyoo_crus_node>(ref: $hyoo_crus_ref, Node: Node): InstanceType<Node>;
         apply_pack(pack: $hyoo_crus_pack): void;
+        apply_parts(lands: Record<$hyoo_crus_ref, {
+            faces: $hyoo_crus_face_map;
+            units: $hyoo_crus_unit[];
+        }>, rocks: [Uint8Array, Uint8Array | null][]): void;
     }
 }
 
