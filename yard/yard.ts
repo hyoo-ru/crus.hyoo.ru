@@ -156,22 +156,37 @@ namespace $ {
 				rocks: parts.rocks.length,
 			})
 			
+			this.face_port_sync( port, parts.lands )
+			this.realm().apply_parts( parts.lands, parts.rocks )
+			
+		}
+		
+		@ $mol_action
+		face_port_sync(
+			port: $mol_rest_port,
+			income: Record< $hyoo_crus_ref, {
+				faces: $hyoo_crus_face_map
+				units: $hyoo_crus_unit[]
+			}>
+		) {
+			
 			const lands = this.port_lands( port )
 			
-			for( const land of Reflect.ownKeys( parts.lands ) as $hyoo_crus_ref[] ) {
+			for( const land of Reflect.ownKeys( income ) as $hyoo_crus_ref[] ) {
 				
 				lands.add( land )
 				
-				const faces = parts.lands[ land ].faces
+				const faces = income[ land ].faces
 				let port_faces = this.face_port_land([ port, land ])
 				
 				if( !port_faces ) this.face_port_land(
 					[ port, land ],
-					port_faces = new $hyoo_crus_face_map,
+					port_faces = $mol_mem_cached( ()=> this.face_port_land([ port, land ]) )
+						|| new $hyoo_crus_face_map,
 				)
 				port_faces.sync( faces )
 			
-				const units = parts.lands[ land ].units
+				const units = income[ land ].units
 				for( let unit of units ) {
 					const unit2 = unit.narrow()
 					if( unit2 instanceof $hyoo_crus_pass ) continue
@@ -180,7 +195,6 @@ namespace $ {
 				
 			}
 			
-			this.realm().apply_parts( parts.lands, parts.rocks )
 		}
 		
 		@ $mol_mem_key
@@ -226,7 +240,7 @@ namespace $ {
 		
 		@ $mol_mem_key
 		init_port_land( [ port, land ]: [ $mol_rest_port, $hyoo_crus_ref ] ) {
-			// $mol_wire_solid()
+			// $mol_wire_solid() 
 			const Land = this.realm().Land( land )
 			Land.loading()
 			this.$.$mol_log3_rise({
