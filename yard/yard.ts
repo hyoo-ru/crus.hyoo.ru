@@ -167,7 +167,7 @@ namespace $ {
 			income: Record< $hyoo_crus_ref, {
 				faces: $hyoo_crus_face_map
 				units: $hyoo_crus_unit[]
-			}>
+			}>, 
 		) {
 			
 			const lands = this.port_lands( port )
@@ -258,7 +258,7 @@ namespace $ {
 			[ port, land ]: [ $mol_rest_port, $hyoo_crus_ref ],
 			next = null as null | $hyoo_crus_face_map
 		) {
-			// $mol_wire_solid()
+			$mol_wire_solid()
 			return next
 		}
 		
