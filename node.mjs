@@ -8222,15 +8222,20 @@ var $;
                 lands: parts.lands,
                 rocks: parts.rocks.length,
             });
+            this.face_port_sync(port, parts.lands);
+            this.realm().apply_parts(parts.lands, parts.rocks);
+        }
+        face_port_sync(port, income) {
             const lands = this.port_lands(port);
-            for (const land of Reflect.ownKeys(parts.lands)) {
+            for (const land of Reflect.ownKeys(income)) {
                 lands.add(land);
-                const faces = parts.lands[land].faces;
+                const faces = income[land].faces;
                 let port_faces = this.face_port_land([port, land]);
                 if (!port_faces)
-                    this.face_port_land([port, land], port_faces = new $hyoo_crus_face_map);
+                    this.face_port_land([port, land], port_faces = $mol_mem_cached(() => this.face_port_land([port, land]))
+                        || new $hyoo_crus_face_map);
                 port_faces.sync(faces);
-                const units = parts.lands[land].units;
+                const units = income[land].units;
                 for (let unit of units) {
                     const unit2 = unit.narrow();
                     if (unit2 instanceof $hyoo_crus_pass)
@@ -8238,7 +8243,6 @@ var $;
                     port_faces.time_max(unit2.peer(), unit2.time());
                 }
             }
-            this.realm().apply_parts(parts.lands, parts.rocks);
         }
         sync_land(land) {
             for (const port of this.ports()) {
@@ -8317,6 +8321,9 @@ var $;
     __decorate([
         $mol_action
     ], $hyoo_crus_yard.prototype, "port_income", null);
+    __decorate([
+        $mol_action
+    ], $hyoo_crus_yard.prototype, "face_port_sync", null);
     __decorate([
         $mol_mem_key
     ], $hyoo_crus_yard.prototype, "sync_land", null);
