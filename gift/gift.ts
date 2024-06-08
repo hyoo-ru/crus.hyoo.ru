@@ -50,7 +50,7 @@ namespace $ {
 				' ',
 				this.peer(),
 				' 🏅 ',
-				$mol_dev_format_span( {}, this.dest().description ),
+				$mol_dev_format_span( {}, this.dest().description || '_' ),
 				this.bill().some( v => v ) ? ' 🔐' : ' 📢',
 				$hyoo_crus_rank[ this.rank() ],
 				' ',
