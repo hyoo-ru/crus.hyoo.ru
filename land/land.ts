@@ -747,7 +747,7 @@ namespace $ {
 			$mol_wire_sync( this.$ ).$mol_log3_rise({
 				place: this,
 				message: 'Load Unit unordered',
-				units,
+				units: units.map( unit => unit.dump() ),
 				count: units.length,
 			})
 			
@@ -772,7 +772,7 @@ namespace $ {
 			$mol_wire_sync( this.$ ).$mol_log3_rise({
 				place: this,
 				message: 'Load Unit ordered',
-				units,
+				units: units.map( unit => unit.dump() ),
 				count: units.length,
 			})
 			

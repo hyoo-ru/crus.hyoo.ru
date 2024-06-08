@@ -119,6 +119,10 @@ namespace $ {
 		
 		_land = null as null | $hyoo_crus_land
 		
+		dump() {
+			return {}
+		}
+		
 	}
 	
 }

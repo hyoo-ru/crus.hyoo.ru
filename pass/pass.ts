@@ -23,7 +23,7 @@ namespace $ {
 			return prev
 		}
 		
-		toJSON() {
+		dump() {
 			return {
 				kind: this.kind(),
 				lord: this.lord().description!,

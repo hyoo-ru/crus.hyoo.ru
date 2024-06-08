@@ -44,7 +44,7 @@ namespace $ {
 			return ( right.time() - left.time() ) || ( right.peer() > left.peer() ? 1 : right.peer() < left.peer() ? -1 : 0 )
 		}
 		
-		toJSON() {
+		dump() {
 			return {
 				kind: this.kind(),
 				peer: this.peer(),

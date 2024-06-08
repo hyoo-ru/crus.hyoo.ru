@@ -130,7 +130,7 @@ namespace $ {
 			|| ( right.time() - left.time() )
 		}
 		
-		toJSON() {
+		dump() {
 			return {
 				kind: this.kind(),
 				peer: this.peer(),
