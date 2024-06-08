@@ -7827,8 +7827,8 @@ var $;
             let units = realm.$.$hyoo_crus_mine.units(this) ?? [];
             $mol_wire_sync(this.$).$mol_log3_rise({
                 place: this,
-                message: 'Load Unit',
-                units: units,
+                message: 'Load Unit unordered',
+                counnt: units.length,
             });
             const dict = new Map();
             for (const unit of units)
@@ -7849,6 +7849,12 @@ var $;
             }
             graph.acyclic(() => 1);
             units = [...graph.sorted].map(key => dict.get(key)).filter(Boolean);
+            $mol_wire_sync(this.$).$mol_log3_rise({
+                place: this,
+                message: 'Load Unit ordered',
+                units,
+                counnt: units.length,
+            });
             const errors = this.apply_unit_trust(units, !!'skip_check').filter(Boolean);
             if (errors.length)
                 this.$.$mol_log3_fail({
