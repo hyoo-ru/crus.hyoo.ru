@@ -68,6 +68,9 @@ namespace $ {
 			} )
 			
 			await Promise.all( tasks )
+			
+			for( const unit of units ) this.units_persisted.add( unit )
+			
 		}
 		
 		@ $mol_action
@@ -90,8 +93,9 @@ namespace $ {
 				return bin.narrow()
 			})
 			
+			for( const unit of units ) this.units_persisted.add( unit )
+				
 			return units
-
 		}
 		
 		@ $mol_memo.method
