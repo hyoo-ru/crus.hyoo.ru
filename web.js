@@ -8445,6 +8445,9 @@ var $;
             return this.sign().some(b => b);
         }
         _land = null;
+        dump() {
+            return {};
+        }
     }
     $.$hyoo_crus_unit = $hyoo_crus_unit;
 })($ || ($ = {}));
@@ -9179,7 +9182,7 @@ var $;
                 || (right.peer() > left.peer() ? 1 : right.peer() < left.peer() ? -1 : 0)
                 || (right.time() - left.time());
         }
-        toJSON() {
+        dump() {
             return {
                 kind: this.kind(),
                 peer: this.peer(),
@@ -10261,7 +10264,7 @@ var $;
                 prev.set(next);
             return prev;
         }
-        toJSON() {
+        dump() {
             return {
                 kind: this.kind(),
                 lord: this.lord().description,
@@ -10310,7 +10313,7 @@ var $;
         static compare(left, right) {
             return (right.time() - left.time()) || (right.peer() > left.peer() ? 1 : right.peer() < left.peer() ? -1 : 0);
         }
-        toJSON() {
+        dump() {
             return {
                 kind: this.kind(),
                 peer: this.peer(),
@@ -11350,7 +11353,7 @@ var $;
             $mol_wire_sync(this.$).$mol_log3_rise({
                 place: this,
                 message: 'Load Unit unordered',
-                units,
+                units: units.map(unit => unit.dump()),
                 count: units.length,
             });
             const graph = new $mol_graph();
@@ -11372,7 +11375,7 @@ var $;
             $mol_wire_sync(this.$).$mol_log3_rise({
                 place: this,
                 message: 'Load Unit ordered',
-                units,
+                units: units.map(unit => unit.dump()),
                 count: units.length,
             });
             const errors = this.apply_unit_trust(units, !!'skip_check').filter(Boolean);

@@ -1383,6 +1383,7 @@ declare namespace $ {
         sign(next?: ArrayLike<number>): Uint8Array;
         signed(): boolean;
         _land: $hyoo_crus_land | null;
+        dump(): {};
     }
 }
 
@@ -1505,7 +1506,7 @@ declare namespace $ {
         data(next?: Uint8Array, tip?: "time" | "json" | "bin" | "tree" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom", tag?: "keys" | "term" | "solo" | "vals"): Uint8Array;
         idea(): number;
         static compare(left: $hyoo_crus_gist, right: $hyoo_crus_gist): number;
-        toJSON(): {
+        dump(): {
             kind: "gist" | "pass" | "gift";
             peer: string;
             lead: string;
@@ -2452,7 +2453,7 @@ declare namespace $ {
         };
         key(): string;
         auth(next?: ArrayLike<number>): Uint8Array;
-        toJSON(): {
+        dump(): {
             kind: "gist" | "pass" | "gift";
             lord: string;
         };
@@ -2471,7 +2472,7 @@ declare namespace $ {
         key(): string;
         bill(): Uint8Array;
         static compare(left: $hyoo_crus_gift, right: $hyoo_crus_gift): number;
-        toJSON(): {
+        dump(): {
             kind: "gist" | "pass" | "gift";
             peer: string;
             dest: string;
