@@ -130,6 +130,20 @@ namespace $ {
 			|| ( right.time() - left.time() )
 		}
 		
+		toJSON() {
+			return {
+				kind: this.kind(),
+				peer: this.peer(),
+				lead: this.lead(),
+				head: this.head(),
+				self: this.self(),
+				tip: this.tip(),
+				tag: this.tag(),
+				size: this.size(),
+				time: $hyoo_crus_time_dump( this.time() ),
+			}
+		}
+		
 		[ $mol_dev_format_head ]() {
 			return $mol_dev_format_span( {},
 				$mol_dev_format_native( this ),
@@ -142,7 +156,7 @@ namespace $ {
 				$mol_dev_format_shade( '/' ),
 				this.self() || 'AAAAAAAA',
 				' ',
-				$mol_dev_format_shade( new $mol_time_moment( this.time() ).toString( 'YYYY-MM-DD hh:mm:ss.sss' ) ),
+				$mol_dev_format_shade( $hyoo_crus_time_dump( this.time() ) ),
 				' ',
 				{
 					term: '💼',

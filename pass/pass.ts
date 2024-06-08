@@ -23,6 +23,13 @@ namespace $ {
 			return prev
 		}
 		
+		toJSON() {
+			return {
+				kind: this.kind(),
+				lord: this.lord().description!,
+			}
+		}
+		
 		[ $mol_dev_format_head ]() {
 			return $mol_dev_format_span( {} ,
 				$mol_dev_format_native( this ) ,

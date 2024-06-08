@@ -44,6 +44,16 @@ namespace $ {
 			return ( right.time() - left.time() ) || ( right.peer() > left.peer() ? 1 : right.peer() < left.peer() ? -1 : 0 )
 		}
 		
+		toJSON() {
+			return {
+				kind: this.kind(),
+				peer: this.peer(),
+				dest: this.dest().description!,
+				rank: $hyoo_crus_rank[ this.rank() ],
+				time: $hyoo_crus_time_dump( this.time() ),
+			}
+		}
+		
 		[ $mol_dev_format_head ]() {
 			return $mol_dev_format_span( {} ,
 				$mol_dev_format_native( this ) ,
@@ -54,7 +64,7 @@ namespace $ {
 				this.bill().some( v => v ) ? ' 🔐' : ' 📢',
 				$hyoo_crus_rank[ this.rank() ],
 				' ',
-				$mol_dev_format_shade( new $mol_time_moment( this.time() ).toString( 'YYYY-MM-DD hh:mm:ss.sss' ) ),
+				$mol_dev_format_shade( $hyoo_crus_time_dump( this.time() ) ),
 			)
 		}
 		
