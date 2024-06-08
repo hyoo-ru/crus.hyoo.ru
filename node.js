@@ -7840,7 +7840,7 @@ var $;
             $mol_wire_sync(this.$).$mol_log3_rise({
                 place: this,
                 message: 'Load Unit unordered',
-                size: dict.size,
+                units,
                 count: units.length,
             });
             const graph = new $mol_graph();
