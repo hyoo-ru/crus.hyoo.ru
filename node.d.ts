@@ -1283,6 +1283,12 @@ declare namespace $ {
 }
 
 declare namespace $ {
+    function $hyoo_crus_time_moment(time: number): $mol_time_moment;
+    function $hyoo_crus_time_counter(time: number): number;
+    function $hyoo_crus_time_dump(time: number): string;
+}
+
+declare namespace $ {
     type $hyoo_crus_face_data = Iterable<readonly [peer: string, time: number]>;
     class $hyoo_crus_face_map extends Map<string, number> {
         last: number;
@@ -1499,6 +1505,17 @@ declare namespace $ {
         data(next?: Uint8Array, tip?: "time" | "json" | "bin" | "tree" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom", tag?: "keys" | "term" | "solo" | "vals"): Uint8Array;
         idea(): number;
         static compare(left: $hyoo_crus_gist, right: $hyoo_crus_gist): number;
+        toJSON(): {
+            kind: "gist" | "pass" | "gift";
+            peer: string;
+            lead: string;
+            head: string;
+            self: string;
+            tip: "time" | "json" | "bin" | "tree" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom";
+            tag: "keys" | "term" | "solo" | "vals";
+            size: number;
+            time: string;
+        };
     }
 }
 
@@ -2435,6 +2452,10 @@ declare namespace $ {
         };
         key(): string;
         auth(next?: ArrayLike<number>): Uint8Array;
+        toJSON(): {
+            kind: "gist" | "pass" | "gift";
+            lord: string;
+        };
     }
 }
 
@@ -2450,6 +2471,13 @@ declare namespace $ {
         key(): string;
         bill(): Uint8Array;
         static compare(left: $hyoo_crus_gift, right: $hyoo_crus_gift): number;
+        toJSON(): {
+            kind: "gist" | "pass" | "gift";
+            peer: string;
+            dest: string;
+            rank: string;
+            time: string;
+        };
     }
 }
 
