@@ -11350,12 +11350,6 @@ var $;
             const dict = new Map();
             for (const unit of units)
                 dict.set(unit.key(), unit);
-            $mol_wire_sync(this.$).$mol_log3_rise({
-                place: this,
-                message: 'Load Unit unordered',
-                units: units.map(unit => unit.dump()),
-                count: units.length,
-            });
             const graph = new $mol_graph();
             for (const unit of units) {
                 unit.choose({
@@ -11375,9 +11369,8 @@ var $;
             units = [...graph.sorted].map(key => dict.get(key)).filter(Boolean);
             $mol_wire_sync(this.$).$mol_log3_rise({
                 place: this,
-                message: 'Load Unit ordered',
-                units: units.map(unit => unit.dump()),
-                count: units.length,
+                message: 'Load Unit',
+                units: units.length,
             });
             const errors = this.apply_unit(units, !!'skip_check').filter(Boolean);
             if (errors.length)

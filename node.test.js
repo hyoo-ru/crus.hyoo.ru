@@ -7831,12 +7831,6 @@ var $;
             const dict = new Map();
             for (const unit of units)
                 dict.set(unit.key(), unit);
-            $mol_wire_sync(this.$).$mol_log3_rise({
-                place: this,
-                message: 'Load Unit unordered',
-                units: units.map(unit => unit.dump()),
-                count: units.length,
-            });
             const graph = new $mol_graph();
             for (const unit of units) {
                 unit.choose({
@@ -7856,9 +7850,8 @@ var $;
             units = [...graph.sorted].map(key => dict.get(key)).filter(Boolean);
             $mol_wire_sync(this.$).$mol_log3_rise({
                 place: this,
-                message: 'Load Unit ordered',
-                units: units.map(unit => unit.dump()),
-                count: units.length,
+                message: 'Load Unit',
+                units: units.length,
             });
             const errors = this.apply_unit(units, !!'skip_check').filter(Boolean);
             if (errors.length)
@@ -8487,9 +8480,8 @@ var $;
                 return [];
             const res = await db.query(`SELECT unit FROM Land WHERE land = $1::varchar(17)`, [land.ref().description]);
             const units = res.rows.map(row => {
-                const unit = new $hyoo_crus_unit(row.unit.buffer, row.unit.byteOffset, row.unit.byteLength).narrow();
+                const unit = new $hyoo_crus_unit(row.unit).narrow();
                 this.units_persisted.add(unit);
-                console.log(row.unit, 'xxx', unit.dump());
                 return unit;
             });
             return units;
