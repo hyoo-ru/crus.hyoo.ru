@@ -8480,7 +8480,7 @@ var $;
                 return [];
             const res = await db.query(`SELECT unit FROM Land WHERE land = $1::varchar(17)`, [land.ref().description]);
             const units = res.rows.map(row => {
-                const unit = new $hyoo_crus_unit(row.unit).narrow();
+                const unit = new $hyoo_crus_unit(row.unit.buffer, row.unit.byteOffset, row.unit.byteLength).narrow();
                 this.units_persisted.add(unit);
                 return unit;
             });
