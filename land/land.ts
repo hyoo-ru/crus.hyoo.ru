@@ -780,7 +780,7 @@ namespace $ {
 			})
 			
 			// const errors = this.apply_unit_trust( [ ... pass!, ... gift!, ... gist! ], !!'skip_check' ).filter( Boolean )
-			const errors = this.apply_unit_trust( units, !!'skip_check' ).filter( Boolean )
+			const errors = this.apply_unit( units, !!'skip_check' ).filter( Boolean )
 			
 			if( errors.length ) this.$.$mol_log3_fail({
 				place: this,

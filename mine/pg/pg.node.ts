@@ -85,16 +85,16 @@ namespace $ {
 			)
 			
 			const units = res.rows.map( row => {
-				const bin = new $hyoo_crus_unit(
+				const unit = new $hyoo_crus_unit(
 					row.unit.buffer,
 					row.unit.byteOffset,
 					row.unit.byteLength,
-				)
-				return bin.narrow()
+				).narrow()
+				this.units_persisted.add( unit )
+				console.log(row.unit, 'xxx', unit.dump())
+				return unit
 			})
 			
-			for( const unit of units ) this.units_persisted.add( unit )
-				
 			return units
 		}
 		
@@ -112,19 +112,19 @@ namespace $ {
 			await db.connect()
 			
 			await db.query(`
-				CREATE TABLE IF NOT EXISTS Rock (
-					hash bytea NOT NULL,
-					rock bytea NOT NULL,
-					primary key( hash )
-				);
-			`)
-			
-			await db.query(`
 				CREATE TABLE IF NOT EXISTS Land (
 					land varchar(17) NOT NULL,
 					path varchar(17) NOT NULL,
 					unit bytea NOT NULL,
 					primary key( land, path )
+				);
+			`)
+			
+			await db.query(`
+				CREATE TABLE IF NOT EXISTS Rock (
+					hash bytea NOT NULL,
+					rock bytea NOT NULL,
+					primary key( hash )
 				);
 			`)
 			
