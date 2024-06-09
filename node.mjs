@@ -7869,7 +7869,7 @@ var $;
                 units: units.map(unit => unit.dump()),
                 count: units.length,
             });
-            const errors = this.apply_unit_trust(units, !!'skip_check').filter(Boolean);
+            const errors = this.apply_unit(units, !!'skip_check').filter(Boolean);
             if (errors.length)
                 this.$.$mol_log3_fail({
                     place: this,
@@ -8496,11 +8496,11 @@ var $;
                 return [];
             const res = await db.query(`SELECT unit FROM Land WHERE land = $1::varchar(17)`, [land.ref().description]);
             const units = res.rows.map(row => {
-                const bin = new $hyoo_crus_unit(row.unit.buffer, row.unit.byteOffset, row.unit.byteLength);
-                return bin.narrow();
-            });
-            for (const unit of units)
+                const unit = new $hyoo_crus_unit(row.unit.buffer, row.unit.byteOffset, row.unit.byteLength).narrow();
                 this.units_persisted.add(unit);
+                console.log(row.unit, 'xxx', unit.dump());
+                return unit;
+            });
             return units;
         }
         static async db() {
@@ -8513,18 +8513,18 @@ var $;
             });
             await db.connect();
             await db.query(`
-				CREATE TABLE IF NOT EXISTS Rock (
-					hash bytea NOT NULL,
-					rock bytea NOT NULL,
-					primary key( hash )
-				);
-			`);
-            await db.query(`
 				CREATE TABLE IF NOT EXISTS Land (
 					land varchar(17) NOT NULL,
 					path varchar(17) NOT NULL,
 					unit bytea NOT NULL,
 					primary key( land, path )
+				);
+			`);
+            await db.query(`
+				CREATE TABLE IF NOT EXISTS Rock (
+					hash bytea NOT NULL,
+					rock bytea NOT NULL,
+					primary key( hash )
 				);
 			`);
             this.$.$mol_log3_rise({
