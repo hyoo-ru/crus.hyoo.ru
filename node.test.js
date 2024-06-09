@@ -7845,6 +7845,7 @@ var $;
                     },
                     gift: gift => {
                         graph.link($hyoo_crus_ref_peer(gift.dest()), gift.key());
+                        graph.link(gift.key(), gift.peer());
                     },
                     gist: gist => {
                         graph.link(gist.key(), gist.peer());
