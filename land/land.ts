@@ -751,6 +751,8 @@ namespace $ {
 				count: units.length,
 			})
 			
+			// const { pass = [], gift = [], gist = [] } = $mol_array_groups( units, unit => unit.kind() )
+			
 			const graph = new $mol_graph< string, void >()
 			for( const unit of units ) {
 				unit.choose({
@@ -759,6 +761,7 @@ namespace $ {
 					},
 					gift: gift => {
 						graph.link( $hyoo_crus_ref_peer( gift.dest() ), gift.key() )
+						graph.link( gift.key(), gift.peer() )
 					},
 					gist: gist=> {
 						graph.link( gist.key(), gist.peer() )
@@ -776,6 +779,7 @@ namespace $ {
 				count: units.length,
 			})
 			
+			// const errors = this.apply_unit_trust( [ ... pass!, ... gift!, ... gist! ], !!'skip_check' ).filter( Boolean )
 			const errors = this.apply_unit_trust( units, !!'skip_check' ).filter( Boolean )
 			
 			if( errors.length ) this.$.$mol_log3_fail({
