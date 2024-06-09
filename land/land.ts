@@ -744,13 +744,6 @@ namespace $ {
 			const dict = new Map< string, $hyoo_crus_unit >()
 			for( const unit of units ) dict.set( unit.key(), unit )
 				
-			$mol_wire_sync( this.$ ).$mol_log3_rise({
-				place: this,
-				message: 'Load Unit unordered',
-				units: units.map( unit => unit.dump() ),
-				count: units.length,
-			})
-			
 			// const { pass = [], gift = [], gist = [] } = $mol_array_groups( units, unit => unit.kind() )
 			
 			const graph = new $mol_graph< string, void >()
@@ -774,9 +767,8 @@ namespace $ {
 			
 			$mol_wire_sync( this.$ ).$mol_log3_rise({
 				place: this,
-				message: 'Load Unit ordered',
-				units: units.map( unit => unit.dump() ),
-				count: units.length,
+				message: 'Load Unit',
+s				units: units.length,
 			})
 			
 			// const errors = this.apply_unit_trust( [ ... pass!, ... gift!, ... gist! ], !!'skip_check' ).filter( Boolean )
