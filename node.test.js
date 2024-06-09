@@ -5504,20 +5504,20 @@ var $;
         }
         id6(offset, next) {
             if (next === undefined) {
-                const str = $mol_base64_ae_encode(new Uint8Array(this.buffer, offset, 6));
+                const str = $mol_base64_ae_encode(new Uint8Array(this.buffer, this.byteOffset + offset, 6));
                 return str === 'AAAAAAAA' ? '' : str;
             }
             else {
-                this.asArray().set($mol_base64_ae_decode(next || 'AAAAAAAA'), offset);
+                this.asArray().set($mol_base64_ae_decode(next || 'AAAAAAAA'), this.byteOffset + offset);
                 return next;
             }
         }
         id12(offset, next) {
             if (next === undefined) {
-                return $hyoo_crus_ref_decode(new Uint8Array(this.buffer, offset, 12));
+                return $hyoo_crus_ref_decode(new Uint8Array(this.buffer, this.byteOffset + offset, 12));
             }
             else {
-                this.asArray().set($hyoo_crus_ref_encode(next), offset);
+                this.asArray().set($hyoo_crus_ref_encode(next), this.byteOffset + offset);
                 return next;
             }
         }
