@@ -46,7 +46,7 @@ namespace $ {
 		'word with spaces'() {
 			$mol_assert_equal(
 				'foo1  bar2'.match( $hyoo_crus_text_tokens ),
-				[ 'foo1', ' ', ' bar2' ],
+				[ 'foo1 ', ' ', 'bar2' ],
 			)
 		},
 		

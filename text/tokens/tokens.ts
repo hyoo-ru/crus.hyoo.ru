@@ -29,35 +29,35 @@ namespace $ {
 			
 			'Word': [
 				
-				[
-					forbid_after( line_end ),
-					unicode_only( 'White_Space' ),
-				],
-				
 				repeat_greedy( char_only([
 					unicode_only( 'General_Category', 'Uppercase_Letter' ),
 					unicode_only( 'Diacritic' ),
 					unicode_only( 'General_Category', 'Number' ),
+					0xA0,
 				]), 1 ),
 				
 				repeat_greedy( char_only([
 					unicode_only( 'General_Category', 'Lowercase_Letter' ),
 					unicode_only( 'Diacritic' ),
 					unicode_only( 'General_Category', 'Number' ),
+					0xA0,
 				]) ),
+				
+				[ char_only( ' ' ) ],
 				
 			],
 			
 			'word': [
-				[
-					forbid_after( line_end ),
-					unicode_only( 'White_Space' ),
-				],
+				
 				repeat_greedy( char_only([
 					unicode_only( 'General_Category', 'Lowercase_Letter' ),
 					unicode_only( 'Diacritic' ),
 					unicode_only( 'General_Category', 'Number' ),
+					0xA0,
 				]), 1 ),
+				
+				[ char_only( ' ' ) ],
+				
 			],
 			
 			'spaces': [
@@ -87,6 +87,8 @@ namespace $ {
 					unicode_only( 'General_Category', 'Number' ),
 					unicode_only( 'White_Space' ),
 				]), 1 ),
+				
+				[ char_only( ' ' ) ],
 				
 			],
 			
