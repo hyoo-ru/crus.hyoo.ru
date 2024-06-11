@@ -3280,7 +3280,7 @@ declare namespace $ {
 declare namespace $ {
     class $hyoo_crus_yard extends $mol_object {
         realm(): $hyoo_crus_realm;
-        units_neonatals: $mol_wire_set<symbol & {
+        lands_neonatals: $mol_wire_set<symbol & {
             $hyoo_crus_ref: symbol;
         }>;
         static masters: string[];
@@ -3291,6 +3291,9 @@ declare namespace $ {
         master(): $mol_rest_port | null;
         slaves: $mol_wire_set<$mol_rest_port>;
         sync(): void;
+        sync_neonatals(): void;
+        sync_port(): void;
+        sync_port_lands(port: $mol_rest_port): void;
         ports(): $mol_rest_port[];
         port_lands(port: $mol_rest_port): $mol_wire_set<symbol & {
             $hyoo_crus_ref: symbol;

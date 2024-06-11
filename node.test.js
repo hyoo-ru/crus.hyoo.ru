@@ -7774,7 +7774,7 @@ var $;
             this.post(seat ? units[seat - 1].self() : '', gist.head(), gist.self(), null, 'term');
         }
         broadcast() {
-            this.realm()?.yard().units_neonatals.add(this.ref());
+            this.realm()?.yard().lands_neonatals.add(this.ref());
         }
         sync() {
             this.loading();
@@ -8134,7 +8134,7 @@ var $;
         realm() {
             return null;
         }
-        units_neonatals = new $mol_wire_set();
+        lands_neonatals = new $mol_wire_set();
         static masters = [];
         master_cursor(next = 0) {
             return next;
@@ -8207,15 +8207,25 @@ var $;
         }
         slaves = new $mol_wire_set();
         sync() {
+            this.sync_neonatals();
+            this.sync_port();
+        }
+        sync_neonatals() {
             for (const port of this.ports()) {
-                for (const land of this.units_neonatals) {
-                    this.sync_port_land([port, land]);
-                }
-                for (const land of this.port_lands(port)) {
+                for (const land of this.lands_neonatals) {
                     this.sync_port_land([port, land]);
                 }
             }
-            this.units_neonatals.clear();
+            this.lands_neonatals.clear();
+        }
+        sync_port() {
+            for (const port of this.ports())
+                this.sync_port_lands(port);
+        }
+        sync_port_lands(port) {
+            for (const land of this.port_lands(port)) {
+                this.sync_port_land([port, land]);
+            }
         }
         ports() {
             try {
@@ -8330,6 +8340,15 @@ var $;
     __decorate([
         $mol_mem
     ], $hyoo_crus_yard.prototype, "sync", null);
+    __decorate([
+        $mol_mem
+    ], $hyoo_crus_yard.prototype, "sync_neonatals", null);
+    __decorate([
+        $mol_mem
+    ], $hyoo_crus_yard.prototype, "sync_port", null);
+    __decorate([
+        $mol_mem_key
+    ], $hyoo_crus_yard.prototype, "sync_port_lands", null);
     __decorate([
         $mol_mem
     ], $hyoo_crus_yard.prototype, "ports", null);
@@ -8669,7 +8688,7 @@ var $;
         }
         king_grab(preset = { '': $hyoo_crus_rank.get }) {
             const king = this.$.$hyoo_crus_auth.grab();
-            const colony = $mol_wire_sync($hyoo_crus_land).make({});
+            const colony = $mol_wire_sync($hyoo_crus_land).make({ $: this.$ });
             colony.auth = $mol_const(king);
             if ((preset[''] ?? $hyoo_crus_rank.nil) === $hyoo_crus_rank.nil) {
                 colony.encrypted(true);
