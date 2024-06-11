@@ -5478,7 +5478,7 @@ var $;
             $mol_assert_equal('👩🏿‍🤝‍🧑🏿👩🏿‍🤝‍🧑🏿'.match($hyoo_crus_text_tokens), ['👩🏿‍🤝‍🧑🏿', '👩🏿‍🤝‍🧑🏿']);
         },
         'word with spaces'() {
-            $mol_assert_equal('foo1  bar2'.match($hyoo_crus_text_tokens), ['foo1', ' ', ' bar2']);
+            $mol_assert_equal('foo1  bar2'.match($hyoo_crus_text_tokens), ['foo1 ', ' ', 'bar2']);
         },
         'word with diactric'() {
             $mol_assert_equal('Е́е́'.match($hyoo_crus_text_tokens), ['Е́е́']);
@@ -5508,22 +5508,22 @@ var $;
             $mol_assert_equal(list.items_vary(), ['foo']);
             text.str('foo bar');
             $mol_assert_equal(text.str(), 'foo bar');
-            $mol_assert_equal(list.items_vary(), ['foo', ' bar']);
+            $mol_assert_equal(list.items_vary(), ['foo ', 'bar']);
             text.str('foo lol bar');
             $mol_assert_equal(text.str(), 'foo lol bar');
-            $mol_assert_equal(list.items_vary(), ['foo', ' lol', ' bar']);
+            $mol_assert_equal(list.items_vary(), ['foo ', 'lol ', 'bar']);
             text.str('lol bar');
             $mol_assert_equal(text.str(), 'lol bar');
-            $mol_assert_equal(list.items_vary(), ['lol', ' bar']);
+            $mol_assert_equal(list.items_vary(), ['lol ', 'bar']);
             text.str('foo bar');
             $mol_assert_equal(text.str(), 'foo bar');
-            $mol_assert_equal(list.items_vary(), ['foo', ' bar']);
+            $mol_assert_equal(list.items_vary(), ['foo ', 'bar']);
             text.str('foo  bar');
             $mol_assert_equal(text.str(), 'foo  bar');
-            $mol_assert_equal(list.items_vary(), ['foo', ' ', ' bar']);
+            $mol_assert_equal(list.items_vary(), ['foo ', ' ', 'bar']);
             text.str('foo  BarBar');
             $mol_assert_equal(text.str(), 'foo  BarBar');
-            $mol_assert_equal(list.items_vary(), ['foo', ' ', ' Bar', 'Bar']);
+            $mol_assert_equal(list.items_vary(), ['foo ', ' ', 'Bar', 'Bar']);
         },
         async 'str: Offset <=> Point'($) {
             const land = $hyoo_crus_land.make({ $ });
