@@ -693,7 +693,7 @@ namespace $ {
 		}
 		
 		broadcast() {
-			this.realm()?.yard().units_neonatals.add( this.ref() )
+			this.realm()?.yard().lands_neonatals.add( this.ref() )
 		}
 		
 		@ $mol_mem

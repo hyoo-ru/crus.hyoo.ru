@@ -22,7 +22,7 @@ namespace $ {
 		king_grab( preset : $hyoo_crus_rank_preset = { '': $hyoo_crus_rank.get } ) {
 			
 			const king = this.$.$hyoo_crus_auth.grab()
-			const colony = ( $mol_wire_sync( $hyoo_crus_land ) as typeof $hyoo_crus_land ).make({})
+			const colony = ( $mol_wire_sync( $hyoo_crus_land ) as typeof $hyoo_crus_land ).make({ $: this.$ })
 			colony.auth = $mol_const( king )
 			
 			if( ( preset[''] ?? $hyoo_crus_rank.nil ) === $hyoo_crus_rank.nil ) {

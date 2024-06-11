@@ -8,7 +8,7 @@ namespace $ {
 			return null! as $hyoo_crus_realm
 		}
 		
-		units_neonatals = new $mol_wire_set< $hyoo_crus_ref >()
+		lands_neonatals = new $mol_wire_set< $hyoo_crus_ref >()
 		
 		static masters = [] as string[]
 		
@@ -113,18 +113,30 @@ namespace $ {
 		
 		@ $mol_mem
 		sync() {
+			this.sync_neonatals()
+			this.sync_port()
+		}
+		
+		@ $mol_mem
+		sync_neonatals() {
 			for( const port of this.ports() ) {
-				
-				for( const land of this.units_neonatals ) {
+				for( const land of this.lands_neonatals ) {
 					this.sync_port_land([ port, land ])
 				}
-				
-				for( const land of this.port_lands( port ) ) {
-					this.sync_port_land([ port, land ])
-				}
-				
 			}
-			this.units_neonatals.clear()
+			this.lands_neonatals.clear()
+		}
+		
+		@ $mol_mem
+		sync_port() {
+			for( const port of this.ports() ) this.sync_port_lands( port )
+		}
+		
+		@ $mol_mem_key
+		sync_port_lands( port: $mol_rest_port ) {
+			for( const land of this.port_lands( port ) ) {
+				this.sync_port_land([ port, land ])
+			}
 		}
 		
 		@ $mol_mem
