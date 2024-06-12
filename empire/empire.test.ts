@@ -20,10 +20,13 @@ namespace $.$$ {
 			const pub = { '': $hyoo_crus_rank.get }
 			const target = targets.path( [ Place.SPb, Type.Alarm, start ], pub )!.remote_make( pub )!
 			targets.path( [ Place.SPb, Type.Alarm, after ], pub )!.add( target.ref() )
+			targets.path( [ Place.SPb, Type.Skip, start ], pub )!.add( target.ref() )
+			targets.path( [ Place.Msk, Type.Alarm, start ], pub )!.add( target.ref() )
 			
-			$mol_assert_equal( targets.keys([]), [ Place.SPb ] )
-			$mol_assert_equal( targets.keys([ Place.SPb ]), [ Type.Alarm ] )
+			$mol_assert_equal( targets.keys([]), [ Place.Msk, Place.SPb ] )
+			$mol_assert_equal( targets.keys([ Place.SPb ]), [ Type.Skip, Type.Alarm ] )
 			$mol_assert_equal( targets.keys([ Place.SPb, Type.Alarm ]), [ after, start ] )
+			
 			$mol_assert_equal( targets.path([ Place.SPb, Type.Alarm, before ])?.remote_list() ?? [], [] )
 			$mol_assert_equal( targets.path([ Place.SPb, Type.Alarm, start ])?.remote_list(), [ target ] )
 			$mol_assert_equal( targets.path([ Place.SPb, Type.Alarm, after ])?.remote_list(), [ target ] )
