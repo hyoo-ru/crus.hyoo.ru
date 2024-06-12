@@ -48,7 +48,7 @@ namespace $.$$ {
 		}
 		
 		unit_time( index: number ) {
-			return new $mol_time_moment( this.node().units()[ index ].time() ).toString( 'YYYY-MM-DD hh:mm:ss.sss' )
+			return $hyoo_crus_time_dump( this.node().units()[ index ].time() )
 		}
 		
 		unit_value( index: number ) {
