@@ -25,7 +25,7 @@ namespace $ {
 		static rock( hash: Uint8Array, next?: Uint8Array ) {
 			$mol_wire_solid()
 			const buf = this.rock_file( hash ).buffer( next )
-			if( !next ) return buf
+			if( next ) return buf
 			if( $mol_compare_deep( hash, this.hash( buf ) ) ) return buf
 			return null
 		}
