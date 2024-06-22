@@ -62,7 +62,7 @@ declare namespace $ {
 declare namespace $ {
     let $mol_wire_auto_sub: $mol_wire_sub | null;
     function $mol_wire_auto(next?: $mol_wire_sub | null): $mol_wire_sub | null;
-    const $mol_wire_affected: (number | $mol_wire_sub)[];
+    const $mol_wire_affected: ($mol_wire_sub | number)[];
 }
 
 declare namespace $ {
@@ -154,9 +154,9 @@ declare namespace $ {
 
 declare namespace $ {
     class $mol_object2 {
-        static $: typeof $$;
+        static $: $;
         [Symbol.toStringTag]: string;
-        [$mol_ambient_ref]: typeof $$;
+        [$mol_ambient_ref]: $;
         get $(): $;
         set $(next: $);
         static create<Instance>(this: new (init?: (instance: any) => void) => Instance, init?: (instance: $mol_type_writable<Instance>) => void): Instance;
@@ -387,9 +387,9 @@ declare namespace $ {
 declare namespace $ {
     function $mol_wire_method<Host extends object, Args extends readonly any[]>(host: Host, field: PropertyKey, descr?: TypedPropertyDescriptor<(...args: Args) => any>): {
         value: (this: Host, ...args: Args) => any;
-        enumerable?: boolean | undefined;
-        configurable?: boolean | undefined;
-        writable?: boolean | undefined;
+        enumerable?: boolean;
+        configurable?: boolean;
+        writable?: boolean;
         get?: (() => (...args: Args) => any) | undefined;
         set?: ((value: (...args: Args) => any) => void) | undefined;
     };
@@ -488,8 +488,6 @@ declare namespace $ {
 declare namespace $ {
 }
 
-/// <reference types="node" />
-/// <reference types="node" />
 declare namespace $ {
     function $mol_exec(this: $, dir: string, command: string, ...args: string[]): import("child_process").SpawnSyncReturns<Buffer>;
 }
@@ -572,9 +570,9 @@ declare namespace $ {
 declare namespace $ {
     function $mol_wire_plex<Args extends [any, ...any[]]>(host: object, field: string, descr?: TypedPropertyDescriptor<(...args: Args) => any>): {
         value: (this: typeof host, ...args: Args) => any;
-        enumerable?: boolean | undefined;
-        configurable?: boolean | undefined;
-        writable?: boolean | undefined;
+        enumerable?: boolean;
+        configurable?: boolean;
+        writable?: boolean;
         get?: (() => (...args: Args) => any) | undefined;
         set?: ((value: (...args: Args) => any) => void) | undefined;
     };
@@ -605,7 +603,7 @@ declare namespace $ {
         port: $mol_rest_port;
         method(): string;
         uri(): URL;
-        type(): `image/${string}` | `text/${string}` | `audio/${string}` | `video/${string}` | `font/${string}` | `application/${string}` | `model/${string}`;
+        type(): $mol_rest_port_mime;
         data(): null | string | Uint8Array | Element | object;
         bin(): Uint8Array;
         text(): string;
@@ -692,7 +690,7 @@ declare namespace $ {
 declare namespace $ {
     let $mol_jsx_prefix: string;
     let $mol_jsx_crumbs: string;
-    let $mol_jsx_booked: Set<string> | null;
+    let $mol_jsx_booked: null | Set<string>;
     let $mol_jsx_document: $mol_jsx.JSX.ElementClass['ownerDocument'];
     const $mol_jsx_frag = "";
     function $mol_jsx<Props extends $mol_jsx.JSX.IntrinsicAttributes, Children extends Array<Node | string>>(Elem: string | ((props: Props, ...children: Children) => Element), props: Props, ...childNodes: Children): Element | DocumentFragment;
@@ -824,7 +822,7 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    let $mol_file_extensions: Record<string, `image/${string}` | `text/${string}` | `audio/${string}` | `video/${string}` | `font/${string}` | `application/${string}` | `model/${string}`>;
+    let $mol_file_extensions: Record<string, $mol_rest_port_mime>;
 }
 
 declare namespace $ {
@@ -845,7 +843,7 @@ declare namespace $ {
         input: InstanceType<$node['http']['IncomingMessage']>;
         method(): string;
         uri(): URL;
-        type(): `image/${string}` | `text/${string}` | `audio/${string}` | `video/${string}` | `font/${string}` | `application/${string}` | `model/${string}`;
+        type(): $mol_rest_port_mime;
         data(): null | string | Uint8Array | Element | object;
         route(uri: URL): $mol_rest_message_http;
     }
@@ -962,8 +960,6 @@ declare namespace $ {
     function $mol_wire_solid(): void;
 }
 
-/// <reference types="node" />
-/// <reference types="node" />
 declare namespace $ {
     class $mol_rest_server extends $mol_object {
         port(): number;
@@ -1312,7 +1308,7 @@ declare namespace $ {
         data = 0,
         meta = 1
     }
-    function $hyoo_crus_area_of(numb: string): "data" | "meta";
+    function $hyoo_crus_area_of(numb: string): keyof typeof $hyoo_crus_area;
     function $hyoo_crus_area_to(numb: string, area: keyof typeof $hyoo_crus_area): string;
 }
 
@@ -1372,7 +1368,7 @@ declare namespace $ {
         mix(mixin: Uint8Array): void;
         sign(next?: ArrayLike<number>): Uint8Array;
         signed(): boolean;
-        _land: $hyoo_crus_land | null;
+        _land: null | $hyoo_crus_land;
         dump(): {};
     }
 }
@@ -1475,11 +1471,11 @@ declare namespace $ {
         keys = 3
     }
     class $hyoo_crus_gist extends $hyoo_crus_unit {
-        _vary: $hyoo_crus_vary_type | undefined;
-        _open: Uint8Array | null;
-        hint(tip?: "time" | "json" | "bin" | "tree" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom", tag?: "keys" | "term" | "solo" | "vals"): void;
-        tag(): "keys" | "term" | "solo" | "vals";
-        tip(): "time" | "json" | "bin" | "tree" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom";
+        _vary: undefined | $hyoo_crus_vary_type;
+        _open: null | Uint8Array;
+        hint(tip?: keyof typeof $hyoo_crus_vary_tip, tag?: keyof typeof $hyoo_crus_gist_tag): void;
+        tag(): keyof typeof $hyoo_crus_gist_tag;
+        tip(): keyof typeof $hyoo_crus_vary_tip;
         utf(): boolean;
         nil(): boolean;
         size(next?: number): number;
@@ -1491,9 +1487,9 @@ declare namespace $ {
         key(): string;
         _lead: string;
         lead(next?: string): string;
-        hash(next?: Uint8Array, tip?: "time" | "json" | "bin" | "tree" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom", tag?: "keys" | "term" | "solo" | "vals"): Uint8Array;
+        hash(next?: Uint8Array, tip?: keyof typeof $hyoo_crus_vary_tip, tag?: keyof typeof $hyoo_crus_gist_tag): Uint8Array;
         meta(): Uint8Array;
-        data(next?: Uint8Array, tip?: "time" | "json" | "bin" | "tree" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom", tag?: "keys" | "term" | "solo" | "vals"): Uint8Array;
+        data(next?: Uint8Array, tip?: keyof typeof $hyoo_crus_vary_tip, tag?: keyof typeof $hyoo_crus_gist_tag): Uint8Array;
         idea(): number;
         static compare(left: $hyoo_crus_gist, right: $hyoo_crus_gist): number;
         dump(): {
@@ -1512,7 +1508,7 @@ declare namespace $ {
 
 declare namespace $ {
     class $hyoo_crus_node extends $mol_object {
-        static tag: "keys" | "term" | "solo" | "vals";
+        static tag: keyof typeof $hyoo_crus_gist_tag;
         land(): $hyoo_crus_land;
         head(): string;
         realm(): $hyoo_crus_realm | null;
@@ -1598,28 +1594,28 @@ declare namespace $ {
 
 declare namespace $ {
     export class $hyoo_crus_list_vary extends $hyoo_crus_node {
-        static tag: "keys" | "term" | "solo" | "vals";
-        items_vary(next?: readonly $hyoo_crus_vary_type[], tag?: "keys" | "term" | "solo" | "vals"): readonly $hyoo_crus_vary_type[];
-        splice(next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: "keys" | "term" | "solo" | "vals"): void;
+        static tag: keyof typeof $hyoo_crus_gist_tag;
+        items_vary(next?: readonly $hyoo_crus_vary_type[], tag?: keyof typeof $hyoo_crus_gist_tag): readonly $hyoo_crus_vary_type[];
+        splice(next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: keyof typeof $hyoo_crus_gist_tag): void;
         find(vary: $hyoo_crus_vary_type): $hyoo_crus_gist | null;
-        has(vary: $hyoo_crus_vary_type, next?: boolean, tag?: "keys" | "term" | "solo" | "vals"): boolean;
-        add(vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): void;
+        has(vary: $hyoo_crus_vary_type, next?: boolean, tag?: keyof typeof $hyoo_crus_gist_tag): boolean;
+        add(vary: $hyoo_crus_vary_type, tag?: keyof typeof $hyoo_crus_gist_tag): void;
         cut(vary: $hyoo_crus_vary_type): void;
         move(from: number, to: number): void;
         wipe(seat: number): void;
-        node_make<Node extends typeof $hyoo_crus_node>(Node: Node, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): InstanceType<Node>;
+        node_make<Node extends typeof $hyoo_crus_node>(Node: Node, vary: $hyoo_crus_vary_type, tag?: keyof typeof $hyoo_crus_gist_tag): InstanceType<Node>;
     }
     export function $hyoo_crus_list<Parse extends $mol_data_value>(parse: Parse): (abstract new () => {
         items(next?: readonly ReturnType<Parse>[]): readonly ReturnType<Parse>[];
-        items_vary(next?: readonly $hyoo_crus_vary_type[] | undefined, tag?: "keys" | "term" | "solo" | "vals"): readonly $hyoo_crus_vary_type[];
-        splice(next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: "keys" | "term" | "solo" | "vals"): void;
+        items_vary(next?: readonly $hyoo_crus_vary_type[], tag?: keyof typeof $hyoo_crus_gist_tag): readonly $hyoo_crus_vary_type[];
+        splice(next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: keyof typeof $hyoo_crus_gist_tag): void;
         find(vary: $hyoo_crus_vary_type): $hyoo_crus_gist | null;
-        has(vary: $hyoo_crus_vary_type, next?: boolean | undefined, tag?: "keys" | "term" | "solo" | "vals"): boolean;
-        add(vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): void;
+        has(vary: $hyoo_crus_vary_type, next?: boolean, tag?: keyof typeof $hyoo_crus_gist_tag): boolean;
+        add(vary: $hyoo_crus_vary_type, tag?: keyof typeof $hyoo_crus_gist_tag): void;
         cut(vary: $hyoo_crus_vary_type): void;
         move(from: number, to: number): void;
         wipe(seat: number): void;
-        node_make<Node extends typeof $hyoo_crus_node>(Node: Node, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): InstanceType<Node>;
+        node_make<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1, vary: $hyoo_crus_vary_type, tag?: keyof typeof $hyoo_crus_gist_tag): InstanceType<Node_1>;
         land(): $hyoo_crus_land;
         head(): string;
         realm(): $hyoo_crus_realm | null;
@@ -1631,7 +1627,7 @@ declare namespace $ {
         };
         toJSON(): string | undefined;
         cast<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1): InstanceType<Node_1>;
-        nodes<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2 | null): readonly InstanceType<Node_2>[];
+        nodes<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1 | null): readonly InstanceType<Node_1>[];
         units(): $hyoo_crus_gist[];
         filled(): boolean;
         can_change(lord?: symbol & {
@@ -1642,29 +1638,29 @@ declare namespace $ {
         destructor(): void;
         toString(): string;
         [Symbol.toStringTag]: string;
-        [$mol_ambient_ref]: typeof $$;
+        [$mol_ambient_ref]: $;
     }) & {
         parse: Parse;
-        tag: "keys" | "term" | "solo" | "vals";
+        tag: keyof typeof $hyoo_crus_gist_tag;
         make<This extends typeof $mol_object>(this: This, config: Partial<InstanceType<This>>): InstanceType<This>;
-        $: typeof $$;
-        create<Instance>(this: new (init?: ((instance: any) => void) | undefined) => Instance, init?: ((instance: $mol_type_writable<Instance>) => void) | undefined): Instance;
+        $: $;
+        create<Instance>(this: new (init?: (instance: any) => void) => Instance, init?: (instance: $mol_type_writable<Instance>) => void): Instance;
         toString(): any;
         toJSON(): any;
         destructor(): void;
         [Symbol.toPrimitive](): any;
     };
     const $hyoo_crus_list_bin_base: (abstract new () => {
-        items(next?: readonly (Uint8Array | null)[] | undefined): readonly (Uint8Array | null)[];
-        items_vary(next?: readonly $hyoo_crus_vary_type[] | undefined, tag?: "keys" | "term" | "solo" | "vals"): readonly $hyoo_crus_vary_type[];
-        splice(next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: "keys" | "term" | "solo" | "vals"): void;
+        items(next?: readonly (Uint8Array | null)[] | undefined): readonly ReturnType<typeof $hyoo_crus_vary_cast_bin>[];
+        items_vary(next?: readonly $hyoo_crus_vary_type[], tag?: keyof typeof $hyoo_crus_gist_tag): readonly $hyoo_crus_vary_type[];
+        splice(next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: keyof typeof $hyoo_crus_gist_tag): void;
         find(vary: $hyoo_crus_vary_type): $hyoo_crus_gist | null;
-        has(vary: $hyoo_crus_vary_type, next?: boolean | undefined, tag?: "keys" | "term" | "solo" | "vals"): boolean;
-        add(vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): void;
+        has(vary: $hyoo_crus_vary_type, next?: boolean, tag?: keyof typeof $hyoo_crus_gist_tag): boolean;
+        add(vary: $hyoo_crus_vary_type, tag?: keyof typeof $hyoo_crus_gist_tag): void;
         cut(vary: $hyoo_crus_vary_type): void;
         move(from: number, to: number): void;
         wipe(seat: number): void;
-        node_make<Node extends typeof $hyoo_crus_node>(Node: Node, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): InstanceType<Node>;
+        node_make<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1, vary: $hyoo_crus_vary_type, tag?: keyof typeof $hyoo_crus_gist_tag): InstanceType<Node_1>;
         land(): $hyoo_crus_land;
         head(): string;
         realm(): $hyoo_crus_realm | null;
@@ -1676,7 +1672,7 @@ declare namespace $ {
         };
         toJSON(): string | undefined;
         cast<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1): InstanceType<Node_1>;
-        nodes<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2 | null): readonly InstanceType<Node_2>[];
+        nodes<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1 | null): readonly InstanceType<Node_1>[];
         units(): $hyoo_crus_gist[];
         filled(): boolean;
         can_change(lord?: symbol & {
@@ -1687,13 +1683,13 @@ declare namespace $ {
         destructor(): void;
         toString(): string;
         [Symbol.toStringTag]: string;
-        [$mol_ambient_ref]: typeof $$;
+        [$mol_ambient_ref]: $;
     }) & {
         parse: typeof $hyoo_crus_vary_cast_bin;
-        tag: "keys" | "term" | "solo" | "vals";
+        tag: keyof typeof $hyoo_crus_gist_tag;
         make<This extends typeof $mol_object>(this: This, config: Partial<InstanceType<This>>): InstanceType<This>;
-        $: typeof $$;
-        create<Instance>(this: new (init?: ((instance: any) => void) | undefined) => Instance, init?: ((instance: $mol_type_writable<Instance>) => void) | undefined): Instance;
+        $: $;
+        create<Instance>(this: new (init?: (instance: any) => void) => Instance, init?: (instance: $mol_type_writable<Instance>) => void): Instance;
         toString(): any;
         toJSON(): any;
         destructor(): void;
@@ -1702,16 +1698,16 @@ declare namespace $ {
     export class $hyoo_crus_list_bin extends $hyoo_crus_list_bin_base {
     }
     const $hyoo_crus_list_bool_base: (abstract new () => {
-        items(next?: readonly (boolean | null)[] | undefined): readonly (boolean | null)[];
-        items_vary(next?: readonly $hyoo_crus_vary_type[] | undefined, tag?: "keys" | "term" | "solo" | "vals"): readonly $hyoo_crus_vary_type[];
-        splice(next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: "keys" | "term" | "solo" | "vals"): void;
+        items(next?: readonly (boolean | null)[] | undefined): readonly ReturnType<typeof $hyoo_crus_vary_cast_bool>[];
+        items_vary(next?: readonly $hyoo_crus_vary_type[], tag?: keyof typeof $hyoo_crus_gist_tag): readonly $hyoo_crus_vary_type[];
+        splice(next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: keyof typeof $hyoo_crus_gist_tag): void;
         find(vary: $hyoo_crus_vary_type): $hyoo_crus_gist | null;
-        has(vary: $hyoo_crus_vary_type, next?: boolean | undefined, tag?: "keys" | "term" | "solo" | "vals"): boolean;
-        add(vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): void;
+        has(vary: $hyoo_crus_vary_type, next?: boolean, tag?: keyof typeof $hyoo_crus_gist_tag): boolean;
+        add(vary: $hyoo_crus_vary_type, tag?: keyof typeof $hyoo_crus_gist_tag): void;
         cut(vary: $hyoo_crus_vary_type): void;
         move(from: number, to: number): void;
         wipe(seat: number): void;
-        node_make<Node extends typeof $hyoo_crus_node>(Node: Node, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): InstanceType<Node>;
+        node_make<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1, vary: $hyoo_crus_vary_type, tag?: keyof typeof $hyoo_crus_gist_tag): InstanceType<Node_1>;
         land(): $hyoo_crus_land;
         head(): string;
         realm(): $hyoo_crus_realm | null;
@@ -1723,7 +1719,7 @@ declare namespace $ {
         };
         toJSON(): string | undefined;
         cast<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1): InstanceType<Node_1>;
-        nodes<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2 | null): readonly InstanceType<Node_2>[];
+        nodes<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1 | null): readonly InstanceType<Node_1>[];
         units(): $hyoo_crus_gist[];
         filled(): boolean;
         can_change(lord?: symbol & {
@@ -1734,13 +1730,13 @@ declare namespace $ {
         destructor(): void;
         toString(): string;
         [Symbol.toStringTag]: string;
-        [$mol_ambient_ref]: typeof $$;
+        [$mol_ambient_ref]: $;
     }) & {
         parse: typeof $hyoo_crus_vary_cast_bool;
-        tag: "keys" | "term" | "solo" | "vals";
+        tag: keyof typeof $hyoo_crus_gist_tag;
         make<This extends typeof $mol_object>(this: This, config: Partial<InstanceType<This>>): InstanceType<This>;
-        $: typeof $$;
-        create<Instance>(this: new (init?: ((instance: any) => void) | undefined) => Instance, init?: ((instance: $mol_type_writable<Instance>) => void) | undefined): Instance;
+        $: $;
+        create<Instance>(this: new (init?: (instance: any) => void) => Instance, init?: (instance: $mol_type_writable<Instance>) => void): Instance;
         toString(): any;
         toJSON(): any;
         destructor(): void;
@@ -1749,16 +1745,16 @@ declare namespace $ {
     export class $hyoo_crus_list_bool extends $hyoo_crus_list_bool_base {
     }
     const $hyoo_crus_list_int_base: (abstract new () => {
-        items(next?: readonly (bigint | null)[] | undefined): readonly (bigint | null)[];
-        items_vary(next?: readonly $hyoo_crus_vary_type[] | undefined, tag?: "keys" | "term" | "solo" | "vals"): readonly $hyoo_crus_vary_type[];
-        splice(next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: "keys" | "term" | "solo" | "vals"): void;
+        items(next?: readonly (bigint | null)[] | undefined): readonly ReturnType<typeof $hyoo_crus_vary_cast_int>[];
+        items_vary(next?: readonly $hyoo_crus_vary_type[], tag?: keyof typeof $hyoo_crus_gist_tag): readonly $hyoo_crus_vary_type[];
+        splice(next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: keyof typeof $hyoo_crus_gist_tag): void;
         find(vary: $hyoo_crus_vary_type): $hyoo_crus_gist | null;
-        has(vary: $hyoo_crus_vary_type, next?: boolean | undefined, tag?: "keys" | "term" | "solo" | "vals"): boolean;
-        add(vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): void;
+        has(vary: $hyoo_crus_vary_type, next?: boolean, tag?: keyof typeof $hyoo_crus_gist_tag): boolean;
+        add(vary: $hyoo_crus_vary_type, tag?: keyof typeof $hyoo_crus_gist_tag): void;
         cut(vary: $hyoo_crus_vary_type): void;
         move(from: number, to: number): void;
         wipe(seat: number): void;
-        node_make<Node extends typeof $hyoo_crus_node>(Node: Node, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): InstanceType<Node>;
+        node_make<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1, vary: $hyoo_crus_vary_type, tag?: keyof typeof $hyoo_crus_gist_tag): InstanceType<Node_1>;
         land(): $hyoo_crus_land;
         head(): string;
         realm(): $hyoo_crus_realm | null;
@@ -1770,7 +1766,7 @@ declare namespace $ {
         };
         toJSON(): string | undefined;
         cast<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1): InstanceType<Node_1>;
-        nodes<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2 | null): readonly InstanceType<Node_2>[];
+        nodes<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1 | null): readonly InstanceType<Node_1>[];
         units(): $hyoo_crus_gist[];
         filled(): boolean;
         can_change(lord?: symbol & {
@@ -1781,13 +1777,13 @@ declare namespace $ {
         destructor(): void;
         toString(): string;
         [Symbol.toStringTag]: string;
-        [$mol_ambient_ref]: typeof $$;
+        [$mol_ambient_ref]: $;
     }) & {
         parse: typeof $hyoo_crus_vary_cast_int;
-        tag: "keys" | "term" | "solo" | "vals";
+        tag: keyof typeof $hyoo_crus_gist_tag;
         make<This extends typeof $mol_object>(this: This, config: Partial<InstanceType<This>>): InstanceType<This>;
-        $: typeof $$;
-        create<Instance>(this: new (init?: ((instance: any) => void) | undefined) => Instance, init?: ((instance: $mol_type_writable<Instance>) => void) | undefined): Instance;
+        $: $;
+        create<Instance>(this: new (init?: (instance: any) => void) => Instance, init?: (instance: $mol_type_writable<Instance>) => void): Instance;
         toString(): any;
         toJSON(): any;
         destructor(): void;
@@ -1796,16 +1792,16 @@ declare namespace $ {
     export class $hyoo_crus_list_int extends $hyoo_crus_list_int_base {
     }
     const $hyoo_crus_list_real_base: (abstract new () => {
-        items(next?: readonly (number | null)[] | undefined): readonly (number | null)[];
-        items_vary(next?: readonly $hyoo_crus_vary_type[] | undefined, tag?: "keys" | "term" | "solo" | "vals"): readonly $hyoo_crus_vary_type[];
-        splice(next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: "keys" | "term" | "solo" | "vals"): void;
+        items(next?: readonly (number | null)[] | undefined): readonly ReturnType<typeof $hyoo_crus_vary_cast_real>[];
+        items_vary(next?: readonly $hyoo_crus_vary_type[], tag?: keyof typeof $hyoo_crus_gist_tag): readonly $hyoo_crus_vary_type[];
+        splice(next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: keyof typeof $hyoo_crus_gist_tag): void;
         find(vary: $hyoo_crus_vary_type): $hyoo_crus_gist | null;
-        has(vary: $hyoo_crus_vary_type, next?: boolean | undefined, tag?: "keys" | "term" | "solo" | "vals"): boolean;
-        add(vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): void;
+        has(vary: $hyoo_crus_vary_type, next?: boolean, tag?: keyof typeof $hyoo_crus_gist_tag): boolean;
+        add(vary: $hyoo_crus_vary_type, tag?: keyof typeof $hyoo_crus_gist_tag): void;
         cut(vary: $hyoo_crus_vary_type): void;
         move(from: number, to: number): void;
         wipe(seat: number): void;
-        node_make<Node extends typeof $hyoo_crus_node>(Node: Node, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): InstanceType<Node>;
+        node_make<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1, vary: $hyoo_crus_vary_type, tag?: keyof typeof $hyoo_crus_gist_tag): InstanceType<Node_1>;
         land(): $hyoo_crus_land;
         head(): string;
         realm(): $hyoo_crus_realm | null;
@@ -1817,7 +1813,7 @@ declare namespace $ {
         };
         toJSON(): string | undefined;
         cast<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1): InstanceType<Node_1>;
-        nodes<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2 | null): readonly InstanceType<Node_2>[];
+        nodes<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1 | null): readonly InstanceType<Node_1>[];
         units(): $hyoo_crus_gist[];
         filled(): boolean;
         can_change(lord?: symbol & {
@@ -1828,13 +1824,13 @@ declare namespace $ {
         destructor(): void;
         toString(): string;
         [Symbol.toStringTag]: string;
-        [$mol_ambient_ref]: typeof $$;
+        [$mol_ambient_ref]: $;
     }) & {
         parse: typeof $hyoo_crus_vary_cast_real;
-        tag: "keys" | "term" | "solo" | "vals";
+        tag: keyof typeof $hyoo_crus_gist_tag;
         make<This extends typeof $mol_object>(this: This, config: Partial<InstanceType<This>>): InstanceType<This>;
-        $: typeof $$;
-        create<Instance>(this: new (init?: ((instance: any) => void) | undefined) => Instance, init?: ((instance: $mol_type_writable<Instance>) => void) | undefined): Instance;
+        $: $;
+        create<Instance>(this: new (init?: (instance: any) => void) => Instance, init?: (instance: $mol_type_writable<Instance>) => void): Instance;
         toString(): any;
         toJSON(): any;
         destructor(): void;
@@ -1845,18 +1841,16 @@ declare namespace $ {
     const $hyoo_crus_list_ref_base_1: (abstract new () => {
         items(next?: readonly ((symbol & {
             $hyoo_crus_ref: symbol;
-        }) | null)[] | undefined): readonly ((symbol & {
-            $hyoo_crus_ref: symbol;
-        }) | null)[];
-        items_vary(next?: readonly $hyoo_crus_vary_type[] | undefined, tag?: "keys" | "term" | "solo" | "vals"): readonly $hyoo_crus_vary_type[];
-        splice(next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: "keys" | "term" | "solo" | "vals"): void;
+        }) | null)[] | undefined): readonly ReturnType<typeof $hyoo_crus_vary_cast_ref>[];
+        items_vary(next?: readonly $hyoo_crus_vary_type[], tag?: keyof typeof $hyoo_crus_gist_tag): readonly $hyoo_crus_vary_type[];
+        splice(next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: keyof typeof $hyoo_crus_gist_tag): void;
         find(vary: $hyoo_crus_vary_type): $hyoo_crus_gist | null;
-        has(vary: $hyoo_crus_vary_type, next?: boolean | undefined, tag?: "keys" | "term" | "solo" | "vals"): boolean;
-        add(vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): void;
+        has(vary: $hyoo_crus_vary_type, next?: boolean, tag?: keyof typeof $hyoo_crus_gist_tag): boolean;
+        add(vary: $hyoo_crus_vary_type, tag?: keyof typeof $hyoo_crus_gist_tag): void;
         cut(vary: $hyoo_crus_vary_type): void;
         move(from: number, to: number): void;
         wipe(seat: number): void;
-        node_make<Node extends typeof $hyoo_crus_node>(Node: Node, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): InstanceType<Node>;
+        node_make<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1, vary: $hyoo_crus_vary_type, tag?: keyof typeof $hyoo_crus_gist_tag): InstanceType<Node_1>;
         land(): $hyoo_crus_land;
         head(): string;
         realm(): $hyoo_crus_realm | null;
@@ -1868,7 +1862,7 @@ declare namespace $ {
         };
         toJSON(): string | undefined;
         cast<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1): InstanceType<Node_1>;
-        nodes<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2 | null): readonly InstanceType<Node_2>[];
+        nodes<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1 | null): readonly InstanceType<Node_1>[];
         units(): $hyoo_crus_gist[];
         filled(): boolean;
         can_change(lord?: symbol & {
@@ -1879,13 +1873,13 @@ declare namespace $ {
         destructor(): void;
         toString(): string;
         [Symbol.toStringTag]: string;
-        [$mol_ambient_ref]: typeof $$;
+        [$mol_ambient_ref]: $;
     }) & {
         parse: typeof $hyoo_crus_vary_cast_ref;
-        tag: "keys" | "term" | "solo" | "vals";
+        tag: keyof typeof $hyoo_crus_gist_tag;
         make<This extends typeof $mol_object>(this: This, config: Partial<InstanceType<This>>): InstanceType<This>;
-        $: typeof $$;
-        create<Instance>(this: new (init?: ((instance: any) => void) | undefined) => Instance, init?: ((instance: $mol_type_writable<Instance>) => void) | undefined): Instance;
+        $: $;
+        create<Instance>(this: new (init?: (instance: any) => void) => Instance, init?: (instance: $mol_type_writable<Instance>) => void): Instance;
         toString(): any;
         toJSON(): any;
         destructor(): void;
@@ -1894,16 +1888,16 @@ declare namespace $ {
     export class $hyoo_crus_list_ref extends $hyoo_crus_list_ref_base_1 {
     }
     const $hyoo_crus_list_str_base: (abstract new () => {
-        items(next?: readonly (string | null)[] | undefined): readonly (string | null)[];
-        items_vary(next?: readonly $hyoo_crus_vary_type[] | undefined, tag?: "keys" | "term" | "solo" | "vals"): readonly $hyoo_crus_vary_type[];
-        splice(next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: "keys" | "term" | "solo" | "vals"): void;
+        items(next?: readonly (string | null)[] | undefined): readonly ReturnType<typeof $hyoo_crus_vary_cast_str>[];
+        items_vary(next?: readonly $hyoo_crus_vary_type[], tag?: keyof typeof $hyoo_crus_gist_tag): readonly $hyoo_crus_vary_type[];
+        splice(next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: keyof typeof $hyoo_crus_gist_tag): void;
         find(vary: $hyoo_crus_vary_type): $hyoo_crus_gist | null;
-        has(vary: $hyoo_crus_vary_type, next?: boolean | undefined, tag?: "keys" | "term" | "solo" | "vals"): boolean;
-        add(vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): void;
+        has(vary: $hyoo_crus_vary_type, next?: boolean, tag?: keyof typeof $hyoo_crus_gist_tag): boolean;
+        add(vary: $hyoo_crus_vary_type, tag?: keyof typeof $hyoo_crus_gist_tag): void;
         cut(vary: $hyoo_crus_vary_type): void;
         move(from: number, to: number): void;
         wipe(seat: number): void;
-        node_make<Node extends typeof $hyoo_crus_node>(Node: Node, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): InstanceType<Node>;
+        node_make<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1, vary: $hyoo_crus_vary_type, tag?: keyof typeof $hyoo_crus_gist_tag): InstanceType<Node_1>;
         land(): $hyoo_crus_land;
         head(): string;
         realm(): $hyoo_crus_realm | null;
@@ -1915,7 +1909,7 @@ declare namespace $ {
         };
         toJSON(): string | undefined;
         cast<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1): InstanceType<Node_1>;
-        nodes<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2 | null): readonly InstanceType<Node_2>[];
+        nodes<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1 | null): readonly InstanceType<Node_1>[];
         units(): $hyoo_crus_gist[];
         filled(): boolean;
         can_change(lord?: symbol & {
@@ -1926,13 +1920,13 @@ declare namespace $ {
         destructor(): void;
         toString(): string;
         [Symbol.toStringTag]: string;
-        [$mol_ambient_ref]: typeof $$;
+        [$mol_ambient_ref]: $;
     }) & {
         parse: typeof $hyoo_crus_vary_cast_str;
-        tag: "keys" | "term" | "solo" | "vals";
+        tag: keyof typeof $hyoo_crus_gist_tag;
         make<This extends typeof $mol_object>(this: This, config: Partial<InstanceType<This>>): InstanceType<This>;
-        $: typeof $$;
-        create<Instance>(this: new (init?: ((instance: any) => void) | undefined) => Instance, init?: ((instance: $mol_type_writable<Instance>) => void) | undefined): Instance;
+        $: $;
+        create<Instance>(this: new (init?: (instance: any) => void) => Instance, init?: (instance: $mol_type_writable<Instance>) => void): Instance;
         toString(): any;
         toJSON(): any;
         destructor(): void;
@@ -1941,16 +1935,16 @@ declare namespace $ {
     export class $hyoo_crus_list_str extends $hyoo_crus_list_str_base {
     }
     const $hyoo_crus_list_time_base: (abstract new () => {
-        items(next?: readonly ($mol_time_moment | null)[] | undefined): readonly ($mol_time_moment | null)[];
-        items_vary(next?: readonly $hyoo_crus_vary_type[] | undefined, tag?: "keys" | "term" | "solo" | "vals"): readonly $hyoo_crus_vary_type[];
-        splice(next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: "keys" | "term" | "solo" | "vals"): void;
+        items(next?: readonly ($mol_time_moment | null)[] | undefined): readonly ReturnType<typeof $hyoo_crus_vary_cast_time>[];
+        items_vary(next?: readonly $hyoo_crus_vary_type[], tag?: keyof typeof $hyoo_crus_gist_tag): readonly $hyoo_crus_vary_type[];
+        splice(next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: keyof typeof $hyoo_crus_gist_tag): void;
         find(vary: $hyoo_crus_vary_type): $hyoo_crus_gist | null;
-        has(vary: $hyoo_crus_vary_type, next?: boolean | undefined, tag?: "keys" | "term" | "solo" | "vals"): boolean;
-        add(vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): void;
+        has(vary: $hyoo_crus_vary_type, next?: boolean, tag?: keyof typeof $hyoo_crus_gist_tag): boolean;
+        add(vary: $hyoo_crus_vary_type, tag?: keyof typeof $hyoo_crus_gist_tag): void;
         cut(vary: $hyoo_crus_vary_type): void;
         move(from: number, to: number): void;
         wipe(seat: number): void;
-        node_make<Node extends typeof $hyoo_crus_node>(Node: Node, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): InstanceType<Node>;
+        node_make<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1, vary: $hyoo_crus_vary_type, tag?: keyof typeof $hyoo_crus_gist_tag): InstanceType<Node_1>;
         land(): $hyoo_crus_land;
         head(): string;
         realm(): $hyoo_crus_realm | null;
@@ -1962,7 +1956,7 @@ declare namespace $ {
         };
         toJSON(): string | undefined;
         cast<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1): InstanceType<Node_1>;
-        nodes<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2 | null): readonly InstanceType<Node_2>[];
+        nodes<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1 | null): readonly InstanceType<Node_1>[];
         units(): $hyoo_crus_gist[];
         filled(): boolean;
         can_change(lord?: symbol & {
@@ -1973,13 +1967,13 @@ declare namespace $ {
         destructor(): void;
         toString(): string;
         [Symbol.toStringTag]: string;
-        [$mol_ambient_ref]: typeof $$;
+        [$mol_ambient_ref]: $;
     }) & {
         parse: typeof $hyoo_crus_vary_cast_time;
-        tag: "keys" | "term" | "solo" | "vals";
+        tag: keyof typeof $hyoo_crus_gist_tag;
         make<This extends typeof $mol_object>(this: This, config: Partial<InstanceType<This>>): InstanceType<This>;
-        $: typeof $$;
-        create<Instance>(this: new (init?: ((instance: any) => void) | undefined) => Instance, init?: ((instance: $mol_type_writable<Instance>) => void) | undefined): Instance;
+        $: $;
+        create<Instance>(this: new (init?: (instance: any) => void) => Instance, init?: (instance: $mol_type_writable<Instance>) => void): Instance;
         toString(): any;
         toJSON(): any;
         destructor(): void;
@@ -1988,16 +1982,16 @@ declare namespace $ {
     export class $hyoo_crus_list_time extends $hyoo_crus_list_time_base {
     }
     const $hyoo_crus_list_dur_base: (abstract new () => {
-        items(next?: readonly ($mol_time_duration | $mol_time_moment | null)[] | undefined): readonly ($mol_time_duration | $mol_time_moment | null)[];
-        items_vary(next?: readonly $hyoo_crus_vary_type[] | undefined, tag?: "keys" | "term" | "solo" | "vals"): readonly $hyoo_crus_vary_type[];
-        splice(next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: "keys" | "term" | "solo" | "vals"): void;
+        items(next?: readonly ($mol_time_duration | $mol_time_moment | null)[] | undefined): readonly ReturnType<typeof $hyoo_crus_vary_cast_dur>[];
+        items_vary(next?: readonly $hyoo_crus_vary_type[], tag?: keyof typeof $hyoo_crus_gist_tag): readonly $hyoo_crus_vary_type[];
+        splice(next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: keyof typeof $hyoo_crus_gist_tag): void;
         find(vary: $hyoo_crus_vary_type): $hyoo_crus_gist | null;
-        has(vary: $hyoo_crus_vary_type, next?: boolean | undefined, tag?: "keys" | "term" | "solo" | "vals"): boolean;
-        add(vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): void;
+        has(vary: $hyoo_crus_vary_type, next?: boolean, tag?: keyof typeof $hyoo_crus_gist_tag): boolean;
+        add(vary: $hyoo_crus_vary_type, tag?: keyof typeof $hyoo_crus_gist_tag): void;
         cut(vary: $hyoo_crus_vary_type): void;
         move(from: number, to: number): void;
         wipe(seat: number): void;
-        node_make<Node extends typeof $hyoo_crus_node>(Node: Node, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): InstanceType<Node>;
+        node_make<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1, vary: $hyoo_crus_vary_type, tag?: keyof typeof $hyoo_crus_gist_tag): InstanceType<Node_1>;
         land(): $hyoo_crus_land;
         head(): string;
         realm(): $hyoo_crus_realm | null;
@@ -2009,7 +2003,7 @@ declare namespace $ {
         };
         toJSON(): string | undefined;
         cast<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1): InstanceType<Node_1>;
-        nodes<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2 | null): readonly InstanceType<Node_2>[];
+        nodes<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1 | null): readonly InstanceType<Node_1>[];
         units(): $hyoo_crus_gist[];
         filled(): boolean;
         can_change(lord?: symbol & {
@@ -2020,13 +2014,13 @@ declare namespace $ {
         destructor(): void;
         toString(): string;
         [Symbol.toStringTag]: string;
-        [$mol_ambient_ref]: typeof $$;
+        [$mol_ambient_ref]: $;
     }) & {
         parse: typeof $hyoo_crus_vary_cast_dur;
-        tag: "keys" | "term" | "solo" | "vals";
+        tag: keyof typeof $hyoo_crus_gist_tag;
         make<This extends typeof $mol_object>(this: This, config: Partial<InstanceType<This>>): InstanceType<This>;
-        $: typeof $$;
-        create<Instance>(this: new (init?: ((instance: any) => void) | undefined) => Instance, init?: ((instance: $mol_type_writable<Instance>) => void) | undefined): Instance;
+        $: $;
+        create<Instance>(this: new (init?: (instance: any) => void) => Instance, init?: (instance: $mol_type_writable<Instance>) => void): Instance;
         toString(): any;
         toJSON(): any;
         destructor(): void;
@@ -2035,16 +2029,16 @@ declare namespace $ {
     export class $hyoo_crus_list_dur extends $hyoo_crus_list_dur_base {
     }
     const $hyoo_crus_list_range_base: (abstract new () => {
-        items(next?: readonly ($mol_time_interval | null)[] | undefined): readonly ($mol_time_interval | null)[];
-        items_vary(next?: readonly $hyoo_crus_vary_type[] | undefined, tag?: "keys" | "term" | "solo" | "vals"): readonly $hyoo_crus_vary_type[];
-        splice(next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: "keys" | "term" | "solo" | "vals"): void;
+        items(next?: readonly ($mol_time_interval | null)[] | undefined): readonly ReturnType<typeof $hyoo_crus_vary_cast_range>[];
+        items_vary(next?: readonly $hyoo_crus_vary_type[], tag?: keyof typeof $hyoo_crus_gist_tag): readonly $hyoo_crus_vary_type[];
+        splice(next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: keyof typeof $hyoo_crus_gist_tag): void;
         find(vary: $hyoo_crus_vary_type): $hyoo_crus_gist | null;
-        has(vary: $hyoo_crus_vary_type, next?: boolean | undefined, tag?: "keys" | "term" | "solo" | "vals"): boolean;
-        add(vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): void;
+        has(vary: $hyoo_crus_vary_type, next?: boolean, tag?: keyof typeof $hyoo_crus_gist_tag): boolean;
+        add(vary: $hyoo_crus_vary_type, tag?: keyof typeof $hyoo_crus_gist_tag): void;
         cut(vary: $hyoo_crus_vary_type): void;
         move(from: number, to: number): void;
         wipe(seat: number): void;
-        node_make<Node extends typeof $hyoo_crus_node>(Node: Node, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): InstanceType<Node>;
+        node_make<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1, vary: $hyoo_crus_vary_type, tag?: keyof typeof $hyoo_crus_gist_tag): InstanceType<Node_1>;
         land(): $hyoo_crus_land;
         head(): string;
         realm(): $hyoo_crus_realm | null;
@@ -2056,7 +2050,7 @@ declare namespace $ {
         };
         toJSON(): string | undefined;
         cast<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1): InstanceType<Node_1>;
-        nodes<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2 | null): readonly InstanceType<Node_2>[];
+        nodes<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1 | null): readonly InstanceType<Node_1>[];
         units(): $hyoo_crus_gist[];
         filled(): boolean;
         can_change(lord?: symbol & {
@@ -2067,13 +2061,13 @@ declare namespace $ {
         destructor(): void;
         toString(): string;
         [Symbol.toStringTag]: string;
-        [$mol_ambient_ref]: typeof $$;
+        [$mol_ambient_ref]: $;
     }) & {
         parse: typeof $hyoo_crus_vary_cast_range;
-        tag: "keys" | "term" | "solo" | "vals";
+        tag: keyof typeof $hyoo_crus_gist_tag;
         make<This extends typeof $mol_object>(this: This, config: Partial<InstanceType<This>>): InstanceType<This>;
-        $: typeof $$;
-        create<Instance>(this: new (init?: ((instance: any) => void) | undefined) => Instance, init?: ((instance: $mol_type_writable<Instance>) => void) | undefined): Instance;
+        $: $;
+        create<Instance>(this: new (init?: (instance: any) => void) => Instance, init?: (instance: $mol_type_writable<Instance>) => void): Instance;
         toString(): any;
         toJSON(): any;
         destructor(): void;
@@ -2082,16 +2076,16 @@ declare namespace $ {
     export class $hyoo_crus_list_range extends $hyoo_crus_list_range_base {
     }
     const $hyoo_crus_list_json_base: (abstract new () => {
-        items(next?: readonly any[] | undefined): readonly any[];
-        items_vary(next?: readonly $hyoo_crus_vary_type[] | undefined, tag?: "keys" | "term" | "solo" | "vals"): readonly $hyoo_crus_vary_type[];
-        splice(next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: "keys" | "term" | "solo" | "vals"): void;
+        items(next?: readonly any[] | undefined): readonly ReturnType<typeof $hyoo_crus_vary_cast_json>[];
+        items_vary(next?: readonly $hyoo_crus_vary_type[], tag?: keyof typeof $hyoo_crus_gist_tag): readonly $hyoo_crus_vary_type[];
+        splice(next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: keyof typeof $hyoo_crus_gist_tag): void;
         find(vary: $hyoo_crus_vary_type): $hyoo_crus_gist | null;
-        has(vary: $hyoo_crus_vary_type, next?: boolean | undefined, tag?: "keys" | "term" | "solo" | "vals"): boolean;
-        add(vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): void;
+        has(vary: $hyoo_crus_vary_type, next?: boolean, tag?: keyof typeof $hyoo_crus_gist_tag): boolean;
+        add(vary: $hyoo_crus_vary_type, tag?: keyof typeof $hyoo_crus_gist_tag): void;
         cut(vary: $hyoo_crus_vary_type): void;
         move(from: number, to: number): void;
         wipe(seat: number): void;
-        node_make<Node extends typeof $hyoo_crus_node>(Node: Node, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): InstanceType<Node>;
+        node_make<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1, vary: $hyoo_crus_vary_type, tag?: keyof typeof $hyoo_crus_gist_tag): InstanceType<Node_1>;
         land(): $hyoo_crus_land;
         head(): string;
         realm(): $hyoo_crus_realm | null;
@@ -2103,7 +2097,7 @@ declare namespace $ {
         };
         toJSON(): string | undefined;
         cast<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1): InstanceType<Node_1>;
-        nodes<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2 | null): readonly InstanceType<Node_2>[];
+        nodes<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1 | null): readonly InstanceType<Node_1>[];
         units(): $hyoo_crus_gist[];
         filled(): boolean;
         can_change(lord?: symbol & {
@@ -2114,13 +2108,13 @@ declare namespace $ {
         destructor(): void;
         toString(): string;
         [Symbol.toStringTag]: string;
-        [$mol_ambient_ref]: typeof $$;
+        [$mol_ambient_ref]: $;
     }) & {
         parse: typeof $hyoo_crus_vary_cast_json;
-        tag: "keys" | "term" | "solo" | "vals";
+        tag: keyof typeof $hyoo_crus_gist_tag;
         make<This extends typeof $mol_object>(this: This, config: Partial<InstanceType<This>>): InstanceType<This>;
-        $: typeof $$;
-        create<Instance>(this: new (init?: ((instance: any) => void) | undefined) => Instance, init?: ((instance: $mol_type_writable<Instance>) => void) | undefined): Instance;
+        $: $;
+        create<Instance>(this: new (init?: (instance: any) => void) => Instance, init?: (instance: $mol_type_writable<Instance>) => void): Instance;
         toString(): any;
         toJSON(): any;
         destructor(): void;
@@ -2129,16 +2123,16 @@ declare namespace $ {
     export class $hyoo_crus_list_json extends $hyoo_crus_list_json_base {
     }
     const $hyoo_crus_list_jsan_base: (abstract new () => {
-        items(next?: readonly (any[] | string[] | number[] | boolean[] | {}[] | null)[] | undefined): readonly (any[] | string[] | number[] | boolean[] | {}[] | null)[];
-        items_vary(next?: readonly $hyoo_crus_vary_type[] | undefined, tag?: "keys" | "term" | "solo" | "vals"): readonly $hyoo_crus_vary_type[];
-        splice(next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: "keys" | "term" | "solo" | "vals"): void;
+        items(next?: readonly (any[] | string[] | number[] | boolean[] | {}[] | null)[] | undefined): readonly ReturnType<typeof $hyoo_crus_vary_cast_jsan>[];
+        items_vary(next?: readonly $hyoo_crus_vary_type[], tag?: keyof typeof $hyoo_crus_gist_tag): readonly $hyoo_crus_vary_type[];
+        splice(next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: keyof typeof $hyoo_crus_gist_tag): void;
         find(vary: $hyoo_crus_vary_type): $hyoo_crus_gist | null;
-        has(vary: $hyoo_crus_vary_type, next?: boolean | undefined, tag?: "keys" | "term" | "solo" | "vals"): boolean;
-        add(vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): void;
+        has(vary: $hyoo_crus_vary_type, next?: boolean, tag?: keyof typeof $hyoo_crus_gist_tag): boolean;
+        add(vary: $hyoo_crus_vary_type, tag?: keyof typeof $hyoo_crus_gist_tag): void;
         cut(vary: $hyoo_crus_vary_type): void;
         move(from: number, to: number): void;
         wipe(seat: number): void;
-        node_make<Node extends typeof $hyoo_crus_node>(Node: Node, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): InstanceType<Node>;
+        node_make<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1, vary: $hyoo_crus_vary_type, tag?: keyof typeof $hyoo_crus_gist_tag): InstanceType<Node_1>;
         land(): $hyoo_crus_land;
         head(): string;
         realm(): $hyoo_crus_realm | null;
@@ -2150,7 +2144,7 @@ declare namespace $ {
         };
         toJSON(): string | undefined;
         cast<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1): InstanceType<Node_1>;
-        nodes<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2 | null): readonly InstanceType<Node_2>[];
+        nodes<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1 | null): readonly InstanceType<Node_1>[];
         units(): $hyoo_crus_gist[];
         filled(): boolean;
         can_change(lord?: symbol & {
@@ -2161,13 +2155,13 @@ declare namespace $ {
         destructor(): void;
         toString(): string;
         [Symbol.toStringTag]: string;
-        [$mol_ambient_ref]: typeof $$;
+        [$mol_ambient_ref]: $;
     }) & {
         parse: typeof $hyoo_crus_vary_cast_jsan;
-        tag: "keys" | "term" | "solo" | "vals";
+        tag: keyof typeof $hyoo_crus_gist_tag;
         make<This extends typeof $mol_object>(this: This, config: Partial<InstanceType<This>>): InstanceType<This>;
-        $: typeof $$;
-        create<Instance>(this: new (init?: ((instance: any) => void) | undefined) => Instance, init?: ((instance: $mol_type_writable<Instance>) => void) | undefined): Instance;
+        $: $;
+        create<Instance>(this: new (init?: (instance: any) => void) => Instance, init?: (instance: $mol_type_writable<Instance>) => void): Instance;
         toString(): any;
         toJSON(): any;
         destructor(): void;
@@ -2176,16 +2170,16 @@ declare namespace $ {
     export class $hyoo_crus_list_jsan extends $hyoo_crus_list_jsan_base {
     }
     const $hyoo_crus_list_dom_base: (abstract new () => {
-        items(next?: readonly (Element | HTMLElement | $mol_jsx.JSX.Element | null)[] | undefined): readonly (Element | HTMLElement | $mol_jsx.JSX.Element | null)[];
-        items_vary(next?: readonly $hyoo_crus_vary_type[] | undefined, tag?: "keys" | "term" | "solo" | "vals"): readonly $hyoo_crus_vary_type[];
-        splice(next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: "keys" | "term" | "solo" | "vals"): void;
+        items(next?: readonly (Element | HTMLElement | $mol_jsx.JSX.Element | null)[] | undefined): readonly ReturnType<typeof $hyoo_crus_vary_cast_dom>[];
+        items_vary(next?: readonly $hyoo_crus_vary_type[], tag?: keyof typeof $hyoo_crus_gist_tag): readonly $hyoo_crus_vary_type[];
+        splice(next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: keyof typeof $hyoo_crus_gist_tag): void;
         find(vary: $hyoo_crus_vary_type): $hyoo_crus_gist | null;
-        has(vary: $hyoo_crus_vary_type, next?: boolean | undefined, tag?: "keys" | "term" | "solo" | "vals"): boolean;
-        add(vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): void;
+        has(vary: $hyoo_crus_vary_type, next?: boolean, tag?: keyof typeof $hyoo_crus_gist_tag): boolean;
+        add(vary: $hyoo_crus_vary_type, tag?: keyof typeof $hyoo_crus_gist_tag): void;
         cut(vary: $hyoo_crus_vary_type): void;
         move(from: number, to: number): void;
         wipe(seat: number): void;
-        node_make<Node extends typeof $hyoo_crus_node>(Node: Node, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): InstanceType<Node>;
+        node_make<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1, vary: $hyoo_crus_vary_type, tag?: keyof typeof $hyoo_crus_gist_tag): InstanceType<Node_1>;
         land(): $hyoo_crus_land;
         head(): string;
         realm(): $hyoo_crus_realm | null;
@@ -2197,7 +2191,7 @@ declare namespace $ {
         };
         toJSON(): string | undefined;
         cast<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1): InstanceType<Node_1>;
-        nodes<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2 | null): readonly InstanceType<Node_2>[];
+        nodes<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1 | null): readonly InstanceType<Node_1>[];
         units(): $hyoo_crus_gist[];
         filled(): boolean;
         can_change(lord?: symbol & {
@@ -2208,13 +2202,13 @@ declare namespace $ {
         destructor(): void;
         toString(): string;
         [Symbol.toStringTag]: string;
-        [$mol_ambient_ref]: typeof $$;
+        [$mol_ambient_ref]: $;
     }) & {
         parse: typeof $hyoo_crus_vary_cast_dom;
-        tag: "keys" | "term" | "solo" | "vals";
+        tag: keyof typeof $hyoo_crus_gist_tag;
         make<This extends typeof $mol_object>(this: This, config: Partial<InstanceType<This>>): InstanceType<This>;
-        $: typeof $$;
-        create<Instance>(this: new (init?: ((instance: any) => void) | undefined) => Instance, init?: ((instance: $mol_type_writable<Instance>) => void) | undefined): Instance;
+        $: $;
+        create<Instance>(this: new (init?: (instance: any) => void) => Instance, init?: (instance: $mol_type_writable<Instance>) => void): Instance;
         toString(): any;
         toJSON(): any;
         destructor(): void;
@@ -2223,16 +2217,16 @@ declare namespace $ {
     export class $hyoo_crus_list_dom extends $hyoo_crus_list_dom_base {
     }
     const $hyoo_crus_list_tree_base: (abstract new () => {
-        items(next?: readonly ($mol_tree2 | null)[] | undefined): readonly ($mol_tree2 | null)[];
-        items_vary(next?: readonly $hyoo_crus_vary_type[] | undefined, tag?: "keys" | "term" | "solo" | "vals"): readonly $hyoo_crus_vary_type[];
-        splice(next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: "keys" | "term" | "solo" | "vals"): void;
+        items(next?: readonly ($mol_tree2 | null)[] | undefined): readonly ReturnType<typeof $hyoo_crus_vary_cast_tree>[];
+        items_vary(next?: readonly $hyoo_crus_vary_type[], tag?: keyof typeof $hyoo_crus_gist_tag): readonly $hyoo_crus_vary_type[];
+        splice(next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: keyof typeof $hyoo_crus_gist_tag): void;
         find(vary: $hyoo_crus_vary_type): $hyoo_crus_gist | null;
-        has(vary: $hyoo_crus_vary_type, next?: boolean | undefined, tag?: "keys" | "term" | "solo" | "vals"): boolean;
-        add(vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): void;
+        has(vary: $hyoo_crus_vary_type, next?: boolean, tag?: keyof typeof $hyoo_crus_gist_tag): boolean;
+        add(vary: $hyoo_crus_vary_type, tag?: keyof typeof $hyoo_crus_gist_tag): void;
         cut(vary: $hyoo_crus_vary_type): void;
         move(from: number, to: number): void;
         wipe(seat: number): void;
-        node_make<Node extends typeof $hyoo_crus_node>(Node: Node, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): InstanceType<Node>;
+        node_make<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1, vary: $hyoo_crus_vary_type, tag?: keyof typeof $hyoo_crus_gist_tag): InstanceType<Node_1>;
         land(): $hyoo_crus_land;
         head(): string;
         realm(): $hyoo_crus_realm | null;
@@ -2244,7 +2238,7 @@ declare namespace $ {
         };
         toJSON(): string | undefined;
         cast<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1): InstanceType<Node_1>;
-        nodes<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2 | null): readonly InstanceType<Node_2>[];
+        nodes<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1 | null): readonly InstanceType<Node_1>[];
         units(): $hyoo_crus_gist[];
         filled(): boolean;
         can_change(lord?: symbol & {
@@ -2255,13 +2249,13 @@ declare namespace $ {
         destructor(): void;
         toString(): string;
         [Symbol.toStringTag]: string;
-        [$mol_ambient_ref]: typeof $$;
+        [$mol_ambient_ref]: $;
     }) & {
         parse: typeof $hyoo_crus_vary_cast_tree;
-        tag: "keys" | "term" | "solo" | "vals";
+        tag: keyof typeof $hyoo_crus_gist_tag;
         make<This extends typeof $mol_object>(this: This, config: Partial<InstanceType<This>>): InstanceType<This>;
-        $: typeof $$;
-        create<Instance>(this: new (init?: ((instance: any) => void) | undefined) => Instance, init?: ((instance: $mol_type_writable<Instance>) => void) | undefined): Instance;
+        $: $;
+        create<Instance>(this: new (init?: (instance: any) => void) => Instance, init?: (instance: $mol_type_writable<Instance>) => void): Instance;
         toString(): any;
         toJSON(): any;
         destructor(): void;
@@ -2278,18 +2272,16 @@ declare namespace $ {
             local_make(idea?: number): Vals[number];
             items(next?: readonly ((symbol & {
                 $hyoo_crus_ref: symbol;
-            }) | null)[] | undefined): readonly ((symbol & {
-                $hyoo_crus_ref: symbol;
-            }) | null)[];
-            items_vary(next?: readonly $hyoo_crus_vary_type[] | undefined, tag?: "keys" | "term" | "solo" | "vals"): readonly $hyoo_crus_vary_type[];
-            splice(next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: "keys" | "term" | "solo" | "vals"): void;
+            }) | null)[] | undefined): readonly ReturnType<typeof $hyoo_crus_vary_cast_ref>[];
+            items_vary(next?: readonly $hyoo_crus_vary_type[], tag?: keyof typeof $hyoo_crus_gist_tag): readonly $hyoo_crus_vary_type[];
+            splice(next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: keyof typeof $hyoo_crus_gist_tag): void;
             find(vary: $hyoo_crus_vary_type): $hyoo_crus_gist | null;
-            has(vary: $hyoo_crus_vary_type, next?: boolean | undefined, tag?: "keys" | "term" | "solo" | "vals"): boolean;
-            add(vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): void;
+            has(vary: $hyoo_crus_vary_type, next?: boolean, tag?: keyof typeof $hyoo_crus_gist_tag): boolean;
+            add(vary: $hyoo_crus_vary_type, tag?: keyof typeof $hyoo_crus_gist_tag): void;
             cut(vary: $hyoo_crus_vary_type): void;
             move(from: number, to: number): void;
             wipe(seat: number): void;
-            node_make<Node extends typeof $hyoo_crus_node>(Node: Node, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): InstanceType<Node>;
+            node_make<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1, vary: $hyoo_crus_vary_type, tag?: keyof typeof $hyoo_crus_gist_tag): InstanceType<Node_1>;
             land(): $hyoo_crus_land;
             head(): string;
             realm(): $hyoo_crus_realm | null;
@@ -2301,7 +2293,7 @@ declare namespace $ {
             };
             toJSON(): string | undefined;
             cast<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1): InstanceType<Node_1>;
-            nodes<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2 | null): readonly InstanceType<Node_2>[];
+            nodes<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1 | null): readonly InstanceType<Node_1>[];
             units(): $hyoo_crus_gist[];
             filled(): boolean;
             can_change(lord?: symbol & {
@@ -2312,15 +2304,15 @@ declare namespace $ {
             destructor(): void;
             toString(): string;
             [Symbol.toStringTag]: string;
-            [$mol_ambient_ref]: typeof $$;
+            [$mol_ambient_ref]: $;
         };
         Value: Value;
         toJSON(): string;
         parse: typeof $hyoo_crus_vary_cast_ref;
-        tag: "keys" | "term" | "solo" | "vals";
+        tag: keyof typeof $hyoo_crus_gist_tag;
         make<This extends typeof $mol_object>(this: This, config: Partial<InstanceType<This>>): InstanceType<This>;
-        $: typeof $$;
-        create<Instance>(this: new (init?: ((instance: any) => void) | undefined) => Instance, init?: ((instance: $mol_type_writable<Instance>) => void) | undefined): Instance;
+        $: $;
+        create<Instance>(this: new (init?: (instance: any) => void) => Instance, init?: (instance: $mol_type_writable<Instance>) => void): Instance;
         toString(): any;
         destructor(): void;
         [Symbol.toPrimitive](): any;
@@ -2335,7 +2327,7 @@ declare namespace $ {
 declare namespace $ {
     const $hyoo_crus_dict_base: typeof $hyoo_crus_list_vary;
     export class $hyoo_crus_dict extends $hyoo_crus_dict_base {
-        static tag: "keys" | "term" | "solo" | "vals";
+        static tag: keyof typeof $hyoo_crus_gist_tag;
         keys(): readonly $hyoo_crus_vary_type[];
         dive<Node extends typeof $hyoo_crus_node>(key: $hyoo_crus_vary_type, Node: Node, auto?: any): InstanceType<Node> | null;
         static schema: Record<string, typeof $hyoo_crus_node>;
@@ -2356,16 +2348,16 @@ declare namespace $ {
             Value: Value;
             key(key: $hyoo_crus_vary_type, auto?: any): InstanceType<Value>;
             keys(): readonly $hyoo_crus_vary_type[];
-            dive<Node extends typeof $hyoo_crus_node>(key: $hyoo_crus_vary_type, Node: Node, auto?: any): InstanceType<Node> | null;
-            items_vary(next?: readonly $hyoo_crus_vary_type[] | undefined, tag?: "keys" | "term" | "solo" | "vals"): readonly $hyoo_crus_vary_type[];
-            splice(next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: "keys" | "term" | "solo" | "vals"): void;
+            dive<Node_1 extends typeof $hyoo_crus_node>(key: $hyoo_crus_vary_type, Node: Node_1, auto?: any): InstanceType<Node_1> | null;
+            items_vary(next?: readonly $hyoo_crus_vary_type[], tag?: keyof typeof $hyoo_crus_gist_tag): readonly $hyoo_crus_vary_type[];
+            splice(next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: keyof typeof $hyoo_crus_gist_tag): void;
             find(vary: $hyoo_crus_vary_type): $hyoo_crus_gist | null;
-            has(vary: $hyoo_crus_vary_type, next?: boolean | undefined, tag?: "keys" | "term" | "solo" | "vals"): boolean;
-            add(vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): void;
+            has(vary: $hyoo_crus_vary_type, next?: boolean, tag?: keyof typeof $hyoo_crus_gist_tag): boolean;
+            add(vary: $hyoo_crus_vary_type, tag?: keyof typeof $hyoo_crus_gist_tag): void;
             cut(vary: $hyoo_crus_vary_type): void;
             move(from: number, to: number): void;
             wipe(seat: number): void;
-            node_make<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): InstanceType<Node_1>;
+            node_make<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1, vary: $hyoo_crus_vary_type, tag?: keyof typeof $hyoo_crus_gist_tag): InstanceType<Node_1>;
             land(): $hyoo_crus_land;
             head(): string;
             realm(): $hyoo_crus_realm | null;
@@ -2376,8 +2368,8 @@ declare namespace $ {
                 $hyoo_crus_ref: symbol;
             };
             toJSON(): string | undefined;
-            cast<Node_2 extends typeof $hyoo_crus_node>(Node: Node_2): InstanceType<Node_2>;
-            nodes<Node_3 extends typeof $hyoo_crus_node>(Node: Node_3 | null): readonly InstanceType<Node_3>[];
+            cast<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1): InstanceType<Node_1>;
+            nodes<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1 | null): readonly InstanceType<Node_1>[];
             units(): $hyoo_crus_gist[];
             filled(): boolean;
             can_change(lord?: symbol & {
@@ -2388,22 +2380,22 @@ declare namespace $ {
             destructor(): void;
             toString(): string;
             [Symbol.toStringTag]: string;
-            [$mol_ambient_ref]: typeof $$;
+            [$mol_ambient_ref]: $;
         };
         toString(): any;
-        tag: "keys" | "term" | "solo" | "vals";
+        tag: keyof typeof $hyoo_crus_gist_tag;
         schema: Record<string, typeof $hyoo_crus_node>;
         with<This extends typeof $hyoo_crus_dict, const Schema extends Record<string, {
+            tag: keyof typeof $hyoo_crus_gist_tag;
             new (): {};
-            tag: "keys" | "term" | "solo" | "vals";
         }>>(this: This, schema: Schema): Omit<This, "prototype"> & (new (...args: any[]) => $mol_type_override<InstanceType<This>, { readonly [Key in keyof Schema]: (auto?: any) => InstanceType<Schema[Key]> | null; }>) & {
             schema: {
                 [x: string]: typeof $hyoo_crus_node;
             } & Schema;
         };
-        make<This_1 extends typeof $mol_object>(this: This_1, config: Partial<InstanceType<This_1>>): InstanceType<This_1>;
-        $: typeof $$;
-        create<Instance>(this: new (init?: ((instance: any) => void) | undefined) => Instance, init?: ((instance: $mol_type_writable<Instance>) => void) | undefined): Instance;
+        make<This extends typeof $mol_object>(this: This, config: Partial<InstanceType<This>>): InstanceType<This>;
+        $: $;
+        create<Instance>(this: new (init?: (instance: any) => void) => Instance, init?: (instance: $mol_type_writable<Instance>) => void): Instance;
         toJSON(): any;
         destructor(): void;
         [Symbol.toPrimitive](): any;
@@ -2412,9 +2404,9 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    const $hyoo_crus_meta_base: Omit<typeof $hyoo_crus_dict, "prototype"> & (new (...args: any[]) => $mol_type_override<$hyoo_crus_dict, {
-        readonly Inflow: (auto?: any) => $hyoo_crus_list_ref | null;
-    }>) & {
+    const $hyoo_crus_meta_base: Omit<typeof $hyoo_crus_dict, "prototype"> & (new (...args: any[]) => $mol_type_override<InstanceType<typeof $hyoo_crus_dict>, { readonly [Key in "Inflow"]: (auto?: any) => InstanceType<{
+        readonly Inflow: typeof $hyoo_crus_list_ref;
+    }[Key]> | null; }>) & {
         schema: {
             [x: string]: typeof $hyoo_crus_node;
         } & {
@@ -2482,9 +2474,7 @@ declare namespace $ {
     };
     class $hyoo_crus_pack extends $mol_buffer {
         toBlob(): Blob;
-        parts(land?: (symbol & {
-            $hyoo_crus_ref: symbol;
-        }) | null): {
+        parts(land?: $hyoo_crus_ref | null): {
             lands: Record<symbol & {
                 $hyoo_crus_ref: symbol;
             }, {
@@ -2536,7 +2526,7 @@ declare namespace $ {
 
 declare namespace $ {
     export class $hyoo_crus_atom_vary extends $hyoo_crus_node {
-        static tag: "keys" | "term" | "solo" | "vals";
+        static tag: keyof typeof $hyoo_crus_gist_tag;
         pick_unit(): $hyoo_crus_gist | undefined;
         vary(next?: $hyoo_crus_vary_type): $hyoo_crus_vary_type;
     }
@@ -2546,7 +2536,7 @@ declare namespace $ {
     export function $hyoo_crus_atom_enum<const Options extends readonly $hyoo_crus_vary_type[]>(options: Options): (abstract new () => {
         val(next?: Options[number]): Options[number] | null;
         pick_unit(): $hyoo_crus_gist | undefined;
-        vary(next?: $hyoo_crus_vary_type | undefined): $hyoo_crus_vary_type;
+        vary(next?: $hyoo_crus_vary_type): $hyoo_crus_vary_type;
         land(): $hyoo_crus_land;
         head(): string;
         realm(): $hyoo_crus_realm | null;
@@ -2557,7 +2547,7 @@ declare namespace $ {
             $hyoo_crus_ref: symbol;
         };
         toJSON(): string | undefined;
-        cast<Node extends typeof $hyoo_crus_node>(Node: Node): InstanceType<Node>;
+        cast<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1): InstanceType<Node_1>;
         nodes<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1 | null): readonly InstanceType<Node_1>[];
         units(): $hyoo_crus_gist[];
         filled(): boolean;
@@ -2569,13 +2559,13 @@ declare namespace $ {
         destructor(): void;
         toString(): string;
         [Symbol.toStringTag]: string;
-        [$mol_ambient_ref]: typeof $$;
+        [$mol_ambient_ref]: $;
     }) & {
         options: Options;
-        tag: "keys" | "term" | "solo" | "vals";
+        tag: keyof typeof $hyoo_crus_gist_tag;
         make<This extends typeof $mol_object>(this: This, config: Partial<InstanceType<This>>): InstanceType<This>;
-        $: typeof $$;
-        create<Instance>(this: new (init?: ((instance: any) => void) | undefined) => Instance, init?: ((instance: $mol_type_writable<Instance>) => void) | undefined): Instance;
+        $: $;
+        create<Instance>(this: new (init?: (instance: any) => void) => Instance, init?: (instance: $mol_type_writable<Instance>) => void): Instance;
         toString(): any;
         toJSON(): any;
         destructor(): void;
@@ -2584,7 +2574,7 @@ declare namespace $ {
     export function $hyoo_crus_atom<Parse extends $mol_data_value>(parse: Parse): (abstract new () => {
         val(next?: ReturnType<Parse>): ReturnType<Parse> | null;
         pick_unit(): $hyoo_crus_gist | undefined;
-        vary(next?: $hyoo_crus_vary_type | undefined): $hyoo_crus_vary_type;
+        vary(next?: $hyoo_crus_vary_type): $hyoo_crus_vary_type;
         land(): $hyoo_crus_land;
         head(): string;
         realm(): $hyoo_crus_realm | null;
@@ -2595,7 +2585,7 @@ declare namespace $ {
             $hyoo_crus_ref: symbol;
         };
         toJSON(): string | undefined;
-        cast<Node extends typeof $hyoo_crus_node>(Node: Node): InstanceType<Node>;
+        cast<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1): InstanceType<Node_1>;
         nodes<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1 | null): readonly InstanceType<Node_1>[];
         units(): $hyoo_crus_gist[];
         filled(): boolean;
@@ -2607,22 +2597,22 @@ declare namespace $ {
         destructor(): void;
         toString(): string;
         [Symbol.toStringTag]: string;
-        [$mol_ambient_ref]: typeof $$;
+        [$mol_ambient_ref]: $;
     }) & {
         parse: Parse;
-        tag: "keys" | "term" | "solo" | "vals";
+        tag: keyof typeof $hyoo_crus_gist_tag;
         make<This extends typeof $mol_object>(this: This, config: Partial<InstanceType<This>>): InstanceType<This>;
-        $: typeof $$;
-        create<Instance>(this: new (init?: ((instance: any) => void) | undefined) => Instance, init?: ((instance: $mol_type_writable<Instance>) => void) | undefined): Instance;
+        $: $;
+        create<Instance>(this: new (init?: (instance: any) => void) => Instance, init?: (instance: $mol_type_writable<Instance>) => void): Instance;
         toString(): any;
         toJSON(): any;
         destructor(): void;
         [Symbol.toPrimitive](): any;
     };
     const $hyoo_crus_atom_bin_base: (abstract new () => {
-        val(next?: Uint8Array | null | undefined): Uint8Array | null;
+        val(next?: Uint8Array | null | undefined): ReturnType<typeof $hyoo_crus_vary_cast_bin> | null;
         pick_unit(): $hyoo_crus_gist | undefined;
-        vary(next?: $hyoo_crus_vary_type | undefined): $hyoo_crus_vary_type;
+        vary(next?: $hyoo_crus_vary_type): $hyoo_crus_vary_type;
         land(): $hyoo_crus_land;
         head(): string;
         realm(): $hyoo_crus_realm | null;
@@ -2633,7 +2623,7 @@ declare namespace $ {
             $hyoo_crus_ref: symbol;
         };
         toJSON(): string | undefined;
-        cast<Node extends typeof $hyoo_crus_node>(Node: Node): InstanceType<Node>;
+        cast<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1): InstanceType<Node_1>;
         nodes<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1 | null): readonly InstanceType<Node_1>[];
         units(): $hyoo_crus_gist[];
         filled(): boolean;
@@ -2645,13 +2635,13 @@ declare namespace $ {
         destructor(): void;
         toString(): string;
         [Symbol.toStringTag]: string;
-        [$mol_ambient_ref]: typeof $$;
+        [$mol_ambient_ref]: $;
     }) & {
         parse: typeof $hyoo_crus_vary_cast_bin;
-        tag: "keys" | "term" | "solo" | "vals";
+        tag: keyof typeof $hyoo_crus_gist_tag;
         make<This extends typeof $mol_object>(this: This, config: Partial<InstanceType<This>>): InstanceType<This>;
-        $: typeof $$;
-        create<Instance>(this: new (init?: ((instance: any) => void) | undefined) => Instance, init?: ((instance: $mol_type_writable<Instance>) => void) | undefined): Instance;
+        $: $;
+        create<Instance>(this: new (init?: (instance: any) => void) => Instance, init?: (instance: $mol_type_writable<Instance>) => void): Instance;
         toString(): any;
         toJSON(): any;
         destructor(): void;
@@ -2660,9 +2650,9 @@ declare namespace $ {
     export class $hyoo_crus_atom_bin extends $hyoo_crus_atom_bin_base {
     }
     const $hyoo_crus_atom_bool_base: (abstract new () => {
-        val(next?: boolean | null | undefined): boolean | null;
+        val(next?: boolean | null | undefined): ReturnType<typeof $hyoo_crus_vary_cast_bool> | null;
         pick_unit(): $hyoo_crus_gist | undefined;
-        vary(next?: $hyoo_crus_vary_type | undefined): $hyoo_crus_vary_type;
+        vary(next?: $hyoo_crus_vary_type): $hyoo_crus_vary_type;
         land(): $hyoo_crus_land;
         head(): string;
         realm(): $hyoo_crus_realm | null;
@@ -2673,7 +2663,7 @@ declare namespace $ {
             $hyoo_crus_ref: symbol;
         };
         toJSON(): string | undefined;
-        cast<Node extends typeof $hyoo_crus_node>(Node: Node): InstanceType<Node>;
+        cast<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1): InstanceType<Node_1>;
         nodes<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1 | null): readonly InstanceType<Node_1>[];
         units(): $hyoo_crus_gist[];
         filled(): boolean;
@@ -2685,13 +2675,13 @@ declare namespace $ {
         destructor(): void;
         toString(): string;
         [Symbol.toStringTag]: string;
-        [$mol_ambient_ref]: typeof $$;
+        [$mol_ambient_ref]: $;
     }) & {
         parse: typeof $hyoo_crus_vary_cast_bool;
-        tag: "keys" | "term" | "solo" | "vals";
+        tag: keyof typeof $hyoo_crus_gist_tag;
         make<This extends typeof $mol_object>(this: This, config: Partial<InstanceType<This>>): InstanceType<This>;
-        $: typeof $$;
-        create<Instance>(this: new (init?: ((instance: any) => void) | undefined) => Instance, init?: ((instance: $mol_type_writable<Instance>) => void) | undefined): Instance;
+        $: $;
+        create<Instance>(this: new (init?: (instance: any) => void) => Instance, init?: (instance: $mol_type_writable<Instance>) => void): Instance;
         toString(): any;
         toJSON(): any;
         destructor(): void;
@@ -2700,9 +2690,9 @@ declare namespace $ {
     export class $hyoo_crus_atom_bool extends $hyoo_crus_atom_bool_base {
     }
     const $hyoo_crus_atom_int_base: (abstract new () => {
-        val(next?: bigint | null | undefined): bigint | null;
+        val(next?: bigint | null | undefined): ReturnType<typeof $hyoo_crus_vary_cast_int> | null;
         pick_unit(): $hyoo_crus_gist | undefined;
-        vary(next?: $hyoo_crus_vary_type | undefined): $hyoo_crus_vary_type;
+        vary(next?: $hyoo_crus_vary_type): $hyoo_crus_vary_type;
         land(): $hyoo_crus_land;
         head(): string;
         realm(): $hyoo_crus_realm | null;
@@ -2713,7 +2703,7 @@ declare namespace $ {
             $hyoo_crus_ref: symbol;
         };
         toJSON(): string | undefined;
-        cast<Node extends typeof $hyoo_crus_node>(Node: Node): InstanceType<Node>;
+        cast<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1): InstanceType<Node_1>;
         nodes<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1 | null): readonly InstanceType<Node_1>[];
         units(): $hyoo_crus_gist[];
         filled(): boolean;
@@ -2725,13 +2715,13 @@ declare namespace $ {
         destructor(): void;
         toString(): string;
         [Symbol.toStringTag]: string;
-        [$mol_ambient_ref]: typeof $$;
+        [$mol_ambient_ref]: $;
     }) & {
         parse: typeof $hyoo_crus_vary_cast_int;
-        tag: "keys" | "term" | "solo" | "vals";
+        tag: keyof typeof $hyoo_crus_gist_tag;
         make<This extends typeof $mol_object>(this: This, config: Partial<InstanceType<This>>): InstanceType<This>;
-        $: typeof $$;
-        create<Instance>(this: new (init?: ((instance: any) => void) | undefined) => Instance, init?: ((instance: $mol_type_writable<Instance>) => void) | undefined): Instance;
+        $: $;
+        create<Instance>(this: new (init?: (instance: any) => void) => Instance, init?: (instance: $mol_type_writable<Instance>) => void): Instance;
         toString(): any;
         toJSON(): any;
         destructor(): void;
@@ -2740,9 +2730,9 @@ declare namespace $ {
     export class $hyoo_crus_atom_int extends $hyoo_crus_atom_int_base {
     }
     const $hyoo_crus_atom_real_base: (abstract new () => {
-        val(next?: number | null | undefined): number | null;
+        val(next?: number | null | undefined): ReturnType<typeof $hyoo_crus_vary_cast_real> | null;
         pick_unit(): $hyoo_crus_gist | undefined;
-        vary(next?: $hyoo_crus_vary_type | undefined): $hyoo_crus_vary_type;
+        vary(next?: $hyoo_crus_vary_type): $hyoo_crus_vary_type;
         land(): $hyoo_crus_land;
         head(): string;
         realm(): $hyoo_crus_realm | null;
@@ -2753,7 +2743,7 @@ declare namespace $ {
             $hyoo_crus_ref: symbol;
         };
         toJSON(): string | undefined;
-        cast<Node extends typeof $hyoo_crus_node>(Node: Node): InstanceType<Node>;
+        cast<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1): InstanceType<Node_1>;
         nodes<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1 | null): readonly InstanceType<Node_1>[];
         units(): $hyoo_crus_gist[];
         filled(): boolean;
@@ -2765,13 +2755,13 @@ declare namespace $ {
         destructor(): void;
         toString(): string;
         [Symbol.toStringTag]: string;
-        [$mol_ambient_ref]: typeof $$;
+        [$mol_ambient_ref]: $;
     }) & {
         parse: typeof $hyoo_crus_vary_cast_real;
-        tag: "keys" | "term" | "solo" | "vals";
+        tag: keyof typeof $hyoo_crus_gist_tag;
         make<This extends typeof $mol_object>(this: This, config: Partial<InstanceType<This>>): InstanceType<This>;
-        $: typeof $$;
-        create<Instance>(this: new (init?: ((instance: any) => void) | undefined) => Instance, init?: ((instance: $mol_type_writable<Instance>) => void) | undefined): Instance;
+        $: $;
+        create<Instance>(this: new (init?: (instance: any) => void) => Instance, init?: (instance: $mol_type_writable<Instance>) => void): Instance;
         toString(): any;
         toJSON(): any;
         destructor(): void;
@@ -2782,11 +2772,9 @@ declare namespace $ {
     const $hyoo_crus_atom_ref_base_1: (abstract new () => {
         val(next?: (symbol & {
             $hyoo_crus_ref: symbol;
-        }) | null | undefined): (symbol & {
-            $hyoo_crus_ref: symbol;
-        }) | null;
+        }) | null | undefined): ReturnType<typeof $hyoo_crus_vary_cast_ref> | null;
         pick_unit(): $hyoo_crus_gist | undefined;
-        vary(next?: $hyoo_crus_vary_type | undefined): $hyoo_crus_vary_type;
+        vary(next?: $hyoo_crus_vary_type): $hyoo_crus_vary_type;
         land(): $hyoo_crus_land;
         head(): string;
         realm(): $hyoo_crus_realm | null;
@@ -2797,7 +2785,7 @@ declare namespace $ {
             $hyoo_crus_ref: symbol;
         };
         toJSON(): string | undefined;
-        cast<Node extends typeof $hyoo_crus_node>(Node: Node): InstanceType<Node>;
+        cast<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1): InstanceType<Node_1>;
         nodes<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1 | null): readonly InstanceType<Node_1>[];
         units(): $hyoo_crus_gist[];
         filled(): boolean;
@@ -2809,13 +2797,13 @@ declare namespace $ {
         destructor(): void;
         toString(): string;
         [Symbol.toStringTag]: string;
-        [$mol_ambient_ref]: typeof $$;
+        [$mol_ambient_ref]: $;
     }) & {
         parse: typeof $hyoo_crus_vary_cast_ref;
-        tag: "keys" | "term" | "solo" | "vals";
+        tag: keyof typeof $hyoo_crus_gist_tag;
         make<This extends typeof $mol_object>(this: This, config: Partial<InstanceType<This>>): InstanceType<This>;
-        $: typeof $$;
-        create<Instance>(this: new (init?: ((instance: any) => void) | undefined) => Instance, init?: ((instance: $mol_type_writable<Instance>) => void) | undefined): Instance;
+        $: $;
+        create<Instance>(this: new (init?: (instance: any) => void) => Instance, init?: (instance: $mol_type_writable<Instance>) => void): Instance;
         toString(): any;
         toJSON(): any;
         destructor(): void;
@@ -2824,9 +2812,9 @@ declare namespace $ {
     export class $hyoo_crus_atom_ref extends $hyoo_crus_atom_ref_base_1 {
     }
     const $hyoo_crus_atom_str_base: (abstract new () => {
-        val(next?: string | null | undefined): string | null;
+        val(next?: string | null | undefined): ReturnType<typeof $hyoo_crus_vary_cast_str> | null;
         pick_unit(): $hyoo_crus_gist | undefined;
-        vary(next?: $hyoo_crus_vary_type | undefined): $hyoo_crus_vary_type;
+        vary(next?: $hyoo_crus_vary_type): $hyoo_crus_vary_type;
         land(): $hyoo_crus_land;
         head(): string;
         realm(): $hyoo_crus_realm | null;
@@ -2837,7 +2825,7 @@ declare namespace $ {
             $hyoo_crus_ref: symbol;
         };
         toJSON(): string | undefined;
-        cast<Node extends typeof $hyoo_crus_node>(Node: Node): InstanceType<Node>;
+        cast<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1): InstanceType<Node_1>;
         nodes<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1 | null): readonly InstanceType<Node_1>[];
         units(): $hyoo_crus_gist[];
         filled(): boolean;
@@ -2849,13 +2837,13 @@ declare namespace $ {
         destructor(): void;
         toString(): string;
         [Symbol.toStringTag]: string;
-        [$mol_ambient_ref]: typeof $$;
+        [$mol_ambient_ref]: $;
     }) & {
         parse: typeof $hyoo_crus_vary_cast_str;
-        tag: "keys" | "term" | "solo" | "vals";
+        tag: keyof typeof $hyoo_crus_gist_tag;
         make<This extends typeof $mol_object>(this: This, config: Partial<InstanceType<This>>): InstanceType<This>;
-        $: typeof $$;
-        create<Instance>(this: new (init?: ((instance: any) => void) | undefined) => Instance, init?: ((instance: $mol_type_writable<Instance>) => void) | undefined): Instance;
+        $: $;
+        create<Instance>(this: new (init?: (instance: any) => void) => Instance, init?: (instance: $mol_type_writable<Instance>) => void): Instance;
         toString(): any;
         toJSON(): any;
         destructor(): void;
@@ -2864,9 +2852,9 @@ declare namespace $ {
     export class $hyoo_crus_atom_str extends $hyoo_crus_atom_str_base {
     }
     const $hyoo_crus_atom_time_base: (abstract new () => {
-        val(next?: $mol_time_moment | null | undefined): $mol_time_moment | null;
+        val(next?: $mol_time_moment | null | undefined): ReturnType<typeof $hyoo_crus_vary_cast_time> | null;
         pick_unit(): $hyoo_crus_gist | undefined;
-        vary(next?: $hyoo_crus_vary_type | undefined): $hyoo_crus_vary_type;
+        vary(next?: $hyoo_crus_vary_type): $hyoo_crus_vary_type;
         land(): $hyoo_crus_land;
         head(): string;
         realm(): $hyoo_crus_realm | null;
@@ -2877,7 +2865,7 @@ declare namespace $ {
             $hyoo_crus_ref: symbol;
         };
         toJSON(): string | undefined;
-        cast<Node extends typeof $hyoo_crus_node>(Node: Node): InstanceType<Node>;
+        cast<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1): InstanceType<Node_1>;
         nodes<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1 | null): readonly InstanceType<Node_1>[];
         units(): $hyoo_crus_gist[];
         filled(): boolean;
@@ -2889,13 +2877,13 @@ declare namespace $ {
         destructor(): void;
         toString(): string;
         [Symbol.toStringTag]: string;
-        [$mol_ambient_ref]: typeof $$;
+        [$mol_ambient_ref]: $;
     }) & {
         parse: typeof $hyoo_crus_vary_cast_time;
-        tag: "keys" | "term" | "solo" | "vals";
+        tag: keyof typeof $hyoo_crus_gist_tag;
         make<This extends typeof $mol_object>(this: This, config: Partial<InstanceType<This>>): InstanceType<This>;
-        $: typeof $$;
-        create<Instance>(this: new (init?: ((instance: any) => void) | undefined) => Instance, init?: ((instance: $mol_type_writable<Instance>) => void) | undefined): Instance;
+        $: $;
+        create<Instance>(this: new (init?: (instance: any) => void) => Instance, init?: (instance: $mol_type_writable<Instance>) => void): Instance;
         toString(): any;
         toJSON(): any;
         destructor(): void;
@@ -2904,9 +2892,9 @@ declare namespace $ {
     export class $hyoo_crus_atom_time extends $hyoo_crus_atom_time_base {
     }
     const $hyoo_crus_atom_dur_base: (abstract new () => {
-        val(next?: $mol_time_duration | $mol_time_moment | null | undefined): $mol_time_duration | $mol_time_moment | null;
+        val(next?: $mol_time_duration | $mol_time_moment | null | undefined): ReturnType<typeof $hyoo_crus_vary_cast_dur> | null;
         pick_unit(): $hyoo_crus_gist | undefined;
-        vary(next?: $hyoo_crus_vary_type | undefined): $hyoo_crus_vary_type;
+        vary(next?: $hyoo_crus_vary_type): $hyoo_crus_vary_type;
         land(): $hyoo_crus_land;
         head(): string;
         realm(): $hyoo_crus_realm | null;
@@ -2917,7 +2905,7 @@ declare namespace $ {
             $hyoo_crus_ref: symbol;
         };
         toJSON(): string | undefined;
-        cast<Node extends typeof $hyoo_crus_node>(Node: Node): InstanceType<Node>;
+        cast<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1): InstanceType<Node_1>;
         nodes<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1 | null): readonly InstanceType<Node_1>[];
         units(): $hyoo_crus_gist[];
         filled(): boolean;
@@ -2929,13 +2917,13 @@ declare namespace $ {
         destructor(): void;
         toString(): string;
         [Symbol.toStringTag]: string;
-        [$mol_ambient_ref]: typeof $$;
+        [$mol_ambient_ref]: $;
     }) & {
         parse: typeof $hyoo_crus_vary_cast_dur;
-        tag: "keys" | "term" | "solo" | "vals";
+        tag: keyof typeof $hyoo_crus_gist_tag;
         make<This extends typeof $mol_object>(this: This, config: Partial<InstanceType<This>>): InstanceType<This>;
-        $: typeof $$;
-        create<Instance>(this: new (init?: ((instance: any) => void) | undefined) => Instance, init?: ((instance: $mol_type_writable<Instance>) => void) | undefined): Instance;
+        $: $;
+        create<Instance>(this: new (init?: (instance: any) => void) => Instance, init?: (instance: $mol_type_writable<Instance>) => void): Instance;
         toString(): any;
         toJSON(): any;
         destructor(): void;
@@ -2944,9 +2932,9 @@ declare namespace $ {
     export class $hyoo_crus_atom_dur extends $hyoo_crus_atom_dur_base {
     }
     const $hyoo_crus_atom_range_base: (abstract new () => {
-        val(next?: $mol_time_interval | null | undefined): $mol_time_interval | null;
+        val(next?: $mol_time_interval | null | undefined): ReturnType<typeof $hyoo_crus_vary_cast_range> | null;
         pick_unit(): $hyoo_crus_gist | undefined;
-        vary(next?: $hyoo_crus_vary_type | undefined): $hyoo_crus_vary_type;
+        vary(next?: $hyoo_crus_vary_type): $hyoo_crus_vary_type;
         land(): $hyoo_crus_land;
         head(): string;
         realm(): $hyoo_crus_realm | null;
@@ -2957,7 +2945,7 @@ declare namespace $ {
             $hyoo_crus_ref: symbol;
         };
         toJSON(): string | undefined;
-        cast<Node extends typeof $hyoo_crus_node>(Node: Node): InstanceType<Node>;
+        cast<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1): InstanceType<Node_1>;
         nodes<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1 | null): readonly InstanceType<Node_1>[];
         units(): $hyoo_crus_gist[];
         filled(): boolean;
@@ -2969,13 +2957,13 @@ declare namespace $ {
         destructor(): void;
         toString(): string;
         [Symbol.toStringTag]: string;
-        [$mol_ambient_ref]: typeof $$;
+        [$mol_ambient_ref]: $;
     }) & {
         parse: typeof $hyoo_crus_vary_cast_range;
-        tag: "keys" | "term" | "solo" | "vals";
+        tag: keyof typeof $hyoo_crus_gist_tag;
         make<This extends typeof $mol_object>(this: This, config: Partial<InstanceType<This>>): InstanceType<This>;
-        $: typeof $$;
-        create<Instance>(this: new (init?: ((instance: any) => void) | undefined) => Instance, init?: ((instance: $mol_type_writable<Instance>) => void) | undefined): Instance;
+        $: $;
+        create<Instance>(this: new (init?: (instance: any) => void) => Instance, init?: (instance: $mol_type_writable<Instance>) => void): Instance;
         toString(): any;
         toJSON(): any;
         destructor(): void;
@@ -2984,9 +2972,9 @@ declare namespace $ {
     export class $hyoo_crus_atom_range extends $hyoo_crus_atom_range_base {
     }
     const $hyoo_crus_atom_json_base: (abstract new () => {
-        val(next?: any): any;
+        val(next?: any): ReturnType<typeof $hyoo_crus_vary_cast_json> | null;
         pick_unit(): $hyoo_crus_gist | undefined;
-        vary(next?: $hyoo_crus_vary_type | undefined): $hyoo_crus_vary_type;
+        vary(next?: $hyoo_crus_vary_type): $hyoo_crus_vary_type;
         land(): $hyoo_crus_land;
         head(): string;
         realm(): $hyoo_crus_realm | null;
@@ -2997,7 +2985,7 @@ declare namespace $ {
             $hyoo_crus_ref: symbol;
         };
         toJSON(): string | undefined;
-        cast<Node extends typeof $hyoo_crus_node>(Node: Node): InstanceType<Node>;
+        cast<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1): InstanceType<Node_1>;
         nodes<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1 | null): readonly InstanceType<Node_1>[];
         units(): $hyoo_crus_gist[];
         filled(): boolean;
@@ -3009,13 +2997,13 @@ declare namespace $ {
         destructor(): void;
         toString(): string;
         [Symbol.toStringTag]: string;
-        [$mol_ambient_ref]: typeof $$;
+        [$mol_ambient_ref]: $;
     }) & {
         parse: typeof $hyoo_crus_vary_cast_json;
-        tag: "keys" | "term" | "solo" | "vals";
+        tag: keyof typeof $hyoo_crus_gist_tag;
         make<This extends typeof $mol_object>(this: This, config: Partial<InstanceType<This>>): InstanceType<This>;
-        $: typeof $$;
-        create<Instance>(this: new (init?: ((instance: any) => void) | undefined) => Instance, init?: ((instance: $mol_type_writable<Instance>) => void) | undefined): Instance;
+        $: $;
+        create<Instance>(this: new (init?: (instance: any) => void) => Instance, init?: (instance: $mol_type_writable<Instance>) => void): Instance;
         toString(): any;
         toJSON(): any;
         destructor(): void;
@@ -3024,9 +3012,9 @@ declare namespace $ {
     export class $hyoo_crus_atom_json extends $hyoo_crus_atom_json_base {
     }
     const $hyoo_crus_atom_jsan_base: (abstract new () => {
-        val(next?: any[] | string[] | number[] | boolean[] | {}[] | null | undefined): any[] | string[] | number[] | boolean[] | {}[] | null;
+        val(next?: any[] | string[] | number[] | boolean[] | {}[] | null | undefined): ReturnType<typeof $hyoo_crus_vary_cast_jsan> | null;
         pick_unit(): $hyoo_crus_gist | undefined;
-        vary(next?: $hyoo_crus_vary_type | undefined): $hyoo_crus_vary_type;
+        vary(next?: $hyoo_crus_vary_type): $hyoo_crus_vary_type;
         land(): $hyoo_crus_land;
         head(): string;
         realm(): $hyoo_crus_realm | null;
@@ -3037,7 +3025,7 @@ declare namespace $ {
             $hyoo_crus_ref: symbol;
         };
         toJSON(): string | undefined;
-        cast<Node extends typeof $hyoo_crus_node>(Node: Node): InstanceType<Node>;
+        cast<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1): InstanceType<Node_1>;
         nodes<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1 | null): readonly InstanceType<Node_1>[];
         units(): $hyoo_crus_gist[];
         filled(): boolean;
@@ -3049,13 +3037,13 @@ declare namespace $ {
         destructor(): void;
         toString(): string;
         [Symbol.toStringTag]: string;
-        [$mol_ambient_ref]: typeof $$;
+        [$mol_ambient_ref]: $;
     }) & {
         parse: typeof $hyoo_crus_vary_cast_jsan;
-        tag: "keys" | "term" | "solo" | "vals";
+        tag: keyof typeof $hyoo_crus_gist_tag;
         make<This extends typeof $mol_object>(this: This, config: Partial<InstanceType<This>>): InstanceType<This>;
-        $: typeof $$;
-        create<Instance>(this: new (init?: ((instance: any) => void) | undefined) => Instance, init?: ((instance: $mol_type_writable<Instance>) => void) | undefined): Instance;
+        $: $;
+        create<Instance>(this: new (init?: (instance: any) => void) => Instance, init?: (instance: $mol_type_writable<Instance>) => void): Instance;
         toString(): any;
         toJSON(): any;
         destructor(): void;
@@ -3064,9 +3052,9 @@ declare namespace $ {
     export class $hyoo_crus_atom_jsan extends $hyoo_crus_atom_jsan_base {
     }
     const $hyoo_crus_atom_dom_base: (abstract new () => {
-        val(next?: Element | HTMLElement | $mol_jsx.JSX.Element | null | undefined): Element | HTMLElement | $mol_jsx.JSX.Element | null;
+        val(next?: Element | HTMLElement | $mol_jsx.JSX.Element | null | undefined): ReturnType<typeof $hyoo_crus_vary_cast_dom> | null;
         pick_unit(): $hyoo_crus_gist | undefined;
-        vary(next?: $hyoo_crus_vary_type | undefined): $hyoo_crus_vary_type;
+        vary(next?: $hyoo_crus_vary_type): $hyoo_crus_vary_type;
         land(): $hyoo_crus_land;
         head(): string;
         realm(): $hyoo_crus_realm | null;
@@ -3077,7 +3065,7 @@ declare namespace $ {
             $hyoo_crus_ref: symbol;
         };
         toJSON(): string | undefined;
-        cast<Node extends typeof $hyoo_crus_node>(Node: Node): InstanceType<Node>;
+        cast<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1): InstanceType<Node_1>;
         nodes<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1 | null): readonly InstanceType<Node_1>[];
         units(): $hyoo_crus_gist[];
         filled(): boolean;
@@ -3089,13 +3077,13 @@ declare namespace $ {
         destructor(): void;
         toString(): string;
         [Symbol.toStringTag]: string;
-        [$mol_ambient_ref]: typeof $$;
+        [$mol_ambient_ref]: $;
     }) & {
         parse: typeof $hyoo_crus_vary_cast_dom;
-        tag: "keys" | "term" | "solo" | "vals";
+        tag: keyof typeof $hyoo_crus_gist_tag;
         make<This extends typeof $mol_object>(this: This, config: Partial<InstanceType<This>>): InstanceType<This>;
-        $: typeof $$;
-        create<Instance>(this: new (init?: ((instance: any) => void) | undefined) => Instance, init?: ((instance: $mol_type_writable<Instance>) => void) | undefined): Instance;
+        $: $;
+        create<Instance>(this: new (init?: (instance: any) => void) => Instance, init?: (instance: $mol_type_writable<Instance>) => void): Instance;
         toString(): any;
         toJSON(): any;
         destructor(): void;
@@ -3104,9 +3092,9 @@ declare namespace $ {
     export class $hyoo_crus_atom_dom extends $hyoo_crus_atom_dom_base {
     }
     const $hyoo_crus_atom_tree_base: (abstract new () => {
-        val(next?: $mol_tree2 | null | undefined): $mol_tree2 | null;
+        val(next?: $mol_tree2 | null | undefined): ReturnType<typeof $hyoo_crus_vary_cast_tree> | null;
         pick_unit(): $hyoo_crus_gist | undefined;
-        vary(next?: $hyoo_crus_vary_type | undefined): $hyoo_crus_vary_type;
+        vary(next?: $hyoo_crus_vary_type): $hyoo_crus_vary_type;
         land(): $hyoo_crus_land;
         head(): string;
         realm(): $hyoo_crus_realm | null;
@@ -3117,7 +3105,7 @@ declare namespace $ {
             $hyoo_crus_ref: symbol;
         };
         toJSON(): string | undefined;
-        cast<Node extends typeof $hyoo_crus_node>(Node: Node): InstanceType<Node>;
+        cast<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1): InstanceType<Node_1>;
         nodes<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1 | null): readonly InstanceType<Node_1>[];
         units(): $hyoo_crus_gist[];
         filled(): boolean;
@@ -3129,13 +3117,13 @@ declare namespace $ {
         destructor(): void;
         toString(): string;
         [Symbol.toStringTag]: string;
-        [$mol_ambient_ref]: typeof $$;
+        [$mol_ambient_ref]: $;
     }) & {
         parse: typeof $hyoo_crus_vary_cast_tree;
-        tag: "keys" | "term" | "solo" | "vals";
+        tag: keyof typeof $hyoo_crus_gist_tag;
         make<This extends typeof $mol_object>(this: This, config: Partial<InstanceType<This>>): InstanceType<This>;
-        $: typeof $$;
-        create<Instance>(this: new (init?: ((instance: any) => void) | undefined) => Instance, init?: ((instance: $mol_type_writable<Instance>) => void) | undefined): Instance;
+        $: $;
+        create<Instance>(this: new (init?: (instance: any) => void) => Instance, init?: (instance: $mol_type_writable<Instance>) => void): Instance;
         toString(): any;
         toJSON(): any;
         destructor(): void;
@@ -3150,16 +3138,14 @@ declare namespace $ {
         new (): {
             Value: Value;
             yoke(preset?: $hyoo_crus_rank_preset): $hyoo_crus_land | null;
-            remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
+            remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): null | $mol_type_result<$mol_type_result<any["Value"]>>;
             remote_ensure(preset?: $hyoo_crus_rank_preset): $mol_type_result<$mol_type_result<Value>> | null;
             local_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
             val(next?: (symbol & {
                 $hyoo_crus_ref: symbol;
-            }) | null | undefined): (symbol & {
-                $hyoo_crus_ref: symbol;
-            }) | null;
+            }) | null | undefined): ReturnType<typeof $hyoo_crus_vary_cast_ref> | null;
             pick_unit(): $hyoo_crus_gist | undefined;
-            vary(next?: $hyoo_crus_vary_type | undefined): $hyoo_crus_vary_type;
+            vary(next?: $hyoo_crus_vary_type): $hyoo_crus_vary_type;
             land(): $hyoo_crus_land;
             head(): string;
             realm(): $hyoo_crus_realm | null;
@@ -3170,7 +3156,7 @@ declare namespace $ {
                 $hyoo_crus_ref: symbol;
             };
             toJSON(): string | undefined;
-            cast<Node extends typeof $hyoo_crus_node>(Node: Node): InstanceType<Node>;
+            cast<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1): InstanceType<Node_1>;
             nodes<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1 | null): readonly InstanceType<Node_1>[];
             units(): $hyoo_crus_gist[];
             filled(): boolean;
@@ -3182,15 +3168,15 @@ declare namespace $ {
             destructor(): void;
             toString(): string;
             [Symbol.toStringTag]: string;
-            [$mol_ambient_ref]: typeof $$;
+            [$mol_ambient_ref]: $;
         };
         toString(): string;
         Value: typeof $hyoo_crus_dict;
         parse: typeof $hyoo_crus_vary_cast_ref;
-        tag: "keys" | "term" | "solo" | "vals";
+        tag: keyof typeof $hyoo_crus_gist_tag;
         make<This extends typeof $mol_object>(this: This, config: Partial<InstanceType<This>>): InstanceType<This>;
-        $: typeof $$;
-        create<Instance>(this: new (init?: ((instance: any) => void) | undefined) => Instance, init?: ((instance: $mol_type_writable<Instance>) => void) | undefined): Instance;
+        $: $;
+        create<Instance>(this: new (init?: (instance: any) => void) => Instance, init?: (instance: $mol_type_writable<Instance>) => void): Instance;
         toJSON(): any;
         destructor(): void;
         [Symbol.toPrimitive](): any;
@@ -3200,7 +3186,7 @@ declare namespace $ {
 
 declare namespace $ {
     class $hyoo_crus_land extends $mol_object {
-        realm(): $hyoo_crus_realm | null;
+        realm(): null | $hyoo_crus_realm;
         ref(): symbol & {
             $hyoo_crus_ref: symbol;
         };
@@ -3248,7 +3234,7 @@ declare namespace $ {
         gists_ordered(head: string): $hyoo_crus_gist[];
         join(): $hyoo_crus_pass;
         give(dest: $hyoo_crus_auth | null, rank: $hyoo_crus_rank): $hyoo_crus_gift;
-        post(lead: string, head: string, self: string, vary: $hyoo_crus_vary_type, tag?: "keys" | "term" | "solo" | "vals"): $hyoo_crus_gist;
+        post(lead: string, head: string, self: string, vary: $hyoo_crus_vary_type, tag?: keyof typeof $hyoo_crus_gist_tag): $hyoo_crus_gist;
         gist_move(gist: $hyoo_crus_gist, head: string, seat: number): void;
         gist_wipe(gist: $hyoo_crus_gist): void;
         broadcast(): void;
@@ -3306,7 +3292,7 @@ declare namespace $ {
         sync_land(land: $hyoo_crus_ref): void;
         sync_port_land([port, land]: [$mol_rest_port, $hyoo_crus_ref]): void;
         init_port_land([port, land]: [$mol_rest_port, $hyoo_crus_ref]): void;
-        face_port_land([port, land]: [$mol_rest_port, $hyoo_crus_ref], next?: $hyoo_crus_face_map | null): $hyoo_crus_face_map | null;
+        face_port_land([port, land]: [$mol_rest_port, $hyoo_crus_ref], next?: null | $hyoo_crus_face_map): $hyoo_crus_face_map | null;
     }
 }
 
@@ -3352,47 +3338,57 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    const $hyoo_crus_home_base: Omit<typeof $hyoo_crus_dict, "prototype"> & (new (...args: any[]) => $mol_type_override<$hyoo_crus_dict, {
-        readonly Title: (auto?: any) => $hyoo_crus_atom_str | null;
-        readonly Selection: (auto?: any) => $hyoo_crus_atom_str | null;
-        readonly Hall: (auto?: any) => {
-            Value: () => typeof $hyoo_crus_dict;
-            yoke(preset?: $hyoo_crus_rank_preset | undefined): $hyoo_crus_land | null;
-            remote(next?: $hyoo_crus_dict | null | undefined): $hyoo_crus_dict | null;
-            remote_ensure(preset?: $hyoo_crus_rank_preset | undefined): $hyoo_crus_dict | null;
-            local_ensure(): $hyoo_crus_dict | null;
-            val(next?: (symbol & {
-                $hyoo_crus_ref: symbol;
-            }) | null | undefined): (symbol & {
-                $hyoo_crus_ref: symbol;
-            }) | null;
-            pick_unit(): $hyoo_crus_gist | undefined;
-            vary(next?: $hyoo_crus_vary_type | undefined): $hyoo_crus_vary_type;
-            land(): $hyoo_crus_land;
-            head(): string;
-            realm(): $hyoo_crus_realm | null;
-            land_ref(): symbol & {
-                $hyoo_crus_ref: symbol;
+    const $hyoo_crus_home_base: Omit<typeof $hyoo_crus_dict, "prototype"> & (new (...args: any[]) => $mol_type_override<InstanceType<typeof $hyoo_crus_dict>, { readonly [Key in "Selection" | "Hall" | "Title"]: (auto?: any) => InstanceType<{
+        readonly Title: typeof $hyoo_crus_atom_str;
+        readonly Selection: typeof $hyoo_crus_atom_str;
+        readonly Hall: {
+            new (): {
+                Value: () => typeof $hyoo_crus_dict;
+                yoke(preset?: $hyoo_crus_rank_preset): $hyoo_crus_land | null;
+                remote(next?: $hyoo_crus_dict | null | undefined): null | $mol_type_result<$mol_type_result<any["Value"]>>;
+                remote_ensure(preset?: $hyoo_crus_rank_preset): $hyoo_crus_dict | null;
+                local_ensure(): $hyoo_crus_dict | null;
+                val(next?: (symbol & {
+                    $hyoo_crus_ref: symbol;
+                }) | null | undefined): ReturnType<typeof $hyoo_crus_vary_cast_ref> | null;
+                pick_unit(): $hyoo_crus_gist | undefined;
+                vary(next?: $hyoo_crus_vary_type): $hyoo_crus_vary_type;
+                land(): $hyoo_crus_land;
+                head(): string;
+                realm(): $hyoo_crus_realm | null;
+                land_ref(): symbol & {
+                    $hyoo_crus_ref: symbol;
+                };
+                ref(): symbol & {
+                    $hyoo_crus_ref: symbol;
+                };
+                toJSON(): string | undefined;
+                cast<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1): InstanceType<Node_1>;
+                nodes<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1 | null): readonly InstanceType<Node_1>[];
+                units(): $hyoo_crus_gist[];
+                filled(): boolean;
+                can_change(lord?: symbol & {
+                    $hyoo_crus_ref: symbol;
+                }): boolean;
+                last_change(): $mol_time_moment | null;
+                $: typeof $$;
+                destructor(): void;
+                toString(): string;
+                [Symbol.toStringTag]: string;
+                [$mol_ambient_ref]: $;
             };
-            ref(): symbol & {
-                $hyoo_crus_ref: symbol;
-            };
-            toJSON(): string | undefined;
-            cast<Node extends typeof $hyoo_crus_node>(Node: Node): InstanceType<Node>;
-            nodes<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1 | null): readonly InstanceType<Node_1>[];
-            units(): $hyoo_crus_gist[];
-            filled(): boolean;
-            can_change(lord?: symbol & {
-                $hyoo_crus_ref: symbol;
-            }): boolean;
-            last_change(): $mol_time_moment | null;
-            $: typeof $$;
-            destructor(): void;
             toString(): string;
-            [Symbol.toStringTag]: string;
-            [$mol_ambient_ref]: typeof $$;
-        } | null;
-    }>) & {
+            Value: typeof $hyoo_crus_dict;
+            parse: typeof $hyoo_crus_vary_cast_ref;
+            tag: keyof typeof $hyoo_crus_gist_tag;
+            make<This extends typeof $mol_object>(this: This, config: Partial<InstanceType<This>>): InstanceType<This>;
+            $: $;
+            create<Instance>(this: new (init?: (instance: any) => void) => Instance, init?: (instance: $mol_type_writable<Instance>) => void): Instance;
+            toJSON(): any;
+            destructor(): void;
+            [Symbol.toPrimitive](): any;
+        };
+    }[Key]> | null; }>) & {
         schema: {
             [x: string]: typeof $hyoo_crus_node;
         } & {
@@ -3401,17 +3397,15 @@ declare namespace $ {
             readonly Hall: {
                 new (): {
                     Value: () => typeof $hyoo_crus_dict;
-                    yoke(preset?: $hyoo_crus_rank_preset | undefined): $hyoo_crus_land | null;
-                    remote(next?: $hyoo_crus_dict | null | undefined): $hyoo_crus_dict | null;
-                    remote_ensure(preset?: $hyoo_crus_rank_preset | undefined): $hyoo_crus_dict | null;
+                    yoke(preset?: $hyoo_crus_rank_preset): $hyoo_crus_land | null;
+                    remote(next?: $hyoo_crus_dict | null | undefined): null | $mol_type_result<$mol_type_result<any["Value"]>>;
+                    remote_ensure(preset?: $hyoo_crus_rank_preset): $hyoo_crus_dict | null;
                     local_ensure(): $hyoo_crus_dict | null;
                     val(next?: (symbol & {
                         $hyoo_crus_ref: symbol;
-                    }) | null | undefined): (symbol & {
-                        $hyoo_crus_ref: symbol;
-                    }) | null;
+                    }) | null | undefined): ReturnType<typeof $hyoo_crus_vary_cast_ref> | null;
                     pick_unit(): $hyoo_crus_gist | undefined;
-                    vary(next?: $hyoo_crus_vary_type | undefined): $hyoo_crus_vary_type;
+                    vary(next?: $hyoo_crus_vary_type): $hyoo_crus_vary_type;
                     land(): $hyoo_crus_land;
                     head(): string;
                     realm(): $hyoo_crus_realm | null;
@@ -3422,7 +3416,7 @@ declare namespace $ {
                         $hyoo_crus_ref: symbol;
                     };
                     toJSON(): string | undefined;
-                    cast<Node extends typeof $hyoo_crus_node>(Node: Node): InstanceType<Node>;
+                    cast<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1): InstanceType<Node_1>;
                     nodes<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1 | null): readonly InstanceType<Node_1>[];
                     units(): $hyoo_crus_gist[];
                     filled(): boolean;
@@ -3434,15 +3428,15 @@ declare namespace $ {
                     destructor(): void;
                     toString(): string;
                     [Symbol.toStringTag]: string;
-                    [$mol_ambient_ref]: typeof $$;
+                    [$mol_ambient_ref]: $;
                 };
                 toString(): string;
                 Value: typeof $hyoo_crus_dict;
                 parse: typeof $hyoo_crus_vary_cast_ref;
-                tag: "keys" | "term" | "solo" | "vals";
+                tag: keyof typeof $hyoo_crus_gist_tag;
                 make<This extends typeof $mol_object>(this: This, config: Partial<InstanceType<This>>): InstanceType<This>;
-                $: typeof $$;
-                create<Instance>(this: new (init?: ((instance: any) => void) | undefined) => Instance, init?: ((instance: $mol_type_writable<Instance>) => void) | undefined): Instance;
+                $: $;
+                create<Instance>(this: new (init?: (instance: any) => void) => Instance, init?: (instance: $mol_type_writable<Instance>) => void): Instance;
                 toJSON(): any;
                 destructor(): void;
                 [Symbol.toPrimitive](): any;
