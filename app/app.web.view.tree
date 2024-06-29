@@ -9,12 +9,10 @@ $hyoo_crus_app $mol_book2_catalog
 			realm <= realm
 	spreads *
 		\
-			<= Intro $mol_page
-				title \💨 Intro
-				body /
-					<= Intro_content $mol_text
-						uri_base \hyoo/crus/
-						text <= intro \
+			<= Intro $hyoo_page
+				menu_title \💨 Intro
+				side_main_id \sy2u0y_9rb8zj
+				Gap* null
 		realm <= Realm $hyoo_crus_realm_book
 			realm <= realm
 			addon_tools /
