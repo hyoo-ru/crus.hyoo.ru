@@ -28197,9 +28197,9 @@ var $node = $node || {} ; $node[ "/hyoo/calc/calc_logo.svg" ] = "data:image/svg+
 			(obj.realm) = () => ((this?.realm()));
 			return obj;
 		}
-		Intro(){
+		Info(){
 			const obj = new this.$.$hyoo_page();
-			(obj.menu_title) = () => ("💨 Intro");
+			(obj.menu_title) = () => ("💨 Info");
 			(obj.side_main_id) = () => ("sy2u0y_9rb8zj");
 			(obj.Gap) = (id) => (null);
 			return obj;
@@ -28230,7 +28230,7 @@ var $node = $node || {} ; $node[ "/hyoo/calc/calc_logo.svg" ] = "data:image/svg+
 			return obj;
 		}
 		menu_title(){
-			return "CRUS🦿DB";
+			return "🦿 CRUS-DB";
 		}
 		param(){
 			return "section";
@@ -28244,7 +28244,7 @@ var $node = $node || {} ; $node[ "/hyoo/calc/calc_logo.svg" ] = "data:image/svg+
 		}
 		spreads(){
 			return {
-				"": (this?.Intro()), 
+				"": (this?.Info()), 
 				"realm": (this?.Realm()), 
 				"slot": (this?.Slot()), 
 				"casting": (this?.Casting())
@@ -28256,7 +28256,7 @@ var $node = $node || {} ; $node[ "/hyoo/calc/calc_logo.svg" ] = "data:image/svg+
 	};
 	($mol_mem(($.$hyoo_crus_app.prototype), "Source"));
 	($mol_mem(($.$hyoo_crus_app.prototype), "Status"));
-	($mol_mem(($.$hyoo_crus_app.prototype), "Intro"));
+	($mol_mem(($.$hyoo_crus_app.prototype), "Info"));
 	($mol_mem(($.$hyoo_crus_app.prototype), "Realm"));
 	($mol_mem(($.$hyoo_crus_app.prototype), "Slot"));
 	($mol_mem(($.$hyoo_crus_app.prototype), "Casting"));
@@ -28310,7 +28310,7 @@ var $;
                     basis: `8rem`,
                 },
             },
-            Intro: {
+            Info: {
                 margin: [0, 'auto'],
                 flex: {
                     basis: `60rem`,

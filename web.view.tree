@@ -2215,7 +2215,7 @@ $hyoo_calc_cell $mol_text
 		hyoo_calc_cell_type <= type?val \
 
 $hyoo_crus_app $mol_book2_catalog
-	menu_title \CRUS🦿DB
+	menu_title \🦿 CRUS-DB
 	param \section
 	realm $hyoo_crus_realm
 	menu_foot /
@@ -2225,8 +2225,8 @@ $hyoo_crus_app $mol_book2_catalog
 			realm <= realm
 	spreads *
 		\
-			<= Intro $hyoo_page
-				menu_title \💨 Intro
+			<= Info $hyoo_page
+				menu_title \💨 Info
 				side_main_id \sy2u0y_9rb8zj
 				Gap* null
 		realm <= Realm $hyoo_crus_realm_book
