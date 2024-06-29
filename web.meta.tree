@@ -78,6 +78,10 @@
 \/hyoo/sync
 	- build $hyoo_sync_revision \git rev-parse --short HEAD
 	build $hyoo_sync_revision \echo echo
+\/hyoo/page
+	include \/mol/offline/install
+	deploy \/hyoo/page/logo/logo.svg
+	deploy \/hyoo/page/logo/logo.png
 \/hyoo/calc
 	include \/mol/offline/install
 	deploy \/hyoo/calc/demo/input.json

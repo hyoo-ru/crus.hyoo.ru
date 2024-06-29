@@ -423,6 +423,276 @@ $hyoo_crus_status $mol_select
 				<= Fail $mol_icon_sync_off
 			hint <= message <= hint \Sync status
 
+$mol_theme_auto $mol_plugin
+	attr * mol_theme <= theme \
+
+$hyoo_meta_link $mol_link
+	minimal_height 40
+	meta $hyoo_meta_model
+		id => id
+		title => title
+	param \
+	all_title @ \All
+	sub /
+		<= Avatar $mol_avatar
+			id <= id
+		<= Title $mol_dimmer
+			haystack <= title
+			needle <= highlight \
+
+$hyoo_page_side_news $mol_page
+	side $hyoo_page_side
+		news => news
+	title @ \Interesting
+	attr *
+		^
+		mol_theme \$mol_theme_special
+	body /
+		<= Section_list $mol_list
+			rows <= items /
+				<= Item*0 $hyoo_meta_link
+					meta <= item* $hyoo_page_side
+					title <= item_title* \
+					Avatar null
+
+$mol_icon_magnify $mol_icon path \M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z
+
+$mol_check_icon $mol_check
+
+$mol_icon_pencil $mol_icon path \M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z
+
+$mol_icon_pencil_outline $mol_icon path \M14.06,9L15,9.94L5.92,19H5V18.08L14.06,9M17.66,3C17.41,3 17.15,3.1 16.96,3.29L15.13,5.12L18.88,8.87L20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18.17,3.09 17.92,3 17.66,3M14.06,6.19L3,17.25V21H6.75L17.81,9.94L14.06,6.19Z
+
+$mol_icon_plus $mol_icon path \M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z
+
+$mol_icon_chevron $mol_icon path \M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z
+
+$mol_check_expand $mol_check
+	Icon $mol_icon_chevron
+	level 0
+	style *
+		^
+		paddingLeft <= level_style \0px
+	checked? <=> expanded? false
+	enabled <= expandable false
+
+$mol_ghost $mol_view
+	Sub $mol_view
+
+$mol_drag $mol_ghost
+	event *
+		dragstart?event <=> drag_start?event <=> start?event null
+		drag?event <=> drag_move?event <=> move?event null
+		dragend?event <=> drag_end?event <=> end?event null
+	attr *
+		draggable true
+		mol_drag_status <= status? \ready
+	transfer *
+		text/plain \
+		text/html \
+		text/uri-list \
+	allow_copy true
+	allow_link true
+	allow_move true
+	image <= dom_node
+
+$mol_drop $mol_ghost
+	enabled? true
+	event *
+		dragenter?event <=> enter?event null
+		dragover?event <=> move?event null
+		dragleave?event <=> leave?event null
+		drop?event <=> drop?event null
+	attr * mol_drop_status <= status? \ready
+	adopt?transfer *
+	receive?transfer null
+	allow /
+		\copy
+		\move
+		\link
+
+$mol_icon_pin $mol_icon path \M16,12V4H17V2H7V4H8V12L6,14V16H11.2V22H12.8V16H18V14L16,12Z
+
+$mol_icon_pin_outline $mol_icon path \M16,12V4H17V2H7V4H8V12L6,14V16H11.2V22H12.8V16H18V14L16,12M8.8,14L10,12.8V4H14V12.8L15.2,14H8.8Z
+
+$hyoo_meta_menu_items $mol_list
+	id \
+	editing false
+	drop_allow /
+		\move
+		\link
+	list $hyoo_crowd_list
+		list => ids
+	item* $hyoo_meta_model
+		title => item_title*
+	item_list* $hyoo_crowd_list
+	item_moved*? null
+	rows <= items /
+		<= Item*0_0 $mol_list
+			rows <= item_content* /
+				<= Item_row* $mol_view
+					sub <= item_row* /
+						<= Item_expand* $mol_check_expand
+							expandable <= item_expandable* false
+							expanded? <=> item_expanded*? true
+						<= Item_drop_after* $mol_drop
+							enabled <= editable false
+							adopt? <=> transfer_adopt? null
+							receive? <=> receive_after*? null
+							allow <= drop_allow
+							Sub <= Item_drag* $mol_drag
+								end? <=> item_drag_end*? null
+								transfer *
+									text/plain <= item_text* \
+									text/html <= item_html* \
+									text/uri-list <= item_uri* \
+								Sub <= Item_link* $hyoo_meta_link
+									meta <= item*
+									param <= param \
+									highlight <= highlight \
+									Avatar null
+						<= Item_remove* $mol_button_minor
+							hint @ \Remove
+							click? <=> item_remove*? null
+							sub /
+								<= Item_remove_icon* $mol_icon_close
+						<= Item_pin* $mol_button_minor
+							hint @ \Pin here
+							click? <=> item_pin*? null
+							sub /
+								<= Item_pin_icon* $mol_icon_pin_outline
+						<= Item_drop_inside* $mol_drop
+							enabled <= editable
+							adopt? <=> transfer_adopt? null
+							receive? <=> receive_inside*? null
+							allow <= drop_allow
+							Sub <= Item_add* $mol_button_minor
+								hint @ \Add page inside
+								click? <=> item_add*? null
+								sub /
+									<= Item_add_icon* $mol_icon_plus
+				<= Item_items* $hyoo_meta_menu_items
+					editing <= editing
+					list <= item_list*
+					item* <= item*
+					item_moved*? <=> item_moved*?
+					item_expanded*? <=> item_expanded*?
+					item_list* <= item_list*
+					item_uri* <= item_uri*
+					highlight <= highlight
+					item_add*? <=> item_add*?
+
+$hyoo_meta_menu $mol_page
+	editable true
+	item_moved*? null
+	yard $hyoo_sync_yard<any>
+	item* $hyoo_meta_model
+		title => item_title*
+	list $hyoo_crowd_list
+		list => ids
+		world => world
+	item_list* $hyoo_crowd_list
+	drop_allow /
+		\move
+		\link
+	Logo $mol_avatar
+		id <= id \
+	tools_ext /
+	head /
+		<= Title
+		<= Tools
+		<= Search $mol_search
+			query? <=> search? \
+	tools /
+		<= Search_toggle $mol_check_icon
+			hint @ \Fulltext search
+			checked? <=> search_show? false
+			Icon <= Search_icon $mol_icon_magnify
+		<= Editing $mol_check_icon
+			hint @ \Edit list
+			checked? <=> editing? false
+			Icon <= Editing_icon $mol_icon_pencil_outline
+		<= Add $mol_button_minor
+			hint @ \Add new
+			click? <=> add? null
+			sub /
+				<= Add_icon $mol_icon_plus
+		^ tools_ext
+	body /
+		<= Found $hyoo_meta_menu_items
+			editing <= editing
+			drop_allow /
+			list <= list
+			ids <= found /$mol_int62_string
+			highlight <= search
+			item_uri* <= item_uri* \
+			item_moved*? <=> item_moved*?
+			- item_list* <= item_list*
+			item_add*? <=> item_add*? null
+		<= Content $hyoo_meta_menu_items
+			editing <= editing
+			drop_allow <= drop_allow
+			list <= list
+			item_uri* <= item_uri* \
+			item_expanded*? <=> item_expanded*? false
+			item_moved*? <=> item_moved*?
+			item_list* <= item_list*
+			item_add*? <=> item_add*? null
+		<= Drop_end $mol_drop
+			enabled <= editable
+			adopt? <=> transfer_adopt? null
+			receive? <=> receive_end? null
+			Sub <= Drop_zone $mol_view
+			allow <= drop_allow
+
+$hyoo_page_side_menu $hyoo_meta_menu
+	side_current $hyoo_page_side
+	Title $hyoo_meta_link
+		meta <= side $hyoo_page_side
+			title => title
+
+$mol_bar $mol_view
+
+$mol_icon_chevron_left $mol_icon path \M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z
+
+$mol_icon_chevron_right $mol_icon path \M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z
+
+$mol_paginator $mol_bar
+	sub /
+		<= Backward $mol_button_minor
+			hint <= backward_hint @ \Backward
+			click?event <=> backward?event null
+			sub / <= Backward_icon $mol_icon_chevron_left
+		<= Value $mol_view sub / <= value? 0
+		<= Forward $mol_button_minor
+			hint <= forward_hint @ \Forward
+			click?event <=> forward?event null
+			sub / <= Forward_icon $mol_icon_chevron_right
+
+$mol_search_jumper $mol_search
+	Root $mol_view
+	Index $mol_paginator
+		value? <=> index? 0
+		forward?event => forward?event
+		backward?event => backward?event
+	plugins /
+		^
+		<= Backward $mol_hotkey
+			mod_shift true
+			key * enter?event <=> backward?event
+		<= Forward $mol_hotkey
+			key *
+				enter?event <=> forward?event
+				escape? <=> escape? null
+
+$mol_icon_information $mol_icon path \M13,9H11V7H13M13,17H11V11H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z
+
+$mol_icon_information_outline $mol_icon path \M11,9H13V7H11M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M11,17H13V11H11V17Z
+
+$mol_icon_bookmark $mol_icon path \M17,3H7A2,2 0 0,0 5,5V21L12,18L19,21V5C19,3.89 18.1,3 17,3Z
+
+$mol_icon_bookmark_outline $mol_icon path \M17,18L12,15.82L7,18V5H17M17,3H7A2,2 0 0,0 5,5V21L12,18L19,21V5C19,3.89 18.1,3 17,3Z
+
 $mol_stack $mol_view
 
 $mol_text_code_token $mol_dimmer
@@ -502,17 +772,6 @@ $mol_float $mol_view
 	style *
 		^
 		minHeight \auto
-
-$mol_icon_chevron $mol_icon path \M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z
-
-$mol_check_expand $mol_check
-	Icon $mol_icon_chevron
-	level 0
-	style *
-		^
-		paddingLeft <= level_style \0px
-	checked? <=> expanded? false
-	enabled <= expandable false
 
 $mol_grid $mol_view
 	row_height 32
@@ -750,213 +1009,6 @@ $mol_text_span $mol_paragraph
 		^
 		mol_text_type <= type \
 
-$mol_icon_lock $mol_icon path \M12,17A2,2 0 0,0 14,15C14,13.89 13.1,13 12,13A2,2 0 0,0 10,15A2,2 0 0,0 12,17M18,8A2,2 0 0,1 20,10V20A2,2 0 0,1 18,22H6A2,2 0 0,1 4,20V10C4,8.89 4.9,8 6,8H7V6A5,5 0 0,1 12,1A5,5 0 0,1 17,6V8H18M12,3A3,3 0 0,0 9,6V8H15V6A3,3 0 0,0 12,3Z
-
-$mol_check_icon $mol_check
-
-$mol_dump_list $mol_view
-	values /
-	sub /
-		<= Dump*0 $mol_dump_value
-			value <= dump_value* null
-			expanded? <=> dump_expanded*? false
-			prototypes <= prototypes false
-			preview_show <= preview_show true
-
-$mol_expander $mol_list
-	rows /
-		<= Label $mol_view
-			sub /
-				<= Trigger $mol_check_expand
-					checked? <=> expanded? false
-					expandable <= expandable true
-					label <= label /
-						<= title
-				<= Tools null
-		<= Content $mol_list
-			rows <= content /
-
-$mol_dump_value $mol_view
-	value? null
-	preview_show? true
-	sub /
-		<= Simple $mol_text_code
-			text <= simple \
-		<= Expand $mol_expander
-			expanded? <=> expanded? false
-			Trigger <= Expand_head $mol_check_expand
-				minimal_height 24
-				minimal_width 24
-				expanded? <=> expanded? false
-				expandable <= expandable true
-				clicks? <=> expand_all? null
-				label /
-					<= Expand_title $mol_text_code
-						text <= expand_title \
-			content <= expand_content /
-				<= Preview $mol_view sub /
-					<= Preview_dom $mol_view
-						dom_node <= preview_dom null
-						render <= preview null
-				<= Row*0 $mol_dump_list
-					values <= row_values* /
-					prototypes <= prototypes false
-					preview_show <= preview_show
-
-$hyoo_crus_gist_dump $mol_view
-	land $hyoo_crus_land
-	gist $hyoo_crus_gist
-	Ref $mol_link
-		title <= title
-		arg <= arg *
-	Other $mol_dump_value
-		value <= value null
-
-$mol_icon_plus $mol_icon path \M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z
-
-$mol_ghost $mol_view
-	Sub $mol_view
-
-$mol_drag $mol_ghost
-	event *
-		dragstart?event <=> drag_start?event <=> start?event null
-		drag?event <=> drag_move?event <=> move?event null
-		dragend?event <=> drag_end?event <=> end?event null
-	attr *
-		draggable true
-		mol_drag_status <= status? \ready
-	transfer *
-		text/plain \
-		text/html \
-		text/uri-list \
-	allow_copy true
-	allow_link true
-	allow_move true
-	image <= dom_node
-
-$mol_drop $mol_ghost
-	enabled? true
-	event *
-		dragenter?event <=> enter?event null
-		dragover?event <=> move?event null
-		dragleave?event <=> leave?event null
-		drop?event <=> drop?event null
-	attr * mol_drop_status <= status? \ready
-	adopt?transfer *
-	receive?transfer null
-	allow /
-		\copy
-		\move
-		\link
-
-$mol_icon_tick $mol_icon path \M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z
-
-$mol_check_box $mol_check
-	Icon $mol_icon_tick
-
-$mol_icon_minus $mol_icon path \M19,13H5V11H19V13Z
-
-$mol_number $mol_view
-	precision_view <= precision 1
-	precision_change <= precision 1
-	value_min -Infinity
-	value_max +Infinity
-	value? +NaN
-	enabled true
-	sub /
-		<= String $mol_string
-			- \ we don't want native number controls in mobile devices
-			- \ https://stackoverflow.com/questions/3790935/can-i-hide-the-html5-number-input-s-spin-box
-			type <= type \tel
-			value? <=> value_string? \
-			hint <= hint \ 
-			enabled <= string_enabled <= enabled
-			submit? <=> submit? null
-		<= Dec $mol_button_minor
-			event_click? <=> event_dec? null
-			enabled <= dec_enabled <= enabled
-			sub / <= dec_icon $mol_icon_minus
-		<= Inc $mol_button_minor
-			event_click? <=> event_inc? null
-			enabled <= inc_enabled <= enabled
-			sub / <= inc_icon $mol_icon_plus
-
-$mol_bar $mol_view
-
-$mol_textarea $mol_stack
-	attr *
-		^
-		mol_textarea_clickable <= clickable? false
-		mol_textarea_sidebar_showed <= sidebar_showed false
-	event *
-		keydown?event <=> press?event null
-		pointermove?event <=> hover?event null
-	sub /
-		<= Edit $mol_textarea_edit
-			value? <=> value? \
-			hint <= hint \ 
-			enabled <= enabled true
-			spellcheck <= spellcheck true
-			length_max <= length_max +Infinity
-			selection? <=> selection? /number
-			bring => bring
-			submit? <=> submit? null
-			submit_with_ctrl <= submit_with_ctrl true
-		<= View $mol_text_code
-			text <= value
-			render_visible_only false
-			row_numb* <= row_numb* 0
-			sidebar_showed <= sidebar_showed
-			highlight <= highlight \
-	symbols_alt *string
-		comma \<
-		period \>
-		dash \−
-		equals \≈
-		graveAccent \́
-		forwardSlash \÷
-		E \€
-		V \✔
-		X \×
-		C \©
-		P \§
-		H \₽
-		key0 \°
-		key8 \•
-		key2 \@
-		key3 \#
-		key4 \$
-		key6 \^
-		key7 \&
-		bracketOpen \[
-		bracketClose \]
-		slashBack \|
-	symbols_alt_ctrl *string
-		space \ 
-	symbols_alt_shift *string
-		V \✅
-		X \❌
-		O \⭕
-		key1 \❗
-		key4 \💲
-		key7 \❓
-		comma \«
-		period \»
-		semicolon \“
-		quoteSingle \”
-		dash \—
-		equals \≠
-		graveAccent \̱
-		bracketOpen \{
-		bracketClose \}
-
-$mol_textarea_edit $mol_string
-	dom_name \textarea
-	enter \enter
-	field *
-		^
-		scrollTop 0
-
 $mol_icon_calendar $mol_icon path \M19,19H5V8H19M16,1V3H8V1H6V3H5C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3H18V1M17,12H12V17H17V12Z
 
 $mol_icon_calendar_today $mol_icon path \M7,10H12V15H7M19,19H5V8H19M19,3H18V1H16V3H8V1H6V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3Z
@@ -969,10 +1021,6 @@ $mol_format $mol_string
 $mol_icon_trash_can $mol_icon path \M9,3V4H4V6H5V19A2,2 0 0,0 7,21H17A2,2 0 0,0 19,19V6H20V4H15V3H9M9,8H11V17H9V8M13,8H15V17H13V8Z
 
 $mol_icon_trash_can_outline $mol_icon path \M9,3V4H4V6H5V19A2,2 0 0,0 7,21H17A2,2 0 0,0 19,19V6H20V4H15V3H9M7,6H17V19H7V6M9,8V17H11V8H9M13,8V17H15V8H13Z
-
-$mol_icon_chevron_left $mol_icon path \M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z
-
-$mol_icon_chevron_right $mol_icon path \M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z
 
 $mol_hor $mol_view
 
@@ -1073,6 +1121,664 @@ $mol_date_calendar $mol_calendar
 			minimal_height 24
 			enabled <= enabled true
 
+$mol_text_list $mol_text
+	auto_scroll null
+	attr *
+		^
+		mol_text_list_type <= type \
+	Paragraph* $mol_text_list_item
+		index <= item_index*
+		sub <= block_content*
+
+$mol_text_list_item $mol_paragraph
+	attr *
+		^
+		mol_text_list_item_index <= index 0
+
+$hyoo_page_side_view $mol_page
+	profile $hyoo_page_side
+	peer* $hyoo_page_side
+	book $hyoo_page_side
+	highlight \
+	side $hyoo_page_side
+		id => id
+		editable => editable
+		title? => title?
+		details? => side_details?
+		released => released
+		release => side_release
+		changed_moment => changed_moment
+		authors => authors
+		following => following
+	plugins /
+		<= Search_start $mol_hotkey
+			key * F? <=> search_start? null
+			mod_ctrl true
+	auto /
+		<= slides_send null
+		<= history_mark null
+	Logo <= Menu_toggle $mol_check
+		checked? <=> menu_showed? false
+		hint @ \Menu Showing
+		sub /
+			<= Avatar $mol_avatar
+				id <= id
+	head /
+		<= Title
+		<= Tools
+		<= Search $mol_search_jumper
+			query?val <=> search_query?val \
+			Root <= Details
+			clear? <=> search_stop? null
+	tools /
+		<= Edit_toggle $mol_check_icon
+			hint @ \Edit page
+			checked? <=> editing? false
+			Icon <= Edit_icon $mol_icon_pencil_outline
+			label <= edit_toggle_label /
+				<= Unreleased $mol_speck
+		<= Search_toggle $mol_check_icon
+			hint @ \Find on page
+			checked? <=> search_show? false
+			Icon <= Search_icon $mol_icon_magnify
+		<= Info_toggle $mol_check_icon
+			hint @ \Info page
+			checked? <=> info? false
+			Icon <= Info_icon $mol_icon_information_outline
+		<= Bookmark_toggle $mol_check_icon
+			hint @ \Bookmark page
+			checked? <=> bookmark? false
+			Icon <= Bookmark_icon $mol_icon_bookmark_outline
+	body /
+		<= Details $mol_text
+			text <= details \
+			highlight <= search_query
+			- Empty <= Details_empty $mol_text text \...
+		<= Signature $mol_view
+			sub /
+				<= Changed $mol_date
+					value_moment <= changed_moment
+				<= Author_list $mol_view
+					sub <= author_list /
+						<= Author_link*0_0 $hyoo_meta_link
+							meta <= peer*
+							uri <= author_link* \https://page.hyoo.ru/#!={person}
+				<= Following $hyoo_meta_link
+					meta <= following
+
+$mol_icon_publish $mol_icon path \M5,4V6H19V4H5M5,14H9V20H15V14H19L12,7L5,14Z
+
+$mol_icon_export $mol_icon path \M23,12L19,8V11H10V13H19V16M1,18V6C1,4.89 1.9,4 3,4H15A2,2 0 0,1 17,6V9H15V6H3V18H15V15H17V18A2,2 0 0,1 15,20H3A2,2 0 0,1 1,18Z
+
+$mol_icon_download $mol_icon path \M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z
+
+$mol_button_download $mol_button_minor
+	blob null
+	uri \
+	file_name \blob.bin
+	sub /
+		<= Icon $mol_icon_download
+		<= title \
+
+$mol_icon_shield $mol_icon path \M12,1L3,5V11C3,16.55 6.84,21.74 12,23C17.16,21.74 21,16.55 21,11V5L12,1Z
+
+$mol_icon_shield_account $mol_icon path \M12,1L3,5V11C3,16.55 6.84,21.74 12,23C17.16,21.74 21,16.55 21,11V5L12,1M12,5A3,3 0 0,1 15,8A3,3 0 0,1 12,11A3,3 0 0,1 9,8A3,3 0 0,1 12,5M17.13,17C15.92,18.85 14.11,20.24 12,20.92C9.89,20.24 8.08,18.85 6.87,17C6.53,16.5 6.24,16 6,15.47C6,13.82 8.71,12.47 12,12.47C15.29,12.47 18,13.79 18,15.47C17.76,16 17.47,16.5 17.13,17Z
+
+$mol_textarea $mol_stack
+	attr *
+		^
+		mol_textarea_clickable <= clickable? false
+		mol_textarea_sidebar_showed <= sidebar_showed false
+	event *
+		keydown?event <=> press?event null
+		pointermove?event <=> hover?event null
+	sub /
+		<= Edit $mol_textarea_edit
+			value? <=> value? \
+			hint <= hint \ 
+			enabled <= enabled true
+			spellcheck <= spellcheck true
+			length_max <= length_max +Infinity
+			selection? <=> selection? /number
+			bring => bring
+			submit? <=> submit? null
+			submit_with_ctrl <= submit_with_ctrl true
+		<= View $mol_text_code
+			text <= value
+			render_visible_only false
+			row_numb* <= row_numb* 0
+			sidebar_showed <= sidebar_showed
+			highlight <= highlight \
+	symbols_alt *string
+		comma \<
+		period \>
+		dash \−
+		equals \≈
+		graveAccent \́
+		forwardSlash \÷
+		E \€
+		V \✔
+		X \×
+		C \©
+		P \§
+		H \₽
+		key0 \°
+		key8 \•
+		key2 \@
+		key3 \#
+		key4 \$
+		key6 \^
+		key7 \&
+		bracketOpen \[
+		bracketClose \]
+		slashBack \|
+	symbols_alt_ctrl *string
+		space \ 
+	symbols_alt_shift *string
+		V \✅
+		X \❌
+		O \⭕
+		key1 \❗
+		key4 \💲
+		key7 \❓
+		comma \«
+		period \»
+		semicolon \“
+		quoteSingle \”
+		dash \—
+		equals \≠
+		graveAccent \̱
+		bracketOpen \{
+		bracketClose \}
+
+$mol_textarea_edit $mol_string
+	dom_name \textarea
+	enter \enter
+	field *
+		^
+		scrollTop 0
+
+$mol_string_button $mol_string
+
+$mol_labeler $mol_list
+	rows /
+		<= Label $mol_view
+			minimal_height 32
+			sub <= label /$mol_view_content
+				<= title
+		<= Content $mol_view
+			minimal_height 24
+			sub <= content /
+
+$mol_form_field $mol_labeler
+	bids /string
+	label /
+		<= name \
+		<= Bid $mol_view
+			sub / <= bid \
+	content / <= control null
+
+$mol_row $mol_view
+
+$mol_form $mol_list
+	submit_allowed true
+	submit_blocked false
+	event *
+		^
+		keydown?event <=> keydown?event null
+	submit?event null
+	rows /
+		<= Body $mol_list
+			sub <= body <= form_fields /$mol_form_field
+		<= Foot $mol_row
+			sub <= foot <= buttons /$mol_view
+
+$hyoo_page_side_edit $mol_page
+	side $hyoo_page_side
+		title? => title?
+		details? => details?
+		details_selection? => details_selection?
+		content_full => content_full
+		aura? => aura?
+		editable => editable
+		released => released
+	Title $mol_string_button
+		hint @ \Title
+		- bring => bring
+		value? <=> title?
+		enabled <= editable
+	export_sign @ \\\Current Original on $hyoo_page.\{link}\\
+	tools /
+		<= Syntax $mol_link_iconed
+			hint @ \MarkedText Syntax
+			uri \https://marked.hyoo.ru/
+			icon \https://marked.hyoo.ru/hyoo/marked/logo/logo.svg
+			title \
+		<= Publish $mol_button_minor
+			click? <=> publish? null
+			disabled <= released
+			hint @ \Publish
+			sub /
+				<= Publish_icon $mol_icon_publish
+		<= Export $mol_pick
+			hint @ \Download markdown
+			trigger_content /
+				<= Export_icon $mol_icon_export
+			bubble_content /
+				<= Download $mol_button_download
+					title @ \Download Book as MT File
+					file_name <= download_name \{filename}.mt
+					blob <= download_blob $mol_blob
+				<= Copy_html $mol_button_copy
+					title @ \Copy to Clipboard
+					text <= copy_text \
+					html <= copy_html \
+		<= Rights_toggle $mol_check_icon
+			hint @ \Access Rights
+			checked? <=> rights? false
+			Icon <= Rights_icon $mol_icon_shield_account
+		<= Close $mol_button_minor
+			click? <=> close? null
+			sub / <= Close_icon $mol_icon_close
+	body /
+		<= Details_edit $mol_textarea
+			hint @ \Details
+			value? <=> details?
+			selection? <=> details_selection?
+			enabled <= editable
+		<= Aura_field $mol_form_field
+			name @ \Page Background
+			Content <= Aura $mol_string_button
+				hint @ \hyper link
+				value? <=> aura?
+				enabled <= editable
+
+$mol_expander $mol_list
+	rows /
+		<= Label $mol_view
+			sub /
+				<= Trigger $mol_check_expand
+					checked? <=> expanded? false
+					expandable <= expandable true
+					label <= label /
+						<= title
+				<= Tools null
+		<= Content $mol_list
+			rows <= content /
+
+$hyoo_page_side_info $mol_page
+	Text $mol_text
+		flow_tokens => text_tokens
+		block_text* => text_header_title*
+		header_arg* => section_arg*
+		header_level* => section_level*
+	side $hyoo_page_side
+		details => details
+		details_node => details_node
+		referrers_list => referrers_list
+		referrers_stat* => referrers_stat*
+	title @ \Page Info
+	tools /
+		<= Slides $mol_link_iconed
+			hint @ \View as Slides
+			uri <= slides_uri \https://slides.hyoo.ru/#!slides={source}
+			title \
+		<= Close $mol_button_minor
+			click? <=> close? null
+			sub /
+				<= Close_icon $mol_icon_close
+	body /
+		<= Stat $mol_view sub /
+			<= Size $mol_labeler
+				title @ \Size
+				content /
+					<= size \0
+			<= Chars $mol_labeler
+				title @ \Chars
+				content /
+					<= chars \0
+			<= Words $mol_labeler
+				title @ \Words
+				content /
+					<= words \0
+			<= Weight $mol_labeler
+				title @ \Weight
+				content /
+					<= weight \0B
+		<= Section_list $mol_expander
+			title @ \Sections
+			expanded? <=> section_expanded? false
+			content <= section_list /
+				<= Section_link*0 $mol_link
+					arg <= section_arg*
+					title <= section_title* \
+		<= Ref_list $mol_expander
+			title @ \Referrers
+			expanded? <=> ref_expanded? false
+			content <= ref_list /
+				<= Ref_item*0_0 $mol_view
+					sub /
+						<= Ref_item_link* $mol_link_iconed
+							uri <= ref_uri* \
+						<= Ref_item_stat* $mol_view
+							sub / <= ref_stat* 0
+		<= Word_list $mol_expander
+			title @ \Key Words
+			content / <= Word_list_items $mol_row
+				sub <= word_list_items /
+					<= Word_item*0_0 $mol_view
+						sub /
+							<= Word_item_text* $mol_view
+								sub / <= word_item_text* \
+							<= Word_item_stat* $mol_speck
+								value <= word_item_stat* 0
+								theme \$mol_theme_special
+				- Empty <= Word_list_empty $mol_card
+					title @ \No words
+
+$mol_button_major $mol_button_minor
+	theme \$mol_theme_base
+
+$hyoo_meta_rights $mol_page
+	title @ \Rights
+	meta $hyoo_meta_model
+		editors => editors
+	body /
+		<= Content $mol_list
+			rows <= blocks /
+				<= Editor_list $mol_list
+					rows <= editor_list /
+						<= Editor_link*0_0 $hyoo_meta_link
+							meta <= peer* $hyoo_meta_person
+				<= Editor_add $mol_form_field
+					name @ \Add new
+					bid <= editor_add_bid @ \Irrevocable!
+					Content <= Editor_add_form $mol_list
+						rows <= editor_add_rows /
+							<= Editor_add_bar $mol_bar sub /
+								<= Editor_add_id $mol_string
+									hint @ \Id or Profile Link
+									value? <=> editor_add_id? \
+									enabled <= editable false
+								<= Editor_add_submit $mol_button_major
+									enabled <= editor_add_allowed false
+									click? <=> editor_add_submit? null
+									sub /
+										<= Editor_add_icon $mol_icon_plus
+							<= Editor_add_preview $hyoo_meta_link
+								meta <= editor_add_preview $hyoo_meta_model
+							<= Editor_fill_all $mol_button_minor
+								title @ \Allow anyone
+								click? <=> editor_fill_all? null
+
+$mol_icon_eye $mol_icon path \M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9M12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17M12,4.5C7,4.5 2.73,7.61 1,12C2.73,16.39 7,19.5 12,19.5C17,19.5 21.27,16.39 23,12C21.27,7.61 17,4.5 12,4.5Z
+
+$mol_password $mol_view
+	type? \password
+	sub <= content /
+		<= Pass $mol_string
+			type <= type
+			hint <= hint \
+			value? <=> value? \
+			submit?event <=> submit?event null
+			enabled <= enabled true
+		<= Show $mol_check_icon
+			checked? <=> checked? true
+			Icon <= Show_icon $mol_icon_eye
+
+$hyoo_meta_safe $mol_page
+	title @ \Private keys
+	yard $hyoo_sync_yard<any>
+	bid_pass_long @ \> 7 letters
+	key_size 144
+	attr *
+		^
+		mol_theme \$mol_theme_special
+	body /
+		<= Content $mol_list rows <= content /
+			<= Export_block $mol_list rows <= export_rows /
+				<= Expot_bid $mol_text text @ \Your private access keys are stored in the browser. In order not to lose them or transfer to another device, it is recommended to come up with a strong password for exporting them.
+				<= Export_pass $mol_list rows /
+					<= Password_field $mol_form_field
+						name @ \Password
+						bids / <= password_bid \
+						Content <= Password $mol_password
+							value? <=> password? \
+					<= Recall_field $mol_form_field
+						name @ \Hint for recall
+						Content <= Recall $mol_string
+							enabled <= recall_enabled true
+							value? <=> recall? \
+				<= Export_link $mol_link
+					uri <= export_link \
+					title @ \This link contains your encrypted prvate keys. Save it to a secure place on another physical device. Using this link you can restore your private keys by enterig same password.
+			<= Import_block $mol_list rows <= import_rows /
+				<= Iport_descr $mol_text text @ \
+					\To import a private key, you must enter the password from it.
+					\**If the current key is not saved, it will be lost forever.**
+				<= Import_pass $mol_list rows /
+					<= Recall_field
+					<= Password_field
+				<= Import_switch $mol_button_minor
+					click? <=> import_switch? null
+					sub /
+						<= Peer_new $mol_avatar id <= peer_new \
+						<= impot_switch_title @ \Switch
+
+$hyoo_sync_online $mol_select
+	minimal_width 40
+	minimal_height 40
+	yard $hyoo_sync_yard<any>
+		master_list => dictionary
+		master_cursor? => master_cursor?
+	Filter null
+	option_content* /
+		<= Option_logo* $mol_avatar
+			id <= master_id* \
+		<= option_label*
+	trigger_content /
+		<= Link $mol_link
+			uri <= master_link \
+			sub <= link_content /
+				<= Well $mol_avatar
+					id <= master_link \
+				<= Fail $mol_icon_sync_off
+			hint <= message <= hint \$hyoo_sync
+
+$mol_icon_key $mol_icon path \M7 14C5.9 14 5 13.1 5 12S5.9 10 7 10 9 10.9 9 12 8.1 14 7 14M12.6 10C11.8 7.7 9.6 6 7 6C3.7 6 1 8.7 1 12S3.7 18 7 18C9.6 18 11.8 16.3 12.6 14H16V18H20V14H23V10H12.6Z
+
+$mol_icon_key_variant $mol_icon path \M22,18V22H18V19H15V16H12L9.74,13.74C9.19,13.91 8.61,14 8,14A6,6 0 0,1 2,8A6,6 0 0,1 8,2A6,6 0 0,1 14,8C14,8.61 13.91,9.19 13.74,9.74L22,18M7,5A2,2 0 0,0 5,7A2,2 0 0,0 7,9A2,2 0 0,0 9,7A2,2 0 0,0 7,5Z
+
+$mol_icon_image $mol_icon path \M8.5,13.5L11,16.5L14.5,12L19,18H5M21,19V5C21,3.89 20.1,3 19,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19Z
+
+$mol_icon_brightness_6 $mol_icon path \M12,18V6A6,6 0 0,1 18,12A6,6 0 0,1 12,18M20,15.31L23.31,12L20,8.69V4H15.31L12,0.69L8.69,4H4V8.69L0.69,12L4,15.31V20H8.69L12,23.31L15.31,20H20V15.31Z
+
+$mol_lights_toggle $mol_check_icon
+	Icon <= Lights_icon $mol_icon_brightness_6
+	hint @ \Toggle lights
+	checked? <=> lights? false
+
+$hyoo_page_menu $hyoo_meta_menu
+	title @ \In Bookmarks
+	attr *
+		^
+		mol_theme \$mol_theme_special
+	head /
+		<= Profile $hyoo_meta_link
+			meta <= side $hyoo_page_side
+			hint @ \Profile
+			Title null
+			relation \nofollow
+		<= Title
+		<= Tools
+	Logo null
+	foot /
+		<= Online $hyoo_sync_online
+			yard <= yard
+		<= Safe_showing $mol_check_icon
+			hint @ \Private Keys
+			Icon <= Safe_icon $mol_icon_key_variant
+			checked? <=> safe_showing? false
+		<= About $mol_link_iconed
+			hint @ \About $hyoo_page
+			title \
+			uri \http://page.hyoo.ru/
+		<= Aura_showing $mol_check_icon
+			hint @ \Backgrounds Showing
+			Icon <= Aura_icon $mol_icon_image
+			checked? <=> aura_showing? true
+		<= Lights $mol_lights_toggle
+
+$hyoo_page $mol_book2
+	side_main_id \iy8wtn_tky6pc
+	yard $hyoo_sync_client
+	side* $hyoo_page_side
+		title => side_title*
+		pages_node => pages_node*
+	side_current $hyoo_page_side
+	profile $hyoo_page_side
+		bookmarks_node => bookmarks_node
+	style *
+		^
+		backgroundImage <= aura_image \
+	plugins /
+		<= Theme $mol_theme_auto
+	auto /
+		<= ref_track null
+	pages /
+		<= News $hyoo_page_side_news
+			side <= profile
+		<= Side_menu $hyoo_page_side_menu
+			yard <= yard
+			side <= book_side $hyoo_page_side
+			side_current <= side_current
+			list <= book_pages_node null
+			item_list* <= pages_node*
+			item_uri* <= side_uri* \
+			item_add*? <=> side_add*? null
+			tools_ext <= tools_ext /
+		<= View*0_0 $hyoo_page_side_view
+			side <= side*
+			peer* <= side*
+			profile <= profile
+			menu_showed? <=> side_menu_showed? false
+			editing? <=> editing? false
+			info? <=> info? false
+			highlight <= search
+			Details => View_details*
+		<= Edit*0_0 $hyoo_page_side_edit
+			side <= side*
+			rights? <=> rights? false
+			close? <=> edit_close*? null
+		<= Info*0_0 $hyoo_page_side_info
+			side <= side*
+			close? <=> info_close*? null
+			Text <= View_details*
+		<= Rights*0_0 $hyoo_meta_rights
+			meta <= side*
+			peer* <= side*
+			tools /
+				<= Rights_close $mol_button_minor
+					click? <=> rights_close? null
+					sub /
+						<= Close_icon $mol_icon_close
+		<= Safe $hyoo_meta_safe
+			yard <= yard
+			tools /
+				<= Safe_close $mol_button_minor
+					click? <=> safe_close? null
+					sub /
+						<= Safe_icon $mol_icon_close
+	Placeholder <= Menu $hyoo_page_menu
+		yard <= yard
+		side <= profile
+		list <= bookmarks_node
+		item_uri* <= side_uri* \
+		add? <=> page_add? null
+		item_add*? <=> side_add*? null
+		aura_showing? <=> aura_showing? true
+		safe_showing? <=> safe? false
+		search => search
+
+$mol_icon_lock $mol_icon path \M12,17A2,2 0 0,0 14,15C14,13.89 13.1,13 12,13A2,2 0 0,0 10,15A2,2 0 0,0 12,17M18,8A2,2 0 0,1 20,10V20A2,2 0 0,1 18,22H6A2,2 0 0,1 4,20V10C4,8.89 4.9,8 6,8H7V6A5,5 0 0,1 12,1A5,5 0 0,1 17,6V8H18M12,3A3,3 0 0,0 9,6V8H15V6A3,3 0 0,0 12,3Z
+
+$mol_dump_list $mol_view
+	values /
+	sub /
+		<= Dump*0 $mol_dump_value
+			value <= dump_value* null
+			expanded? <=> dump_expanded*? false
+			prototypes <= prototypes false
+			preview_show <= preview_show true
+
+$mol_dump_value $mol_view
+	value? null
+	preview_show? true
+	sub /
+		<= Simple $mol_text_code
+			text <= simple \
+		<= Expand $mol_expander
+			expanded? <=> expanded? false
+			Trigger <= Expand_head $mol_check_expand
+				minimal_height 24
+				minimal_width 24
+				expanded? <=> expanded? false
+				expandable <= expandable true
+				clicks? <=> expand_all? null
+				label /
+					<= Expand_title $mol_text_code
+						text <= expand_title \
+			content <= expand_content /
+				<= Preview $mol_view sub /
+					<= Preview_dom $mol_view
+						dom_node <= preview_dom null
+						render <= preview null
+				<= Row*0 $mol_dump_list
+					values <= row_values* /
+					prototypes <= prototypes false
+					preview_show <= preview_show
+
+$hyoo_crus_gist_dump $mol_view
+	land $hyoo_crus_land
+	gist $hyoo_crus_gist
+	Ref $mol_link
+		title <= title
+		arg <= arg *
+	Other $mol_dump_value
+		value <= value null
+
+$mol_icon_tick $mol_icon path \M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z
+
+$mol_check_box $mol_check
+	Icon $mol_icon_tick
+
+$mol_icon_minus $mol_icon path \M19,13H5V11H19V13Z
+
+$mol_number $mol_view
+	precision_view <= precision 1
+	precision_change <= precision 1
+	value_min -Infinity
+	value_max +Infinity
+	value? +NaN
+	enabled true
+	sub /
+		<= String $mol_string
+			- \ we don't want native number controls in mobile devices
+			- \ https://stackoverflow.com/questions/3790935/can-i-hide-the-html5-number-input-s-spin-box
+			type <= type \tel
+			value? <=> value_string? \
+			hint <= hint \ 
+			enabled <= string_enabled <= enabled
+			submit? <=> submit? null
+		<= Dec $mol_button_minor
+			event_click? <=> event_dec? null
+			enabled <= dec_enabled <= enabled
+			sub / <= dec_icon $mol_icon_minus
+		<= Inc $mol_button_minor
+			event_click? <=> event_inc? null
+			enabled <= inc_enabled <= enabled
+			sub / <= inc_icon $mol_icon_plus
+
 $hyoo_crus_flex_field $mol_view
 	sub / <= Sub $mol_view
 	node? $hyoo_crus_node
@@ -1159,39 +1865,6 @@ $hyoo_crus_flex_field $mol_view
 					click? <=> list_item_add? null
 					title \+
 
-$mol_labeler $mol_list
-	rows /
-		<= Label $mol_view
-			minimal_height 32
-			sub <= label /$mol_view_content
-				<= title
-		<= Content $mol_view
-			minimal_height 24
-			sub <= content /
-
-$mol_form_field $mol_labeler
-	bids /string
-	label /
-		<= name \
-		<= Bid $mol_view
-			sub / <= bid \
-	content / <= control null
-
-$mol_row $mol_view
-
-$mol_form $mol_list
-	submit_allowed true
-	submit_blocked false
-	event *
-		^
-		keydown?event <=> keydown?event null
-	submit?event null
-	rows /
-		<= Body $mol_list
-			sub <= body <= form_fields /$mol_form_field
-		<= Foot $mol_row
-			sub <= foot <= buttons /$mol_view
-
 $hyoo_crus_flex_form $mol_list
 	node $hyoo_crus_dict
 	kind $hyoo_crus_flex_kind
@@ -1274,16 +1947,6 @@ $hyoo_crus_node_dump $mol_expander
 $mol_icon_source $mol_icon path \M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z
 
 $mol_icon_source_fork $mol_icon path \M6,2A3,3 0 0,1 9,5C9,6.28 8.19,7.38 7.06,7.81C7.15,8.27 7.39,8.83 8,9.63C9,10.92 11,12.83 12,14.17C13,12.83 15,10.92 16,9.63C16.61,8.83 16.85,8.27 16.94,7.81C15.81,7.38 15,6.28 15,5A3,3 0 0,1 18,2A3,3 0 0,1 21,5C21,6.32 20.14,7.45 18.95,7.85C18.87,8.37 18.64,9 18,9.83C17,11.17 15,13.08 14,14.38C13.39,15.17 13.15,15.73 13.06,16.19C14.19,16.62 15,17.72 15,19A3,3 0 0,1 12,22A3,3 0 0,1 9,19C9,17.72 9.81,16.62 10.94,16.19C10.85,15.73 10.61,15.17 10,14.38C9,13.08 7,11.17 6,9.83C5.36,9 5.13,8.37 5.05,7.85C3.86,7.45 3,6.32 3,5A3,3 0 0,1 6,2M6,4A1,1 0 0,0 5,5A1,1 0 0,0 6,6A1,1 0 0,0 7,5A1,1 0 0,0 6,4M18,4A1,1 0 0,0 17,5A1,1 0 0,0 18,6A1,1 0 0,0 19,5A1,1 0 0,0 18,4M12,18A1,1 0 0,0 11,19A1,1 0 0,0 12,20A1,1 0 0,0 13,19A1,1 0 0,0 12,18Z
-
-$mol_icon_download $mol_icon path \M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z
-
-$mol_button_download $mol_button_minor
-	blob null
-	uri \
-	file_name \blob.bin
-	sub /
-		<= Icon $mol_icon_download
-		<= title \
 
 $hyoo_crus_land_page $mol_page
 	land $hyoo_crus_land
@@ -1408,47 +2071,15 @@ $hyoo_crus_auth_slot $mol_page
 					title <= ref* \
 					text <= key* \
 
-$mol_string_button $mol_string
-
 $mol_icon_directions $mol_icon path \M14,14.5V12H10V15H8V11A1,1 0 0,1 9,10H14V7.5L17.5,11M21.71,11.29L12.71,2.29H12.7C12.31,1.9 11.68,1.9 11.29,2.29L2.29,11.29C1.9,11.68 1.9,12.32 2.29,12.71L11.29,21.71C11.68,22.09 12.31,22.1 12.71,21.71L21.71,12.71C22.1,12.32 22.1,11.68 21.71,11.29Z
 
 $mol_icon_directions_fork $mol_icon path \M3,4V12.5L6,9.5L9,13C10,14 10,15 10,15V21H14V14C14,14 14,13 13.47,12C12.94,11 12,10 12,10L9,6.58L11.5,4M18,4L13.54,8.47L14,9C14,9 14.93,10 15.47,11C15.68,11.4 15.8,11.79 15.87,12.13L21,7
 
 $mol_icon_plus_box $mol_icon path \M17,13H13V17H11V13H7V11H11V7H13V11H17M19,3H5C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3Z
 
-$mol_icon_brightness_6 $mol_icon path \M12,18V6A6,6 0 0,1 18,12A6,6 0 0,1 12,18M20,15.31L23.31,12L20,8.69V4H15.31L12,0.69L8.69,4H4V8.69L0.69,12L4,15.31V20H8.69L12,23.31L15.31,20H20V15.31Z
-
-$mol_lights_toggle $mol_check_icon
-	Icon <= Lights_icon $mol_icon_brightness_6
-	hint @ \Toggle lights
-	checked? <=> lights? false
-
-$hyoo_sync_online $mol_select
-	minimal_width 40
-	minimal_height 40
-	yard $hyoo_sync_yard<any>
-		master_list => dictionary
-		master_cursor? => master_cursor?
-	Filter null
-	option_content* /
-		<= Option_logo* $mol_avatar
-			id <= master_id* \
-		<= option_label*
-	trigger_content /
-		<= Link $mol_link
-			uri <= master_link \
-			sub <= link_content /
-				<= Well $mol_avatar
-					id <= master_link \
-				<= Fail $mol_icon_sync_off
-			hint <= message <= hint \$hyoo_sync
-
 $mol_icon_hint $mol_icon path \M10,19H13V22H10V19M12,2C17.35,2.22 19.68,7.62 16.5,11.67C15.67,12.67 14.33,13.33 13.67,14.17C13,15 13,16 13,17H10C10,15.33 10,13.92 10.67,12.92C11.33,11.92 12.67,11.33 13.5,10.67C15.92,8.43 15.32,5.26 12,5A3,3 0 0,0 9,8H6A6,6 0 0,1 12,2Z
 
 $mol_icon_chevron_down $mol_icon path \M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z
-
-$mol_theme_auto $mol_plugin
-	attr * mol_theme <= theme \
 
 $hyoo_calc $mol_page
 	yard $hyoo_sync_client
@@ -1583,20 +2214,6 @@ $hyoo_calc_cell $mol_text
 		hyoo_calc_cell_selected <= selected?val false
 		hyoo_calc_cell_type <= type?val \
 
-$mol_text_list $mol_text
-	auto_scroll null
-	attr *
-		^
-		mol_text_list_type <= type \
-	Paragraph* $mol_text_list_item
-		index <= item_index*
-		sub <= block_content*
-
-$mol_text_list_item $mol_paragraph
-	attr *
-		^
-		mol_text_list_item_index <= index 0
-
 $hyoo_crus_app $mol_book2_catalog
 	menu_title \CRUS🦿DB
 	param \section
@@ -1608,12 +2225,10 @@ $hyoo_crus_app $mol_book2_catalog
 			realm <= realm
 	spreads *
 		\
-			<= Intro $mol_page
-				title \💨 Intro
-				body /
-					<= Intro_content $mol_text
-						uri_base \hyoo/crus/
-						text <= intro \
+			<= Intro $hyoo_page
+				menu_title \💨 Intro
+				side_main_id \sy2u0y_9rb8zj
+				Gap* null
 		realm <= Realm $hyoo_crus_realm_book
 			realm <= realm
 			addon_tools /
