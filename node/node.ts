@@ -3,7 +3,7 @@ namespace $ {
 	/** Virtual Node that represents contained units as high-level data types. */
 	export class $hyoo_crus_node extends $mol_object {
 		
-		static tag = $hyoo_crus_gist_tag[ $hyoo_crus_gist_tag.vals ] as keyof typeof $hyoo_crus_gist_tag
+		static tag: keyof typeof $hyoo_crus_gist_tag = 'vals'
 		
 		/** Standalone part of Realm which syncs separately, have own rights, and contains Units */
 		land() {

@@ -8,15 +8,15 @@ namespace $ {
 			}
 			
 			@ $mol_mem_key
-			static units( land: $hyoo_crus_land, next?: readonly $hyoo_crus_unit[] ) {
+			static units( land: $hyoo_crus_ref, next?: readonly $hyoo_crus_unit[] ) { $hyoo_crus_land
 				return next ?? []
 			}
 				
-			static async units_load( land: $hyoo_crus_land ) {
+			static async units_load( land: $hyoo_crus_ref ) {
 				return []
 			}
 			
-			static async units_save( land: $hyoo_crus_land, units: readonly $hyoo_crus_unit[] ) {}
+			static async units_save( land: $hyoo_crus_ref, units: readonly $hyoo_crus_unit[] ) {}
 			
 		}
 		$.$hyoo_crus_mine = $hyoo_crus_mine_mock

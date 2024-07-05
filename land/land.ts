@@ -739,7 +739,7 @@ namespace $ {
 			const realm = this.realm()
 			if( !realm ) return
 			
-			let units = realm.$.$hyoo_crus_mine.units( this ) ?? []
+			let units = realm.$.$hyoo_crus_mine.units( this.ref() ) ?? []
 			
 			const dict = new Map< string, $hyoo_crus_unit >()
 			for( const unit of units ) dict.set( unit.key(), unit )
@@ -818,7 +818,7 @@ namespace $ {
 			
 			if( persisting.length )	{
 				
-				mine.units( this, persisting )
+				mine.units( this.ref(), persisting )
 				this.bus().send( persisting.map( unit => unit.buffer ) )
 			
 				$mol_wire_sync( this.$ ).$mol_log3_done({

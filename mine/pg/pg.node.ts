@@ -49,13 +49,13 @@ namespace $ {
 			return res.rows[0]?.rock as Uint8Array ?? null
 		}
 		
-		static async units_save( land: $hyoo_crus_land, units: readonly $hyoo_crus_unit[] ) {
+		static async units_save( land: $hyoo_crus_ref, units: readonly $hyoo_crus_unit[] ) { $hyoo_crus_land
 			
 			const db = await this.db()
 			if( !db ) return
 			
 			const tasks = units.map( unit => {
-				const ref = land.ref().description
+				const ref = land.description
 				const buf = Buffer.from( unit.buffer, unit.byteOffset, unit.byteLength )
 				return db.query(
 					`
@@ -74,14 +74,14 @@ namespace $ {
 		}
 		
 		@ $mol_action
-		static async units_load( land: $hyoo_crus_land ) {
+		static async units_load( land: $hyoo_crus_ref ) {
 			
 			const db = await this.db()
 			if( !db ) return []
 
 			const res = await db.query<{ unit: Uint8Array }>(
 				`SELECT unit FROM Land WHERE land = $1::varchar(17)`,
-				[ land.ref().description ]
+				[ land.description ]
 			)
 			
 			const units = res.rows.map( row => {

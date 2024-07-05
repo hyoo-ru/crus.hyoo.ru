@@ -1,9 +1,8 @@
 namespace $ {
-	
 	/** Whole global graph database which contains Lands. */
 	export class $hyoo_crus_realm extends $mol_object {
 		
-		lands = new $mol_wire_dict< $hyoo_crus_ref, $hyoo_crus_land >()
+		lands_touched = new $mol_wire_set< $hyoo_crus_ref >()
 		
 		/** Realm synchronizer. */
 		@ $mol_mem
@@ -47,18 +46,11 @@ namespace $ {
 		/** Standalone part of Realm which syncs separately, have own rights, and contains Units */
 		@ $mol_mem_key
 		Land( ref: $hyoo_crus_ref ): $hyoo_crus_land {
-			
-			let land = this.lands.get( ref )
-			if( land ) return land
-			
-			land = $hyoo_crus_land.make({
+			this.lands_touched.add( ref )
+			return $hyoo_crus_land.make({
 				realm: $mol_const( this ),
 				ref: $mol_const( ref ),
 			})
-			
-			this.lands.set( ref, land )
-			return land
-			
 		}
 		
 		/** High level representation of stored data. */

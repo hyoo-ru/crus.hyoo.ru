@@ -25,18 +25,18 @@ namespace $ {
 		static units_persisted = new WeakSet< $hyoo_crus_unit >()
 		
 		/** Sync loads/saves units. */
-		static units( land: $hyoo_crus_land, next?: readonly $hyoo_crus_unit[] ) {
+		static units( land: $hyoo_crus_ref, next?: readonly $hyoo_crus_unit[] ) {
 			if( next ) return $mol_wire_sync( this ).units_save( land, next ), next
 			else return $mol_wire_sync( this ).units_load( land )
 		}
 		
 		/** Loads units from storage */
-		static async units_load( land: $hyoo_crus_land ) {
+		static async units_load( land: $hyoo_crus_ref ) {
 			return [] as readonly $hyoo_crus_unit[]
 		}
 		
 		/** Saves units to storage */
-		static async units_save( land: $hyoo_crus_land, units: readonly $hyoo_crus_unit[] ) {
+		static async units_save( land: $hyoo_crus_ref, units: readonly $hyoo_crus_unit[] ) {
 			
 		}
 		

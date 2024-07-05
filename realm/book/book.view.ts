@@ -5,11 +5,11 @@ namespace $.$$ {
 		override spread_ids() {
 			const spread = this.spread()
 			const spread_land = $hyoo_crus_ref_land( $hyoo_crus_ref( spread ) )
-			return [ ... new Set([ ... this.realm().lands.values() ].flatMap( land => {
-				return land.ref() === spread_land
-					? [ land.ref().description!, spread]
-					: [ land.ref().description! ]
-			} ) ) ]
+			return [ ... this.realm().lands_touched.values() ].flatMap( land => {
+				return land === spread_land
+					? [ land.description!, spread ]
+					: [ land.description! ]
+			} )
 		}
 		
 		override land( id: string ) {

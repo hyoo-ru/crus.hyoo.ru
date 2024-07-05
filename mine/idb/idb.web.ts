@@ -29,9 +29,9 @@ namespace $ {
 			return db.change( 'Rock' ).stores.Rock
 		}
 		
-		static async units_save( land: $hyoo_crus_land, units: readonly $hyoo_crus_unit[] ) {
+		static async units_save( land: $hyoo_crus_ref, units: readonly $hyoo_crus_unit[] ) { $hyoo_crus_land
 			
-			const land_ref = land.ref().description!
+			const land_ref = land.description!
 			const db = await this.db()
 			const change = db.change( 'Land' )
 			const { Land } = change.stores
@@ -45,11 +45,11 @@ namespace $ {
 			
 		}
 		
-		static async units_load( land: $hyoo_crus_land ) {
+		static async units_load( land: $hyoo_crus_ref ) {
 			
 			const db = await this.db()
 			const { Land } = db.read( 'Land' )
-			const land_ref = land.ref().description
+			const land_ref = land.description
 			const land_key = IDBKeyRange.bound( [ land_ref ], [ land_ref + '\uFFFF' ] )
 			const res = await Land.select( land_key )
 			
