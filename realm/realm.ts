@@ -4,7 +4,7 @@ namespace $ {
 		
 		static lands_touched = new $mol_wire_set< $hyoo_crus_ref >()
 		/** @deprecated Use `this.$.$hyoo_crus_realm` */
-		lands_touched = $hyoo_crus_realm.lands_touched
+		lands_touched = ( this.constructor as typeof $hyoo_crus_realm ).lands_touched
 		
 		/** Realm synchronizer. */
 		@ $mol_mem
