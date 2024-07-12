@@ -1,12 +1,10 @@
 $hyoo_crus_app $mol_book2_catalog
 	menu_title \🦿 CRUS-DB
 	param \section
-	realm $hyoo_crus_realm
 	menu_foot /
 		<= Source $mol_link_source
 			uri \https://github.com/hyoo-ru/crus.hyoo.ru
 		<= Status $hyoo_crus_status
-			realm <= realm
 	spreads *
 		\
 			<= Info $hyoo_page
@@ -14,11 +12,9 @@ $hyoo_crus_app $mol_book2_catalog
 				side_main_id \sy2u0y_9rb8zj
 				Gap* null
 		realm <= Realm $hyoo_crus_realm_book
-			realm <= realm
 			addon_tools /
 				<= Spread_close
 		slot <= Slot $hyoo_crus_auth_slot
-			realm <= realm
 			tools /
 				<= Spread_close
 		casting <= Casting $hyoo_calc
