@@ -1349,7 +1349,6 @@ declare namespace $ {
         static tag: keyof typeof $hyoo_crus_gist_tag;
         land(): $hyoo_crus_land;
         head(): string;
-        realm(): $hyoo_crus_realm | null;
         land_ref(): symbol & {
             $hyoo_crus_ref: symbol;
         };
@@ -1550,7 +1549,6 @@ declare namespace $ {
 
 declare namespace $ {
     class $hyoo_crus_land extends $mol_object {
-        realm(): null | $hyoo_crus_realm;
         ref(): symbol & {
             $hyoo_crus_ref: symbol;
         };
@@ -1587,7 +1585,7 @@ declare namespace $ {
         } | null;
         faces_pack(): $hyoo_crus_pack;
         apply_unit(delta: readonly $hyoo_crus_unit[], skip_check?: boolean): string[];
-        units_verify(delta: readonly $hyoo_crus_unit[]): Promise<string[]>;
+        units_verify(units: readonly $hyoo_crus_unit[]): Promise<string[]>;
         apply_unit_trust(delta: readonly $hyoo_crus_unit[], skip_check?: boolean): string[];
         apply_land(land: $hyoo_crus_land): string[];
         recheck(): void;
@@ -1604,7 +1602,7 @@ declare namespace $ {
         broadcast(): void;
         sync(): this;
         sync_mine(): $mol_wire_atom<unknown, [], void> | undefined;
-        sync_yard(): $mol_wire_atom<unknown, [], void | undefined> | undefined;
+        sync_yard(): $mol_wire_atom<unknown, [], void> | undefined;
         bus(): $mol_bus<ArrayBuffer[]>;
         loading(): void;
         saving(): void;
@@ -1633,6 +1631,7 @@ declare namespace $ {
         gift = 247,
         gist = 0
     }
+    let $hyoo_crus_unit_trusted: WeakSet<$hyoo_crus_unit>;
     class $hyoo_crus_unit extends $mol_buffer {
         static size: 128;
         constructor(buffer?: ArrayBuffer, byteOffset?: number, byteLength?: number);
@@ -1780,7 +1779,6 @@ declare namespace $ {
         node_make<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1, vary: $hyoo_crus_vary_type, tag?: keyof typeof $hyoo_crus_gist_tag): InstanceType<Node_1>;
         land(): $hyoo_crus_land;
         head(): string;
-        realm(): $hyoo_crus_realm | null;
         land_ref(): symbol & {
             $hyoo_crus_ref: symbol;
         };
@@ -1825,7 +1823,6 @@ declare namespace $ {
         node_make<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1, vary: $hyoo_crus_vary_type, tag?: keyof typeof $hyoo_crus_gist_tag): InstanceType<Node_1>;
         land(): $hyoo_crus_land;
         head(): string;
-        realm(): $hyoo_crus_realm | null;
         land_ref(): symbol & {
             $hyoo_crus_ref: symbol;
         };
@@ -1872,7 +1869,6 @@ declare namespace $ {
         node_make<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1, vary: $hyoo_crus_vary_type, tag?: keyof typeof $hyoo_crus_gist_tag): InstanceType<Node_1>;
         land(): $hyoo_crus_land;
         head(): string;
-        realm(): $hyoo_crus_realm | null;
         land_ref(): symbol & {
             $hyoo_crus_ref: symbol;
         };
@@ -1919,7 +1915,6 @@ declare namespace $ {
         node_make<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1, vary: $hyoo_crus_vary_type, tag?: keyof typeof $hyoo_crus_gist_tag): InstanceType<Node_1>;
         land(): $hyoo_crus_land;
         head(): string;
-        realm(): $hyoo_crus_realm | null;
         land_ref(): symbol & {
             $hyoo_crus_ref: symbol;
         };
@@ -1966,7 +1961,6 @@ declare namespace $ {
         node_make<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1, vary: $hyoo_crus_vary_type, tag?: keyof typeof $hyoo_crus_gist_tag): InstanceType<Node_1>;
         land(): $hyoo_crus_land;
         head(): string;
-        realm(): $hyoo_crus_realm | null;
         land_ref(): symbol & {
             $hyoo_crus_ref: symbol;
         };
@@ -2015,7 +2009,6 @@ declare namespace $ {
         node_make<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1, vary: $hyoo_crus_vary_type, tag?: keyof typeof $hyoo_crus_gist_tag): InstanceType<Node_1>;
         land(): $hyoo_crus_land;
         head(): string;
-        realm(): $hyoo_crus_realm | null;
         land_ref(): symbol & {
             $hyoo_crus_ref: symbol;
         };
@@ -2062,7 +2055,6 @@ declare namespace $ {
         node_make<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1, vary: $hyoo_crus_vary_type, tag?: keyof typeof $hyoo_crus_gist_tag): InstanceType<Node_1>;
         land(): $hyoo_crus_land;
         head(): string;
-        realm(): $hyoo_crus_realm | null;
         land_ref(): symbol & {
             $hyoo_crus_ref: symbol;
         };
@@ -2109,7 +2101,6 @@ declare namespace $ {
         node_make<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1, vary: $hyoo_crus_vary_type, tag?: keyof typeof $hyoo_crus_gist_tag): InstanceType<Node_1>;
         land(): $hyoo_crus_land;
         head(): string;
-        realm(): $hyoo_crus_realm | null;
         land_ref(): symbol & {
             $hyoo_crus_ref: symbol;
         };
@@ -2156,7 +2147,6 @@ declare namespace $ {
         node_make<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1, vary: $hyoo_crus_vary_type, tag?: keyof typeof $hyoo_crus_gist_tag): InstanceType<Node_1>;
         land(): $hyoo_crus_land;
         head(): string;
-        realm(): $hyoo_crus_realm | null;
         land_ref(): symbol & {
             $hyoo_crus_ref: symbol;
         };
@@ -2203,7 +2193,6 @@ declare namespace $ {
         node_make<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1, vary: $hyoo_crus_vary_type, tag?: keyof typeof $hyoo_crus_gist_tag): InstanceType<Node_1>;
         land(): $hyoo_crus_land;
         head(): string;
-        realm(): $hyoo_crus_realm | null;
         land_ref(): symbol & {
             $hyoo_crus_ref: symbol;
         };
@@ -2250,7 +2239,6 @@ declare namespace $ {
         node_make<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1, vary: $hyoo_crus_vary_type, tag?: keyof typeof $hyoo_crus_gist_tag): InstanceType<Node_1>;
         land(): $hyoo_crus_land;
         head(): string;
-        realm(): $hyoo_crus_realm | null;
         land_ref(): symbol & {
             $hyoo_crus_ref: symbol;
         };
@@ -2297,7 +2285,6 @@ declare namespace $ {
         node_make<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1, vary: $hyoo_crus_vary_type, tag?: keyof typeof $hyoo_crus_gist_tag): InstanceType<Node_1>;
         land(): $hyoo_crus_land;
         head(): string;
-        realm(): $hyoo_crus_realm | null;
         land_ref(): symbol & {
             $hyoo_crus_ref: symbol;
         };
@@ -2344,7 +2331,6 @@ declare namespace $ {
         node_make<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1, vary: $hyoo_crus_vary_type, tag?: keyof typeof $hyoo_crus_gist_tag): InstanceType<Node_1>;
         land(): $hyoo_crus_land;
         head(): string;
-        realm(): $hyoo_crus_realm | null;
         land_ref(): symbol & {
             $hyoo_crus_ref: symbol;
         };
@@ -2391,7 +2377,6 @@ declare namespace $ {
         node_make<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1, vary: $hyoo_crus_vary_type, tag?: keyof typeof $hyoo_crus_gist_tag): InstanceType<Node_1>;
         land(): $hyoo_crus_land;
         head(): string;
-        realm(): $hyoo_crus_realm | null;
         land_ref(): symbol & {
             $hyoo_crus_ref: symbol;
         };
@@ -2446,7 +2431,6 @@ declare namespace $ {
             node_make<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1, vary: $hyoo_crus_vary_type, tag?: keyof typeof $hyoo_crus_gist_tag): InstanceType<Node_1>;
             land(): $hyoo_crus_land;
             head(): string;
-            realm(): $hyoo_crus_realm | null;
             land_ref(): symbol & {
                 $hyoo_crus_ref: symbol;
             };
@@ -2522,7 +2506,6 @@ declare namespace $ {
             node_make<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1, vary: $hyoo_crus_vary_type, tag?: keyof typeof $hyoo_crus_gist_tag): InstanceType<Node_1>;
             land(): $hyoo_crus_land;
             head(): string;
-            realm(): $hyoo_crus_realm | null;
             land_ref(): symbol & {
                 $hyoo_crus_ref: symbol;
             };
@@ -2580,7 +2563,6 @@ declare namespace $ {
         vary(next?: $hyoo_crus_vary_type): $hyoo_crus_vary_type;
         land(): $hyoo_crus_land;
         head(): string;
-        realm(): $hyoo_crus_realm | null;
         land_ref(): symbol & {
             $hyoo_crus_ref: symbol;
         };
@@ -2618,7 +2600,6 @@ declare namespace $ {
         vary(next?: $hyoo_crus_vary_type): $hyoo_crus_vary_type;
         land(): $hyoo_crus_land;
         head(): string;
-        realm(): $hyoo_crus_realm | null;
         land_ref(): symbol & {
             $hyoo_crus_ref: symbol;
         };
@@ -2656,7 +2637,6 @@ declare namespace $ {
         vary(next?: $hyoo_crus_vary_type): $hyoo_crus_vary_type;
         land(): $hyoo_crus_land;
         head(): string;
-        realm(): $hyoo_crus_realm | null;
         land_ref(): symbol & {
             $hyoo_crus_ref: symbol;
         };
@@ -2696,7 +2676,6 @@ declare namespace $ {
         vary(next?: $hyoo_crus_vary_type): $hyoo_crus_vary_type;
         land(): $hyoo_crus_land;
         head(): string;
-        realm(): $hyoo_crus_realm | null;
         land_ref(): symbol & {
             $hyoo_crus_ref: symbol;
         };
@@ -2736,7 +2715,6 @@ declare namespace $ {
         vary(next?: $hyoo_crus_vary_type): $hyoo_crus_vary_type;
         land(): $hyoo_crus_land;
         head(): string;
-        realm(): $hyoo_crus_realm | null;
         land_ref(): symbol & {
             $hyoo_crus_ref: symbol;
         };
@@ -2776,7 +2754,6 @@ declare namespace $ {
         vary(next?: $hyoo_crus_vary_type): $hyoo_crus_vary_type;
         land(): $hyoo_crus_land;
         head(): string;
-        realm(): $hyoo_crus_realm | null;
         land_ref(): symbol & {
             $hyoo_crus_ref: symbol;
         };
@@ -2818,7 +2795,6 @@ declare namespace $ {
         vary(next?: $hyoo_crus_vary_type): $hyoo_crus_vary_type;
         land(): $hyoo_crus_land;
         head(): string;
-        realm(): $hyoo_crus_realm | null;
         land_ref(): symbol & {
             $hyoo_crus_ref: symbol;
         };
@@ -2858,7 +2834,6 @@ declare namespace $ {
         vary(next?: $hyoo_crus_vary_type): $hyoo_crus_vary_type;
         land(): $hyoo_crus_land;
         head(): string;
-        realm(): $hyoo_crus_realm | null;
         land_ref(): symbol & {
             $hyoo_crus_ref: symbol;
         };
@@ -2898,7 +2873,6 @@ declare namespace $ {
         vary(next?: $hyoo_crus_vary_type): $hyoo_crus_vary_type;
         land(): $hyoo_crus_land;
         head(): string;
-        realm(): $hyoo_crus_realm | null;
         land_ref(): symbol & {
             $hyoo_crus_ref: symbol;
         };
@@ -2938,7 +2912,6 @@ declare namespace $ {
         vary(next?: $hyoo_crus_vary_type): $hyoo_crus_vary_type;
         land(): $hyoo_crus_land;
         head(): string;
-        realm(): $hyoo_crus_realm | null;
         land_ref(): symbol & {
             $hyoo_crus_ref: symbol;
         };
@@ -2978,7 +2951,6 @@ declare namespace $ {
         vary(next?: $hyoo_crus_vary_type): $hyoo_crus_vary_type;
         land(): $hyoo_crus_land;
         head(): string;
-        realm(): $hyoo_crus_realm | null;
         land_ref(): symbol & {
             $hyoo_crus_ref: symbol;
         };
@@ -3018,7 +2990,6 @@ declare namespace $ {
         vary(next?: $hyoo_crus_vary_type): $hyoo_crus_vary_type;
         land(): $hyoo_crus_land;
         head(): string;
-        realm(): $hyoo_crus_realm | null;
         land_ref(): symbol & {
             $hyoo_crus_ref: symbol;
         };
@@ -3058,7 +3029,6 @@ declare namespace $ {
         vary(next?: $hyoo_crus_vary_type): $hyoo_crus_vary_type;
         land(): $hyoo_crus_land;
         head(): string;
-        realm(): $hyoo_crus_realm | null;
         land_ref(): symbol & {
             $hyoo_crus_ref: symbol;
         };
@@ -3098,7 +3068,6 @@ declare namespace $ {
         vary(next?: $hyoo_crus_vary_type): $hyoo_crus_vary_type;
         land(): $hyoo_crus_land;
         head(): string;
-        realm(): $hyoo_crus_realm | null;
         land_ref(): symbol & {
             $hyoo_crus_ref: symbol;
         };
@@ -3138,7 +3107,6 @@ declare namespace $ {
         vary(next?: $hyoo_crus_vary_type): $hyoo_crus_vary_type;
         land(): $hyoo_crus_land;
         head(): string;
-        realm(): $hyoo_crus_realm | null;
         land_ref(): symbol & {
             $hyoo_crus_ref: symbol;
         };
@@ -3189,7 +3157,6 @@ declare namespace $ {
             vary(next?: $hyoo_crus_vary_type): $hyoo_crus_vary_type;
             land(): $hyoo_crus_land;
             head(): string;
-            realm(): $hyoo_crus_realm | null;
             land_ref(): symbol & {
                 $hyoo_crus_ref: symbol;
             };
@@ -3243,7 +3210,6 @@ declare namespace $ {
                 vary(next?: $hyoo_crus_vary_type): $hyoo_crus_vary_type;
                 land(): $hyoo_crus_land;
                 head(): string;
-                realm(): $hyoo_crus_realm | null;
                 land_ref(): symbol & {
                     $hyoo_crus_ref: symbol;
                 };
@@ -3296,7 +3262,6 @@ declare namespace $ {
                     vary(next?: $hyoo_crus_vary_type): $hyoo_crus_vary_type;
                     land(): $hyoo_crus_land;
                     head(): string;
-                    realm(): $hyoo_crus_realm | null;
                     land_ref(): symbol & {
                         $hyoo_crus_ref: symbol;
                     };
@@ -3453,16 +3418,30 @@ declare namespace $ {
 
 declare namespace $ {
     class $hyoo_crus_realm extends $mol_object {
+        static lands_touched: $mol_wire_set<symbol & {
+            $hyoo_crus_ref: symbol;
+        }>;
         lands_touched: $mol_wire_set<symbol & {
             $hyoo_crus_ref: symbol;
         }>;
+        static yard(): $hyoo_crus_yard;
         yard(): $hyoo_crus_yard;
+        static home(): $hyoo_crus_home;
         home(): $hyoo_crus_home;
+        static king_grab(preset?: $hyoo_crus_rank_preset): $hyoo_crus_auth;
         king_grab(preset?: $hyoo_crus_rank_preset): $hyoo_crus_auth;
+        static land_grab(preset?: $hyoo_crus_rank_preset): $hyoo_crus_land;
         land_grab(preset?: $hyoo_crus_rank_preset): $hyoo_crus_land;
+        static Land(ref: $hyoo_crus_ref): $hyoo_crus_land;
         Land(ref: $hyoo_crus_ref): $hyoo_crus_land;
+        static Node<Node extends typeof $hyoo_crus_node>(ref: $hyoo_crus_ref, Node: Node): InstanceType<Node>;
         Node<Node extends typeof $hyoo_crus_node>(ref: $hyoo_crus_ref, Node: Node): InstanceType<Node>;
+        static apply_pack(pack: $hyoo_crus_pack): void;
         apply_pack(pack: $hyoo_crus_pack): void;
+        static apply_parts(lands: Record<$hyoo_crus_ref, {
+            faces: $hyoo_crus_face_map;
+            units: $hyoo_crus_unit[];
+        }>, rocks: [Uint8Array, Uint8Array | null][]): void;
         apply_parts(lands: Record<$hyoo_crus_ref, {
             faces: $hyoo_crus_face_map;
             units: $hyoo_crus_unit[];
@@ -3472,7 +3451,6 @@ declare namespace $ {
 
 declare namespace $ {
     class $hyoo_crus_app extends $mol_rest_resource_fs {
-        _realm(): $hyoo_crus_realm;
         _yard(): $hyoo_crus_yard;
         _sync(): void;
         OPEN(msg: $mol_rest_message): void;

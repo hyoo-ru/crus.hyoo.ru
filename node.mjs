@@ -5465,9 +5465,6 @@ var $;
         head() {
             return '';
         }
-        realm() {
-            return this.land()?.realm() ?? null;
-        }
         land_ref() {
             return this.land()?.ref() ?? this.$.$hyoo_crus_auth.current().lord();
         }
@@ -6387,9 +6384,6 @@ var $;
 var $;
 (function ($) {
     class $hyoo_crus_land extends $mol_object {
-        realm() {
-            return null;
-        }
         ref() {
             return this.auth().lord();
         }
@@ -6562,16 +6556,19 @@ var $;
         apply_unit(delta, skip_check = false) {
             if (!delta.length)
                 return [];
-            const errors = $mol_wire_sync(this).units_verify(delta);
-            if (errors.some(v => v))
-                return errors;
+            const doubt = delta.filter(unit => !$hyoo_crus_unit_trusted.has(unit));
+            if (doubt.length) {
+                const errors = $mol_wire_sync(this).units_verify(doubt);
+                if (errors.some(v => v))
+                    return errors;
+            }
             return this.apply_unit_trust(delta, skip_check);
         }
-        async units_verify(delta) {
-            const passes = delta.filter(unit => unit.kind() === 'pass');
+        async units_verify(units) {
+            const passes = units.filter(unit => unit.kind() === 'pass');
             const auth = new Map(passes.map((unit) => [unit.peer(), unit.auth()]));
             const mixin = $hyoo_crus_ref_encode(this.ref());
-            return await Promise.all(delta.map(async (unit) => {
+            return await Promise.all(units.map(async (unit) => {
                 let key_public = this.key_public(unit.peer());
                 if (!key_public) {
                     const key_serial = auth.get(unit.peer());
@@ -6582,7 +6579,9 @@ var $;
                 const sens = unit.sens().slice();
                 for (let i = 0; i < mixin.length; ++i)
                     sens[i + 14] ^= mixin[i + 14];
-                return await key_public.verify(sens, unit.sign()) ? '' : `Wrong unit sign`;
+                const valid = await key_public.verify(sens, unit.sign());
+                $hyoo_crus_unit_trusted.add(unit);
+                return valid ? '' : `Wrong unit sign`;
             }));
         }
         apply_unit_trust(delta, skip_check = false) {
@@ -6682,10 +6681,7 @@ var $;
             });
         }
         fork(preset = { '': $hyoo_crus_rank.get }) {
-            const realm = this.realm();
-            if (!realm)
-                $mol_fail(new Error('Realm is required to fork'));
-            const land = realm.land_grab(preset);
+            const land = this.$.$hyoo_crus_realm.land_grab(preset);
             land.Meta().Inflow(null).items_vary([this.ref()]);
             return land;
         }
@@ -6703,20 +6699,19 @@ var $;
                 if (!inflow.length)
                     break merge;
                 const exists = new Set([...this.gists.get(head)?.keys() ?? []]);
-                const realm = this.realm();
+                const realm = this.$.$hyoo_crus_realm;
                 let slice = 0;
-                if (realm)
-                    for (const ref of inflow) {
-                        ++slice;
-                        const land = realm.Land(ref);
-                        for (const gist of land.gists_ordered(head)) {
-                            if (exists.has(gist.self()))
-                                continue;
-                            queue.push(gist);
-                            exists.add(gist.self());
-                            slices.set(gist, slice);
-                        }
+                for (const ref of inflow) {
+                    ++slice;
+                    const land = realm.Land(ref);
+                    for (const gist of land.gists_ordered(head)) {
+                        if (exists.has(gist.self()))
+                            continue;
+                        queue.push(gist);
+                        exists.add(gist.self());
+                        slices.set(gist, slice);
                     }
+                }
             }
             if (queue.length === 0)
                 return queue;
@@ -6819,6 +6814,7 @@ var $;
             this.join();
             const auth = this.auth();
             const unit = new $hyoo_crus_gist;
+            $hyoo_crus_unit_trusted.add(unit);
             unit.time(this.faces.tick());
             unit.peer(auth.peer());
             unit.lead(lead);
@@ -6873,7 +6869,7 @@ var $;
             this.post(seat ? units[seat - 1].self() : '', gist.head(), gist.self(), null, 'term');
         }
         broadcast() {
-            this.realm()?.yard().lands_neonatals.add(this.ref());
+            this.$.$hyoo_crus_realm.yard().lands_neonatals.add(this.ref());
         }
         sync() {
             this.loading();
@@ -6886,7 +6882,7 @@ var $;
             return new $mol_wire_atom('', () => this.saving()).fresh();
         }
         sync_yard() {
-            return new $mol_wire_atom('', () => this.realm()?.yard().sync_land(this.ref())).fresh();
+            return new $mol_wire_atom('', () => this.$.$hyoo_crus_realm.yard().sync_land(this.ref())).fresh();
         }
         bus() {
             return new this.$.$mol_bus(`$hyoo_crus_land:${this.ref().description}`, $mol_wire_async(bins => {
@@ -6899,10 +6895,7 @@ var $;
         }
         loading() {
             $mol_wire_solid();
-            const realm = this.realm();
-            if (!realm)
-                return;
-            let units = realm.$.$hyoo_crus_mine.units(this.ref()) ?? [];
+            let units = this.$.$hyoo_crus_mine.units(this.ref()) ?? [];
             const dict = new Map();
             for (const unit of units)
                 dict.set(unit.key(), unit);
@@ -7012,7 +7005,7 @@ var $;
         gist_decode_raw(gist) {
             if (this.gists.get(gist.head())?.get(gist.self()) !== gist) {
                 for (const id of this.Meta().Inflow()?.items_vary() ?? []) {
-                    const vary = this.realm()?.Land($hyoo_crus_vary_cast_ref(id)).gist_decode_raw(gist);
+                    const vary = this.$.$hyoo_crus_realm.Land($hyoo_crus_vary_cast_ref(id)).gist_decode_raw(gist);
                     if (vary !== undefined)
                         return vary;
                 }
@@ -7235,6 +7228,7 @@ var $;
         $hyoo_crus_unit_kind[$hyoo_crus_unit_kind["gift"] = $hyoo_crus_part.gift] = "gift";
         $hyoo_crus_unit_kind[$hyoo_crus_unit_kind["gist"] = $hyoo_crus_part.gist] = "gist";
     })($hyoo_crus_unit_kind = $.$hyoo_crus_unit_kind || ($.$hyoo_crus_unit_kind = {}));
+    $.$hyoo_crus_unit_trusted = new WeakSet();
     class $hyoo_crus_unit extends $mol_buffer {
         static size = 128;
         constructor(buffer = new ArrayBuffer($hyoo_crus_unit.size), byteOffset = 0, byteLength = buffer.byteLength) {
@@ -7720,7 +7714,7 @@ var $;
                 return '$hyoo_crus_list_to<' + Value() + '>';
             }
             remote_list(next) {
-                const realm = this.realm();
+                const realm = this.$.$hyoo_crus_realm;
                 const Node = Value();
                 return this.items_vary(next?.map(item => item.ref()))
                     .map($hyoo_crus_vary_cast_ref)
@@ -7728,7 +7722,7 @@ var $;
                     .map(ref => realm.Node(ref, Node));
             }
             remote_make(preset) {
-                const land = this.realm().land_grab(preset);
+                const land = this.$.$hyoo_crus_realm.land_grab(preset);
                 this.splice([land.ref()]);
                 return land.Node(Value()).Item('');
             }
@@ -7947,7 +7941,7 @@ var $;
                 return '$hyoo_crus_atom_ref_to<' + Value() + '>';
             }
             yoke(preset) {
-                const realm = this.realm();
+                const realm = this.$.$hyoo_crus_realm;
                 const Ref = this.cast($hyoo_crus_atom_ref);
                 const ref = Ref.val();
                 if (ref)
@@ -7959,12 +7953,11 @@ var $;
                 return land;
             }
             remote(next) {
-                const realm = this.realm();
                 let ref = next?.ref() ?? next;
                 ref = $hyoo_crus_vary_cast_ref(this.vary(ref));
                 if (!ref)
                     return null;
-                return realm.Node(ref, Value());
+                return this.$.$hyoo_crus_realm.Node(ref, Value());
             }
             remote_ensure(preset) {
                 this.yoke(preset);
@@ -8559,7 +8552,7 @@ var $;
                 rocks: parts.rocks.length,
             });
             this.face_port_sync(port, parts.lands);
-            this.realm().apply_parts(parts.lands, parts.rocks);
+            this.$.$hyoo_crus_realm.apply_parts(parts.lands, parts.rocks);
         }
         face_port_sync(port, income) {
             const lands = this.port_lands(port);
@@ -8592,7 +8585,7 @@ var $;
                 const faces = this.face_port_land([port, land]);
                 if (!faces)
                     return;
-                const Land = this.realm().Land(land);
+                const Land = this.$.$hyoo_crus_realm.Land(land);
                 Land.saving();
                 const parts = Land.delta_parts(faces);
                 if (!parts)
@@ -8612,7 +8605,7 @@ var $;
             }
         }
         init_port_land([port, land]) {
-            const Land = this.realm().Land(land);
+            const Land = this.$.$hyoo_crus_realm.Land(land);
             Land.loading();
             this.$.$mol_log3_rise({
                 place: this,
@@ -8690,16 +8683,21 @@ var $;
 var $;
 (function ($) {
     class $hyoo_crus_realm extends $mol_object {
-        lands_touched = new $mol_wire_set();
-        yard() {
-            return this.$.$hyoo_crus_yard.make({
-                realm: $mol_const(this),
-            });
+        static lands_touched = new $mol_wire_set();
+        lands_touched = $hyoo_crus_realm.lands_touched;
+        static yard() {
+            return new this.$.$hyoo_crus_yard;
         }
-        home() {
+        yard() {
+            return this.$.$hyoo_crus_realm.yard();
+        }
+        static home() {
             return this.Land(this.$.$hyoo_crus_auth.current().lord()).home();
         }
-        king_grab(preset = { '': $hyoo_crus_rank.get }) {
+        home() {
+            return this.$.$hyoo_crus_realm.home();
+        }
+        static king_grab(preset = { '': $hyoo_crus_rank.get }) {
             const king = this.$.$hyoo_crus_auth.grab();
             const colony = $mol_wire_sync($hyoo_crus_land).make({ $: this.$ });
             colony.auth = $mol_const(king);
@@ -8713,25 +8711,39 @@ var $;
             this.Land(colony.ref()).apply_unit_trust(colony.delta_unit());
             return king;
         }
-        land_grab(preset = { '': $hyoo_crus_rank.get }) {
+        king_grab(preset = { '': $hyoo_crus_rank.get }) {
+            return this.$.$hyoo_crus_realm.king_grab(preset);
+        }
+        static land_grab(preset = { '': $hyoo_crus_rank.get }) {
             return this.Land(this.king_grab(preset).lord());
         }
-        Land(ref) {
+        land_grab(preset = { '': $hyoo_crus_rank.get }) {
+            return this.$.$hyoo_crus_realm.land_grab(preset);
+        }
+        static Land(ref) {
             this.lands_touched.add(ref);
             return $hyoo_crus_land.make({
-                realm: $mol_const(this),
                 ref: $mol_const(ref),
             });
         }
-        Node(ref, Node) {
+        Land(ref) {
+            return this.$.$hyoo_crus_realm.Land(ref);
+        }
+        static Node(ref, Node) {
             const land = this.Land($hyoo_crus_ref_land(ref));
             return land.Node(Node).Item($hyoo_crus_ref_head(ref));
         }
-        apply_pack(pack) {
+        Node(ref, Node) {
+            return this.$.$hyoo_crus_realm.Node(ref, Node);
+        }
+        static apply_pack(pack) {
             const { lands, rocks } = pack.parts();
             return this.apply_parts(lands, rocks);
         }
-        apply_parts(lands, rocks) {
+        apply_pack(pack) {
+            return this.$.$hyoo_crus_realm.apply_pack(pack);
+        }
+        static apply_parts(lands, rocks) {
             for (const land of Reflect.ownKeys(lands)) {
                 const errors = this.Land(land).apply_unit(lands[land].units).filter(Boolean);
                 for (const error of errors)
@@ -8747,25 +8759,28 @@ var $;
                 this.$.$hyoo_crus_mine.rock_save(rock);
             }
         }
+        apply_parts(lands, rocks) {
+            return this.$.$hyoo_crus_realm.apply_parts(lands, rocks);
+        }
     }
     __decorate([
         $mol_mem
-    ], $hyoo_crus_realm.prototype, "yard", null);
+    ], $hyoo_crus_realm, "yard", null);
     __decorate([
         $mol_action
-    ], $hyoo_crus_realm.prototype, "king_grab", null);
+    ], $hyoo_crus_realm, "king_grab", null);
     __decorate([
         $mol_action
-    ], $hyoo_crus_realm.prototype, "land_grab", null);
+    ], $hyoo_crus_realm, "land_grab", null);
     __decorate([
         $mol_mem_key
-    ], $hyoo_crus_realm.prototype, "Land", null);
+    ], $hyoo_crus_realm, "Land", null);
     __decorate([
         $mol_action
-    ], $hyoo_crus_realm.prototype, "apply_pack", null);
+    ], $hyoo_crus_realm, "apply_pack", null);
     __decorate([
         $mol_action
-    ], $hyoo_crus_realm.prototype, "apply_parts", null);
+    ], $hyoo_crus_realm, "apply_parts", null);
     $.$hyoo_crus_realm = $hyoo_crus_realm;
 })($ || ($ = {}));
 
@@ -8774,13 +8789,10 @@ var $;
 var $;
 (function ($) {
     class $hyoo_crus_app extends $mol_rest_resource_fs {
-        _realm() {
-            return new $hyoo_crus_realm;
-        }
         _yard() {
             $mol_wire_solid();
             setTimeout(() => this._sync());
-            return this._realm().yard();
+            return this.$.$hyoo_crus_realm.yard();
         }
         _sync() {
             this._yard().sync();
@@ -8795,9 +8807,6 @@ var $;
             this._yard().slaves.delete(msg.port);
         }
     }
-    __decorate([
-        $mol_mem
-    ], $hyoo_crus_app.prototype, "_realm", null);
     __decorate([
         $mol_mem
     ], $hyoo_crus_app.prototype, "_yard", null);
