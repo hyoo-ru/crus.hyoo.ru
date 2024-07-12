@@ -6972,6 +6972,66 @@ var $;
 "use strict";
 
 ;
+	($.$hyoo_crus_status) = class $hyoo_crus_status extends ($.$mol_select) {
+		master_id(id){
+			return "";
+		}
+		Option_logo(id){
+			const obj = new this.$.$mol_avatar();
+			(obj.id) = () => ((this?.master_id(id)));
+			return obj;
+		}
+		master_link(){
+			return "";
+		}
+		Well(){
+			const obj = new this.$.$mol_avatar();
+			(obj.id) = () => ((this?.master_link()));
+			return obj;
+		}
+		Fail(){
+			const obj = new this.$.$mol_icon_sync_off();
+			return obj;
+		}
+		link_content(){
+			return [(this?.Well()), (this?.Fail())];
+		}
+		hint(){
+			return "Sync status";
+		}
+		message(){
+			return (this?.hint());
+		}
+		Link(){
+			const obj = new this.$.$mol_link();
+			(obj.uri) = () => ((this?.master_link()));
+			(obj.sub) = () => ((this?.link_content()));
+			(obj.hint) = () => ((this?.message()));
+			return obj;
+		}
+		minimal_width(){
+			return 40;
+		}
+		minimal_height(){
+			return 40;
+		}
+		Filter(){
+			return null;
+		}
+		option_content(id){
+			return [(this?.Option_logo(id)), (this?.option_label(id))];
+		}
+		trigger_content(){
+			return [(this?.Link())];
+		}
+	};
+	($mol_mem_key(($.$hyoo_crus_status.prototype), "Option_logo"));
+	($mol_mem(($.$hyoo_crus_status.prototype), "Well"));
+	($mol_mem(($.$hyoo_crus_status.prototype), "Fail"));
+	($mol_mem(($.$hyoo_crus_status.prototype), "Link"));
+
+
+;
 "use strict";
 var $;
 (function ($) {
@@ -12568,71 +12628,6 @@ var $;
     ], $hyoo_crus_realm, "apply_parts", null);
     $.$hyoo_crus_realm = $hyoo_crus_realm;
 })($ || ($ = {}));
-
-;
-	($.$hyoo_crus_status) = class $hyoo_crus_status extends ($.$mol_select) {
-		master_id(id){
-			return "";
-		}
-		Option_logo(id){
-			const obj = new this.$.$mol_avatar();
-			(obj.id) = () => ((this?.master_id(id)));
-			return obj;
-		}
-		master_link(){
-			return "";
-		}
-		Well(){
-			const obj = new this.$.$mol_avatar();
-			(obj.id) = () => ((this?.master_link()));
-			return obj;
-		}
-		Fail(){
-			const obj = new this.$.$mol_icon_sync_off();
-			return obj;
-		}
-		link_content(){
-			return [(this?.Well()), (this?.Fail())];
-		}
-		hint(){
-			return "Sync status";
-		}
-		message(){
-			return (this?.hint());
-		}
-		Link(){
-			const obj = new this.$.$mol_link();
-			(obj.uri) = () => ((this?.master_link()));
-			(obj.sub) = () => ((this?.link_content()));
-			(obj.hint) = () => ((this?.message()));
-			return obj;
-		}
-		minimal_width(){
-			return 40;
-		}
-		minimal_height(){
-			return 40;
-		}
-		realm(){
-			const obj = new this.$.$hyoo_crus_realm();
-			return obj;
-		}
-		Filter(){
-			return null;
-		}
-		option_content(id){
-			return [(this?.Option_logo(id)), (this?.option_label(id))];
-		}
-		trigger_content(){
-			return [(this?.Link())];
-		}
-	};
-	($mol_mem_key(($.$hyoo_crus_status.prototype), "Option_logo"));
-	($mol_mem(($.$hyoo_crus_status.prototype), "Well"));
-	($mol_mem(($.$hyoo_crus_status.prototype), "Fail"));
-	($mol_mem(($.$hyoo_crus_status.prototype), "Link"));
-	($mol_mem(($.$hyoo_crus_status.prototype), "realm"));
-
 
 ;
 "use strict";
@@ -28240,7 +28235,6 @@ var $node = $node || {} ; $node[ "/hyoo/calc/calc_logo.svg" ] = "data:image/svg+
 		}
 		Status(){
 			const obj = new this.$.$hyoo_crus_status();
-			(obj.realm) = () => ((this?.realm()));
 			return obj;
 		}
 		Info(){
@@ -28252,13 +28246,11 @@ var $node = $node || {} ; $node[ "/hyoo/calc/calc_logo.svg" ] = "data:image/svg+
 		}
 		Realm(){
 			const obj = new this.$.$hyoo_crus_realm_book();
-			(obj.realm) = () => ((this?.realm()));
 			(obj.addon_tools) = () => ([(this?.Spread_close())]);
 			return obj;
 		}
 		Slot(){
 			const obj = new this.$.$hyoo_crus_auth_slot();
-			(obj.realm) = () => ((this?.realm()));
 			(obj.tools) = () => ([(this?.Spread_close())]);
 			return obj;
 		}
@@ -28282,10 +28274,6 @@ var $node = $node || {} ; $node[ "/hyoo/calc/calc_logo.svg" ] = "data:image/svg+
 		param(){
 			return "section";
 		}
-		realm(){
-			const obj = new this.$.$hyoo_crus_realm();
-			return obj;
-		}
 		menu_foot(){
 			return [(this?.Source()), (this?.Status())];
 		}
@@ -28307,7 +28295,6 @@ var $node = $node || {} ; $node[ "/hyoo/calc/calc_logo.svg" ] = "data:image/svg+
 	($mol_mem(($.$hyoo_crus_app.prototype), "Realm"));
 	($mol_mem(($.$hyoo_crus_app.prototype), "Slot"));
 	($mol_mem(($.$hyoo_crus_app.prototype), "Casting"));
-	($mol_mem(($.$hyoo_crus_app.prototype), "realm"));
 
 
 ;
@@ -28320,21 +28307,13 @@ var $;
     var $$;
     (function ($$) {
         class $hyoo_crus_app extends $.$hyoo_crus_app {
-            realm() {
-                const realm = super.realm();
-                realm.home();
-                return realm;
-            }
-            intro() {
-                return this.$.$mol_fetch.text('hyoo/crus/readme.md');
+            auto() {
+                this.$.$hyoo_crus_realm.home();
             }
         }
         __decorate([
             $mol_mem
-        ], $hyoo_crus_app.prototype, "realm", null);
-        __decorate([
-            $mol_mem
-        ], $hyoo_crus_app.prototype, "intro", null);
+        ], $hyoo_crus_app.prototype, "auto", null);
         $$.$hyoo_crus_app = $hyoo_crus_app;
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));

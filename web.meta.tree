@@ -90,7 +90,6 @@
 	deploy \/hyoo/crus/logo/logo.svg
 	deploy \/hyoo/crus/logo/logo-512.png
 	deploy \/hyoo/crus/logo/bg.webp
-	deploy \/hyoo/crus/readme.md
 	deploy \/hyoo/crus/diagram/crus-reg.png
 	deploy \/hyoo/crus/diagram/crus-list.png
 	deploy \/hyoo/crus/diagram/crus-dict.png
