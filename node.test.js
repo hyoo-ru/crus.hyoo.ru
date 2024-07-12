@@ -8680,7 +8680,7 @@ var $;
 (function ($) {
     class $hyoo_crus_realm extends $mol_object {
         static lands_touched = new $mol_wire_set();
-        lands_touched = $hyoo_crus_realm.lands_touched;
+        lands_touched = this.constructor.lands_touched;
         static yard() {
             return new this.$.$hyoo_crus_yard;
         }
@@ -13331,6 +13331,7 @@ var $;
     $mol_test_mocks.push($ => {
         class $hyoo_crus_realm_mock extends $.$hyoo_crus_realm {
             static $ = $;
+            static lands_touched = new $mol_wire_set();
         }
         $.$hyoo_crus_realm = $hyoo_crus_realm_mock;
     });
