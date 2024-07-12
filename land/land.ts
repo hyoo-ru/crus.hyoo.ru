@@ -242,13 +242,16 @@ namespace $ {
 			if( !delta.length ) return []
 			
 			const doubt = delta.filter( unit => !$hyoo_crus_unit_trusted.has( unit ) )
-			
 			if( doubt.length ) {
 				const errors = $mol_wire_sync( this ).units_verify( doubt )
 				if( errors.some( v => v ) ) return errors
 			}
 			
-			return this.apply_unit_trust( delta, skip_check )
+			const errors = this.apply_unit_trust( delta, skip_check )
+			
+			for( const unit of doubt ) $hyoo_crus_unit_trusted.add( unit )
+			
+			return errors
 		}
 		
 		async units_verify( units: readonly $hyoo_crus_unit[] ) {
@@ -274,7 +277,6 @@ namespace $ {
 				for( let i = 0; i < mixin.length; ++i ) sens[i+14] ^= mixin[i+14]
 				
 				const valid = await key_public.verify( sens, unit.sign() )
-				$hyoo_crus_unit_trusted.add( unit )
 				
 				return valid ? '' : `Wrong unit sign`
 	
@@ -525,6 +527,7 @@ namespace $ {
 			if( prev ) return prev
 			
 			const next = new $hyoo_crus_pass
+			$hyoo_crus_unit_trusted.add( next )
 			next.auth( auth.public().asArray() )
 			next._land = this
 			
@@ -549,6 +552,7 @@ namespace $ {
 			
 			const auth = this.auth()
 			const unit = new $hyoo_crus_gift
+			$hyoo_crus_unit_trusted.add( unit )
 			
 			unit.rank( rank )
 			unit.time( this.faces.tick() )

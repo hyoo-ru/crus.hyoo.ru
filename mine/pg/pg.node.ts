@@ -91,6 +91,7 @@ namespace $ {
 					row.unit.byteLength,
 				).narrow()
 				this.units_persisted.add( unit )
+				$hyoo_crus_unit_trusted.add( unit )
 				return unit
 			})
 			

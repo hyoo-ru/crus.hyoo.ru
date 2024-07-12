@@ -54,7 +54,10 @@ namespace $ {
 			const res = await Land.select( land_key )
 			
 			const units = res.map( bin => new $hyoo_crus_unit( bin ).narrow() )
-			for( const unit of units ) this.units_persisted.add( unit )
+			for( const unit of units ) {
+				this.units_persisted.add( unit )
+				$hyoo_crus_unit_trusted.add( unit )
+			}
 			
 			return units
 		}
