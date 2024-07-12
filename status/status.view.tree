@@ -1,7 +1,6 @@
 $hyoo_crus_status $mol_select
 	minimal_width 40
 	minimal_height 40
-	realm $hyoo_crus_realm
 	Filter null
 	option_content* /
 		<= Option_logo* $mol_avatar
