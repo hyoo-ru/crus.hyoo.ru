@@ -82,7 +82,7 @@ namespace $.$$ {
 		}
 		
 		ref_label( ref: $hyoo_crus_vary_type ) {
-			if( typeof ref === 'symbol' ) return this.prop()?.realm()!.Node( ref, $hyoo_crus_flex_thing ).Title()?.val() ?? ref.description!
+			if( typeof ref === 'symbol' ) return this.$.$hyoo_crus_realm.Node( ref, $hyoo_crus_flex_thing ).Title()?.val() ?? ref.description!
 			return $hyoo_crus_vary_cast_str( ref ) ?? ''
 		}
 		

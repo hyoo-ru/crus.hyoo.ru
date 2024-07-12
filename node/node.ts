@@ -15,11 +15,6 @@ namespace $ {
 			return ''
 		}
 		
-		/** Whole global graph database which contains Lands */
-		realm() {
-			return this.land()?.realm() ?? null
-		}
-		
 		/** Reference to Land/Lord. */
 		land_ref() {
 			return this.land()?.ref() ?? this.$.$hyoo_crus_auth.current().lord()

@@ -70,8 +70,7 @@ namespace $.$$ {
 				Author: $hyoo_crus_atom_ref_to( ()=> User ),
 			}) {}
 			
-			const realm = $hyoo_crus_realm.make({ $ })
-			const land = realm.home().land()
+			const land = $.$hyoo_crus_realm.home().land()
 			
 			const user = land.Node( User ).Item('11111111')
 			$mol_assert_equal( user.Title()?.val() ?? null, null )

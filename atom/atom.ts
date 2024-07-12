@@ -157,7 +157,7 @@ namespace $ {
 			@ $mol_mem
 			yoke( preset?: $hyoo_crus_rank_preset ) {
 				
-				const realm = this.realm()!
+				const realm = this.$.$hyoo_crus_realm
 				const Ref = this.cast( $hyoo_crus_atom_ref )
 				const ref = Ref.val()
 				if( ref ) return realm.Land( ref )
@@ -175,13 +175,11 @@ namespace $ {
 				next?: null | $mol_type_result< $mol_type_result< this['Value'] > >
 			): null | $mol_type_result< $mol_type_result< this['Value'] > > {
 				
-				const realm = this.realm()
-				
 				let ref: $hyoo_crus_ref | null = ( next as $hyoo_crus_node )?.ref() ?? next
 				ref = $hyoo_crus_vary_cast_ref( this.vary( ref ) )
 				if( !ref ) return null
 				
-				return realm!.Node( ref, ( Value as any )() )
+				return this.$.$hyoo_crus_realm.Node( ref, ( Value as any )() )
 				
 			}
 			

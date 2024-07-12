@@ -190,18 +190,18 @@ namespace $ {
 			/** List of referenced Nodes */
 			@ $mol_mem
 			remote_list( next?: Vals ) {
-				const realm = this.realm()
+				const realm = this.$.$hyoo_crus_realm
 				const Node = ( Value as any )()
 				return this.items_vary( next?.map( item => ( item as $hyoo_crus_node ).ref() ) )
 					.map( $hyoo_crus_vary_cast_ref )
 					.filter( $mol_guard_defined )
-					.map( ref => realm!.Node( ref, Node ) ) as readonly any[] as Vals
+					.map( ref => realm.Node( ref, Node ) ) as readonly any[] as Vals
 			}
 			
 			/** Add new Node which placed in new Land */
 			@ $mol_action
 			remote_make( preset: $hyoo_crus_rank_preset ): Vals[number] {
-				const land = this.realm()!.land_grab( preset )
+				const land = this.$.$hyoo_crus_realm.land_grab( preset )
 				this.splice([ land.ref() ])
 				return land.Node( ( Value as any )() ).Item('')
 			}

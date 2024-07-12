@@ -169,7 +169,7 @@ namespace $ {
 			})
 			
 			this.face_port_sync( port, parts.lands )
-			this.realm().apply_parts( parts.lands, parts.rocks )
+			this.$.$hyoo_crus_realm.apply_parts( parts.lands, parts.rocks )
 			
 		}
 		
@@ -227,7 +227,7 @@ namespace $ {
 				const faces = this.face_port_land([ port, land ])
 				if( !faces ) return
 				
-				const Land = this.realm().Land( land )
+				const Land = this.$.$hyoo_crus_realm.Land( land )
 				Land.saving()
 				
 				const parts = Land.delta_parts( faces )
@@ -253,7 +253,7 @@ namespace $ {
 		@ $mol_mem_key
 		init_port_land( [ port, land ]: [ $mol_rest_port, $hyoo_crus_ref ] ) {
 			// $mol_wire_solid() 
-			const Land = this.realm().Land( land )
+			const Land = this.$.$hyoo_crus_realm.Land( land )
 			Land.loading()
 			this.$.$mol_log3_rise({
 				place: this,

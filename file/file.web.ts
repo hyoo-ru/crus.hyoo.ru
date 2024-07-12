@@ -2,8 +2,6 @@ namespace $ {
 	
 	if( typeof window === 'undefined' ) {
 		
-		const realm = new $hyoo_crus_realm
-		
 		const Query = $hyoo_harp_scheme({
 			CRUS: $hyoo_harp_scheme({}),
 			file: $hyoo_harp_scheme( {}, $mol_data_string ),
@@ -21,7 +19,7 @@ namespace $ {
 			if( !id ) return
 			
 			const ref = $hyoo_crus_ref( id )
-			const file = realm.Node( ref, $hyoo_crus_file )
+			const file = $.$hyoo_crus_realm.Node( ref, $hyoo_crus_file )
 			
 			return event.respondWith( $mol_wire_async( file ).blob().then( blob => {
 				

@@ -16,8 +16,7 @@ namespace $.$$ {
 		
 		"Narrow registers"( $ ) {
 			
-			const realm = $hyoo_crus_realm.make({ $ })
-			const land = realm.home().land()
+			const land = $.$hyoo_crus_realm.home().land()
 			
 			const bin = land.Node( $hyoo_crus_atom_bin ).Item('11111111')
 			$mol_assert_equal( bin.val(), null )
@@ -53,8 +52,7 @@ namespace $.$$ {
 		
 		"Hyper link to another land"( $ ) {
 			
-			const realm = $hyoo_crus_realm.make({ $ })
-			const land = realm.home().land()
+			const land = $.$hyoo_crus_realm.home().land()
 			
 			const reg = land.Node( $hyoo_crus_atom_ref_to( ()=> $hyoo_crus_atom_vary ) ).Item( '11111111' )
 			const remote = reg.remote_ensure({ '': $hyoo_crus_rank.get })!
@@ -67,8 +65,7 @@ namespace $.$$ {
 		
 		"Register with linked nodes"( $ ) {
 			
-			const realm = $hyoo_crus_realm.make({ $ })
-			const land = realm.home().land()
+			const land = $.$hyoo_crus_realm.home().land()
 			
 			const str = land.Node( $hyoo_crus_atom_str ).Item('11111111')
 			const ref = land.Node( $hyoo_crus_atom_ref_to( ()=> $hyoo_crus_atom_str ) ).Item('11111111')
@@ -88,8 +85,7 @@ namespace $.$$ {
 				'file' | 'dir' | 'link' | null
 			>
 			
-			const realm = $hyoo_crus_realm.make({ $ })
-			const land = realm.home().land()
+			const land = $.$hyoo_crus_realm.home().land()
 			
 			const type = land.Data( FileType )
 			$mol_assert_equal( type.val(), null )

@@ -14,6 +14,8 @@ namespace $ {
 		
 	}
 	
+	export let $hyoo_crus_unit_trusted = new WeakSet< $hyoo_crus_unit >()
+	
 	/** Minimal independent stable part of information. Actually it's edge between nodes in graph model */
 	export class $hyoo_crus_unit extends $mol_buffer {
 		

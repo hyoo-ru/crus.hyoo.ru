@@ -3,15 +3,10 @@ namespace $ {
 	export class $hyoo_crus_app extends $mol_rest_resource_fs {
 		
 		@ $mol_mem
-		_realm() {
-			return new $hyoo_crus_realm
-		}
-		
-		@ $mol_mem
 		_yard() {
 			$mol_wire_solid()
 			setTimeout( ()=> this._sync() )
-			return this._realm().yard()
+			return this.$.$hyoo_crus_realm.yard()
 		}
 		
 		@ $mol_mem

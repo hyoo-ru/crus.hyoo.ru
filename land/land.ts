@@ -3,11 +3,6 @@ namespace $ {
 	/** Standalone part of Realm which syncs separately, have own rights, and contains Units */
 	export class $hyoo_crus_land extends $mol_object {
 		
-		/** Whole global graph database which contains Lands. */
-		realm() {
-			return null as null | $hyoo_crus_realm
-		}
-		
 		/** Auth Independent actor with global unique id generated from Auth key */
 		ref() {
 			return this.auth().lord()
@@ -246,20 +241,24 @@ namespace $ {
 			
 			if( !delta.length ) return []
 			
-			const errors = $mol_wire_sync( this ).units_verify( delta )
-			if( errors.some( v => v ) ) return errors
+			const doubt = delta.filter( unit => !$hyoo_crus_unit_trusted.has( unit ) )
+			
+			if( doubt.length ) {
+				const errors = $mol_wire_sync( this ).units_verify( doubt )
+				if( errors.some( v => v ) ) return errors
+			}
 			
 			return this.apply_unit_trust( delta, skip_check )
 		}
 		
-		async units_verify( delta: readonly $hyoo_crus_unit[] ) {
+		async units_verify( units: readonly $hyoo_crus_unit[] ) {
 			
-			const passes = delta.filter( unit => unit.kind() === 'pass' ) as $hyoo_crus_pass[]
+			const passes = units.filter( unit => unit.kind() === 'pass' ) as $hyoo_crus_pass[]
 			const auth = new Map( passes.map( ( unit: $hyoo_crus_pass )=> [ unit.peer(), unit.auth() ] ) )
 			
 			const mixin = $hyoo_crus_ref_encode( this.ref() )
 			
-			return await Promise.all( delta.map( async unit => {
+			return await Promise.all( units.map( async unit => {
 				
 				let key_public = this.key_public( unit.peer() )
 				if( !key_public ) {
@@ -274,7 +273,10 @@ namespace $ {
 				const sens = unit.sens().slice()
 				for( let i = 0; i < mixin.length; ++i ) sens[i+14] ^= mixin[i+14]
 				
-				return await key_public.verify( sens, unit.sign() ) ? '' : `Wrong unit sign`
+				const valid = await key_public.verify( sens, unit.sign() )
+				$hyoo_crus_unit_trusted.add( unit )
+				
+				return valid ? '' : `Wrong unit sign`
 	
 			} ) )
 			
@@ -401,13 +403,8 @@ namespace $ {
 		
 		@ $mol_action
 		fork( preset = { '': $hyoo_crus_rank.get } ) {
-			const realm = this.realm()
-			
-			if( !realm ) $mol_fail( new Error( 'Realm is required to fork' ) )
-			
-			const land = realm.land_grab( preset )
+			const land = this.$.$hyoo_crus_realm.land_grab( preset )
 			land.Meta().Inflow(null)!.items_vary([ this.ref() ])
-			
 			return land
 		}
 		
@@ -431,9 +428,9 @@ namespace $ {
 				
 				const exists = new Set([ ... this.gists.get( head )?.keys() ?? [] ])
 				
-				const realm  = this.realm()
+				const realm = this.$.$hyoo_crus_realm
 				let slice = 0
-				if( realm ) for( const ref of inflow ) {
+				for( const ref of inflow ) {
 					++ slice
 					const land = realm.Land( ref )
 					for( const gist of land.gists_ordered( head ) ) {
@@ -600,6 +597,7 @@ namespace $ {
 			
 			const auth = this.auth()
 			const unit = new $hyoo_crus_gist
+			$hyoo_crus_unit_trusted.add( unit )
 			
 			unit.time( this.faces.tick() )
 			unit.peer( auth.peer() )
@@ -693,7 +691,7 @@ namespace $ {
 		}
 		
 		broadcast() {
-			this.realm()?.yard().lands_neonatals.add( this.ref() )
+			this.$.$hyoo_crus_realm.yard().lands_neonatals.add( this.ref() )
 		}
 		
 		@ $mol_mem
@@ -712,7 +710,7 @@ namespace $ {
 		
 		@ $mol_mem
 		sync_yard() {
-			return new $mol_wire_atom( '', ()=> this.realm()?.yard().sync_land( this.ref() ) ).fresh()
+			return new $mol_wire_atom( '', ()=> this.$.$hyoo_crus_realm.yard().sync_land( this.ref() ) ).fresh()
 		}
 		
 		@ $mol_mem
@@ -736,10 +734,7 @@ namespace $ {
 			
 			$mol_wire_solid()
 			
-			const realm = this.realm()
-			if( !realm ) return
-			
-			let units = realm.$.$hyoo_crus_mine.units( this.ref() ) ?? []
+			let units = this.$.$hyoo_crus_mine.units( this.ref() ) ?? []
 			
 			const dict = new Map< string, $hyoo_crus_unit >()
 			for( const unit of units ) dict.set( unit.key(), unit )
@@ -771,7 +766,6 @@ namespace $ {
 				units: units.length,
 			})
 			
-			// const errors = this.apply_unit_trust( [ ... pass!, ... gift!, ... gist! ], !!'skip_check' ).filter( Boolean )
 			const errors = this.apply_unit( units, !!'skip_check' ).filter( Boolean )
 			
 			if( errors.length ) this.$.$mol_log3_fail({
@@ -875,7 +869,7 @@ namespace $ {
 			
 			if( this.gists.get( gist.head() )?.get( gist.self() ) !== gist ) {
 				for( const id of this.Meta().Inflow()?.items_vary() ?? [] ) {
-					const vary = this.realm()?.Land( $hyoo_crus_vary_cast_ref( id! )! ).gist_decode_raw( gist )
+					const vary = this.$.$hyoo_crus_realm.Land( $hyoo_crus_vary_cast_ref( id! )! ).gist_decode_raw( gist )
 					if( vary !== undefined ) return vary
 				}
 				return undefined!
