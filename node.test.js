@@ -6553,7 +6553,10 @@ var $;
                 if (errors.some(v => v))
                     return errors;
             }
-            return this.apply_unit_trust(delta, skip_check);
+            const errors = this.apply_unit_trust(delta, skip_check);
+            for (const unit of doubt)
+                $hyoo_crus_unit_trusted.add(unit);
+            return errors;
         }
         async units_verify(units) {
             const passes = units.filter(unit => unit.kind() === 'pass');
@@ -6571,7 +6574,6 @@ var $;
                 for (let i = 0; i < mixin.length; ++i)
                     sens[i + 14] ^= mixin[i + 14];
                 const valid = await key_public.verify(sens, unit.sign());
-                $hyoo_crus_unit_trusted.add(unit);
                 return valid ? '' : `Wrong unit sign`;
             }));
         }
@@ -6763,6 +6765,7 @@ var $;
             if (prev)
                 return prev;
             const next = new $hyoo_crus_pass;
+            $hyoo_crus_unit_trusted.add(next);
             next.auth(auth.public().asArray());
             next._land = this;
             const error = this.apply_unit_trust([next])[0];
@@ -6775,6 +6778,7 @@ var $;
             this.join();
             const auth = this.auth();
             const unit = new $hyoo_crus_gift;
+            $hyoo_crus_unit_trusted.add(unit);
             unit.rank(rank);
             unit.time(this.faces.tick());
             unit.peer(auth.peer());
@@ -8104,6 +8108,7 @@ var $;
             const units = res.rows.map(row => {
                 const unit = new $hyoo_crus_unit(row.unit.buffer, row.unit.byteOffset, row.unit.byteLength).narrow();
                 this.units_persisted.add(unit);
+                $hyoo_crus_unit_trusted.add(unit);
                 return unit;
             });
             return units;

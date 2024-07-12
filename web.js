@@ -10277,7 +10277,10 @@ var $;
                 if (errors.some(v => v))
                     return errors;
             }
-            return this.apply_unit_trust(delta, skip_check);
+            const errors = this.apply_unit_trust(delta, skip_check);
+            for (const unit of doubt)
+                $hyoo_crus_unit_trusted.add(unit);
+            return errors;
         }
         async units_verify(units) {
             const passes = units.filter(unit => unit.kind() === 'pass');
@@ -10295,7 +10298,6 @@ var $;
                 for (let i = 0; i < mixin.length; ++i)
                     sens[i + 14] ^= mixin[i + 14];
                 const valid = await key_public.verify(sens, unit.sign());
-                $hyoo_crus_unit_trusted.add(unit);
                 return valid ? '' : `Wrong unit sign`;
             }));
         }
@@ -10487,6 +10489,7 @@ var $;
             if (prev)
                 return prev;
             const next = new $hyoo_crus_pass;
+            $hyoo_crus_unit_trusted.add(next);
             next.auth(auth.public().asArray());
             next._land = this;
             const error = this.apply_unit_trust([next])[0];
@@ -10499,6 +10502,7 @@ var $;
             this.join();
             const auth = this.auth();
             const unit = new $hyoo_crus_gift;
+            $hyoo_crus_unit_trusted.add(unit);
             unit.rank(rank);
             unit.time(this.faces.tick());
             unit.peer(auth.peer());
@@ -12035,8 +12039,10 @@ var $;
             const land_key = IDBKeyRange.bound([land_ref], [land_ref + '\uFFFF']);
             const res = await Land.select(land_key);
             const units = res.map(bin => new $hyoo_crus_unit(bin).narrow());
-            for (const unit of units)
+            for (const unit of units) {
                 this.units_persisted.add(unit);
+                $hyoo_crus_unit_trusted.add(unit);
+            }
             return units;
         }
         static async db() {
