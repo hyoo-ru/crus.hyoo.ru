@@ -6663,15 +6663,15 @@ var $;
             for (const gist of queue)
                 slices.set(gist, 0);
             merge: if (head !== 'AQAAAAAA') {
-                const inflow = (this.Tines().items_vary().slice().reverse() ?? [])
+                const tines = (this.Tines().items_vary().slice().reverse() ?? [])
                     .map($hyoo_crus_vary_cast_ref)
                     .filter($mol_guard_defined);
-                if (!inflow.length)
+                if (!tines.length)
                     break merge;
                 const exists = new Set([...this.gists.get(head)?.keys() ?? []]);
                 const realm = this.$.$hyoo_crus_realm;
                 let slice = 0;
-                for (const ref of inflow) {
+                for (const ref of tines) {
                     ++slice;
                     const land = realm.Land(ref);
                     for (const gist of land.gists_ordered(head)) {
