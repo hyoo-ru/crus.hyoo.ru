@@ -3,7 +3,7 @@ namespace $ {
 		
 		'unit type'() {
 			const unit = new $hyoo_crus_unit
-			$mol_assert_equal( unit.kind(), 'gist' )
+			$mol_assert_fail( ()=> unit.kind(), 'Empty unit' )
 		},
 		
 		'auth unit type'() {
@@ -30,6 +30,7 @@ namespace $ {
 		'data unit type'() {
 			
 			const unit = new $hyoo_crus_gist
+			unit.hint( 'nil', 'term' )
 			unit.data( new Uint8Array([ 0xFF, 0xFF ]) )
 			
 			$mol_assert_equal( unit.kind(), 'gist' )

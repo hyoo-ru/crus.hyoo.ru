@@ -43,7 +43,7 @@ namespace $ {
 							offset += 4
 							
 							land = $hyoo_crus_ref_decode(
-								new Uint8Array( buf.buffer, buf.byteOffset + offset, 18 )
+								new Uint8Array( buf.buffer, buf.byteOffset + offset, 12 )
 							)
 							offset += 18
 							

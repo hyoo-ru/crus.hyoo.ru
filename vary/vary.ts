@@ -39,17 +39,31 @@ namespace $ {
 	export enum $hyoo_crus_vary_tip {
 		
 		/** 0. No Data */
-		nil = 0b00000, // 0
+		nil = 0b00001,
 		/** 0. Binary */
-		bin = 0b00001,
+		bin = 0b00010,
 		/** 1b * 32 * 8. Boolean */
-		bool = 0b00010,
-		/** 8B * 4. int64 */
-		int = 0b00011,
-		/** 8B * 4. float64 */
-		real = 0b00100,
-		/** 12B + 6B = 18B. Reference to Node/Land/Lord. */
-		ref   = 0b00101,
+		bool = 0b00011,
+		/** 8B. int64 */
+		int = 0b00100,
+		// /** 8B * 2. int64 */
+		// int2 = 0b00101,
+		// /** 8B * 3. int64 */
+		// int3 = 0b00110,
+		// /** 8B * 4. int64 */
+		// int4 = 0b00111,
+		/** 8B. float64 */
+		real = 0b01000,
+		// /** 8B * 2. float64 */
+		// real2 = 0b01001,
+		// /** 8B * 3. float64 */
+		// real3 = 0b01010,
+		// /** 8B * 4. float64 */
+		// real4 = 0b01011,
+		/** 12B. Reference to Node/Land/Lord. */
+		ref = 0b01100,
+		// /** 12B * 2. Reference to Node/Land/Lord. */
+		// ref2 = 0b01110,
 
 		/** String */
 		str = 0b10000,

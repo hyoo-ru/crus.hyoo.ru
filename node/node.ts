@@ -52,7 +52,7 @@ namespace $ {
 		/** All ordered alive Units */
 		@ $mol_mem
 		units() {
-			return this.land().gists_ordered( this.head() ).filter( unit => !unit.nil() )
+			return this.land().gists_ordered( this.head() ).filter( unit => unit.tip() !== 'nil' )
 		}
 		
 		filled() {

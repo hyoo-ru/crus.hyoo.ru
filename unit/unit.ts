@@ -32,6 +32,7 @@ namespace $ {
 		kind() {
 			
 			const val = this.uint8( 0 )
+			if( !val ) $mol_fail( new Error( `Empty unit` ) )
 			if( ( val & 1 ) === 0 ) return 'gist'
 			
 			const kind = $hyoo_crus_unit_kind[ val ] as keyof typeof $hyoo_crus_unit_kind

@@ -442,8 +442,7 @@ namespace $ {
 				
 			}
 			
-			if( queue.length === 0 ) return queue
-			if( queue.length === 1 ) return queue[0].nil() ? [] : queue
+			if( queue.length < 2 ) return queue
 			
 			const compare = ( left: $hyoo_crus_gist, right: $hyoo_crus_gist )=> {
 				return ( slices.get( left ) - slices.get( right ) ) || $hyoo_crus_gist.compare( left, right )
@@ -586,7 +585,7 @@ namespace $ {
 			head: string,
 			self: string,
 			vary: $hyoo_crus_vary_type,
-			tag = 'term' as keyof typeof $hyoo_crus_gist_tag,
+			tag: keyof typeof $hyoo_crus_gist_tag = 'term',
 		) {
 			
 			if( typeof vary === 'symbol' ) vary = $hyoo_crus_ref_relate( this.ref(), vary )
@@ -630,9 +629,9 @@ namespace $ {
 			seat: number,
 		) {
 			
-			if( gist.nil() ) $mol_fail( new RangeError( `Can't move wiped gist` ) )
+			if( gist.tip() === 'nil' ) $mol_fail( new RangeError( `Can't move wiped gist` ) )
 			
-			const units = this.gists_ordered( head ).filter( unit => !unit.nil() )
+			const units = this.gists_ordered( head ).filter( unit => unit.tip() !== 'nil' )
 			if( seat > units.length ) $mol_fail( new RangeError( `Seat (${seat}) out of units length (${units.length})` ) )
 			
 			const lead = seat ? units[ seat - 1 ].self() : ''
@@ -675,7 +674,7 @@ namespace $ {
 		@ $mol_action
 		gist_wipe( gist: $hyoo_crus_gist ) {
 			
-			const units = this.gists_ordered( gist.head() ).filter( unit => !unit.nil() )
+			const units = this.gists_ordered( gist.head() ).filter( unit => unit.tip() !== 'nil' )
 			const seat = units.indexOf( gist )
 			
 			this.post(
@@ -842,7 +841,7 @@ namespace $ {
 		gist_encode( gist: $hyoo_crus_gist ) {
 			
 			if( gist._open === null ) return gist
-			if( gist.nil() ) return gist
+			if( gist.tip() === 'nil' ) return gist
 			
 			let bin = gist._open
 			const secret = gist._land!.secret()!
@@ -879,7 +878,7 @@ namespace $ {
 			if( gist._open !== null ) return gist._vary = $hyoo_crus_vary_decode({ tip: gist.tip(), bin: gist._open })
 			
 			let bin = gist.size() > 32 ? this.$.$hyoo_crus_mine.rock( gist.hash() ) : gist.data()
-			if( secret && bin && !gist.nil() ) {
+			if( secret && bin && gist.tip() !== 'nil' ) {
 				try {
 					bin = new Uint8Array( $mol_wire_sync( secret ).decrypt( bin, gist.salt() ) )
 				} catch( error: any ) {
