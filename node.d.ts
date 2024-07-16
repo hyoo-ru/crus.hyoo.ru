@@ -1321,15 +1321,6 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    enum $hyoo_crus_area {
-        data = 0,
-        meta = 1
-    }
-    function $hyoo_crus_area_of(numb: string): keyof typeof $hyoo_crus_area;
-    function $hyoo_crus_area_to(numb: string, area: keyof typeof $hyoo_crus_area): string;
-}
-
-declare namespace $ {
     enum $hyoo_crus_rank {
         nil = 0,
         get = 1,
@@ -1560,10 +1551,10 @@ declare namespace $ {
         }, $hyoo_crus_gift>;
         gists: $mol_wire_dict<string, $mol_wire_dict<string, $hyoo_crus_gist>>;
         self_all: $mol_wire_set<string>;
-        self_make(area: keyof typeof $hyoo_crus_area, idea?: number): string;
+        self_make(idea?: number): string;
         home(): $hyoo_crus_home;
         Data<Node extends typeof $hyoo_crus_node>(Node: Node): InstanceType<Node>;
-        Meta(): $hyoo_crus_meta;
+        Tines(): $hyoo_crus_list_ref;
         Node<Node extends typeof $hyoo_crus_node>(Node: Node): $hyoo_crus_fund<string, InstanceType<Node>>;
         total(): number;
         joined_list(): (symbol & {
@@ -3298,21 +3289,6 @@ declare namespace $ {
     };
     export class $hyoo_crus_home extends $hyoo_crus_home_base {
         hall_by<Node extends typeof $hyoo_crus_dict>(Node: Node, preset?: $hyoo_crus_rank_preset): InstanceType<Node> | null;
-    }
-    export {};
-}
-
-declare namespace $ {
-    const $hyoo_crus_meta_base: Omit<typeof $hyoo_crus_dict, "prototype"> & (new (...args: any[]) => $mol_type_override<InstanceType<typeof $hyoo_crus_dict>, { readonly [Key in "Inflow"]: (auto?: any) => InstanceType<{
-        readonly Inflow: typeof $hyoo_crus_list_ref;
-    }[Key]> | null; }>) & {
-        schema: {
-            [x: string]: typeof $hyoo_crus_node;
-        } & {
-            readonly Inflow: typeof $hyoo_crus_list_ref;
-        };
-    };
-    export class $hyoo_crus_meta extends $hyoo_crus_meta_base {
     }
     export {};
 }

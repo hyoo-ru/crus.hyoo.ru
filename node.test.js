@@ -5407,29 +5407,6 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    let $hyoo_crus_area;
-    (function ($hyoo_crus_area) {
-        $hyoo_crus_area[$hyoo_crus_area["data"] = 0] = "data";
-        $hyoo_crus_area[$hyoo_crus_area["meta"] = 1] = "meta";
-    })($hyoo_crus_area = $.$hyoo_crus_area || ($.$hyoo_crus_area = {}));
-    function $hyoo_crus_area_of(numb) {
-        const num = $mol_base64_ae_decode(numb || 'AAAAAAAA')[0];
-        return $hyoo_crus_area[num % 2];
-    }
-    $.$hyoo_crus_area_of = $hyoo_crus_area_of;
-    function $hyoo_crus_area_to(numb, area) {
-        const buf = $mol_base64_ae_decode(numb || 'AAAAAAAA');
-        buf[0] -= buf[0] % 2 - $hyoo_crus_area[area];
-        numb = $mol_base64_ae_encode(buf);
-        return numb;
-    }
-    $.$hyoo_crus_area_to = $hyoo_crus_area_to;
-})($ || ($ = {}));
-
-;
-"use strict";
-var $;
-(function ($) {
     let $hyoo_crus_rank;
     (function ($hyoo_crus_rank) {
         $hyoo_crus_rank[$hyoo_crus_rank["nil"] = 0] = "nil";
@@ -6386,18 +6363,16 @@ var $;
         gifts = new $mol_wire_dict();
         gists = new $mol_wire_dict();
         self_all = new $mol_wire_set();
-        self_make(area, idea = Math.floor(Math.random() * 2 ** 48)) {
+        self_make(idea = Math.floor(Math.random() * 2 ** 48)) {
             const auth = this.auth();
             const rank = this.lord_rank(auth.lord());
             if (rank === $hyoo_crus_rank.add)
-                return $hyoo_crus_area_to(auth.peer(), 'data');
+                return auth.peer();
             if (rank === $hyoo_crus_rank.nil)
                 $mol_fail(new Error('Rank too low (nil)'));
             for (let i = 0; i < 4096; ++i) {
                 idea = (idea + 1) % 2 ** 48;
                 if (!idea)
-                    continue;
-                if ($hyoo_crus_area[idea % 2] !== area)
                     continue;
                 const idea_str = $mol_base64_ae_encode(new Uint8Array(new BigUint64Array([BigInt(idea)]).buffer, 0, 6));
                 if (this.self_all.has(idea_str))
@@ -6413,8 +6388,8 @@ var $;
         Data(Node) {
             return this.Node(Node).Item('');
         }
-        Meta() {
-            return this.Node($hyoo_crus_meta).Item('AQAAAAAA');
+        Tines() {
+            return this.Node($hyoo_crus_list_ref).Item('AQAAAAAA');
         }
         Node(Node) {
             return new $hyoo_crus_fund((head) => {
@@ -6657,25 +6632,18 @@ var $;
                 pass: next => this.lord_rank(next.lord()) < $hyoo_crus_rank.add ? 'Need add rank to join' : '',
                 gift: next => this.peer_rank(next.peer()) < $hyoo_crus_rank.law ? 'Need law rank to change rank' : '',
                 gist: next => {
-                    if ($hyoo_crus_area_of(next.self()) !== $hyoo_crus_area_of(next.self()))
-                        return 'Need same area';
-                    if ($hyoo_crus_area_to(next.peer(), 'data') === next.self()) {
+                    if (next.peer() === next.self()) {
                         return this.peer_rank(next.peer()) < $hyoo_crus_rank.add ? 'Need add rank to post self data' : '';
                     }
                     else {
-                        if ($hyoo_crus_area_of(next.self()) === 'data') {
-                            return this.peer_rank(next.peer()) < $hyoo_crus_rank.mod ? 'Need mod rank to post any data' : '';
-                        }
-                        else {
-                            return this.peer_rank(next.peer()) < $hyoo_crus_rank.law ? 'Need law rank to post to meta area' : '';
-                        }
+                        return this.peer_rank(next.peer()) < $hyoo_crus_rank.mod ? 'Need mod rank to post any data' : '';
                     }
                 },
             });
         }
         fork(preset = { '': $hyoo_crus_rank.get }) {
             const land = this.$.$hyoo_crus_realm.land_grab(preset);
-            land.Meta().Inflow(null).items_vary([this.ref()]);
+            land.Tines().items_vary([this.ref()]);
             return land;
         }
         gists_ordered(head) {
@@ -6685,8 +6653,8 @@ var $;
             const slices = new Map;
             for (const gist of queue)
                 slices.set(gist, 0);
-            merge: if ($hyoo_crus_area_of(head) === 'data') {
-                const inflow = (this.Meta().Inflow()?.items_vary().slice().reverse() ?? [])
+            merge: if (head !== 'AQAAAAAA') {
+                const inflow = (this.Tines().items_vary().slice().reverse() ?? [])
                     .map($hyoo_crus_vary_cast_ref)
                     .filter($mol_guard_defined);
                 if (!inflow.length)
@@ -6827,7 +6795,7 @@ var $;
                 else
                     unit.data(bin, tip, tag);
             }
-            unit.self(self || this.self_make($hyoo_crus_area_of(head), unit.idea()));
+            unit.self(self || this.self_make(unit.idea()));
             const error = this.apply_unit_trust([unit])[0];
             if (error)
                 $mol_fail(new Error(error));
@@ -6999,7 +6967,7 @@ var $;
         }
         gist_decode_raw(gist) {
             if (this.gists.get(gist.head())?.get(gist.self()) !== gist) {
-                for (const id of this.Meta().Inflow()?.items_vary() ?? []) {
+                for (const id of this.Tines().items_vary() ?? []) {
                     const vary = this.$.$hyoo_crus_realm.Land($hyoo_crus_vary_cast_ref(id)).gist_decode_raw(gist);
                     if (vary !== undefined)
                         return vary;
@@ -7119,7 +7087,7 @@ var $;
     ], $hyoo_crus_land.prototype, "Data", null);
     __decorate([
         $mol_mem
-    ], $hyoo_crus_land.prototype, "Meta", null);
+    ], $hyoo_crus_land.prototype, "Tines", null);
     __decorate([
         $mol_mem_key
     ], $hyoo_crus_land.prototype, "Node", null);
@@ -7593,7 +7561,7 @@ var $;
                 next,
                 equal: (next, prev) => $mol_compare_deep(this.land().gist_decode(prev), next),
                 drop: (prev, lead) => this.land().post(lead?.self() ?? '', prev.head(), prev.self(), null),
-                insert: (next, lead) => this.land().post(lead?.self() ?? '', this.head(), land.self_make($hyoo_crus_area_of(this.head())), next, tag),
+                insert: (next, lead) => this.land().post(lead?.self() ?? '', this.head(), land.self_make(), next, tag),
                 update: (next, prev, lead) => this.land().post(lead?.self() ?? '', prev.head(), prev.self(), next, prev.tag()),
             });
         }
@@ -7722,8 +7690,7 @@ var $;
                 return land.Node(Value()).Item('');
             }
             local_make(idea) {
-                const area = $hyoo_crus_area_of(this.head());
-                const self = this.land().self_make(area, idea);
+                const self = this.land().self_make(idea);
                 const node = this.land().Node(Value()).Item(self);
                 this.splice([node.ref()]);
                 return node;
@@ -7961,7 +7928,7 @@ var $;
             local_ensure() {
                 if (this.remote())
                     return this.remote();
-                const node = this.land().Node(Value()).Item(this.land().self_make($hyoo_crus_area_of(this.head())));
+                const node = this.land().Node(Value()).Item(this.land().self_make());
                 return this.remote(node);
             }
         }
@@ -7993,17 +7960,6 @@ var $;
         }
     }
     $.$hyoo_crus_home = $hyoo_crus_home;
-})($ || ($ = {}));
-
-;
-"use strict";
-var $;
-(function ($) {
-    class $hyoo_crus_meta extends $hyoo_crus_dict.with({
-        Inflow: $hyoo_crus_list_ref,
-    }) {
-    }
-    $.$hyoo_crus_meta = $hyoo_crus_meta;
 })($ || ($ = {}));
 
 ;
@@ -12258,15 +12214,13 @@ var $;
             $mol_assert_fail(() => land2.post('AA222222', '', 'AA333333', new Uint8Array([3])), 'Need mod rank to post any data');
             $mol_assert_equal(land2.delta_unit().length, 4);
             $mol_assert_equal(land2.delta_unit(face).length, 2);
-            land2.post('AA222222', '', $hyoo_crus_area_to(auth1.peer(), 'data'), new Uint8Array([4]));
+            land2.post('AA222222', '', auth1.peer(), new Uint8Array([4]));
             $mol_assert_equal(land2.delta_unit().length, 6);
             $mol_assert_equal(land2.delta_unit(face).length, 4);
             land1.give(auth1, $hyoo_crus_rank.mod);
             land2.apply_unit_trust(land1.delta_unit());
-            $mol_assert_fail(() => land2.post('AA222222', '', '33333333', new Uint8Array([3])), 'Need law rank to post to meta area');
-            land2.post('AA222222', '', 'AA333333', new Uint8Array([3]));
-            $mol_assert_equal(land2.delta_unit().length, 7);
-            $mol_assert_equal(land2.delta_unit(face).length, 5);
+            $mol_assert_equal(land2.delta_unit().length, 6);
+            $mol_assert_equal(land2.delta_unit(face).length, 4);
             land1.give(auth1, $hyoo_crus_rank.add);
             land2.apply_unit_trust(land1.delta_unit());
             $mol_assert_equal(land2.delta_unit().length, 6);
@@ -12282,10 +12236,10 @@ var $;
             land2.apply_unit_trust(land1.delta_unit());
             $mol_assert_equal(land2.delta_unit().length, 2);
             const gist1 = land2.post('', '', '', 'foo');
-            $mol_assert_equal(gist1.self(), $hyoo_crus_area_to(auth2.peer(), 'data'));
+            $mol_assert_equal(gist1.self(), auth2.peer());
             $mol_assert_equal(land2.delta_unit().length, 4);
             const gist2 = land2.post('', '', '', 'bar');
-            $mol_assert_equal(gist2.self(), $hyoo_crus_area_to(auth2.peer(), 'data'));
+            $mol_assert_equal(gist2.self(), auth2.peer());
             $mol_assert_equal(land2.delta_unit().length, 4);
         },
         async 'Land encryption'($) {
@@ -12315,13 +12269,13 @@ var $;
             $mol_assert_equal(right.Data($hyoo_crus_list_vary).items_vary(), ['foo', 'zzz']);
             const both = home.fork();
             $mol_assert_equal(both.Data($hyoo_crus_list_vary).items_vary(), ['foo', 'xxx']);
-            both.Meta().Inflow(null).items_vary([right.ref()]);
+            both.Tines().items_vary([right.ref()]);
             $mol_assert_equal(both.Data($hyoo_crus_list_vary).items_vary(), ['foo', 'zzz']);
-            both.Meta().Inflow(null).items_vary([left.ref()]);
+            both.Tines().items_vary([left.ref()]);
             $mol_assert_equal(both.Data($hyoo_crus_list_vary).items_vary(), ['foo', 'yyy']);
-            both.Meta().Inflow(null).items_vary([right.ref(), left.ref()]);
+            both.Tines().items_vary([right.ref(), left.ref()]);
             $mol_assert_equal(both.Data($hyoo_crus_list_vary).items_vary(), ['foo', 'yyy']);
-            both.Meta().Inflow(null).items_vary([left.ref(), right.ref()]);
+            both.Tines().items_vary([left.ref(), right.ref()]);
             $mol_assert_equal(both.Data($hyoo_crus_list_vary).items_vary(), ['foo', 'zzz']);
         },
         'Inner refs is relative to land'($) {
