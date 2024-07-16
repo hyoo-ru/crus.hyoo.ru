@@ -22,19 +22,18 @@ namespace $ {
 		self_all = new $mol_wire_set< string >()
 		
 		@ $mol_action
-		self_make( area: keyof typeof $hyoo_crus_area, idea = Math.floor( Math.random() * 2**48 ) ) {
+		self_make( idea = Math.floor( Math.random() * 2**48 ) ) {
 			
 			const auth = this.auth()
 			const rank = this.lord_rank( auth.lord() )
 			
-			if( rank === $hyoo_crus_rank.add ) return $hyoo_crus_area_to( auth.peer(), 'data' )
+			if( rank === $hyoo_crus_rank.add ) return auth.peer()
 			if( rank === $hyoo_crus_rank.nil ) $mol_fail( new Error( 'Rank too low (nil)' ) )
 			
 			for( let i = 0; i < 4096; ++i ) {
 				
 				idea = ( idea + 1 ) % 2**48
 				if( !idea ) continue
-				if( $hyoo_crus_area[ idea % 2 ] !== area ) continue
 				
 				const idea_str = $mol_base64_ae_encode( new Uint8Array( new BigUint64Array([ BigInt( idea ) ]).buffer, 0, 6 ) )
 				if( this.self_all.has( idea_str ) ) continue
@@ -52,16 +51,16 @@ namespace $ {
 			return this.Data( $hyoo_crus_home )
 		}
 		
-		/** */
+		/** Data root */
 		@ $mol_mem_key
 		Data< Node extends typeof $hyoo_crus_node >( Node: Node ) {
 			return this.Node( Node ).Item( '' ) // 0
 		} 
 		
-		/** Land meta info */
+		/** Lands for inheritance */
 		@ $mol_mem
-		Meta() {
-			return this.Node( $hyoo_crus_meta ).Item( 'AQAAAAAA' ) // 1
+		Tines() {
+			return this.Node( $hyoo_crus_list_ref ).Item( 'AQAAAAAA' ) // 1
 		} 
 		
 		/** High level representation of stored data */
@@ -388,15 +387,10 @@ namespace $ {
 				gift: next => this.peer_rank( next.peer() ) < $hyoo_crus_rank.law ? 'Need law rank to change rank': '',
 				
 				gist: next => {
-					if( $hyoo_crus_area_of( next.self() ) !== $hyoo_crus_area_of( next.self() ) ) return 'Need same area'
-					if( $hyoo_crus_area_to( next.peer(), 'data' ) === next.self() ) {
+					if( next.peer() === next.self() ) {
 						return this.peer_rank( next.peer() ) < $hyoo_crus_rank.add ? 'Need add rank to post self data' : ''
 					} else {
-						if( $hyoo_crus_area_of( next.self() ) === 'data' ) {
-							return this.peer_rank( next.peer() ) < $hyoo_crus_rank.mod ? 'Need mod rank to post any data' : ''
-						} else {
-							return this.peer_rank( next.peer() ) < $hyoo_crus_rank.law ? 'Need law rank to post to meta area' : ''
-						}
+						return this.peer_rank( next.peer() ) < $hyoo_crus_rank.mod ? 'Need mod rank to post any data' : ''
 					}
 				},
 				
@@ -406,7 +400,7 @@ namespace $ {
 		@ $mol_action
 		fork( preset = { '': $hyoo_crus_rank.get } ) {
 			const land = this.$.$hyoo_crus_realm.land_grab( preset )
-			land.Meta().Inflow(null)!.items_vary([ this.ref() ])
+			land.Tines().items_vary([ this.ref() ])
 			return land
 		}
 		
@@ -421,9 +415,9 @@ namespace $ {
 			const slices = new Map
 			for( const gist of queue ) slices.set( gist, 0 )
 			
-			merge: if( $hyoo_crus_area_of( head ) === 'data' ) {
+			merge: if( head !== 'AQAAAAAA' ) {
 				
-				const inflow = ( this.Meta().Inflow()?.items_vary().slice().reverse() ?? [] )
+				const inflow = ( this.Tines().items_vary().slice().reverse() ?? [] )
 					.map( $hyoo_crus_vary_cast_ref )
 					.filter( $mol_guard_defined )
 				if( !inflow.length ) break merge
@@ -620,7 +614,7 @@ namespace $ {
 				else unit.data( bin, tip, tag )
 			}
 		
-			unit.self( self || this.self_make( $hyoo_crus_area_of( head ), unit.idea() ) )
+			unit.self( self || this.self_make( unit.idea() ) )
 			
 			const error = this.apply_unit_trust([ unit ])[0]
 			if( error ) $mol_fail( new Error( error ) )
@@ -872,7 +866,7 @@ namespace $ {
 		gist_decode_raw( gist: $hyoo_crus_gist ): $hyoo_crus_vary_type {
 			
 			if( this.gists.get( gist.head() )?.get( gist.self() ) !== gist ) {
-				for( const id of this.Meta().Inflow()?.items_vary() ?? [] ) {
+				for( const id of this.Tines().items_vary() ?? [] ) {
 					const vary = this.$.$hyoo_crus_realm.Land( $hyoo_crus_vary_cast_ref( id! )! ).gist_decode_raw( gist )
 					if( vary !== undefined ) return vary
 				}

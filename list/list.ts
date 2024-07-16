@@ -35,7 +35,7 @@ namespace $ {
 				next,
 				equal: ( next, prev )=> $mol_compare_deep( this.land().gist_decode( prev ), next ),
 				drop: ( prev, lead )=> this.land().post( lead?.self() ?? '', prev.head(), prev.self(), null ),
-				insert: ( next, lead )=> this.land().post( lead?.self() ?? '', this.head(), land.self_make( $hyoo_crus_area_of( this.head() ) ), next, tag ),
+				insert: ( next, lead )=> this.land().post( lead?.self() ?? '', this.head(), land.self_make(), next, tag ),
 				update: ( next, prev, lead )=> this.land().post( lead?.self() ?? '', prev.head(), prev.self(), next, prev.tag() ),
 			})
 		}
@@ -209,8 +209,7 @@ namespace $ {
 			/** Add new Node which placed in same Land */
 			@ $mol_action
 			local_make( idea?: number ): Vals[number] {
-				const area = $hyoo_crus_area_of( this.head() )
-				const self = this.land().self_make( area, idea )
+				const self = this.land().self_make( idea )
 				const node = this.land().Node( ( Value as any )() ).Item( self )
 				this.splice([ node.ref() ])
 				return node

@@ -193,7 +193,7 @@ namespace $ {
 			@ $mol_mem
 			local_ensure() {
 				if( this.remote() ) return this.remote()!
-				const node = this.land().Node( ( Value as any )() ).Item( this.land().self_make( $hyoo_crus_area_of( this.head() ) ) )
+				const node = this.land().Node( ( Value as any )() ).Item( this.land().self_make() )
 				return this.remote( node )
 			}
 
