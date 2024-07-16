@@ -26263,7 +26263,7 @@ var $;
 		}
 		Raw_meta(){
 			const obj = new this.$.$hyoo_crus_node_dump();
-			(obj.title) = () => ("Meta");
+			(obj.title) = () => ("Tine");
 			(obj.node) = () => ((this?.node_meta()));
 			return obj;
 		}
