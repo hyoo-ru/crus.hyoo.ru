@@ -79,6 +79,7 @@ namespace $ {
 			}>( '$hyoo_crus',
 				mig => mig.store_make( 'Rock' ),
 				mig => mig.store_make( 'Land' ),
+				mig => mig.stores.Land.clear(),
 			)
 			
 		}

@@ -96,14 +96,6 @@ namespace $ {
 							continue
 						}
 						
-						case $hyoo_crus_part.hash: {
-							
-							const hash = buf.slice( offset += 4, offset += 24 )
-							rocks.push([ hash, null ])
-							
-							continue
-						}
-						
 						case $hyoo_crus_part.rock: {
 							
 							const size = this.uint32( offset ) >> 8
