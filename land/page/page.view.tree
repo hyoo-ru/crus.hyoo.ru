@@ -17,7 +17,7 @@ $hyoo_crus_land_page $mol_page
 					title \Data
 					node <= node
 				<= Raw_meta $hyoo_crus_node_dump
-					title \Meta
+					title \Tine
 					node <= node_meta $hyoo_crus_node
 		- <= Text $mol_textarea
 			value? <=> text? \
