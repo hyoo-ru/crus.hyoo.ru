@@ -6848,6 +6848,9 @@ var $;
             this.bus();
             return this;
         }
+        destructor() {
+            this.$.$hyoo_crus_realm.yard().forget_land(this);
+        }
         sync_mine() {
             return new $mol_wire_atom('', () => this.saving()).fresh();
         }
@@ -8271,6 +8274,8 @@ var $;
             const buf = this.asArray();
             for (let offset = 0; offset < this.byteLength;) {
                 const kind = this.uint8(offset);
+                if (!kind)
+                    break;
                 if (kind % 2) {
                     switch (kind) {
                         case $hyoo_crus_part.land: {
@@ -8350,7 +8355,9 @@ var $;
             let size = 0;
             for (const land of Reflect.ownKeys(lands)) {
                 size += 16;
-                size += Math.ceil(lands[land].faces.size * 12 / 8 + .5) * 8;
+                if (lands[land].faces.size) {
+                    size += Math.ceil(lands[land].faces.size * 12 / 8 + .5) * 8;
+                }
                 size += lands[land].units.length * $hyoo_crus_unit.size;
             }
             for (const [hash, rock] of rocks) {
@@ -8366,6 +8373,8 @@ var $;
                 pack.uint32(offset, $hyoo_crus_part.land | (faces.total << 8));
                 buff.set($hyoo_crus_ref_encode(land), offset + 4);
                 offset += 16;
+                if (!faces.size)
+                    continue;
                 pack.uint32(offset, $hyoo_crus_part.face | (faces.size << 8));
                 offset += 4;
                 for (const [peer, time] of faces) {
@@ -8496,12 +8505,15 @@ var $;
             }
         }
         ports() {
+            return [...this.masters(), ...this.slaves];
+        }
+        masters() {
             try {
-                return [this.master(), ...this.slaves].filter($mol_guard_defined);
+                return [this.master()].filter($mol_guard_defined);
             }
             catch (error) {
                 $mol_fail_log(error);
-                return [...this.slaves];
+                return [];
             }
         }
         port_lands(port) {
@@ -8517,6 +8529,22 @@ var $;
                 lands: parts.lands,
                 rocks: parts.rocks.length,
             });
+            forget: {
+                if (parts.rocks.length)
+                    break forget;
+                const lands = Object.getOwnPropertySymbols(parts.lands);
+                for (const land of lands) {
+                    if (parts.lands[land].units.length)
+                        break forget;
+                    if (parts.lands[land].faces.size)
+                        break forget;
+                    if (!this.port_lands(port).has(land))
+                        break forget;
+                    this.port_lands(port).delete(land);
+                    console.log('forget', land);
+                    return;
+                }
+            }
             this.face_port_sync(port, parts.lands);
             this.$.$hyoo_crus_realm.apply_parts(parts.lands, parts.rocks);
         }
@@ -8541,9 +8569,21 @@ var $;
         }
         sync_land(land) {
             for (const port of this.ports()) {
-                this.port_lands(port).add(land);
+                this.sync_port_land([port, land]);
             }
             this.sync();
+        }
+        forget_land(land) {
+            const faces = new $hyoo_crus_face_map;
+            faces.total = land.faces.total;
+            const pack = $hyoo_crus_pack.make({
+                lands: { [land.ref()]: { faces, units: [] } },
+                rocks: [],
+            }).asArray();
+            for (const port of $mol_mem_cached(() => this.masters()) ?? []) {
+                port?.send_bin(pack);
+                console.log('destroy', land.ref());
+            }
         }
         sync_port_land([port, land]) {
             try {
@@ -8621,6 +8661,9 @@ var $;
         $mol_mem
     ], $hyoo_crus_yard.prototype, "ports", null);
     __decorate([
+        $mol_mem
+    ], $hyoo_crus_yard.prototype, "masters", null);
+    __decorate([
         $mol_mem_key
     ], $hyoo_crus_yard.prototype, "port_lands", null);
     __decorate([
@@ -8632,6 +8675,9 @@ var $;
     __decorate([
         $mol_mem_key
     ], $hyoo_crus_yard.prototype, "sync_land", null);
+    __decorate([
+        $mol_action
+    ], $hyoo_crus_yard.prototype, "forget_land", null);
     __decorate([
         $mol_mem_key
     ], $hyoo_crus_yard.prototype, "sync_port_land", null);
