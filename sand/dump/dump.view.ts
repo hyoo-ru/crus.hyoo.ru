@@ -2,7 +2,7 @@ namespace $.$$ {
 	export class $hyoo_crus_sand_dump extends $.$hyoo_crus_sand_dump {
 		
 		value() {
-			return this.land().gist_decode( this.gist() )
+			return this.land().sand_decode( this.sand() )
 		}
 		
 		@ $mol_mem
