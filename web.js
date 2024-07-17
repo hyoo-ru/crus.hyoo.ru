@@ -12182,9 +12182,7 @@ var $;
             let size = 0;
             for (const land of Reflect.ownKeys(lands)) {
                 size += 16;
-                if (lands[land].faces.size) {
-                    size += Math.ceil(lands[land].faces.size * 12 / 8 + .5) * 8;
-                }
+                size += Math.ceil(lands[land].faces.size * 12 / 8 + .5) * 8;
                 size += lands[land].units.length * $hyoo_crus_unit.size;
             }
             for (const [hash, rock] of rocks) {
@@ -12200,8 +12198,6 @@ var $;
                 pack.uint32(offset, $hyoo_crus_part.land | (faces.total << 8));
                 buff.set($hyoo_crus_ref_encode(land), offset + 4);
                 offset += 16;
-                if (!faces.size)
-                    continue;
                 pack.uint32(offset, $hyoo_crus_part.face | (faces.size << 8));
                 offset += 4;
                 for (const [peer, time] of faces) {
