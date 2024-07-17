@@ -8127,12 +8127,12 @@ var $;
 (function ($) {
     let $hyoo_crus_part;
     (function ($hyoo_crus_part) {
-        $hyoo_crus_part[$hyoo_crus_part["land"] = 219] = "land";
+        $hyoo_crus_part[$hyoo_crus_part["land"] = 3] = "land";
+        $hyoo_crus_part[$hyoo_crus_part["face"] = 11] = "face";
         $hyoo_crus_part[$hyoo_crus_part["pass"] = 255] = "pass";
         $hyoo_crus_part[$hyoo_crus_part["gift"] = 247] = "gift";
-        $hyoo_crus_part[$hyoo_crus_part["gist"] = 0] = "gist";
-        $hyoo_crus_part[$hyoo_crus_part["hash"] = 253] = "hash";
-        $hyoo_crus_part[$hyoo_crus_part["rock"] = 245] = "rock";
+        $hyoo_crus_part[$hyoo_crus_part["sand"] = 8] = "sand";
+        $hyoo_crus_part[$hyoo_crus_part["rock"] = 5] = "rock";
         $hyoo_crus_part[$hyoo_crus_part["root"] = 1] = "root";
         $hyoo_crus_part[$hyoo_crus_part["buck"] = 9] = "buck";
     })($hyoo_crus_part = $.$hyoo_crus_part || ($.$hyoo_crus_part = {}));
@@ -8622,7 +8622,7 @@ var $;
             return this.units().map(unit => map[unit.tag()]().Item(unit.self()));
         }
         units() {
-            return this.land().gists_ordered(this.head()).filter(unit => !unit.nil());
+            return this.land().sand_ordered(this.head()).filter(unit => unit.tip() !== 'nil');
         }
         filled() {
             return this.units().length > 0;
@@ -8639,13 +8639,13 @@ var $;
                 vals: () => land.Node($hyoo_crus_list_vary),
                 keys: () => land.Node($hyoo_crus_dict),
             };
-            const visit = (gist) => {
-                if (gist.time() > last)
-                    last = gist.time();
-                map[gist.tag()]()?.Item(gist.self()).units().forEach(visit);
+            const visit = (sand) => {
+                if (sand.time() > last)
+                    last = sand.time();
+                map[sand.tag()]()?.Item(sand.self()).units().forEach(visit);
             };
-            for (const gist of this.units())
-                visit(gist);
+            for (const sand of this.units())
+                visit(sand);
             return last ? new $mol_time_moment(last) : null;
         }
         ;
@@ -9157,12 +9157,12 @@ var $;
     };
     let $hyoo_crus_vary_tip;
     (function ($hyoo_crus_vary_tip) {
-        $hyoo_crus_vary_tip[$hyoo_crus_vary_tip["nil"] = 0] = "nil";
-        $hyoo_crus_vary_tip[$hyoo_crus_vary_tip["bin"] = 1] = "bin";
-        $hyoo_crus_vary_tip[$hyoo_crus_vary_tip["bool"] = 2] = "bool";
-        $hyoo_crus_vary_tip[$hyoo_crus_vary_tip["int"] = 3] = "int";
-        $hyoo_crus_vary_tip[$hyoo_crus_vary_tip["real"] = 4] = "real";
-        $hyoo_crus_vary_tip[$hyoo_crus_vary_tip["ref"] = 5] = "ref";
+        $hyoo_crus_vary_tip[$hyoo_crus_vary_tip["nil"] = 1] = "nil";
+        $hyoo_crus_vary_tip[$hyoo_crus_vary_tip["bin"] = 2] = "bin";
+        $hyoo_crus_vary_tip[$hyoo_crus_vary_tip["bool"] = 3] = "bool";
+        $hyoo_crus_vary_tip[$hyoo_crus_vary_tip["int"] = 4] = "int";
+        $hyoo_crus_vary_tip[$hyoo_crus_vary_tip["real"] = 8] = "real";
+        $hyoo_crus_vary_tip[$hyoo_crus_vary_tip["ref"] = 12] = "ref";
         $hyoo_crus_vary_tip[$hyoo_crus_vary_tip["str"] = 16] = "str";
         $hyoo_crus_vary_tip[$hyoo_crus_vary_tip["time"] = 17] = "time";
         $hyoo_crus_vary_tip[$hyoo_crus_vary_tip["dur"] = 18] = "dur";
@@ -10143,9 +10143,9 @@ var $;
             return this.$.$hyoo_crus_auth.current();
         }
         faces = new $hyoo_crus_face_map;
-        passes = new $mol_wire_dict();
-        gifts = new $mol_wire_dict();
-        gists = new $mol_wire_dict();
+        pass = new $mol_wire_dict();
+        gift = new $mol_wire_dict();
+        sand = new $mol_wire_dict();
         self_all = new $mol_wire_set();
         self_make(idea = Math.floor(Math.random() * 2 ** 48)) {
             const auth = this.auth();
@@ -10186,16 +10186,16 @@ var $;
             });
         }
         total() {
-            let total = this.passes.size + this.gifts.size;
-            for (const units of this.gists.values())
+            let total = this.pass.size + this.gift.size;
+            for (const units of this.sand.values())
                 total += units.size;
             return total;
         }
         joined_list() {
-            return [...this.passes.values()].map(unit => unit.lord());
+            return [...this.pass.values()].map(unit => unit.lord());
         }
         key() {
-            const pass = this.passes.get($hyoo_crus_ref_peer(this.ref()));
+            const pass = this.pass.get($hyoo_crus_ref_peer(this.ref()));
             if (!pass)
                 return null;
             return $hyoo_crus_auth.from(pass.auth());
@@ -10203,21 +10203,21 @@ var $;
         lord_rank(lord, next) {
             if (lord === this.ref())
                 return $hyoo_crus_rank.law;
-            const prev = this.gifts.get(lord)?.rank()
-                ?? this.gifts.get($hyoo_crus_ref(''))?.rank()
+            const prev = this.gift.get(lord)?.rank()
+                ?? this.gift.get($hyoo_crus_ref(''))?.rank()
                 ?? $hyoo_crus_rank.get;
             if (next === undefined)
                 return prev;
             if (next === prev)
                 return prev;
-            const key = this.passes.get($hyoo_crus_ref_peer(lord))?.auth();
+            const key = this.pass.get($hyoo_crus_ref_peer(lord))?.auth();
             if (!key)
                 $mol_fail(new Error(`No pub key for lord (${lord.description})`));
             this.give($hyoo_crus_auth.from(key), next);
             return next;
         }
         peer_rank(peer) {
-            const auth = this.passes.get(peer);
+            const auth = this.pass.get(peer);
             if (!auth)
                 return $hyoo_crus_rank.get;
             return this.lord_rank(auth.lord());
@@ -10231,20 +10231,20 @@ var $;
                     return;
                 if (face.get(peer))
                     return;
-                const pass = this.passes.get(peer);
+                const pass = this.pass.get(peer);
                 if (!pass)
                     $mol_fail(new Error(`No pass for Peer (${peer})`));
                 delta.push(pass);
                 passed.add(peer);
             };
-            for (const [lord, unit] of this.gifts) {
+            for (const [lord, unit] of this.gift) {
                 const time = face.get(unit.peer()) ?? 0;
                 if (time >= unit.time())
                     continue;
                 auth(unit.peer());
                 delta.push(unit);
             }
-            for (const kids of this.gists.values()) {
+            for (const kids of this.sand.values()) {
                 for (const unit of kids.values()) {
                     const time = face.get(unit.peer()) ?? 0;
                     if (time >= unit.time())
@@ -10276,13 +10276,13 @@ var $;
                 return null;
             const rocks = [];
             for (let unit of units) {
-                if (unit.kind() !== 'gist')
+                if (unit.kind() !== 'sand')
                     continue;
-                const gist = unit.narrow();
-                if (gist.size() <= 32)
+                const sand = unit.narrow();
+                if (sand.size() <= 32)
                     continue;
-                const rock = this.$.$hyoo_crus_mine.rock(gist.hash()) ?? null;
-                rocks.push([gist.hash(), rock]);
+                const rock = this.$.$hyoo_crus_mine.rock(sand.hash()) ?? null;
+                rocks.push([sand.hash(), rock]);
             }
             return {
                 lands: {
@@ -10347,32 +10347,32 @@ var $;
                 const res = unit.choose({
                     pass: next => {
                         const peer = next.peer();
-                        const exists = this.passes.get(peer);
+                        const exists = this.pass.get(peer);
                         if (exists)
                             return '';
-                        this.passes.set(peer, next);
+                        this.pass.set(peer, next);
                         this.faces.total++;
                     },
                     gift: next => {
                         const dest = next.dest();
-                        const prev = this.gifts.get(dest);
+                        const prev = this.gift.get(dest);
                         if (prev && $hyoo_crus_gift.compare(prev, next) <= 0)
                             return '';
-                        this.gifts.set(dest, next);
+                        this.gift.set(dest, next);
                         this.faces.time_max(next.peer(), next.time());
                         if (!prev)
                             this.faces.total++;
                         if ((prev?.rank() ?? $hyoo_crus_rank.nil) > next.rank())
                             need_recheck = true;
                     },
-                    gist: next => {
+                    sand: next => {
                         const head = next.head();
                         const self = next.self();
-                        let units = this.gists.get(head);
+                        let units = this.sand.get(head);
                         if (!units)
-                            this.gists.set(head, units = new $mol_wire_dict);
+                            this.sand.set(head, units = new $mol_wire_dict);
                         const prev = units.get(self);
-                        if (prev && $hyoo_crus_gist.compare(prev, next) <= 0)
+                        if (prev && $hyoo_crus_sand.compare(prev, next) <= 0)
                             return '';
                         units.set(self, next);
                         this.self_all.add(self);
@@ -10390,21 +10390,21 @@ var $;
             return this.apply_unit_trust(land.delta_unit());
         }
         recheck() {
-            for (const [peer, pass] of this.passes) {
+            for (const [peer, pass] of this.pass) {
                 if (!this.check_unit(pass))
                     continue;
-                this.passes.delete(peer);
+                this.pass.delete(peer);
                 this.faces.total--;
             }
-            for (const [lord, gift] of this.gifts) {
+            for (const [lord, gift] of this.gift) {
                 if (!this.check_unit(gift))
                     continue;
-                this.gifts.delete(lord);
+                this.gift.delete(lord);
                 this.faces.total--;
             }
-            for (const [head, units] of this.gists) {
-                for (const [self, gist] of units) {
-                    if (!this.check_unit(gist))
+            for (const [head, units] of this.sand) {
+                for (const [self, sand] of units) {
+                    if (!this.check_unit(sand))
                         continue;
                     units.delete(self);
                     this.faces.total--;
@@ -10415,7 +10415,7 @@ var $;
             return unit.choose({
                 pass: next => this.lord_rank(next.lord()) < $hyoo_crus_rank.add ? 'Need add rank to join' : '',
                 gift: next => this.peer_rank(next.peer()) < $hyoo_crus_rank.law ? 'Need law rank to change rank' : '',
-                gist: next => {
+                sand: next => {
                     if (next.peer() === next.self()) {
                         return this.peer_rank(next.peer()) < $hyoo_crus_rank.add ? 'Need add rank to post self data' : '';
                     }
@@ -10430,44 +10430,42 @@ var $;
             land.Tines().items_vary([this.ref()]);
             return land;
         }
-        gists_ordered(head) {
+        sand_ordered(head) {
             this.sync();
             this.secret();
-            const queue = [...this.gists.get(head)?.values() ?? []];
+            const queue = [...this.sand.get(head)?.values() ?? []];
             const slices = new Map;
-            for (const gist of queue)
-                slices.set(gist, 0);
+            for (const sand of queue)
+                slices.set(sand, 0);
             merge: if (head !== 'AQAAAAAA') {
                 const tines = (this.Tines().items_vary().slice().reverse() ?? [])
                     .map($hyoo_crus_vary_cast_ref)
                     .filter($mol_guard_defined);
                 if (!tines.length)
                     break merge;
-                const exists = new Set([...this.gists.get(head)?.keys() ?? []]);
+                const exists = new Set([...this.sand.get(head)?.keys() ?? []]);
                 const realm = this.$.$hyoo_crus_realm;
                 let slice = 0;
                 for (const ref of tines) {
                     ++slice;
                     const land = realm.Land(ref);
-                    for (const gist of land.gists_ordered(head)) {
-                        if (exists.has(gist.self()))
+                    for (const sand of land.sand_ordered(head)) {
+                        if (exists.has(sand.self()))
                             continue;
-                        queue.push(gist);
-                        exists.add(gist.self());
-                        slices.set(gist, slice);
+                        queue.push(sand);
+                        exists.add(sand.self());
+                        slices.set(sand, slice);
                     }
                 }
             }
-            if (queue.length === 0)
+            if (queue.length < 2)
                 return queue;
-            if (queue.length === 1)
-                return queue[0].nil() ? [] : queue;
             const compare = (left, right) => {
-                return (slices.get(left) - slices.get(right)) || $hyoo_crus_gist.compare(left, right);
+                return (slices.get(left) - slices.get(right)) || $hyoo_crus_sand.compare(left, right);
             };
             queue.sort(compare);
             let entry = {
-                gist: null,
+                sand: null,
                 next: '',
                 prev: '',
             };
@@ -10475,19 +10473,19 @@ var $;
             while (queue.length) {
                 const last = queue.pop();
                 graph.get(entry.prev).next = last.self();
-                graph.set(last.self(), { gist: last, next: '', prev: entry.prev });
+                graph.set(last.self(), { sand: last, next: '', prev: entry.prev });
                 entry.prev = last.self();
                 for (let cursor = queue.length - 1; cursor >= 0; --cursor) {
                     const kid = queue[cursor];
                     let lead = graph.get(kid.lead());
                     if (!lead)
                         continue;
-                    while (lead.next && (compare(graph.get(lead.next).gist, kid) < 0))
+                    while (lead.next && (compare(graph.get(lead.next).sand, kid) < 0))
                         lead = graph.get(lead.next);
                     const exists = graph.get(kid.self());
                     if (exists) {
-                        if ((lead.gist?.self() ?? '') === exists.prev) {
-                            exists.gist = kid;
+                        if ((lead.sand?.self() ?? '') === exists.prev) {
+                            exists.sand = kid;
                             if (cursor === queue.length - 1)
                                 queue.pop();
                             continue;
@@ -10497,7 +10495,7 @@ var $;
                     }
                     const follower = graph.get(lead.next);
                     follower.prev = kid.self();
-                    graph.set(kid.self(), { gist: kid, next: lead.next, prev: lead.gist?.self() ?? '' });
+                    graph.set(kid.self(), { sand: kid, next: lead.next, prev: lead.sand?.self() ?? '' });
                     lead.next = kid.self();
                     if (cursor === queue.length - 1)
                         queue.pop();
@@ -10507,13 +10505,13 @@ var $;
             const res = [];
             while (entry.next) {
                 entry = graph.get(entry.next);
-                res.push(entry.gist);
+                res.push(entry.sand);
             }
             return res;
         }
         join() {
             const auth = this.auth();
-            const prev = this.passes.get(auth.peer());
+            const prev = this.pass.get(auth.peer());
             if (prev)
                 return prev;
             const next = new $hyoo_crus_pass;
@@ -10560,7 +10558,7 @@ var $;
                 vary = $hyoo_crus_ref_relate(this.ref(), vary);
             this.join();
             const auth = this.auth();
-            const unit = new $hyoo_crus_gist;
+            const unit = new $hyoo_crus_sand;
             $hyoo_crus_unit_trusted.add(unit);
             unit.time(this.faces.tick());
             unit.peer(auth.peer());
@@ -10586,16 +10584,16 @@ var $;
             this.broadcast();
             return unit;
         }
-        gist_move(gist, head, seat) {
-            if (gist.nil())
-                $mol_fail(new RangeError(`Can't move wiped gist`));
-            const units = this.gists_ordered(head).filter(unit => !unit.nil());
+        sand_move(sand, head, seat) {
+            if (sand.tip() === 'nil')
+                $mol_fail(new RangeError(`Can't move wiped sand`));
+            const units = this.sand_ordered(head).filter(unit => unit.tip() !== 'nil');
             if (seat > units.length)
                 $mol_fail(new RangeError(`Seat (${seat}) out of units length (${units.length})`));
             const lead = seat ? units[seat - 1].self() : '';
-            const vary = this.gist_decode(gist);
-            if (gist.head() === head) {
-                const seat_prev = units.indexOf(gist);
+            const vary = this.sand_decode(sand);
+            if (sand.head() === head) {
+                const seat_prev = units.indexOf(sand);
                 if (seat === seat_prev)
                     return;
                 if (seat === seat_prev + 1)
@@ -10603,17 +10601,17 @@ var $;
                 const prev = seat_prev ? units[seat_prev - 1].self() : '';
                 const next = units[seat_prev + 1];
                 if (next)
-                    this.post(prev, head, next.self(), this.gist_decode(next), next.tag());
+                    this.post(prev, head, next.self(), this.sand_decode(next), next.tag());
             }
             else {
-                this.gist_wipe(gist);
+                this.sand_wipe(sand);
             }
-            this.post(lead, head, gist.self(), vary, gist.tag());
+            this.post(lead, head, sand.self(), vary, sand.tag());
         }
-        gist_wipe(gist) {
-            const units = this.gists_ordered(gist.head()).filter(unit => !unit.nil());
-            const seat = units.indexOf(gist);
-            this.post(seat ? units[seat - 1].self() : '', gist.head(), gist.self(), null, 'term');
+        sand_wipe(sand) {
+            const units = this.sand_ordered(sand.head()).filter(unit => unit.tip() !== 'nil');
+            const seat = units.indexOf(sand);
+            this.post(seat ? units[seat - 1].self() : '', sand.head(), sand.self(), null, 'term');
         }
         broadcast() {
             this.$.$hyoo_crus_realm.yard().lands_neonatals.add(this.ref());
@@ -10656,8 +10654,8 @@ var $;
                         graph.link($hyoo_crus_ref_peer(gift.dest()), gift.key());
                         graph.link(gift.key(), gift.peer());
                     },
-                    gist: gist => {
-                        graph.link(gist.key(), gist.peer());
+                    sand: sand => {
+                        graph.link(sand.key(), sand.peer());
                     },
                 });
             }
@@ -10683,29 +10681,29 @@ var $;
             const encoding = [];
             const signing = [];
             const persisting = [];
-            for (const pass of this.passes.values()) {
+            for (const pass of this.pass.values()) {
                 if (!pass.signed())
                     signing.push(pass);
                 if (!mine.units_persisted.has(pass))
                     persisting.push(pass);
             }
-            for (const gift of this.gifts.values()) {
+            for (const gift of this.gift.values()) {
                 if (!gift.signed())
                     signing.push(gift);
                 if (!mine.units_persisted.has(gift))
                     persisting.push(gift);
             }
-            for (const kids of this.gists.values()) {
-                for (const gist of kids.values()) {
-                    if (!gist.signed()) {
-                        encoding.push(gist);
-                        signing.push(gist);
+            for (const kids of this.sand.values()) {
+                for (const sand of kids.values()) {
+                    if (!sand.signed()) {
+                        encoding.push(sand);
+                        signing.push(sand);
                     }
-                    if (!mine.units_persisted.has(gist))
-                        persisting.push(gist);
+                    if (!mine.units_persisted.has(sand))
+                        persisting.push(sand);
                 }
             }
-            $mol_wire_race(...encoding.map(unit => () => this.gist_encode(unit)));
+            $mol_wire_race(...encoding.map(unit => () => this.sand_encode(unit)));
             $mol_wire_race(...signing.map(unit => () => this.unit_sign(unit)));
             if (persisting.length) {
                 mine.units(this.ref(), persisting);
@@ -10728,45 +10726,45 @@ var $;
             const sign = new Uint8Array(key.sign(sens));
             unit.sign(sign);
         }
-        gist_encode(gist) {
-            if (gist._open === null)
-                return gist;
-            if (gist.nil())
-                return gist;
-            let bin = gist._open;
-            const secret = gist._land.secret();
+        sand_encode(sand) {
+            if (sand._open === null)
+                return sand;
+            if (sand.tip() === 'nil')
+                return sand;
+            let bin = sand._open;
+            const secret = sand._land.secret();
             if (secret)
-                bin = new Uint8Array($mol_wire_sync(secret).encrypt(bin, gist.salt()));
+                bin = new Uint8Array($mol_wire_sync(secret).encrypt(bin, sand.salt()));
             if (bin.byteLength > 32)
-                gist.hash(this.$.$hyoo_crus_mine.rock_save(bin), gist.tip(), gist.tag());
+                sand.hash(this.$.$hyoo_crus_mine.rock_save(bin), sand.tip(), sand.tag());
             else
-                gist.data(bin, gist.tip(), gist.tag());
-            return gist;
+                sand.data(bin, sand.tip(), sand.tag());
+            return sand;
         }
-        gist_decode(gist) {
-            let vary = this.gist_decode_raw(gist);
+        sand_decode(sand) {
+            let vary = this.sand_decode_raw(sand);
             if (typeof vary === 'symbol')
                 vary = $hyoo_crus_ref_resolve(this.ref(), vary);
             return vary;
         }
-        gist_decode_raw(gist) {
-            if (this.gists.get(gist.head())?.get(gist.self()) !== gist) {
+        sand_decode_raw(sand) {
+            if (this.sand.get(sand.head())?.get(sand.self()) !== sand) {
                 for (const id of this.Tines().items_vary() ?? []) {
-                    const vary = this.$.$hyoo_crus_realm.Land($hyoo_crus_vary_cast_ref(id)).gist_decode_raw(gist);
+                    const vary = this.$.$hyoo_crus_realm.Land($hyoo_crus_vary_cast_ref(id)).sand_decode_raw(sand);
                     if (vary !== undefined)
                         return vary;
                 }
                 return undefined;
             }
             const secret = this.secret();
-            if (gist._vary !== undefined)
-                return gist._vary;
-            if (gist._open !== null)
-                return gist._vary = $hyoo_crus_vary_decode({ tip: gist.tip(), bin: gist._open });
-            let bin = gist.size() > 32 ? this.$.$hyoo_crus_mine.rock(gist.hash()) : gist.data();
-            if (secret && bin && !gist.nil()) {
+            if (sand._vary !== undefined)
+                return sand._vary;
+            if (sand._open !== null)
+                return sand._vary = $hyoo_crus_vary_decode({ tip: sand.tip(), bin: sand._open });
+            let bin = sand.size() > 32 ? this.$.$hyoo_crus_mine.rock(sand.hash()) : sand.data();
+            if (secret && bin && sand.tip() !== 'nil') {
                 try {
-                    bin = new Uint8Array($mol_wire_sync(secret).decrypt(bin, gist.salt()));
+                    bin = new Uint8Array($mol_wire_sync(secret).decrypt(bin, sand.salt()));
                 }
                 catch (error) {
                     if ($mol_fail_catch(error)) {
@@ -10777,22 +10775,22 @@ var $;
                     }
                 }
             }
-            gist._open = bin;
-            return gist._vary = (bin ? $hyoo_crus_vary_decode({ tip: gist.tip(), bin }) : null);
+            sand._open = bin;
+            return sand._vary = (bin ? $hyoo_crus_vary_decode({ tip: sand.tip(), bin }) : null);
         }
         key_public(peer) {
-            const key = this.passes.get(peer)?.auth();
+            const key = this.pass.get(peer)?.auth();
             return key ? $mol_crypto_key_public.from(key) : null;
         }
         secret_mutual(key_public) {
             return $mol_wire_sync($mol_crypto_secret).derive(this.auth().toString(), key_public);
         }
         encryptable() {
-            return !this.gists.size;
+            return !this.sand.size;
         }
         encrypted(next) {
             $mol_wire_solid();
-            const gift = this.gifts.get(this.ref());
+            const gift = this.gift.get(this.ref());
             const prev = gift?.bill().some(b => b) ?? false;
             if (next === undefined)
                 return prev;
@@ -10822,7 +10820,7 @@ var $;
             if (!this.encrypted())
                 return null;
             const auth = this.auth();
-            const gift = this.gifts.get(auth.lord());
+            const gift = this.gift.get(auth.lord());
             if (!gift)
                 return $mol_fail(new Error(`Access denied`));
             const bill = gift.bill();
@@ -10838,19 +10836,19 @@ var $;
             this.saving();
             const units = [];
             const rocks = [];
-            for (const pass of this.passes.values())
+            for (const pass of this.pass.values())
                 units.push(pass);
-            for (const gift of this.gifts.values())
+            for (const gift of this.gift.values())
                 units.push(gift);
-            for (const kids of this.gists.values()) {
-                for (const gist of kids.values()) {
-                    units.push(gist);
-                    if (gist.size() <= 32)
+            for (const kids of this.sand.values()) {
+                for (const sand of kids.values()) {
+                    units.push(sand);
+                    if (sand.size() <= 32)
                         continue;
-                    const rock = this.$.$hyoo_crus_mine.rock(gist.hash());
+                    const rock = this.$.$hyoo_crus_mine.rock(sand.hash());
                     if (!rock)
                         continue;
-                    rocks.push([gist.hash(), rock]);
+                    rocks.push([sand.hash(), rock]);
                 }
             }
             return {
@@ -10901,7 +10899,7 @@ var $;
     ], $hyoo_crus_land.prototype, "fork", null);
     __decorate([
         $mol_mem_key
-    ], $hyoo_crus_land.prototype, "gists_ordered", null);
+    ], $hyoo_crus_land.prototype, "sand_ordered", null);
     __decorate([
         $mol_action
     ], $hyoo_crus_land.prototype, "join", null);
@@ -10913,10 +10911,10 @@ var $;
     ], $hyoo_crus_land.prototype, "post", null);
     __decorate([
         $mol_action
-    ], $hyoo_crus_land.prototype, "gist_move", null);
+    ], $hyoo_crus_land.prototype, "sand_move", null);
     __decorate([
         $mol_action
-    ], $hyoo_crus_land.prototype, "gist_wipe", null);
+    ], $hyoo_crus_land.prototype, "sand_wipe", null);
     __decorate([
         $mol_mem
     ], $hyoo_crus_land.prototype, "sync", null);
@@ -10940,13 +10938,13 @@ var $;
     ], $hyoo_crus_land.prototype, "unit_sign", null);
     __decorate([
         $mol_mem_key
-    ], $hyoo_crus_land.prototype, "gist_encode", null);
+    ], $hyoo_crus_land.prototype, "sand_encode", null);
     __decorate([
         $mol_mem_key
-    ], $hyoo_crus_land.prototype, "gist_decode", null);
+    ], $hyoo_crus_land.prototype, "sand_decode", null);
     __decorate([
         $mol_mem_key
-    ], $hyoo_crus_land.prototype, "gist_decode_raw", null);
+    ], $hyoo_crus_land.prototype, "sand_decode_raw", null);
     __decorate([
         $mol_mem_key
     ], $hyoo_crus_land.prototype, "key_public", null);
@@ -10973,7 +10971,7 @@ var $;
     (function ($hyoo_crus_unit_kind) {
         $hyoo_crus_unit_kind[$hyoo_crus_unit_kind["pass"] = $hyoo_crus_part.pass] = "pass";
         $hyoo_crus_unit_kind[$hyoo_crus_unit_kind["gift"] = $hyoo_crus_part.gift] = "gift";
-        $hyoo_crus_unit_kind[$hyoo_crus_unit_kind["gist"] = $hyoo_crus_part.gist] = "gist";
+        $hyoo_crus_unit_kind[$hyoo_crus_unit_kind["sand"] = $hyoo_crus_part.sand] = "sand";
     })($hyoo_crus_unit_kind = $.$hyoo_crus_unit_kind || ($.$hyoo_crus_unit_kind = {}));
     $.$hyoo_crus_unit_trusted = new WeakSet();
     class $hyoo_crus_unit extends $mol_buffer {
@@ -10983,8 +10981,10 @@ var $;
         }
         kind() {
             const val = this.uint8(0);
+            if (!val)
+                $mol_fail(new Error(`Empty unit`));
             if ((val & 1) === 0)
-                return 'gist';
+                return 'sand';
             const kind = $hyoo_crus_unit_kind[val];
             if (kind)
                 return kind;
@@ -10995,7 +10995,7 @@ var $;
             const Unit = {
                 pass: $hyoo_crus_pass,
                 gift: $hyoo_crus_gift,
-                gist: $hyoo_crus_gist,
+                sand: $hyoo_crus_sand,
             }[way];
             if (this instanceof Unit)
                 return ways[way](this);
@@ -11004,7 +11004,7 @@ var $;
         }
         narrow() {
             return this.choose({
-                gist: unit => unit,
+                sand: unit => unit,
                 pass: unit => unit,
                 gift: unit => unit,
             });
@@ -11162,30 +11162,30 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    let $hyoo_crus_gist_tag;
-    (function ($hyoo_crus_gist_tag) {
-        $hyoo_crus_gist_tag[$hyoo_crus_gist_tag["term"] = 0] = "term";
-        $hyoo_crus_gist_tag[$hyoo_crus_gist_tag["solo"] = 1] = "solo";
-        $hyoo_crus_gist_tag[$hyoo_crus_gist_tag["vals"] = 2] = "vals";
-        $hyoo_crus_gist_tag[$hyoo_crus_gist_tag["keys"] = 3] = "keys";
-    })($hyoo_crus_gist_tag = $.$hyoo_crus_gist_tag || ($.$hyoo_crus_gist_tag = {}));
-    class $hyoo_crus_gist extends $hyoo_crus_unit {
+    let $hyoo_crus_sand_tag;
+    (function ($hyoo_crus_sand_tag) {
+        $hyoo_crus_sand_tag[$hyoo_crus_sand_tag["term"] = 0] = "term";
+        $hyoo_crus_sand_tag[$hyoo_crus_sand_tag["solo"] = 1] = "solo";
+        $hyoo_crus_sand_tag[$hyoo_crus_sand_tag["vals"] = 2] = "vals";
+        $hyoo_crus_sand_tag[$hyoo_crus_sand_tag["keys"] = 3] = "keys";
+    })($hyoo_crus_sand_tag = $.$hyoo_crus_sand_tag || ($.$hyoo_crus_sand_tag = {}));
+    class $hyoo_crus_sand extends $hyoo_crus_unit {
         _vary = undefined;
         _open = null;
-        hint(tip = 'null', tag = 'term') {
-            this.uint8(0, ($hyoo_crus_gist_tag[tag] << 1) | ($hyoo_crus_vary_tip[tip] << 3));
+        hint(tip = 'nil', tag = 'term') {
+            this.uint8(0, ($hyoo_crus_sand_tag[tag] << 1) | ($hyoo_crus_vary_tip[tip] << 3));
         }
         tag() {
-            return $hyoo_crus_gist_tag[(this.uint8(0) >> 1) & 0b11];
+            return $hyoo_crus_sand_tag[(this.uint8(0) >> 1) & 0b11];
         }
         tip() {
-            return $hyoo_crus_vary_tip[this.uint8(0) >> 3];
+            const tip = $hyoo_crus_vary_tip[this.uint8(0) >> 3];
+            if (!tip)
+                $mol_fail(new Error('Empty tip'));
+            return tip;
         }
         utf() {
             return Boolean(this.uint8(0) & 0b10000000);
-        }
-        nil() {
-            return !this.uint16(0);
         }
         size(next) {
             return this.uint8(1, next);
@@ -11217,7 +11217,7 @@ var $;
             else
                 return this._lead = this.id6(26, next);
         }
-        hash(next, tip = 'null', tag = 'term') {
+        hash(next, tip = 'nil', tag = 'term') {
             const bin = new Uint8Array(this.buffer, this.byteOffset + 32, 20);
             if (next !== undefined) {
                 this.hint(tip, tag);
@@ -11231,7 +11231,7 @@ var $;
         meta() {
             return new Uint8Array(this.buffer, this.byteOffset + 42, 12);
         }
-        data(next, tip = 'null', tag = 'term') {
+        data(next, tip = 'nil', tag = 'term') {
             if (next === undefined) {
                 const size = this.size();
                 if (size > 32)
@@ -11282,7 +11282,7 @@ var $;
             }[this.tag()], this.tip(), ' ', $mol_dev_format_native(this._vary));
         }
     }
-    $.$hyoo_crus_gist = $hyoo_crus_gist;
+    $.$hyoo_crus_sand = $hyoo_crus_sand;
 })($ || ($ = {}));
 
 ;
@@ -11328,11 +11328,11 @@ var $;
 var $;
 (function ($) {
     class $hyoo_crus_list_vary extends $hyoo_crus_node {
-        static tag = $hyoo_crus_gist_tag[$hyoo_crus_gist_tag.vals];
+        static tag = $hyoo_crus_sand_tag[$hyoo_crus_sand_tag.vals];
         items_vary(next, tag = 'term') {
             const units = this.units();
             if (next === undefined)
-                return units.map(unit => this.land().gist_decode(unit));
+                return units.map(unit => this.land().sand_decode(unit));
             this.splice(next, 0, units.length, tag);
             return this.items_vary();
         }
@@ -11343,7 +11343,7 @@ var $;
                 from,
                 to,
                 next,
-                equal: (next, prev) => $mol_compare_deep(this.land().gist_decode(prev), next),
+                equal: (next, prev) => $mol_compare_deep(this.land().sand_decode(prev), next),
                 drop: (prev, lead) => this.land().post(lead?.self() ?? '', prev.head(), prev.self(), null),
                 insert: (next, lead) => this.land().post(lead?.self() ?? '', this.head(), land.self_make(), next, tag),
                 update: (next, prev, lead) => this.land().post(lead?.self() ?? '', prev.head(), prev.self(), next, prev.tag()),
@@ -11351,7 +11351,7 @@ var $;
         }
         find(vary) {
             for (const unit of this.units()) {
-                if ($mol_compare_deep(this.land().gist_decode(unit), vary))
+                if ($mol_compare_deep(this.land().sand_decode(unit), vary))
                     return unit;
             }
             return null;
@@ -11373,7 +11373,7 @@ var $;
         cut(vary) {
             const units = [...this.units()];
             for (let i = 0; i < units.length; ++i) {
-                if (!$mol_compare_deep(this.land().gist_decode(units[i]), vary))
+                if (!$mol_compare_deep(this.land().sand_decode(units[i]), vary))
                     continue;
                 this.land().post(units[i - 1]?.self() ?? 0, units[i].head(), units[i].self(), null);
                 units.splice(i, 1);
@@ -11381,10 +11381,10 @@ var $;
             }
         }
         move(from, to) {
-            this.land().gist_move(this.units()[from], this.head(), to);
+            this.land().sand_move(this.units()[from], this.head(), to);
         }
         wipe(seat) {
-            this.land().gist_wipe(this.units()[seat]);
+            this.land().sand_wipe(this.units()[seat]);
         }
         node_make(Node, vary, tag = 'term') {
             this.splice([vary], undefined, undefined, tag);
@@ -11499,7 +11499,7 @@ var $;
 var $;
 (function ($) {
     class $hyoo_crus_dict extends ($hyoo_crus_list_vary) {
-        static tag = $hyoo_crus_gist_tag[$hyoo_crus_gist_tag.keys];
+        static tag = $hyoo_crus_sand_tag[$hyoo_crus_sand_tag.keys];
         keys() {
             return this.items_vary();
         }
@@ -11564,13 +11564,13 @@ var $;
 var $;
 (function ($) {
     class $hyoo_crus_atom_vary extends $hyoo_crus_node {
-        static tag = $hyoo_crus_gist_tag[$hyoo_crus_gist_tag.solo];
+        static tag = $hyoo_crus_sand_tag[$hyoo_crus_sand_tag.solo];
         pick_unit() {
             return this.units().at(0);
         }
         vary(next) {
             let unit_prev = this.pick_unit();
-            let prev = unit_prev ? this.land().gist_decode(unit_prev) : null;
+            let prev = unit_prev ? this.land().sand_decode(unit_prev) : null;
             if (next === undefined)
                 return prev;
             if ($mol_compare_deep(prev, next))
@@ -12062,7 +12062,7 @@ var $;
             return units;
         }
         static async db() {
-            return await this.$.$mol_db('$hyoo_crus', mig => mig.store_make('Rock'), mig => mig.store_make('Land'));
+            return await this.$.$mol_db('$hyoo_crus', mig => mig.store_make('Rock'), mig => mig.store_make('Land'), mig => mig.stores.Land.clear());
         }
     }
     __decorate([
@@ -12096,6 +12096,7 @@ var $;
             const lands = {};
             if (land)
                 lands[land] = { faces: new $hyoo_crus_face_map, units: [] };
+            let total = 0;
             const rocks = [];
             const buf = this.asArray();
             for (let offset = 0; offset < this.byteLength;) {
@@ -12106,17 +12107,24 @@ var $;
                             const faces = new $hyoo_crus_face_map;
                             faces.total = this.uint32(offset) >> 8;
                             offset += 4;
-                            land = $hyoo_crus_ref_decode(new Uint8Array(buf.buffer, buf.byteOffset + offset, 18));
-                            offset += 18;
-                            const len = this.uint16(offset);
-                            offset += 2;
-                            for (let i = 0; i < len; ++i) {
+                            land = $hyoo_crus_ref_decode(new Uint8Array(buf.buffer, buf.byteOffset + offset, 12));
+                            offset += 12;
+                            lands[land] = { faces, units: [] };
+                            continue;
+                        }
+                        case $hyoo_crus_part.face: {
+                            if (!land)
+                                $mol_fail(new Error('Land is undefined'));
+                            const count = this.uint32(offset) >> 8;
+                            offset += 4;
+                            const faces = lands[land].faces;
+                            for (let i = 0; i < count; ++i) {
                                 const peer = $mol_base64_ae_encode(new Uint8Array(buf.buffer, buf.byteOffset + offset, 6));
                                 const time = this.uint48(offset + 6);
                                 faces.time_max(peer, time);
                                 offset += 12;
                             }
-                            lands[land] = { faces, units: [] };
+                            offset = Math.ceil(offset / 8) * 8;
                             continue;
                         }
                         case $hyoo_crus_part.pass: {
@@ -12133,11 +12141,6 @@ var $;
                             const unit = new $hyoo_crus_gift(buf.slice(offset, offset += $hyoo_crus_unit.size).buffer);
                             lands[land].units ||= [];
                             lands[land].units.push(unit);
-                            continue;
-                        }
-                        case $hyoo_crus_part.hash: {
-                            const hash = buf.slice(offset += 4, offset += 24);
-                            rocks.push([hash, null]);
                             continue;
                         }
                         case $hyoo_crus_part.rock: {
@@ -12165,7 +12168,7 @@ var $;
                 else {
                     if (!land)
                         $mol_fail(new Error('Land is undefined'));
-                    const unit = new $hyoo_crus_gist(buf.slice(offset, offset += $hyoo_crus_unit.size).buffer);
+                    const unit = new $hyoo_crus_sand(buf.slice(offset, offset += $hyoo_crus_unit.size).buffer);
                     lands[land].units ||= [];
                     lands[land].units.push(unit);
                     continue;
@@ -12176,8 +12179,8 @@ var $;
         static make({ lands, rocks }) {
             let size = 0;
             for (const land of Reflect.ownKeys(lands)) {
-                size += 24;
-                size += lands[land].faces.size * 12;
+                size += 16;
+                size += Math.ceil(lands[land].faces.size * 12 / 8 + .5) * 8;
                 size += lands[land].units.length * $hyoo_crus_unit.size;
             }
             for (const [hash, rock] of rocks) {
@@ -12192,13 +12195,15 @@ var $;
                 const faces = lands[land].faces;
                 pack.uint32(offset, $hyoo_crus_part.land | (faces.total << 8));
                 buff.set($hyoo_crus_ref_encode(land), offset + 4);
-                pack.uint16(offset + 22, faces.size);
-                offset += 24;
+                offset += 16;
+                pack.uint32(offset, $hyoo_crus_part.face | (faces.size << 8));
+                offset += 4;
                 for (const [peer, time] of faces) {
                     buff.set($mol_base64_ae_decode(peer), offset);
                     pack.uint48(offset + 6, time);
                     offset += 12;
                 }
+                offset = Math.ceil(offset / 8) * 8;
                 for (const unit of lands[land].units) {
                     buff.set(unit.asArray(), offset);
                     offset += unit.byteLength;
@@ -24579,7 +24584,7 @@ var $;
 })($ || ($ = {}));
 
 ;
-	($.$hyoo_crus_gist_dump) = class $hyoo_crus_gist_dump extends ($.$mol_view) {
+	($.$hyoo_crus_sand_dump) = class $hyoo_crus_sand_dump extends ($.$mol_view) {
 		arg(){
 			return {};
 		}
@@ -24590,8 +24595,8 @@ var $;
 			const obj = new this.$.$hyoo_crus_land();
 			return obj;
 		}
-		gist(){
-			const obj = new this.$.$hyoo_crus_gist();
+		sand(){
+			const obj = new this.$.$hyoo_crus_sand();
 			return obj;
 		}
 		Ref(){
@@ -24606,10 +24611,10 @@ var $;
 			return obj;
 		}
 	};
-	($mol_mem(($.$hyoo_crus_gist_dump.prototype), "land"));
-	($mol_mem(($.$hyoo_crus_gist_dump.prototype), "gist"));
-	($mol_mem(($.$hyoo_crus_gist_dump.prototype), "Ref"));
-	($mol_mem(($.$hyoo_crus_gist_dump.prototype), "Other"));
+	($mol_mem(($.$hyoo_crus_sand_dump.prototype), "land"));
+	($mol_mem(($.$hyoo_crus_sand_dump.prototype), "sand"));
+	($mol_mem(($.$hyoo_crus_sand_dump.prototype), "Ref"));
+	($mol_mem(($.$hyoo_crus_sand_dump.prototype), "Other"));
 
 
 ;
@@ -24621,9 +24626,9 @@ var $;
 (function ($) {
     var $$;
     (function ($$) {
-        class $hyoo_crus_gist_dump extends $.$hyoo_crus_gist_dump {
+        class $hyoo_crus_sand_dump extends $.$hyoo_crus_sand_dump {
             value() {
-                return this.land().gist_decode(this.gist());
+                return this.land().sand_decode(this.sand());
             }
             sub() {
                 const value = this.value();
@@ -24642,14 +24647,14 @@ var $;
         }
         __decorate([
             $mol_mem
-        ], $hyoo_crus_gist_dump.prototype, "sub", null);
+        ], $hyoo_crus_sand_dump.prototype, "sub", null);
         __decorate([
             $mol_mem
-        ], $hyoo_crus_gist_dump.prototype, "title", null);
+        ], $hyoo_crus_sand_dump.prototype, "title", null);
         __decorate([
             $mol_mem
-        ], $hyoo_crus_gist_dump.prototype, "arg", null);
-        $$.$hyoo_crus_gist_dump = $hyoo_crus_gist_dump;
+        ], $hyoo_crus_sand_dump.prototype, "arg", null);
+        $$.$hyoo_crus_sand_dump = $hyoo_crus_sand_dump;
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));
 
@@ -24659,7 +24664,7 @@ var $;
 (function ($) {
     var $$;
     (function ($$) {
-        $mol_style_define($hyoo_crus_gist_dump, {
+        $mol_style_define($hyoo_crus_sand_dump, {
             Other: {
                 padding: $mol_gap.text,
             },
@@ -24919,7 +24924,7 @@ var $;
 			return null;
 		}
 		Ref_dump(){
-			const obj = new this.$.$hyoo_crus_gist_dump();
+			const obj = new this.$.$hyoo_crus_sand_dump();
 			(obj.land) = () => ((this?.land()));
 			(obj.value) = () => ((this?.ref_value()));
 			return obj;
@@ -25022,14 +25027,14 @@ var $;
 		list_item_uri(id){
 			return "";
 		}
-		list_gist(id){
-			const obj = new this.$.$hyoo_crus_gist();
+		list_sand(id){
+			const obj = new this.$.$hyoo_crus_sand();
 			return obj;
 		}
 		List_item_dump(id){
-			const obj = new this.$.$hyoo_crus_gist_dump();
+			const obj = new this.$.$hyoo_crus_sand_dump();
 			(obj.land) = () => ((this?.land()));
-			(obj.gist) = () => ((this?.list_gist(id)));
+			(obj.sand) = () => ((this?.list_sand(id)));
 			return obj;
 		}
 		List_item_drag(id){
@@ -25191,7 +25196,7 @@ var $;
 	($mol_mem(($.$hyoo_crus_flex_field.prototype), "list_receive"));
 	($mol_mem_key(($.$hyoo_crus_flex_field.prototype), "list_item_receive"));
 	($mol_mem_key(($.$hyoo_crus_flex_field.prototype), "list_item_drag_end"));
-	($mol_mem_key(($.$hyoo_crus_flex_field.prototype), "list_gist"));
+	($mol_mem_key(($.$hyoo_crus_flex_field.prototype), "list_sand"));
 	($mol_mem_key(($.$hyoo_crus_flex_field.prototype), "List_item_dump"));
 	($mol_mem_key(($.$hyoo_crus_flex_field.prototype), "List_item_drag"));
 	($mol_mem_key(($.$hyoo_crus_flex_field.prototype), "List_item_drop"));
@@ -25292,7 +25297,7 @@ var $;
 var $;
 (function ($) {
     class $hyoo_crus_text extends $hyoo_crus_node {
-        static tag = $hyoo_crus_gist_tag[$hyoo_crus_gist_tag.vals];
+        static tag = $hyoo_crus_sand_tag[$hyoo_crus_sand_tag.vals];
         value(next) {
             return this.text(next);
         }
@@ -25311,9 +25316,9 @@ var $;
                     },
                     drop: (prev, lead) => this.land().post(lead?.self() ?? '', prev.head(), prev.self(), null),
                     insert: (next, lead) => {
-                        const gist = this.land().post(lead?.self() ?? '', this.head(), land.self_make(), 'p', 'vals');
-                        land.Node($hyoo_crus_text).Item(gist.self()).str(next);
-                        return gist;
+                        const sand = this.land().post(lead?.self() ?? '', this.head(), land.self_make(), 'p', 'vals');
+                        land.Node($hyoo_crus_text).Item(sand.self()).str(next);
+                        return sand;
                     },
                     update: (next, prev, lead) => {
                         land.Node($hyoo_crus_text).Item(prev.self()).str(next);
@@ -25329,7 +25334,7 @@ var $;
                 const land = this.land();
                 for (const unit of this.units()) {
                     if (unit.tag() === 'term')
-                        str += $hyoo_crus_vary_cast_str(land.gist_decode(unit)) ?? '';
+                        str += $hyoo_crus_vary_cast_str(land.sand_decode(unit)) ?? '';
                     else
                         str += land.Node($hyoo_crus_text).Item(unit.self()).str();
                 }
@@ -25346,7 +25351,7 @@ var $;
             let from = str_from < 0 ? list.length : 0;
             let word = '';
             while (from < list.length) {
-                word = $hyoo_crus_vary_cast_str(land.gist_decode(list[from])) ?? '';
+                word = $hyoo_crus_vary_cast_str(land.sand_decode(list[from])) ?? '';
                 if (str_from <= word.length) {
                     next = word.slice(0, str_from) + next;
                     break;
@@ -25358,7 +25363,7 @@ var $;
             }
             let to = str_to < 0 ? list.length : from;
             while (to < list.length) {
-                word = $hyoo_crus_vary_cast_str(land.gist_decode(list[to])) ?? '';
+                word = $hyoo_crus_vary_cast_str(land.sand_decode(list[to])) ?? '';
                 to++;
                 if (str_to < word.length) {
                     next = next + word.slice(str_to);
@@ -25368,7 +25373,7 @@ var $;
             }
             if (from && from === list.length) {
                 --from;
-                next = ($hyoo_crus_vary_cast_str(land.gist_decode(list[from])) ?? '') + next;
+                next = ($hyoo_crus_vary_cast_str(land.sand_decode(list[from])) ?? '') + next;
             }
             const words = next.match($hyoo_crus_text_tokens) ?? [];
             this.cast($hyoo_crus_list_vary).splice(words, from, to);
@@ -25379,7 +25384,7 @@ var $;
             let off = offset;
             for (const unit of this.units()) {
                 if (unit.tag() === 'term') {
-                    const len = $hyoo_crus_vary_cast_str(land.gist_decode(unit))?.length ?? 0;
+                    const len = $hyoo_crus_vary_cast_str(land.sand_decode(unit))?.length ?? 0;
                     if (off <= len)
                         return [unit.self(), off];
                     else
@@ -25400,7 +25405,7 @@ var $;
                 if (unit.self() === self)
                     return [self, offset];
                 if (unit.tag() === 'term') {
-                    offset += $hyoo_crus_vary_cast_str(land.gist_decode(unit))?.length ?? 0;
+                    offset += $hyoo_crus_vary_cast_str(land.sand_decode(unit))?.length ?? 0;
                 }
                 else {
                     const found = land.Node($hyoo_crus_text).Item(unit.self()).offset_by_point([self, offset]);
@@ -25570,7 +25575,7 @@ var $;
             }
             list_items() {
                 return [
-                    ...this.node()?.units().map((gist, i) => this.List_item(gist)) ?? [],
+                    ...this.node()?.units().map((unit, i) => this.List_item(unit)) ?? [],
                     ...this.ref_options().length ? [this.List_pick()] : [],
                     this.List_item_add(),
                 ];
@@ -25585,11 +25590,11 @@ var $;
                 const target = this.node(null).cast($hyoo_crus_list_ref_to(() => $hyoo_crus_flex_thing)).local_make();
                 target.Kind(null)?.remote(this.prop().Target()?.remote());
             }
-            list_gist(gist) {
-                return gist;
+            list_sand(sand) {
+                return sand;
             }
-            list_item_value(gist) {
-                return $hyoo_crus_vary_cast_str(this.land().gist_decode(gist)) ?? '';
+            list_item_value(sand) {
+                return $hyoo_crus_vary_cast_str(this.land().sand_decode(sand)) ?? '';
             }
             list_item_adopt(transfer) {
                 let val = transfer.getData("text/plain");
@@ -25597,18 +25602,18 @@ var $;
                     val = $hyoo_crus_vary_cast_ref(val);
                 return val;
             }
-            list_item_receive(gist, value) {
+            list_item_receive(sand, value) {
                 const list = this.node().cast($hyoo_crus_list_vary);
-                this.node()?.cast($hyoo_crus_list_vary).splice([value], list.units().indexOf(gist));
+                this.node()?.cast($hyoo_crus_list_vary).splice([value], list.units().indexOf(sand));
             }
             list_receive(value) {
                 const list = this.node().cast($hyoo_crus_list_vary);
                 this.node()?.cast($hyoo_crus_list_vary).splice([value]);
             }
-            list_item_drag_end(gist, event) {
+            list_item_drag_end(sand, event) {
                 if (event.dataTransfer?.dropEffect !== 'move')
                     return;
-                this.land().gist_wipe(gist);
+                this.land().sand_wipe(sand);
             }
         }
         __decorate([
@@ -25640,7 +25645,7 @@ var $;
         ], $hyoo_crus_flex_field.prototype, "list_item_add", null);
         __decorate([
             $mol_mem_key
-        ], $hyoo_crus_flex_field.prototype, "list_gist", null);
+        ], $hyoo_crus_flex_field.prototype, "list_sand", null);
         $$.$hyoo_crus_flex_field = $hyoo_crus_flex_field;
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));
@@ -25878,9 +25883,9 @@ var $;
 			return null;
 		}
 		Unit_value(id){
-			const obj = new this.$.$hyoo_crus_gist_dump();
+			const obj = new this.$.$hyoo_crus_sand_dump();
 			(obj.land) = () => ((this?.land()));
-			(obj.gist) = () => ((this?.unit_value(id)));
+			(obj.sand) = () => ((this?.unit_value(id)));
 			return obj;
 		}
 		unit_tip(id, next){
@@ -26058,7 +26063,7 @@ var $;
                 if (next) {
                     const units = this.node().units();
                     const unit = units[index];
-                    this.node().land().post(index ? units[index - 1].self() : '', unit.head(), unit.self(), this.node().land().gist_decode(unit), next);
+                    this.node().land().post(index ? units[index - 1].self() : '', unit.head(), unit.self(), this.node().land().sand_decode(unit), next);
                 }
                 return this.node().units()[index].tag();
             }
@@ -26066,7 +26071,7 @@ var $;
                 if (next) {
                     const units = this.node().units();
                     const unit = units[index];
-                    this.node().land().post(index ? units[index - 1].self() : '', unit.head(), unit.self(), $hyoo_crus_vary_cast(next, this.node().land().gist_decode(unit)), unit.tag());
+                    this.node().land().post(index ? units[index - 1].self() : '', unit.head(), unit.self(), $hyoo_crus_vary_cast(next, this.node().land().sand_decode(unit)), unit.tag());
                 }
                 return this.node().units()[index].tip();
             }

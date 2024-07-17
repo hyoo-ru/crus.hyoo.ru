@@ -1737,9 +1737,9 @@ $mol_dump_value $mol_view
 					prototypes <= prototypes false
 					preview_show <= preview_show
 
-$hyoo_crus_gist_dump $mol_view
+$hyoo_crus_sand_dump $mol_view
 	land $hyoo_crus_land
-	gist $hyoo_crus_gist
+	sand $hyoo_crus_sand
 	Ref $mol_link
 		title <= title
 		arg <= arg *
@@ -1798,7 +1798,7 @@ $hyoo_crus_flex_field $mol_view
 		enabled <= enabled true
 		value? <=> real? +NaN
 	Ref $mol_bar sub <= ref_content /
-		<= Ref_dump $hyoo_crus_gist_dump
+		<= Ref_dump $hyoo_crus_sand_dump
 			land <= land
 			value <= ref_value null
 		<= Ref_pick $mol_select
@@ -1851,9 +1851,9 @@ $hyoo_crus_flex_field $mol_view
 							text/plain <= list_item_value* \
 							text/html <= list_item_html* \
 							text/uri-list <= list_item_uri* \
-						Sub <= List_item_dump* $hyoo_crus_gist_dump
+						Sub <= List_item_dump* $hyoo_crus_sand_dump
 							land <= land
-							gist <= list_gist* $hyoo_crus_gist
+							sand <= list_sand* $hyoo_crus_sand
 				<= List_pick $mol_select
 					enabled <= enabled true
 					value? <=> list_pick? null
@@ -1908,9 +1908,9 @@ $hyoo_crus_node_dump $mol_expander
 			<= Node_inner* $hyoo_crus_node_dump
 				tag <= unit_tag*
 				addons <= node_addons* /
-					<= Unit_value* $hyoo_crus_gist_dump
+					<= Unit_value* $hyoo_crus_sand_dump
 						land <= land
-						gist <= unit_value* null
+						sand <= unit_value* null
 					<= Unit_tip* $mol_select
 						value? <=> unit_tip*? \bin
 						enabled <= can_change

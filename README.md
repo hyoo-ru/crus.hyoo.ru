@@ -168,7 +168,7 @@
 - **Unit** - Minimal independent stable part of information. Actually it's edge between nodes in graph model.
   - **🔑Pass** - Public key of Peer.
   - **🏅Give** - Rights and secret key given to Peer.
-  - **📦Gist** - (Meta) Data.
+  - **📦Sand** - (Meta) Data.
 
 - **🆔Self** - Self Node id
 - **🎃Head** - Parent Node id.
@@ -341,7 +341,7 @@ export class $my_app extends $mol_object {
 - `$hyoo_crus_unit` - base class
 - `$hyoo_crus_pass` - public key
 - `$hyoo_crus_gift` - given rank and secret
-- `$hyoo_crus_gist` - data
+- `$hyoo_crus_sand` - data
 
 ### Atomic LWW-Register
 
