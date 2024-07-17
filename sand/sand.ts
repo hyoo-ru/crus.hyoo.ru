@@ -1,7 +1,7 @@
 namespace $ {
 
 	/** Hint how interpret inner Units: term, solo, vals, keys */
-	export enum $hyoo_crus_gist_tag {
+	export enum $hyoo_crus_sand_tag {
 		/** Itself value. Ignore */
 		term = 0b00,
 		/** Value in first sub node. Ignore all after first */
@@ -13,20 +13,20 @@ namespace $ {
 	}
 
 	/**  (Meta) Data */
-	export class $hyoo_crus_gist extends $hyoo_crus_unit {
+	export class $hyoo_crus_sand extends $hyoo_crus_unit {
 
 		_vary = undefined as undefined | $hyoo_crus_vary_type
 		_open = null as null | Uint8Array
 
 		hint(
 			tip: keyof typeof $hyoo_crus_vary_tip = 'nil',
-			tag: keyof typeof $hyoo_crus_gist_tag = 'term',
+			tag: keyof typeof $hyoo_crus_sand_tag = 'term',
 		) {
-			this.uint8( 0, ( $hyoo_crus_gist_tag[ tag ] << 1 ) | ( $hyoo_crus_vary_tip[ tip ] << 3 ) )
+			this.uint8( 0, ( $hyoo_crus_sand_tag[ tag ] << 1 ) | ( $hyoo_crus_vary_tip[ tip ] << 3 ) )
 		}
 
 		tag() {
-			return $hyoo_crus_gist_tag[ ( this.uint8( 0 ) >> 1 ) & 0b11 ] as keyof typeof $hyoo_crus_gist_tag
+			return $hyoo_crus_sand_tag[ ( this.uint8( 0 ) >> 1 ) & 0b11 ] as keyof typeof $hyoo_crus_sand_tag
 		}
 
 		tip() {
@@ -72,7 +72,7 @@ namespace $ {
 		hash(
 			next?: Uint8Array,
 			tip: keyof typeof $hyoo_crus_vary_tip = 'nil' as const,
-			tag: keyof typeof $hyoo_crus_gist_tag = 'term',
+			tag: keyof typeof $hyoo_crus_sand_tag = 'term',
 		) {
 			const bin = new Uint8Array( this.buffer, this.byteOffset + 32, 20 )
 			if( next !== undefined ) {
@@ -91,7 +91,7 @@ namespace $ {
 		data(
 			next?: Uint8Array,
 			tip: keyof typeof $hyoo_crus_vary_tip = 'nil',
-			tag: keyof typeof $hyoo_crus_gist_tag = 'term',
+			tag: keyof typeof $hyoo_crus_sand_tag = 'term',
 		) {
 			if( next === undefined ) {
 				const size = this.size()
@@ -116,12 +116,12 @@ namespace $ {
 		}
 
 		/**
-		 * Compare gists on timeline ( right - left )
+		 * Compare Sands on timeline ( right - left )
 		 * Priority: time > peer > tick
 		 */
 		static compare(
-			left: $hyoo_crus_gist,
-			right: $hyoo_crus_gist,
+			left: $hyoo_crus_sand,
+			right: $hyoo_crus_sand,
 		) {
 			return ( Math.floor( right.time() / 65536 ) - Math.floor( left.time() / 65536 ) )
 				|| ( right.peer() > left.peer() ? 1 : right.peer() < left.peer() ? -1 : 0 )

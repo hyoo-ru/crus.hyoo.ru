@@ -3,7 +3,7 @@ namespace $ {
 	/** Virtual Node that represents contained units as high-level data types. */
 	export class $hyoo_crus_node extends $mol_object {
 		
-		static tag: keyof typeof $hyoo_crus_gist_tag = 'vals'
+		static tag: keyof typeof $hyoo_crus_sand_tag = 'vals'
 		
 		/** Standalone part of Realm which syncs separately, have own rights, and contains Units */
 		land() {
@@ -52,7 +52,7 @@ namespace $ {
 		/** All ordered alive Units */
 		@ $mol_mem
 		units() {
-			return this.land().gists_ordered( this.head() ).filter( unit => unit.tip() !== 'nil' )
+			return this.land().sand_ordered( this.head() ).filter( unit => unit.tip() !== 'nil' )
 		}
 		
 		filled() {
@@ -78,11 +78,11 @@ namespace $ {
 				keys: ()=> land.Node( $hyoo_crus_dict ),
 			}
 			
-			const visit = ( gist: $hyoo_crus_gist )=> {
-				if( gist.time() > last ) last = gist.time()
-				map[ gist.tag() ]()?.Item( gist.self() ).units().forEach( visit )
+			const visit = ( sand: $hyoo_crus_sand )=> {
+				if( sand.time() > last ) last = sand.time()
+				map[ sand.tag() ]()?.Item( sand.self() ).units().forEach( visit )
 			}
-			for( const gist of this.units() ) visit( gist )
+			for( const sand of this.units() ) visit( sand )
 			
 			return last ? new $mol_time_moment( last ) : null
 			

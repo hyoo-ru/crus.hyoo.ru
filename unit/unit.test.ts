@@ -29,11 +29,11 @@ namespace $ {
 		
 		'data unit type'() {
 			
-			const unit = new $hyoo_crus_gist
+			const unit = new $hyoo_crus_sand
 			unit.hint( 'nil', 'term' )
 			unit.data( new Uint8Array([ 0xFF, 0xFF ]) )
 			
-			$mol_assert_equal( unit.kind(), 'gist' )
+			$mol_assert_equal( unit.kind(), 'sand' )
 			$mol_assert_equal( unit.size(), 2 )
 			$mol_assert_equal( unit.data(), new Uint8Array([ 0xFF, 0xFF ]) )
 			
@@ -41,7 +41,7 @@ namespace $ {
 		
 		// 'big data unit type'() {
 			
-		// 	const unit = new $hyoo_crus_gist
+		// 	const unit = new $hyoo_crus_sand
 		// 	unit.hash( 0xa1a2a3a4a5a6a7a8b1b2b3b4b5b6b7b8n )
 			
 		// 	// $mol_assert_equal( unit.size(), 255 )
@@ -76,7 +76,7 @@ namespace $ {
 		
 		'data unit fields'() {
 			
-			const unit = new $hyoo_crus_gist
+			const unit = new $hyoo_crus_sand
 			
 			$mol_assert_equal( unit.time(), 0 )
 			$mol_assert_equal( unit.head(), '' )
@@ -97,7 +97,7 @@ namespace $ {
 		
 		async 'sign / verify'( $ ) {
 			
-			const source = new $hyoo_crus_gist
+			const source = new $hyoo_crus_sand
 			source.data( new Uint8Array([ 0xF1, 0xF2 ]) )
 			
 			const key = await $.$mol_crypto_auditor_pair()

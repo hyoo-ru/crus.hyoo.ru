@@ -13,7 +13,7 @@ namespace $ {
 		gift = 0b1111_0111,
 		
 		/** Changeable data. Last writes wins. */
-		gist = 0b0000_1000,
+		sand = 0b0000_1000,
 		
 		/** Blob response. */
 		rock = 0b0000_0101,

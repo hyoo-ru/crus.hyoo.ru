@@ -1,5 +1,5 @@
 namespace $.$$ {
-	export class $hyoo_crus_gist_dump extends $.$hyoo_crus_gist_dump {
+	export class $hyoo_crus_sand_dump extends $.$hyoo_crus_sand_dump {
 		
 		value() {
 			return this.land().gist_decode( this.gist() )

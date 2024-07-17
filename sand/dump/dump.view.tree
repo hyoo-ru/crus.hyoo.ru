@@ -1,6 +1,6 @@
-$hyoo_crus_gist_dump $mol_view
+$hyoo_crus_sand_dump $mol_view
 	land $hyoo_crus_land
-	gist $hyoo_crus_gist
+	sand $hyoo_crus_sand
 	Ref $mol_link
 		title <= title
 		arg <= arg *

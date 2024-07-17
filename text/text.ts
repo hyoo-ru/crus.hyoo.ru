@@ -2,7 +2,7 @@ namespace $ {
 	/** Mergeable text node */
 	export class $hyoo_crus_text extends $hyoo_crus_node {
 		
-		static tag = $hyoo_crus_gist_tag[ $hyoo_crus_gist_tag.vals ] as keyof typeof $hyoo_crus_gist_tag
+		static tag = $hyoo_crus_sand_tag[ $hyoo_crus_sand_tag.vals ] as keyof typeof $hyoo_crus_sand_tag
 				
 		value( next?: string ): string {
 			return this.text( next )
@@ -29,9 +29,9 @@ namespace $ {
 					},
 					drop: ( prev, lead )=> this.land().post( lead?.self() ?? '', prev.head(), prev.self(), null ),
 					insert: ( next, lead )=> {
-						const gist = this.land().post( lead?.self() ?? '', this.head(), land.self_make(), 'p', 'vals' )
-						land.Node( $hyoo_crus_text ).Item( gist.self() ).str( next )
-						return gist
+						const sand = this.land().post( lead?.self() ?? '', this.head(), land.self_make(), 'p', 'vals' )
+						land.Node( $hyoo_crus_text ).Item( sand.self() ).str( next )
+						return sand
 					},
 					update: ( next, prev, lead )=> {
 						land.Node( $hyoo_crus_text ).Item( prev.self() ).str( next )
@@ -54,7 +54,7 @@ namespace $ {
 				const land = this.land()
 				
 				for( const unit of this.units() ) {
-					if( unit.tag() === 'term' ) str += $hyoo_crus_vary_cast_str( land.gist_decode( unit ) ) ?? ''
+					if( unit.tag() === 'term' ) str += $hyoo_crus_vary_cast_str( land.sand_decode( unit ) ) ?? ''
 					else str += land.Node( $hyoo_crus_text ).Item( unit.self() ).str()
 				}
 				
@@ -84,7 +84,7 @@ namespace $ {
 			
 			while( from < list.length ) {
 				
-				word = $hyoo_crus_vary_cast_str( land.gist_decode( list[ from ] ) ) ?? ''
+				word = $hyoo_crus_vary_cast_str( land.sand_decode( list[ from ] ) ) ?? ''
 				
 				if( str_from <= word.length ) {
 					next = word.slice( 0, str_from ) + next
@@ -102,7 +102,7 @@ namespace $ {
 			
 			while( to < list.length ) {
 				
-				word = $hyoo_crus_vary_cast_str( land.gist_decode( list[ to ] ) ) ?? ''
+				word = $hyoo_crus_vary_cast_str( land.sand_decode( list[ to ] ) ) ?? ''
 				to ++
 				
 				if( str_to < word.length ) {
@@ -116,7 +116,7 @@ namespace $ {
 			
 			if( from && from === list.length ) {
 				-- from
-				next = ( $hyoo_crus_vary_cast_str( land.gist_decode( list[ from ] ) ) ?? '' ) + next
+				next = ( $hyoo_crus_vary_cast_str( land.sand_decode( list[ from ] ) ) ?? '' ) + next
 			}
 			
 			const words = next.match( $hyoo_crus_text_tokens ) ?? []
@@ -135,7 +135,7 @@ namespace $ {
 				
 				if( unit.tag() === 'term' ) {
 					
-					const len = $hyoo_crus_vary_cast_str( land.gist_decode( unit ) )?.length ?? 0
+					const len = $hyoo_crus_vary_cast_str( land.sand_decode( unit ) )?.length ?? 0
 					
 					if( off <= len ) return [ unit.self(), off ]
 					else off -= len
@@ -165,7 +165,7 @@ namespace $ {
 				
 				if( unit.tag() === 'term' ) {
 					
-					offset += $hyoo_crus_vary_cast_str( land.gist_decode( unit ) )?.length ?? 0
+					offset += $hyoo_crus_vary_cast_str( land.sand_decode( unit ) )?.length ?? 0
 					
 				} else {
 					

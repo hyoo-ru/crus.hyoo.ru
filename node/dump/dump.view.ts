@@ -17,7 +17,7 @@ namespace $.$$ {
 			return this.node().units().map( (_,i)=> this.Inner(i) )
 		}
 		
-		unit_tag( index: number, next?: keyof typeof $hyoo_crus_gist_tag ) {
+		unit_tag( index: number, next?: keyof typeof $hyoo_crus_sand_tag ) {
 			if( next ) {
 				const units = this.node().units()
 				const unit = units[ index ]
@@ -25,7 +25,7 @@ namespace $.$$ {
 					index ? units[ index - 1 ].self() : '',
 					unit.head(),
 					unit.self(),
-					this.node().land().gist_decode( unit ),
+					this.node().land().sand_decode( unit ),
 					next,
 				)
 			}
@@ -40,7 +40,7 @@ namespace $.$$ {
 					index ? units[ index - 1 ].self() : '',
 					unit.head(),
 					unit.self(),
-					$hyoo_crus_vary_cast( next, this.node().land().gist_decode( unit ) ),
+					$hyoo_crus_vary_cast( next, this.node().land().sand_decode( unit ) ),
 					unit.tag(),
 				)
 			}

@@ -112,12 +112,12 @@ namespace $ {
 			land2.apply_unit_trust( land1.delta_unit() )
 			$mol_assert_equal( land2.delta_unit().length, 2 )
 			
-			const gist1 = land2.post( '', '', '', 'foo' )
-			$mol_assert_equal( gist1.self(), auth2.peer() )
+			const sand1 = land2.post( '', '', '', 'foo' )
+			$mol_assert_equal( sand1.self(), auth2.peer() )
 			$mol_assert_equal( land2.delta_unit().length, 4 )
 			
-			const gist2 = land2.post( '', '', '', 'bar' )
-			$mol_assert_equal( gist2.self(), auth2.peer() )
+			const sand2 = land2.post( '', '', '', 'bar' )
+			$mol_assert_equal( sand2.self(), auth2.peer() )
 			$mol_assert_equal( land2.delta_unit().length, 4 )
 			
 		},
@@ -130,17 +130,17 @@ namespace $ {
 			await land.encrypted( true )
 			$mol_assert_equal( await land.encrypted(), true )
 			
-			const gist = await land.post( '', '', '', new Uint8Array([ 1, 2, 3 ]) )
+			const sand = await land.post( '', '', '', new Uint8Array([ 1, 2, 3 ]) )
 			
-			$mol_assert_equal( ( await land.gist_encode( gist ) ).data().length, 16 )
+			$mol_assert_equal( ( await land.sand_encode( sand ) ).data().length, 16 )
 			$mol_assert_equal(
-				await land.gist_decode( gist ),
+				await land.sand_decode( sand ),
 				new Uint8Array([ 1, 2, 3 ]),
 			)
-			$mol_assert_equal( ( await land.gists_ordered( '' ) ).length, 1 )
+			$mol_assert_equal( ( await land.sand_ordered( '' ) ).length, 1 )
 			
-			await land.post( '', '', gist.self(), null )
-			$mol_assert_equal( ( await land.gists_ordered( '' ) ).length, 1 )
+			await land.post( '', '', sand.self(), null )
+			$mol_assert_equal( ( await land.sand_ordered( '' ) ).length, 1 )
 		},
 		
 		'Land fork & merge'( $ ) {

@@ -132,7 +132,7 @@ namespace $.$$ {
 		@ $mol_mem
 		list_items() {
 			return [
-				... this.node()?.units().map( ( gist, i )=> this.List_item( gist ) ) ?? [],
+				... this.node()?.units().map( ( unit, i )=> this.List_item( unit ) ) ?? [],
 				... this.ref_options().length ? [ this.List_pick() ] : [],
 				this.List_item_add(),
 			]
@@ -151,12 +151,12 @@ namespace $.$$ {
 		}
 		
 		@ $mol_mem_key
-		list_gist( gist: $hyoo_crus_gist ) {
-			return gist
+		list_sand( sand: $hyoo_crus_sand ) {
+			return sand
 		}
 		
-		list_item_value( gist: $hyoo_crus_gist ) {
-			return $hyoo_crus_vary_cast_str( this.land().gist_decode( gist ) ) ?? ''
+		list_item_value( sand: $hyoo_crus_sand ) {
+			return $hyoo_crus_vary_cast_str( this.land().sand_decode( sand ) ) ?? ''
 		}
 		
 		list_item_adopt( transfer : DataTransfer ) {
@@ -165,9 +165,9 @@ namespace $.$$ {
 			return val
 		}
 
-		list_item_receive( gist: $hyoo_crus_gist, value: string ) {
+		list_item_receive( sand: $hyoo_crus_sand, value: string ) {
 			const list = this.node()!.cast( $hyoo_crus_list_vary )
-			this.node()?.cast( $hyoo_crus_list_vary ).splice( [ value ], list.units().indexOf( gist ) )
+			this.node()?.cast( $hyoo_crus_list_vary ).splice( [ value ], list.units().indexOf( sand ) )
 		}
 		
 		list_receive( value: string ) {
@@ -175,9 +175,9 @@ namespace $.$$ {
 			this.node()?.cast( $hyoo_crus_list_vary ).splice( [ value ] )
 		}
 		
-		list_item_drag_end( gist: $hyoo_crus_gist, event: DragEvent ) {
+		list_item_drag_end( sand: $hyoo_crus_sand, event: DragEvent ) {
 			if( event.dataTransfer?.dropEffect !== 'move' ) return
-			this.land().gist_wipe( gist )
+			this.land().sand_wipe( sand )
 		}
 		
 	}

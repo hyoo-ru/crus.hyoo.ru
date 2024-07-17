@@ -3,17 +3,17 @@ namespace $ {
 	/** Reactive convergent list. */
 	export class $hyoo_crus_list_vary extends $hyoo_crus_node {
 		
-		static tag = $hyoo_crus_gist_tag[ $hyoo_crus_gist_tag.vals ] as keyof typeof $hyoo_crus_gist_tag
+		static tag = $hyoo_crus_sand_tag[ $hyoo_crus_sand_tag.vals ] as keyof typeof $hyoo_crus_sand_tag
 		
 		/** All Vary in the list. */
 		@ $mol_mem
 		items_vary(
 			next?: readonly $hyoo_crus_vary_type[],
-			tag: keyof typeof $hyoo_crus_gist_tag = 'term',
+			tag: keyof typeof $hyoo_crus_sand_tag = 'term',
 		): readonly $hyoo_crus_vary_type[] {
 			
 			const units = this.units()
-			if( next === undefined ) return units.map( unit => this.land().gist_decode( unit ) )
+			if( next === undefined ) return units.map( unit => this.land().sand_decode( unit ) )
 			
 			this.splice( next, 0, units.length, tag )
 			return this.items_vary()
@@ -25,7 +25,7 @@ namespace $ {
 			next: readonly $hyoo_crus_vary_type[],
 			from = this.units().length,
 			to = from,
-			tag: keyof typeof $hyoo_crus_gist_tag = 'term',
+			tag: keyof typeof $hyoo_crus_sand_tag = 'term',
 		) {
 			const land = this.land()
 			$mol_reconcile({
@@ -33,7 +33,7 @@ namespace $ {
 				from,
 				to,
 				next,
-				equal: ( next, prev )=> $mol_compare_deep( this.land().gist_decode( prev ), next ),
+				equal: ( next, prev )=> $mol_compare_deep( this.land().sand_decode( prev ), next ),
 				drop: ( prev, lead )=> this.land().post( lead?.self() ?? '', prev.head(), prev.self(), null ),
 				insert: ( next, lead )=> this.land().post( lead?.self() ?? '', this.head(), land.self_make(), next, tag ),
 				update: ( next, prev, lead )=> this.land().post( lead?.self() ?? '', prev.head(), prev.self(), next, prev.tag() ),
@@ -43,7 +43,7 @@ namespace $ {
 		/** Unit by Vary. */
 		find( vary: $hyoo_crus_vary_type ) {
 			for( const unit of this.units() ) {
-				if( $mol_compare_deep( this.land().gist_decode( unit ), vary ) ) return unit
+				if( $mol_compare_deep( this.land().sand_decode( unit ), vary ) ) return unit
 			}
 			return null
 		}
@@ -52,7 +52,7 @@ namespace $ {
 		has(
 			vary: $hyoo_crus_vary_type,
 			next?: boolean,
-			tag: keyof typeof $hyoo_crus_gist_tag = 'term',
+			tag: keyof typeof $hyoo_crus_sand_tag = 'term',
 		) {
 			if( next === undefined ) return Boolean( this.find( vary ) )
 			if( next ) this.add( vary, tag )
@@ -63,7 +63,7 @@ namespace $ {
 		/** Add Vary a the beginning if it doesn't exists. */
 		add(
 			vary: $hyoo_crus_vary_type,
-			tag: keyof typeof $hyoo_crus_gist_tag = 'term',
+			tag: keyof typeof $hyoo_crus_sand_tag = 'term',
 		) {
 			if( this.has( vary ) ) return
 			this.land().post( '', this.head(), '', vary, tag )
@@ -75,7 +75,7 @@ namespace $ {
 			const units = [ ... this.units() ]
 			for( let i = 0; i < units.length; ++ i ) {
 				
-				if( ! $mol_compare_deep( this.land().gist_decode( units[i] ), vary ) ) continue
+				if( ! $mol_compare_deep( this.land().sand_decode( units[i] ), vary ) ) continue
 				
 				this.land().post(
 					units[i-1]?.self() ?? 0,
@@ -93,19 +93,19 @@ namespace $ {
 		
 		/** Moves item from one Seat to another. */
 		move( from: number, to: number ) {
-			this.land().gist_move( this.units()[ from ], this.head(), to )
+			this.land().sand_move( this.units()[ from ], this.head(), to )
 		}
 		
 		/** Remove item by Seat. */
 		wipe( seat: number ) {
-			this.land().gist_wipe( this.units()[ seat ] )
+			this.land().sand_wipe( this.units()[ seat ] )
 		}
 		
 		/** Add vary at the end and use maked Self as Node Head. */
 		node_make< Node extends typeof $hyoo_crus_node >(
 			Node: Node,
 			vary: $hyoo_crus_vary_type,
-			tag: keyof typeof $hyoo_crus_gist_tag = 'term',
+			tag: keyof typeof $hyoo_crus_sand_tag = 'term',
 		) {
 			this.splice( [ vary ], undefined, undefined, tag )
 			return this.land().Node( Node ).Item( this.units().at(-1)!.self() )

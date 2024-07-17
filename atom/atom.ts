@@ -4,7 +4,7 @@ namespace $ {
 	/** Atomic dynamic register */
 	export class $hyoo_crus_atom_vary extends $hyoo_crus_node {
 
-		static tag = $hyoo_crus_gist_tag[ $hyoo_crus_gist_tag.solo ] as keyof typeof $hyoo_crus_gist_tag;
+		static tag = $hyoo_crus_sand_tag[ $hyoo_crus_sand_tag.solo ] as keyof typeof $hyoo_crus_sand_tag;
 		
 		pick_unit() {
 			return this.units().at(0)
@@ -14,7 +14,7 @@ namespace $ {
 		vary( next?: $hyoo_crus_vary_type ): $hyoo_crus_vary_type {
 			
 			let unit_prev = this.pick_unit()
-			let prev = unit_prev ? this.land().gist_decode( unit_prev ) : null
+			let prev = unit_prev ? this.land().sand_decode( unit_prev ) : null
 			
 			if( next === undefined ) return prev
 			if( $mol_compare_deep( prev , next ) ) return next

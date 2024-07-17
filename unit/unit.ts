@@ -1,6 +1,6 @@
 namespace $ {
 	
-	/** Entity schema: pass, gift, gist */
+	/** Kind of Unit */
 	export enum $hyoo_crus_unit_kind {
 		
 		/** Public key. First writes wins. */
@@ -10,7 +10,7 @@ namespace $ {
 		gift = $hyoo_crus_part.gift,
 		
 		/** Changeable data. Last writes wins. */
-		gist = $hyoo_crus_part.gist,
+		sand = $hyoo_crus_part.sand,
 		
 	}
 	
@@ -29,11 +29,11 @@ namespace $ {
 			super( buffer, byteOffset, byteLength )
 		}
 		
-		kind() {
+		kind(): keyof typeof $hyoo_crus_unit_kind {
 			
 			const val = this.uint8( 0 )
 			if( !val ) $mol_fail( new Error( `Empty unit` ) )
-			if( ( val & 1 ) === 0 ) return 'gist'
+			if( ( val & 1 ) === 0 ) return 'sand'
 			
 			const kind = $hyoo_crus_unit_kind[ val ] as keyof typeof $hyoo_crus_unit_kind
 			if( kind ) return kind
@@ -44,13 +44,13 @@ namespace $ {
 		choose< Res >( ways: {
 			pass: ( unit: $hyoo_crus_pass )=> Res,
 			gift: ( unit: $hyoo_crus_gift )=> Res,
-			gist: ( unit: $hyoo_crus_gist )=> Res,
+			sand: ( unit: $hyoo_crus_sand )=> Res,
 		} ) {
 			const way = this.kind()
 			const Unit = {
 				pass: $hyoo_crus_pass,
 				gift: $hyoo_crus_gift,
-				gist: $hyoo_crus_gist,
+				sand: $hyoo_crus_sand,
 			}[ way ]
 			if( this instanceof Unit ) return ways[ way ]( this as any )
 			const unit = new Unit( this.buffer, this.byteOffset, this.byteLength ) as any
@@ -58,8 +58,8 @@ namespace $ {
 		}
 		
 		narrow() {
-			return this.choose< $hyoo_crus_pass | $hyoo_crus_gift | $hyoo_crus_gist >({
-				gist: unit => unit,
+			return this.choose< $hyoo_crus_pass | $hyoo_crus_gift | $hyoo_crus_sand >({
+				sand: unit => unit,
 				pass: unit => unit,
 				gift: unit => unit,
 			})

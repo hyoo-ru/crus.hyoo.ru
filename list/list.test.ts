@@ -353,7 +353,7 @@ namespace $ {
 			base.Data( $hyoo_crus_list_vary ).items_vary([ 1, 2, 3, 4 ])
 			
 			const left = fork( base )
-			left.gist_move( left.Data( $hyoo_crus_list_vary ).units()[1], '11111111', 0 )
+			left.sand_move( left.Data( $hyoo_crus_list_vary ).units()[1], '11111111', 0 )
 			
 			const right = fork( base )
 			right.faces.sync( left.faces )
@@ -383,7 +383,7 @@ namespace $ {
 			
 			const right = fork( base )
 			right.faces.sync( left.faces )
-			right.gist_move( right.Data( $hyoo_crus_list_vary ).units()[1], '11111111', 0 )
+			right.sand_move( right.Data( $hyoo_crus_list_vary ).units()[1], '11111111', 0 )
 			
 			sync( left, right )
 			$mol_assert_equal(
