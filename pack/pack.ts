@@ -25,6 +25,8 @@ namespace $ {
 			const lands = {} as $hyoo_crus_pack_parts[ 'lands' ]
 			if( land ) lands[ land ] = { faces: new $hyoo_crus_face_map, units: [] }
 			
+			let total = 0
+			
 			const rocks = [] as $hyoo_crus_pack_parts[ 'rocks' ]
 			
 			const buf = this.asArray()
@@ -45,12 +47,22 @@ namespace $ {
 							land = $hyoo_crus_ref_decode(
 								new Uint8Array( buf.buffer, buf.byteOffset + offset, 12 )
 							)
-							offset += 18
+							offset += 12
 							
-							const len = this.uint16( offset )
-							offset += 2
+							lands[ land ] = { faces, units: [] }
 							
-							for( let i = 0; i < len; ++i ) {
+							continue
+						}
+						
+						case $hyoo_crus_part.face: {
+							
+							if( !land ) $mol_fail( new Error( 'Land is undefined' ) )
+							
+							const count = this.uint32( offset ) >> 8
+							offset += 4
+							
+							const faces = lands[ land ].faces
+							for( let i = 0; i < count; ++i ) {
 								
 								const peer = $mol_base64_ae_encode(
 									new Uint8Array( buf.buffer, buf.byteOffset + offset, 6 )
@@ -63,7 +75,7 @@ namespace $ {
 								
 							}
 							
-							lands[ land ] = { faces, units: [] }
+							offset = Math.ceil( offset / 8 ) * 8
 							
 							continue
 						}
@@ -153,8 +165,8 @@ namespace $ {
 			let size = 0
 			
 			for( const land of Reflect.ownKeys( lands ) as $hyoo_crus_ref[] ) {
-				size += 24
-				size += lands[ land ].faces.size * 12
+				size += 16
+				size += Math.ceil( lands[ land ].faces.size * 12 / 8 + .5 ) * 8
 				size += lands[ land ].units.length * $hyoo_crus_unit.size
 			}
 			
@@ -175,14 +187,16 @@ namespace $ {
 				
 				pack.uint32( offset, $hyoo_crus_part.land | ( faces.total << 8 ) )
 				buff.set( $hyoo_crus_ref_encode( land ), offset + 4 )
-				pack.uint16( offset + 22, faces.size )
-				offset += 24
+				offset += 16
 				
+				pack.uint32( offset, $hyoo_crus_part.face | ( faces.size << 8 ) )
+				offset += 4
 				for( const [ peer, time ] of faces ) {
 					buff.set( $mol_base64_ae_decode( peer ), offset )
 					pack.uint48( offset + 6, time )
 					offset += 12
 				}
+				offset = Math.ceil( offset / 8 ) * 8
 				
 				for( const unit of lands[ land ].units ) {
 					buff.set( unit.asArray(), offset )
