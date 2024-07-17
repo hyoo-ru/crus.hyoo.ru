@@ -141,11 +141,16 @@ namespace $ {
 		
 		@ $mol_mem
 		ports() {
+			return [ ... this.masters(), ... this.slaves ]
+		}
+		
+		@ $mol_mem
+		masters() {
 			try {
-				return [ this.master(), ... this.slaves ].filter( $mol_guard_defined )
+				return [ this.master() ].filter( $mol_guard_defined )
 			} catch( error ) {
 				$mol_fail_log( error )
-				return [ ... this.slaves ]
+				return []
 			}
 		}
 		
@@ -167,6 +172,25 @@ namespace $ {
 				lands: parts.lands,
 				rocks: parts.rocks.length,
 			})
+			
+			forget: {
+				
+				if( parts.rocks.length ) break forget
+				
+				const lands = Object.getOwnPropertySymbols( parts.lands ) as any as readonly $hyoo_crus_ref[]
+				for( const land of lands ) {
+					
+					if( parts.lands[ land ].units.length ) break forget
+					if( parts.lands[ land ].faces.size ) break forget
+					if( !this.port_lands( port ).has( land ) ) break forget
+					
+					this.port_lands( port ).delete( land )
+					console.log( 'forget', land )
+					return
+					
+				}
+				
+			}
 			
 			this.face_port_sync( port, parts.lands )
 			this.$.$hyoo_crus_realm.apply_parts( parts.lands, parts.rocks )
@@ -212,9 +236,28 @@ namespace $ {
 		@ $mol_mem_key
 		sync_land( land: $hyoo_crus_ref ) {
 			for( const port of this.ports() ) {
-				this.port_lands( port ).add( land )
+				// this.port_lands( port ).add( land ) 
+				this.sync_port_land([ port, land ])
 			}
 			this.sync()
+		}
+		
+		@ $mol_action
+		forget_land( land: $hyoo_crus_land ) {
+			
+			const faces = new $hyoo_crus_face_map
+			faces.total = land.faces.total
+			
+			const pack = $hyoo_crus_pack.make({
+				lands: { [ land.ref() ]: { faces, units: [] } },
+				rocks:[],
+			}).asArray()
+			
+			for( const port of $mol_mem_cached( ()=> this.masters() ) ?? [] ) {
+				port?.send_bin( pack )
+				console.log( 'destroy', land.ref())
+			}
+			
 		}
 		
 		@ $mol_mem_key

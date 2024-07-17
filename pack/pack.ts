@@ -34,6 +34,8 @@ namespace $ {
 			for( let offset = 0; offset < this.byteLength; ) {
 				
 				const kind = this.uint8( offset )
+				if( !kind ) break
+				
 				if( kind % 2 ) {
 					
 					switch( kind ) {
@@ -166,7 +168,9 @@ namespace $ {
 			
 			for( const land of Reflect.ownKeys( lands ) as $hyoo_crus_ref[] ) {
 				size += 16
-				size += Math.ceil( lands[ land ].faces.size * 12 / 8 + .5 ) * 8
+				if( lands[ land ].faces.size ) {
+					size += Math.ceil( lands[ land ].faces.size * 12 / 8 + .5 ) * 8
+				}
 				size += lands[ land ].units.length * $hyoo_crus_unit.size
 			}
 			
@@ -188,6 +192,8 @@ namespace $ {
 				pack.uint32( offset, $hyoo_crus_part.land | ( faces.total << 8 ) )
 				buff.set( $hyoo_crus_ref_encode( land ), offset + 4 )
 				offset += 16
+				
+				if( !faces.size ) continue
 				
 				pack.uint32( offset, $hyoo_crus_part.face | ( faces.size << 8 ) )
 				offset += 4
