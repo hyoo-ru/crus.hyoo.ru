@@ -700,10 +700,6 @@ namespace $ {
 			return this
 		}
 		
-		destructor() {
-			this.$.$hyoo_crus_realm.yard().forget_land( this )
-		}
-		
 		@ $mol_mem
 		sync_mine() {
 			return new $mol_wire_atom( '', ()=> this.saving() ).fresh()
