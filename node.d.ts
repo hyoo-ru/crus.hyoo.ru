@@ -1592,6 +1592,7 @@ declare namespace $ {
         sand_wipe(sand: $hyoo_crus_sand): void;
         broadcast(): void;
         sync(): this;
+        destructor(): void;
         sync_mine(): $mol_wire_atom<unknown, [], void> | undefined;
         sync_yard(): $mol_wire_atom<unknown, [], void> | undefined;
         bus(): $mol_bus<ArrayBuffer[]>;
@@ -3376,6 +3377,7 @@ declare namespace $ {
         sync_port(): void;
         sync_port_lands(port: $mol_rest_port): void;
         ports(): $mol_rest_port[];
+        masters(): $mol_rest_port[];
         port_lands(port: $mol_rest_port): $mol_wire_set<symbol & {
             $hyoo_crus_ref: symbol;
         }>;
@@ -3385,6 +3387,7 @@ declare namespace $ {
             units: $hyoo_crus_unit[];
         }>): void;
         sync_land(land: $hyoo_crus_ref): void;
+        forget_land(land: $hyoo_crus_land): void;
         sync_port_land([port, land]: [$mol_rest_port, $hyoo_crus_ref]): void;
         init_port_land([port, land]: [$mol_rest_port, $hyoo_crus_ref]): void;
         face_port_land([port, land]: [$mol_rest_port, $hyoo_crus_ref], next?: null | $hyoo_crus_face_map): $hyoo_crus_face_map | null;
