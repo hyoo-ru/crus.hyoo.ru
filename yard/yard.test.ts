@@ -3,8 +3,8 @@ namespace $ {
 	$mol_test_mocks.push( $=> {
 		class $hyoo_crus_yard_mock extends $.$hyoo_crus_yard {
 			
-			ports() { 
-				return []
+			master() {
+				return null
 			}
 			
 		}
