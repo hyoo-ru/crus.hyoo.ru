@@ -129,12 +129,12 @@ namespace $ {
 		
 		@ $mol_mem
 		sync_port() {
-			for( const port of this.slaves ) this.sync_port_lands( port )
+			for( const port of this.ports() ) this.sync_port_lands( port )
 		}
 		
 		@ $mol_mem_key
 		sync_port_lands( port: $mol_rest_port ) {
-			for( const land of this.port_lands( port ) ) {
+			for( const land of this.port_lands_active( port ) ) {
 				this.sync_port_land([ port, land ])
 			}
 		}
@@ -155,7 +155,12 @@ namespace $ {
 		}
 		
 		@ $mol_mem_key
-		port_lands( port: $mol_rest_port ) {
+		port_lands_active( port: $mol_rest_port ) {
+			return new $mol_wire_set< $hyoo_crus_ref >()
+		}
+		
+		@ $mol_mem_key
+		port_lands_passive( port: $mol_rest_port ) {
 			return new $mol_wire_set< $hyoo_crus_ref >()
 		}
 		
@@ -182,9 +187,9 @@ namespace $ {
 					
 					if( parts.lands[ land ].units.length ) break forget
 					if( parts.lands[ land ].faces.size ) break forget
-					if( !this.port_lands( port ).has( land ) ) break forget
+					if( !this.port_lands_active( port ).has( land ) ) break forget
 					
-					this.port_lands( port ).delete( land )
+					this.port_lands_active( port ).delete( land )
 					return
 					
 				}
@@ -205,11 +210,12 @@ namespace $ {
 			}>, 
 		) {
 			
-			const lands = this.port_lands( port )
+			const actives = this.port_lands_active( port )
+			const passives = this.port_lands_passive( port )
 			
 			for( const land of Reflect.ownKeys( income ) as $hyoo_crus_ref[] ) {
 				
-				lands.add( land )
+				if( !passives.has( land ) ) actives.add( land )
 				
 				const faces = income[ land ].faces
 				let port_faces = this.face_port_land([ port, land ])
@@ -235,6 +241,7 @@ namespace $ {
 		@ $mol_mem_key
 		sync_land( land: $hyoo_crus_ref ) {
 			for( const port of this.masters() ) {
+				this.port_lands_passive( port ).add( land )
 				this.sync_port_land([ port, land ])
 			}
 			this.sync()
@@ -251,7 +258,10 @@ namespace $ {
 				rocks:[],
 			}).asArray()
 			
-			for( const port of this.masters() ) port.send_bin( pack )
+			for( const port of this.ports() ) {
+				this.port_lands_passive( port ).delete( land.ref() )
+				port.send_bin( pack )
+			}
 			
 		}
 		
