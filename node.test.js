@@ -8483,11 +8483,11 @@ var $;
             this.lands_neonatals.clear();
         }
         sync_port() {
-            for (const port of this.slaves)
+            for (const port of this.ports())
                 this.sync_port_lands(port);
         }
         sync_port_lands(port) {
-            for (const land of this.port_lands(port)) {
+            for (const land of this.port_lands_active(port)) {
                 this.sync_port_land([port, land]);
             }
         }
@@ -8503,7 +8503,10 @@ var $;
                 return [];
             }
         }
-        port_lands(port) {
+        port_lands_active(port) {
+            return new $mol_wire_set();
+        }
+        port_lands_passive(port) {
             return new $mol_wire_set();
         }
         port_income(port, msg) {
@@ -8525,9 +8528,9 @@ var $;
                         break forget;
                     if (parts.lands[land].faces.size)
                         break forget;
-                    if (!this.port_lands(port).has(land))
+                    if (!this.port_lands_active(port).has(land))
                         break forget;
-                    this.port_lands(port).delete(land);
+                    this.port_lands_active(port).delete(land);
                     return;
                 }
             }
@@ -8535,9 +8538,11 @@ var $;
             this.$.$hyoo_crus_realm.apply_parts(parts.lands, parts.rocks);
         }
         face_port_sync(port, income) {
-            const lands = this.port_lands(port);
+            const actives = this.port_lands_active(port);
+            const passives = this.port_lands_passive(port);
             for (const land of Reflect.ownKeys(income)) {
-                lands.add(land);
+                if (!passives.has(land))
+                    actives.add(land);
                 const faces = income[land].faces;
                 let port_faces = this.face_port_land([port, land]);
                 if (!port_faces)
@@ -8555,6 +8560,7 @@ var $;
         }
         sync_land(land) {
             for (const port of this.masters()) {
+                this.port_lands_passive(port).add(land);
                 this.sync_port_land([port, land]);
             }
             this.sync();
@@ -8566,8 +8572,10 @@ var $;
                 lands: { [land.ref()]: { faces, units: [] } },
                 rocks: [],
             }).asArray();
-            for (const port of this.masters())
+            for (const port of this.ports()) {
+                this.port_lands_passive(port).delete(land.ref());
                 port.send_bin(pack);
+            }
         }
         sync_port_land([port, land]) {
             try {
@@ -8649,7 +8657,10 @@ var $;
     ], $hyoo_crus_yard.prototype, "masters", null);
     __decorate([
         $mol_mem_key
-    ], $hyoo_crus_yard.prototype, "port_lands", null);
+    ], $hyoo_crus_yard.prototype, "port_lands_active", null);
+    __decorate([
+        $mol_mem_key
+    ], $hyoo_crus_yard.prototype, "port_lands_passive", null);
     __decorate([
         $mol_action
     ], $hyoo_crus_yard.prototype, "port_income", null);
