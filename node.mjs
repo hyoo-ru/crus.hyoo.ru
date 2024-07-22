@@ -8100,7 +8100,6 @@ var $;
                     message: error?.message,
                 });
             });
-            await db.connect();
             await db.query(`
 				CREATE TABLE IF NOT EXISTS Land (
 					land varchar(17) NOT NULL,
