@@ -8085,6 +8085,12 @@ var $;
                 connectionString: urn,
                 ssl: { rejectUnauthorized: false },
             });
+            db.on('error', error => {
+                this.$.$mol_log3_fail({
+                    place: this,
+                    message: error?.message,
+                });
+            });
             await db.connect();
             await db.query(`
 				CREATE TABLE IF NOT EXISTS Land (
