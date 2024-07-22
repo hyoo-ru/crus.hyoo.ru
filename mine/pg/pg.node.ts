@@ -116,7 +116,7 @@ namespace $ {
 				})
 			} )
 			
-			await db.connect()
+			// await db.connect()
 			
 			await db.query(`
 				CREATE TABLE IF NOT EXISTS Land (
