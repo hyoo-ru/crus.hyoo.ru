@@ -1802,7 +1802,7 @@ declare namespace $ {
         [Symbol.toPrimitive](): any;
     };
     const $hyoo_crus_list_bin_base: (abstract new () => {
-        items(next?: readonly (Uint8Array | null)[] | undefined): readonly ReturnType<typeof $hyoo_crus_vary_cast_bin>[];
+        items(next?: readonly (Uint8Array | null)[] | undefined): readonly (Uint8Array | null)[];
         items_vary(next?: readonly $hyoo_crus_vary_type[], tag?: keyof typeof $hyoo_crus_sand_tag): readonly $hyoo_crus_vary_type[];
         splice(next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: keyof typeof $hyoo_crus_sand_tag): void;
         find(vary: $hyoo_crus_vary_type): $hyoo_crus_sand | null;
@@ -1848,7 +1848,7 @@ declare namespace $ {
     export class $hyoo_crus_list_bin extends $hyoo_crus_list_bin_base {
     }
     const $hyoo_crus_list_bool_base: (abstract new () => {
-        items(next?: readonly (boolean | null)[] | undefined): readonly ReturnType<typeof $hyoo_crus_vary_cast_bool>[];
+        items(next?: readonly (boolean | null)[] | undefined): readonly (boolean | null)[];
         items_vary(next?: readonly $hyoo_crus_vary_type[], tag?: keyof typeof $hyoo_crus_sand_tag): readonly $hyoo_crus_vary_type[];
         splice(next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: keyof typeof $hyoo_crus_sand_tag): void;
         find(vary: $hyoo_crus_vary_type): $hyoo_crus_sand | null;
@@ -1894,7 +1894,7 @@ declare namespace $ {
     export class $hyoo_crus_list_bool extends $hyoo_crus_list_bool_base {
     }
     const $hyoo_crus_list_int_base: (abstract new () => {
-        items(next?: readonly (bigint | null)[] | undefined): readonly ReturnType<typeof $hyoo_crus_vary_cast_int>[];
+        items(next?: readonly (bigint | null)[] | undefined): readonly (bigint | null)[];
         items_vary(next?: readonly $hyoo_crus_vary_type[], tag?: keyof typeof $hyoo_crus_sand_tag): readonly $hyoo_crus_vary_type[];
         splice(next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: keyof typeof $hyoo_crus_sand_tag): void;
         find(vary: $hyoo_crus_vary_type): $hyoo_crus_sand | null;
@@ -1940,7 +1940,7 @@ declare namespace $ {
     export class $hyoo_crus_list_int extends $hyoo_crus_list_int_base {
     }
     const $hyoo_crus_list_real_base: (abstract new () => {
-        items(next?: readonly (number | null)[] | undefined): readonly ReturnType<typeof $hyoo_crus_vary_cast_real>[];
+        items(next?: readonly (number | null)[] | undefined): readonly (number | null)[];
         items_vary(next?: readonly $hyoo_crus_vary_type[], tag?: keyof typeof $hyoo_crus_sand_tag): readonly $hyoo_crus_vary_type[];
         splice(next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: keyof typeof $hyoo_crus_sand_tag): void;
         find(vary: $hyoo_crus_vary_type): $hyoo_crus_sand | null;
@@ -1988,7 +1988,9 @@ declare namespace $ {
     const $hyoo_crus_list_ref_base_1: (abstract new () => {
         items(next?: readonly ((symbol & {
             $hyoo_crus_ref: symbol;
-        }) | null)[] | undefined): readonly ReturnType<typeof $hyoo_crus_vary_cast_ref>[];
+        }) | null)[] | undefined): readonly ((symbol & {
+            $hyoo_crus_ref: symbol;
+        }) | null)[];
         items_vary(next?: readonly $hyoo_crus_vary_type[], tag?: keyof typeof $hyoo_crus_sand_tag): readonly $hyoo_crus_vary_type[];
         splice(next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: keyof typeof $hyoo_crus_sand_tag): void;
         find(vary: $hyoo_crus_vary_type): $hyoo_crus_sand | null;
@@ -2034,7 +2036,7 @@ declare namespace $ {
     export class $hyoo_crus_list_ref extends $hyoo_crus_list_ref_base_1 {
     }
     const $hyoo_crus_list_str_base: (abstract new () => {
-        items(next?: readonly (string | null)[] | undefined): readonly ReturnType<typeof $hyoo_crus_vary_cast_str>[];
+        items(next?: readonly (string | null)[] | undefined): readonly (string | null)[];
         items_vary(next?: readonly $hyoo_crus_vary_type[], tag?: keyof typeof $hyoo_crus_sand_tag): readonly $hyoo_crus_vary_type[];
         splice(next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: keyof typeof $hyoo_crus_sand_tag): void;
         find(vary: $hyoo_crus_vary_type): $hyoo_crus_sand | null;
@@ -2080,7 +2082,7 @@ declare namespace $ {
     export class $hyoo_crus_list_str extends $hyoo_crus_list_str_base {
     }
     const $hyoo_crus_list_time_base: (abstract new () => {
-        items(next?: readonly ($mol_time_moment | null)[] | undefined): readonly ReturnType<typeof $hyoo_crus_vary_cast_time>[];
+        items(next?: readonly ($mol_time_moment | null)[] | undefined): readonly ($mol_time_moment | null)[];
         items_vary(next?: readonly $hyoo_crus_vary_type[], tag?: keyof typeof $hyoo_crus_sand_tag): readonly $hyoo_crus_vary_type[];
         splice(next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: keyof typeof $hyoo_crus_sand_tag): void;
         find(vary: $hyoo_crus_vary_type): $hyoo_crus_sand | null;
@@ -2126,7 +2128,7 @@ declare namespace $ {
     export class $hyoo_crus_list_time extends $hyoo_crus_list_time_base {
     }
     const $hyoo_crus_list_dur_base: (abstract new () => {
-        items(next?: readonly ($mol_time_duration | $mol_time_moment | null)[] | undefined): readonly ReturnType<typeof $hyoo_crus_vary_cast_dur>[];
+        items(next?: readonly ($mol_time_duration | $mol_time_moment | null)[] | undefined): readonly ($mol_time_duration | $mol_time_moment | null)[];
         items_vary(next?: readonly $hyoo_crus_vary_type[], tag?: keyof typeof $hyoo_crus_sand_tag): readonly $hyoo_crus_vary_type[];
         splice(next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: keyof typeof $hyoo_crus_sand_tag): void;
         find(vary: $hyoo_crus_vary_type): $hyoo_crus_sand | null;
@@ -2172,7 +2174,7 @@ declare namespace $ {
     export class $hyoo_crus_list_dur extends $hyoo_crus_list_dur_base {
     }
     const $hyoo_crus_list_range_base: (abstract new () => {
-        items(next?: readonly ($mol_time_interval | null)[] | undefined): readonly ReturnType<typeof $hyoo_crus_vary_cast_range>[];
+        items(next?: readonly ($mol_time_interval | null)[] | undefined): readonly ($mol_time_interval | null)[];
         items_vary(next?: readonly $hyoo_crus_vary_type[], tag?: keyof typeof $hyoo_crus_sand_tag): readonly $hyoo_crus_vary_type[];
         splice(next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: keyof typeof $hyoo_crus_sand_tag): void;
         find(vary: $hyoo_crus_vary_type): $hyoo_crus_sand | null;
@@ -2218,7 +2220,7 @@ declare namespace $ {
     export class $hyoo_crus_list_range extends $hyoo_crus_list_range_base {
     }
     const $hyoo_crus_list_json_base: (abstract new () => {
-        items(next?: readonly any[] | undefined): readonly ReturnType<typeof $hyoo_crus_vary_cast_json>[];
+        items(next?: readonly any[] | undefined): readonly any[];
         items_vary(next?: readonly $hyoo_crus_vary_type[], tag?: keyof typeof $hyoo_crus_sand_tag): readonly $hyoo_crus_vary_type[];
         splice(next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: keyof typeof $hyoo_crus_sand_tag): void;
         find(vary: $hyoo_crus_vary_type): $hyoo_crus_sand | null;
@@ -2264,7 +2266,7 @@ declare namespace $ {
     export class $hyoo_crus_list_json extends $hyoo_crus_list_json_base {
     }
     const $hyoo_crus_list_jsan_base: (abstract new () => {
-        items(next?: readonly (any[] | string[] | number[] | boolean[] | {}[] | null)[] | undefined): readonly ReturnType<typeof $hyoo_crus_vary_cast_jsan>[];
+        items(next?: readonly (any[] | string[] | number[] | boolean[] | {}[] | null)[] | undefined): readonly (any[] | string[] | number[] | boolean[] | {}[] | null)[];
         items_vary(next?: readonly $hyoo_crus_vary_type[], tag?: keyof typeof $hyoo_crus_sand_tag): readonly $hyoo_crus_vary_type[];
         splice(next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: keyof typeof $hyoo_crus_sand_tag): void;
         find(vary: $hyoo_crus_vary_type): $hyoo_crus_sand | null;
@@ -2310,7 +2312,7 @@ declare namespace $ {
     export class $hyoo_crus_list_jsan extends $hyoo_crus_list_jsan_base {
     }
     const $hyoo_crus_list_dom_base: (abstract new () => {
-        items(next?: readonly (Element | HTMLElement | $mol_jsx.JSX.Element | null)[] | undefined): readonly ReturnType<typeof $hyoo_crus_vary_cast_dom>[];
+        items(next?: readonly (Element | HTMLElement | $mol_jsx.JSX.Element | null)[] | undefined): readonly (Element | HTMLElement | $mol_jsx.JSX.Element | null)[];
         items_vary(next?: readonly $hyoo_crus_vary_type[], tag?: keyof typeof $hyoo_crus_sand_tag): readonly $hyoo_crus_vary_type[];
         splice(next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: keyof typeof $hyoo_crus_sand_tag): void;
         find(vary: $hyoo_crus_vary_type): $hyoo_crus_sand | null;
@@ -2356,7 +2358,7 @@ declare namespace $ {
     export class $hyoo_crus_list_dom extends $hyoo_crus_list_dom_base {
     }
     const $hyoo_crus_list_tree_base: (abstract new () => {
-        items(next?: readonly ($mol_tree2 | null)[] | undefined): readonly ReturnType<typeof $hyoo_crus_vary_cast_tree>[];
+        items(next?: readonly ($mol_tree2 | null)[] | undefined): readonly ($mol_tree2 | null)[];
         items_vary(next?: readonly $hyoo_crus_vary_type[], tag?: keyof typeof $hyoo_crus_sand_tag): readonly $hyoo_crus_vary_type[];
         splice(next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: keyof typeof $hyoo_crus_sand_tag): void;
         find(vary: $hyoo_crus_vary_type): $hyoo_crus_sand | null;
@@ -2410,7 +2412,9 @@ declare namespace $ {
             local_make(idea?: number): Vals[number];
             items(next?: readonly ((symbol & {
                 $hyoo_crus_ref: symbol;
-            }) | null)[] | undefined): readonly ReturnType<typeof $hyoo_crus_vary_cast_ref>[];
+            }) | null)[] | undefined): readonly ((symbol & {
+                $hyoo_crus_ref: symbol;
+            }) | null)[];
             items_vary(next?: readonly $hyoo_crus_vary_type[], tag?: keyof typeof $hyoo_crus_sand_tag): readonly $hyoo_crus_vary_type[];
             splice(next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: keyof typeof $hyoo_crus_sand_tag): void;
             find(vary: $hyoo_crus_vary_type): $hyoo_crus_sand | null;
@@ -2623,7 +2627,7 @@ declare namespace $ {
         [Symbol.toPrimitive](): any;
     };
     const $hyoo_crus_atom_bin_base: (abstract new () => {
-        val(next?: Uint8Array | null | undefined): ReturnType<typeof $hyoo_crus_vary_cast_bin> | null;
+        val(next?: Uint8Array | null | undefined): Uint8Array | null;
         pick_unit(): $hyoo_crus_sand | undefined;
         vary(next?: $hyoo_crus_vary_type): $hyoo_crus_vary_type;
         land(): $hyoo_crus_land;
@@ -2662,7 +2666,7 @@ declare namespace $ {
     export class $hyoo_crus_atom_bin extends $hyoo_crus_atom_bin_base {
     }
     const $hyoo_crus_atom_bool_base: (abstract new () => {
-        val(next?: boolean | null | undefined): ReturnType<typeof $hyoo_crus_vary_cast_bool> | null;
+        val(next?: boolean | null | undefined): boolean | null;
         pick_unit(): $hyoo_crus_sand | undefined;
         vary(next?: $hyoo_crus_vary_type): $hyoo_crus_vary_type;
         land(): $hyoo_crus_land;
@@ -2701,7 +2705,7 @@ declare namespace $ {
     export class $hyoo_crus_atom_bool extends $hyoo_crus_atom_bool_base {
     }
     const $hyoo_crus_atom_int_base: (abstract new () => {
-        val(next?: bigint | null | undefined): ReturnType<typeof $hyoo_crus_vary_cast_int> | null;
+        val(next?: bigint | null | undefined): bigint | null;
         pick_unit(): $hyoo_crus_sand | undefined;
         vary(next?: $hyoo_crus_vary_type): $hyoo_crus_vary_type;
         land(): $hyoo_crus_land;
@@ -2740,7 +2744,7 @@ declare namespace $ {
     export class $hyoo_crus_atom_int extends $hyoo_crus_atom_int_base {
     }
     const $hyoo_crus_atom_real_base: (abstract new () => {
-        val(next?: number | null | undefined): ReturnType<typeof $hyoo_crus_vary_cast_real> | null;
+        val(next?: number | null | undefined): number | null;
         pick_unit(): $hyoo_crus_sand | undefined;
         vary(next?: $hyoo_crus_vary_type): $hyoo_crus_vary_type;
         land(): $hyoo_crus_land;
@@ -2781,7 +2785,9 @@ declare namespace $ {
     const $hyoo_crus_atom_ref_base_1: (abstract new () => {
         val(next?: (symbol & {
             $hyoo_crus_ref: symbol;
-        }) | null | undefined): ReturnType<typeof $hyoo_crus_vary_cast_ref> | null;
+        }) | null | undefined): (symbol & {
+            $hyoo_crus_ref: symbol;
+        }) | null;
         pick_unit(): $hyoo_crus_sand | undefined;
         vary(next?: $hyoo_crus_vary_type): $hyoo_crus_vary_type;
         land(): $hyoo_crus_land;
@@ -2820,7 +2826,7 @@ declare namespace $ {
     export class $hyoo_crus_atom_ref extends $hyoo_crus_atom_ref_base_1 {
     }
     const $hyoo_crus_atom_str_base: (abstract new () => {
-        val(next?: string | null | undefined): ReturnType<typeof $hyoo_crus_vary_cast_str> | null;
+        val(next?: string | null | undefined): string | null;
         pick_unit(): $hyoo_crus_sand | undefined;
         vary(next?: $hyoo_crus_vary_type): $hyoo_crus_vary_type;
         land(): $hyoo_crus_land;
@@ -2859,7 +2865,7 @@ declare namespace $ {
     export class $hyoo_crus_atom_str extends $hyoo_crus_atom_str_base {
     }
     const $hyoo_crus_atom_time_base: (abstract new () => {
-        val(next?: $mol_time_moment | null | undefined): ReturnType<typeof $hyoo_crus_vary_cast_time> | null;
+        val(next?: $mol_time_moment | null | undefined): $mol_time_moment | null;
         pick_unit(): $hyoo_crus_sand | undefined;
         vary(next?: $hyoo_crus_vary_type): $hyoo_crus_vary_type;
         land(): $hyoo_crus_land;
@@ -2898,7 +2904,7 @@ declare namespace $ {
     export class $hyoo_crus_atom_time extends $hyoo_crus_atom_time_base {
     }
     const $hyoo_crus_atom_dur_base: (abstract new () => {
-        val(next?: $mol_time_duration | $mol_time_moment | null | undefined): ReturnType<typeof $hyoo_crus_vary_cast_dur> | null;
+        val(next?: $mol_time_duration | $mol_time_moment | null | undefined): $mol_time_duration | $mol_time_moment | null;
         pick_unit(): $hyoo_crus_sand | undefined;
         vary(next?: $hyoo_crus_vary_type): $hyoo_crus_vary_type;
         land(): $hyoo_crus_land;
@@ -2937,7 +2943,7 @@ declare namespace $ {
     export class $hyoo_crus_atom_dur extends $hyoo_crus_atom_dur_base {
     }
     const $hyoo_crus_atom_range_base: (abstract new () => {
-        val(next?: $mol_time_interval | null | undefined): ReturnType<typeof $hyoo_crus_vary_cast_range> | null;
+        val(next?: $mol_time_interval | null | undefined): $mol_time_interval | null;
         pick_unit(): $hyoo_crus_sand | undefined;
         vary(next?: $hyoo_crus_vary_type): $hyoo_crus_vary_type;
         land(): $hyoo_crus_land;
@@ -2976,7 +2982,7 @@ declare namespace $ {
     export class $hyoo_crus_atom_range extends $hyoo_crus_atom_range_base {
     }
     const $hyoo_crus_atom_json_base: (abstract new () => {
-        val(next?: any): ReturnType<typeof $hyoo_crus_vary_cast_json> | null;
+        val(next?: any): any;
         pick_unit(): $hyoo_crus_sand | undefined;
         vary(next?: $hyoo_crus_vary_type): $hyoo_crus_vary_type;
         land(): $hyoo_crus_land;
@@ -3015,7 +3021,7 @@ declare namespace $ {
     export class $hyoo_crus_atom_json extends $hyoo_crus_atom_json_base {
     }
     const $hyoo_crus_atom_jsan_base: (abstract new () => {
-        val(next?: any[] | string[] | number[] | boolean[] | {}[] | null | undefined): ReturnType<typeof $hyoo_crus_vary_cast_jsan> | null;
+        val(next?: any[] | string[] | number[] | boolean[] | {}[] | null | undefined): any[] | string[] | number[] | boolean[] | {}[] | null;
         pick_unit(): $hyoo_crus_sand | undefined;
         vary(next?: $hyoo_crus_vary_type): $hyoo_crus_vary_type;
         land(): $hyoo_crus_land;
@@ -3054,7 +3060,7 @@ declare namespace $ {
     export class $hyoo_crus_atom_jsan extends $hyoo_crus_atom_jsan_base {
     }
     const $hyoo_crus_atom_dom_base: (abstract new () => {
-        val(next?: Element | HTMLElement | $mol_jsx.JSX.Element | null | undefined): ReturnType<typeof $hyoo_crus_vary_cast_dom> | null;
+        val(next?: Element | HTMLElement | $mol_jsx.JSX.Element | null | undefined): Element | HTMLElement | $mol_jsx.JSX.Element | null;
         pick_unit(): $hyoo_crus_sand | undefined;
         vary(next?: $hyoo_crus_vary_type): $hyoo_crus_vary_type;
         land(): $hyoo_crus_land;
@@ -3093,7 +3099,7 @@ declare namespace $ {
     export class $hyoo_crus_atom_dom extends $hyoo_crus_atom_dom_base {
     }
     const $hyoo_crus_atom_tree_base: (abstract new () => {
-        val(next?: $mol_tree2 | null | undefined): ReturnType<typeof $hyoo_crus_vary_cast_tree> | null;
+        val(next?: $mol_tree2 | null | undefined): $mol_tree2 | null;
         pick_unit(): $hyoo_crus_sand | undefined;
         vary(next?: $hyoo_crus_vary_type): $hyoo_crus_vary_type;
         land(): $hyoo_crus_land;
@@ -3138,12 +3144,14 @@ declare namespace $ {
         new (): {
             Value: Value;
             yoke(preset?: $hyoo_crus_rank_preset): $hyoo_crus_land | null;
-            remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): null | $mol_type_result<$mol_type_result<any["Value"]>>;
+            remote(next?: $mol_type_result<$mol_type_result<Value>> | null | undefined): $mol_type_result<$mol_type_result<Value>> | null;
             remote_ensure(preset?: $hyoo_crus_rank_preset): $mol_type_result<$mol_type_result<Value>> | null;
             local_ensure(): $mol_type_result<$mol_type_result<Value>> | null;
             val(next?: (symbol & {
                 $hyoo_crus_ref: symbol;
-            }) | null | undefined): ReturnType<typeof $hyoo_crus_vary_cast_ref> | null;
+            }) | null | undefined): (symbol & {
+                $hyoo_crus_ref: symbol;
+            }) | null;
             pick_unit(): $hyoo_crus_sand | undefined;
             vary(next?: $hyoo_crus_vary_type): $hyoo_crus_vary_type;
             land(): $hyoo_crus_land;
@@ -3184,56 +3192,46 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    const $hyoo_crus_home_base: Omit<typeof $hyoo_crus_dict, "prototype"> & (new (...args: any[]) => $mol_type_override<InstanceType<typeof $hyoo_crus_dict>, { readonly [Key in "Selection" | "Hall" | "Title"]: (auto?: any) => InstanceType<{
-        readonly Title: typeof $hyoo_crus_atom_str;
-        readonly Selection: typeof $hyoo_crus_atom_str;
-        readonly Hall: {
-            new (): {
-                Value: () => typeof $hyoo_crus_dict;
-                yoke(preset?: $hyoo_crus_rank_preset): $hyoo_crus_land | null;
-                remote(next?: $hyoo_crus_dict | null | undefined): null | $mol_type_result<$mol_type_result<any["Value"]>>;
-                remote_ensure(preset?: $hyoo_crus_rank_preset): $hyoo_crus_dict | null;
-                local_ensure(): $hyoo_crus_dict | null;
-                val(next?: (symbol & {
-                    $hyoo_crus_ref: symbol;
-                }) | null | undefined): ReturnType<typeof $hyoo_crus_vary_cast_ref> | null;
-                pick_unit(): $hyoo_crus_sand | undefined;
-                vary(next?: $hyoo_crus_vary_type): $hyoo_crus_vary_type;
-                land(): $hyoo_crus_land;
-                head(): string;
-                land_ref(): symbol & {
-                    $hyoo_crus_ref: symbol;
-                };
-                ref(): symbol & {
-                    $hyoo_crus_ref: symbol;
-                };
-                toJSON(): string | undefined;
-                cast<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1): InstanceType<Node_1>;
-                nodes<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1 | null): readonly InstanceType<Node_1>[];
-                units(): $hyoo_crus_sand[];
-                filled(): boolean;
-                can_change(lord?: symbol & {
-                    $hyoo_crus_ref: symbol;
-                }): boolean;
-                last_change(): $mol_time_moment | null;
-                $: typeof $$;
-                destructor(): void;
-                toString(): string;
-                [Symbol.toStringTag]: string;
-                [$mol_ambient_ref]: $;
+    const $hyoo_crus_home_base: Omit<typeof $hyoo_crus_dict, "prototype"> & (new (...args: any[]) => $mol_type_override<$hyoo_crus_dict, {
+        readonly Title: (auto?: any) => $hyoo_crus_atom_str | null;
+        readonly Selection: (auto?: any) => $hyoo_crus_atom_str | null;
+        readonly Hall: (auto?: any) => {
+            Value: () => typeof $hyoo_crus_dict;
+            yoke(preset?: $hyoo_crus_rank_preset): $hyoo_crus_land | null;
+            remote(next?: $hyoo_crus_dict | null | undefined): $hyoo_crus_dict | null;
+            remote_ensure(preset?: $hyoo_crus_rank_preset): $hyoo_crus_dict | null;
+            local_ensure(): $hyoo_crus_dict | null;
+            val(next?: (symbol & {
+                $hyoo_crus_ref: symbol;
+            }) | null | undefined): (symbol & {
+                $hyoo_crus_ref: symbol;
+            }) | null;
+            pick_unit(): $hyoo_crus_sand | undefined;
+            vary(next?: $hyoo_crus_vary_type): $hyoo_crus_vary_type;
+            land(): $hyoo_crus_land;
+            head(): string;
+            land_ref(): symbol & {
+                $hyoo_crus_ref: symbol;
             };
-            toString(): string;
-            Value: typeof $hyoo_crus_dict;
-            parse: typeof $hyoo_crus_vary_cast_ref;
-            tag: keyof typeof $hyoo_crus_sand_tag;
-            make<This extends typeof $mol_object>(this: This, config: Partial<InstanceType<This>>): InstanceType<This>;
-            $: $;
-            create<Instance>(this: new (init?: (instance: any) => void) => Instance, init?: (instance: $mol_type_writable<Instance>) => void): Instance;
-            toJSON(): any;
+            ref(): symbol & {
+                $hyoo_crus_ref: symbol;
+            };
+            toJSON(): string | undefined;
+            cast<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1): InstanceType<Node_1>;
+            nodes<Node_1 extends typeof $hyoo_crus_node>(Node: Node_1 | null): readonly InstanceType<Node_1>[];
+            units(): $hyoo_crus_sand[];
+            filled(): boolean;
+            can_change(lord?: symbol & {
+                $hyoo_crus_ref: symbol;
+            }): boolean;
+            last_change(): $mol_time_moment | null;
+            $: typeof $$;
             destructor(): void;
-            [Symbol.toPrimitive](): any;
-        };
-    }[Key]> | null; }>) & {
+            toString(): string;
+            [Symbol.toStringTag]: string;
+            [$mol_ambient_ref]: $;
+        } | null;
+    }>) & {
         schema: {
             [x: string]: typeof $hyoo_crus_node;
         } & {
@@ -3243,12 +3241,14 @@ declare namespace $ {
                 new (): {
                     Value: () => typeof $hyoo_crus_dict;
                     yoke(preset?: $hyoo_crus_rank_preset): $hyoo_crus_land | null;
-                    remote(next?: $hyoo_crus_dict | null | undefined): null | $mol_type_result<$mol_type_result<any["Value"]>>;
+                    remote(next?: $hyoo_crus_dict | null | undefined): $hyoo_crus_dict | null;
                     remote_ensure(preset?: $hyoo_crus_rank_preset): $hyoo_crus_dict | null;
                     local_ensure(): $hyoo_crus_dict | null;
                     val(next?: (symbol & {
                         $hyoo_crus_ref: symbol;
-                    }) | null | undefined): ReturnType<typeof $hyoo_crus_vary_cast_ref> | null;
+                    }) | null | undefined): (symbol & {
+                        $hyoo_crus_ref: symbol;
+                    }) | null;
                     pick_unit(): $hyoo_crus_sand | undefined;
                     vary(next?: $hyoo_crus_vary_type): $hyoo_crus_vary_type;
                     land(): $hyoo_crus_land;
