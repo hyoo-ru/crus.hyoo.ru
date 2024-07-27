@@ -15970,7 +15970,7 @@ var $;
             position: 'absolute',
             zIndex: $mol_layer.float,
             margin: {
-                left: rem(-7.5),
+                left: rem(-.75),
             },
         },
         Item_drop_after: {
