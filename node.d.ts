@@ -967,7 +967,8 @@ declare namespace $ {
         http_server(): import("http").Server<typeof import("http").IncomingMessage, typeof import("http").ServerResponse>;
         http_income(req: InstanceType<$node['http']['IncomingMessage']>, res: InstanceType<$node['http']['ServerResponse']>): void;
         ws_upgrade(req: InstanceType<$node['http']['IncomingMessage']>, socket: InstanceType<$node['stream']['Duplex']>, head: Buffer): void;
-        _ws_icome_partial: Uint8Array[];
+        _ws_income_chunks: WeakMap<import("stream").Duplex, Uint8Array[]>;
+        _ws_income_frames: WeakMap<import("stream").Duplex, (string | Uint8Array)[]>;
         ws_income(chunk: Buffer, upgrade: $mol_rest_message, sock: InstanceType<typeof $node.stream.Duplex>): Promise<void>;
         root(resource?: $mol_rest_resource): $mol_rest_resource;
     }
