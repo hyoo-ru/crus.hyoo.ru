@@ -2494,8 +2494,7 @@ var $;
             const win = this.$.$mol_dom_context;
             if (win.parent !== win.self && !win.document.hasFocus())
                 return;
-            new this.$.$mol_after_frame(() => {
-                this.dom_node().scrollIntoView({ block: 'start', inline: 'nearest' });
+            new this.$.$mol_after_timeout(500, () => {
                 this.focused(true);
             });
         }
@@ -2992,7 +2991,8 @@ var $;
                 return this.pages()[0]?.title() || this.title();
             }
             sub() {
-                const next = [...this.pages(), this.Placeholder()];
+                const placeholder = this.Placeholder();
+                const next = [...this.pages(), placeholder];
                 const prev = $mol_mem_cached(() => this.sub()) ?? [];
                 for (let i = 1; i++;) {
                     const p = prev[prev.length - i];
@@ -3001,7 +3001,17 @@ var $;
                         break;
                     if (p === n)
                         continue;
+                    if (n === placeholder)
+                        continue;
                     n.bring();
+                    new this.$.$mol_after_frame(() => {
+                        const b = this.dom_node();
+                        const p = n.dom_node();
+                        b.scroll({
+                            left: p.offsetLeft + p.offsetWidth - b.offsetWidth,
+                            behavior: 'smooth',
+                        });
+                    });
                     break;
                 }
                 return next;
