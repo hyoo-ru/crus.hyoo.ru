@@ -7,7 +7,7 @@ services:
     ports:
       - "9090:9090"
     logging:
-    	driver: "local"
+        driver: "local"
     volumes:
       - dotcrus:/mam/hyoo/crus/app/run/-/.crus
 
