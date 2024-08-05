@@ -26793,7 +26793,7 @@ var $;
 			return obj;
 		}
 		menu_title(){
-			return "🌌 Glob";
+			return "🌍 Glob";
 		}
 		param(){
 			return "ref";
@@ -26859,7 +26859,7 @@ var $;
                 const prefix = [
                     '',
                     '',
-                    '🌍 ',
+                    '🌄 ',
                     '   🧩 ',
                 ][chunks.length];
                 return prefix + suffix;
