@@ -28,10 +28,11 @@ namespace $.$$ {
 				$mol_fail_log( error )
 			}
 			const chunks = id.split( '_' )
-			const suffix = title || ( chunks.length >= 3 ? $hyoo_crus_ref_head( ref ) : ref.description! )
+			const suffix = title || ( chunks.length >= 4 ? $hyoo_crus_ref_head( ref ) : ref.description! )
 			const prefix = [
 				'',
 				'',
+				'👑 ',
 				'🌄 ',
 				'   🧩 ',
 			][ chunks.length ]
