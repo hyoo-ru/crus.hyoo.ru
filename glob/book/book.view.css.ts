@@ -1,6 +1,6 @@
 namespace $.$$ {
 	
-	$mol_style_define( $hyoo_crus_realm_book, {
+	$mol_style_define( $hyoo_crus_glob_book, {
 		
 		Menu: {
 			flex: {

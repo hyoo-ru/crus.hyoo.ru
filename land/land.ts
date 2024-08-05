@@ -1,6 +1,6 @@
 namespace $ {
 	
-	/** Standalone part of Realm which syncs separately, have own rights, and contains Units */
+	/** Standalone part of Glob which syncs separately, have own rights, and contains Units */
 	export class $hyoo_crus_land extends $mol_object {
 		
 		/** Auth Independent actor with global unique id generated from Auth key */
@@ -399,7 +399,7 @@ namespace $ {
 		
 		@ $mol_action
 		fork( preset = { '': $hyoo_crus_rank.get } ) {
-			const land = this.$.$hyoo_crus_realm.land_grab( preset )
+			const land = this.$.$hyoo_crus_glob.land_grab( preset )
 			land.Tines().items_vary([ this.ref() ])
 			return land
 		}
@@ -424,11 +424,11 @@ namespace $ {
 				
 				const exists = new Set([ ... this.sand.get( head )?.keys() ?? [] ])
 				
-				const realm = this.$.$hyoo_crus_realm
+				const glob = this.$.$hyoo_crus_glob
 				let slice = 0
 				for( const ref of tines ) {
 					++ slice
-					const land = realm.Land( ref )
+					const land = glob.Land( ref )
 					for( const sand of land.sand_ordered( head ) ) {
 						
 						if( exists.has( sand.self() ) ) continue
@@ -688,7 +688,7 @@ namespace $ {
 		}
 		
 		broadcast() {
-			this.$.$hyoo_crus_realm.yard().lands_neonatals.add( this.ref() )
+			this.$.$hyoo_crus_glob.yard().lands_neonatals.add( this.ref() )
 		}
 		
 		@ $mol_mem
@@ -701,7 +701,7 @@ namespace $ {
 		}
 		
 		destructor() {
-			this.$.$hyoo_crus_realm.yard().forget_land( this )
+			this.$.$hyoo_crus_glob.yard().forget_land( this )
 		}
 		
 		@ $mol_mem
@@ -711,7 +711,7 @@ namespace $ {
 		
 		@ $mol_mem
 		sync_yard() {
-			return new $mol_wire_atom( '', ()=> this.$.$hyoo_crus_realm.yard().sync_land( this.ref() ) ).fresh()
+			return new $mol_wire_atom( '', ()=> this.$.$hyoo_crus_glob.yard().sync_land( this.ref() ) ).fresh()
 		}
 		
 		@ $mol_mem
@@ -868,7 +868,7 @@ namespace $ {
 			
 			if( this.sand.get( sand.head() )?.get( sand.self() ) !== sand ) {
 				for( const id of this.Tines().items_vary() ?? [] ) {
-					const vary = this.$.$hyoo_crus_realm.Land( $hyoo_crus_vary_cast_ref( id! )! ).sand_decode_raw( sand )
+					const vary = this.$.$hyoo_crus_glob.Land( $hyoo_crus_vary_cast_ref( id! )! ).sand_decode_raw( sand )
 					if( vary !== undefined ) return vary
 				}
 				return undefined!

@@ -184,7 +184,7 @@ namespace $ {
 		@ $mol_mem_key
 		selection( lord: $hyoo_crus_ref, next?: readonly[ begin: number, end: number ] ) {
 			
-			const base = this.$.$hyoo_crus_realm.Land( lord ).Data( $hyoo_crus_home )
+			const base = this.$.$hyoo_crus_glob.Land( lord ).Data( $hyoo_crus_home )
 			
 			if( next ) {
 				

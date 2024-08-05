@@ -5,7 +5,7 @@ namespace $ {
 		
 		static tag: keyof typeof $hyoo_crus_sand_tag = 'vals'
 		
-		/** Standalone part of Realm which syncs separately, have own rights, and contains Units */
+		/** Standalone part of Glob which syncs separately, have own rights, and contains Units */
 		land() {
 			return null as any as $hyoo_crus_land
 		}

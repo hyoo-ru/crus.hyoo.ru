@@ -19,7 +19,7 @@ namespace $ {
 			if( !id ) return
 			
 			const ref = $hyoo_crus_ref( id )
-			const file = $.$hyoo_crus_realm.Node( ref, $hyoo_crus_file )
+			const file = $.$hyoo_crus_glob.Node( ref, $hyoo_crus_file )
 			
 			return event.respondWith( $mol_wire_async( file ).blob().then( blob => {
 				

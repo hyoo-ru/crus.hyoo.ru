@@ -1,6 +1,6 @@
 $hyoo_crus_auth_slot $mol_page
 	title \🎰 Grab
-	realm $hyoo_crus_realm
+	glob $hyoo_crus_glob
 	prefix? \
 	found*? /string
 	body /

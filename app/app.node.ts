@@ -6,7 +6,7 @@ namespace $ {
 		_yard() {
 			$mol_wire_solid()
 			setTimeout( ()=> this._sync() )
-			return this.$.$hyoo_crus_realm.yard()
+			return this.$.$hyoo_crus_glob.yard()
 		}
 		
 		@ $mol_mem

@@ -1,11 +1,11 @@
 namespace $ {
-	/** Realm synchronizer */
+	/** Glob synchronizer */
 	export class $hyoo_crus_yard extends $mol_object {
 		
 		/** Whole global graph database which contains Lands */
 		@ $mol_mem
-		realm() {
-			return null! as $hyoo_crus_realm
+		glob() {
+			return null! as $hyoo_crus_glob
 		}
 		
 		lands_neonatals = new $mol_wire_set< $hyoo_crus_ref >()
@@ -197,7 +197,7 @@ namespace $ {
 			}
 			
 			this.face_port_sync( port, parts.lands )
-			this.$.$hyoo_crus_realm.apply_parts( parts.lands, parts.rocks )
+			this.$.$hyoo_crus_glob.apply_parts( parts.lands, parts.rocks )
 			
 		}
 		
@@ -275,7 +275,7 @@ namespace $ {
 				const faces = this.face_port_land([ port, land ])
 				if( !faces ) return
 				
-				const Land = this.$.$hyoo_crus_realm.Land( land )
+				const Land = this.$.$hyoo_crus_glob.Land( land )
 				Land.saving()
 				
 				const parts = Land.delta_parts( faces )
@@ -301,7 +301,7 @@ namespace $ {
 		@ $mol_mem_key
 		init_port_land( [ port, land ]: [ $mol_rest_port, $hyoo_crus_ref ] ) {
 			// $mol_wire_solid() 
-			const Land = this.$.$hyoo_crus_realm.Land( land )
+			const Land = this.$.$hyoo_crus_glob.Land( land )
 			Land.loading()
 			this.$.$mol_log3_rise({
 				place: this,

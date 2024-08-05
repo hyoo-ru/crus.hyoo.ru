@@ -1,11 +1,11 @@
 namespace $.$$ {
-	export class $hyoo_crus_realm_book extends $.$hyoo_crus_realm_book {
+	export class $hyoo_crus_glob_book extends $.$hyoo_crus_glob_book {
 		
 		@ $mol_mem
 		override spread_ids() {
 			const spread = this.spread()
 			const spread_land = $hyoo_crus_ref_land( $hyoo_crus_ref( spread ) )
-			return [ ... this.$.$hyoo_crus_realm.lands_touched.values() ].flatMap( land => {
+			return [ ... this.$.$hyoo_crus_glob.lands_touched.values() ].flatMap( land => {
 				return land === spread_land
 					? [ land.description!, spread ]
 					: [ land.description! ]
@@ -13,17 +13,17 @@ namespace $.$$ {
 		}
 		
 		override land( id: string ) {
-			return this.$.$hyoo_crus_realm.Land( $hyoo_crus_ref_land( $hyoo_crus_ref( id ) ) )
+			return this.$.$hyoo_crus_glob.Land( $hyoo_crus_ref_land( $hyoo_crus_ref( id ) ) )
 		}
 		
 		override node( id: string ) {
-			return this.$.$hyoo_crus_realm.Node( $hyoo_crus_ref( id ), $hyoo_crus_dict )
+			return this.$.$hyoo_crus_glob.Node( $hyoo_crus_ref( id ), $hyoo_crus_dict )
 		}
 		
 		override spread_title( id: string ) {
 			const ref = $hyoo_crus_ref( id )
 			try {
-				var title = this.$.$hyoo_crus_realm.Node( ref, $hyoo_crus_entity ).Title()?.val()
+				var title = this.$.$hyoo_crus_glob.Node( ref, $hyoo_crus_entity ).Title()?.val()
 			} catch( error ) {
 				$mol_fail_log( error )
 			}
@@ -41,7 +41,7 @@ namespace $.$$ {
 		override land_add( preset: $hyoo_crus_rank_preset ) {
 			
 			this.$.$mol_dom_context.location.href = this.$.$mol_state_arg.link({
-				[ this.param() ]: this.$.$hyoo_crus_realm.land_grab( preset ).ref().description!
+				[ this.param() ]: this.$.$hyoo_crus_glob.land_grab( preset ).ref().description!
 			})
 			
 			return null
@@ -49,11 +49,11 @@ namespace $.$$ {
 		
 		@ $mol_action
 		override update( files: File[] ) {
-			const realm = this.$.$hyoo_crus_realm
+			const glob = this.$.$hyoo_crus_glob
 			for( const file of files ) {
 				const dump = $mol_wire_sync( file ).arrayBuffer()
 				const pack = new $hyoo_crus_pack( dump )
-				realm.apply_pack( pack )
+				glob.apply_pack( pack )
 			}
 			return []
 		}

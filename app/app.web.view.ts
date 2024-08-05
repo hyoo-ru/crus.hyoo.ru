@@ -3,7 +3,7 @@ namespace $.$$ {
 		
 		@ $mol_mem
 		auto() {
-			this.$.$hyoo_crus_realm.home()
+			this.$.$hyoo_crus_glob.home()
 		}
 		
 	}

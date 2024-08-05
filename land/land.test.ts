@@ -145,7 +145,7 @@ namespace $ {
 		
 		'Land fork & merge'( $ ) {
 			
-			const home = $.$hyoo_crus_realm.home().land()
+			const home = $.$hyoo_crus_glob.home().land()
 			const left = home.fork()
 			
 			home.Data( $hyoo_crus_list_vary ).items_vary([ 'foo', 'xxx' ])
@@ -180,7 +180,7 @@ namespace $ {
 		
 		'Inner refs is relative to land'( $ ) {
 			
-			const Alice = $.$hyoo_crus_realm.home().land()
+			const Alice = $.$hyoo_crus_glob.home().land()
 			const Bella = Alice.fork()
 			
 			const alice_val = Alice.Node( $hyoo_crus_atom_str ).Item( 'qwertyui' )
