@@ -165,14 +165,16 @@
     "$mol_tree2_xml_from_dom",
     "$mol_tree2_xml_from",
     "$mol_tree2_xml",
+    "$mol_hash_string",
+    "$mol_hash",
     "$mol_reconcile",
     "$mol_type_override",
     "$hyoo_crus_fund",
+    "$mol_graph",
     "$hyoo_crus_mine",
     "$hyoo_crus_mine_pg",
     "$hyoo_crus_mine_fs",
     "$mol_bus",
-    "$mol_graph",
     "$mol_wire_race"
   ],
   "dependencies": {
