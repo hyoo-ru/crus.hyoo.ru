@@ -99,7 +99,7 @@ namespace $.$$ {
 			const Target = this.prop().Target()?.remote()
 			
 			if( rights === 'local' ) {
-				const remote = node.local_ensure()!
+				const remote = node.ensure(null)!
 				if( Target ) remote.Kind(null)?.remote( Target )
 				return null
 			}
@@ -112,7 +112,7 @@ namespace $.$$ {
 			} as Record< string, $hyoo_crus_rank_preset > )[ rights as any ]
 			
 			if( preset ) {
-				const remote = node.remote_ensure( preset )!
+				const remote = node.ensure( preset )!
 				if( Target ) remote.Kind(null)?.remote( Target )
 				return null
 			}

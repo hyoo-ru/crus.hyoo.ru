@@ -51,6 +51,24 @@ namespace $ {
 			return this.Data( $hyoo_crus_home )
 		}
 		
+		@ $mol_action
+		area_make( idea = Math.floor( Math.random() * 2**48 ) ) {
+			
+			const id = $mol_base64_ae_encode( new Uint8Array( new BigUint64Array([ BigInt( idea ) ]).buffer, 0, 6 ) )
+			const ref = $hyoo_crus_ref( $hyoo_crus_ref_lord( this.ref() ).description! + '_' + id )
+			
+			const area = this.$.$hyoo_crus_glob.Land( ref )
+			const errors = area.apply_unit( this.unit_sort([ ... this.pass.values(), ... this.gift.values() ]) )
+			
+			for( const error of errors ) this.$.$mol_log3_warn({
+				place: `${this}.area_make()`,
+				message: error,
+				hint: 'Send it to developer',
+			})
+			
+			return area
+		}
+		
 		/** Data root */
 		@ $mol_mem_key
 		Data< Node extends typeof $hyoo_crus_node >( Node: Node ) {
@@ -101,7 +119,7 @@ namespace $ {
 		@ $mol_mem_key
 		lord_rank( lord: $hyoo_crus_ref, next?: $hyoo_crus_rank ) {
 			
-			if( lord === this.ref() ) return $hyoo_crus_rank.law
+			if( lord === $hyoo_crus_ref_lord( this.ref() ) ) return $hyoo_crus_rank.law
 			
 			const prev = this.gift.get( lord )?.rank()
 				?? this.gift.get( $hyoo_crus_ref( '' ) )?.rank()
@@ -123,6 +141,36 @@ namespace $ {
 			const auth = this.pass.get( peer )!
 			if( !auth ) return $hyoo_crus_rank.get
 			return this.lord_rank( auth.lord() )
+		}
+		
+		unit_sort( units: readonly $hyoo_crus_unit[] ) {
+		
+			const dict = new Map< string, $hyoo_crus_unit >()
+			for( const unit of units ) dict.set( unit.key(), unit )
+			
+			const lord = $hyoo_crus_ref_lord( this.ref() )
+			
+			const graph = new $mol_graph< string, void >()
+			for( const unit of units ) {
+				unit.choose({
+					pass: pass => {
+						if( pass.lord() === lord ) return
+						graph.link( pass.key(), '' )
+					},
+					gift: gift => {
+						graph.link( $hyoo_crus_ref_peer( gift.dest() ), gift.key() )
+						graph.link( gift.key(), gift.peer() )
+					},
+					sand: sand=> {
+						graph.link( sand.key(), sand.peer() )
+					},
+				})
+			}
+			
+			graph.acyclic( ()=> 1 ) 
+			
+			return [ ... graph.sorted ].map( key => dict.get( key )! ).filter( Boolean )
+	
 		}
 		
 		/** Picks units between Face and current state. */
@@ -735,29 +783,7 @@ namespace $ {
 			
 			$mol_wire_solid()
 			
-			let units = this.$.$hyoo_crus_mine.units( this.ref() ) ?? []
-			
-			const dict = new Map< string, $hyoo_crus_unit >()
-			for( const unit of units ) dict.set( unit.key(), unit )
-				
-			const graph = new $mol_graph< string, void >()
-			for( const unit of units ) {
-				unit.choose({
-					pass: pass => {
-						graph.link( pass.key(), '' )
-					},
-					gift: gift => {
-						graph.link( $hyoo_crus_ref_peer( gift.dest() ), gift.key() )
-						graph.link( gift.key(), gift.peer() )
-					},
-					sand: sand=> {
-						graph.link( sand.key(), sand.peer() )
-					},
-				})
-			}
-			
-			graph.acyclic( ()=> 1 ) 
-			units = [ ... graph.sorted ].map( key => dict.get( key )! ).filter( Boolean )
+			let units = this.unit_sort( this.$.$hyoo_crus_mine.units( this.ref() ) ?? [] )
 			
 			$mol_wire_sync( this.$ ).$mol_log3_rise({
 				place: this,

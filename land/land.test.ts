@@ -199,6 +199,16 @@ namespace $ {
 			
 		},
 		
+		'Land Area inherits rights'( $ ) {
+			
+			const base = $.$hyoo_crus_glob.land_grab({ '': $hyoo_crus_rank.mod })
+			const area = base.area_make()
+			
+			$mol_assert_equal( area.lord_rank( area.auth().lord() ), $hyoo_crus_rank.law )
+			$mol_assert_equal( area.lord_rank( $hyoo_crus_ref( '' ) ), $hyoo_crus_rank.mod )
+			
+		},
+		
 		// async 'Merge text changes'() {
 			
 		// 	const base = new $hyoo_crus_land( 1n, 1 )

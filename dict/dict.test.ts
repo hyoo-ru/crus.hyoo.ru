@@ -80,7 +80,7 @@ namespace $.$$ {
 			user.Title(null)!.val( 'Jin' )
 			$mol_assert_equal( user.Title()!.val() ?? '', 'Jin' )
 			
-			const account = user.Account(null)!.remote_ensure({ '': $hyoo_crus_rank.get })!
+			const account = user.Account(null)!.ensure({ '': $hyoo_crus_rank.get })!
 			$mol_assert_equal( user.Account()?.remote() ?? null, account )
 			$mol_assert_equal( account.User()?.remote() ?? null, null )
 			

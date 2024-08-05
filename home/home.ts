@@ -11,7 +11,7 @@ namespace $ {
 			Node: Node,
 			preset?: $hyoo_crus_rank_preset
 		) {
-			return this.Hall(null)?.remote_ensure( preset )?.cast( Node ) ?? null
+			return this.Hall(null)?.ensure( preset )?.cast( Node ) ?? null
 		}
 		
 	}

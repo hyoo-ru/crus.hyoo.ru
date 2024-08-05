@@ -154,22 +154,7 @@ namespace $ {
 				return '$hyoo_crus_atom_ref_to<' + ( Value as any )() + '>'
 			}
 			
-			@ $mol_mem
-			yoke( preset?: $hyoo_crus_rank_preset ) {
-				
-				const glob = this.$.$hyoo_crus_glob
-				const Ref = this.cast( $hyoo_crus_atom_ref )
-				const ref = Ref.val()
-				if( ref ) return glob.Land( ref )
-				if( preset === undefined ) return null
-				
-				const land = glob.land_grab( preset )
-				Ref.val( land.ref() )
-				
-				return land
-			}
-			
-			/** Reference atom Node */
+			/** Target Node */
 			@ $mol_mem
 			remote(
 				next?: null | $mol_type_result< $mol_type_result< this['Value'] > >
@@ -183,18 +168,48 @@ namespace $ {
 				
 			}
 			
-			/** Reference atom Node. Create if not exists */
-			// @ $mol_mem
-			remote_ensure( preset?: $hyoo_crus_rank_preset ) {
-				this.yoke( preset )
+			/** Target Node. Creates if not exists. */
+			ensure( config?: null | $hyoo_crus_rank_preset | $hyoo_crus_land ) {
+				
+				if( !this.val() ) {
+					if( config === null ) this.ensure_here()
+					else if( config instanceof $hyoo_crus_land ) this.ensure_area( config )
+					else if( config ) this.ensure_lord( config )
+					else return null
+				}
+				
 				return this.remote()
 			}
+			
+			@ $mol_action
+			ensure_here() {
+				const idea = $mol_hash_string( this.ref().description! )
+				const head = this.land().self_make( idea )
+				const node = this.land().Node( ( Value as any )() ).Item( head )
+				this.remote( node )
+			}
+			
+			@ $mol_action
+			ensure_area( land: $hyoo_crus_land ) {
+				const idea = $mol_hash_string( this.ref().description! )
+				const area = land.area_make( idea )
+				this.val( area.ref() )
+			}
+			
+			@ $mol_action
+			ensure_lord( preset: $hyoo_crus_rank_preset ) {
+				const land = this.$.$hyoo_crus_glob.land_grab( preset )
+				this.val( land.ref() )
+			}
+			
+			/** @deprecated Use ensure( preset ) */
+			remote_ensure( preset?: $hyoo_crus_rank_preset ) {
+				return this.ensure( preset )
+			}
 
-			@ $mol_mem
+			/** @deprecated Use ensure( null ) */
 			local_ensure() {
-				if( this.remote() ) return this.remote()!
-				const node = this.land().Node( ( Value as any )() ).Item( this.land().self_make() )
-				return this.remote( node )
+				return this.ensure( null )
 			}
 
 		}

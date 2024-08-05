@@ -55,7 +55,7 @@ namespace $.$$ {
 			const land = $.$hyoo_crus_glob.home().land()
 			
 			const reg = land.Node( $hyoo_crus_atom_ref_to( ()=> $hyoo_crus_atom_vary ) ).Item( '11111111' )
-			const remote = reg.remote_ensure({ '': $hyoo_crus_rank.get })!
+			const remote = reg.ensure({ '': $hyoo_crus_rank.get })!
 			
 			$mol_assert_unique( reg.land(), remote.land() )
 			$mol_assert_equal( reg.vary()!, remote.ref() )
