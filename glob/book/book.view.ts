@@ -32,7 +32,7 @@ namespace $.$$ {
 			const prefix = [
 				'',
 				'',
-				'🌍 ',
+				'🌄 ',
 				'   🧩 ',
 			][ chunks.length ]
 			return prefix + suffix
