@@ -612,7 +612,7 @@ namespace $ {
 				if( bin.byteLength > 32 ) unit.hash( this.$.$hyoo_crus_mine.hash( bin ), tip, tag )
 				else unit.data( bin, tip, tag )
 			}
-		
+			
 			unit.self( self || this.self_make( unit.idea() ) )
 			
 			const error = this.apply_unit_trust([ unit ])[0]

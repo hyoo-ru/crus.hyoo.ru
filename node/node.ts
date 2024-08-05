@@ -23,7 +23,7 @@ namespace $ {
 		/** Reference to Node/Land/Lord. */
 		@ $mol_memo.method
 		ref() {
-			return $hyoo_crus_ref( this.land_ref().description + '_' + this.head() )
+			return $hyoo_crus_ref_resolve( this.land_ref(),  $hyoo_crus_ref( '___' + this.head() ) )
 		}
 		
 		toJSON() {
