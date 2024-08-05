@@ -12132,7 +12132,7 @@ var $;
             return units;
         }
         static async db() {
-            return await this.$.$mol_db('$hyoo_crus', mig => mig.store_make('Rock'), mig => mig.store_make('Land'), mig => mig.stores.Land.clear());
+            return await this.$.$mol_db('$hyoo_crus', mig => mig.store_make('Rock'), mig => mig.store_make('Land'), mig => mig.stores.Land.clear(), mig => mig.stores.Land.clear());
         }
     }
     __decorate([
