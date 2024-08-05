@@ -2028,10 +2028,9 @@ $hyoo_crus_land_grab $mol_select
 		private @ \🔐 Private
 	grab? null $hyoo_crus_rank_preset
 
-$hyoo_crus_realm_book $mol_book2_catalog
-	menu_title \🌌 Realm
+$hyoo_crus_glob_book $mol_book2_catalog
+	menu_title \🌌 Glob
 	param \ref
-	realm $hyoo_crus_realm
 	Spread* <= Land* $hyoo_crus_land_page
 		land <= land* $hyoo_crus_land
 		node <= node* $hyoo_crus_dict
@@ -2057,7 +2056,7 @@ $mol_icon_play $mol_icon path \M8,5.14V19.14L19,12.14L8,5.14Z
 
 $hyoo_crus_auth_slot $mol_page
 	title \🎰 Grab
-	realm $hyoo_crus_realm
+	glob $hyoo_crus_glob
 	prefix? \
 	found*? /string
 	body /
@@ -2234,7 +2233,7 @@ $hyoo_crus_app $mol_book2_catalog
 				menu_title \💨 Info
 				side_main_id \sy2u0y_9rb8zj
 				Gap* null
-		realm <= Realm $hyoo_crus_realm_book
+		glob <= Glob $hyoo_crus_glob_book
 			addon_tools /
 				<= Spread_close
 		slot <= Slot $hyoo_crus_auth_slot

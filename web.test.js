@@ -4258,7 +4258,7 @@ var $;
             $mol_assert_equal((await land.sand_ordered('')).length, 1);
         },
         'Land fork & merge'($) {
-            const home = $.$hyoo_crus_realm.home().land();
+            const home = $.$hyoo_crus_glob.home().land();
             const left = home.fork();
             home.Data($hyoo_crus_list_vary).items_vary(['foo', 'xxx']);
             $mol_assert_equal(home.Data($hyoo_crus_list_vary).items_vary(), ['foo', 'xxx']);
@@ -4282,7 +4282,7 @@ var $;
             $mol_assert_equal(both.Data($hyoo_crus_list_vary).items_vary(), ['foo', 'zzz']);
         },
         'Inner refs is relative to land'($) {
-            const Alice = $.$hyoo_crus_realm.home().land();
+            const Alice = $.$hyoo_crus_glob.home().land();
             const Bella = Alice.fork();
             const alice_val = Alice.Node($hyoo_crus_atom_str).Item('qwertyui');
             const bella_val = Bella.Node($hyoo_crus_atom_str).Item('qwertyui');
@@ -4925,7 +4925,7 @@ var $;
                     Author: $hyoo_crus_atom_ref_to(() => User),
                 }) {
                 }
-                const land = $.$hyoo_crus_realm.home().land();
+                const land = $.$hyoo_crus_glob.home().land();
                 const user = land.Node(User).Item('11111111');
                 $mol_assert_equal(user.Title()?.val() ?? null, null);
                 $mol_assert_equal(user.Account()?.remote() ?? null, null);
@@ -5075,7 +5075,7 @@ var $;
                 $mol_assert_equal(reg.val(), null);
             },
             "Narrow registers"($) {
-                const land = $.$hyoo_crus_realm.home().land();
+                const land = $.$hyoo_crus_glob.home().land();
                 const bin = land.Node($hyoo_crus_atom_bin).Item('11111111');
                 $mol_assert_equal(bin.val(), null);
                 bin.val(new Uint8Array([1, 2, 3]));
@@ -5099,7 +5099,7 @@ var $;
                 $mol_assert_equal(reg.val(), null);
             },
             "Hyper link to another land"($) {
-                const land = $.$hyoo_crus_realm.home().land();
+                const land = $.$hyoo_crus_glob.home().land();
                 const reg = land.Node($hyoo_crus_atom_ref_to(() => $hyoo_crus_atom_vary)).Item('11111111');
                 const remote = reg.remote_ensure({ '': $hyoo_crus_rank.get });
                 $mol_assert_unique(reg.land(), remote.land());
@@ -5107,7 +5107,7 @@ var $;
                 $mol_assert_equal(reg.remote(), remote);
             },
             "Register with linked nodes"($) {
-                const land = $.$hyoo_crus_realm.home().land();
+                const land = $.$hyoo_crus_glob.home().land();
                 const str = land.Node($hyoo_crus_atom_str).Item('11111111');
                 const ref = land.Node($hyoo_crus_atom_ref_to(() => $hyoo_crus_atom_str)).Item('11111111');
                 $mol_assert_equal(ref.remote(), null);
@@ -5117,7 +5117,7 @@ var $;
             "Enumerated reg type"($) {
                 class FileType extends $hyoo_crus_atom_enum(['file', 'dir', 'link']) {
                 }
-                const land = $.$hyoo_crus_realm.home().land();
+                const land = $.$hyoo_crus_glob.home().land();
                 const type = land.Data(FileType);
                 $mol_assert_equal(type.val(), null);
                 type.val('file');
@@ -5137,7 +5137,7 @@ var $;
 (function ($_1) {
     $mol_test({
         'Per app profiles'($) {
-            const base = $.$hyoo_crus_realm.home();
+            const base = $.$hyoo_crus_glob.home();
             const hall = base.hall_by($hyoo_crus_dict, { '': $hyoo_crus_rank.get });
             $mol_assert_unique(base.land(), hall);
         },
@@ -5386,11 +5386,11 @@ var $;
 var $;
 (function ($_1) {
     $mol_test_mocks.push($ => {
-        class $hyoo_crus_realm_mock extends $.$hyoo_crus_realm {
+        class $hyoo_crus_glob_mock extends $.$hyoo_crus_glob {
             static $ = $;
             static lands_touched = new $mol_wire_set();
         }
-        $.$hyoo_crus_realm = $hyoo_crus_realm_mock;
+        $.$hyoo_crus_glob = $hyoo_crus_glob_mock;
     });
 })($ || ($ = {}));
 

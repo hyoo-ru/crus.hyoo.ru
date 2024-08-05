@@ -3362,7 +3362,7 @@ declare namespace $ {
 
 declare namespace $ {
     class $hyoo_crus_yard extends $mol_object {
-        realm(): $hyoo_crus_realm;
+        glob(): $hyoo_crus_glob;
         lands_neonatals: $mol_wire_set<symbol & {
             $hyoo_crus_ref: symbol;
         }>;
@@ -3399,7 +3399,7 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    class $hyoo_crus_realm extends $mol_object {
+    class $hyoo_crus_glob extends $mol_object {
         static lands_touched: $mol_wire_set<symbol & {
             $hyoo_crus_ref: symbol;
         }>;
