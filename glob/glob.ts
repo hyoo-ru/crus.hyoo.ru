@@ -43,7 +43,7 @@ namespace $ {
 			
 			for( const key in preset ) colony.give( key ? $hyoo_crus_auth.from( key ) : null, preset[ key ] )
 			
-			this.Land( colony.ref() ).apply_unit_trust( colony.delta_unit() )
+			this.Land( colony.ref() ).apply_unit( colony.delta_unit() )
 			
 			return king
 		}

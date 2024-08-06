@@ -41,13 +41,13 @@ namespace $.$$ {
 			dict1.dive( 123, $hyoo_crus_atom_vary, null )!.vary( 666 )
 			land2.faces.tick()
 			dict2.dive( 123, $hyoo_crus_atom_vary, null )!.vary( 777 )
-			land1.apply_unit_trust( land2.delta_unit() )
+			land1.apply_unit( land2.delta_unit() )
 			$mol_assert_equal( dict1.dive( 123, $hyoo_crus_atom_vary )!.vary(), 777 )
 			
 			dict1.dive( 'xxx', $hyoo_crus_list_vary, null )!.items_vary([ 'foo' ])
 			land2.faces.tick()
 			dict2.dive( 'xxx', $hyoo_crus_list_vary, null )!.items_vary([ 'bar' ])
-			land1.apply_unit_trust( land2.delta_unit() )
+			land1.apply_unit( land2.delta_unit() )
 			$mol_assert_equal( dict1.dive( 'xxx', $hyoo_crus_list_vary )!.items_vary(), [ 'bar', 'foo' ] )
 
 		},

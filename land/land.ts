@@ -400,7 +400,7 @@ namespace $ {
 		}
 		
 		apply_land( land: $hyoo_crus_land ) {
-			return this.apply_unit_trust( land.delta_unit() )
+			return this.apply_unit( land.delta_unit() )
 		}
 		
 		recheck() {
@@ -572,7 +572,7 @@ namespace $ {
 			next.auth( auth.public().asArray() )
 			next._land = this
 			
-			const error = this.apply_unit_trust([ next ])[0]
+			const error = this.apply_unit([ next ])[0]
 			if( error ) $mol_fail( new Error( error ) )
 			
 			this.broadcast()
@@ -619,7 +619,7 @@ namespace $ {
 				
 			}
 			
-			const error = this.apply_unit_trust([ unit ])[0]
+			const error = this.apply_unit([ unit ])[0]
 			if( error ) $mol_fail( new Error( error ) )
 			
 			this.broadcast()
@@ -663,7 +663,7 @@ namespace $ {
 			
 			unit.self( self || this.self_make( unit.idea() ) )
 			
-			const error = this.apply_unit_trust([ unit ])[0]
+			const error = this.apply_unit([ unit ])[0]
 			if( error ) $mol_fail( new Error( error ) )
 			
 			this.broadcast()
@@ -768,8 +768,9 @@ namespace $ {
 				`$hyoo_crus_land:${ this.ref().description }`,
 				$mol_wire_async( bins => {
 					
-					this.apply_unit_trust( bins.map( bin => {
+					this.apply_unit( bins.map( bin => {
 						const unit = new $hyoo_crus_unit( bin ).narrow()
+						$hyoo_crus_unit_trusted.add( unit )
 						this.$.$hyoo_crus_mine.units_persisted.add( unit )
 						return unit
 					} ) )
@@ -962,6 +963,7 @@ namespace $ {
 			const secret_mutual = auth.secret_mutual( auth.public().toString() )
 			
 			const unit = new $hyoo_crus_gift
+			$hyoo_crus_unit_trusted.add( unit )
 			
 			unit.rank( $hyoo_crus_rank.law )
 			unit.time( this.faces.tick() )
@@ -972,7 +974,7 @@ namespace $ {
 			const secret_closed = $mol_wire_sync( secret_mutual ).encrypt( secret_land, unit.salt() )
 			unit.bill().set( new Uint8Array( secret_closed ) )
 			
-			const error = this.apply_unit_trust([ unit ])[0]
+			const error = this.apply_unit([ unit ])[0]
 			if( error ) $mol_fail( new Error( error ) )
 			
 			return next
