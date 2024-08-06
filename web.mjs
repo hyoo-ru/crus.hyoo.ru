@@ -12482,7 +12482,15 @@ var $;
                 rocks: [],
             }).asArray();
             for (const port of this.ports()) {
+                if (!this.port_lands_passive(port).has(land.ref()))
+                    continue;
                 this.port_lands_passive(port).delete(land.ref());
+                this.$.$mol_log3_rise({
+                    place: this,
+                    message: 'Forget Land',
+                    port: $mol_key(port),
+                    land: land.ref(),
+                });
                 port.send_bin(pack);
             }
         }
