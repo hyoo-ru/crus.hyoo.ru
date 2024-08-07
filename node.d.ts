@@ -1807,11 +1807,11 @@ declare namespace $ {
         [$mol_ambient_ref]: $;
     }) & {
         parse: Parse;
+        toString(): any;
         tag: keyof typeof $hyoo_crus_sand_tag;
         make<This extends typeof $mol_object>(this: This, config: Partial<InstanceType<This>>): InstanceType<This>;
         $: $;
         create<Instance>(this: new (init?: (instance: any) => void) => Instance, init?: (instance: $mol_type_writable<Instance>) => void): Instance;
-        toString(): any;
         toJSON(): any;
         destructor(): void;
         [Symbol.toPrimitive](): any;
@@ -1855,11 +1855,11 @@ declare namespace $ {
         [$mol_ambient_ref]: $;
     }) & {
         parse: typeof $hyoo_crus_vary_cast_bin;
+        toString(): any;
         tag: keyof typeof $hyoo_crus_sand_tag;
         make<This extends typeof $mol_object>(this: This, config: Partial<InstanceType<This>>): InstanceType<This>;
         $: $;
         create<Instance>(this: new (init?: (instance: any) => void) => Instance, init?: (instance: $mol_type_writable<Instance>) => void): Instance;
-        toString(): any;
         toJSON(): any;
         destructor(): void;
         [Symbol.toPrimitive](): any;
@@ -1905,11 +1905,11 @@ declare namespace $ {
         [$mol_ambient_ref]: $;
     }) & {
         parse: typeof $hyoo_crus_vary_cast_bool;
+        toString(): any;
         tag: keyof typeof $hyoo_crus_sand_tag;
         make<This extends typeof $mol_object>(this: This, config: Partial<InstanceType<This>>): InstanceType<This>;
         $: $;
         create<Instance>(this: new (init?: (instance: any) => void) => Instance, init?: (instance: $mol_type_writable<Instance>) => void): Instance;
-        toString(): any;
         toJSON(): any;
         destructor(): void;
         [Symbol.toPrimitive](): any;
@@ -1955,11 +1955,11 @@ declare namespace $ {
         [$mol_ambient_ref]: $;
     }) & {
         parse: typeof $hyoo_crus_vary_cast_int;
+        toString(): any;
         tag: keyof typeof $hyoo_crus_sand_tag;
         make<This extends typeof $mol_object>(this: This, config: Partial<InstanceType<This>>): InstanceType<This>;
         $: $;
         create<Instance>(this: new (init?: (instance: any) => void) => Instance, init?: (instance: $mol_type_writable<Instance>) => void): Instance;
-        toString(): any;
         toJSON(): any;
         destructor(): void;
         [Symbol.toPrimitive](): any;
@@ -2005,11 +2005,11 @@ declare namespace $ {
         [$mol_ambient_ref]: $;
     }) & {
         parse: typeof $hyoo_crus_vary_cast_real;
+        toString(): any;
         tag: keyof typeof $hyoo_crus_sand_tag;
         make<This extends typeof $mol_object>(this: This, config: Partial<InstanceType<This>>): InstanceType<This>;
         $: $;
         create<Instance>(this: new (init?: (instance: any) => void) => Instance, init?: (instance: $mol_type_writable<Instance>) => void): Instance;
-        toString(): any;
         toJSON(): any;
         destructor(): void;
         [Symbol.toPrimitive](): any;
@@ -2059,11 +2059,11 @@ declare namespace $ {
         [$mol_ambient_ref]: $;
     }) & {
         parse: typeof $hyoo_crus_vary_cast_ref;
+        toString(): any;
         tag: keyof typeof $hyoo_crus_sand_tag;
         make<This extends typeof $mol_object>(this: This, config: Partial<InstanceType<This>>): InstanceType<This>;
         $: $;
         create<Instance>(this: new (init?: (instance: any) => void) => Instance, init?: (instance: $mol_type_writable<Instance>) => void): Instance;
-        toString(): any;
         toJSON(): any;
         destructor(): void;
         [Symbol.toPrimitive](): any;
@@ -2109,11 +2109,11 @@ declare namespace $ {
         [$mol_ambient_ref]: $;
     }) & {
         parse: typeof $hyoo_crus_vary_cast_str;
+        toString(): any;
         tag: keyof typeof $hyoo_crus_sand_tag;
         make<This extends typeof $mol_object>(this: This, config: Partial<InstanceType<This>>): InstanceType<This>;
         $: $;
         create<Instance>(this: new (init?: (instance: any) => void) => Instance, init?: (instance: $mol_type_writable<Instance>) => void): Instance;
-        toString(): any;
         toJSON(): any;
         destructor(): void;
         [Symbol.toPrimitive](): any;
@@ -2159,11 +2159,11 @@ declare namespace $ {
         [$mol_ambient_ref]: $;
     }) & {
         parse: typeof $hyoo_crus_vary_cast_time;
+        toString(): any;
         tag: keyof typeof $hyoo_crus_sand_tag;
         make<This extends typeof $mol_object>(this: This, config: Partial<InstanceType<This>>): InstanceType<This>;
         $: $;
         create<Instance>(this: new (init?: (instance: any) => void) => Instance, init?: (instance: $mol_type_writable<Instance>) => void): Instance;
-        toString(): any;
         toJSON(): any;
         destructor(): void;
         [Symbol.toPrimitive](): any;
@@ -2209,11 +2209,11 @@ declare namespace $ {
         [$mol_ambient_ref]: $;
     }) & {
         parse: typeof $hyoo_crus_vary_cast_dur;
+        toString(): any;
         tag: keyof typeof $hyoo_crus_sand_tag;
         make<This extends typeof $mol_object>(this: This, config: Partial<InstanceType<This>>): InstanceType<This>;
         $: $;
         create<Instance>(this: new (init?: (instance: any) => void) => Instance, init?: (instance: $mol_type_writable<Instance>) => void): Instance;
-        toString(): any;
         toJSON(): any;
         destructor(): void;
         [Symbol.toPrimitive](): any;
@@ -2259,11 +2259,11 @@ declare namespace $ {
         [$mol_ambient_ref]: $;
     }) & {
         parse: typeof $hyoo_crus_vary_cast_range;
+        toString(): any;
         tag: keyof typeof $hyoo_crus_sand_tag;
         make<This extends typeof $mol_object>(this: This, config: Partial<InstanceType<This>>): InstanceType<This>;
         $: $;
         create<Instance>(this: new (init?: (instance: any) => void) => Instance, init?: (instance: $mol_type_writable<Instance>) => void): Instance;
-        toString(): any;
         toJSON(): any;
         destructor(): void;
         [Symbol.toPrimitive](): any;
@@ -2309,11 +2309,11 @@ declare namespace $ {
         [$mol_ambient_ref]: $;
     }) & {
         parse: typeof $hyoo_crus_vary_cast_json;
+        toString(): any;
         tag: keyof typeof $hyoo_crus_sand_tag;
         make<This extends typeof $mol_object>(this: This, config: Partial<InstanceType<This>>): InstanceType<This>;
         $: $;
         create<Instance>(this: new (init?: (instance: any) => void) => Instance, init?: (instance: $mol_type_writable<Instance>) => void): Instance;
-        toString(): any;
         toJSON(): any;
         destructor(): void;
         [Symbol.toPrimitive](): any;
@@ -2359,11 +2359,11 @@ declare namespace $ {
         [$mol_ambient_ref]: $;
     }) & {
         parse: typeof $hyoo_crus_vary_cast_jsan;
+        toString(): any;
         tag: keyof typeof $hyoo_crus_sand_tag;
         make<This extends typeof $mol_object>(this: This, config: Partial<InstanceType<This>>): InstanceType<This>;
         $: $;
         create<Instance>(this: new (init?: (instance: any) => void) => Instance, init?: (instance: $mol_type_writable<Instance>) => void): Instance;
-        toString(): any;
         toJSON(): any;
         destructor(): void;
         [Symbol.toPrimitive](): any;
@@ -2409,11 +2409,11 @@ declare namespace $ {
         [$mol_ambient_ref]: $;
     }) & {
         parse: typeof $hyoo_crus_vary_cast_dom;
+        toString(): any;
         tag: keyof typeof $hyoo_crus_sand_tag;
         make<This extends typeof $mol_object>(this: This, config: Partial<InstanceType<This>>): InstanceType<This>;
         $: $;
         create<Instance>(this: new (init?: (instance: any) => void) => Instance, init?: (instance: $mol_type_writable<Instance>) => void): Instance;
-        toString(): any;
         toJSON(): any;
         destructor(): void;
         [Symbol.toPrimitive](): any;
@@ -2459,11 +2459,11 @@ declare namespace $ {
         [$mol_ambient_ref]: $;
     }) & {
         parse: typeof $hyoo_crus_vary_cast_tree;
+        toString(): any;
         tag: keyof typeof $hyoo_crus_sand_tag;
         make<This extends typeof $mol_object>(this: This, config: Partial<InstanceType<This>>): InstanceType<This>;
         $: $;
         create<Instance>(this: new (init?: (instance: any) => void) => Instance, init?: (instance: $mol_type_writable<Instance>) => void): Instance;
-        toString(): any;
         toJSON(): any;
         destructor(): void;
         [Symbol.toPrimitive](): any;
@@ -2520,13 +2520,13 @@ declare namespace $ {
             [$mol_ambient_ref]: $;
         };
         Value: Value;
-        toJSON(): string;
+        toString(): any;
         parse: typeof $hyoo_crus_vary_cast_ref;
         tag: keyof typeof $hyoo_crus_sand_tag;
         make<This extends typeof $mol_object>(this: This, config: Partial<InstanceType<This>>): InstanceType<This>;
         $: $;
         create<Instance>(this: new (init?: (instance: any) => void) => Instance, init?: (instance: $mol_type_writable<Instance>) => void): Instance;
-        toString(): any;
+        toJSON(): any;
         destructor(): void;
         [Symbol.toPrimitive](): any;
     };
@@ -2538,8 +2538,7 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    const $hyoo_crus_dict_base: typeof $hyoo_crus_list_vary;
-    export class $hyoo_crus_dict extends $hyoo_crus_dict_base {
+    class $hyoo_crus_dict extends $hyoo_crus_list_vary {
         static tag: keyof typeof $hyoo_crus_sand_tag;
         keys(): readonly $hyoo_crus_vary_type[];
         dive<Node extends typeof $hyoo_crus_node>(key: $hyoo_crus_vary_type, Node: Node, auto?: any): InstanceType<Node> | null;
@@ -2553,7 +2552,7 @@ declare namespace $ {
             } & Schema;
         };
     }
-    export function $hyoo_crus_dict_to<Value extends {
+    function $hyoo_crus_dict_to<Value extends {
         tag: keyof typeof $hyoo_crus_sand_tag;
         new (): {};
     }>(Value: Value): {
@@ -2616,7 +2615,6 @@ declare namespace $ {
         destructor(): void;
         [Symbol.toPrimitive](): any;
     };
-    export {};
 }
 
 declare namespace $ {
@@ -2664,11 +2662,11 @@ declare namespace $ {
         [$mol_ambient_ref]: $;
     }) & {
         options: Options;
+        toString(): any;
         tag: keyof typeof $hyoo_crus_sand_tag;
         make<This extends typeof $mol_object>(this: This, config: Partial<InstanceType<This>>): InstanceType<This>;
         $: $;
         create<Instance>(this: new (init?: (instance: any) => void) => Instance, init?: (instance: $mol_type_writable<Instance>) => void): Instance;
-        toString(): any;
         toJSON(): any;
         destructor(): void;
         [Symbol.toPrimitive](): any;
@@ -2705,11 +2703,11 @@ declare namespace $ {
         [$mol_ambient_ref]: $;
     }) & {
         parse: Parse;
+        toString(): any;
         tag: keyof typeof $hyoo_crus_sand_tag;
         make<This extends typeof $mol_object>(this: This, config: Partial<InstanceType<This>>): InstanceType<This>;
         $: $;
         create<Instance>(this: new (init?: (instance: any) => void) => Instance, init?: (instance: $mol_type_writable<Instance>) => void): Instance;
-        toString(): any;
         toJSON(): any;
         destructor(): void;
         [Symbol.toPrimitive](): any;
@@ -2746,11 +2744,11 @@ declare namespace $ {
         [$mol_ambient_ref]: $;
     }) & {
         parse: typeof $hyoo_crus_vary_cast_bin;
+        toString(): any;
         tag: keyof typeof $hyoo_crus_sand_tag;
         make<This extends typeof $mol_object>(this: This, config: Partial<InstanceType<This>>): InstanceType<This>;
         $: $;
         create<Instance>(this: new (init?: (instance: any) => void) => Instance, init?: (instance: $mol_type_writable<Instance>) => void): Instance;
-        toString(): any;
         toJSON(): any;
         destructor(): void;
         [Symbol.toPrimitive](): any;
@@ -2789,11 +2787,11 @@ declare namespace $ {
         [$mol_ambient_ref]: $;
     }) & {
         parse: typeof $hyoo_crus_vary_cast_bool;
+        toString(): any;
         tag: keyof typeof $hyoo_crus_sand_tag;
         make<This extends typeof $mol_object>(this: This, config: Partial<InstanceType<This>>): InstanceType<This>;
         $: $;
         create<Instance>(this: new (init?: (instance: any) => void) => Instance, init?: (instance: $mol_type_writable<Instance>) => void): Instance;
-        toString(): any;
         toJSON(): any;
         destructor(): void;
         [Symbol.toPrimitive](): any;
@@ -2832,11 +2830,11 @@ declare namespace $ {
         [$mol_ambient_ref]: $;
     }) & {
         parse: typeof $hyoo_crus_vary_cast_int;
+        toString(): any;
         tag: keyof typeof $hyoo_crus_sand_tag;
         make<This extends typeof $mol_object>(this: This, config: Partial<InstanceType<This>>): InstanceType<This>;
         $: $;
         create<Instance>(this: new (init?: (instance: any) => void) => Instance, init?: (instance: $mol_type_writable<Instance>) => void): Instance;
-        toString(): any;
         toJSON(): any;
         destructor(): void;
         [Symbol.toPrimitive](): any;
@@ -2875,11 +2873,11 @@ declare namespace $ {
         [$mol_ambient_ref]: $;
     }) & {
         parse: typeof $hyoo_crus_vary_cast_real;
+        toString(): any;
         tag: keyof typeof $hyoo_crus_sand_tag;
         make<This extends typeof $mol_object>(this: This, config: Partial<InstanceType<This>>): InstanceType<This>;
         $: $;
         create<Instance>(this: new (init?: (instance: any) => void) => Instance, init?: (instance: $mol_type_writable<Instance>) => void): Instance;
-        toString(): any;
         toJSON(): any;
         destructor(): void;
         [Symbol.toPrimitive](): any;
@@ -2922,11 +2920,11 @@ declare namespace $ {
         [$mol_ambient_ref]: $;
     }) & {
         parse: typeof $hyoo_crus_vary_cast_ref;
+        toString(): any;
         tag: keyof typeof $hyoo_crus_sand_tag;
         make<This extends typeof $mol_object>(this: This, config: Partial<InstanceType<This>>): InstanceType<This>;
         $: $;
         create<Instance>(this: new (init?: (instance: any) => void) => Instance, init?: (instance: $mol_type_writable<Instance>) => void): Instance;
-        toString(): any;
         toJSON(): any;
         destructor(): void;
         [Symbol.toPrimitive](): any;
@@ -2965,11 +2963,11 @@ declare namespace $ {
         [$mol_ambient_ref]: $;
     }) & {
         parse: typeof $hyoo_crus_vary_cast_str;
+        toString(): any;
         tag: keyof typeof $hyoo_crus_sand_tag;
         make<This extends typeof $mol_object>(this: This, config: Partial<InstanceType<This>>): InstanceType<This>;
         $: $;
         create<Instance>(this: new (init?: (instance: any) => void) => Instance, init?: (instance: $mol_type_writable<Instance>) => void): Instance;
-        toString(): any;
         toJSON(): any;
         destructor(): void;
         [Symbol.toPrimitive](): any;
@@ -3008,11 +3006,11 @@ declare namespace $ {
         [$mol_ambient_ref]: $;
     }) & {
         parse: typeof $hyoo_crus_vary_cast_time;
+        toString(): any;
         tag: keyof typeof $hyoo_crus_sand_tag;
         make<This extends typeof $mol_object>(this: This, config: Partial<InstanceType<This>>): InstanceType<This>;
         $: $;
         create<Instance>(this: new (init?: (instance: any) => void) => Instance, init?: (instance: $mol_type_writable<Instance>) => void): Instance;
-        toString(): any;
         toJSON(): any;
         destructor(): void;
         [Symbol.toPrimitive](): any;
@@ -3051,11 +3049,11 @@ declare namespace $ {
         [$mol_ambient_ref]: $;
     }) & {
         parse: typeof $hyoo_crus_vary_cast_dur;
+        toString(): any;
         tag: keyof typeof $hyoo_crus_sand_tag;
         make<This extends typeof $mol_object>(this: This, config: Partial<InstanceType<This>>): InstanceType<This>;
         $: $;
         create<Instance>(this: new (init?: (instance: any) => void) => Instance, init?: (instance: $mol_type_writable<Instance>) => void): Instance;
-        toString(): any;
         toJSON(): any;
         destructor(): void;
         [Symbol.toPrimitive](): any;
@@ -3094,11 +3092,11 @@ declare namespace $ {
         [$mol_ambient_ref]: $;
     }) & {
         parse: typeof $hyoo_crus_vary_cast_range;
+        toString(): any;
         tag: keyof typeof $hyoo_crus_sand_tag;
         make<This extends typeof $mol_object>(this: This, config: Partial<InstanceType<This>>): InstanceType<This>;
         $: $;
         create<Instance>(this: new (init?: (instance: any) => void) => Instance, init?: (instance: $mol_type_writable<Instance>) => void): Instance;
-        toString(): any;
         toJSON(): any;
         destructor(): void;
         [Symbol.toPrimitive](): any;
@@ -3137,11 +3135,11 @@ declare namespace $ {
         [$mol_ambient_ref]: $;
     }) & {
         parse: typeof $hyoo_crus_vary_cast_json;
+        toString(): any;
         tag: keyof typeof $hyoo_crus_sand_tag;
         make<This extends typeof $mol_object>(this: This, config: Partial<InstanceType<This>>): InstanceType<This>;
         $: $;
         create<Instance>(this: new (init?: (instance: any) => void) => Instance, init?: (instance: $mol_type_writable<Instance>) => void): Instance;
-        toString(): any;
         toJSON(): any;
         destructor(): void;
         [Symbol.toPrimitive](): any;
@@ -3180,11 +3178,11 @@ declare namespace $ {
         [$mol_ambient_ref]: $;
     }) & {
         parse: typeof $hyoo_crus_vary_cast_jsan;
+        toString(): any;
         tag: keyof typeof $hyoo_crus_sand_tag;
         make<This extends typeof $mol_object>(this: This, config: Partial<InstanceType<This>>): InstanceType<This>;
         $: $;
         create<Instance>(this: new (init?: (instance: any) => void) => Instance, init?: (instance: $mol_type_writable<Instance>) => void): Instance;
-        toString(): any;
         toJSON(): any;
         destructor(): void;
         [Symbol.toPrimitive](): any;
@@ -3223,11 +3221,11 @@ declare namespace $ {
         [$mol_ambient_ref]: $;
     }) & {
         parse: typeof $hyoo_crus_vary_cast_dom;
+        toString(): any;
         tag: keyof typeof $hyoo_crus_sand_tag;
         make<This extends typeof $mol_object>(this: This, config: Partial<InstanceType<This>>): InstanceType<This>;
         $: $;
         create<Instance>(this: new (init?: (instance: any) => void) => Instance, init?: (instance: $mol_type_writable<Instance>) => void): Instance;
-        toString(): any;
         toJSON(): any;
         destructor(): void;
         [Symbol.toPrimitive](): any;
@@ -3266,11 +3264,11 @@ declare namespace $ {
         [$mol_ambient_ref]: $;
     }) & {
         parse: typeof $hyoo_crus_vary_cast_tree;
+        toString(): any;
         tag: keyof typeof $hyoo_crus_sand_tag;
         make<This extends typeof $mol_object>(this: This, config: Partial<InstanceType<This>>): InstanceType<This>;
         $: $;
         create<Instance>(this: new (init?: (instance: any) => void) => Instance, init?: (instance: $mol_type_writable<Instance>) => void): Instance;
-        toString(): any;
         toJSON(): any;
         destructor(): void;
         [Symbol.toPrimitive](): any;
@@ -3324,7 +3322,7 @@ declare namespace $ {
             [Symbol.toStringTag]: string;
             [$mol_ambient_ref]: $;
         };
-        toString(): string;
+        toString(): any;
         Value: typeof $hyoo_crus_dict;
         parse: typeof $hyoo_crus_vary_cast_ref;
         tag: keyof typeof $hyoo_crus_sand_tag;
@@ -3448,7 +3446,7 @@ declare namespace $ {
                     [Symbol.toStringTag]: string;
                     [$mol_ambient_ref]: $;
                 };
-                toString(): string;
+                toString(): any;
                 Value: typeof $hyoo_crus_dict;
                 parse: typeof $hyoo_crus_vary_cast_ref;
                 tag: keyof typeof $hyoo_crus_sand_tag;

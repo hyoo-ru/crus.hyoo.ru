@@ -7739,6 +7739,9 @@ var $;
             items(next) {
                 return this.items_vary(next?.map(parse)).map(parse);
             }
+            static toString() {
+                return this === Narrow ? '$hyoo_crus_list<' + this.$.$mol_func_name(parse) + '>' : super.toString();
+            }
         }
         __decorate([
             $mol_mem
@@ -7789,10 +7792,10 @@ var $;
     }
     $.$hyoo_crus_list_ref_base = $hyoo_crus_list_ref_base;
     function $hyoo_crus_list_ref_to(Value) {
-        class Ref extends $hyoo_crus_list_ref_base {
+        class Ref_list extends $hyoo_crus_list_ref_base {
             static Value = Value;
-            static toJSON() {
-                return '$hyoo_crus_list_to<' + Value() + '>';
+            static toString() {
+                return this === Ref_list ? '$hyoo_crus_list_ref_to<' + Value() + '>' : super.toString();
             }
             remote_list(next) {
                 const glob = this.$.$hyoo_crus_glob;
@@ -7821,17 +7824,17 @@ var $;
         }
         __decorate([
             $mol_mem
-        ], Ref.prototype, "remote_list", null);
+        ], Ref_list.prototype, "remote_list", null);
         __decorate([
             $mol_action
-        ], Ref.prototype, "remote_add", null);
+        ], Ref_list.prototype, "remote_add", null);
         __decorate([
             $mol_action
-        ], Ref.prototype, "remote_make", null);
+        ], Ref_list.prototype, "remote_make", null);
         __decorate([
             $mol_action
-        ], Ref.prototype, "local_make", null);
-        return Ref;
+        ], Ref_list.prototype, "local_make", null);
+        return Ref_list;
     }
     $.$hyoo_crus_list_ref_to = $hyoo_crus_list_ref_to;
 })($ || ($ = {}));
@@ -7843,7 +7846,7 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    class $hyoo_crus_dict extends ($hyoo_crus_list_vary) {
+    class $hyoo_crus_dict extends $hyoo_crus_list_vary {
         static tag = $hyoo_crus_sand_tag[$hyoo_crus_sand_tag.keys];
         keys() {
             return this.items_vary();
@@ -7958,6 +7961,9 @@ var $;
     function $hyoo_crus_atom_enum(options) {
         class Narrow extends $hyoo_crus_atom_enum_base {
             static options = options;
+            static toString() {
+                return this === Narrow ? '$hyoo_crus_atom_enum<' + options.map($hyoo_crus_vary_cast_str) + '>' : super.toString();
+            }
             val(next) {
                 validate: if (next !== undefined) {
                     for (const option of options) {
@@ -7993,6 +7999,9 @@ var $;
                 catch {
                     return null;
                 }
+            }
+            static toString() {
+                return this === Narrow ? '$hyoo_crus_atom<' + this.$.$mol_func_name(parse) + '>' : super.toString();
             }
         }
         return Narrow;
@@ -8045,7 +8054,7 @@ var $;
         class Ref extends $hyoo_crus_atom_ref_base {
             Value = Value;
             static toString() {
-                return '$hyoo_crus_atom_ref_to<' + Value() + '>';
+                return this === Ref ? '$hyoo_crus_atom_ref_to<' + Value() + '>' : super.toString();
             }
             remote(next) {
                 let ref = next?.ref() ?? next;
