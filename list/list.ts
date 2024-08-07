@@ -137,6 +137,10 @@ namespace $ {
 				return this.items_vary( next?.map( parse ) ).map( parse )
 			}
 
+			static toString() {
+				return this === Narrow ? '$hyoo_crus_list<' + this.$.$mol_func_name( parse ) + '>' : super.toString()
+			}
+			
 		}
 
 		return Narrow
@@ -179,12 +183,12 @@ namespace $ {
 		Vals extends readonly any[] = readonly $mol_type_result< $mol_type_result< Value > >[]
 	>( Value: Value ) {
 		
-		class Ref extends $hyoo_crus_list_ref_base {
+		class Ref_list extends $hyoo_crus_list_ref_base {
 			
 			static Value = Value
 			
-			static toJSON() {
-				return '$hyoo_crus_list_to<' + ( Value as any )() + '>'
+			static toString() {
+				return this === Ref_list ? '$hyoo_crus_list_ref_to<' + ( Value as any )() + '>' : super.toString()
 			}
 			
 			/** List of referenced Nodes */
@@ -224,7 +228,7 @@ namespace $ {
 			
 		}
 		
-		return Ref
+		return Ref_list
 	}
 	
 }

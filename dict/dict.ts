@@ -1,8 +1,6 @@
 namespace $ {
 	/** Mergeable dictionary node with any keys mapped to any embedded Node types */
-	export class $hyoo_crus_dict extends (
-		$hyoo_crus_list_vary
-	) {
+	export class $hyoo_crus_dict extends $hyoo_crus_list_vary {
 		
 		static tag = $hyoo_crus_sand_tag[ $hyoo_crus_sand_tag.keys ] as keyof typeof $hyoo_crus_sand_tag
 		

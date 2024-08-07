@@ -56,6 +56,10 @@ namespace $ {
 
 			static options = options;
 
+			static toString() {
+				return this === Narrow ? '$hyoo_crus_atom_enum<' + options.map( $hyoo_crus_vary_cast_str ) + '>' : super.toString()
+			}
+			
 			@ $mol_mem
 			val( next?: Options[number] ): Options[number] | null {
 				
@@ -103,6 +107,10 @@ namespace $ {
 				
 			}
 
+			static toString() {
+				return this === Narrow ? '$hyoo_crus_atom<' + this.$.$mol_func_name( parse ) + '>' : super.toString()
+			}
+			
 		}
 
 		return Narrow
@@ -151,7 +159,7 @@ namespace $ {
 			Value = Value;
 
 			static toString() {
-				return '$hyoo_crus_atom_ref_to<' + ( Value as any )() + '>'
+				return this === Ref ? '$hyoo_crus_atom_ref_to<' + ( Value as any )() + '>' : super.toString()
 			}
 			
 			/** Target Node */
