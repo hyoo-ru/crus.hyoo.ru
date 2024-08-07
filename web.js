@@ -11505,19 +11505,19 @@ var $;
     ], $hyoo_crus_list_vary.prototype, "items_vary", null);
     $.$hyoo_crus_list_vary = $hyoo_crus_list_vary;
     function $hyoo_crus_list(parse) {
-        class Narrow extends $hyoo_crus_list_vary {
+        class $hyoo_crus_list extends $hyoo_crus_list_vary {
             static parse = parse;
             items(next) {
                 return this.items_vary(next?.map(parse)).map(parse);
             }
             static toString() {
-                return this === Narrow ? '$hyoo_crus_list<' + this.$.$mol_func_name(parse) + '>' : super.toString();
+                return this === $hyoo_crus_list ? '$hyoo_crus_list<' + this.$.$mol_func_name(parse) + '>' : super.toString();
             }
         }
         __decorate([
             $mol_mem
-        ], Narrow.prototype, "items", null);
-        return Narrow;
+        ], $hyoo_crus_list.prototype, "items", null);
+        return $hyoo_crus_list;
     }
     $.$hyoo_crus_list = $hyoo_crus_list;
     class $hyoo_crus_list_bin extends $hyoo_crus_list($hyoo_crus_vary_cast_bin) {
@@ -11563,10 +11563,10 @@ var $;
     }
     $.$hyoo_crus_list_ref_base = $hyoo_crus_list_ref_base;
     function $hyoo_crus_list_ref_to(Value) {
-        class Ref_list extends $hyoo_crus_list_ref_base {
+        class $hyoo_crus_list_ref_to extends $hyoo_crus_list_ref_base {
             static Value = Value;
             static toString() {
-                return this === Ref_list ? '$hyoo_crus_list_ref_to<' + Value() + '>' : super.toString();
+                return this === $hyoo_crus_list_ref_to ? '$hyoo_crus_list_ref_to<' + Value() + '>' : super.toString();
             }
             remote_list(next) {
                 const glob = this.$.$hyoo_crus_glob;
@@ -11595,17 +11595,17 @@ var $;
         }
         __decorate([
             $mol_mem
-        ], Ref_list.prototype, "remote_list", null);
+        ], $hyoo_crus_list_ref_to.prototype, "remote_list", null);
         __decorate([
             $mol_action
-        ], Ref_list.prototype, "remote_add", null);
+        ], $hyoo_crus_list_ref_to.prototype, "remote_add", null);
         __decorate([
             $mol_action
-        ], Ref_list.prototype, "remote_make", null);
+        ], $hyoo_crus_list_ref_to.prototype, "remote_make", null);
         __decorate([
             $mol_action
-        ], Ref_list.prototype, "local_make", null);
-        return Ref_list;
+        ], $hyoo_crus_list_ref_to.prototype, "local_make", null);
+        return $hyoo_crus_list_ref_to;
     }
     $.$hyoo_crus_list_ref_to = $hyoo_crus_list_ref_to;
 })($ || ($ = {}));
@@ -11662,13 +11662,13 @@ var $;
         }
     }
     function $hyoo_crus_dict_to(Value) {
-        return class Dict extends $hyoo_crus_dict {
+        return class $hyoo_crus_dict_to extends $hyoo_crus_dict {
             Value = Value;
             key(key, auto) {
                 return this.dive(key, this.Value, auto);
             }
             static toString() {
-                return this === Dict ? '$hyoo_crus_dict_to<' + Value + '>' : super.toString();
+                return this === $hyoo_crus_dict_to ? '$hyoo_crus_dict_to<' + Value + '>' : super.toString();
             }
         };
     }
@@ -11708,10 +11708,10 @@ var $;
     }
     $.$hyoo_crus_atom_enum_base = $hyoo_crus_atom_enum_base;
     function $hyoo_crus_atom_enum(options) {
-        class Narrow extends $hyoo_crus_atom_enum_base {
+        class $hyoo_crus_atom_enum extends $hyoo_crus_atom_enum_base {
             static options = options;
             static toString() {
-                return this === Narrow ? '$hyoo_crus_atom_enum<' + options.map($hyoo_crus_vary_cast_str) + '>' : super.toString();
+                return this === $hyoo_crus_atom_enum ? '$hyoo_crus_atom_enum<' + options.map($hyoo_crus_vary_cast_str) + '>' : super.toString();
             }
             val(next) {
                 validate: if (next !== undefined) {
@@ -11731,12 +11731,12 @@ var $;
         }
         __decorate([
             $mol_mem
-        ], Narrow.prototype, "val", null);
-        return Narrow;
+        ], $hyoo_crus_atom_enum.prototype, "val", null);
+        return $hyoo_crus_atom_enum;
     }
     $.$hyoo_crus_atom_enum = $hyoo_crus_atom_enum;
     function $hyoo_crus_atom(parse) {
-        class Narrow extends $hyoo_crus_atom_vary {
+        class $hyoo_crus_atom extends $hyoo_crus_atom_vary {
             static parse = parse;
             val(next) {
                 if (next !== undefined)
@@ -11750,10 +11750,10 @@ var $;
                 }
             }
             static toString() {
-                return this === Narrow ? '$hyoo_crus_atom<' + this.$.$mol_func_name(parse) + '>' : super.toString();
+                return this === $hyoo_crus_atom ? '$hyoo_crus_atom<' + this.$.$mol_func_name(parse) + '>' : super.toString();
             }
         }
-        return Narrow;
+        return $hyoo_crus_atom;
     }
     $.$hyoo_crus_atom = $hyoo_crus_atom;
     class $hyoo_crus_atom_bin extends $hyoo_crus_atom($hyoo_crus_vary_cast_bin) {
@@ -11800,10 +11800,10 @@ var $;
     }
     $.$hyoo_crus_atom_ref_base = $hyoo_crus_atom_ref_base;
     function $hyoo_crus_atom_ref_to(Value) {
-        class Ref extends $hyoo_crus_atom_ref_base {
+        class $hyoo_crus_atom_ref_to extends $hyoo_crus_atom_ref_base {
             Value = Value;
             static toString() {
-                return this === Ref ? '$hyoo_crus_atom_ref_to<' + Value() + '>' : super.toString();
+                return this === $hyoo_crus_atom_ref_to ? '$hyoo_crus_atom_ref_to<' + Value() + '>' : super.toString();
             }
             remote(next) {
                 let ref = next?.ref() ?? next;
@@ -11849,17 +11849,17 @@ var $;
         }
         __decorate([
             $mol_mem
-        ], Ref.prototype, "remote", null);
+        ], $hyoo_crus_atom_ref_to.prototype, "remote", null);
         __decorate([
             $mol_action
-        ], Ref.prototype, "ensure_here", null);
+        ], $hyoo_crus_atom_ref_to.prototype, "ensure_here", null);
         __decorate([
             $mol_action
-        ], Ref.prototype, "ensure_area", null);
+        ], $hyoo_crus_atom_ref_to.prototype, "ensure_area", null);
         __decorate([
             $mol_action
-        ], Ref.prototype, "ensure_lord", null);
-        return Ref;
+        ], $hyoo_crus_atom_ref_to.prototype, "ensure_lord", null);
+        return $hyoo_crus_atom_ref_to;
     }
     $.$hyoo_crus_atom_ref_to = $hyoo_crus_atom_ref_to;
 })($ || ($ = {}));
