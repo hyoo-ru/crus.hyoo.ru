@@ -86,7 +86,7 @@ namespace $ {
 		Value extends { tag: keyof typeof $hyoo_crus_sand_tag, new(): {} }
 	>( Value: Value ) {
 		
-		return class Dict extends $hyoo_crus_dict {
+		return class $hyoo_crus_dict_to extends $hyoo_crus_dict {
 			
 			Value = Value
 			
@@ -95,7 +95,7 @@ namespace $ {
 			}
 			
 			static toString() {
-				return this === Dict ? '$hyoo_crus_dict_to<' + Value + '>' : super.toString()
+				return this === $hyoo_crus_dict_to ? '$hyoo_crus_dict_to<' + Value + '>' : super.toString()
 			}
 			
 		}

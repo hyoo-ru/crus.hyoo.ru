@@ -52,12 +52,12 @@ namespace $ {
 		const Options extends readonly $hyoo_crus_vary_type[]
 	>( options: Options ) {
 
-		abstract class Narrow extends $hyoo_crus_atom_enum_base {
+		abstract class $hyoo_crus_atom_enum extends $hyoo_crus_atom_enum_base {
 
 			static options = options;
 
 			static toString() {
-				return this === Narrow ? '$hyoo_crus_atom_enum<' + options.map( $hyoo_crus_vary_cast_str ) + '>' : super.toString()
+				return this === $hyoo_crus_atom_enum ? '$hyoo_crus_atom_enum<' + options.map( $hyoo_crus_vary_cast_str ) + '>' : super.toString()
 			}
 			
 			@ $mol_mem
@@ -81,7 +81,7 @@ namespace $ {
 
 		}
 
-		return Narrow
+		return $hyoo_crus_atom_enum
 	}
 
 	/** Atomic narrowed register factory */
@@ -89,7 +89,7 @@ namespace $ {
 		Parse extends $mol_data_value
 	>( parse: Parse ) {
 
-		abstract class Narrow extends $hyoo_crus_atom_vary {
+		abstract class $hyoo_crus_atom extends $hyoo_crus_atom_vary {
 
 			static parse = parse;
 
@@ -108,12 +108,12 @@ namespace $ {
 			}
 
 			static toString() {
-				return this === Narrow ? '$hyoo_crus_atom<' + this.$.$mol_func_name( parse ) + '>' : super.toString()
+				return this === $hyoo_crus_atom ? '$hyoo_crus_atom<' + this.$.$mol_func_name( parse ) + '>' : super.toString()
 			}
 			
 		}
 
-		return Narrow
+		return $hyoo_crus_atom
 	}
 	
 	/** Atomic non empty binary register */
@@ -154,12 +154,12 @@ namespace $ {
 	/** Atomic reference to some Node type register */
 	export function $hyoo_crus_atom_ref_to< const Value extends any >( Value: Value ) {
 
-		class Ref extends $hyoo_crus_atom_ref_base {
+		class $hyoo_crus_atom_ref_to extends $hyoo_crus_atom_ref_base {
 
 			Value = Value;
 
 			static toString() {
-				return this === Ref ? '$hyoo_crus_atom_ref_to<' + ( Value as any )() + '>' : super.toString()
+				return this === $hyoo_crus_atom_ref_to ? '$hyoo_crus_atom_ref_to<' + ( Value as any )() + '>' : super.toString()
 			}
 			
 			/** Target Node */
@@ -222,7 +222,7 @@ namespace $ {
 
 		}
 
-		return Ref
+		return $hyoo_crus_atom_ref_to
 	}
 	
 }

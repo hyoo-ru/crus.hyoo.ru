@@ -128,7 +128,7 @@ namespace $ {
 		Parse extends $mol_data_value
 	>( parse: Parse ) {
 
-		abstract class Narrow extends $hyoo_crus_list_vary {
+		abstract class $hyoo_crus_list extends $hyoo_crus_list_vary {
 
 			static parse = parse;
 
@@ -138,12 +138,12 @@ namespace $ {
 			}
 
 			static toString() {
-				return this === Narrow ? '$hyoo_crus_list<' + this.$.$mol_func_name( parse ) + '>' : super.toString()
+				return this === $hyoo_crus_list ? '$hyoo_crus_list<' + this.$.$mol_func_name( parse ) + '>' : super.toString()
 			}
 			
 		}
 
-		return Narrow
+		return $hyoo_crus_list
 	}
 
 	/** Mergeable list of atomic non empty binaries */
@@ -183,12 +183,12 @@ namespace $ {
 		Vals extends readonly any[] = readonly $mol_type_result< $mol_type_result< Value > >[]
 	>( Value: Value ) {
 		
-		class Ref_list extends $hyoo_crus_list_ref_base {
+		class $hyoo_crus_list_ref_to extends $hyoo_crus_list_ref_base {
 			
 			static Value = Value
 			
 			static toString() {
-				return this === Ref_list ? '$hyoo_crus_list_ref_to<' + ( Value as any )() + '>' : super.toString()
+				return this === $hyoo_crus_list_ref_to ? '$hyoo_crus_list_ref_to<' + ( Value as any )() + '>' : super.toString()
 			}
 			
 			/** List of referenced Nodes */
@@ -228,7 +228,7 @@ namespace $ {
 			
 		}
 		
-		return Ref_list
+		return $hyoo_crus_list_ref_to
 	}
 	
 }
