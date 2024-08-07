@@ -736,7 +736,7 @@ namespace $ {
 		}
 		
 		broadcast() {
-			this.$.$hyoo_crus_glob.yard().lands_neonatals.add( this.ref() )
+			this.$.$hyoo_crus_glob.yard().lands_news.add( this.ref() )
 		}
 		
 		@ $mol_mem

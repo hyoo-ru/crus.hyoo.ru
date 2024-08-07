@@ -8,7 +8,7 @@ namespace $ {
 			return null! as $hyoo_crus_glob
 		}
 		
-		lands_neonatals = new $mol_wire_set< $hyoo_crus_ref >()
+		lands_news = new $mol_wire_set< $hyoo_crus_ref >()
 		
 		static masters = [] as string[]
 		
@@ -113,18 +113,28 @@ namespace $ {
 		
 		@ $mol_mem
 		sync() {
-			this.sync_neonatals()
+			this.sync_news()
 			this.sync_port()
 		}
 		
 		@ $mol_mem
-		sync_neonatals() {
-			for( const port of this.ports() ) {
-				for( const land of this.lands_neonatals ) {
-					this.sync_port_land([ port, land ])
+		sync_news() {
+			
+			const glob = this.$.$hyoo_crus_glob
+			const lands = [ ... this.lands_news ].map( ref =>  glob.Land( ref ) )
+			
+			try {
+				for( const port of this.ports() ) {
+					for( const land of lands ) {
+						this.sync_port_land([ port, land.ref() ])
+					}
 				}
+				for( const land of lands ) land.saving()
+				this.lands_news.clear()
+			} catch( error ) {
+				$mol_fail_log( error )
 			}
-			this.lands_neonatals.clear()
+			
 		}
 		
 		@ $mol_mem

@@ -71,21 +71,42 @@ namespace $ {
 			const land = this.land()
 			let last = 0
 			
-			const map = {
-				term: ()=> null,
-				solo: ()=> land.Node( $hyoo_crus_atom_vary ),
-				vals: ()=> land.Node( $hyoo_crus_list_vary ),
-				keys: ()=> land.Node( $hyoo_crus_dict ),
-			}
-			
 			const visit = ( sand: $hyoo_crus_sand )=> {
 				if( sand.time() > last ) last = sand.time()
-				map[ sand.tag() ]()?.Item( sand.self() ).units().forEach( visit )
+				if( sand.tag() === 'term' ) return
+				land.Node( $hyoo_crus_node ).Item( sand.self() ).units().forEach( visit )
 			}
-			for( const sand of this.units() ) visit( sand )
+			this.units().forEach( visit )
 			
-			return last ? new $mol_time_moment( last ) : null
+			return last ? $hyoo_crus_time_moment( last ) : null
 			
+		}
+		
+		/** All author Peers of Node subtree */
+		@ $mol_mem
+		author_peers() {
+			
+			const land = this.land()
+			const peers = new Set< string >()
+			
+			const visit = ( sand: $hyoo_crus_sand )=> {
+				peers.add( sand.peer() )
+				if( sand.tag() === 'term' ) return
+				land.Node( $hyoo_crus_node ).Item( sand.self() ).units().forEach( visit )
+			}
+			this.units().forEach( visit )
+			
+			return [ ... peers ]
+			
+		}
+		
+		/** All author Lords of Node subtree */
+		@ $mol_mem
+		author_lords() {
+			const land = this.land()
+			return this.author_peers()
+				.map( peer => land.pass.get( peer )?.lord() )
+				.filter( $mol_guard_defined )
 		}
 		
 		;[ $mol_dev_format_head ]() {

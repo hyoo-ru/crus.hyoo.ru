@@ -198,10 +198,17 @@ namespace $ {
 					.map( ref => glob.Node( ref, Node ) ) as readonly any[] as Vals
 			}
 			
+			@ $mol_action
+			remote_add( item: Vals[number] ) {
+				this.add( item.ref() )
+			}
+			
 			/** Add new Node which placed in new Land */
 			@ $mol_action
-			remote_make( preset: $hyoo_crus_rank_preset ): Vals[number] {
-				const land = this.$.$hyoo_crus_glob.land_grab( preset )
+			remote_make( config: $hyoo_crus_rank_preset | $hyoo_crus_land ): Vals[number] {
+				const land = ( config instanceof $hyoo_crus_land )
+					? config.area_make()
+					: this.$.$hyoo_crus_glob.land_grab( config )
 				this.splice([ land.ref() ])
 				return land.Node( ( Value as any )() ).Item('')
 			}

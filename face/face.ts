@@ -6,7 +6,7 @@ namespace $ {
 	export class $hyoo_crus_face_map extends Map< string, number > {
 		
 		/** Maximum time for all peers. */
-		last = 0
+		last_time = 0
 		
 		/** Total units count in Land. */
 		total = 0
@@ -30,7 +30,7 @@ namespace $ {
 			time: number,
 		) {
 			
-			if( this.last < time ) this.last = time
+			if( this.last_time < time ) this.last_time = time
 			
 			let prev = this.get( peer ) ?? 0
 			if( prev < time ) this.set( peer, time )
@@ -40,14 +40,19 @@ namespace $ {
 		/** Generates new time for peer that greater then other seen. */
 		@ $mol_action
 		tick() {
-			return this.last = Math.max( this.last + 1, Math.floor( Date.now() * 65.536 ) )
+			return this.last_time = Math.max( this.last_time + 1, Math.floor( Date.now() * 65.536 ) )
+		}
+		
+		/** Last change moment */
+		last_moment() {
+			return $hyoo_crus_time_moment( this.last_time )
 		}
 		
 		[ $mol_dev_format_head ]() {
 			
 			return $mol_dev_format_span( {} ,
 				$mol_dev_format_native( this ) ,
-				$mol_dev_format_shade( ' ', $hyoo_crus_time_dump( this.last ) ) ,
+				$mol_dev_format_shade( ' ', $hyoo_crus_time_dump( this.last_time ) ) ,
 				$mol_dev_format_shade( ' #', this.total ) ,
 			)
 			
