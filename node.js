@@ -7802,7 +7802,7 @@ var $;
     $.$hyoo_crus_list_ref_base = $hyoo_crus_list_ref_base;
     function $hyoo_crus_list_ref_to(Value) {
         class $hyoo_crus_list_ref_to extends $hyoo_crus_list_ref_base {
-            static Value = Value;
+            static Value = $mol_memo.func(Value);
             static toString() {
                 return this === $hyoo_crus_list_ref_to ? '$hyoo_crus_list_ref_to<' + Value() + '>' : super.toString();
             }
@@ -8061,7 +8061,7 @@ var $;
     $.$hyoo_crus_atom_ref_base = $hyoo_crus_atom_ref_base;
     function $hyoo_crus_atom_ref_to(Value) {
         class $hyoo_crus_atom_ref_to extends $hyoo_crus_atom_ref_base {
-            Value = Value;
+            Value = $mol_memo.func(Value);
             static toString() {
                 return this === $hyoo_crus_atom_ref_to ? '$hyoo_crus_atom_ref_to<' + Value() + '>' : super.toString();
             }
