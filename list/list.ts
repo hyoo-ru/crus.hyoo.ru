@@ -185,7 +185,7 @@ namespace $ {
 		
 		class $hyoo_crus_list_ref_to extends $hyoo_crus_list_ref_base {
 			
-			static Value = Value
+			static Value = $mol_memo.func( Value as any ) as Value
 			
 			static toString() {
 				return this === $hyoo_crus_list_ref_to ? '$hyoo_crus_list_ref_to<' + ( Value as any )() + '>' : super.toString()

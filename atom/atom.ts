@@ -156,7 +156,7 @@ namespace $ {
 
 		class $hyoo_crus_atom_ref_to extends $hyoo_crus_atom_ref_base {
 
-			Value = Value;
+			Value = $mol_memo.func( Value as any ) as Value;
 
 			static toString() {
 				return this === $hyoo_crus_atom_ref_to ? '$hyoo_crus_atom_ref_to<' + ( Value as any )() + '>' : super.toString()
