@@ -156,6 +156,7 @@
     "$mol_crypto_secret",
     "$mol_wire_dict",
     "$hyoo_crus_home",
+    "$hyoo_crus_entity",
     "$hyoo_crus_dict",
     "$hyoo_crus_list",
     "$hyoo_crus_node",

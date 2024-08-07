@@ -1184,12 +1184,13 @@ declare namespace $ {
 declare namespace $ {
     type $hyoo_crus_face_data = Iterable<readonly [peer: string, time: number]>;
     class $hyoo_crus_face_map extends Map<string, number> {
-        last: number;
+        last_time: number;
         total: number;
         constructor(entries?: $hyoo_crus_face_data);
         sync(right: $hyoo_crus_face_data): void;
         time_max(peer: string, time: number): void;
         tick(): number;
+        last_moment(): $mol_time_moment;
     }
 }
 
@@ -1359,6 +1360,10 @@ declare namespace $ {
             $hyoo_crus_ref: symbol;
         }): boolean;
         last_change(): $mol_time_moment | null;
+        author_peers(): string[];
+        author_lords(): (symbol & {
+            $hyoo_crus_ref: symbol;
+        })[];
     }
 }
 
@@ -1729,7 +1734,7 @@ declare namespace $ {
             lead: string;
             head: string;
             self: string;
-            tip: "time" | "json" | "bin" | "tree" | "nil" | "bool" | "int" | "real" | "ref" | "str" | "dur" | "range" | "jsan" | "dom";
+            tip: "time" | "json" | "bin" | "tree" | "ref" | "nil" | "bool" | "int" | "real" | "str" | "dur" | "range" | "jsan" | "dom";
             tag: "keys" | "term" | "solo" | "vals";
             size: number;
             time: string;
@@ -1791,6 +1796,10 @@ declare namespace $ {
             $hyoo_crus_ref: symbol;
         }): boolean;
         last_change(): $mol_time_moment | null;
+        author_peers(): string[];
+        author_lords(): (symbol & {
+            $hyoo_crus_ref: symbol;
+        })[];
         $: typeof $$;
         destructor(): void;
         toString(): string;
@@ -1835,6 +1844,10 @@ declare namespace $ {
             $hyoo_crus_ref: symbol;
         }): boolean;
         last_change(): $mol_time_moment | null;
+        author_peers(): string[];
+        author_lords(): (symbol & {
+            $hyoo_crus_ref: symbol;
+        })[];
         $: typeof $$;
         destructor(): void;
         toString(): string;
@@ -1881,6 +1894,10 @@ declare namespace $ {
             $hyoo_crus_ref: symbol;
         }): boolean;
         last_change(): $mol_time_moment | null;
+        author_peers(): string[];
+        author_lords(): (symbol & {
+            $hyoo_crus_ref: symbol;
+        })[];
         $: typeof $$;
         destructor(): void;
         toString(): string;
@@ -1927,6 +1944,10 @@ declare namespace $ {
             $hyoo_crus_ref: symbol;
         }): boolean;
         last_change(): $mol_time_moment | null;
+        author_peers(): string[];
+        author_lords(): (symbol & {
+            $hyoo_crus_ref: symbol;
+        })[];
         $: typeof $$;
         destructor(): void;
         toString(): string;
@@ -1973,6 +1994,10 @@ declare namespace $ {
             $hyoo_crus_ref: symbol;
         }): boolean;
         last_change(): $mol_time_moment | null;
+        author_peers(): string[];
+        author_lords(): (symbol & {
+            $hyoo_crus_ref: symbol;
+        })[];
         $: typeof $$;
         destructor(): void;
         toString(): string;
@@ -2023,6 +2048,10 @@ declare namespace $ {
             $hyoo_crus_ref: symbol;
         }): boolean;
         last_change(): $mol_time_moment | null;
+        author_peers(): string[];
+        author_lords(): (symbol & {
+            $hyoo_crus_ref: symbol;
+        })[];
         $: typeof $$;
         destructor(): void;
         toString(): string;
@@ -2069,6 +2098,10 @@ declare namespace $ {
             $hyoo_crus_ref: symbol;
         }): boolean;
         last_change(): $mol_time_moment | null;
+        author_peers(): string[];
+        author_lords(): (symbol & {
+            $hyoo_crus_ref: symbol;
+        })[];
         $: typeof $$;
         destructor(): void;
         toString(): string;
@@ -2115,6 +2148,10 @@ declare namespace $ {
             $hyoo_crus_ref: symbol;
         }): boolean;
         last_change(): $mol_time_moment | null;
+        author_peers(): string[];
+        author_lords(): (symbol & {
+            $hyoo_crus_ref: symbol;
+        })[];
         $: typeof $$;
         destructor(): void;
         toString(): string;
@@ -2161,6 +2198,10 @@ declare namespace $ {
             $hyoo_crus_ref: symbol;
         }): boolean;
         last_change(): $mol_time_moment | null;
+        author_peers(): string[];
+        author_lords(): (symbol & {
+            $hyoo_crus_ref: symbol;
+        })[];
         $: typeof $$;
         destructor(): void;
         toString(): string;
@@ -2207,6 +2248,10 @@ declare namespace $ {
             $hyoo_crus_ref: symbol;
         }): boolean;
         last_change(): $mol_time_moment | null;
+        author_peers(): string[];
+        author_lords(): (symbol & {
+            $hyoo_crus_ref: symbol;
+        })[];
         $: typeof $$;
         destructor(): void;
         toString(): string;
@@ -2253,6 +2298,10 @@ declare namespace $ {
             $hyoo_crus_ref: symbol;
         }): boolean;
         last_change(): $mol_time_moment | null;
+        author_peers(): string[];
+        author_lords(): (symbol & {
+            $hyoo_crus_ref: symbol;
+        })[];
         $: typeof $$;
         destructor(): void;
         toString(): string;
@@ -2299,6 +2348,10 @@ declare namespace $ {
             $hyoo_crus_ref: symbol;
         }): boolean;
         last_change(): $mol_time_moment | null;
+        author_peers(): string[];
+        author_lords(): (symbol & {
+            $hyoo_crus_ref: symbol;
+        })[];
         $: typeof $$;
         destructor(): void;
         toString(): string;
@@ -2345,6 +2398,10 @@ declare namespace $ {
             $hyoo_crus_ref: symbol;
         }): boolean;
         last_change(): $mol_time_moment | null;
+        author_peers(): string[];
+        author_lords(): (symbol & {
+            $hyoo_crus_ref: symbol;
+        })[];
         $: typeof $$;
         destructor(): void;
         toString(): string;
@@ -2391,6 +2448,10 @@ declare namespace $ {
             $hyoo_crus_ref: symbol;
         }): boolean;
         last_change(): $mol_time_moment | null;
+        author_peers(): string[];
+        author_lords(): (symbol & {
+            $hyoo_crus_ref: symbol;
+        })[];
         $: typeof $$;
         destructor(): void;
         toString(): string;
@@ -2414,7 +2475,8 @@ declare namespace $ {
     export function $hyoo_crus_list_ref_to<const Value extends any, Vals extends readonly any[] = readonly $mol_type_result<$mol_type_result<Value>>[]>(Value: Value): {
         new (): {
             remote_list(next?: Vals): Vals;
-            remote_make(preset: $hyoo_crus_rank_preset): Vals[number];
+            remote_add(item: Vals[number]): void;
+            remote_make(config: $hyoo_crus_rank_preset | $hyoo_crus_land): Vals[number];
             local_make(idea?: number): Vals[number];
             items(next?: readonly ((symbol & {
                 $hyoo_crus_ref: symbol;
@@ -2447,6 +2509,10 @@ declare namespace $ {
                 $hyoo_crus_ref: symbol;
             }): boolean;
             last_change(): $mol_time_moment | null;
+            author_peers(): string[];
+            author_lords(): (symbol & {
+                $hyoo_crus_ref: symbol;
+            })[];
             $: typeof $$;
             destructor(): void;
             toString(): string;
@@ -2522,6 +2588,10 @@ declare namespace $ {
                 $hyoo_crus_ref: symbol;
             }): boolean;
             last_change(): $mol_time_moment | null;
+            author_peers(): string[];
+            author_lords(): (symbol & {
+                $hyoo_crus_ref: symbol;
+            })[];
             $: typeof $$;
             destructor(): void;
             toString(): string;
@@ -2583,6 +2653,10 @@ declare namespace $ {
             $hyoo_crus_ref: symbol;
         }): boolean;
         last_change(): $mol_time_moment | null;
+        author_peers(): string[];
+        author_lords(): (symbol & {
+            $hyoo_crus_ref: symbol;
+        })[];
         $: typeof $$;
         destructor(): void;
         toString(): string;
@@ -2620,6 +2694,10 @@ declare namespace $ {
             $hyoo_crus_ref: symbol;
         }): boolean;
         last_change(): $mol_time_moment | null;
+        author_peers(): string[];
+        author_lords(): (symbol & {
+            $hyoo_crus_ref: symbol;
+        })[];
         $: typeof $$;
         destructor(): void;
         toString(): string;
@@ -2657,6 +2735,10 @@ declare namespace $ {
             $hyoo_crus_ref: symbol;
         }): boolean;
         last_change(): $mol_time_moment | null;
+        author_peers(): string[];
+        author_lords(): (symbol & {
+            $hyoo_crus_ref: symbol;
+        })[];
         $: typeof $$;
         destructor(): void;
         toString(): string;
@@ -2696,6 +2778,10 @@ declare namespace $ {
             $hyoo_crus_ref: symbol;
         }): boolean;
         last_change(): $mol_time_moment | null;
+        author_peers(): string[];
+        author_lords(): (symbol & {
+            $hyoo_crus_ref: symbol;
+        })[];
         $: typeof $$;
         destructor(): void;
         toString(): string;
@@ -2735,6 +2821,10 @@ declare namespace $ {
             $hyoo_crus_ref: symbol;
         }): boolean;
         last_change(): $mol_time_moment | null;
+        author_peers(): string[];
+        author_lords(): (symbol & {
+            $hyoo_crus_ref: symbol;
+        })[];
         $: typeof $$;
         destructor(): void;
         toString(): string;
@@ -2774,6 +2864,10 @@ declare namespace $ {
             $hyoo_crus_ref: symbol;
         }): boolean;
         last_change(): $mol_time_moment | null;
+        author_peers(): string[];
+        author_lords(): (symbol & {
+            $hyoo_crus_ref: symbol;
+        })[];
         $: typeof $$;
         destructor(): void;
         toString(): string;
@@ -2817,6 +2911,10 @@ declare namespace $ {
             $hyoo_crus_ref: symbol;
         }): boolean;
         last_change(): $mol_time_moment | null;
+        author_peers(): string[];
+        author_lords(): (symbol & {
+            $hyoo_crus_ref: symbol;
+        })[];
         $: typeof $$;
         destructor(): void;
         toString(): string;
@@ -2856,6 +2954,10 @@ declare namespace $ {
             $hyoo_crus_ref: symbol;
         }): boolean;
         last_change(): $mol_time_moment | null;
+        author_peers(): string[];
+        author_lords(): (symbol & {
+            $hyoo_crus_ref: symbol;
+        })[];
         $: typeof $$;
         destructor(): void;
         toString(): string;
@@ -2895,6 +2997,10 @@ declare namespace $ {
             $hyoo_crus_ref: symbol;
         }): boolean;
         last_change(): $mol_time_moment | null;
+        author_peers(): string[];
+        author_lords(): (symbol & {
+            $hyoo_crus_ref: symbol;
+        })[];
         $: typeof $$;
         destructor(): void;
         toString(): string;
@@ -2934,6 +3040,10 @@ declare namespace $ {
             $hyoo_crus_ref: symbol;
         }): boolean;
         last_change(): $mol_time_moment | null;
+        author_peers(): string[];
+        author_lords(): (symbol & {
+            $hyoo_crus_ref: symbol;
+        })[];
         $: typeof $$;
         destructor(): void;
         toString(): string;
@@ -2973,6 +3083,10 @@ declare namespace $ {
             $hyoo_crus_ref: symbol;
         }): boolean;
         last_change(): $mol_time_moment | null;
+        author_peers(): string[];
+        author_lords(): (symbol & {
+            $hyoo_crus_ref: symbol;
+        })[];
         $: typeof $$;
         destructor(): void;
         toString(): string;
@@ -3012,6 +3126,10 @@ declare namespace $ {
             $hyoo_crus_ref: symbol;
         }): boolean;
         last_change(): $mol_time_moment | null;
+        author_peers(): string[];
+        author_lords(): (symbol & {
+            $hyoo_crus_ref: symbol;
+        })[];
         $: typeof $$;
         destructor(): void;
         toString(): string;
@@ -3051,6 +3169,10 @@ declare namespace $ {
             $hyoo_crus_ref: symbol;
         }): boolean;
         last_change(): $mol_time_moment | null;
+        author_peers(): string[];
+        author_lords(): (symbol & {
+            $hyoo_crus_ref: symbol;
+        })[];
         $: typeof $$;
         destructor(): void;
         toString(): string;
@@ -3090,6 +3212,10 @@ declare namespace $ {
             $hyoo_crus_ref: symbol;
         }): boolean;
         last_change(): $mol_time_moment | null;
+        author_peers(): string[];
+        author_lords(): (symbol & {
+            $hyoo_crus_ref: symbol;
+        })[];
         $: typeof $$;
         destructor(): void;
         toString(): string;
@@ -3129,6 +3255,10 @@ declare namespace $ {
             $hyoo_crus_ref: symbol;
         }): boolean;
         last_change(): $mol_time_moment | null;
+        author_peers(): string[];
+        author_lords(): (symbol & {
+            $hyoo_crus_ref: symbol;
+        })[];
         $: typeof $$;
         destructor(): void;
         toString(): string;
@@ -3184,6 +3314,10 @@ declare namespace $ {
                 $hyoo_crus_ref: symbol;
             }): boolean;
             last_change(): $mol_time_moment | null;
+            author_peers(): string[];
+            author_lords(): (symbol & {
+                $hyoo_crus_ref: symbol;
+            })[];
             $: typeof $$;
             destructor(): void;
             toString(): string;
@@ -3205,8 +3339,22 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    const $hyoo_crus_home_base: Omit<typeof $hyoo_crus_dict, "prototype"> & (new (...args: any[]) => $mol_type_override<$hyoo_crus_dict, {
+    const $hyoo_crus_entity_base: Omit<typeof $hyoo_crus_dict, "prototype"> & (new (...args: any[]) => $mol_type_override<$hyoo_crus_dict, {
         readonly Title: (auto?: any) => $hyoo_crus_atom_str | null;
+    }>) & {
+        schema: {
+            [x: string]: typeof $hyoo_crus_node;
+        } & {
+            readonly Title: typeof $hyoo_crus_atom_str;
+        };
+    };
+    export class $hyoo_crus_entity extends $hyoo_crus_entity_base {
+    }
+    export {};
+}
+
+declare namespace $ {
+    const $hyoo_crus_home_base: Omit<typeof $hyoo_crus_entity, "prototype"> & (new (...args: any[]) => $mol_type_override<$hyoo_crus_entity, {
         readonly Selection: (auto?: any) => $hyoo_crus_atom_str | null;
         readonly Hall: (auto?: any) => {
             Value: () => typeof $hyoo_crus_dict;
@@ -3241,6 +3389,10 @@ declare namespace $ {
                 $hyoo_crus_ref: symbol;
             }): boolean;
             last_change(): $mol_time_moment | null;
+            author_peers(): string[];
+            author_lords(): (symbol & {
+                $hyoo_crus_ref: symbol;
+            })[];
             $: typeof $$;
             destructor(): void;
             toString(): string;
@@ -3251,7 +3403,6 @@ declare namespace $ {
         schema: {
             [x: string]: typeof $hyoo_crus_node;
         } & {
-            readonly Title: typeof $hyoo_crus_atom_str;
             readonly Selection: typeof $hyoo_crus_atom_str;
             readonly Hall: {
                 new (): {
@@ -3287,6 +3438,10 @@ declare namespace $ {
                         $hyoo_crus_ref: symbol;
                     }): boolean;
                     last_change(): $mol_time_moment | null;
+                    author_peers(): string[];
+                    author_lords(): (symbol & {
+                        $hyoo_crus_ref: symbol;
+                    })[];
                     $: typeof $$;
                     destructor(): void;
                     toString(): string;
@@ -3381,7 +3536,7 @@ declare namespace $ {
 declare namespace $ {
     class $hyoo_crus_yard extends $mol_object {
         glob(): $hyoo_crus_glob;
-        lands_neonatals: $mol_wire_set<symbol & {
+        lands_news: $mol_wire_set<symbol & {
             $hyoo_crus_ref: symbol;
         }>;
         static masters: string[];
@@ -3392,7 +3547,7 @@ declare namespace $ {
         master(): $mol_rest_port | null;
         slaves: $mol_wire_set<$mol_rest_port>;
         sync(): void;
-        sync_neonatals(): void;
+        sync_news(): void;
         sync_port(): void;
         sync_port_lands(port: $mol_rest_port): void;
         ports(): $mol_rest_port[];

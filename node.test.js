@@ -4967,7 +4967,7 @@ var $;
 var $;
 (function ($) {
     class $hyoo_crus_face_map extends Map {
-        last = 0;
+        last_time = 0;
         total = 0;
         constructor(entries) {
             super();
@@ -4981,17 +4981,20 @@ var $;
                 this.time_max(peer, time);
         }
         time_max(peer, time) {
-            if (this.last < time)
-                this.last = time;
+            if (this.last_time < time)
+                this.last_time = time;
             let prev = this.get(peer) ?? 0;
             if (prev < time)
                 this.set(peer, time);
         }
         tick() {
-            return this.last = Math.max(this.last + 1, Math.floor(Date.now() * 65.536));
+            return this.last_time = Math.max(this.last_time + 1, Math.floor(Date.now() * 65.536));
+        }
+        last_moment() {
+            return $hyoo_crus_time_moment(this.last_time);
         }
         [$mol_dev_format_head]() {
-            return $mol_dev_format_span({}, $mol_dev_format_native(this), $mol_dev_format_shade(' ', $hyoo_crus_time_dump(this.last)), $mol_dev_format_shade(' #', this.total));
+            return $mol_dev_format_span({}, $mol_dev_format_native(this), $mol_dev_format_shade(' ', $hyoo_crus_time_dump(this.last_time)), $mol_dev_format_shade(' #', this.total));
         }
     }
     __decorate([
@@ -5537,20 +5540,33 @@ var $;
         last_change() {
             const land = this.land();
             let last = 0;
-            const map = {
-                term: () => null,
-                solo: () => land.Node($hyoo_crus_atom_vary),
-                vals: () => land.Node($hyoo_crus_list_vary),
-                keys: () => land.Node($hyoo_crus_dict),
-            };
             const visit = (sand) => {
                 if (sand.time() > last)
                     last = sand.time();
-                map[sand.tag()]()?.Item(sand.self()).units().forEach(visit);
+                if (sand.tag() === 'term')
+                    return;
+                land.Node($hyoo_crus_node).Item(sand.self()).units().forEach(visit);
             };
-            for (const sand of this.units())
-                visit(sand);
-            return last ? new $mol_time_moment(last) : null;
+            this.units().forEach(visit);
+            return last ? $hyoo_crus_time_moment(last) : null;
+        }
+        author_peers() {
+            const land = this.land();
+            const peers = new Set();
+            const visit = (sand) => {
+                peers.add(sand.peer());
+                if (sand.tag() === 'term')
+                    return;
+                land.Node($hyoo_crus_node).Item(sand.self()).units().forEach(visit);
+            };
+            this.units().forEach(visit);
+            return [...peers];
+        }
+        author_lords() {
+            const land = this.land();
+            return this.author_peers()
+                .map(peer => land.pass.get(peer)?.lord())
+                .filter($mol_guard_defined);
         }
         ;
         [$mol_dev_format_head]() {
@@ -5572,6 +5588,12 @@ var $;
     __decorate([
         $mol_mem
     ], $hyoo_crus_node.prototype, "last_change", null);
+    __decorate([
+        $mol_mem
+    ], $hyoo_crus_node.prototype, "author_peers", null);
+    __decorate([
+        $mol_mem
+    ], $hyoo_crus_node.prototype, "author_lords", null);
     $.$hyoo_crus_node = $hyoo_crus_node;
 })($ || ($ = {}));
 
@@ -6938,7 +6960,7 @@ var $;
             this.post(seat ? units[seat - 1].self() : '', sand.head(), sand.self(), null, 'term');
         }
         broadcast() {
-            this.$.$hyoo_crus_glob.yard().lands_neonatals.add(this.ref());
+            this.$.$hyoo_crus_glob.yard().lands_news.add(this.ref());
         }
         sync() {
             this.loading();
@@ -7780,8 +7802,13 @@ var $;
                     .filter($mol_guard_defined)
                     .map(ref => glob.Node(ref, Node));
             }
-            remote_make(preset) {
-                const land = this.$.$hyoo_crus_glob.land_grab(preset);
+            remote_add(item) {
+                this.add(item.ref());
+            }
+            remote_make(config) {
+                const land = (config instanceof $hyoo_crus_land)
+                    ? config.area_make()
+                    : this.$.$hyoo_crus_glob.land_grab(config);
                 this.splice([land.ref()]);
                 return land.Node(Value()).Item('');
             }
@@ -7795,6 +7822,9 @@ var $;
         __decorate([
             $mol_mem
         ], Ref.prototype, "remote_list", null);
+        __decorate([
+            $mol_action
+        ], Ref.prototype, "remote_add", null);
         __decorate([
             $mol_action
         ], Ref.prototype, "remote_make", null);
@@ -8080,8 +8110,18 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    class $hyoo_crus_home extends $hyoo_crus_dict.with({
+    class $hyoo_crus_entity extends $hyoo_crus_dict.with({
         Title: $hyoo_crus_atom_str,
+    }) {
+    }
+    $.$hyoo_crus_entity = $hyoo_crus_entity;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    class $hyoo_crus_home extends $hyoo_crus_entity.with({
         Selection: $hyoo_crus_atom_str,
         Hall: $hyoo_crus_atom_ref_to(() => $hyoo_crus_dict),
     }) {
@@ -8531,7 +8571,7 @@ var $;
         glob() {
             return null;
         }
-        lands_neonatals = new $mol_wire_set();
+        lands_news = new $mol_wire_set();
         static masters = [];
         master_cursor(next = 0) {
             return next;
@@ -8604,16 +8644,25 @@ var $;
         }
         slaves = new $mol_wire_set();
         sync() {
-            this.sync_neonatals();
+            this.sync_news();
             this.sync_port();
         }
-        sync_neonatals() {
-            for (const port of this.ports()) {
-                for (const land of this.lands_neonatals) {
-                    this.sync_port_land([port, land]);
+        sync_news() {
+            const glob = this.$.$hyoo_crus_glob;
+            const lands = [...this.lands_news].map(ref => glob.Land(ref));
+            try {
+                for (const port of this.ports()) {
+                    for (const land of lands) {
+                        this.sync_port_land([port, land.ref()]);
+                    }
                 }
+                for (const land of lands)
+                    land.saving();
+                this.lands_news.clear();
             }
-            this.lands_neonatals.clear();
+            catch (error) {
+                $mol_fail_log(error);
+            }
         }
         sync_port() {
             for (const port of this.ports())
@@ -8783,7 +8832,7 @@ var $;
     ], $hyoo_crus_yard.prototype, "sync", null);
     __decorate([
         $mol_mem
-    ], $hyoo_crus_yard.prototype, "sync_neonatals", null);
+    ], $hyoo_crus_yard.prototype, "sync_news", null);
     __decorate([
         $mol_mem
     ], $hyoo_crus_yard.prototype, "sync_port", null);
