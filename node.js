@@ -6674,16 +6674,17 @@ var $;
         }
         async units_verify(units) {
             const passes = units.filter(unit => unit.kind() === 'pass');
-            const auth = new Map(passes.map((unit) => [unit.peer(), unit.auth()]));
+            const auth = new Map(passes.map((unit) => [
+                unit.peer(),
+                $mol_crypto_key_public.from(unit.auth()),
+            ]));
             const mixin = $hyoo_crus_ref_encode(this.ref());
             return await Promise.all(units.map(async (unit) => {
                 let key_public = this.key_public(unit.peer());
-                if (!key_public) {
-                    const key_serial = auth.get(unit.peer());
-                    if (!key_serial)
-                        return `No public key for peer (${unit.peer()})`;
-                    key_public = $mol_crypto_key_public.from(key_serial);
-                }
+                if (!key_public)
+                    key_public = auth.get(unit.peer()) ?? null;
+                if (!key_public)
+                    return `No public key for peer (${unit.peer()})`;
                 const sens = unit.sens().slice();
                 for (let i = 0; i < mixin.length; ++i)
                     sens[i + 14] ^= mixin[i + 14];
@@ -8131,7 +8132,13 @@ var $;
     class $hyoo_crus_entity extends $hyoo_crus_dict.with({
         Title: $hyoo_crus_atom_str,
     }) {
+        title(next) {
+            return this.Title(next)?.val(next) ?? '';
+        }
     }
+    __decorate([
+        $mol_mem
+    ], $hyoo_crus_entity.prototype, "title", null);
     $.$hyoo_crus_entity = $hyoo_crus_entity;
 })($ || ($ = {}));
 
@@ -8906,8 +8913,8 @@ var $;
         yard() {
             return this.$.$hyoo_crus_glob.yard();
         }
-        static home() {
-            return this.Land(this.$.$hyoo_crus_auth.current().lord()).home();
+        static home(Node) {
+            return this.Land(this.$.$hyoo_crus_auth.current().lord()).Data(Node ?? $hyoo_crus_home);
         }
         home() {
             return this.$.$hyoo_crus_glob.home();

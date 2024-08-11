@@ -3347,6 +3347,7 @@ declare namespace $ {
         };
     };
     export class $hyoo_crus_entity extends $hyoo_crus_entity_base {
+        title(next?: string): string;
     }
     export {};
 }
@@ -3579,7 +3580,7 @@ declare namespace $ {
         }>;
         static yard(): $hyoo_crus_yard;
         yard(): $hyoo_crus_yard;
-        static home(): $hyoo_crus_home;
+        static home<Node extends typeof $hyoo_crus_home = typeof $hyoo_crus_home>(Node?: Node): InstanceType<Node>;
         home(): $hyoo_crus_home;
         static king_grab(preset?: $hyoo_crus_rank_preset): $hyoo_crus_auth;
         king_grab(preset?: $hyoo_crus_rank_preset): $hyoo_crus_auth;
