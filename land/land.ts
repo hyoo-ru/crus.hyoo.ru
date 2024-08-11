@@ -304,21 +304,18 @@ namespace $ {
 		async units_verify( units: readonly $hyoo_crus_unit[] ) {
 			
 			const passes = units.filter( unit => unit.kind() === 'pass' ) as $hyoo_crus_pass[]
-			const auth = new Map( passes.map( ( unit: $hyoo_crus_pass )=> [ unit.peer(), unit.auth() ] ) )
+			const auth = new Map( passes.map( ( unit: $hyoo_crus_pass )=> [
+				unit.peer(),
+				$mol_crypto_key_public.from( unit.auth() ),
+			] ) )
 			
 			const mixin = $hyoo_crus_ref_encode( this.ref() )
 			
 			return await Promise.all( units.map( async unit => {
 				
 				let key_public = this.key_public( unit.peer() )
-				if( !key_public ) {
-					
-					const key_serial = auth.get( unit.peer() )
-					if( !key_serial ) return `No public key for peer (${unit.peer()})`
-					
-					key_public = $mol_crypto_key_public.from( key_serial )
-					
-				}
+				if( !key_public ) key_public = auth.get( unit.peer() ) ?? null
+				if( !key_public ) return `No public key for peer (${unit.peer()})`
 				
 				const sens = unit.sens().slice()
 				for( let i = 0; i < mixin.length; ++i ) sens[i+14] ^= mixin[i+14]

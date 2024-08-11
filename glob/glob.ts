@@ -18,8 +18,8 @@ namespace $ {
 		}
 		
 		/** Land where Lord is King. Contains only ain info */
-		static home() {
-			return this.Land( this.$.$hyoo_crus_auth.current().lord() ).home()
+		static home< Node extends typeof $hyoo_crus_home = typeof $hyoo_crus_home >( Node?: Node ) {
+			return this.Land( this.$.$hyoo_crus_auth.current().lord() ).Data( Node ?? $hyoo_crus_home ) as InstanceType< Node >
 		}
 		
 		/** @deprecated Use `this.$.$hyoo_crus_glob` */
