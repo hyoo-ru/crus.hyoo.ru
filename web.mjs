@@ -10252,13 +10252,16 @@ var $;
             const id = $mol_base64_ae_encode(new Uint8Array(new BigUint64Array([BigInt(idea)]).buffer, 0, 6));
             const ref = $hyoo_crus_ref($hyoo_crus_ref_lord(this.ref()).description + '_' + id);
             const area = this.$.$hyoo_crus_glob.Land(ref);
-            const errors = area.apply_unit(this.unit_sort([...this.pass.values(), ...this.gift.values()]));
+            const errors = area.apply_unit(this.unit_sort([...this.pass.values(), ...this.gift.values()])).filter(Boolean);
             for (const error of errors)
                 this.$.$mol_log3_warn({
                     place: `${this}.area_make()`,
                     message: error,
                     hint: 'Send it to developer',
                 });
+            area.sync_mine();
+            area.sync_yard();
+            area.bus();
             return area;
         }
         Data(Node) {
@@ -11580,12 +11583,26 @@ var $;
             remote_add(item) {
                 this.add(item.ref());
             }
+            make(config) {
+                if (config === null) {
+                    const self = this.land().self_make();
+                    const node = this.land().Node(Value()).Item(self);
+                    this.splice([node.ref()]);
+                    return node;
+                }
+                else if (config instanceof $hyoo_crus_land) {
+                    const land = config.area_make();
+                    this.splice([land.ref()]);
+                    return land.Node(Value()).Item('');
+                }
+                else if (config) {
+                    const land = this.$.$hyoo_crus_glob.land_grab(config);
+                    this.splice([land.ref()]);
+                    return land.Node(Value()).Item('');
+                }
+            }
             remote_make(config) {
-                const land = (config instanceof $hyoo_crus_land)
-                    ? config.area_make()
-                    : this.$.$hyoo_crus_glob.land_grab(config);
-                this.splice([land.ref()]);
-                return land.Node(Value()).Item('');
+                return this.make(config);
             }
             local_make(idea) {
                 const self = this.land().self_make(idea);
@@ -11600,9 +11617,6 @@ var $;
         __decorate([
             $mol_action
         ], $hyoo_crus_list_ref_to.prototype, "remote_add", null);
-        __decorate([
-            $mol_action
-        ], $hyoo_crus_list_ref_to.prototype, "remote_make", null);
         __decorate([
             $mol_action
         ], $hyoo_crus_list_ref_to.prototype, "local_make", null);

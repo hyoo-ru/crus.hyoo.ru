@@ -2476,7 +2476,8 @@ declare namespace $ {
         new (): {
             remote_list(next?: Vals): Vals;
             remote_add(item: Vals[number]): void;
-            remote_make(config: $hyoo_crus_rank_preset | $hyoo_crus_land): Vals[number];
+            make(config?: null | $hyoo_crus_rank_preset | $hyoo_crus_land): Vals[number];
+            remote_make(config: $hyoo_crus_rank_preset): Vals[number];
             local_make(idea?: number): Vals[number];
             items(next?: readonly ((symbol & {
                 $hyoo_crus_ref: symbol;
