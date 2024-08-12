@@ -10828,7 +10828,7 @@ var $;
             const sens = unit.sens().slice();
             for (let i = 0; i < mixin.length; ++i)
                 sens[i + 14] ^= mixin[i + 14];
-            const sign = new Uint8Array(key.sign(sens));
+            const sign = key.sign(sens);
             unit.sign(sign);
         }
         sand_encode(sand) {
@@ -10839,7 +10839,7 @@ var $;
             let bin = sand._open;
             const secret = sand._land.secret();
             if (secret)
-                bin = new Uint8Array($mol_wire_sync(secret).encrypt(bin, sand.salt()));
+                bin = $mol_wire_sync(secret).encrypt(bin, sand.salt());
             if (bin.byteLength > 32)
                 sand.hash(this.$.$hyoo_crus_mine.rock_save(bin), sand.tip(), sand.tag());
             else
@@ -10869,7 +10869,7 @@ var $;
             let bin = sand.size() > 32 ? this.$.$hyoo_crus_mine.rock(sand.hash()) : sand.data();
             if (secret && bin && sand.tip() !== 'nil') {
                 try {
-                    bin = new Uint8Array($mol_wire_sync(secret).decrypt(bin, sand.salt()));
+                    bin = $mol_wire_sync(secret).decrypt(bin, sand.salt());
                 }
                 catch (error) {
                     if ($mol_fail_catch(error)) {
@@ -10916,7 +10916,7 @@ var $;
             unit.dest(auth.lord());
             unit._land = this;
             const secret_closed = $mol_wire_sync(secret_mutual).encrypt(secret_land, unit.salt());
-            unit.bill().set(new Uint8Array(secret_closed));
+            unit.bill().set(secret_closed);
             const error = this.apply_unit([unit])[0];
             if (error)
                 $mol_fail(new Error(error));
