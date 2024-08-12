@@ -8537,7 +8537,7 @@ var $;
                 else {
                     if (!land)
                         $mol_fail(new Error('Land is undefined'));
-                    const unit = new $hyoo_crus_sand(buf.slice(offset, offset += $hyoo_crus_unit.size).buffer);
+                    const unit = $hyoo_crus_sand.from(buf.slice(offset, offset += $hyoo_crus_unit.size));
                     lands[land].units ||= [];
                     lands[land].units.push(unit);
                     continue;
