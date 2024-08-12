@@ -207,14 +207,36 @@ namespace $ {
 				this.add( item.ref() )
 			}
 			
+			/** Make new Node and place it at end. */
+			make( config?: null | $hyoo_crus_rank_preset | $hyoo_crus_land ): Vals[number] {
+				
+				if( config === null ) {
+					
+					const self = this.land().self_make()
+					const node = this.land().Node( ( Value as any )() ).Item( self )
+					this.splice([ node.ref() ])
+					return node
+					
+				} else if( config instanceof $hyoo_crus_land ) {
+					
+					const land = config.area_make()
+					this.splice([ land.ref() ])
+					return land.Node( ( Value as any )() ).Item('')
+					
+				} else if( config ) {
+					
+					const land = this.$.$hyoo_crus_glob.land_grab( config )
+					this.splice([ land.ref() ])
+					return land.Node( ( Value as any )() ).Item('')
+					
+				}
+				
+			}
+			
 			/** Add new Node which placed in new Land */
-			@ $mol_action
-			remote_make( config: $hyoo_crus_rank_preset | $hyoo_crus_land ): Vals[number] {
-				const land = ( config instanceof $hyoo_crus_land )
-					? config.area_make()
-					: this.$.$hyoo_crus_glob.land_grab( config )
-				this.splice([ land.ref() ])
-				return land.Node( ( Value as any )() ).Item('')
+			/** @deprecated use make( ... ) */
+			remote_make( config: $hyoo_crus_rank_preset ): Vals[number] {
+				return this.make( config )
 			}
 			
 			/** Add new Node which placed in same Land */

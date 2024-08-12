@@ -58,13 +58,17 @@ namespace $ {
 			const ref = $hyoo_crus_ref( $hyoo_crus_ref_lord( this.ref() ).description! + '_' + id )
 			
 			const area = this.$.$hyoo_crus_glob.Land( ref )
-			const errors = area.apply_unit( this.unit_sort([ ... this.pass.values(), ... this.gift.values() ]) )
+			const errors = area.apply_unit( this.unit_sort([ ... this.pass.values(), ... this.gift.values() ]) ).filter( Boolean )
 			
 			for( const error of errors ) this.$.$mol_log3_warn({
 				place: `${this}.area_make()`,
 				message: error,
 				hint: 'Send it to developer',
 			})
+			
+			area.sync_mine()
+			area.sync_yard()
+			area.bus()
 			
 			return area
 		}
