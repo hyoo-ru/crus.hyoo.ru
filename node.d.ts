@@ -1029,6 +1029,7 @@ declare namespace $ {
         $hyoo_crus_ref: symbol;
     };
     function $hyoo_crus_ref_peer(ref: $hyoo_crus_ref): string;
+    function $hyoo_crus_ref_area(ref: $hyoo_crus_ref): string;
     function $hyoo_crus_ref_head(ref: $hyoo_crus_ref): string;
     function $hyoo_crus_ref_encode(ref: $hyoo_crus_ref): Uint8Array;
     function $hyoo_crus_ref_decode(bin: Uint8Array): symbol & {
@@ -1548,6 +1549,10 @@ declare namespace $ {
 }
 
 declare namespace $ {
+    enum $hyoo_crus_land_root {
+        data = "",
+        tine = "AQAAAAAA"
+    }
     class $hyoo_crus_land extends $mol_object {
         ref(): symbol & {
             $hyoo_crus_ref: symbol;
@@ -1564,7 +1569,7 @@ declare namespace $ {
         home(): $hyoo_crus_home;
         area_make(idea?: number): $hyoo_crus_land;
         Data<Node extends typeof $hyoo_crus_node>(Node: Node): InstanceType<Node>;
-        Tines(): $hyoo_crus_list_ref;
+        Tine(): $hyoo_crus_list_ref;
         Node<Node extends typeof $hyoo_crus_node>(Node: Node): $hyoo_crus_fund<string, InstanceType<Node>>;
         total(): number;
         joined_list(): (symbol & {

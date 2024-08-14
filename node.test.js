@@ -4260,6 +4260,10 @@ var $;
         return ref.description.split('_')[0] ?? '';
     }
     $.$hyoo_crus_ref_peer = $hyoo_crus_ref_peer;
+    function $hyoo_crus_ref_area(ref) {
+        return ref.description.split('_')[2] ?? '';
+    }
+    $.$hyoo_crus_ref_area = $hyoo_crus_ref_area;
     function $hyoo_crus_ref_head(ref) {
         return ref.description.split('_')[3] ?? '';
     }
@@ -6443,6 +6447,11 @@ var $;
 "use strict";
 var $;
 (function ($) {
+    let $hyoo_crus_land_root;
+    (function ($hyoo_crus_land_root) {
+        $hyoo_crus_land_root["data"] = "";
+        $hyoo_crus_land_root["tine"] = "AQAAAAAA";
+    })($hyoo_crus_land_root = $.$hyoo_crus_land_root || ($.$hyoo_crus_land_root = {}));
     class $hyoo_crus_land extends $mol_object {
         ref() {
             return this.auth().lord();
@@ -6494,15 +6503,15 @@ var $;
             return area;
         }
         Data(Node) {
-            return this.Node(Node).Item('');
+            return this.Node(Node).Item($hyoo_crus_land_root.data);
         }
-        Tines() {
-            return this.Node($hyoo_crus_list_ref).Item('AQAAAAAA');
+        Tine() {
+            return this.Node($hyoo_crus_list_ref).Item($hyoo_crus_land_root.tine);
         }
         Node(Node) {
             return new $hyoo_crus_fund((head) => {
                 if (head === 'AAAAAAAA')
-                    return this.Node(Node).Item('');
+                    return this.Node(Node).Item($hyoo_crus_land_root.data);
                 return Node.make({
                     land: () => this.sync(),
                     head: $mol_const(head),
@@ -6777,7 +6786,7 @@ var $;
         }
         fork(preset = { '': $hyoo_crus_rank.get }) {
             const land = this.$.$hyoo_crus_glob.land_grab(preset);
-            land.Tines().items_vary([this.ref()]);
+            land.Tine().items_vary([this.ref()]);
             return land;
         }
         sand_ordered(head) {
@@ -6787,8 +6796,8 @@ var $;
             const slices = new Map;
             for (const sand of queue)
                 slices.set(sand, 0);
-            merge: if (head !== 'AQAAAAAA') {
-                const tines = (this.Tines().items_vary().slice().reverse() ?? [])
+            merge: if (head !== $hyoo_crus_land_root.tine) {
+                const tines = (this.Tine()?.items_vary().slice().reverse() ?? [])
                     .map($hyoo_crus_vary_cast_ref)
                     .filter($mol_guard_defined);
                 if (!tines.length)
@@ -7083,7 +7092,7 @@ var $;
         }
         sand_decode_raw(sand) {
             if (this.sand.get(sand.head())?.get(sand.self()) !== sand) {
-                for (const id of this.Tines().items_vary() ?? []) {
+                for (const id of this.Tine().items_vary() ?? []) {
                     const vary = this.$.$hyoo_crus_glob.Land($hyoo_crus_vary_cast_ref(id)).sand_decode_raw(sand);
                     if (vary !== undefined)
                         return vary;
@@ -7207,7 +7216,7 @@ var $;
     ], $hyoo_crus_land.prototype, "Data", null);
     __decorate([
         $mol_mem
-    ], $hyoo_crus_land.prototype, "Tines", null);
+    ], $hyoo_crus_land.prototype, "Tine", null);
     __decorate([
         $mol_mem_key
     ], $hyoo_crus_land.prototype, "Node", null);
@@ -12554,13 +12563,13 @@ var $;
             $mol_assert_equal(right.Data($hyoo_crus_list_vary).items_vary(), ['foo', 'zzz']);
             const both = home.fork();
             $mol_assert_equal(both.Data($hyoo_crus_list_vary).items_vary(), ['foo', 'xxx']);
-            both.Tines().items_vary([right.ref()]);
+            both.Tine().items_vary([right.ref()]);
             $mol_assert_equal(both.Data($hyoo_crus_list_vary).items_vary(), ['foo', 'zzz']);
-            both.Tines().items_vary([left.ref()]);
+            both.Tine().items_vary([left.ref()]);
             $mol_assert_equal(both.Data($hyoo_crus_list_vary).items_vary(), ['foo', 'yyy']);
-            both.Tines().items_vary([right.ref(), left.ref()]);
+            both.Tine().items_vary([right.ref(), left.ref()]);
             $mol_assert_equal(both.Data($hyoo_crus_list_vary).items_vary(), ['foo', 'yyy']);
-            both.Tines().items_vary([left.ref(), right.ref()]);
+            both.Tine().items_vary([left.ref(), right.ref()]);
             $mol_assert_equal(both.Data($hyoo_crus_list_vary).items_vary(), ['foo', 'zzz']);
         },
         'Inner refs is relative to land'($) {
