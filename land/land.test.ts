@@ -164,16 +164,16 @@ namespace $ {
 			const both = home.fork()
 			$mol_assert_equal( both.Data( $hyoo_crus_list_vary ).items_vary(), [ 'foo', 'xxx' ] )
 			
-			both.Tines().items_vary([ right.ref() ])
+			both.Tine().items_vary([ right.ref() ])
 			$mol_assert_equal( both.Data( $hyoo_crus_list_vary ).items_vary(), [ 'foo', 'zzz' ] )
 			
-			both.Tines().items_vary([ left.ref() ])
+			both.Tine().items_vary([ left.ref() ])
 			$mol_assert_equal( both.Data( $hyoo_crus_list_vary ).items_vary(), [ 'foo', 'yyy' ] )
 			
-			both.Tines().items_vary([ right.ref(), left.ref() ])
+			both.Tine().items_vary([ right.ref(), left.ref() ])
 			$mol_assert_equal( both.Data( $hyoo_crus_list_vary ).items_vary(), [ 'foo', 'yyy' ] )
 			
-			both.Tines().items_vary([ left.ref(), right.ref() ])
+			both.Tine().items_vary([ left.ref(), right.ref() ])
 			$mol_assert_equal( both.Data( $hyoo_crus_list_vary ).items_vary(), [ 'foo', 'zzz' ] )
 			
 		},

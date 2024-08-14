@@ -1,5 +1,10 @@
 namespace $ {
 	
+	export enum $hyoo_crus_land_root {
+		data = '', // 0
+		tine = 'AQAAAAAA', // 1
+	}
+	
 	/** Standalone part of Glob which syncs separately, have own rights, and contains Units */
 	export class $hyoo_crus_land extends $mol_object {
 		
@@ -76,20 +81,20 @@ namespace $ {
 		/** Data root */
 		@ $mol_mem_key
 		Data< Node extends typeof $hyoo_crus_node >( Node: Node ) {
-			return this.Node( Node ).Item( '' ) // 0
+			return this.Node( Node ).Item( $hyoo_crus_land_root.data )
 		} 
 		
 		/** Lands for inheritance */
 		@ $mol_mem
-		Tines() {
-			return this.Node( $hyoo_crus_list_ref ).Item( 'AQAAAAAA' ) // 1
+		Tine() {
+			return this.Node( $hyoo_crus_list_ref ).Item( $hyoo_crus_land_root.tine ) 
 		} 
 		
 		/** High level representation of stored data */
 		@ $mol_mem_key
 		Node< Node extends typeof $hyoo_crus_node >( Node: Node ): $hyoo_crus_fund< string, InstanceType< Node > > {
 			return new $hyoo_crus_fund( ( head: string )=> {
-				if( head === 'AAAAAAAA' ) return this.Node( Node ).Item( '' )
+				if( head === 'AAAAAAAA' ) return this.Node( Node ).Item( $hyoo_crus_land_root.data )
 				return ( Node as typeof $hyoo_crus_node ).make({
 					land: ()=> this.sync(),
 					head: $mol_const( head ),
@@ -449,7 +454,7 @@ namespace $ {
 		@ $mol_action
 		fork( preset = { '': $hyoo_crus_rank.get } ) {
 			const land = this.$.$hyoo_crus_glob.land_grab( preset )
-			land.Tines().items_vary([ this.ref() ])
+			land.Tine().items_vary([ this.ref() ])
 			return land
 		}
 		
@@ -464,9 +469,9 @@ namespace $ {
 			const slices = new Map
 			for( const sand of queue ) slices.set( sand, 0 )
 			
-			merge: if( head !== 'AQAAAAAA' ) {
+			merge: if( head !== $hyoo_crus_land_root.tine ) {
 				
-				const tines = ( this.Tines().items_vary().slice().reverse() ?? [] )
+				const tines = ( this.Tine()?.items_vary().slice().reverse() ?? [] )
 					.map( $hyoo_crus_vary_cast_ref )
 					.filter( $mol_guard_defined )
 				if( !tines.length ) break merge
@@ -895,7 +900,7 @@ namespace $ {
 		sand_decode_raw( sand: $hyoo_crus_sand ): $hyoo_crus_vary_type {
 			
 			if( this.sand.get( sand.head() )?.get( sand.self() ) !== sand ) {
-				for( const id of this.Tines().items_vary() ?? [] ) {
+				for( const id of this.Tine().items_vary() ?? [] ) {
 					const vary = this.$.$hyoo_crus_glob.Land( $hyoo_crus_vary_cast_ref( id! )! ).sand_decode_raw( sand )
 					if( vary !== undefined ) return vary
 				}

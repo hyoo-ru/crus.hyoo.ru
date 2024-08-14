@@ -1,5 +1,5 @@
 $hyoo_crus_glob_book $mol_book2_catalog
-	menu_title \🌍 Glob
+	menu_title \🌐 Glob
 	param \ref
 	Spread* <= Land* $hyoo_crus_land_page
 		land <= land* $hyoo_crus_land

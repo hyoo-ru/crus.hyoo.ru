@@ -15,12 +15,12 @@ namespace $.$$ {
 		
 		// override node_title( head: string ) {
 		// 	const id = this.node_dump( head ).head()
-		// 	if( id === 'AQAAAAAA' ) return 'Meta'
+		// 	if( id === $hyoo_crus_land_root.tine ) return 'Meta'
 		// 	return id || 'Data'
 		// }
 		
 		override node_meta() {
-			return this.land().Node( $hyoo_crus_node ).Item( 'AQAAAAAA' )
+			return this.land().Node( $hyoo_crus_node ).Item( $hyoo_crus_land_root.tine )
 		}
 		
 		// @ $mol_mem
@@ -28,7 +28,7 @@ namespace $.$$ {
 		// 	return [
 		// 		this.Flex(),
 		// 		this.Node_dump( this.node().head() ),
-		// 		this.Node_dump( 'AQAAAAAA' ),
+		// 		this.Node_dump( $hyoo_crus_land_root.tine ),
 		// 	]
 		// }
 		

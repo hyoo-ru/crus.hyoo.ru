@@ -3,13 +3,26 @@ namespace $.$$ {
 		
 		@ $mol_mem
 		override spread_ids() {
+			
 			const spread = this.spread()
 			const spread_land = $hyoo_crus_ref_land( $hyoo_crus_ref( spread ) )
-			return [ ... this.$.$hyoo_crus_glob.lands_touched.values() ].flatMap( land => {
-				return land === spread_land
-					? [ land.description!, spread ]
-					: [ land.description! ]
-			} )
+			const lands_touched = [ ... this.$.$hyoo_crus_glob.lands_touched.values() ]
+			const groups = $mol_array_groups( lands_touched, land => $hyoo_crus_ref_lord( land ).description! )
+			
+			const ids = [] as string[]
+			
+			for( const lord of Object.keys( groups ) ) {
+				
+				ids.push( lord )
+				
+				for( const land of groups[ lord ]! ) {
+					if( land.description! !== lord ) ids.push( land.description! )
+					if( land === spread_land ) ids.push( spread )
+				}
+				
+			}
+			
+			return ids
 		}
 		
 		override land( id: string ) {
@@ -28,13 +41,13 @@ namespace $.$$ {
 				$mol_fail_log( error )
 			}
 			const chunks = id.split( '_' )
-			const suffix = title || ( chunks.length >= 4 ? $hyoo_crus_ref_head( ref ) : ref.description! )
+			const suffix = title || ( chunks.length >= 4 ? $hyoo_crus_ref_head( ref ) : chunks.length === 3 ? $hyoo_crus_ref_area( ref ) : ref.description! )
 			const prefix = [
 				'',
 				'',
-				'👑 ',
-				'🌄 ',
-				'   🧩 ',
+				'🌎 ',
+				'   🌄 ',
+				'      🧩 ',
 			][ chunks.length ]
 			return prefix + suffix
 		}

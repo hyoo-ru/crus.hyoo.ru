@@ -24,6 +24,11 @@ namespace $ {
 		return ref.description!.split( '_' )[ 0 ] ?? ''
 	}
 	
+	/** Area part of Node Ref */
+	export function $hyoo_crus_ref_area( ref: $hyoo_crus_ref ) {
+		return ref.description!.split( '_' )[ 2 ] ?? ''
+	}
+
 	/** Head part of Node Ref */
 	export function $hyoo_crus_ref_head( ref: $hyoo_crus_ref ) {
 		return ref.description!.split( '_' )[ 3 ] ?? ''
