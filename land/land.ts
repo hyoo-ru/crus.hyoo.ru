@@ -788,7 +788,7 @@ namespace $ {
 		@ $mol_mem
 		loading() {
 			
-			$mol_wire_solid()
+			// $mol_wire_solid()
 			
 			let units = this.unit_sort( this.$.$hyoo_crus_mine.units( this.ref() ) ?? [] )
 			
@@ -951,7 +951,7 @@ namespace $ {
 		@ $mol_mem
 		encrypted( next?: boolean ) {
 			
-			$mol_wire_solid()
+			// $mol_wire_solid()
 			
 			const gift = this.gift.get( this.ref() )
 			const prev = gift?.bill().some( b => b ) ?? false
