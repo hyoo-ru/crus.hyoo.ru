@@ -46,7 +46,7 @@ namespace $ {
 		
 		static units_sizes = new Map< $hyoo_crus_ref, number >()
 		
-		static async units_save( land: $hyoo_crus_ref, units: readonly $hyoo_crus_unit[] ) {
+		static units_save( land: $hyoo_crus_ref, units: readonly $hyoo_crus_unit[] ) {
 			
 			const descr = this.units_file( land ).open( 'create', 'read_write' )
 			try {
@@ -60,6 +60,7 @@ namespace $ {
 						append.push( unit )
 					} else {
 						$node.fs.writeSync( descr, unit, 0, unit.byteLength, off )
+						this.units_persisted.add( unit )
 					}
 				}
 				
