@@ -84,6 +84,7 @@ namespace $ {
 				$node.fs.closeSync( descr )
 			}
 			
+			return undefined as any
 		}
 		
 		@ $mol_action
