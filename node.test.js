@@ -1892,7 +1892,7 @@ var $;
         }
         send_text(data) {
             this.send_code(200);
-            this.send_type('text/plain');
+            this.send_type('text/plain;charset=utf-8');
             this.send_bin($mol_charset_encode(data));
         }
         send_json(data) {
@@ -1902,7 +1902,7 @@ var $;
         }
         send_dom(data) {
             this.send_code(200);
-            this.send_type('text/html');
+            this.send_type('text/html;charset=utf-8');
             this.send_text($mol_dom_serialize(data));
         }
         static make(config) {
@@ -2575,12 +2575,21 @@ var $;
         PATCH(msg) { }
         POST(msg) { }
         DELETE(msg) { }
+        _auto() { }
         static port(port) {
             const server = $mol_rest_server.make({
                 port: () => port,
             });
             server.root(this.make({}));
             server.start();
+            new $mol_wire_atom(`${server.root()}._auto<>`, () => {
+                try {
+                    server.root()._auto();
+                }
+                catch (error) {
+                    $mol_fail_log(error);
+                }
+            }).fresh();
             return server;
         }
         static serve() {
@@ -4135,6 +4144,8 @@ var $;
                         resources.map(res => {
                             if (res === 'constructor')
                                 return null;
+                            if (!/^[a-z][a-z_-]*$/.test(res))
+                                return null;
                             const uri = root.resolve(res);
                             return $mol_jsx("a", { href: uri.relate(file) + '/' },
                                 "/",
@@ -4142,6 +4153,9 @@ var $;
                                 "/",
                                 $mol_jsx("br", null));
                         }),
+                        $mol_jsx("a", { href: "../" },
+                            "../",
+                            $mol_jsx("br", null)),
                         file.sub().map(kid => {
                             const uri = kid.name() + (kid.type() === 'dir' ? '/' : '');
                             return $mol_jsx("a", { href: uri },
@@ -7637,13 +7651,13 @@ var $;
     function $mol_reconcile({ prev, from, to, next, equal, drop, insert, update, }) {
         if (!update)
             update = (next, prev, lead) => insert(next, drop(prev, lead));
+        if (to > prev.length)
+            to = prev.length;
+        if (from > to)
+            from = to;
         let p = from;
         let n = 0;
         let lead = p ? prev[p - 1] : null;
-        if (to > prev.length)
-            $mol_fail(new RangeError(`To(${to}) greater then length(${prev.length})`));
-        if (from > to)
-            $mol_fail(new RangeError(`From(${to}) greater then to(${to})`));
         while (p < to || n < next.length) {
             if (p < to && n < next.length && equal(next[n], prev[p])) {
                 lead = prev[p];
@@ -8375,7 +8389,7 @@ var $;
             return new Map();
         }
         static units_sizes = new Map();
-        static async units_save(land, units) {
+        static units_save(land, units) {
             const descr = this.units_file(land).open('create', 'read_write');
             try {
                 const offsets = this.units_offsets(land);
@@ -8387,6 +8401,7 @@ var $;
                     }
                     else {
                         $node.fs.writeSync(descr, unit, 0, unit.byteLength, off);
+                        this.units_persisted.add(unit);
                     }
                 }
                 if (!append.length)
@@ -8406,6 +8421,7 @@ var $;
             finally {
                 $node.fs.closeSync(descr);
             }
+            return undefined;
         }
         static async units_load(land) {
             const descr = this.units_file(land).open('create', 'read_write');
@@ -12824,6 +12840,28 @@ var $;
                 $mol_jsx("p", { "data-rev": "new" }, "Y"),
                 $mol_jsx("p", { "data-rev": "old" }, "c"),
                 $mol_jsx("p", { "data-rev": "old" }, "d")));
+        },
+        'append items'() {
+            const list = $mol_jsx("body", null,
+                $mol_jsx("p", { "data-rev": "old" }, "a"));
+            $mol_reconcile({
+                prev: [...list.children],
+                from: 2,
+                to: 3,
+                next: 'bc',
+                equal: (next, prev) => prev.textContent === next,
+                drop: (prev, lead) => list.removeChild(prev),
+                insert: (next, lead) => list.insertBefore($mol_jsx("p", { "data-rev": "new" }, next), lead ? lead.nextSibling : list.firstChild),
+                update: (next, prev, lead) => {
+                    prev.textContent = next;
+                    prev.setAttribute('data-rev', 'up');
+                    return prev;
+                },
+            });
+            $mol_assert_equal(list, $mol_jsx("body", null,
+                $mol_jsx("p", { "data-rev": "old" }, "a"),
+                $mol_jsx("p", { "data-rev": "new" }, "b"),
+                $mol_jsx("p", { "data-rev": "new" }, "c")));
         },
         'split item'() {
             const list = $mol_jsx("body", null,

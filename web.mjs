@@ -7369,7 +7369,7 @@ var $;
         }
         send_text(data) {
             this.send_code(200);
-            this.send_type('text/plain');
+            this.send_type('text/plain;charset=utf-8');
             this.send_bin($mol_charset_encode(data));
         }
         send_json(data) {
@@ -7379,7 +7379,7 @@ var $;
         }
         send_dom(data) {
             this.send_code(200);
-            this.send_type('text/html');
+            this.send_type('text/html;charset=utf-8');
             this.send_text($mol_dom_serialize(data));
         }
         static make(config) {
@@ -11408,13 +11408,13 @@ var $;
     function $mol_reconcile({ prev, from, to, next, equal, drop, insert, update, }) {
         if (!update)
             update = (next, prev, lead) => insert(next, drop(prev, lead));
+        if (to > prev.length)
+            to = prev.length;
+        if (from > to)
+            from = to;
         let p = from;
         let n = 0;
         let lead = p ? prev[p - 1] : null;
-        if (to > prev.length)
-            $mol_fail(new RangeError(`To(${to}) greater then length(${prev.length})`));
-        if (from > to)
-            $mol_fail(new RangeError(`From(${to}) greater then to(${to})`));
         while (p < to || n < next.length) {
             if (p < to && n < next.length && equal(next[n], prev[p])) {
                 lead = prev[p];

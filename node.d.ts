@@ -672,6 +672,7 @@ declare namespace $ {
         PATCH(msg: $mol_rest_message): void;
         POST(msg: $mol_rest_message): void;
         DELETE(msg: $mol_rest_message): void;
+        _auto(): void;
         static port(port: number): $mol_rest_server;
         static serve(): $mol_rest_server | null;
     }
@@ -3507,7 +3508,7 @@ declare namespace $ {
         static units_sizes: Map<symbol & {
             $hyoo_crus_ref: symbol;
         }, number>;
-        static units_save(land: $hyoo_crus_ref, units: readonly $hyoo_crus_unit[]): Promise<void>;
+        static units_save(land: $hyoo_crus_ref, units: readonly $hyoo_crus_unit[]): any;
         static units_load(land: $hyoo_crus_ref): Promise<$hyoo_crus_unit[]>;
     }
 }
