@@ -124,7 +124,7 @@ namespace $ {
 			const lands = [ ... this.lands_news ].map( ref =>  glob.Land( ref ) )
 			
 			try {
-				for( const port of this.ports() ) {
+				for( const port of this.masters() ) {
 					for( const land of lands ) {
 						this.sync_port_land([ port, land.ref() ])
 					}
