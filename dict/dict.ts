@@ -29,8 +29,18 @@ namespace $ {
 			const Schema extends Record< string, { tag: keyof typeof $hyoo_crus_sand_tag, new(): {} } >
 		>( this: This, schema: Schema ) {
 			
-			const Entity = class Entity extends ( this as any ) {
+			const $hyoo_crus_dict_with = class $hyoo_crus_dict_with extends ( this as any ) {
 				// static get schema() { return { ... this.schema, ... schema } }
+				
+				static toString() {
+					
+					if( this !== $hyoo_crus_dict_with ) return super.toString()
+					
+					const params = Object.entries( schema ).map( ([ name, type ])=> `${name}: ${type}` )
+					return '$hyoo_crus_dict.with<{' + params.join( ', ' ) + '}>'
+					
+				}
+				
 			} as Omit< This, 'prototype' > & {
 				new( ...args: any[] ): $mol_type_override< InstanceType< This >, {
 					readonly [ Key in keyof Schema ]: ( auto?: any )=> InstanceType< Schema[ Key ] > | null
@@ -39,7 +49,7 @@ namespace $ {
 
 			for( const Field in schema ) {
 				
-				Object.defineProperty( Entity.prototype, Field, {
+				Object.defineProperty( $hyoo_crus_dict_with.prototype, Field, {
 					value: function( this: InstanceType< This >, auto?: any ) {
 						return this.dive( Field, schema[ Field ] as any, auto )
 					}
@@ -48,7 +58,7 @@ namespace $ {
 				// $mol_wire_field( Entity.prototype, Field as any )
 			}
 			
-			return Object.assign( Entity, { schema: { ... this.schema, ... schema } } )
+			return Object.assign( $hyoo_crus_dict_with, { schema: { ... this.schema, ... schema } } )
 			
 		}
 		
