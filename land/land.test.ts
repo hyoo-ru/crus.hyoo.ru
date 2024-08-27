@@ -117,10 +117,10 @@ namespace $ {
 				await land.sand_decode( sand ),
 				new Uint8Array([ 1, 2, 3 ]),
 			)
-			$mol_assert_equal( ( await land.sand_ordered( '' ) ).length, 1 )
+			$mol_assert_equal( ( await land.sand_ordered({ head: '', peer: '' }) ).length, 1 )
 			
 			await land.post( '', '', sand.self(), null )
-			$mol_assert_equal( ( await land.sand_ordered( '' ) ).length, 1 )
+			$mol_assert_equal( ( await land.sand_ordered({ head: '', peer: '' }) ).length, 1 )
 		},
 		
 		'Land fork & merge'( $ ) {

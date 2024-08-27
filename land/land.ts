@@ -465,12 +465,14 @@ namespace $ {
 		}
 		
 		@ $mol_mem_key
-		sand_ordered( head: string ) {
+		sand_ordered( { head, peer }: { head: string, peer: string | null } ) {
 			
 			this.sync()
 			this.secret() // early async to prevent async on put
 			
-			const queue = [ ... this.sand.get( head )?.values() ?? [] ].flatMap( units => [ ... units.values() ] )
+			const queue = peer
+				? [ ... this.sand.get( head )?.get( peer )?.values() ?? [] ]
+				: [ ... this.sand.get( head )?.values() ?? [] ].flatMap( units => [ ... units.values() ] )
 			
 			const slices = new Map
 			for( const sand of queue ) slices.set( sand, 0 )
@@ -489,7 +491,7 @@ namespace $ {
 				for( const ref of tines ) {
 					++ slice
 					const land = glob.Land( ref )
-					for( const sand of land.sand_ordered( head ) ) {
+					for( const sand of land.sand_ordered({ head, peer }) ) {
 						
 						if( exists.has( sand.self() ) ) continue
 						queue.push( sand )
@@ -516,42 +518,61 @@ namespace $ {
 				prev: '',
 			}
 			
-			const graph = new Map([ [ '', entry  ] ])
+			const key = peer === null ? ( sand: $hyoo_crus_sand )=> sand.key() : ( sand: $hyoo_crus_sand )=> sand.self()
+			
+			const by_key = new Map([ [ '', entry  ] ])
+			const by_self = new Map([ [ '', entry ] ])
 			
 			while( queue.length ) {
 				
 				const last = queue.pop()!
-				graph.get( entry.prev )!.next = last.self()
-				graph.set( last.self(), { sand: last, next: '', prev: entry.prev } )
-				entry.prev = last.self()
+				by_key.get( entry.prev )!.next = key( last )
+				
+				const item = { sand: last, next: '', prev: entry.prev }
+				by_key.set( key( last ), item )
+				
+				const exists = by_self.get( last.self() )
+				if( !exists || compare( exists.sand!, last ) < 0 ) {
+					by_self.set( last.self(), item )
+				}
+				
+				entry.prev = key( last )
 				
 				for( let cursor = queue.length - 1; cursor >= 0; --cursor ) {
 					
 					const kid = queue[cursor]
 					
-					let lead = graph.get( kid.lead() )
+					let lead = by_self.get( kid.lead() )
 					if( !lead ) continue
 					
-					while( lead.next && ( compare( graph.get( lead.next )!.sand!, kid ) < 0 ) ) lead = graph.get( lead.next )!
+					while( lead.next && ( compare( by_key.get( lead.next )!.sand!, kid ) < 0 ) ) lead = by_key.get( lead.next )!
 					
-					const exists = graph.get( kid.self() )
-					if( exists ) {
+					const exists1 = by_key.get( key( kid ) )
+					if( exists1 ) {
 						
-						if( ( lead.sand?.self() ?? '' )  === exists.prev ) {
-							exists.sand = kid
+						if( ( lead.sand ? key( lead.sand ) : '' ) === exists1.prev ) {
+							exists1.sand = kid
 							if( cursor === queue.length - 1 ) queue.pop()
 							continue
 						}
 						
-						graph.get( exists.prev )!.next = exists.next
-						graph.get( exists.next )!.prev = exists.prev
+						by_key.get( exists1.prev )!.next = exists1.next
+						by_key.get( exists1.next )!.prev = exists1.prev
 						
 					}
 					
-					const follower = graph.get( lead.next )!
-					follower.prev = kid.self()
-					graph.set( kid.self(), { sand: kid, next: lead.next, prev: lead.sand?.self() ?? '' } )
-					lead.next = kid.self()
+					const follower = by_key.get( lead.next )!
+					follower.prev = key( kid )
+					
+					const item = { sand: kid, next: lead.next, prev: lead.sand ? key( lead.sand ) : '' }
+					by_key.set( key( kid ), item )
+					
+					const exists2 = by_self.get( kid.self() )
+					if( !exists2 || compare( exists2.sand!, kid ) < 0 ) {
+						by_self.set( kid.self(), item )
+					}
+					
+					lead.next = key( kid )
 					
 					if( cursor === queue.length - 1 ) queue.pop()
 					cursor = queue.length
@@ -563,7 +584,7 @@ namespace $ {
 			const res = [] as $hyoo_crus_sand[]
 			
 			while( entry.next ) {
-				entry = graph.get( entry.next )!
+				entry = by_key.get( entry.next )!
 				res.push( entry.sand! )
 			}
 			
@@ -687,11 +708,12 @@ namespace $ {
 			sand: $hyoo_crus_sand,
 			head: string,
 			seat: number,
+			peer = '' as string | null
 		) {
 			
 			if( sand.tip() === 'nil' ) $mol_fail( new RangeError( `Can't move wiped sand` ) )
 			
-			const units = this.sand_ordered( head ).filter( unit => unit.tip() !== 'nil' )
+			const units = this.sand_ordered({ head, peer }).filter( unit => unit.tip() !== 'nil' )
 			if( seat > units.length ) $mol_fail( new RangeError( `Seat (${seat}) out of units length (${units.length})` ) )
 			
 			const lead = seat ? units[ seat - 1 ].self() : ''
@@ -732,14 +754,18 @@ namespace $ {
 		}
 		
 		@ $mol_action
-		sand_wipe( sand: $hyoo_crus_sand ) {
+		sand_wipe(
+			sand: $hyoo_crus_sand,
+			peer = '' as string | null,
+		) {
 			
-			const units = this.sand_ordered( sand.head() ).filter( unit => unit.tip() !== 'nil' )
+			const head = sand.head()
+			const units = this.sand_ordered({ head, peer }).filter( unit => unit.tip() !== 'nil' )
 			const seat = units.indexOf( sand )
 			
 			this.post(
 				seat ? units[ seat - 1 ].self() : '',
-				sand.head(),
+				head,
 				sand.self(),
 				null,
 				'term',

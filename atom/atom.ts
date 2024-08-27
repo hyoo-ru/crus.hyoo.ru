@@ -6,14 +6,18 @@ namespace $ {
 
 		static tag = $hyoo_crus_sand_tag[ $hyoo_crus_sand_tag.solo ] as keyof typeof $hyoo_crus_sand_tag;
 		
-		pick_unit() {
-			return this.units().at(0)
+		pick_unit( peer: string | null ) {
+			return this.units_of( peer ).at(0)
 		}
 		
-		@ $mol_mem
 		vary( next?: $hyoo_crus_vary_type ): $hyoo_crus_vary_type {
+			return this.vary_of( '', next )
+		}
+		
+		@ $mol_mem_key
+		vary_of( peer: string | null, next?: $hyoo_crus_vary_type ): $hyoo_crus_vary_type {
 			
-			let unit_prev = this.pick_unit()
+			let unit_prev = this.pick_unit( peer )
 			let prev = unit_prev ? this.land().sand_decode( unit_prev ) : null
 			
 			if( next === undefined ) return prev
@@ -26,7 +30,7 @@ namespace $ {
 				next
 			)
 			
-			return this.vary()
+			return this.vary_of( peer )
 		}
 		
 		;[ $mol_dev_format_head ]() {
@@ -60,8 +64,12 @@ namespace $ {
 				return this === $hyoo_crus_atom_enum ? '$hyoo_crus_atom_enum<' + options.map( $hyoo_crus_vary_cast_str ) + '>' : super.toString()
 			}
 			
-			@ $mol_mem
 			val( next?: Options[number] ): Options[number] | null {
+				return this.val_of( '', next )
+			}
+			
+			@ $mol_mem_key
+			val_of( peer: string | null, next?: Options[number] ): Options[number] | null {
 				
 				validate: if( next !== undefined ) {
 					for( const option of options ) {
@@ -70,7 +78,7 @@ namespace $ {
 					$mol_fail( new Error( `Wrong value (${ $hyoo_crus_vary_cast_str( next ) })` ) )
 				}
 				
-				const val = this.vary( next )
+				const val = this.vary_of( peer, next )
 				
 				for( const option of options ) {
 					if( $mol_compare_deep( option, val ) ) return val
@@ -95,10 +103,14 @@ namespace $ {
 
 			/** Get/Set value of Node field */
 			val( next?: ReturnType< Parse > ): ReturnType< Parse > | null {
+				return this.val_of( '', next )
+			}
+			
+			val_of( peer: string | null, next?: ReturnType< Parse > ): ReturnType< Parse > | null {
 				
 				if( next !== undefined ) parse( next )
 				
-				const res = this.vary( next )
+				const res = this.vary_of( peer, next )
 				try {
 					return parse( res )
 				} catch {
@@ -163,13 +175,20 @@ namespace $ {
 			}
 			
 			/** Target Node */
-			@ $mol_mem
 			remote(
+				next?: null | $mol_type_result< $mol_type_result< this['Value'] > >
+			): null | $mol_type_result< $mol_type_result< this['Value'] > > {
+				return this.remote_of( '', next )
+			}
+			
+			@ $mol_mem_key
+			remote_of(
+				peer: string | null,
 				next?: null | $mol_type_result< $mol_type_result< this['Value'] > >
 			): null | $mol_type_result< $mol_type_result< this['Value'] > > {
 				
 				let ref: $hyoo_crus_ref | null = ( next as $hyoo_crus_node )?.ref() ?? next
-				ref = $hyoo_crus_vary_cast_ref( this.vary( ref ) )
+				ref = $hyoo_crus_vary_cast_ref( this.vary_of( peer, ref ) )
 				if( !ref ) return null
 				
 				return this.$.$hyoo_crus_glob.Node( ref, ( Value as any )() )
@@ -178,36 +197,40 @@ namespace $ {
 			
 			/** Target Node. Creates if not exists. */
 			ensure( config?: null | $hyoo_crus_rank_preset | $hyoo_crus_land ) {
+				return this.ensure_of( '', config )
+			}
+			
+			ensure_of( peer: string | null, config?: null | $hyoo_crus_rank_preset | $hyoo_crus_land ) {
 				
-				if( !this.val() ) {
-					if( config === null ) this.ensure_here()
-					else if( config instanceof $hyoo_crus_land ) this.ensure_area( config )
-					else if( config ) this.ensure_lord( config )
+				if( !this.val_of( peer ) ) {
+					if( config === null ) this.ensure_here( peer )
+					else if( config instanceof $hyoo_crus_land ) this.ensure_area( peer, config )
+					else if( config ) this.ensure_lord( peer, config )
 					else return null
 				}
 				
-				return this.remote()
+				return this.remote_of( peer )
 			}
 			
 			@ $mol_action
-			ensure_here() {
+			ensure_here( peer: string | null ) {
 				const idea = $mol_hash_string( this.ref().description! )
 				const head = this.land().self_make( idea )
 				const node = this.land().Node( ( Value as any )() ).Item( head )
-				this.remote( node )
+				this.remote_of( peer, node )
 			}
 			
 			@ $mol_action
-			ensure_area( land: $hyoo_crus_land ) {
+			ensure_area( peer: string | null, land: $hyoo_crus_land ) {
 				const idea = $mol_hash_string( this.ref().description! )
 				const area = land.area_make( idea )
-				this.val( area.ref() )
+				this.val_of( peer, area.ref() )
 			}
 			
 			@ $mol_action
-			ensure_lord( preset: $hyoo_crus_rank_preset ) {
+			ensure_lord( peer: string | null, preset: $hyoo_crus_rank_preset ) {
 				const land = this.$.$hyoo_crus_glob.land_grab( preset )
-				this.val( land.ref() )
+				this.val_of( peer, land.ref() )
 			}
 			
 			/** @deprecated Use ensure( preset ) */

@@ -50,9 +50,13 @@ namespace $ {
 		}
 		
 		/** All ordered alive Units */
-		@ $mol_mem
 		units() {
-			return this.land().sand_ordered( this.head() ).filter( unit => unit.tip() !== 'nil' )
+			return this.units_of( '' )
+		}
+		
+		@ $mol_mem_key
+		units_of( peer: string | null ) {
+			return this.land().sand_ordered({ head: this.head(), peer }).filter( unit => unit.tip() !== 'nil' )
 		}
 		
 		filled() {
@@ -92,9 +96,9 @@ namespace $ {
 			const visit = ( sand: $hyoo_crus_sand )=> {
 				peers.add( sand.peer() )
 				if( sand.tag() === 'term' ) return
-				land.Node( $hyoo_crus_node ).Item( sand.self() ).units().forEach( visit )
+				land.Node( $hyoo_crus_node ).Item( sand.self() ).units_of( null ).forEach( visit )
 			}
-			this.units().forEach( visit )
+			this.units_of( null ).forEach( visit )
 			
 			return [ ... peers ]
 			
