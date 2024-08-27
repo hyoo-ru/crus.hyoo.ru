@@ -1,0 +1,34 @@
+$hyoo_crus_app_stat_page $mol_page
+	title \📊 Stat
+	body_content /
+		<= Charts $mol_list rows /
+			<= Cpu $mol_chart
+				graphs /
+					<= Cpu_user $mol_plot_line
+						title \CPU User (s/s)
+						series_y <= cpu_user /
+					<= Cpu_system $mol_plot_line
+						title \CPU System (s/s)
+						series_y <= cpu_system /
+					<= Cpu_ruler_sec $mol_plot_ruler_vert
+			<= Mem $mol_chart
+				graphs /
+					<= Mem_alloc $mol_plot_line
+						title \Mem Alloc (MB/s)
+						series_y <= mem_alloc /
+					<= Mem_ruler_mb $mol_plot_ruler_vert
+			<= Fs_using $mol_chart
+				graphs /
+					<= Fs_alloc $mol_plot_line
+						title \FS Alloc (MB/s)
+						series_y <= fs_alloc /
+					<= Fs_ruler_mb $mol_plot_ruler_vert
+			<= Fs_acting $mol_chart
+				graphs /
+					<= Fs_read $mol_plot_line
+						title \FS Read (pct/s)
+						series_y <= fs_read /
+					<= Fs_write $mol_plot_line
+						title \FS Write (pct/s)
+						series_y <= fs_write /
+					<= Fs_ruler_pct $mol_plot_ruler_vert
