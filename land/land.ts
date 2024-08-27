@@ -22,7 +22,7 @@ namespace $ {
 		
 		pass = new $mol_wire_dict< string /*peer*/, $hyoo_crus_pass >()
 		gift = new $mol_wire_dict< $hyoo_crus_ref /*lord*/, $hyoo_crus_gift >()
-		sand = new $mol_wire_dict< string /*head*/, $mol_wire_dict< string /*self*/, $hyoo_crus_sand > >()
+		sand = new $mol_wire_dict< string /*head*/, $mol_wire_dict< string /*peer*/, $mol_wire_dict< string /*self*/, $hyoo_crus_sand > > >()
 		
 		self_all = new $mol_wire_set< string >()
 		
@@ -106,7 +106,11 @@ namespace $ {
 		@ $mol_mem
 		total() {
 			let total = this.pass.size + this.gift.size
-			for( const units of this.sand.values() ) total += units.size
+			for( const peers of this.sand.values() ) {
+				for( const units of peers.values() ) {
+					total += units.size
+				}
+			}
 			return total
 		}
 		
@@ -164,14 +168,14 @@ namespace $ {
 				unit.choose({
 					pass: pass => {
 						if( pass.lord() === lord ) return
-						graph.link( pass.key(), '' )
+						graph.link( pass.key(), 'gift:' )
 					},
 					gift: gift => {
-						graph.link( $hyoo_crus_ref_peer( gift.dest() ), gift.key() )
-						graph.link( gift.key(), gift.peer() )
+						graph.link( 'pass:' + $hyoo_crus_ref_peer( gift.dest() ), gift.key() )
+						graph.link( gift.key(), 'pass:' + gift.peer() )
 					},
 					sand: sand=> {
-						graph.link( sand.key(), sand.peer() )
+						graph.link( sand.key(), 'pass:' + sand.peer() )
 					},
 				})
 			}
@@ -214,15 +218,27 @@ namespace $ {
 			}
 			
 			for( const kids of this.sand.values() ) {
-				for( const unit of kids.values() ) {
-					
-					const time = face.get( unit.peer() ) ?? 0
-					if( time >= unit.time() ) continue
-					
-					auth( unit.peer() )
-					delta.push( unit )
-					
+				for( const peers of kids.values() ) {
+					for( const unit of peers.values() ) {
+						
+						const time = face.get( unit.peer() ) ?? 0
+						if( time >= unit.time() ) continue
+						
+						auth( unit.peer() )
+						delta.push( unit )
+						
+					}
 				}
+			}
+			
+			for( const [ peer, unit ] of this.pass ) {
+				
+				if( passed.has( peer ) ) continue
+				if( face.has( unit.peer() ) ) continue
+				
+				delta.push( unit )
+				passed.add( peer )
+				
 			}
 			
 			if( delta.length || this.faces.total <= this.faces.total ) return delta
@@ -342,35 +358,37 @@ namespace $ {
 		apply_unit_trust( delta: readonly $hyoo_crus_unit[], skip_check = false ) {
 			return delta.map( unit => {
 				
-				if( !skip_check ) {
-					const error = this.check_unit( unit )
-					if( error ) return error
-				}
-				
 				let need_recheck = false
 				const res = unit.choose({
 					
 					pass: next => {
 						
+						const lord = next.lord()
 						const peer = next.peer()
+						
+						if( !skip_check && this.lord_rank( lord ) < $hyoo_crus_rank.add ) return 'Need add rank to join'
 						
 						const exists = this.pass.get( peer )
 						if( exists ) return ''
 						
 						this.pass.set( peer, next )
+						this.faces.time_max( peer, 0 )
 						this.faces.total ++
 						
 					},
 					
 					gift: next => {
 						
+						const peer = next.peer()
 						const dest = next.dest()
+						
+						if( !skip_check && this.peer_rank( peer ) < $hyoo_crus_rank.law ) return 'Need law rank to change rank'
 						
 						const prev = this.gift.get( dest )
 						if( prev && $hyoo_crus_gift.compare( prev, next ) <= 0 ) return ''
 						
 						this.gift.set( dest, next )
-						this.faces.time_max( next.peer(), next.time() )
+						this.faces.time_max( peer, next.time() )
 						
 						if( !prev ) this.faces.total ++
 						
@@ -381,17 +399,23 @@ namespace $ {
 					sand: next => {
 						
 						const head = next.head()
+						const peer = next.peer()
 						const self = next.self()
 						
-						let units = this.sand.get( head )
-						if( !units ) this.sand.set( head, units = new $mol_wire_dict )
+						if( !skip_check && this.peer_rank( peer ) < $hyoo_crus_rank.mod ) return 'Need mod rank to post data'
+
+						let peers = this.sand.get( head )
+						if( !peers ) this.sand.set( head, peers = new $mol_wire_dict )
+							
+						let units = peers.get( peer )
+						if( !units ) peers.set( peer, units = new $mol_wire_dict )
 							
 						const prev = units.get( self )
 						if( prev && $hyoo_crus_sand.compare( prev, next ) <= 0 ) return ''
 						
 						units.set( self, next )
 						this.self_all.add( self )
-						this.faces.time_max( next.peer(), next.time() )
+						this.faces.time_max( peer, next.time() )
 						
 						if( !prev ) this.faces.total ++
 						
@@ -412,43 +436,25 @@ namespace $ {
 		recheck() {
 			
 			for( const [ peer, pass ] of this.pass ) {
-				if( !this.check_unit( pass ) ) continue
+				if( this.lord_rank( pass.lord() ) >= $hyoo_crus_rank.add ) continue
 				this.pass.delete( peer )
 				this.faces.total --
 			}
 			
 			for( const [ lord, gift ] of this.gift ) {
-				if( !this.check_unit( gift ) ) continue
+				if( this.peer_rank( gift.peer() ) >= $hyoo_crus_rank.law ) continue
 				this.gift.delete( lord )
 				this.faces.total --
 			}
 			
-			for( const [ head, units ] of this.sand ) {
-				for( const [ self, sand ] of units ) {
-					if( !this.check_unit( sand ) ) continue
-					units.delete( self )
-					this.faces.total --
+			for( const [ head, peers ] of this.sand ) {
+				for( const [ peer, units ] of peers ) {
+					if( this.peer_rank( peer ) >= $hyoo_crus_rank.mod ) continue
+					peers.delete( peer )
+					this.faces.total -= units.size
 				}
 			}
 			
-		}
-		
-		check_unit( unit: $hyoo_crus_unit ): string {
-			return unit.choose({
-				
-				pass: next => this.lord_rank( next.lord() ) < $hyoo_crus_rank.add ? 'Need add rank to join' : '',
-				
-				gift: next => this.peer_rank( next.peer() ) < $hyoo_crus_rank.law ? 'Need law rank to change rank': '',
-				
-				sand: next => {
-					if( next.peer() === next.self() ) {
-						return this.peer_rank( next.peer() ) < $hyoo_crus_rank.add ? 'Need add rank to post self data' : ''
-					} else {
-						return this.peer_rank( next.peer() ) < $hyoo_crus_rank.mod ? 'Need mod rank to post any data' : ''
-					}
-				},
-				
-			})
 		}
 		
 		@ $mol_action
@@ -464,7 +470,7 @@ namespace $ {
 			this.sync()
 			this.secret() // early async to prevent async on put
 			
-			const queue = [ ... this.sand.get( head )?.values() ?? [] ]
+			const queue = [ ... this.sand.get( head )?.values() ?? [] ].flatMap( units => [ ... units.values() ] )
 			
 			const slices = new Map
 			for( const sand of queue ) slices.set( sand, 0 )
@@ -476,7 +482,7 @@ namespace $ {
 					.filter( $mol_guard_defined )
 				if( !tines.length ) break merge
 				
-				const exists = new Set([ ... this.sand.get( head )?.keys() ?? [] ])
+				const exists = new Set( queue.map( sand => sand.self() ) )
 				
 				const glob = this.$.$hyoo_crus_glob
 				let slice = 0
@@ -830,12 +836,14 @@ namespace $ {
 			}
 			
 			for( const kids of this.sand.values() ) {
-				for( const sand of kids.values() ) {
-					if( !sand.signed() ) {
-						encoding.push( sand )
-						signing.push( sand )
+				for( const units of kids.values() ) {
+					for( const sand of units.values() ) {
+						if( !sand.signed() ) {
+							encoding.push( sand )
+							signing.push( sand )
+						}
+						if( !mine.units_persisted.has( sand ) ) persisting.push( sand )
 					}
-					if( !mine.units_persisted.has( sand ) ) persisting.push( sand )
 				}
 			}
 			
@@ -899,7 +907,7 @@ namespace $ {
 		@ $mol_mem_key
 		sand_decode_raw( sand: $hyoo_crus_sand ): $hyoo_crus_vary_type {
 			
-			if( this.sand.get( sand.head() )?.get( sand.self() ) !== sand ) {
+			if( this.sand.get( sand.head() )?.get( sand.peer() )?.get( sand.self() ) !== sand ) {
 				for( const id of this.Tine().items_vary() ?? [] ) {
 					const vary = this.$.$hyoo_crus_glob.Land( $hyoo_crus_vary_cast_ref( id! )! ).sand_decode_raw( sand )
 					if( vary !== undefined ) return vary
@@ -1016,13 +1024,15 @@ namespace $ {
 			for( const pass of this.pass.values() ) units.push( pass )
 			for( const gift of this.gift.values() ) units.push( gift )
 			
-			for( const kids of this.sand.values() ) {
-				for( const sand of kids.values() ) {
-					units.push( sand )
-					if( sand.size() <= 32 ) continue
-					const rock = this.$.$hyoo_crus_mine.rock( sand.hash() )
-					if( !rock ) continue
-					rocks.push([ sand.hash(), rock ])
+			for( const heads of this.sand.values() ) {
+				for( const sands of heads.values() ) {
+					for( const sand of sands.values() ) {
+						units.push( sand )
+						if( sand.size() <= 32 ) continue
+						const rock = this.$.$hyoo_crus_mine.rock( sand.hash() )
+						if( !rock ) continue
+						rocks.push([ sand.hash(), rock ])
+					}
 				}
 			}
 			

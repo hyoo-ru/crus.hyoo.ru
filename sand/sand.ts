@@ -60,7 +60,7 @@ namespace $ {
 		}
 
 		key(): string {
-			return `${ this.head() }/${ this.self() }`
+			return `sand:${ this.head() }/${ this.peer() }/${ this.self() }`
 		}
 
 		_lead!: string

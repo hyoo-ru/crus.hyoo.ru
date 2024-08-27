@@ -6,11 +6,11 @@ namespace $ {
 		nil = 0b0000,
 		/** 1. Read only */
 		get = 0b0001,
-		/** 3. Data adding with fixed Node id. You can read everything, but change only one node in the landing page with your identifier */
+		/** 3. Join only (Pass) */
 		add = 0b0011,
-		/** 7. Data modification. Can read and write any data */
+		/** 7. Data modification (Pass, Sand) */
 		mod = 0b0111,
-		/** 15. Full administration. Full access, including changing metadata and distributing rights. */
+		/** 15. Full administration (Pass, Sand, Gift) */
 		law = 0b1111,
 	}
 	

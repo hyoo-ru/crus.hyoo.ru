@@ -57,7 +57,7 @@ namespace $ {
 		'Post Data and pick Delta'( $ ) {
 			
 			const land1 = $hyoo_crus_land.make({ $ })
-			const land2 = $hyoo_crus_land.make({ $, ref: ()=> land1.ref(), auth: ()=> auth1 })
+			const land2 = $hyoo_crus_land.make({ $, ref: ()=> land1.ref(), auth: ()=> auth2 })
 			
 			$mol_assert_equal( land1.delta_unit(), [] )
 			
@@ -72,52 +72,32 @@ namespace $ {
 			
 			land2.apply_unit( land1.delta_unit() )
 			
-			$mol_assert_fail( ()=> land2.post( 'AA222222', '', 'AA333333', new Uint8Array([ 3 ]) ), 'Need add rank to join' )
+			$mol_assert_fail( ()=> land2.join(), 'Need add rank to join' )
 			$mol_assert_equal( land2.delta_unit().length, 3 )
 			$mol_assert_equal( land2.delta_unit( face ).length, 1 )
 			
-			land1.give( auth1, $hyoo_crus_rank.add )
+			land1.give( auth2, $hyoo_crus_rank.add )
 			land2.apply_unit( land1.delta_unit() )
-			$mol_assert_fail( ()=> land2.post( 'AA222222', '', 'AA333333', new Uint8Array([ 3 ]) ), 'Need mod rank to post any data' )
-			$mol_assert_equal( land2.delta_unit().length, 4 )
-			$mol_assert_equal( land2.delta_unit( face ).length, 2 )
+			land2.join()
+			$mol_assert_equal( land2.delta_unit().length, 5 )
+			$mol_assert_equal( land2.delta_unit( face ).length, 3 )
 			
-			land2.post( 'AA222222', '', auth1.peer(), new Uint8Array([ 4 ]) )
+			$mol_assert_fail( ()=> land2.post( 'AA222222', '', 'AA333333', new Uint8Array([ 3 ]) ), 'Need mod rank to post data' )
+			$mol_assert_equal( land2.delta_unit().length, 5 )
+			$mol_assert_equal( land2.delta_unit( face ).length, 3 )
+			
+			land1.give( auth2, $hyoo_crus_rank.mod )
+			land2.apply_unit( land1.delta_unit() )
+			land2.post( 'AA222222', '', 'AA333333', new Uint8Array([ 4 ]) )
 			$mol_assert_equal( land2.delta_unit().length, 6 )
 			$mol_assert_equal( land2.delta_unit( face ).length, 4 )
-			
-			land1.give( auth1, $hyoo_crus_rank.mod )
-			land2.apply_unit( land1.delta_unit() )
-			$mol_assert_equal( land2.delta_unit().length, 6 )
-			$mol_assert_equal( land2.delta_unit( face ).length, 4 )
-			
-			land1.give( auth1, $hyoo_crus_rank.add )
-			land2.apply_unit( land1.delta_unit() )
-			$mol_assert_equal( land2.delta_unit().length, 6 )
-			
-			land1.give( auth1, $hyoo_crus_rank.get )
-			land2.apply_unit( land1.delta_unit() )
-			$mol_assert_equal( land2.delta_unit().length, 4 )
-			
-		},
-		
-		'Self restriction for Add Rank'( $ ) {
-			
-			const land1 = $hyoo_crus_land.make({ $ })
-			const land2 = $hyoo_crus_land.make({ $, ref: ()=> land1.ref(), auth: ()=> auth2 })
-			
-			$mol_assert_equal( land1.delta_unit(), [] )
 			
 			land1.give( auth2, $hyoo_crus_rank.add )
 			land2.apply_unit( land1.delta_unit() )
-			$mol_assert_equal( land2.delta_unit().length, 2 )
+			$mol_assert_equal( land2.delta_unit().length, 5 )
 			
-			const sand1 = land2.post( '', '', '', 'foo' )
-			$mol_assert_equal( sand1.self(), auth2.peer() )
-			$mol_assert_equal( land2.delta_unit().length, 4 )
-			
-			const sand2 = land2.post( '', '', '', 'bar' )
-			$mol_assert_equal( sand2.self(), auth2.peer() )
+			land1.give( auth2, $hyoo_crus_rank.get )
+			land2.apply_unit( land1.delta_unit() )
 			$mol_assert_equal( land2.delta_unit().length, 4 )
 			
 		},
