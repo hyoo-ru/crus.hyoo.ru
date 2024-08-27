@@ -110,13 +110,17 @@ namespace $ {
 			
 			for( const land of Reflect.ownKeys( lands ) as $hyoo_crus_ref[] ) {
 				
-				const errors = this.Land( land ).apply_unit( lands[ land ].units ).filter( Boolean )
+				const errors = this.Land( land ).apply_unit( lands[ land ].units )
 				
-				for( const error of errors ) this.$.$mol_log3_warn({
-					place: `${this}.apply_pack()`,
-					message: error,
-					hint: 'Send it to developer',
-				})
+				for( const [ i, error ] of errors.entries() ) {
+					if( !error ) continue
+					this.$.$mol_log3_warn({
+						place: `${this}.apply_parts()`,
+						message: error,
+						unit: lands[ land ].units[i].dump(),
+						hint: 'Send it to developer',
+					})
+				}
 				
 			}
 			
