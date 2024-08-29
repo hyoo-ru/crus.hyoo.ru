@@ -9233,7 +9233,7 @@ var $;
         tick() {
             this.$.$mol_state_time.now(1000);
             const res = $mol_wire_sync(process).resourceUsage();
-            const fs = $mol_wire_sync($node.fs).statfsSync('.crus');
+            const fs = $mol_wire_sync($node.fs).statfsSync('.');
             this.Cpu_user(null).tick(res.userCPUTime / 1e6);
             this.Cpu_system(null).tick(res.systemCPUTime / 1e6);
             this.Mem_max(null).tick(res.maxRSS / 1024);
