@@ -8297,20 +8297,15 @@ var $;
             return new URL(this.urn());
         }
         static rock(hash, next) {
-            $mol_wire_solid();
-            if (next)
+            if (next) {
+                $mol_wire_sync(this).db()?.query(`
+						INSERT INTO Rock( hash, rock )
+						VALUES( $1::bytea, $2::bytea )
+						ON CONFLICT( hash ) DO NOTHING
+					`, [hash, next]);
                 return next;
+            }
             return $mol_wire_sync(this).rock_load(hash);
-        }
-        static rock_save(blob) {
-            const hash = this.hash(blob);
-            this.rock(hash, blob);
-            $mol_wire_sync(this).db()?.query(`
-					INSERT INTO Rock( hash, rock )
-					VALUES( $1::bytea, $2::bytea )
-					ON CONFLICT( hash ) DO NOTHING
-				`, [hash, blob]);
-            return hash;
         }
         static async rock_load(hash) {
             const db = await this.db();
@@ -8400,9 +8395,6 @@ var $;
     ], $hyoo_crus_mine_pg, "rock", null);
     __decorate([
         $mol_action
-    ], $hyoo_crus_mine_pg, "rock_save", null);
-    __decorate([
-        $mol_action
     ], $hyoo_crus_mine_pg, "units_load", null);
     __decorate([
         $mol_memo.method
@@ -8429,7 +8421,6 @@ var $;
             return this.root().resolve(`rock/${id.slice(0, 2)}/${id}.blob`);
         }
         static rock(hash, next) {
-            $mol_wire_solid();
             const buf = this.rock_file(hash).buffer(next);
             if (next)
                 return buf;

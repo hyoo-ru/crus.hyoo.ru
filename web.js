@@ -12250,7 +12250,6 @@ var $;
 (function ($) {
     class $hyoo_crus_mine_idb extends $hyoo_crus_mine {
         static rock(hash, next) {
-            $mol_wire_solid();
             const prev = $mol_mem_cached(() => this.rock(hash));
             if (prev)
                 return prev;

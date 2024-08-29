@@ -3586,7 +3586,6 @@ declare namespace $ {
         static urn(): string | null;
         static url(): URL;
         static rock(hash: Uint8Array, next?: Uint8Array): Uint8Array | null;
-        static rock_save(blob: Uint8Array): Uint8Array;
         static rock_load(hash: Uint8Array): Promise<Uint8Array | null>;
         static units_save(land: $hyoo_crus_ref, units: readonly $hyoo_crus_unit[]): Promise<void>;
         static units_load(land: $hyoo_crus_ref): Promise<($hyoo_crus_pass | $hyoo_crus_gift | $hyoo_crus_sand)[]>;
