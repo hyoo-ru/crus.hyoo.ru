@@ -3,7 +3,6 @@ namespace $ {
 		
 		@ $mol_mem_key
 		static rock( hash: Uint8Array, next?: Uint8Array ): Uint8Array | null {
-			$mol_wire_solid()
 			
 			const prev = $mol_mem_cached( ()=> this.rock( hash ) )
 			if( prev ) return prev

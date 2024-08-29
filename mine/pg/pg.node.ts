@@ -13,27 +13,18 @@ namespace $ {
 		
 		@ $mol_mem_key
 		static rock( hash: Uint8Array, next?: Uint8Array ) {
-			$mol_wire_solid()
-			if( next ) return next
+			if( next ) {
+				$mol_wire_sync( this ).db()?.query(
+					`
+						INSERT INTO Rock( hash, rock )
+						VALUES( $1::bytea, $2::bytea )
+						ON CONFLICT( hash ) DO NOTHING
+					`,
+					[ hash, next ]
+				)
+				return next
+			}
 			return $mol_wire_sync( this ).rock_load( hash )
-		}
-		
-		@ $mol_action
-		static rock_save( blob: Uint8Array ) {
-			
-			const hash = this.hash( blob )
-			this.rock( hash, blob )
-			
-			$mol_wire_sync( this ).db()?.query(
-				`
-					INSERT INTO Rock( hash, rock )
-					VALUES( $1::bytea, $2::bytea )
-					ON CONFLICT( hash ) DO NOTHING
-				`,
-				[ hash, blob ]
-			)
-			
-			return hash
 		}
 		
 		static async rock_load( hash: Uint8Array ) {
