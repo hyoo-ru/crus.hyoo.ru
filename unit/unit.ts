@@ -106,7 +106,7 @@ namespace $ {
 		
 		mix( mixin: Uint8Array ) {
 			for( let i = 0; i < mixin.length; ++i ) {
-				this.uint8( 14 + i, this.uint8( 14 + i ) ^ mixin[i] )
+				this.uint8( 2 + i, this.uint8( 2 + i ) ^ mixin[i] )
 			}
 		}
 		

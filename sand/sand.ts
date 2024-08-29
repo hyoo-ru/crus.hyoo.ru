@@ -47,16 +47,16 @@ namespace $ {
 			return this.uint48( 8, next )
 		}
 
-		_self!: string
-		self( next?: string ) {
-			if( next === undefined && this._self !== undefined ) return this._self
-			else return this._self = this.id6( 14, next )
-		}
-
 		_head!: string
 		head( next?: string ) {
 			if( next === undefined && this._head !== undefined ) return this._head
-			else return this._head = this.id6( 20, next )
+			else return this._head = this.id6( 14, next )
+		}
+
+		_self!: string
+		self( next?: string ) {
+			if( next === undefined && this._self !== undefined ) return this._self
+			else return this._self = this.id6( 20, next )
 		}
 
 		key(): string {

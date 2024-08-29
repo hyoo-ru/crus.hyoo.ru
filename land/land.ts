@@ -343,7 +343,7 @@ namespace $ {
 				if( !key_public ) return `No public key for peer (${unit.peer()})`
 				
 				const sens = unit.sens().slice()
-				for( let i = 0; i < mixin.length; ++i ) sens[i+14] ^= mixin[i+14]
+				for( let i = 0; i < mixin.length; ++i ) sens[i+2] ^= mixin[i]
 				
 				const valid = await key_public.verify( sens, unit.sign() )
 				
@@ -899,7 +899,7 @@ namespace $ {
 			const mixin = $hyoo_crus_ref_encode( unit._land!.ref() )
 			
 			const sens = unit.sens().slice()
-			for( let i = 0; i < mixin.length; ++i ) sens[i+14] ^= mixin[i+14]
+			for( let i = 0; i < mixin.length; ++i ) sens[i+2] ^= mixin[i]
 			
 			const sign = key.sign( sens )
 			unit.sign( sign )
