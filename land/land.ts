@@ -335,6 +335,7 @@ namespace $ {
 			] ) )
 			
 			const mixin = $hyoo_crus_ref_encode( this.ref() )
+			const mixin_lord = $hyoo_crus_ref_encode( $hyoo_crus_ref_lord( this.ref() ) )
 			
 			return await Promise.all( units.map( async unit => {
 				
@@ -342,12 +343,16 @@ namespace $ {
 				if( !key_public ) key_public = auth.get( unit.peer() ) ?? null
 				if( !key_public ) return `No public key for peer (${unit.peer()})`
 				
-				const sens = unit.sens().slice()
+				let sens = unit.sens().slice()
 				for( let i = 0; i < mixin.length; ++i ) sens[i+2] ^= mixin[i]
+				let valid = key_public.verify( sens, unit.sign() )
+				if( await valid ) return ''
 				
-				const valid = await key_public.verify( sens, unit.sign() )
+				sens = unit.sens().slice()
+				valid = key_public.verify( sens, unit.sign() )
+				if( await valid ) return ''
 				
-				return valid ? '' : `Wrong unit sign`
+				return `Wrong unit sign`
 	
 			} ) )
 			
