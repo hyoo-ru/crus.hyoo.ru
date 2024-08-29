@@ -21,7 +21,12 @@ namespace $ {
 		
 		async lookup( ip: string ) {
 			const lookup = $node.util.promisify( $node.dns.lookupService )
-			return lookup( ip, 80 )
+			try {
+				return lookup( ip, 80 )
+			} catch( error ) {
+				$mol_fail_log( error )
+				return ip
+			}
 		}
 		
 		@ $mol_mem
