@@ -3972,10 +3972,7 @@ declare namespace $ {
     class $hyoo_crus_app_home_node extends $hyoo_crus_app_home {
         init(): void;
         ips(): string[];
-        lookup(ip: string): Promise<{
-            hostname: string;
-            service: string;
-        }>;
+        lookup(ip: string): Promise<string>;
         aliases(): string[];
     }
 }

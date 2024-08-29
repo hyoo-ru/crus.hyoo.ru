@@ -9294,11 +9294,17 @@ var $;
         }
         async lookup(ip) {
             const lookup = $node.util.promisify($node.dns.lookupService);
-            return lookup(ip, 80);
+            try {
+                return (await lookup(ip, 80)).hostname;
+            }
+            catch (error) {
+                $mol_fail_log(error);
+                return ip;
+            }
         }
         aliases() {
             const self = $mol_wire_sync(this);
-            return [...new Set(this.ips().map(ip => self.lookup(ip).hostname))];
+            return [...new Set(this.ips().map(ip => self.lookup(ip)))];
         }
     }
     __decorate([
