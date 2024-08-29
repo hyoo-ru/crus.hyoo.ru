@@ -22,7 +22,7 @@ namespace $ {
 		async lookup( ip: string ) {
 			const lookup = $node.util.promisify( $node.dns.lookupService )
 			try {
-				return lookup( ip, 80 )
+				return (await lookup( ip, 80 )).hostname
 			} catch( error ) {
 				$mol_fail_log( error )
 				return ip
@@ -32,7 +32,7 @@ namespace $ {
 		@ $mol_mem
 		aliases() {
 			const self = $mol_wire_sync( this )
-			return [ ... new Set( this.ips().map( ip => self.lookup( ip ).hostname ) ) ]
+			return [ ... new Set( this.ips().map( ip => self.lookup( ip ) ) ) ]
 		}
 		
 	}
