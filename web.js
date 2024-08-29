@@ -8659,7 +8659,10 @@ var $;
             return this.units().map(unit => map[unit.tag()]().Item(unit.self()));
         }
         units() {
-            return this.land().sand_ordered(this.head()).filter(unit => unit.tip() !== 'nil');
+            return this.units_of('');
+        }
+        units_of(peer) {
+            return this.land().sand_ordered({ head: this.head(), peer }).filter(unit => unit.tip() !== 'nil');
         }
         filled() {
             return this.units().length > 0;
@@ -8687,9 +8690,9 @@ var $;
                 peers.add(sand.peer());
                 if (sand.tag() === 'term')
                     return;
-                land.Node($hyoo_crus_node).Item(sand.self()).units().forEach(visit);
+                land.Node($hyoo_crus_node).Item(sand.self()).units_of(null).forEach(visit);
             };
-            this.units().forEach(visit);
+            this.units_of(null).forEach(visit);
             return [...peers];
         }
         author_lords() {
@@ -8713,8 +8716,8 @@ var $;
         $mol_mem_key
     ], $hyoo_crus_node.prototype, "nodes", null);
     __decorate([
-        $mol_mem
-    ], $hyoo_crus_node.prototype, "units", null);
+        $mol_mem_key
+    ], $hyoo_crus_node.prototype, "units_of", null);
     __decorate([
         $mol_mem
     ], $hyoo_crus_node.prototype, "last_change", null);
@@ -10291,8 +10294,11 @@ var $;
         }
         total() {
             let total = this.pass.size + this.gift.size;
-            for (const units of this.sand.values())
-                total += units.size;
+            for (const peers of this.sand.values()) {
+                for (const units of peers.values()) {
+                    total += units.size;
+                }
+            }
             return total;
         }
         joined_list() {
@@ -10337,14 +10343,14 @@ var $;
                     pass: pass => {
                         if (pass.lord() === lord)
                             return;
-                        graph.link(pass.key(), '');
+                        graph.link(pass.key(), 'gift:');
                     },
                     gift: gift => {
-                        graph.link($hyoo_crus_ref_peer(gift.dest()), gift.key());
-                        graph.link(gift.key(), gift.peer());
+                        graph.link('pass:' + $hyoo_crus_ref_peer(gift.dest()), gift.key());
+                        graph.link(gift.key(), 'pass:' + gift.peer());
                     },
                     sand: sand => {
-                        graph.link(sand.key(), sand.peer());
+                        graph.link(sand.key(), 'pass:' + sand.peer());
                     },
                 });
             }
@@ -10374,13 +10380,23 @@ var $;
                 delta.push(unit);
             }
             for (const kids of this.sand.values()) {
-                for (const unit of kids.values()) {
-                    const time = face.get(unit.peer()) ?? 0;
-                    if (time >= unit.time())
-                        continue;
-                    auth(unit.peer());
-                    delta.push(unit);
+                for (const peers of kids.values()) {
+                    for (const unit of peers.values()) {
+                        const time = face.get(unit.peer()) ?? 0;
+                        if (time >= unit.time())
+                            continue;
+                        auth(unit.peer());
+                        delta.push(unit);
+                    }
                 }
+            }
+            for (const [peer, unit] of this.pass) {
+                if (passed.has(peer))
+                    continue;
+                if (face.has(unit.peer()))
+                    continue;
+                delta.push(unit);
+                passed.add(peer);
             }
             if (delta.length || this.faces.total <= this.faces.total)
                 return delta;
@@ -10453,43 +10469,52 @@ var $;
                 $mol_crypto_key_public.from(unit.auth()),
             ]));
             const mixin = $hyoo_crus_ref_encode(this.ref());
+            const mixin_lord = $hyoo_crus_ref_encode($hyoo_crus_ref_lord(this.ref()));
             return await Promise.all(units.map(async (unit) => {
                 let key_public = this.key_public(unit.peer());
                 if (!key_public)
                     key_public = auth.get(unit.peer()) ?? null;
                 if (!key_public)
                     return `No public key for peer (${unit.peer()})`;
-                const sens = unit.sens().slice();
+                let sens = unit.sens().slice();
                 for (let i = 0; i < mixin.length; ++i)
-                    sens[i + 14] ^= mixin[i + 14];
-                const valid = await key_public.verify(sens, unit.sign());
-                return valid ? '' : `Wrong unit sign`;
+                    sens[i + 2] ^= mixin[i];
+                let valid = key_public.verify(sens, unit.sign());
+                if (await valid)
+                    return '';
+                sens = unit.sens().slice();
+                valid = key_public.verify(sens, unit.sign());
+                if (await valid)
+                    return '';
+                return `Wrong unit sign`;
             }));
         }
         apply_unit_trust(delta, skip_check = false) {
             return delta.map(unit => {
-                if (!skip_check) {
-                    const error = this.check_unit(unit);
-                    if (error)
-                        return error;
-                }
                 let need_recheck = false;
                 const res = unit.choose({
                     pass: next => {
+                        const lord = next.lord();
                         const peer = next.peer();
+                        if (!skip_check && this.lord_rank(lord) < $hyoo_crus_rank.add)
+                            return 'Need add rank to join';
                         const exists = this.pass.get(peer);
                         if (exists)
                             return '';
                         this.pass.set(peer, next);
+                        this.faces.time_max(peer, 0);
                         this.faces.total++;
                     },
                     gift: next => {
+                        const peer = next.peer();
                         const dest = next.dest();
+                        if (!skip_check && this.peer_rank(peer) < $hyoo_crus_rank.law)
+                            return 'Need law rank to change rank';
                         const prev = this.gift.get(dest);
                         if (prev && $hyoo_crus_gift.compare(prev, next) <= 0)
                             return '';
                         this.gift.set(dest, next);
-                        this.faces.time_max(next.peer(), next.time());
+                        this.faces.time_max(peer, next.time());
                         if (!prev)
                             this.faces.total++;
                         if ((prev?.rank() ?? $hyoo_crus_rank.nil) > next.rank())
@@ -10497,16 +10522,22 @@ var $;
                     },
                     sand: next => {
                         const head = next.head();
+                        const peer = next.peer();
                         const self = next.self();
-                        let units = this.sand.get(head);
+                        if (!skip_check && this.peer_rank(peer) < $hyoo_crus_rank.mod)
+                            return 'Need mod rank to post data';
+                        let peers = this.sand.get(head);
+                        if (!peers)
+                            this.sand.set(head, peers = new $mol_wire_dict);
+                        let units = peers.get(peer);
                         if (!units)
-                            this.sand.set(head, units = new $mol_wire_dict);
+                            peers.set(peer, units = new $mol_wire_dict);
                         const prev = units.get(self);
                         if (prev && $hyoo_crus_sand.compare(prev, next) <= 0)
                             return '';
                         units.set(self, next);
                         this.self_all.add(self);
-                        this.faces.time_max(next.peer(), next.time());
+                        this.faces.time_max(peer, next.time());
                         if (!prev)
                             this.faces.total++;
                     },
@@ -10521,49 +10552,37 @@ var $;
         }
         recheck() {
             for (const [peer, pass] of this.pass) {
-                if (!this.check_unit(pass))
+                if (this.lord_rank(pass.lord()) >= $hyoo_crus_rank.add)
                     continue;
                 this.pass.delete(peer);
                 this.faces.total--;
             }
             for (const [lord, gift] of this.gift) {
-                if (!this.check_unit(gift))
+                if (this.peer_rank(gift.peer()) >= $hyoo_crus_rank.law)
                     continue;
                 this.gift.delete(lord);
                 this.faces.total--;
             }
-            for (const [head, units] of this.sand) {
-                for (const [self, sand] of units) {
-                    if (!this.check_unit(sand))
+            for (const [head, peers] of this.sand) {
+                for (const [peer, units] of peers) {
+                    if (this.peer_rank(peer) >= $hyoo_crus_rank.mod)
                         continue;
-                    units.delete(self);
-                    this.faces.total--;
+                    peers.delete(peer);
+                    this.faces.total -= units.size;
                 }
             }
-        }
-        check_unit(unit) {
-            return unit.choose({
-                pass: next => this.lord_rank(next.lord()) < $hyoo_crus_rank.add ? 'Need add rank to join' : '',
-                gift: next => this.peer_rank(next.peer()) < $hyoo_crus_rank.law ? 'Need law rank to change rank' : '',
-                sand: next => {
-                    if (next.peer() === next.self()) {
-                        return this.peer_rank(next.peer()) < $hyoo_crus_rank.add ? 'Need add rank to post self data' : '';
-                    }
-                    else {
-                        return this.peer_rank(next.peer()) < $hyoo_crus_rank.mod ? 'Need mod rank to post any data' : '';
-                    }
-                },
-            });
         }
         fork(preset = { '': $hyoo_crus_rank.get }) {
             const land = this.$.$hyoo_crus_glob.land_grab(preset);
             land.Tine().items_vary([this.ref()]);
             return land;
         }
-        sand_ordered(head) {
+        sand_ordered({ head, peer }) {
             this.sync();
             this.secret();
-            const queue = [...this.sand.get(head)?.values() ?? []];
+            const queue = peer
+                ? [...this.sand.get(head)?.get(peer)?.values() ?? []]
+                : [...this.sand.get(head)?.values() ?? []].flatMap(units => [...units.values()]);
             const slices = new Map;
             for (const sand of queue)
                 slices.set(sand, 0);
@@ -10573,13 +10592,13 @@ var $;
                     .filter($mol_guard_defined);
                 if (!tines.length)
                     break merge;
-                const exists = new Set([...this.sand.get(head)?.keys() ?? []]);
+                const exists = new Set(queue.map(sand => sand.self()));
                 const glob = this.$.$hyoo_crus_glob;
                 let slice = 0;
                 for (const ref of tines) {
                     ++slice;
                     const land = glob.Land(ref);
-                    for (const sand of land.sand_ordered(head)) {
+                    for (const sand of land.sand_ordered({ head, peer })) {
                         if (exists.has(sand.self()))
                             continue;
                         queue.push(sand);
@@ -10599,34 +10618,46 @@ var $;
                 next: '',
                 prev: '',
             };
-            const graph = new Map([['', entry]]);
+            const key = peer === null ? (sand) => sand.key() : (sand) => sand.self();
+            const by_key = new Map([['', entry]]);
+            const by_self = new Map([['', entry]]);
             while (queue.length) {
                 const last = queue.pop();
-                graph.get(entry.prev).next = last.self();
-                graph.set(last.self(), { sand: last, next: '', prev: entry.prev });
-                entry.prev = last.self();
+                by_key.get(entry.prev).next = key(last);
+                const item = { sand: last, next: '', prev: entry.prev };
+                by_key.set(key(last), item);
+                const exists = by_self.get(last.self());
+                if (!exists || compare(exists.sand, last) < 0) {
+                    by_self.set(last.self(), item);
+                }
+                entry.prev = key(last);
                 for (let cursor = queue.length - 1; cursor >= 0; --cursor) {
                     const kid = queue[cursor];
-                    let lead = graph.get(kid.lead());
+                    let lead = by_self.get(kid.lead());
                     if (!lead)
                         continue;
-                    while (lead.next && (compare(graph.get(lead.next).sand, kid) < 0))
-                        lead = graph.get(lead.next);
-                    const exists = graph.get(kid.self());
-                    if (exists) {
-                        if ((lead.sand?.self() ?? '') === exists.prev) {
-                            exists.sand = kid;
+                    while (lead.next && (compare(by_key.get(lead.next).sand, kid) < 0))
+                        lead = by_key.get(lead.next);
+                    const exists1 = by_key.get(key(kid));
+                    if (exists1) {
+                        if ((lead.sand ? key(lead.sand) : '') === exists1.prev) {
+                            exists1.sand = kid;
                             if (cursor === queue.length - 1)
                                 queue.pop();
                             continue;
                         }
-                        graph.get(exists.prev).next = exists.next;
-                        graph.get(exists.next).prev = exists.prev;
+                        by_key.get(exists1.prev).next = exists1.next;
+                        by_key.get(exists1.next).prev = exists1.prev;
                     }
-                    const follower = graph.get(lead.next);
-                    follower.prev = kid.self();
-                    graph.set(kid.self(), { sand: kid, next: lead.next, prev: lead.sand?.self() ?? '' });
-                    lead.next = kid.self();
+                    const follower = by_key.get(lead.next);
+                    follower.prev = key(kid);
+                    const item = { sand: kid, next: lead.next, prev: lead.sand ? key(lead.sand) : '' };
+                    by_key.set(key(kid), item);
+                    const exists2 = by_self.get(kid.self());
+                    if (!exists2 || compare(exists2.sand, kid) < 0) {
+                        by_self.set(kid.self(), item);
+                    }
+                    lead.next = key(kid);
                     if (cursor === queue.length - 1)
                         queue.pop();
                     cursor = queue.length;
@@ -10634,7 +10665,7 @@ var $;
             }
             const res = [];
             while (entry.next) {
-                entry = graph.get(entry.next);
+                entry = by_key.get(entry.next);
                 res.push(entry.sand);
             }
             return res;
@@ -10714,10 +10745,10 @@ var $;
             this.broadcast();
             return unit;
         }
-        sand_move(sand, head, seat) {
+        sand_move(sand, head, seat, peer = '') {
             if (sand.tip() === 'nil')
                 $mol_fail(new RangeError(`Can't move wiped sand`));
-            const units = this.sand_ordered(head).filter(unit => unit.tip() !== 'nil');
+            const units = this.sand_ordered({ head, peer }).filter(unit => unit.tip() !== 'nil');
             if (seat > units.length)
                 $mol_fail(new RangeError(`Seat (${seat}) out of units length (${units.length})`));
             const lead = seat ? units[seat - 1].self() : '';
@@ -10738,10 +10769,11 @@ var $;
             }
             this.post(lead, head, sand.self(), vary, sand.tag());
         }
-        sand_wipe(sand) {
-            const units = this.sand_ordered(sand.head()).filter(unit => unit.tip() !== 'nil');
+        sand_wipe(sand, peer = '') {
+            const head = sand.head();
+            const units = this.sand_ordered({ head, peer }).filter(unit => unit.tip() !== 'nil');
             const seat = units.indexOf(sand);
-            this.post(seat ? units[seat - 1].self() : '', sand.head(), sand.self(), null, 'term');
+            this.post(seat ? units[seat - 1].self() : '', head, sand.self(), null, 'term');
         }
         broadcast() {
             this.$.$hyoo_crus_glob.yard().lands_news.add(this.ref());
@@ -10807,13 +10839,15 @@ var $;
                     persisting.push(gift);
             }
             for (const kids of this.sand.values()) {
-                for (const sand of kids.values()) {
-                    if (!sand.signed()) {
-                        encoding.push(sand);
-                        signing.push(sand);
+                for (const units of kids.values()) {
+                    for (const sand of units.values()) {
+                        if (!sand.signed()) {
+                            encoding.push(sand);
+                            signing.push(sand);
+                        }
+                        if (!mine.units_persisted.has(sand))
+                            persisting.push(sand);
                     }
-                    if (!mine.units_persisted.has(sand))
-                        persisting.push(sand);
                 }
             }
             $mol_wire_race(...encoding.map(unit => () => this.sand_encode(unit)));
@@ -10835,7 +10869,7 @@ var $;
             const mixin = $hyoo_crus_ref_encode(unit._land.ref());
             const sens = unit.sens().slice();
             for (let i = 0; i < mixin.length; ++i)
-                sens[i + 14] ^= mixin[i + 14];
+                sens[i + 2] ^= mixin[i];
             const sign = key.sign(sens);
             unit.sign(sign);
         }
@@ -10861,7 +10895,7 @@ var $;
             return vary;
         }
         sand_decode_raw(sand) {
-            if (this.sand.get(sand.head())?.get(sand.self()) !== sand) {
+            if (this.sand.get(sand.head())?.get(sand.peer())?.get(sand.self()) !== sand) {
                 for (const id of this.Tine().items_vary() ?? []) {
                     const vary = this.$.$hyoo_crus_glob.Land($hyoo_crus_vary_cast_ref(id)).sand_decode_raw(sand);
                     if (vary !== undefined)
@@ -10953,15 +10987,17 @@ var $;
                 units.push(pass);
             for (const gift of this.gift.values())
                 units.push(gift);
-            for (const kids of this.sand.values()) {
-                for (const sand of kids.values()) {
-                    units.push(sand);
-                    if (sand.size() <= 32)
-                        continue;
-                    const rock = this.$.$hyoo_crus_mine.rock(sand.hash());
-                    if (!rock)
-                        continue;
-                    rocks.push([sand.hash(), rock]);
+            for (const heads of this.sand.values()) {
+                for (const sands of heads.values()) {
+                    for (const sand of sands.values()) {
+                        units.push(sand);
+                        if (sand.size() <= 32)
+                            continue;
+                        const rock = this.$.$hyoo_crus_mine.rock(sand.hash());
+                        if (!rock)
+                            continue;
+                        rocks.push([sand.hash(), rock]);
+                    }
                 }
             }
             return {
@@ -11165,7 +11201,7 @@ var $;
         }
         mix(mixin) {
             for (let i = 0; i < mixin.length; ++i) {
-                this.uint8(14 + i, this.uint8(14 + i) ^ mixin[i]);
+                this.uint8(2 + i, this.uint8(2 + i) ^ mixin[i]);
             }
         }
         sign(next) {
@@ -11201,7 +11237,7 @@ var $;
                 return this._lord = this.id12(2, next);
         }
         key() {
-            return this.id6(2);
+            return `pass:${this.id6(2)}`;
         }
         auth(next) {
             const prev = new Uint8Array(this.buffer, this.byteOffset, 64);
@@ -11250,7 +11286,7 @@ var $;
                 return this._dest = this.id12(14, next);
         }
         key() {
-            return this.dest().description;
+            return `gift:${this.dest().description}`;
         }
         bill() {
             return new Uint8Array(this.buffer, this.byteOffset + 32, 32);
@@ -11309,22 +11345,22 @@ var $;
         time(next) {
             return this.uint48(8, next);
         }
-        _self;
-        self(next) {
-            if (next === undefined && this._self !== undefined)
-                return this._self;
-            else
-                return this._self = this.id6(14, next);
-        }
         _head;
         head(next) {
             if (next === undefined && this._head !== undefined)
                 return this._head;
             else
-                return this._head = this.id6(20, next);
+                return this._head = this.id6(14, next);
+        }
+        _self;
+        self(next) {
+            if (next === undefined && this._self !== undefined)
+                return this._self;
+            else
+                return this._self = this.id6(20, next);
         }
         key() {
-            return `${this.head()}/${this.self()}`;
+            return `sand:${this.head()}/${this.peer()}/${this.self()}`;
         }
         _lead;
         lead(next) {
@@ -11514,6 +11550,9 @@ var $;
     __decorate([
         $mol_mem
     ], $hyoo_crus_list_vary.prototype, "items_vary", null);
+    __decorate([
+        $mol_action
+    ], $hyoo_crus_list_vary.prototype, "splice", null);
     $.$hyoo_crus_list_vary = $hyoo_crus_list_vary;
     function $hyoo_crus_list(parse) {
         class $hyoo_crus_list extends $hyoo_crus_list_vary {
@@ -11649,16 +11688,22 @@ var $;
         }
         static schema = {};
         static with(schema) {
-            const Entity = class Entity extends this {
+            const $hyoo_crus_dict_with = class $hyoo_crus_dict_with extends this {
+                static toString() {
+                    if (this !== $hyoo_crus_dict_with)
+                        return super.toString();
+                    const params = Object.entries(schema).map(([name, type]) => `${name}: ${type}`);
+                    return '$hyoo_crus_dict.with<{' + params.join(', ') + '}>';
+                }
             };
             for (const Field in schema) {
-                Object.defineProperty(Entity.prototype, Field, {
+                Object.defineProperty($hyoo_crus_dict_with.prototype, Field, {
                     value: function (auto) {
                         return this.dive(Field, schema[Field], auto);
                     }
                 });
             }
-            return Object.assign(Entity, { schema: { ...this.schema, ...schema } });
+            return Object.assign($hyoo_crus_dict_with, { schema: { ...this.schema, ...schema } });
         }
         ;
         [$mol_dev_format_head]() {
@@ -11703,18 +11748,21 @@ var $;
 (function ($) {
     class $hyoo_crus_atom_vary extends $hyoo_crus_node {
         static tag = $hyoo_crus_sand_tag[$hyoo_crus_sand_tag.solo];
-        pick_unit() {
-            return this.units().at(0);
+        pick_unit(peer) {
+            return this.units_of(peer).at(0);
         }
         vary(next) {
-            let unit_prev = this.pick_unit();
+            return this.vary_of('', next);
+        }
+        vary_of(peer, next) {
+            let unit_prev = this.pick_unit(peer);
             let prev = unit_prev ? this.land().sand_decode(unit_prev) : null;
             if (next === undefined)
                 return prev;
             if ($mol_compare_deep(prev, next))
                 return next;
             this.land().post('', unit_prev?.head() ?? this.head(), unit_prev?.self() ?? '', next);
-            return this.vary();
+            return this.vary_of(peer);
         }
         ;
         [$mol_dev_format_head]() {
@@ -11722,8 +11770,8 @@ var $;
         }
     }
     __decorate([
-        $mol_mem
-    ], $hyoo_crus_atom_vary.prototype, "vary", null);
+        $mol_mem_key
+    ], $hyoo_crus_atom_vary.prototype, "vary_of", null);
     $.$hyoo_crus_atom_vary = $hyoo_crus_atom_vary;
     class $hyoo_crus_atom_enum_base extends $hyoo_crus_atom_vary {
         static options = [];
@@ -11736,6 +11784,9 @@ var $;
                 return this === $hyoo_crus_atom_enum ? '$hyoo_crus_atom_enum<' + options.map($hyoo_crus_vary_cast_str) + '>' : super.toString();
             }
             val(next) {
+                return this.val_of('', next);
+            }
+            val_of(peer, next) {
                 validate: if (next !== undefined) {
                     for (const option of options) {
                         if ($mol_compare_deep(option, next))
@@ -11743,7 +11794,7 @@ var $;
                     }
                     $mol_fail(new Error(`Wrong value (${$hyoo_crus_vary_cast_str(next)})`));
                 }
-                const val = this.vary(next);
+                const val = this.vary_of(peer, next);
                 for (const option of options) {
                     if ($mol_compare_deep(option, val))
                         return val;
@@ -11752,8 +11803,8 @@ var $;
             }
         }
         __decorate([
-            $mol_mem
-        ], $hyoo_crus_atom_enum.prototype, "val", null);
+            $mol_mem_key
+        ], $hyoo_crus_atom_enum.prototype, "val_of", null);
         return $hyoo_crus_atom_enum;
     }
     $.$hyoo_crus_atom_enum = $hyoo_crus_atom_enum;
@@ -11761,9 +11812,12 @@ var $;
         class $hyoo_crus_atom extends $hyoo_crus_atom_vary {
             static parse = parse;
             val(next) {
+                return this.val_of('', next);
+            }
+            val_of(peer, next) {
                 if (next !== undefined)
                     parse(next);
-                const res = this.vary(next);
+                const res = this.vary_of(peer, next);
                 try {
                     return parse(res);
                 }
@@ -11828,39 +11882,45 @@ var $;
                 return this === $hyoo_crus_atom_ref_to ? '$hyoo_crus_atom_ref_to<' + Value() + '>' : super.toString();
             }
             remote(next) {
+                return this.remote_of('', next);
+            }
+            remote_of(peer, next) {
                 let ref = next?.ref() ?? next;
-                ref = $hyoo_crus_vary_cast_ref(this.vary(ref));
+                ref = $hyoo_crus_vary_cast_ref(this.vary_of(peer, ref));
                 if (!ref)
                     return null;
                 return this.$.$hyoo_crus_glob.Node(ref, Value());
             }
             ensure(config) {
-                if (!this.val()) {
+                return this.ensure_of('', config);
+            }
+            ensure_of(peer, config) {
+                if (!this.val_of(peer)) {
                     if (config === null)
-                        this.ensure_here();
+                        this.ensure_here(peer);
                     else if (config instanceof $hyoo_crus_land)
-                        this.ensure_area(config);
+                        this.ensure_area(peer, config);
                     else if (config)
-                        this.ensure_lord(config);
+                        this.ensure_lord(peer, config);
                     else
                         return null;
                 }
-                return this.remote();
+                return this.remote_of(peer);
             }
-            ensure_here() {
+            ensure_here(peer) {
                 const idea = $mol_hash_string(this.ref().description);
                 const head = this.land().self_make(idea);
                 const node = this.land().Node(Value()).Item(head);
-                this.remote(node);
+                this.remote_of(peer, node);
             }
-            ensure_area(land) {
+            ensure_area(peer, land) {
                 const idea = $mol_hash_string(this.ref().description);
                 const area = land.area_make(idea);
-                this.val(area.ref());
+                this.val_of(peer, area.ref());
             }
-            ensure_lord(preset) {
+            ensure_lord(peer, preset) {
                 const land = this.$.$hyoo_crus_glob.land_grab(preset);
-                this.val(land.ref());
+                this.val_of(peer, land.ref());
             }
             remote_ensure(preset) {
                 return this.ensure(preset);
@@ -11870,8 +11930,8 @@ var $;
             }
         }
         __decorate([
-            $mol_mem
-        ], $hyoo_crus_atom_ref_to.prototype, "remote", null);
+            $mol_mem_key
+        ], $hyoo_crus_atom_ref_to.prototype, "remote_of", null);
         __decorate([
             $mol_action
         ], $hyoo_crus_atom_ref_to.prototype, "ensure_here", null);
@@ -12227,7 +12287,7 @@ var $;
             const db = await this.db();
             const { Land } = db.read('Land');
             const land_ref = land.description;
-            const land_key = IDBKeyRange.bound([land_ref], [land_ref + '\uFFFF']);
+            const land_key = IDBKeyRange.bound([land_ref, ''], [land_ref, '\uFFFF']);
             const res = await Land.select(land_key);
             const units = res.map(bin => new $hyoo_crus_unit(bin).narrow());
             for (const unit of units) {
@@ -12237,7 +12297,7 @@ var $;
             return units;
         }
         static async db() {
-            return await this.$.$mol_db('$hyoo_crus', mig => mig.store_make('Rock'), mig => mig.store_make('Land'), mig => mig.stores.Land.clear(), mig => mig.stores.Land.clear());
+            return await this.$.$mol_db('$hyoo_crus', mig => mig.store_make('Rock'), mig => mig.store_make('Land'), mig => mig.stores.Land.clear(), mig => mig.stores.Land.clear(), mig => mig.stores.Land.clear());
         }
     }
     __decorate([
@@ -12490,7 +12550,7 @@ var $;
             const glob = this.$.$hyoo_crus_glob;
             const lands = [...this.lands_news].map(ref => glob.Land(ref));
             try {
-                for (const port of this.ports()) {
+                for (const port of this.masters()) {
                     for (const land of lands) {
                         this.sync_port_land([port, land.ref()]);
                     }
@@ -12791,13 +12851,17 @@ var $;
         }
         static apply_parts(lands, rocks) {
             for (const land of Reflect.ownKeys(lands)) {
-                const errors = this.Land(land).apply_unit(lands[land].units).filter(Boolean);
-                for (const error of errors)
+                const errors = this.Land(land).apply_unit(lands[land].units);
+                for (const [i, error] of errors.entries()) {
+                    if (!error)
+                        continue;
                     this.$.$mol_log3_warn({
-                        place: `${this}.apply_pack()`,
+                        place: `${this}.apply_parts()`,
                         message: error,
+                        unit: lands[land].units[i].dump(),
                         hint: 'Send it to developer',
                     });
+                }
             }
             for (const [hash, rock] of rocks) {
                 if (!rock)
@@ -27164,6 +27228,2360 @@ var $;
 })($ || ($ = {}));
 
 ;
+"use strict";
+var $;
+(function ($) {
+    class $hyoo_crus_stat_series extends $hyoo_crus_dict_to($hyoo_crus_atom_real) {
+        tick(key, val) {
+            this.key(key, null).val(this.initial() + val);
+        }
+        _initial;
+        initial() {
+            return this._initial
+                ?? (this._initial = Math.max(...this.values()));
+        }
+        values() {
+            return this.nodes($hyoo_crus_atom_real).map(key => key.val());
+        }
+    }
+    __decorate([
+        $mol_action
+    ], $hyoo_crus_stat_series.prototype, "tick", null);
+    __decorate([
+        $mol_action
+    ], $hyoo_crus_stat_series.prototype, "initial", null);
+    __decorate([
+        $mol_mem
+    ], $hyoo_crus_stat_series.prototype, "values", null);
+    $.$hyoo_crus_stat_series = $hyoo_crus_stat_series;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    class $hyoo_crus_stat_ranges extends $hyoo_crus_dict.with({
+        Seconds: $hyoo_crus_stat_series,
+        Minutes: $hyoo_crus_stat_series,
+        Hours: $hyoo_crus_stat_series,
+        Days: $hyoo_crus_stat_series,
+        Years: $hyoo_crus_stat_series,
+    }) {
+        tick(val) {
+            let now = new $mol_time_moment;
+            const second = BigInt(Math.floor(now.second));
+            const minute = BigInt(now.minute);
+            const hour = BigInt(now.hour);
+            const from_ny = new $mol_time_interval({ start: { year: now.year, month: 0, day: 0 }, end: now });
+            const day = BigInt(Math.floor(from_ny.duration.count('P1D')));
+            const year = BigInt(now.year);
+            this.Seconds(null).tick(second, val);
+            this.Minutes(null).tick(minute, val);
+            this.Hours(null).tick(hour, val);
+            this.Days(null).tick(day, val);
+            this.Years(null).tick(year, val);
+        }
+        series() {
+            function pick(Series, length, range) {
+                let series = Array.from({ length }, (_, i) => Series.key(BigInt(i))?.val() ?? 0);
+                let start = 0;
+                let max = 0;
+                for (let i = 0; i < series.length; ++i) {
+                    if (series[i] < max)
+                        continue;
+                    max = series[i];
+                    start = i + 1;
+                }
+                if (start)
+                    series = [...series.slice(start), ...series.slice(0, start - 1)];
+                let last = series[0];
+                series = series.slice(1).map(val => {
+                    try {
+                        if (last === 0 || val < last)
+                            return 0;
+                        return (val - last) / range;
+                    }
+                    finally {
+                        last = Math.max(val, last);
+                    }
+                });
+                return series;
+            }
+            let days = pick(this.Days(), 365, 60 * 60 * 24);
+            let hours = pick(this.Hours(), 24, 60 * 60);
+            let minutes = pick(this.Minutes(), 60, 60);
+            let seconds = pick(this.Seconds(), 60, 1);
+            return [...days, ...hours, ...minutes, ...seconds].reverse();
+        }
+    }
+    __decorate([
+        $mol_mem
+    ], $hyoo_crus_stat_ranges.prototype, "series", null);
+    $.$hyoo_crus_stat_ranges = $hyoo_crus_stat_ranges;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    class $hyoo_crus_app_stat extends $hyoo_crus_dict.with({
+        Cpu_user: $hyoo_crus_stat_ranges,
+        Cpu_system: $hyoo_crus_stat_ranges,
+        Fs_used: $hyoo_crus_stat_ranges,
+        Mem_max: $hyoo_crus_stat_ranges,
+        Fs_read: $hyoo_crus_stat_ranges,
+        Fs_write: $hyoo_crus_stat_ranges,
+    }) {
+        tick() {
+            this.$.$mol_state_time.now(1000);
+            const res = $mol_wire_sync(process).resourceUsage();
+            const fs = $mol_wire_sync($node.fs).statfsSync('.crus');
+            this.Cpu_user(null).tick(res.userCPUTime / 1e6);
+            this.Cpu_system(null).tick(res.systemCPUTime / 1e6);
+            this.Mem_max(null).tick(res.maxRSS / 1024);
+            const fs_mult = Number(fs.bsize) / 1024 / 1024;
+            this.Fs_used(null).tick((Number(fs.blocks) - Number(fs.bfree)) * fs_mult);
+            this.Fs_read(null).tick(res.fsRead);
+            this.Fs_write(null).tick(res.fsWrite);
+        }
+    }
+    __decorate([
+        $mol_mem
+    ], $hyoo_crus_app_stat.prototype, "tick", null);
+    $.$hyoo_crus_app_stat = $hyoo_crus_app_stat;
+})($ || ($ = {}));
+
+;
+	($.$mol_svg_group) = class $mol_svg_group extends ($.$mol_svg) {
+		dom_name(){
+			return "g";
+		}
+	};
+
+
+;
+"use strict";
+
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_vector extends Array {
+        get length() {
+            return super.length;
+        }
+        constructor(...values) { super(...values); }
+        map(convert, self) {
+            return super.map(convert, self);
+        }
+        merged(patches, combine) {
+            return this.map((value, index) => combine(value, patches[index]));
+        }
+        limited(limits) {
+            return this.merged(limits, (value, [min, max]) => (value < min) ? min : (value > max) ? max : value);
+        }
+        added0(diff) {
+            return this.map(value => value + diff);
+        }
+        added1(diff) {
+            return this.merged(diff, (a, b) => a + b);
+        }
+        multed0(mult) {
+            return this.map(value => value * mult);
+        }
+        multed1(mults) {
+            return this.merged(mults, (a, b) => a * b);
+        }
+        powered0(mult) {
+            return this.map(value => value ** mult);
+        }
+        expanded1(point) {
+            return this.merged(point, (range, value) => range.expanded0(value));
+        }
+        expanded2(point) {
+            return this.merged(point, (range1, range2) => {
+                let next = range1;
+                const Range = range1.constructor;
+                if (range1[0] > range2[0])
+                    next = new Range(range2[0], next.max);
+                if (range1[1] < range2[1])
+                    next = new Range(next.min, range2[1]);
+                return next;
+            });
+        }
+        center() {
+            const Result = this[0].constructor;
+            return new Result(...this[0].map((_, i) => this.reduce((sum, point) => sum + point[i], 0) / this.length));
+        }
+        distance() {
+            let distance = 0;
+            for (let i = 1; i < this.length; ++i) {
+                distance += this[i - 1].reduce((sum, min, j) => sum + (min - this[i][j]) ** 2, 0) ** (1 / this[i].length);
+            }
+            return distance;
+        }
+        transponed() {
+            return this[0].map((_, i) => this.map(row => row[i]));
+        }
+        get x() { return this[0]; }
+        set x(next) { this[0] = next; }
+        get y() { return this[1]; }
+        set y(next) { this[1] = next; }
+        get z() { return this[2]; }
+        set z(next) { this[2] = next; }
+    }
+    $.$mol_vector = $mol_vector;
+    class $mol_vector_1d extends $mol_vector {
+    }
+    $.$mol_vector_1d = $mol_vector_1d;
+    class $mol_vector_2d extends $mol_vector {
+    }
+    $.$mol_vector_2d = $mol_vector_2d;
+    class $mol_vector_3d extends $mol_vector {
+    }
+    $.$mol_vector_3d = $mol_vector_3d;
+    class $mol_vector_range extends $mol_vector {
+        0;
+        1;
+        constructor(min, max = min) {
+            super(min, max);
+            this[0] = min;
+            this[1] = max;
+        }
+        get min() { return this[0]; }
+        set min(next) { this[0] = next; }
+        get max() { return this[1]; }
+        set max(next) { this[1] = next; }
+        get inversed() {
+            return new this.constructor(this.max, this.min);
+        }
+        expanded0(value) {
+            const Range = this.constructor;
+            let range = this;
+            if (value > range.max)
+                range = new Range(range.min, value);
+            if (value < range.min)
+                range = new Range(value, range.max);
+            return range;
+        }
+    }
+    $.$mol_vector_range = $mol_vector_range;
+    $.$mol_vector_range_full = new $mol_vector_range(Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY);
+    class $mol_vector_matrix extends $mol_vector {
+        added2(diff) {
+            return this.merged(diff, (a, b) => a.map((a2, index) => a2 + b[index]));
+        }
+        multed2(diff) {
+            return this.merged(diff, (a, b) => a.map((a2, index) => a2 * b[index]));
+        }
+    }
+    $.$mol_vector_matrix = $mol_vector_matrix;
+})($ || ($ = {}));
+
+;
+	($.$mol_svg_title) = class $mol_svg_title extends ($.$mol_svg) {
+		dom_name(){
+			return "title";
+		}
+		sub(){
+			return [(this?.title())];
+		}
+	};
+
+
+;
+"use strict";
+
+;
+	($.$mol_plot_graph) = class $mol_plot_graph extends ($.$mol_svg_group) {
+		type(){
+			return "solid";
+		}
+		color(){
+			return "";
+		}
+		viewport_x(){
+			const obj = new this.$.$mol_vector_range(Infinity, -Infinity);
+			return obj;
+		}
+		viewport_y(){
+			const obj = new this.$.$mol_vector_range(Infinity, -Infinity);
+			return obj;
+		}
+		dimensions_pane_x(){
+			const obj = new this.$.$mol_vector_range(Infinity, -Infinity);
+			return obj;
+		}
+		dimensions_pane_y(){
+			const obj = new this.$.$mol_vector_range(Infinity, -Infinity);
+			return obj;
+		}
+		dimensions_x(){
+			const obj = new this.$.$mol_vector_range(Infinity, -Infinity);
+			return obj;
+		}
+		dimensions_y(){
+			const obj = new this.$.$mol_vector_range(Infinity, -Infinity);
+			return obj;
+		}
+		gap_x(){
+			const obj = new this.$.$mol_vector_range(0, 0);
+			return obj;
+		}
+		gap_y(){
+			const obj = new this.$.$mol_vector_range(0, 0);
+			return obj;
+		}
+		title(){
+			return "";
+		}
+		hint(){
+			return (this?.title());
+		}
+		series_x(){
+			return [];
+		}
+		series_y(){
+			return [];
+		}
+		attr(){
+			return {...(super.attr()), "mol_plot_graph_type": (this?.type())};
+		}
+		style(){
+			return {...(super.style()), "color": (this?.color())};
+		}
+		viewport(){
+			const obj = new this.$.$mol_vector_2d((this?.viewport_x()), (this?.viewport_y()));
+			return obj;
+		}
+		shift(){
+			return [0, 0];
+		}
+		scale(){
+			return [1, 1];
+		}
+		cursor_position(){
+			const obj = new this.$.$mol_vector_2d(NaN, NaN);
+			return obj;
+		}
+		dimensions_pane(){
+			const obj = new this.$.$mol_vector_2d((this?.dimensions_pane_x()), (this?.dimensions_pane_y()));
+			return obj;
+		}
+		dimensions(){
+			const obj = new this.$.$mol_vector_2d((this?.dimensions_x()), (this?.dimensions_y()));
+			return obj;
+		}
+		size_real(){
+			const obj = new this.$.$mol_vector_2d(0, 0);
+			return obj;
+		}
+		gap(){
+			const obj = new this.$.$mol_vector_2d((this?.gap_x()), (this?.gap_y()));
+			return obj;
+		}
+		repos_x(id){
+			return 0;
+		}
+		repos_y(id){
+			return 0;
+		}
+		indexes(){
+			return [];
+		}
+		points(){
+			return [];
+		}
+		front(){
+			return [];
+		}
+		back(){
+			return [];
+		}
+		Hint(){
+			const obj = new this.$.$mol_svg_title();
+			(obj.title) = () => ((this?.hint()));
+			return obj;
+		}
+		hue(next){
+			if(next !== undefined) return next;
+			return +NaN;
+		}
+		Sample(){
+			return null;
+		}
+	};
+	($mol_mem(($.$mol_plot_graph.prototype), "viewport_x"));
+	($mol_mem(($.$mol_plot_graph.prototype), "viewport_y"));
+	($mol_mem(($.$mol_plot_graph.prototype), "dimensions_pane_x"));
+	($mol_mem(($.$mol_plot_graph.prototype), "dimensions_pane_y"));
+	($mol_mem(($.$mol_plot_graph.prototype), "dimensions_x"));
+	($mol_mem(($.$mol_plot_graph.prototype), "dimensions_y"));
+	($mol_mem(($.$mol_plot_graph.prototype), "gap_x"));
+	($mol_mem(($.$mol_plot_graph.prototype), "gap_y"));
+	($mol_mem(($.$mol_plot_graph.prototype), "viewport"));
+	($mol_mem(($.$mol_plot_graph.prototype), "cursor_position"));
+	($mol_mem(($.$mol_plot_graph.prototype), "dimensions_pane"));
+	($mol_mem(($.$mol_plot_graph.prototype), "dimensions"));
+	($mol_mem(($.$mol_plot_graph.prototype), "size_real"));
+	($mol_mem(($.$mol_plot_graph.prototype), "gap"));
+	($mol_mem(($.$mol_plot_graph.prototype), "Hint"));
+	($mol_mem(($.$mol_plot_graph.prototype), "hue"));
+	($.$mol_plot_graph_sample) = class $mol_plot_graph_sample extends ($.$mol_view) {
+		type(){
+			return "solid";
+		}
+		color(){
+			return "black";
+		}
+		attr(){
+			return {...(super.attr()), "mol_plot_graph_type": (this?.type())};
+		}
+		style(){
+			return {...(super.style()), "color": (this?.color())};
+		}
+	};
+
+
+;
+"use strict";
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $mol_plot_graph extends $.$mol_plot_graph {
+            viewport() {
+                const size = this.size_real();
+                return new this.$.$mol_vector_2d(new this.$.$mol_vector_range(0, size.x), new this.$.$mol_vector_range(0, size.y));
+            }
+            indexes() {
+                return this.series_x().map((_, i) => i);
+            }
+            repos_x(val) {
+                return val;
+            }
+            repos_y(val) {
+                return val;
+            }
+            points() {
+                const [shift_x, shift_y] = this.shift();
+                const [scale_x, scale_y] = this.scale();
+                const series_x = this.series_x();
+                const series_y = this.series_y();
+                return this.indexes().map(index => {
+                    let point_x = Math.round(shift_x + this.repos_x(series_x[index]) * scale_x);
+                    let point_y = Math.round(shift_y + this.repos_y(series_y[index]) * scale_y);
+                    point_x = Math.max(Number.MIN_SAFE_INTEGER, Math.min(point_x, Number.MAX_SAFE_INTEGER));
+                    point_y = Math.max(Number.MIN_SAFE_INTEGER, Math.min(point_y, Number.MAX_SAFE_INTEGER));
+                    return [point_x, point_y];
+                });
+            }
+            series_x() {
+                return this.series_y().map((val, index) => index);
+            }
+            dimensions() {
+                let next = new this.$.$mol_vector_2d($mol_vector_range_full.inversed, $mol_vector_range_full.inversed);
+                const series_x = this.series_x();
+                const series_y = this.series_y();
+                for (let i = 0; i < series_x.length; i++) {
+                    if (series_x[i] > next.x.max)
+                        next.x.max = this.repos_x(series_x[i]);
+                    if (series_x[i] < next.x.min)
+                        next.x.min = this.repos_x(series_x[i]);
+                    if (series_y[i] > next.y.max)
+                        next.y.max = this.repos_y(series_y[i]);
+                    if (series_y[i] < next.y.min)
+                        next.y.min = this.repos_y(series_y[i]);
+                }
+                return next;
+            }
+            color() {
+                const hue = this.hue();
+                return hue ? `hsl( ${hue} , 100% , 35% )` : '';
+            }
+            front() {
+                return [this];
+            }
+        }
+        __decorate([
+            $mol_mem
+        ], $mol_plot_graph.prototype, "indexes", null);
+        __decorate([
+            $mol_mem
+        ], $mol_plot_graph.prototype, "series_x", null);
+        __decorate([
+            $mol_mem
+        ], $mol_plot_graph.prototype, "dimensions", null);
+        $$.$mol_plot_graph = $mol_plot_graph;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    $mol_style_attach("mol/plot/graph/graph.view.css", "[mol_plot_graph] {\n\tstroke: currentColor;\n}\n\n[mol_plot_graph_sample] {\n\tborder-width: 0;\n\tborder-style: solid;\n}\n\n[mol_plot_graph_type=\"dashed\"] {\n\tstroke-dasharray: 4 4;\n\tborder-style: dashed;\n}\n");
+})($ || ($ = {}));
+
+;
+	($.$mol_plot_line) = class $mol_plot_line extends ($.$mol_plot_graph) {
+		curve(){
+			return "";
+		}
+		threshold(){
+			return 1;
+		}
+		spacing(){
+			return 2;
+		}
+		color_fill(){
+			return "none";
+		}
+		dom_name(){
+			return "path";
+		}
+		attr(){
+			return {...(super.attr()), "d": (this?.curve())};
+		}
+		sub(){
+			return [(this?.Hint())];
+		}
+		Sample(){
+			const obj = new this.$.$mol_plot_graph_sample();
+			(obj.color) = () => ((this?.color()));
+			(obj.type) = () => ((this?.type()));
+			return obj;
+		}
+	};
+	($mol_mem(($.$mol_plot_line.prototype), "Sample"));
+
+
+;
+"use strict";
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $mol_plot_line extends $.$mol_plot_line {
+            sub() {
+                return this.hint() ? super.sub() : [];
+            }
+            indexes() {
+                const threshold = this.threshold();
+                const { x: { min: viewport_left, max: viewport_right }, y: { min: viewport_bottom, max: viewport_top }, } = this.viewport();
+                const [shift_x, shift_y] = this.shift();
+                const [scale_x, scale_y] = this.scale();
+                const indexes = [];
+                let last = new $mol_vector_2d(Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY);
+                let last_zone = new $mol_vector_2d(0, 0);
+                const series_x = this.series_x();
+                const series_y = this.series_y();
+                const zone_of = (point) => new $mol_vector_2d(point.x < viewport_left ? -1
+                    : point.x > viewport_right ? 1
+                        : 0, point.y < viewport_bottom ? -1
+                    : point.y > viewport_top ? 1
+                        : 0);
+                for (let i = 0; i < series_x.length - 1; i++) {
+                    const scaled = new $mol_vector_2d(Math.round(shift_x + this.repos_x(series_x[i]) * scale_x), Math.round(shift_y + this.repos_y(series_y[i]) * scale_y));
+                    if (Math.abs(scaled.x - last.x) < threshold
+                        && Math.abs(scaled.y - last.y) < threshold)
+                        continue;
+                    const zone = zone_of(scaled);
+                    last = scaled;
+                    if (zone.x !== 0 && zone.x === last_zone.x || zone.y !== 0 && zone.y === last_zone.y) {
+                        continue;
+                    }
+                    if (last_zone.x !== 0 || last_zone.y !== 0) {
+                        indexes.push(i - 1);
+                    }
+                    last_zone = zone;
+                    indexes.push(i);
+                }
+                indexes.push(series_x.length - 1);
+                return indexes;
+            }
+            curve() {
+                const points = this.points();
+                if (points.length === 0)
+                    return '';
+                const main = points.map(point => `L ${point.join(' ')}`).join(' ');
+                return `M ${points[0].join(' ')} ${main}`;
+            }
+        }
+        __decorate([
+            $mol_mem
+        ], $mol_plot_line.prototype, "indexes", null);
+        $$.$mol_plot_line = $mol_plot_line;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    $mol_style_attach("mol/plot/line/line.view.css", "[mol_plot_line] {\n\tfill: none;\n\tstroke-linejoin: round;\n}\n\n[mol_plot_line_sample] {\n\theight: 0;\n\tleft: 0;\n\tright: 0;\n\tbottom: 0;\n\tborder-width: 2px 0 0;\n\tposition: absolute;\n\ttop: .75em;\n\ttransform: translateY(-50%);\n}\n");
+})($ || ($ = {}));
+
+;
+	($.$mol_svg_rect) = class $mol_svg_rect extends ($.$mol_svg) {
+		width(){
+			return "0";
+		}
+		height(){
+			return "0";
+		}
+		pos_x(){
+			return "";
+		}
+		pos_y(){
+			return "";
+		}
+		dom_name(){
+			return "rect";
+		}
+		pos(){
+			return [];
+		}
+		attr(){
+			return {
+				...(super.attr()), 
+				"width": (this?.width()), 
+				"height": (this?.height()), 
+				"x": (this?.pos_x()), 
+				"y": (this?.pos_y())
+			};
+		}
+	};
+
+
+;
+"use strict";
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $mol_svg_rect extends $.$mol_svg_rect {
+            pos_x() {
+                return this.pos()[0];
+            }
+            pos_y() {
+                return this.pos()[1];
+            }
+        }
+        $$.$mol_svg_rect = $mol_svg_rect;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$mol_svg_text) = class $mol_svg_text extends ($.$mol_svg) {
+		pos_x(){
+			return "";
+		}
+		pos_y(){
+			return "";
+		}
+		align(){
+			return "middle";
+		}
+		align_hor(){
+			return (this?.align());
+		}
+		align_vert(){
+			return "baseline";
+		}
+		text(){
+			return "";
+		}
+		dom_name(){
+			return "text";
+		}
+		pos(){
+			return [];
+		}
+		attr(){
+			return {
+				...(super.attr()), 
+				"x": (this?.pos_x()), 
+				"y": (this?.pos_y()), 
+				"text-anchor": (this?.align_hor()), 
+				"alignment-baseline": (this?.align_vert())
+			};
+		}
+		sub(){
+			return [(this?.text())];
+		}
+	};
+
+
+;
+"use strict";
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $mol_svg_text extends $.$mol_svg_text {
+            pos_x() {
+                return this.pos()[0];
+            }
+            pos_y() {
+                return this.pos()[1];
+            }
+        }
+        $$.$mol_svg_text = $mol_svg_text;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    $mol_style_attach("mol/svg/text/text.view.css", "[mol_svg_text] {\n\tfill: currentColor;\n\tstroke: none;\n}\n");
+})($ || ($ = {}));
+
+;
+	($.$mol_plot_ruler) = class $mol_plot_ruler extends ($.$mol_plot_graph) {
+		background_x(){
+			return "0";
+		}
+		background_y(){
+			return "0";
+		}
+		background_width(){
+			return "100%";
+		}
+		background_height(){
+			return "14";
+		}
+		Background(){
+			const obj = new this.$.$mol_svg_rect();
+			(obj.pos_x) = () => ((this?.background_x()));
+			(obj.pos_y) = () => ((this?.background_y()));
+			(obj.width) = () => ((this?.background_width()));
+			(obj.height) = () => ((this?.background_height()));
+			return obj;
+		}
+		curve(){
+			return "";
+		}
+		Curve(){
+			const obj = new this.$.$mol_svg_path();
+			(obj.geometry) = () => ((this?.curve()));
+			return obj;
+		}
+		labels_formatted(){
+			return [];
+		}
+		title_pos_x(){
+			return "0";
+		}
+		title_pos_y(){
+			return "100%";
+		}
+		title_align(){
+			return "start";
+		}
+		Title(){
+			const obj = new this.$.$mol_svg_text();
+			(obj.pos_x) = () => ((this?.title_pos_x()));
+			(obj.pos_y) = () => ((this?.title_pos_y()));
+			(obj.align) = () => ((this?.title_align()));
+			(obj.text) = () => ((this?.title()));
+			return obj;
+		}
+		label_pos_x(id){
+			return "";
+		}
+		label_pos_y(id){
+			return "";
+		}
+		label_pos(id){
+			return [(this?.label_pos_x(id)), (this?.label_pos_y(id))];
+		}
+		label_text(id){
+			return "";
+		}
+		label_align(){
+			return "";
+		}
+		step(){
+			return 0;
+		}
+		scale_axis(){
+			return 1;
+		}
+		scale_step(){
+			return 1;
+		}
+		shift_axis(){
+			return 1;
+		}
+		dimensions_axis(){
+			const obj = new this.$.$mol_vector_range(Infinity, -Infinity);
+			return obj;
+		}
+		viewport_axis(){
+			const obj = new this.$.$mol_vector_range(Infinity, -Infinity);
+			return obj;
+		}
+		axis_points(){
+			return [];
+		}
+		normalize(next){
+			if(next !== undefined) return next;
+			return 0;
+		}
+		precision(){
+			return 1;
+		}
+		sub(){
+			return [
+				(this?.Background()), 
+				(this?.Curve()), 
+				(this?.labels_formatted()), 
+				(this?.Title())
+			];
+		}
+		Label(id){
+			const obj = new this.$.$mol_svg_text();
+			(obj.pos) = () => ((this?.label_pos(id)));
+			(obj.text) = () => ((this?.label_text(id)));
+			(obj.align) = () => ((this?.label_align()));
+			return obj;
+		}
+	};
+	($mol_mem(($.$mol_plot_ruler.prototype), "Background"));
+	($mol_mem(($.$mol_plot_ruler.prototype), "Curve"));
+	($mol_mem(($.$mol_plot_ruler.prototype), "Title"));
+	($mol_mem(($.$mol_plot_ruler.prototype), "dimensions_axis"));
+	($mol_mem(($.$mol_plot_ruler.prototype), "viewport_axis"));
+	($mol_mem(($.$mol_plot_ruler.prototype), "normalize"));
+	($mol_mem_key(($.$mol_plot_ruler.prototype), "Label"));
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    function $mol_math_round_expand(val, gap = 1) {
+        if (val === 0)
+            return 0;
+        const val_abs = Math.abs(val);
+        const val_sign = val ? Math.round(val / val_abs) : 0;
+        const digits = Math.floor(Math.log(val_abs) / Math.log(10));
+        const precission = Math.pow(10, digits - gap);
+        const val_expanded = precission * Math.ceil(val_abs / precission);
+        return val_sign * val_expanded;
+    }
+    $.$mol_math_round_expand = $mol_math_round_expand;
+})($ || ($ = {}));
+
+;
+"use strict";
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $mol_plot_ruler extends $.$mol_plot_ruler {
+            labels_formatted() {
+                return this.axis_points().map((point, index) => this.Label(index));
+            }
+            step() {
+                const scale = Math.abs(this.scale_step());
+                const dims = this.dimensions_axis();
+                const range = dims.max - dims.min;
+                const min_width = (Math.abs(Math.log10(range)) + 2) * 15;
+                const size = $mol_math_round_expand(range, -1);
+                const count = Math.max(1, Math.pow(10, Math.floor(Math.log(size * scale / min_width) / Math.log(10))));
+                let step = size / count;
+                const step_max = min_width * 2 / scale;
+                if (step > step_max)
+                    step /= 2;
+                if (step > step_max)
+                    step /= 2;
+                return Math.max(step, Math.abs(dims.min) / 1e10, Math.abs(dims.max) / 1e10);
+            }
+            snap_to_grid(coord) {
+                const viewport = this.viewport_axis();
+                const scale = this.scale_axis();
+                const shift = this.shift_axis();
+                const step = this.step();
+                const val = Math.round(coord / step) * step;
+                if (scale == 0)
+                    return val;
+                const step_scaled = step * scale;
+                const scaled = val * scale + shift;
+                let count = 0;
+                if (scaled < viewport.min)
+                    count = (scaled - viewport.min) / step_scaled;
+                if (scaled > viewport.max)
+                    count = (scaled - viewport.max) / step_scaled;
+                return val - Math.floor(count) * step;
+            }
+            axis_points() {
+                const dims = this.dimensions_axis();
+                const start = this.snap_to_grid(dims.min);
+                const end = this.snap_to_grid(dims.max);
+                const step = this.step();
+                const next = [];
+                for (let val = start; val <= end; val += step) {
+                    next.push(val);
+                }
+                return next;
+            }
+            precision() {
+                const step = this.step();
+                return Math.max(0, Math.min(15, (step - Math.floor(step)).toString().length - 2));
+            }
+            label_text(index) {
+                const point = this.axis_points()[index];
+                return point.toFixed(this.precision());
+            }
+            font_size() {
+                return this.Background().font_size();
+            }
+            back() {
+                return [this.Curve()];
+            }
+            front() {
+                return [
+                    ...this.labels_formatted(),
+                    this.Title()
+                ];
+            }
+        }
+        __decorate([
+            $mol_mem
+        ], $mol_plot_ruler.prototype, "step", null);
+        __decorate([
+            $mol_mem
+        ], $mol_plot_ruler.prototype, "axis_points", null);
+        __decorate([
+            $mol_mem
+        ], $mol_plot_ruler.prototype, "precision", null);
+        $$.$mol_plot_ruler = $mol_plot_ruler;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    $mol_style_attach("mol/plot/ruler/ruler.view.css", "[mol_plot_ruler_curve] {\n\tcolor: var(--mol_theme_line);\n\tstroke-width: 1px;\n\tstroke: currentColor;\n}\n\n[mol_plot_ruler_label] {\n\tcolor: var(--mol_theme_text);\n\ttext-shadow: 0 -1px var(--mol_theme_back), 0px 1px var(--mol_theme_back);\n}\n\n[mol_plot_ruler_title] {\n\tcolor: var(--mol_theme_shade);\n\tbackground-color: var(--mol_theme_back);\n\ttext-shadow: 0 -1px var(--mol_theme_back), 0px 1px var(--mol_theme_back);\n}\n\n[mol_plot_ruler_background] {\n\tstroke: none;\n\tfill: var(--mol_theme_back);\n\topacity: 0.8;\n}\n");
+})($ || ($ = {}));
+
+;
+	($.$mol_plot_ruler_vert) = class $mol_plot_ruler_vert extends ($.$mol_plot_ruler) {
+		title_align(){
+			return "end";
+		}
+		label_align(){
+			return "end";
+		}
+		title_pos_y(){
+			return "14";
+		}
+		label_pos_x(id){
+			return (this?.title_pos_x());
+		}
+		background_height(){
+			return "100%";
+		}
+		background_width(){
+			return (this?.title_pos_x());
+		}
+	};
+
+
+;
+"use strict";
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $mol_plot_ruler_vert extends $.$mol_plot_ruler_vert {
+            dimensions_axis() {
+                return this.dimensions_pane().y;
+            }
+            viewport_axis() {
+                return new this.$.$mol_vector_range(0, this.size_real().y);
+            }
+            scale_axis() {
+                return this.scale()[1];
+            }
+            scale_step() {
+                return -this.scale()[1];
+            }
+            shift_axis() {
+                return this.shift()[1];
+            }
+            curve() {
+                const [, shift] = this.shift();
+                const [, scale] = this.scale();
+                return this.axis_points().map(point => {
+                    let scaled = Math.round(point * scale + shift);
+                    scaled = Math.max(Number.MIN_SAFE_INTEGER, Math.min(scaled, Number.MAX_SAFE_INTEGER));
+                    return `M 0 ${scaled} H 2000`;
+                }).join(' ');
+            }
+            title_pos_x() {
+                return String(this.gap().x.min);
+            }
+            label_pos_y(index) {
+                return (this.axis_points()[index] * this.scale()[1] + this.shift()[1]).toFixed(3);
+            }
+        }
+        $$.$mol_plot_ruler_vert = $mol_plot_ruler_vert;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    $mol_style_attach("mol/plot/ruler/vert/vert.view.css", "[mol_plot_ruler_vert_label] {\n\ttransform: translateY( 4px );\n}\n");
+})($ || ($ = {}));
+
+;
+	($.$mol_gallery) = class $mol_gallery extends ($.$mol_view) {
+		items(){
+			return [];
+		}
+		side_size(id){
+			return "1";
+		}
+		side_items(id){
+			return [];
+		}
+		sub(){
+			return (this?.items());
+		}
+		Side(id){
+			const obj = new this.$.$mol_gallery();
+			(obj.style) = () => ({"flexGrow": (this?.side_size(id))});
+			(obj.items) = () => ((this?.side_items(id)));
+			return obj;
+		}
+	};
+	($mol_mem_key(($.$mol_gallery.prototype), "Side"));
+
+
+;
+"use strict";
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $mol_gallery extends $.$mol_gallery {
+            sub() {
+                const items = this.items();
+                if (items.length <= 3)
+                    return items;
+                return [
+                    this.Side(0),
+                    this.Side(1),
+                ];
+            }
+            side_items(id) {
+                const items = this.items();
+                const middle = items.length % 2
+                    ? Math.ceil(items.length / 3)
+                    : items.length / 2;
+                return id
+                    ? items.slice(middle)
+                    : items.slice(0, middle);
+            }
+            side_size(id) {
+                return String(this.side_items(id).length);
+            }
+        }
+        __decorate([
+            $mol_mem
+        ], $mol_gallery.prototype, "sub", null);
+        __decorate([
+            $mol_mem_key
+        ], $mol_gallery.prototype, "side_items", null);
+        $$.$mol_gallery = $mol_gallery;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    $mol_style_attach("mol/gallery/gallery.view.css", "[mol_gallery] {\n\tflex-wrap: wrap;\n\tflex: 1 1 auto;\n\talign-items: stretch;\n    align-content: stretch;\n}\n");
+})($ || ($ = {}));
+
+;
+	($.$mol_chart_legend) = class $mol_chart_legend extends ($.$mol_scroll) {
+		graph_legends(){
+			return [];
+		}
+		Gallery(){
+			const obj = new this.$.$mol_gallery();
+			(obj.items) = () => ((this?.graph_legends()));
+			return obj;
+		}
+		Graph_sample(id){
+			return null;
+		}
+		Graph_sample_box(id){
+			const obj = new this.$.$mol_view();
+			(obj.sub) = () => ([(this?.Graph_sample(id))]);
+			return obj;
+		}
+		graph_title(id){
+			return "";
+		}
+		Graph_title(id){
+			const obj = new this.$.$mol_view();
+			(obj.sub) = () => ([(this?.graph_title(id))]);
+			return obj;
+		}
+		graphs(){
+			return [];
+		}
+		graphs_front(){
+			return [];
+		}
+		sub(){
+			return [(this?.Gallery())];
+		}
+		Graph_legend(id){
+			const obj = new this.$.$mol_view();
+			(obj.sub) = () => ([(this?.Graph_sample_box(id)), (this?.Graph_title(id))]);
+			return obj;
+		}
+	};
+	($mol_mem(($.$mol_chart_legend.prototype), "Gallery"));
+	($mol_mem_key(($.$mol_chart_legend.prototype), "Graph_sample_box"));
+	($mol_mem_key(($.$mol_chart_legend.prototype), "Graph_title"));
+	($mol_mem_key(($.$mol_chart_legend.prototype), "Graph_legend"));
+
+
+;
+"use strict";
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $mol_chart_legend extends $.$mol_chart_legend {
+            graphs_front() {
+                return this.graphs().filter(graph => graph.Sample());
+            }
+            graph_legends() {
+                return this.graphs_front().map((graph, index) => this.Graph_legend(index));
+            }
+            graph_title(index) {
+                return this.graphs_front()[index].title();
+            }
+            Graph_sample(index) {
+                return this.graphs_front()[index].Sample();
+            }
+        }
+        __decorate([
+            $mol_mem
+        ], $mol_chart_legend.prototype, "graphs_front", null);
+        $$.$mol_chart_legend = $mol_chart_legend;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    $mol_style_attach("mol/chart/legend/legend.view.css", "[mol_chart_legend] {\n\tdisplay: flex;\n\tflex-wrap: wrap;\n\tflex-direction: row;\n\tflex: 0 1 auto;\n}\n\n[mol_chart_legend_graph_legend] {\n\tdisplay: flex;\n\tjustify-content: flex-start;\n\tflex: 1 1 8rem;\n\tpadding: .5rem;\n}\n\n[mol_chart_legend_graph_title] {\n\tmargin: 0 .25rem;\n\tflex: 1 1 auto;\n}\n\n[mol_chart_legend_graph_sample_box] {\n\tposition: relative;\n\twidth: 1.5rem;\n\tflex: none;\n}\n");
+})($ || ($ = {}));
+
+;
+	($.$mol_touch) = class $mol_touch extends ($.$mol_plugin) {
+		event_start(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		event_move(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		event_end(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		event_leave(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		event_wheel(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		start_zoom(next){
+			if(next !== undefined) return next;
+			return 0;
+		}
+		start_distance(next){
+			if(next !== undefined) return next;
+			return 0;
+		}
+		zoom(next){
+			if(next !== undefined) return next;
+			return 1;
+		}
+		allow_draw(){
+			return true;
+		}
+		allow_pan(){
+			return true;
+		}
+		allow_zoom(){
+			return true;
+		}
+		action_type(next){
+			if(next !== undefined) return next;
+			return "";
+		}
+		action_point(next){
+			if(next !== undefined) return next;
+			const obj = new this.$.$mol_vector_2d(NaN, NaN);
+			return obj;
+		}
+		start_pan(next){
+			if(next !== undefined) return next;
+			return [0, 0];
+		}
+		pan(next){
+			if(next !== undefined) return next;
+			const obj = new this.$.$mol_vector_2d(0, 0);
+			return obj;
+		}
+		pointer_center(){
+			const obj = new this.$.$mol_vector_2d(NaN, NaN);
+			return obj;
+		}
+		start_pos(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		swipe_precision(){
+			return 16;
+		}
+		swipe_right(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		swipe_bottom(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		swipe_left(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		swipe_top(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		swipe_from_right(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		swipe_from_bottom(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		swipe_from_left(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		swipe_from_top(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		swipe_to_right(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		swipe_to_bottom(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		swipe_to_left(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		swipe_to_top(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		draw_start(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		draw(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		draw_end(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		style(){
+			return {
+				...(super.style()), 
+				"touch-action": "none", 
+				"overscroll-behavior": "none"
+			};
+		}
+		event(){
+			return {
+				...(super.event()), 
+				"pointerdown": (next) => (this?.event_start(next)), 
+				"pointermove": (next) => (this?.event_move(next)), 
+				"pointerup": (next) => (this?.event_end(next)), 
+				"pointerleave": (next) => (this?.event_leave(next)), 
+				"wheel": (next) => (this?.event_wheel(next))
+			};
+		}
+	};
+	($mol_mem(($.$mol_touch.prototype), "event_start"));
+	($mol_mem(($.$mol_touch.prototype), "event_move"));
+	($mol_mem(($.$mol_touch.prototype), "event_end"));
+	($mol_mem(($.$mol_touch.prototype), "event_leave"));
+	($mol_mem(($.$mol_touch.prototype), "event_wheel"));
+	($mol_mem(($.$mol_touch.prototype), "start_zoom"));
+	($mol_mem(($.$mol_touch.prototype), "start_distance"));
+	($mol_mem(($.$mol_touch.prototype), "zoom"));
+	($mol_mem(($.$mol_touch.prototype), "action_type"));
+	($mol_mem(($.$mol_touch.prototype), "action_point"));
+	($mol_mem(($.$mol_touch.prototype), "start_pan"));
+	($mol_mem(($.$mol_touch.prototype), "pan"));
+	($mol_mem(($.$mol_touch.prototype), "pointer_center"));
+	($mol_mem(($.$mol_touch.prototype), "start_pos"));
+	($mol_mem(($.$mol_touch.prototype), "swipe_right"));
+	($mol_mem(($.$mol_touch.prototype), "swipe_bottom"));
+	($mol_mem(($.$mol_touch.prototype), "swipe_left"));
+	($mol_mem(($.$mol_touch.prototype), "swipe_top"));
+	($mol_mem(($.$mol_touch.prototype), "swipe_from_right"));
+	($mol_mem(($.$mol_touch.prototype), "swipe_from_bottom"));
+	($mol_mem(($.$mol_touch.prototype), "swipe_from_left"));
+	($mol_mem(($.$mol_touch.prototype), "swipe_from_top"));
+	($mol_mem(($.$mol_touch.prototype), "swipe_to_right"));
+	($mol_mem(($.$mol_touch.prototype), "swipe_to_bottom"));
+	($mol_mem(($.$mol_touch.prototype), "swipe_to_left"));
+	($mol_mem(($.$mol_touch.prototype), "swipe_to_top"));
+	($mol_mem(($.$mol_touch.prototype), "draw_start"));
+	($mol_mem(($.$mol_touch.prototype), "draw"));
+	($mol_mem(($.$mol_touch.prototype), "draw_end"));
+
+
+;
+"use strict";
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $mol_touch extends $.$mol_touch {
+            auto() {
+                this.pointer_events();
+                this.start_pan();
+                this.start_pos();
+                this.start_distance();
+                this.start_zoom();
+                this.action_type();
+                this.view_rect();
+            }
+            pointer_events(next = []) {
+                return next;
+            }
+            pointer_coords() {
+                const events = this.pointer_events();
+                const touches = events.filter(e => e.pointerType === 'touch');
+                const pens = events.filter(e => e.pointerType === 'pen');
+                const mouses = events.filter(e => !e.pointerType || e.pointerType === 'mouse');
+                const choosen = touches.length ? touches : pens.length ? pens : mouses;
+                return new $mol_vector(...choosen.map(event => this.event_coords(event)));
+            }
+            pointer_center() {
+                const coords = this.pointer_coords();
+                return coords.length ? coords.center() : new $mol_vector_2d(NaN, NaN);
+            }
+            event_coords(event) {
+                const { left, top } = this.view_rect();
+                return new $mol_vector_2d(Math.round(event.pageX - left), Math.round(event.pageY - top));
+            }
+            action_point() {
+                const coord = this.pointer_center();
+                if (!coord)
+                    return null;
+                const zoom = this.zoom();
+                const pan = this.pan();
+                return new $mol_vector_2d((coord.x - pan.x) / zoom, (coord.y - pan.y) / zoom);
+            }
+            event_eat(event) {
+                if (event instanceof PointerEvent) {
+                    const events = this.pointer_events()
+                        .filter(e => e instanceof PointerEvent)
+                        .filter(e => e.pointerId !== event.pointerId);
+                    if (event.type !== 'pointerup' && event.type !== 'pointerleave')
+                        events.push(event);
+                    this.pointer_events(events);
+                    const touch_count = events.filter(e => e.pointerType === 'touch').length;
+                    if (this.allow_zoom() && touch_count === 2) {
+                        return this.action_type('zoom');
+                    }
+                    if (this.action_type() === 'zoom' && touch_count === 1) {
+                        return this.action_type('zoom');
+                    }
+                    let button;
+                    (function (button) {
+                        button[button["left"] = 1] = "left";
+                        button[button["right"] = 2] = "right";
+                        button[button["middle"] = 4] = "middle";
+                    })(button || (button = {}));
+                    if (events.length > 0) {
+                        if (event.ctrlKey && this.allow_zoom())
+                            return this.action_type('zoom');
+                        if (event.buttons === button.left && this.allow_draw())
+                            return this.action_type('draw');
+                        if (event.buttons && this.allow_pan())
+                            return this.action_type('pan');
+                    }
+                    return this.action_type('');
+                }
+                if (event instanceof WheelEvent) {
+                    this.pointer_events([event]);
+                    if (event.shiftKey)
+                        return this.action_type('pan');
+                    return this.action_type('zoom');
+                }
+                return this.action_type('');
+            }
+            event_start(event) {
+                if (event.defaultPrevented)
+                    return;
+                this.start_pan(this.pan());
+                const action_type = this.event_eat(event);
+                if (!action_type)
+                    return;
+                const coords = this.pointer_coords();
+                this.start_pos(coords.center());
+                if (action_type === 'draw') {
+                    this.draw_start(event);
+                    return;
+                }
+                this.start_distance(coords.distance());
+                this.start_zoom(this.zoom());
+            }
+            event_move(event) {
+                if (event.defaultPrevented)
+                    return;
+                const rect = this.view_rect();
+                if (!rect)
+                    return;
+                const start_pan = this.start_pan();
+                const action_type = this.event_eat(event);
+                const start_pos = this.start_pos();
+                let pos = this.pointer_center();
+                if (!action_type)
+                    return;
+                if (!start_pos)
+                    return;
+                if (action_type === 'draw') {
+                    const distance = new $mol_vector(start_pos, pos).distance();
+                    if (distance >= 4) {
+                        this.draw(event);
+                    }
+                    return;
+                }
+                if (action_type === 'pan') {
+                    this.dom_node().setPointerCapture(event.pointerId);
+                    this.pan(new $mol_vector_2d(start_pan[0] + pos[0] - start_pos[0], start_pan[1] + pos[1] - start_pos[1]));
+                }
+                const precision = this.swipe_precision();
+                if ((this.swipe_right !== $mol_touch.prototype.swipe_right
+                    || this.swipe_from_left !== $mol_touch.prototype.swipe_from_left
+                    || this.swipe_to_right !== $mol_touch.prototype.swipe_to_right)
+                    && pos[0] - start_pos[0] > precision * 2
+                    && Math.abs(pos[1] - start_pos[1]) < precision) {
+                    this.swipe_right(event);
+                }
+                if ((this.swipe_left !== $mol_touch.prototype.swipe_left
+                    || this.swipe_from_right !== $mol_touch.prototype.swipe_from_right
+                    || this.swipe_to_left !== $mol_touch.prototype.swipe_to_left)
+                    && start_pos[0] - pos[0] > precision * 2
+                    && Math.abs(pos[1] - start_pos[1]) < precision) {
+                    this.swipe_left(event);
+                }
+                if ((this.swipe_bottom !== $mol_touch.prototype.swipe_bottom
+                    || this.swipe_from_top !== $mol_touch.prototype.swipe_from_top
+                    || this.swipe_to_bottom !== $mol_touch.prototype.swipe_to_bottom)
+                    && pos[1] - start_pos[1] > precision * 2
+                    && Math.abs(pos[0] - start_pos[0]) < precision) {
+                    this.swipe_bottom(event);
+                }
+                if ((this.swipe_top !== $mol_touch.prototype.swipe_top
+                    || this.swipe_from_bottom !== $mol_touch.prototype.swipe_from_bottom
+                    || this.swipe_to_top !== $mol_touch.prototype.swipe_to_top)
+                    && start_pos[1] - pos[1] > precision * 2
+                    && Math.abs(pos[0] - start_pos[0]) < precision) {
+                    this.swipe_top(event);
+                }
+                if (action_type === 'zoom') {
+                    const coords = this.pointer_coords();
+                    const distance = coords.distance();
+                    const start_distance = this.start_distance();
+                    const center = coords.center();
+                    const start_zoom = this.start_zoom();
+                    let mult = Math.abs(distance - start_distance) < 32 ? 1 : distance / start_distance;
+                    this.zoom(start_zoom * mult);
+                    const pan = new $mol_vector_2d((start_pan[0] - center[0] + pos[0] - start_pos[0]) * mult + center[0], (start_pan[1] - center[1] + pos[1] - start_pos[1]) * mult + center[1]);
+                    this.pan(pan);
+                }
+            }
+            event_end(event) {
+                const action = this.action_type();
+                if (action === 'draw') {
+                    this.draw_end(event);
+                }
+                this.event_leave(event);
+            }
+            event_leave(event) {
+                this.event_eat(event);
+                this.dom_node().releasePointerCapture(event.pointerId);
+                this.start_pos(null);
+            }
+            swipe_left(event) {
+                if (this.view_rect().right - this.start_pos()[0] < this.swipe_precision() * 2)
+                    this.swipe_from_right(event);
+                else
+                    this.swipe_to_left(event);
+                this.event_end(event);
+            }
+            swipe_right(event) {
+                if (this.start_pos()[0] - this.view_rect().left < this.swipe_precision() * 2)
+                    this.swipe_from_left(event);
+                else
+                    this.swipe_to_right(event);
+                this.event_end(event);
+            }
+            swipe_top(event) {
+                if (this.view_rect().bottom - this.start_pos()[1] < this.swipe_precision() * 2)
+                    this.swipe_from_bottom(event);
+                else
+                    this.swipe_to_top(event);
+                this.event_end(event);
+            }
+            swipe_bottom(event) {
+                if (this.start_pos()[1] - this.view_rect().top < this.swipe_precision() * 2)
+                    this.swipe_from_top(event);
+                else
+                    this.swipe_to_bottom(event);
+                this.event_end(event);
+            }
+            event_wheel(event) {
+                if (event.defaultPrevented)
+                    return;
+                if (this.pan === $mol_touch.prototype.pan && this.zoom === $mol_touch.prototype.zoom)
+                    return;
+                if (this.pan !== $mol_touch.prototype.pan) {
+                    event.preventDefault();
+                }
+                const action_type = this.event_eat(event);
+                if (action_type === 'zoom') {
+                    const zoom_prev = this.zoom() || 0.001;
+                    const zoom_next = zoom_prev * (1 - .001 * Math.min(event.deltaY, 100));
+                    const mult = zoom_next / zoom_prev;
+                    this.zoom(zoom_next);
+                    const pan_prev = this.pan();
+                    const center = this.pointer_center();
+                    const pan_next = pan_prev.multed0(mult).added1(center.multed0(1 - mult));
+                    this.pan(pan_next);
+                }
+                if (action_type === 'pan') {
+                    const pan_prev = this.pan();
+                    const pan_next = new $mol_vector_2d(pan_prev.x - event.deltaX, pan_prev.y - event.deltaY);
+                    this.pan(pan_next);
+                }
+            }
+        }
+        __decorate([
+            $mol_mem
+        ], $mol_touch.prototype, "pointer_events", null);
+        __decorate([
+            $mol_mem
+        ], $mol_touch.prototype, "pointer_coords", null);
+        __decorate([
+            $mol_mem
+        ], $mol_touch.prototype, "pointer_center", null);
+        __decorate([
+            $mol_mem
+        ], $mol_touch.prototype, "action_point", null);
+        $$.$mol_touch = $mol_touch;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$mol_plot_pane) = class $mol_plot_pane extends ($.$mol_svg_root) {
+		gap_x(){
+			const obj = new this.$.$mol_vector_range((this?.gap_left()), (this?.gap_right()));
+			return obj;
+		}
+		gap_y(){
+			const obj = new this.$.$mol_vector_range((this?.gap_bottom()), (this?.gap_top()));
+			return obj;
+		}
+		shift_limit_x(){
+			const obj = new this.$.$mol_vector_range(0, 0);
+			return obj;
+		}
+		shift_limit_y(){
+			const obj = new this.$.$mol_vector_range(0, 0);
+			return obj;
+		}
+		scale_limit_x(){
+			const obj = new this.$.$mol_vector_range(0, Infinity);
+			return obj;
+		}
+		scale_limit_y(){
+			const obj = new this.$.$mol_vector_range(0, -Infinity);
+			return obj;
+		}
+		dimensions_x(){
+			const obj = new this.$.$mol_vector_range(Infinity, -Infinity);
+			return obj;
+		}
+		dimensions_y(){
+			const obj = new this.$.$mol_vector_range(Infinity, -Infinity);
+			return obj;
+		}
+		dimensions_viewport_x(){
+			const obj = new this.$.$mol_vector_range(Infinity, -Infinity);
+			return obj;
+		}
+		dimensions_viewport_y(){
+			const obj = new this.$.$mol_vector_range(Infinity, -Infinity);
+			return obj;
+		}
+		graphs_sorted(){
+			return [];
+		}
+		graphs(){
+			return [];
+		}
+		graphs_positioned(){
+			return (this?.graphs());
+		}
+		graphs_visible(){
+			return (this?.graphs_positioned());
+		}
+		zoom(next){
+			if(next !== undefined) return next;
+			return 1;
+		}
+		cursor_position(){
+			return (this?.Touch()?.pointer_center());
+		}
+		allow_draw(){
+			return true;
+		}
+		allow_pan(){
+			return true;
+		}
+		allow_zoom(){
+			return true;
+		}
+		action_type(){
+			return (this?.Touch()?.action_type());
+		}
+		action_point(){
+			return (this?.Touch()?.action_point());
+		}
+		draw_start(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		draw(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		draw_end(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		Touch(){
+			const obj = new this.$.$mol_touch();
+			(obj.zoom) = (next) => ((this?.zoom(next)));
+			(obj.pan) = (next) => ((this?.shift(next)));
+			(obj.allow_draw) = () => ((this?.allow_draw()));
+			(obj.allow_pan) = () => ((this?.allow_pan()));
+			(obj.allow_zoom) = () => ((this?.allow_zoom()));
+			(obj.draw_start) = (next) => ((this?.draw_start(next)));
+			(obj.draw) = (next) => ((this?.draw(next)));
+			(obj.draw_end) = (next) => ((this?.draw_end(next)));
+			return obj;
+		}
+		aspect(){
+			return "none";
+		}
+		hue_base(next){
+			if(next !== undefined) return next;
+			return +NaN;
+		}
+		hue_shift(next){
+			if(next !== undefined) return next;
+			return 111;
+		}
+		gap_hor(){
+			return 48;
+		}
+		gap_vert(){
+			return 24;
+		}
+		gap_left(){
+			return (this?.gap_hor());
+		}
+		gap_right(){
+			return (this?.gap_hor());
+		}
+		gap_top(){
+			return (this?.gap_vert());
+		}
+		gap_bottom(){
+			return (this?.gap_vert());
+		}
+		gap(){
+			const obj = new this.$.$mol_vector_2d((this?.gap_x()), (this?.gap_y()));
+			return obj;
+		}
+		shift_limit(){
+			const obj = new this.$.$mol_vector_2d((this?.shift_limit_x()), (this?.shift_limit_y()));
+			return obj;
+		}
+		shift_default(){
+			const obj = new this.$.$mol_vector_2d(0, 0);
+			return obj;
+		}
+		shift(next){
+			if(next !== undefined) return next;
+			const obj = new this.$.$mol_vector_2d(0, 0);
+			return obj;
+		}
+		scale_limit(){
+			const obj = new this.$.$mol_vector_2d((this?.scale_limit_x()), (this?.scale_limit_y()));
+			return obj;
+		}
+		scale_default(){
+			const obj = new this.$.$mol_vector_2d(0, 0);
+			return obj;
+		}
+		scale(next){
+			if(next !== undefined) return next;
+			const obj = new this.$.$mol_vector_2d(1, -1);
+			return obj;
+		}
+		scale_x(next){
+			if(next !== undefined) return next;
+			return 1;
+		}
+		scale_y(next){
+			if(next !== undefined) return next;
+			return -1;
+		}
+		size(){
+			const obj = new this.$.$mol_vector_2d(0, 0);
+			return obj;
+		}
+		size_real(){
+			const obj = new this.$.$mol_vector_2d(1, 1);
+			return obj;
+		}
+		dimensions(){
+			const obj = new this.$.$mol_vector_2d((this?.dimensions_x()), (this?.dimensions_y()));
+			return obj;
+		}
+		dimensions_viewport(){
+			const obj = new this.$.$mol_vector_2d((this?.dimensions_viewport_x()), (this?.dimensions_viewport_y()));
+			return obj;
+		}
+		sub(){
+			return (this?.graphs_sorted());
+		}
+		graphs_colored(){
+			return (this?.graphs_visible());
+		}
+		plugins(){
+			return [...(super.plugins()), (this?.Touch())];
+		}
+	};
+	($mol_mem(($.$mol_plot_pane.prototype), "gap_x"));
+	($mol_mem(($.$mol_plot_pane.prototype), "gap_y"));
+	($mol_mem(($.$mol_plot_pane.prototype), "shift_limit_x"));
+	($mol_mem(($.$mol_plot_pane.prototype), "shift_limit_y"));
+	($mol_mem(($.$mol_plot_pane.prototype), "scale_limit_x"));
+	($mol_mem(($.$mol_plot_pane.prototype), "scale_limit_y"));
+	($mol_mem(($.$mol_plot_pane.prototype), "dimensions_x"));
+	($mol_mem(($.$mol_plot_pane.prototype), "dimensions_y"));
+	($mol_mem(($.$mol_plot_pane.prototype), "dimensions_viewport_x"));
+	($mol_mem(($.$mol_plot_pane.prototype), "dimensions_viewport_y"));
+	($mol_mem(($.$mol_plot_pane.prototype), "zoom"));
+	($mol_mem(($.$mol_plot_pane.prototype), "draw_start"));
+	($mol_mem(($.$mol_plot_pane.prototype), "draw"));
+	($mol_mem(($.$mol_plot_pane.prototype), "draw_end"));
+	($mol_mem(($.$mol_plot_pane.prototype), "Touch"));
+	($mol_mem(($.$mol_plot_pane.prototype), "hue_base"));
+	($mol_mem(($.$mol_plot_pane.prototype), "hue_shift"));
+	($mol_mem(($.$mol_plot_pane.prototype), "gap"));
+	($mol_mem(($.$mol_plot_pane.prototype), "shift_limit"));
+	($mol_mem(($.$mol_plot_pane.prototype), "shift_default"));
+	($mol_mem(($.$mol_plot_pane.prototype), "shift"));
+	($mol_mem(($.$mol_plot_pane.prototype), "scale_limit"));
+	($mol_mem(($.$mol_plot_pane.prototype), "scale_default"));
+	($mol_mem(($.$mol_plot_pane.prototype), "scale"));
+	($mol_mem(($.$mol_plot_pane.prototype), "scale_x"));
+	($mol_mem(($.$mol_plot_pane.prototype), "scale_y"));
+	($mol_mem(($.$mol_plot_pane.prototype), "size"));
+	($mol_mem(($.$mol_plot_pane.prototype), "size_real"));
+	($mol_mem(($.$mol_plot_pane.prototype), "dimensions"));
+	($mol_mem(($.$mol_plot_pane.prototype), "dimensions_viewport"));
+
+
+;
+"use strict";
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $mol_plot_pane extends $.$mol_plot_pane {
+            dimensions() {
+                const graphs = this.graphs();
+                let next = new this.$.$mol_vector_2d($mol_vector_range_full.inversed, $mol_vector_range_full.inversed);
+                for (let graph of graphs) {
+                    next = next.expanded2(graph.dimensions());
+                }
+                return next;
+            }
+            size() {
+                const dims = this.dimensions();
+                return new this.$.$mol_vector_2d((dims.x.max - dims.x.min) || 1, (dims.y.max - dims.y.min) || 1);
+            }
+            graph_hue(index) {
+                return (360 + (this.hue_base() + this.hue_shift() * index) % 360) % 360;
+            }
+            graphs_colored() {
+                const graphs = this.graphs_visible();
+                for (let index = 0; index < graphs.length; index++) {
+                    graphs[index].hue(this.graph_hue(index));
+                }
+                return graphs;
+            }
+            size_real() {
+                const rect = this.view_rect();
+                if (!rect)
+                    return new this.$.$mol_vector_2d(1, 1);
+                return new this.$.$mol_vector_2d(rect.width, rect.height);
+            }
+            view_box() {
+                const size = this.size_real();
+                return `0 0 ${size.x} ${size.y}`;
+            }
+            scale_limit() {
+                const { x: { max: right }, y: { max: top } } = super.scale_limit();
+                const gap = this.gap();
+                const size = this.size();
+                const real = this.size_real();
+                const left = +(real.x - gap.x.min - gap.x.max) / size.x;
+                const bottom = -(real.y - gap.y.max - gap.y.min) / size.y;
+                return new this.$.$mol_vector_2d(new this.$.$mol_vector_range(left, right), new this.$.$mol_vector_range(top, bottom));
+            }
+            scale_default() {
+                const limits = this.scale_limit();
+                return new $mol_vector_2d(limits.x.min, limits.y.max);
+            }
+            scale(next) {
+                if (next === undefined) {
+                    if (!this.graph_touched)
+                        return this.scale_default();
+                    next = $mol_mem_cached(() => this.scale()) ?? this.scale_default();
+                }
+                this.graph_touched = true;
+                return next.limited(this.scale_limit());
+            }
+            scale_x(next) {
+                return this.scale(next === undefined
+                    ? undefined
+                    : new $mol_vector_2d(next, this.scale().y)).x;
+            }
+            scale_y(next) {
+                return this.scale(next === undefined
+                    ? undefined
+                    : new $mol_vector_2d(this.scale().x, next)).y;
+            }
+            shift_limit() {
+                const dims = this.dimensions();
+                const [scale_x, scale_y] = this.scale();
+                const size = this.size_real();
+                const gap = this.gap();
+                const left = gap.x.min - dims.x.min * scale_x;
+                const right = size.x - gap.x.max - dims.x.max * scale_x;
+                const top = gap.y.max - dims.y.max * scale_y;
+                const bottom = size.y - gap.y.min - dims.y.min * scale_y;
+                return new this.$.$mol_vector_2d(new this.$.$mol_vector_range(right, left), new this.$.$mol_vector_range(bottom, top));
+            }
+            shift_default() {
+                const limits = this.shift_limit();
+                return new $mol_vector_2d(limits.x.min, limits.y.min);
+            }
+            graph_touched = false;
+            shift(next) {
+                if (next === undefined) {
+                    if (!this.graph_touched)
+                        return this.shift_default();
+                    next = $mol_mem_cached(() => this.shift()) ?? this.shift_default();
+                }
+                this.graph_touched = true;
+                return next.limited(this.shift_limit());
+            }
+            reset(event) {
+                this.graph_touched = false;
+                this.scale(this.scale_default());
+                this.shift(this.shift_default());
+            }
+            graphs_visible() {
+                const viewport = this.dimensions_viewport();
+                const size_real = this.size_real();
+                const max_x = (viewport.x.max - viewport.x.min) / size_real.x;
+                const max_y = (viewport.y.max - viewport.y.min) / size_real.y;
+                return this.graphs_positioned().filter(graph => {
+                    const dims = graph.dimensions();
+                    if (dims.x.min > dims.x.max)
+                        return true;
+                    if (dims.y.min > dims.y.max)
+                        return true;
+                    const size_x = dims.x.max - dims.x.min;
+                    const size_y = dims.y.max - dims.y.min;
+                    if ((size_x || size_y) && size_x < max_x && size_y < max_y)
+                        return false;
+                    if (dims.x.min > viewport.x.max)
+                        return false;
+                    if (dims.x.max < viewport.x.min)
+                        return false;
+                    if (dims.y.min > viewport.y.max)
+                        return false;
+                    if (dims.y.max < viewport.y.min)
+                        return false;
+                    return true;
+                });
+            }
+            graphs_positioned() {
+                const graphs = this.graphs();
+                for (let graph of graphs) {
+                    graph.shift = () => this.shift();
+                    graph.scale = () => this.scale();
+                    graph.dimensions_pane = () => this.dimensions_viewport();
+                    graph.viewport = () => this.viewport();
+                    graph.size_real = () => this.size_real();
+                    graph.cursor_position = () => this.cursor_position();
+                    graph.gap = () => this.gap();
+                }
+                return graphs;
+            }
+            dimensions_viewport() {
+                const shift = this.shift().multed0(-1);
+                const scale = this.scale().powered0(-1);
+                return this.viewport().map((range, i) => range.added0(shift[i]).multed0(scale[i]).sort((a, b) => a - b));
+            }
+            viewport() {
+                const size = this.size_real();
+                return new this.$.$mol_vector_2d(new this.$.$mol_vector_range(0, size.x), new this.$.$mol_vector_range(0, size.y));
+            }
+            graphs_sorted() {
+                const graphs = this.graphs_colored();
+                const sorted = [];
+                for (let graph of graphs)
+                    sorted.push(...graph.back());
+                for (let graph of graphs)
+                    sorted.push(...graph.front());
+                return sorted;
+            }
+        }
+        __decorate([
+            $mol_mem
+        ], $mol_plot_pane.prototype, "dimensions", null);
+        __decorate([
+            $mol_mem
+        ], $mol_plot_pane.prototype, "size", null);
+        __decorate([
+            $mol_mem
+        ], $mol_plot_pane.prototype, "graphs_colored", null);
+        __decorate([
+            $mol_mem
+        ], $mol_plot_pane.prototype, "scale_limit", null);
+        __decorate([
+            $mol_mem
+        ], $mol_plot_pane.prototype, "scale", null);
+        __decorate([
+            $mol_mem
+        ], $mol_plot_pane.prototype, "shift_limit", null);
+        __decorate([
+            $mol_mem
+        ], $mol_plot_pane.prototype, "shift_default", null);
+        __decorate([
+            $mol_mem
+        ], $mol_plot_pane.prototype, "shift", null);
+        __decorate([
+            $mol_mem
+        ], $mol_plot_pane.prototype, "graphs_visible", null);
+        __decorate([
+            $mol_mem
+        ], $mol_plot_pane.prototype, "graphs_positioned", null);
+        __decorate([
+            $mol_mem
+        ], $mol_plot_pane.prototype, "dimensions_viewport", null);
+        __decorate([
+            $mol_mem
+        ], $mol_plot_pane.prototype, "viewport", null);
+        __decorate([
+            $mol_mem
+        ], $mol_plot_pane.prototype, "graphs_sorted", null);
+        $$.$mol_plot_pane = $mol_plot_pane;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    $mol_style_attach("mol/plot/pane/pane.view.css", "[mol_plot_pane] {\n\tcolor: var(--mol_theme_control);\n\tflex: 1 1 auto;\n\talign-self: stretch;\n\tstroke-width: 2px;\n\tuser-select: none;\n}\n");
+})($ || ($ = {}));
+
+;
+	($.$mol_chart) = class $mol_chart extends ($.$mol_view) {
+		Legend(){
+			const obj = new this.$.$mol_chart_legend();
+			(obj.graphs) = () => ((this?.graphs_colored()));
+			return obj;
+		}
+		zoom(next){
+			return (this?.Plot()?.scale_x(next));
+		}
+		graphs_colored(){
+			return (this?.Plot()?.graphs_colored());
+		}
+		hue_base(){
+			return 210;
+		}
+		hue_shift(){
+			return 163;
+		}
+		Plot(){
+			const obj = new this.$.$mol_plot_pane();
+			(obj.zoom) = (next) => ((this?.zoom(next)));
+			(obj.gap_left) = () => ((this?.gap_left()));
+			(obj.gap_right) = () => ((this?.gap_right()));
+			(obj.gap_bottom) = () => ((this?.gap_bottom()));
+			(obj.gap_top) = () => ((this?.gap_top()));
+			(obj.graphs) = () => ((this?.graphs()));
+			(obj.hue_base) = () => ((this?.hue_base()));
+			(obj.hue_shift) = () => ((this?.hue_shift()));
+			return obj;
+		}
+		gap_hor(){
+			return 48;
+		}
+		gap_vert(){
+			return 24;
+		}
+		gap_left(){
+			return (this?.gap_hor());
+		}
+		gap_right(){
+			return (this?.gap_hor());
+		}
+		gap_bottom(){
+			return (this?.gap_vert());
+		}
+		gap_top(){
+			return (this?.gap_vert());
+		}
+		graphs(){
+			return [];
+		}
+		sub(){
+			return [(this?.Legend()), (this?.Plot())];
+		}
+	};
+	($mol_mem(($.$mol_chart.prototype), "Legend"));
+	($mol_mem(($.$mol_chart.prototype), "Plot"));
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    $mol_style_attach("mol/chart/chart.view.css", "[mol_chart] {\n\tdisplay: flex;\n\tflex-direction: column;\n\talign-self: stretch;\n\tflex: 1 1 auto;\n}\n\n[mol_chart_plot] {\n\tflex: 1 0 50%;\n\tmargin: .5rem;\n}\n");
+})($ || ($ = {}));
+
+;
+"use strict";
+
+;
+	($.$hyoo_crus_app_stat_page) = class $hyoo_crus_app_stat_page extends ($.$mol_page) {
+		cpu_user(){
+			return [];
+		}
+		Cpu_user(){
+			const obj = new this.$.$mol_plot_line();
+			(obj.title) = () => ("CPU User (s/s)");
+			(obj.series_y) = () => ((this?.cpu_user()));
+			return obj;
+		}
+		cpu_system(){
+			return [];
+		}
+		Cpu_system(){
+			const obj = new this.$.$mol_plot_line();
+			(obj.title) = () => ("CPU System (s/s)");
+			(obj.series_y) = () => ((this?.cpu_system()));
+			return obj;
+		}
+		Cpu_ruler_sec(){
+			const obj = new this.$.$mol_plot_ruler_vert();
+			return obj;
+		}
+		Cpu(){
+			const obj = new this.$.$mol_chart();
+			(obj.graphs) = () => ([
+				(this?.Cpu_user()), 
+				(this?.Cpu_system()), 
+				(this?.Cpu_ruler_sec())
+			]);
+			return obj;
+		}
+		mem_alloc(){
+			return [];
+		}
+		Mem_alloc(){
+			const obj = new this.$.$mol_plot_line();
+			(obj.title) = () => ("Mem Alloc (MB/s)");
+			(obj.series_y) = () => ((this?.mem_alloc()));
+			return obj;
+		}
+		Mem_ruler_mb(){
+			const obj = new this.$.$mol_plot_ruler_vert();
+			return obj;
+		}
+		Mem(){
+			const obj = new this.$.$mol_chart();
+			(obj.graphs) = () => ([(this?.Mem_alloc()), (this?.Mem_ruler_mb())]);
+			return obj;
+		}
+		fs_alloc(){
+			return [];
+		}
+		Fs_alloc(){
+			const obj = new this.$.$mol_plot_line();
+			(obj.title) = () => ("FS Alloc (MB/s)");
+			(obj.series_y) = () => ((this?.fs_alloc()));
+			return obj;
+		}
+		Fs_ruler_mb(){
+			const obj = new this.$.$mol_plot_ruler_vert();
+			return obj;
+		}
+		Fs_using(){
+			const obj = new this.$.$mol_chart();
+			(obj.graphs) = () => ([(this?.Fs_alloc()), (this?.Fs_ruler_mb())]);
+			return obj;
+		}
+		fs_read(){
+			return [];
+		}
+		Fs_read(){
+			const obj = new this.$.$mol_plot_line();
+			(obj.title) = () => ("FS Read (pct/s)");
+			(obj.series_y) = () => ((this?.fs_read()));
+			return obj;
+		}
+		fs_write(){
+			return [];
+		}
+		Fs_write(){
+			const obj = new this.$.$mol_plot_line();
+			(obj.title) = () => ("FS Write (pct/s)");
+			(obj.series_y) = () => ((this?.fs_write()));
+			return obj;
+		}
+		Fs_ruler_pct(){
+			const obj = new this.$.$mol_plot_ruler_vert();
+			return obj;
+		}
+		Fs_acting(){
+			const obj = new this.$.$mol_chart();
+			(obj.graphs) = () => ([
+				(this?.Fs_read()), 
+				(this?.Fs_write()), 
+				(this?.Fs_ruler_pct())
+			]);
+			return obj;
+		}
+		Charts(){
+			const obj = new this.$.$mol_list();
+			(obj.rows) = () => ([
+				(this?.Cpu()), 
+				(this?.Mem()), 
+				(this?.Fs_using()), 
+				(this?.Fs_acting())
+			]);
+			return obj;
+		}
+		title(){
+			return "📊 Stat";
+		}
+		body_content(){
+			return [(this?.Charts())];
+		}
+	};
+	($mol_mem(($.$hyoo_crus_app_stat_page.prototype), "Cpu_user"));
+	($mol_mem(($.$hyoo_crus_app_stat_page.prototype), "Cpu_system"));
+	($mol_mem(($.$hyoo_crus_app_stat_page.prototype), "Cpu_ruler_sec"));
+	($mol_mem(($.$hyoo_crus_app_stat_page.prototype), "Cpu"));
+	($mol_mem(($.$hyoo_crus_app_stat_page.prototype), "Mem_alloc"));
+	($mol_mem(($.$hyoo_crus_app_stat_page.prototype), "Mem_ruler_mb"));
+	($mol_mem(($.$hyoo_crus_app_stat_page.prototype), "Mem"));
+	($mol_mem(($.$hyoo_crus_app_stat_page.prototype), "Fs_alloc"));
+	($mol_mem(($.$hyoo_crus_app_stat_page.prototype), "Fs_ruler_mb"));
+	($mol_mem(($.$hyoo_crus_app_stat_page.prototype), "Fs_using"));
+	($mol_mem(($.$hyoo_crus_app_stat_page.prototype), "Fs_read"));
+	($mol_mem(($.$hyoo_crus_app_stat_page.prototype), "Fs_write"));
+	($mol_mem(($.$hyoo_crus_app_stat_page.prototype), "Fs_ruler_pct"));
+	($mol_mem(($.$hyoo_crus_app_stat_page.prototype), "Fs_acting"));
+	($mol_mem(($.$hyoo_crus_app_stat_page.prototype), "Charts"));
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    class $hyoo_crus_app_home extends $hyoo_crus_home.with({
+        Aliases: $hyoo_crus_list_str,
+        Stat: $hyoo_crus_atom_ref_to(() => $hyoo_crus_app_stat),
+    }) {
+        stat(auto) {
+            return this.Stat(auto)?.ensure(this.land()) ?? null;
+        }
+        init() { }
+    }
+    $.$hyoo_crus_app_home = $hyoo_crus_app_home;
+})($ || ($ = {}));
+
+;
+"use strict";
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $hyoo_crus_app_stat_page extends $.$hyoo_crus_app_stat_page {
+            stat() {
+                const ref = $hyoo_crus_ref(this.$.$mol_fetch.text(this.$.$hyoo_crus_glob.yard().master_current() + 'ref'));
+                return this.$.$hyoo_crus_glob.Node(ref, $hyoo_crus_app_home).stat();
+            }
+            mem_alloc() {
+                return this.stat()?.Mem_max()?.series() ?? [];
+            }
+            fs_alloc() {
+                return this.stat()?.Fs_used()?.series() ?? [];
+            }
+            cpu_user() {
+                return this.stat()?.Cpu_user()?.series() ?? [];
+            }
+            cpu_system() {
+                return this.stat()?.Cpu_system()?.series() ?? [];
+            }
+            fs_read() {
+                return this.stat()?.Fs_read()?.series() ?? [];
+            }
+            fs_write() {
+                return this.stat()?.Fs_write()?.series() ?? [];
+            }
+        }
+        __decorate([
+            $mol_mem
+        ], $hyoo_crus_app_stat_page.prototype, "stat", null);
+        __decorate([
+            $mol_mem
+        ], $hyoo_crus_app_stat_page.prototype, "mem_alloc", null);
+        __decorate([
+            $mol_mem
+        ], $hyoo_crus_app_stat_page.prototype, "fs_alloc", null);
+        __decorate([
+            $mol_mem
+        ], $hyoo_crus_app_stat_page.prototype, "cpu_user", null);
+        __decorate([
+            $mol_mem
+        ], $hyoo_crus_app_stat_page.prototype, "cpu_system", null);
+        __decorate([
+            $mol_mem
+        ], $hyoo_crus_app_stat_page.prototype, "fs_read", null);
+        __decorate([
+            $mol_mem
+        ], $hyoo_crus_app_stat_page.prototype, "fs_write", null);
+        $$.$hyoo_crus_app_stat_page = $hyoo_crus_app_stat_page;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        $mol_style_define($hyoo_crus_app_stat_page, {
+            flex: {
+                basis: `40rem`,
+                grow: 1,
+            },
+            Charts: {
+                align: {
+                    self: 'stretch',
+                },
+            },
+        });
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
 	($.$mol_icon_play) = class $mol_icon_play extends ($.$mol_icon) {
 		path(){
 			return "M8,5.14V19.14L19,12.14L8,5.14Z";
@@ -28554,6 +30972,11 @@ var $node = $node || {} ; $node[ "/hyoo/calc/calc_logo.svg" ] = "data:image/svg+
 			(obj.addon_tools) = () => ([(this?.Spread_close())]);
 			return obj;
 		}
+		Stat(){
+			const obj = new this.$.$hyoo_crus_app_stat_page();
+			(obj.tools) = () => ([(this?.Spread_close())]);
+			return obj;
+		}
 		Slot(){
 			const obj = new this.$.$hyoo_crus_auth_slot();
 			(obj.tools) = () => ([(this?.Spread_close())]);
@@ -28586,6 +31009,7 @@ var $node = $node || {} ; $node[ "/hyoo/calc/calc_logo.svg" ] = "data:image/svg+
 			return {
 				"": (this?.Info()), 
 				"glob": (this?.Glob()), 
+				"stat": (this?.Stat()), 
 				"slot": (this?.Slot()), 
 				"casting": (this?.Casting())
 			};
@@ -28598,6 +31022,7 @@ var $node = $node || {} ; $node[ "/hyoo/calc/calc_logo.svg" ] = "data:image/svg+
 	($mol_mem(($.$hyoo_crus_app.prototype), "Status"));
 	($mol_mem(($.$hyoo_crus_app.prototype), "Info"));
 	($mol_mem(($.$hyoo_crus_app.prototype), "Glob"));
+	($mol_mem(($.$hyoo_crus_app.prototype), "Stat"));
 	($mol_mem(($.$hyoo_crus_app.prototype), "Slot"));
 	($mol_mem(($.$hyoo_crus_app.prototype), "Casting"));
 

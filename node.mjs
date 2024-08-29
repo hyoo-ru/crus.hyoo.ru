@@ -5556,7 +5556,10 @@ var $;
             return this.units().map(unit => map[unit.tag()]().Item(unit.self()));
         }
         units() {
-            return this.land().sand_ordered(this.head()).filter(unit => unit.tip() !== 'nil');
+            return this.units_of('');
+        }
+        units_of(peer) {
+            return this.land().sand_ordered({ head: this.head(), peer }).filter(unit => unit.tip() !== 'nil');
         }
         filled() {
             return this.units().length > 0;
@@ -5584,9 +5587,9 @@ var $;
                 peers.add(sand.peer());
                 if (sand.tag() === 'term')
                     return;
-                land.Node($hyoo_crus_node).Item(sand.self()).units().forEach(visit);
+                land.Node($hyoo_crus_node).Item(sand.self()).units_of(null).forEach(visit);
             };
-            this.units().forEach(visit);
+            this.units_of(null).forEach(visit);
             return [...peers];
         }
         author_lords() {
@@ -5610,8 +5613,8 @@ var $;
         $mol_mem_key
     ], $hyoo_crus_node.prototype, "nodes", null);
     __decorate([
-        $mol_mem
-    ], $hyoo_crus_node.prototype, "units", null);
+        $mol_mem_key
+    ], $hyoo_crus_node.prototype, "units_of", null);
     __decorate([
         $mol_mem
     ], $hyoo_crus_node.prototype, "last_change", null);
@@ -6543,8 +6546,11 @@ var $;
         }
         total() {
             let total = this.pass.size + this.gift.size;
-            for (const units of this.sand.values())
-                total += units.size;
+            for (const peers of this.sand.values()) {
+                for (const units of peers.values()) {
+                    total += units.size;
+                }
+            }
             return total;
         }
         joined_list() {
@@ -6589,14 +6595,14 @@ var $;
                     pass: pass => {
                         if (pass.lord() === lord)
                             return;
-                        graph.link(pass.key(), '');
+                        graph.link(pass.key(), 'gift:');
                     },
                     gift: gift => {
-                        graph.link($hyoo_crus_ref_peer(gift.dest()), gift.key());
-                        graph.link(gift.key(), gift.peer());
+                        graph.link('pass:' + $hyoo_crus_ref_peer(gift.dest()), gift.key());
+                        graph.link(gift.key(), 'pass:' + gift.peer());
                     },
                     sand: sand => {
-                        graph.link(sand.key(), sand.peer());
+                        graph.link(sand.key(), 'pass:' + sand.peer());
                     },
                 });
             }
@@ -6626,13 +6632,23 @@ var $;
                 delta.push(unit);
             }
             for (const kids of this.sand.values()) {
-                for (const unit of kids.values()) {
-                    const time = face.get(unit.peer()) ?? 0;
-                    if (time >= unit.time())
-                        continue;
-                    auth(unit.peer());
-                    delta.push(unit);
+                for (const peers of kids.values()) {
+                    for (const unit of peers.values()) {
+                        const time = face.get(unit.peer()) ?? 0;
+                        if (time >= unit.time())
+                            continue;
+                        auth(unit.peer());
+                        delta.push(unit);
+                    }
                 }
+            }
+            for (const [peer, unit] of this.pass) {
+                if (passed.has(peer))
+                    continue;
+                if (face.has(unit.peer()))
+                    continue;
+                delta.push(unit);
+                passed.add(peer);
             }
             if (delta.length || this.faces.total <= this.faces.total)
                 return delta;
@@ -6705,43 +6721,52 @@ var $;
                 $mol_crypto_key_public.from(unit.auth()),
             ]));
             const mixin = $hyoo_crus_ref_encode(this.ref());
+            const mixin_lord = $hyoo_crus_ref_encode($hyoo_crus_ref_lord(this.ref()));
             return await Promise.all(units.map(async (unit) => {
                 let key_public = this.key_public(unit.peer());
                 if (!key_public)
                     key_public = auth.get(unit.peer()) ?? null;
                 if (!key_public)
                     return `No public key for peer (${unit.peer()})`;
-                const sens = unit.sens().slice();
+                let sens = unit.sens().slice();
                 for (let i = 0; i < mixin.length; ++i)
-                    sens[i + 14] ^= mixin[i + 14];
-                const valid = await key_public.verify(sens, unit.sign());
-                return valid ? '' : `Wrong unit sign`;
+                    sens[i + 2] ^= mixin[i];
+                let valid = key_public.verify(sens, unit.sign());
+                if (await valid)
+                    return '';
+                sens = unit.sens().slice();
+                valid = key_public.verify(sens, unit.sign());
+                if (await valid)
+                    return '';
+                return `Wrong unit sign`;
             }));
         }
         apply_unit_trust(delta, skip_check = false) {
             return delta.map(unit => {
-                if (!skip_check) {
-                    const error = this.check_unit(unit);
-                    if (error)
-                        return error;
-                }
                 let need_recheck = false;
                 const res = unit.choose({
                     pass: next => {
+                        const lord = next.lord();
                         const peer = next.peer();
+                        if (!skip_check && this.lord_rank(lord) < $hyoo_crus_rank.add)
+                            return 'Need add rank to join';
                         const exists = this.pass.get(peer);
                         if (exists)
                             return '';
                         this.pass.set(peer, next);
+                        this.faces.time_max(peer, 0);
                         this.faces.total++;
                     },
                     gift: next => {
+                        const peer = next.peer();
                         const dest = next.dest();
+                        if (!skip_check && this.peer_rank(peer) < $hyoo_crus_rank.law)
+                            return 'Need law rank to change rank';
                         const prev = this.gift.get(dest);
                         if (prev && $hyoo_crus_gift.compare(prev, next) <= 0)
                             return '';
                         this.gift.set(dest, next);
-                        this.faces.time_max(next.peer(), next.time());
+                        this.faces.time_max(peer, next.time());
                         if (!prev)
                             this.faces.total++;
                         if ((prev?.rank() ?? $hyoo_crus_rank.nil) > next.rank())
@@ -6749,16 +6774,22 @@ var $;
                     },
                     sand: next => {
                         const head = next.head();
+                        const peer = next.peer();
                         const self = next.self();
-                        let units = this.sand.get(head);
+                        if (!skip_check && this.peer_rank(peer) < $hyoo_crus_rank.mod)
+                            return 'Need mod rank to post data';
+                        let peers = this.sand.get(head);
+                        if (!peers)
+                            this.sand.set(head, peers = new $mol_wire_dict);
+                        let units = peers.get(peer);
                         if (!units)
-                            this.sand.set(head, units = new $mol_wire_dict);
+                            peers.set(peer, units = new $mol_wire_dict);
                         const prev = units.get(self);
                         if (prev && $hyoo_crus_sand.compare(prev, next) <= 0)
                             return '';
                         units.set(self, next);
                         this.self_all.add(self);
-                        this.faces.time_max(next.peer(), next.time());
+                        this.faces.time_max(peer, next.time());
                         if (!prev)
                             this.faces.total++;
                     },
@@ -6773,49 +6804,37 @@ var $;
         }
         recheck() {
             for (const [peer, pass] of this.pass) {
-                if (!this.check_unit(pass))
+                if (this.lord_rank(pass.lord()) >= $hyoo_crus_rank.add)
                     continue;
                 this.pass.delete(peer);
                 this.faces.total--;
             }
             for (const [lord, gift] of this.gift) {
-                if (!this.check_unit(gift))
+                if (this.peer_rank(gift.peer()) >= $hyoo_crus_rank.law)
                     continue;
                 this.gift.delete(lord);
                 this.faces.total--;
             }
-            for (const [head, units] of this.sand) {
-                for (const [self, sand] of units) {
-                    if (!this.check_unit(sand))
+            for (const [head, peers] of this.sand) {
+                for (const [peer, units] of peers) {
+                    if (this.peer_rank(peer) >= $hyoo_crus_rank.mod)
                         continue;
-                    units.delete(self);
-                    this.faces.total--;
+                    peers.delete(peer);
+                    this.faces.total -= units.size;
                 }
             }
-        }
-        check_unit(unit) {
-            return unit.choose({
-                pass: next => this.lord_rank(next.lord()) < $hyoo_crus_rank.add ? 'Need add rank to join' : '',
-                gift: next => this.peer_rank(next.peer()) < $hyoo_crus_rank.law ? 'Need law rank to change rank' : '',
-                sand: next => {
-                    if (next.peer() === next.self()) {
-                        return this.peer_rank(next.peer()) < $hyoo_crus_rank.add ? 'Need add rank to post self data' : '';
-                    }
-                    else {
-                        return this.peer_rank(next.peer()) < $hyoo_crus_rank.mod ? 'Need mod rank to post any data' : '';
-                    }
-                },
-            });
         }
         fork(preset = { '': $hyoo_crus_rank.get }) {
             const land = this.$.$hyoo_crus_glob.land_grab(preset);
             land.Tine().items_vary([this.ref()]);
             return land;
         }
-        sand_ordered(head) {
+        sand_ordered({ head, peer }) {
             this.sync();
             this.secret();
-            const queue = [...this.sand.get(head)?.values() ?? []];
+            const queue = peer
+                ? [...this.sand.get(head)?.get(peer)?.values() ?? []]
+                : [...this.sand.get(head)?.values() ?? []].flatMap(units => [...units.values()]);
             const slices = new Map;
             for (const sand of queue)
                 slices.set(sand, 0);
@@ -6825,13 +6844,13 @@ var $;
                     .filter($mol_guard_defined);
                 if (!tines.length)
                     break merge;
-                const exists = new Set([...this.sand.get(head)?.keys() ?? []]);
+                const exists = new Set(queue.map(sand => sand.self()));
                 const glob = this.$.$hyoo_crus_glob;
                 let slice = 0;
                 for (const ref of tines) {
                     ++slice;
                     const land = glob.Land(ref);
-                    for (const sand of land.sand_ordered(head)) {
+                    for (const sand of land.sand_ordered({ head, peer })) {
                         if (exists.has(sand.self()))
                             continue;
                         queue.push(sand);
@@ -6851,34 +6870,46 @@ var $;
                 next: '',
                 prev: '',
             };
-            const graph = new Map([['', entry]]);
+            const key = peer === null ? (sand) => sand.key() : (sand) => sand.self();
+            const by_key = new Map([['', entry]]);
+            const by_self = new Map([['', entry]]);
             while (queue.length) {
                 const last = queue.pop();
-                graph.get(entry.prev).next = last.self();
-                graph.set(last.self(), { sand: last, next: '', prev: entry.prev });
-                entry.prev = last.self();
+                by_key.get(entry.prev).next = key(last);
+                const item = { sand: last, next: '', prev: entry.prev };
+                by_key.set(key(last), item);
+                const exists = by_self.get(last.self());
+                if (!exists || compare(exists.sand, last) < 0) {
+                    by_self.set(last.self(), item);
+                }
+                entry.prev = key(last);
                 for (let cursor = queue.length - 1; cursor >= 0; --cursor) {
                     const kid = queue[cursor];
-                    let lead = graph.get(kid.lead());
+                    let lead = by_self.get(kid.lead());
                     if (!lead)
                         continue;
-                    while (lead.next && (compare(graph.get(lead.next).sand, kid) < 0))
-                        lead = graph.get(lead.next);
-                    const exists = graph.get(kid.self());
-                    if (exists) {
-                        if ((lead.sand?.self() ?? '') === exists.prev) {
-                            exists.sand = kid;
+                    while (lead.next && (compare(by_key.get(lead.next).sand, kid) < 0))
+                        lead = by_key.get(lead.next);
+                    const exists1 = by_key.get(key(kid));
+                    if (exists1) {
+                        if ((lead.sand ? key(lead.sand) : '') === exists1.prev) {
+                            exists1.sand = kid;
                             if (cursor === queue.length - 1)
                                 queue.pop();
                             continue;
                         }
-                        graph.get(exists.prev).next = exists.next;
-                        graph.get(exists.next).prev = exists.prev;
+                        by_key.get(exists1.prev).next = exists1.next;
+                        by_key.get(exists1.next).prev = exists1.prev;
                     }
-                    const follower = graph.get(lead.next);
-                    follower.prev = kid.self();
-                    graph.set(kid.self(), { sand: kid, next: lead.next, prev: lead.sand?.self() ?? '' });
-                    lead.next = kid.self();
+                    const follower = by_key.get(lead.next);
+                    follower.prev = key(kid);
+                    const item = { sand: kid, next: lead.next, prev: lead.sand ? key(lead.sand) : '' };
+                    by_key.set(key(kid), item);
+                    const exists2 = by_self.get(kid.self());
+                    if (!exists2 || compare(exists2.sand, kid) < 0) {
+                        by_self.set(kid.self(), item);
+                    }
+                    lead.next = key(kid);
                     if (cursor === queue.length - 1)
                         queue.pop();
                     cursor = queue.length;
@@ -6886,7 +6917,7 @@ var $;
             }
             const res = [];
             while (entry.next) {
-                entry = graph.get(entry.next);
+                entry = by_key.get(entry.next);
                 res.push(entry.sand);
             }
             return res;
@@ -6966,10 +6997,10 @@ var $;
             this.broadcast();
             return unit;
         }
-        sand_move(sand, head, seat) {
+        sand_move(sand, head, seat, peer = '') {
             if (sand.tip() === 'nil')
                 $mol_fail(new RangeError(`Can't move wiped sand`));
-            const units = this.sand_ordered(head).filter(unit => unit.tip() !== 'nil');
+            const units = this.sand_ordered({ head, peer }).filter(unit => unit.tip() !== 'nil');
             if (seat > units.length)
                 $mol_fail(new RangeError(`Seat (${seat}) out of units length (${units.length})`));
             const lead = seat ? units[seat - 1].self() : '';
@@ -6990,10 +7021,11 @@ var $;
             }
             this.post(lead, head, sand.self(), vary, sand.tag());
         }
-        sand_wipe(sand) {
-            const units = this.sand_ordered(sand.head()).filter(unit => unit.tip() !== 'nil');
+        sand_wipe(sand, peer = '') {
+            const head = sand.head();
+            const units = this.sand_ordered({ head, peer }).filter(unit => unit.tip() !== 'nil');
             const seat = units.indexOf(sand);
-            this.post(seat ? units[seat - 1].self() : '', sand.head(), sand.self(), null, 'term');
+            this.post(seat ? units[seat - 1].self() : '', head, sand.self(), null, 'term');
         }
         broadcast() {
             this.$.$hyoo_crus_glob.yard().lands_news.add(this.ref());
@@ -7059,13 +7091,15 @@ var $;
                     persisting.push(gift);
             }
             for (const kids of this.sand.values()) {
-                for (const sand of kids.values()) {
-                    if (!sand.signed()) {
-                        encoding.push(sand);
-                        signing.push(sand);
+                for (const units of kids.values()) {
+                    for (const sand of units.values()) {
+                        if (!sand.signed()) {
+                            encoding.push(sand);
+                            signing.push(sand);
+                        }
+                        if (!mine.units_persisted.has(sand))
+                            persisting.push(sand);
                     }
-                    if (!mine.units_persisted.has(sand))
-                        persisting.push(sand);
                 }
             }
             $mol_wire_race(...encoding.map(unit => () => this.sand_encode(unit)));
@@ -7087,7 +7121,7 @@ var $;
             const mixin = $hyoo_crus_ref_encode(unit._land.ref());
             const sens = unit.sens().slice();
             for (let i = 0; i < mixin.length; ++i)
-                sens[i + 14] ^= mixin[i + 14];
+                sens[i + 2] ^= mixin[i];
             const sign = key.sign(sens);
             unit.sign(sign);
         }
@@ -7113,7 +7147,7 @@ var $;
             return vary;
         }
         sand_decode_raw(sand) {
-            if (this.sand.get(sand.head())?.get(sand.self()) !== sand) {
+            if (this.sand.get(sand.head())?.get(sand.peer())?.get(sand.self()) !== sand) {
                 for (const id of this.Tine().items_vary() ?? []) {
                     const vary = this.$.$hyoo_crus_glob.Land($hyoo_crus_vary_cast_ref(id)).sand_decode_raw(sand);
                     if (vary !== undefined)
@@ -7205,15 +7239,17 @@ var $;
                 units.push(pass);
             for (const gift of this.gift.values())
                 units.push(gift);
-            for (const kids of this.sand.values()) {
-                for (const sand of kids.values()) {
-                    units.push(sand);
-                    if (sand.size() <= 32)
-                        continue;
-                    const rock = this.$.$hyoo_crus_mine.rock(sand.hash());
-                    if (!rock)
-                        continue;
-                    rocks.push([sand.hash(), rock]);
+            for (const heads of this.sand.values()) {
+                for (const sands of heads.values()) {
+                    for (const sand of sands.values()) {
+                        units.push(sand);
+                        if (sand.size() <= 32)
+                            continue;
+                        const rock = this.$.$hyoo_crus_mine.rock(sand.hash());
+                        if (!rock)
+                            continue;
+                        rocks.push([sand.hash(), rock]);
+                    }
                 }
             }
             return {
@@ -7417,7 +7453,7 @@ var $;
         }
         mix(mixin) {
             for (let i = 0; i < mixin.length; ++i) {
-                this.uint8(14 + i, this.uint8(14 + i) ^ mixin[i]);
+                this.uint8(2 + i, this.uint8(2 + i) ^ mixin[i]);
             }
         }
         sign(next) {
@@ -7453,7 +7489,7 @@ var $;
                 return this._lord = this.id12(2, next);
         }
         key() {
-            return this.id6(2);
+            return `pass:${this.id6(2)}`;
         }
         auth(next) {
             const prev = new Uint8Array(this.buffer, this.byteOffset, 64);
@@ -7502,7 +7538,7 @@ var $;
                 return this._dest = this.id12(14, next);
         }
         key() {
-            return this.dest().description;
+            return `gift:${this.dest().description}`;
         }
         bill() {
             return new Uint8Array(this.buffer, this.byteOffset + 32, 32);
@@ -7561,22 +7597,22 @@ var $;
         time(next) {
             return this.uint48(8, next);
         }
-        _self;
-        self(next) {
-            if (next === undefined && this._self !== undefined)
-                return this._self;
-            else
-                return this._self = this.id6(14, next);
-        }
         _head;
         head(next) {
             if (next === undefined && this._head !== undefined)
                 return this._head;
             else
-                return this._head = this.id6(20, next);
+                return this._head = this.id6(14, next);
+        }
+        _self;
+        self(next) {
+            if (next === undefined && this._self !== undefined)
+                return this._self;
+            else
+                return this._self = this.id6(20, next);
         }
         key() {
-            return `${this.head()}/${this.self()}`;
+            return `sand:${this.head()}/${this.peer()}/${this.self()}`;
         }
         _lead;
         lead(next) {
@@ -7766,6 +7802,9 @@ var $;
     __decorate([
         $mol_mem
     ], $hyoo_crus_list_vary.prototype, "items_vary", null);
+    __decorate([
+        $mol_action
+    ], $hyoo_crus_list_vary.prototype, "splice", null);
     $.$hyoo_crus_list_vary = $hyoo_crus_list_vary;
     function $hyoo_crus_list(parse) {
         class $hyoo_crus_list extends $hyoo_crus_list_vary {
@@ -7904,16 +7943,22 @@ var $;
         }
         static schema = {};
         static with(schema) {
-            const Entity = class Entity extends this {
+            const $hyoo_crus_dict_with = class $hyoo_crus_dict_with extends this {
+                static toString() {
+                    if (this !== $hyoo_crus_dict_with)
+                        return super.toString();
+                    const params = Object.entries(schema).map(([name, type]) => `${name}: ${type}`);
+                    return '$hyoo_crus_dict.with<{' + params.join(', ') + '}>';
+                }
             };
             for (const Field in schema) {
-                Object.defineProperty(Entity.prototype, Field, {
+                Object.defineProperty($hyoo_crus_dict_with.prototype, Field, {
                     value: function (auto) {
                         return this.dive(Field, schema[Field], auto);
                     }
                 });
             }
-            return Object.assign(Entity, { schema: { ...this.schema, ...schema } });
+            return Object.assign($hyoo_crus_dict_with, { schema: { ...this.schema, ...schema } });
         }
         ;
         [$mol_dev_format_head]() {
@@ -7977,18 +8022,21 @@ var $;
 (function ($) {
     class $hyoo_crus_atom_vary extends $hyoo_crus_node {
         static tag = $hyoo_crus_sand_tag[$hyoo_crus_sand_tag.solo];
-        pick_unit() {
-            return this.units().at(0);
+        pick_unit(peer) {
+            return this.units_of(peer).at(0);
         }
         vary(next) {
-            let unit_prev = this.pick_unit();
+            return this.vary_of('', next);
+        }
+        vary_of(peer, next) {
+            let unit_prev = this.pick_unit(peer);
             let prev = unit_prev ? this.land().sand_decode(unit_prev) : null;
             if (next === undefined)
                 return prev;
             if ($mol_compare_deep(prev, next))
                 return next;
             this.land().post('', unit_prev?.head() ?? this.head(), unit_prev?.self() ?? '', next);
-            return this.vary();
+            return this.vary_of(peer);
         }
         ;
         [$mol_dev_format_head]() {
@@ -7996,8 +8044,8 @@ var $;
         }
     }
     __decorate([
-        $mol_mem
-    ], $hyoo_crus_atom_vary.prototype, "vary", null);
+        $mol_mem_key
+    ], $hyoo_crus_atom_vary.prototype, "vary_of", null);
     $.$hyoo_crus_atom_vary = $hyoo_crus_atom_vary;
     class $hyoo_crus_atom_enum_base extends $hyoo_crus_atom_vary {
         static options = [];
@@ -8010,6 +8058,9 @@ var $;
                 return this === $hyoo_crus_atom_enum ? '$hyoo_crus_atom_enum<' + options.map($hyoo_crus_vary_cast_str) + '>' : super.toString();
             }
             val(next) {
+                return this.val_of('', next);
+            }
+            val_of(peer, next) {
                 validate: if (next !== undefined) {
                     for (const option of options) {
                         if ($mol_compare_deep(option, next))
@@ -8017,7 +8068,7 @@ var $;
                     }
                     $mol_fail(new Error(`Wrong value (${$hyoo_crus_vary_cast_str(next)})`));
                 }
-                const val = this.vary(next);
+                const val = this.vary_of(peer, next);
                 for (const option of options) {
                     if ($mol_compare_deep(option, val))
                         return val;
@@ -8026,8 +8077,8 @@ var $;
             }
         }
         __decorate([
-            $mol_mem
-        ], $hyoo_crus_atom_enum.prototype, "val", null);
+            $mol_mem_key
+        ], $hyoo_crus_atom_enum.prototype, "val_of", null);
         return $hyoo_crus_atom_enum;
     }
     $.$hyoo_crus_atom_enum = $hyoo_crus_atom_enum;
@@ -8035,9 +8086,12 @@ var $;
         class $hyoo_crus_atom extends $hyoo_crus_atom_vary {
             static parse = parse;
             val(next) {
+                return this.val_of('', next);
+            }
+            val_of(peer, next) {
                 if (next !== undefined)
                     parse(next);
-                const res = this.vary(next);
+                const res = this.vary_of(peer, next);
                 try {
                     return parse(res);
                 }
@@ -8102,39 +8156,45 @@ var $;
                 return this === $hyoo_crus_atom_ref_to ? '$hyoo_crus_atom_ref_to<' + Value() + '>' : super.toString();
             }
             remote(next) {
+                return this.remote_of('', next);
+            }
+            remote_of(peer, next) {
                 let ref = next?.ref() ?? next;
-                ref = $hyoo_crus_vary_cast_ref(this.vary(ref));
+                ref = $hyoo_crus_vary_cast_ref(this.vary_of(peer, ref));
                 if (!ref)
                     return null;
                 return this.$.$hyoo_crus_glob.Node(ref, Value());
             }
             ensure(config) {
-                if (!this.val()) {
+                return this.ensure_of('', config);
+            }
+            ensure_of(peer, config) {
+                if (!this.val_of(peer)) {
                     if (config === null)
-                        this.ensure_here();
+                        this.ensure_here(peer);
                     else if (config instanceof $hyoo_crus_land)
-                        this.ensure_area(config);
+                        this.ensure_area(peer, config);
                     else if (config)
-                        this.ensure_lord(config);
+                        this.ensure_lord(peer, config);
                     else
                         return null;
                 }
-                return this.remote();
+                return this.remote_of(peer);
             }
-            ensure_here() {
+            ensure_here(peer) {
                 const idea = $mol_hash_string(this.ref().description);
                 const head = this.land().self_make(idea);
                 const node = this.land().Node(Value()).Item(head);
-                this.remote(node);
+                this.remote_of(peer, node);
             }
-            ensure_area(land) {
+            ensure_area(peer, land) {
                 const idea = $mol_hash_string(this.ref().description);
                 const area = land.area_make(idea);
-                this.val(area.ref());
+                this.val_of(peer, area.ref());
             }
-            ensure_lord(preset) {
+            ensure_lord(peer, preset) {
                 const land = this.$.$hyoo_crus_glob.land_grab(preset);
-                this.val(land.ref());
+                this.val_of(peer, land.ref());
             }
             remote_ensure(preset) {
                 return this.ensure(preset);
@@ -8144,8 +8204,8 @@ var $;
             }
         }
         __decorate([
-            $mol_mem
-        ], $hyoo_crus_atom_ref_to.prototype, "remote", null);
+            $mol_mem_key
+        ], $hyoo_crus_atom_ref_to.prototype, "remote_of", null);
         __decorate([
             $mol_action
         ], $hyoo_crus_atom_ref_to.prototype, "ensure_here", null);
@@ -8713,7 +8773,7 @@ var $;
             const glob = this.$.$hyoo_crus_glob;
             const lands = [...this.lands_news].map(ref => glob.Land(ref));
             try {
-                for (const port of this.ports()) {
+                for (const port of this.masters()) {
                     for (const land of lands) {
                         this.sync_port_land([port, land.ref()]);
                     }
@@ -9004,13 +9064,17 @@ var $;
         }
         static apply_parts(lands, rocks) {
             for (const land of Reflect.ownKeys(lands)) {
-                const errors = this.Land(land).apply_unit(lands[land].units).filter(Boolean);
-                for (const error of errors)
+                const errors = this.Land(land).apply_unit(lands[land].units);
+                for (const [i, error] of errors.entries()) {
+                    if (!error)
+                        continue;
                     this.$.$mol_log3_warn({
-                        place: `${this}.apply_pack()`,
+                        place: `${this}.apply_parts()`,
                         message: error,
+                        unit: lands[land].units[i].dump(),
                         hint: 'Send it to developer',
                     });
+                }
             }
             for (const [hash, rock] of rocks) {
                 if (!rock)
@@ -9047,7 +9111,214 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    class $hyoo_crus_app extends $mol_rest_resource_fs {
+    class $hyoo_crus_stat_series extends $hyoo_crus_dict_to($hyoo_crus_atom_real) {
+        tick(key, val) {
+            this.key(key, null).val(this.initial() + val);
+        }
+        _initial;
+        initial() {
+            return this._initial
+                ?? (this._initial = Math.max(...this.values()));
+        }
+        values() {
+            return this.nodes($hyoo_crus_atom_real).map(key => key.val());
+        }
+    }
+    __decorate([
+        $mol_action
+    ], $hyoo_crus_stat_series.prototype, "tick", null);
+    __decorate([
+        $mol_action
+    ], $hyoo_crus_stat_series.prototype, "initial", null);
+    __decorate([
+        $mol_mem
+    ], $hyoo_crus_stat_series.prototype, "values", null);
+    $.$hyoo_crus_stat_series = $hyoo_crus_stat_series;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    class $hyoo_crus_stat_ranges extends $hyoo_crus_dict.with({
+        Seconds: $hyoo_crus_stat_series,
+        Minutes: $hyoo_crus_stat_series,
+        Hours: $hyoo_crus_stat_series,
+        Days: $hyoo_crus_stat_series,
+        Years: $hyoo_crus_stat_series,
+    }) {
+        tick(val) {
+            let now = new $mol_time_moment;
+            const second = BigInt(Math.floor(now.second));
+            const minute = BigInt(now.minute);
+            const hour = BigInt(now.hour);
+            const from_ny = new $mol_time_interval({ start: { year: now.year, month: 0, day: 0 }, end: now });
+            const day = BigInt(Math.floor(from_ny.duration.count('P1D')));
+            const year = BigInt(now.year);
+            this.Seconds(null).tick(second, val);
+            this.Minutes(null).tick(minute, val);
+            this.Hours(null).tick(hour, val);
+            this.Days(null).tick(day, val);
+            this.Years(null).tick(year, val);
+        }
+        series() {
+            function pick(Series, length, range) {
+                let series = Array.from({ length }, (_, i) => Series.key(BigInt(i))?.val() ?? 0);
+                let start = 0;
+                let max = 0;
+                for (let i = 0; i < series.length; ++i) {
+                    if (series[i] < max)
+                        continue;
+                    max = series[i];
+                    start = i + 1;
+                }
+                if (start)
+                    series = [...series.slice(start), ...series.slice(0, start - 1)];
+                let last = series[0];
+                series = series.slice(1).map(val => {
+                    try {
+                        if (last === 0 || val < last)
+                            return 0;
+                        return (val - last) / range;
+                    }
+                    finally {
+                        last = Math.max(val, last);
+                    }
+                });
+                return series;
+            }
+            let days = pick(this.Days(), 365, 60 * 60 * 24);
+            let hours = pick(this.Hours(), 24, 60 * 60);
+            let minutes = pick(this.Minutes(), 60, 60);
+            let seconds = pick(this.Seconds(), 60, 1);
+            return [...days, ...hours, ...minutes, ...seconds].reverse();
+        }
+    }
+    __decorate([
+        $mol_mem
+    ], $hyoo_crus_stat_ranges.prototype, "series", null);
+    $.$hyoo_crus_stat_ranges = $hyoo_crus_stat_ranges;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_state_time extends $mol_object {
+        static task(precision, reset) {
+            if (precision) {
+                return new $mol_after_timeout(precision, () => this.task(precision, null));
+            }
+            else {
+                return new $mol_after_frame(() => this.task(precision, null));
+            }
+        }
+        static now(precision) {
+            this.task(precision);
+            return Date.now();
+        }
+    }
+    __decorate([
+        $mol_mem_key
+    ], $mol_state_time, "task", null);
+    __decorate([
+        $mol_mem_key
+    ], $mol_state_time, "now", null);
+    $.$mol_state_time = $mol_state_time;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    class $hyoo_crus_app_stat extends $hyoo_crus_dict.with({
+        Cpu_user: $hyoo_crus_stat_ranges,
+        Cpu_system: $hyoo_crus_stat_ranges,
+        Fs_used: $hyoo_crus_stat_ranges,
+        Mem_max: $hyoo_crus_stat_ranges,
+        Fs_read: $hyoo_crus_stat_ranges,
+        Fs_write: $hyoo_crus_stat_ranges,
+    }) {
+        tick() {
+            this.$.$mol_state_time.now(1000);
+            const res = $mol_wire_sync(process).resourceUsage();
+            const fs = $mol_wire_sync($node.fs).statfsSync('.crus');
+            this.Cpu_user(null).tick(res.userCPUTime / 1e6);
+            this.Cpu_system(null).tick(res.systemCPUTime / 1e6);
+            this.Mem_max(null).tick(res.maxRSS / 1024);
+            const fs_mult = Number(fs.bsize) / 1024 / 1024;
+            this.Fs_used(null).tick((Number(fs.blocks) - Number(fs.bfree)) * fs_mult);
+            this.Fs_read(null).tick(res.fsRead);
+            this.Fs_write(null).tick(res.fsWrite);
+        }
+    }
+    __decorate([
+        $mol_mem
+    ], $hyoo_crus_app_stat.prototype, "tick", null);
+    $.$hyoo_crus_app_stat = $hyoo_crus_app_stat;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    class $hyoo_crus_app_home extends $hyoo_crus_home.with({
+        Aliases: $hyoo_crus_list_str,
+        Stat: $hyoo_crus_atom_ref_to(() => $hyoo_crus_app_stat),
+    }) {
+        stat(auto) {
+            return this.Stat(auto)?.ensure(this.land()) ?? null;
+        }
+        init() { }
+    }
+    $.$hyoo_crus_app_home = $hyoo_crus_app_home;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    class $hyoo_crus_app_home_node extends $hyoo_crus_app_home {
+        init() {
+            this.title($node.os.hostname());
+            this.Aliases(null).items(this.aliases());
+        }
+        ips() {
+            const ips = [];
+            for (const group of Object.values($node.os.networkInterfaces())) {
+                for (const face of group) {
+                    ips.push(face.address);
+                }
+            }
+            return ips;
+        }
+        async lookup(ip) {
+            const lookup = $node.util.promisify($node.dns.lookupService);
+            return lookup(ip, 80);
+        }
+        aliases() {
+            const self = $mol_wire_sync(this);
+            return [...new Set(this.ips().map(ip => self.lookup(ip).hostname))];
+        }
+    }
+    __decorate([
+        $mol_mem
+    ], $hyoo_crus_app_home_node.prototype, "init", null);
+    __decorate([
+        $mol_mem
+    ], $hyoo_crus_app_home_node.prototype, "ips", null);
+    __decorate([
+        $mol_mem
+    ], $hyoo_crus_app_home_node.prototype, "aliases", null);
+    $.$hyoo_crus_app_home_node = $hyoo_crus_app_home_node;
+    $.$hyoo_crus_app_home = $hyoo_crus_app_home_node;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    class $hyoo_crus_app_node extends $mol_rest_resource_fs {
         _yard() {
             $mol_wire_solid();
             setTimeout(() => this._sync());
@@ -9055,6 +9326,9 @@ var $;
         }
         _sync() {
             this._yard().sync();
+        }
+        ref() {
+            return new $hyoo_crus_app_node_ref;
         }
         OPEN(msg) {
             this._yard().slaves.add(msg.port);
@@ -9065,14 +9339,35 @@ var $;
         CLOSE(msg) {
             this._yard().slaves.delete(msg.port);
         }
+        _auto() {
+            this._stat_update();
+        }
+        _stat_update() {
+            const home = this.$.$hyoo_crus_glob.home($hyoo_crus_app_home);
+            const stat = home.stat(null);
+            home.init();
+            stat.tick();
+        }
     }
     __decorate([
         $mol_mem
-    ], $hyoo_crus_app.prototype, "_yard", null);
+    ], $hyoo_crus_app_node.prototype, "_yard", null);
     __decorate([
         $mol_mem
-    ], $hyoo_crus_app.prototype, "_sync", null);
-    $.$hyoo_crus_app = $hyoo_crus_app;
+    ], $hyoo_crus_app_node.prototype, "_sync", null);
+    __decorate([
+        $mol_memo.method
+    ], $hyoo_crus_app_node.prototype, "ref", null);
+    __decorate([
+        $mol_mem
+    ], $hyoo_crus_app_node.prototype, "_stat_update", null);
+    $.$hyoo_crus_app_node = $hyoo_crus_app_node;
+    class $hyoo_crus_app_node_ref extends $mol_rest_resource {
+        GET(msg) {
+            msg.reply(this.$.$hyoo_crus_auth.current().lord().description);
+        }
+    }
+    $.$hyoo_crus_app_node_ref = $hyoo_crus_app_node_ref;
 })($ || ($ = {}));
 
 ;
@@ -9080,7 +9375,7 @@ var $;
 var $;
 (function ($) {
     $hyoo_crus_yard.masters = $mol_state_arg.value('masters')?.split(',') ?? [];
-    $hyoo_crus_app.serve();
+    $hyoo_crus_app_node.serve();
 })($ || ($ = {}));
 
 

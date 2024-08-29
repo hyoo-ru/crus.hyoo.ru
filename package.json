@@ -176,7 +176,13 @@
     "$hyoo_crus_mine_pg",
     "$hyoo_crus_mine_fs",
     "$mol_bus",
-    "$mol_wire_race"
+    "$mol_wire_race",
+    "$hyoo_crus_app_home",
+    "$hyoo_crus_app_stat",
+    "$hyoo_crus_stat_ranges",
+    "$hyoo_crus_stat",
+    "$hyoo_crus_stat_series",
+    "$mol_state_time"
   ],
   "dependencies": {
     "jsdom": "*",

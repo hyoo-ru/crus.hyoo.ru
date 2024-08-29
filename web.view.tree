@@ -1828,7 +1828,7 @@ $hyoo_crus_flex_field $mol_view
 			dictionary *
 				local @ \💼 Local
 				orgy @ \✍ All write
-				lobby @ \📢 All add
+				lobby @ \📢 All join
 				public @ \🔎 All read
 				private @ \🔐 Private
 	Str $mol_textarea
@@ -2029,8 +2029,8 @@ $hyoo_crus_land_grab $mol_select
 		<= Trigger_icon $mol_icon_plus
 	dictionary *
 		orgy @ \✍ All write
-		lobby @ \📢 All add
-		public @ \🔎 All read
+		lobby @ \🙋‍♂️ All join
+		public @ \👀 All read
 		private @ \🔐 Private
 	grab? null $hyoo_crus_rank_preset
 
@@ -2057,6 +2057,392 @@ $hyoo_crus_glob_book $mol_book2_catalog
 			hint \Grab new Land
 			align_hor \left
 			grab? <=> land_add? null $hyoo_crus_rank_preset
+
+$mol_svg_group $mol_svg
+	dom_name \g
+
+$mol_svg_title $mol_svg
+	dom_name \title
+	sub /
+		<= title
+
+$mol_plot_graph $mol_svg_group
+	series_x /number
+	series_y /number
+	-
+	attr *
+		^
+		mol_plot_graph_type <= type \solid
+	-
+	style *
+		^
+		color <= color \
+	-
+	viewport $mol_vector_2d<$mol_vector_range<number>> /
+		<= viewport_x $mol_vector_range<number> /
+			Infinity
+			-Infinity
+		<= viewport_y $mol_vector_range<number> /
+			Infinity
+			-Infinity
+	shift /number
+		0
+		0
+	scale /number
+		1
+		1
+	cursor_position $mol_vector_2d<number> /
+		NaN
+		NaN
+	dimensions_pane $mol_vector_2d<$mol_vector_range<number>> /
+		<= dimensions_pane_x $mol_vector_range<number> /
+			Infinity
+			-Infinity
+		<= dimensions_pane_y $mol_vector_range<number> /
+			Infinity
+			-Infinity
+	dimensions $mol_vector_2d<$mol_vector_range<number>> /
+		<= dimensions_x $mol_vector_range<number> /
+			Infinity
+			-Infinity
+		<= dimensions_y $mol_vector_range<number> /
+			Infinity
+			-Infinity
+	size_real $mol_vector_2d<number> /
+		0
+		0
+	gap $mol_vector_2d<$mol_vector_range<number>> /
+		<= gap_x $mol_vector_range<number> /
+			0
+			0
+		<= gap_y $mol_vector_range<number> /
+			0
+			0
+	repos_x* 0
+	repos_y* 0
+	indexes /number
+	points /readonly(number)[]
+	front /$mol_svg
+	back /$mol_svg
+	Hint $mol_svg_title
+		title <= hint <= title \
+	hue? +NaN
+	Sample null
+
+$mol_plot_graph_sample $mol_view
+	attr *
+		^
+		mol_plot_graph_type <= type \solid
+	style *
+		^
+		color <= color \black
+
+$mol_plot_line $mol_plot_graph
+	threshold 1
+	spacing 2
+	color_fill \none
+	dom_name \path
+	attr *
+		^
+		d <= curve \
+	sub /
+		<= Hint
+	-
+	Sample $mol_plot_graph_sample
+		color <= color
+		type <= type
+
+$mol_svg_rect $mol_svg
+	dom_name \rect
+	pos /
+	attr *
+		^
+		width <= width \0
+		height <= height \0
+		x <= pos_x \
+		y <= pos_y \
+
+$mol_svg_text $mol_svg
+	dom_name \text
+	pos /
+	attr *
+		^
+		x <= pos_x \
+		y <= pos_y \
+		text-anchor <= align_hor <= align \middle
+		alignment-baseline <= align_vert \baseline
+	sub /
+		<= text \
+
+$mol_plot_ruler $mol_plot_graph
+	step 0
+	scale_axis 1
+	scale_step 1
+	shift_axis 1
+	dimensions_axis $mol_vector_range<number> /
+		Infinity
+		-Infinity
+	viewport_axis $mol_vector_range<number> /
+		Infinity
+		-Infinity
+	axis_points /number
+	normalize? 0
+	precision 1
+	sub /
+		<= Background $mol_svg_rect
+			pos_x <= background_x \0
+			pos_y <= background_y \0
+			width <= background_width \100%
+			height <= background_height \14
+		<= Curve $mol_svg_path
+			geometry <= curve \
+		<= labels_formatted /
+		<= Title $mol_svg_text
+			pos_x <= title_pos_x \0
+			pos_y <= title_pos_y \100%
+			align <= title_align \start
+			text <= title
+	Label* $mol_svg_text
+		pos <= label_pos* /
+			<= label_pos_x* \
+			<= label_pos_y* \
+		text <= label_text* \
+		align <= label_align \
+
+$mol_plot_ruler_vert $mol_plot_ruler
+	title_align \end
+	label_align \end
+	title_pos_y \14
+	label_pos_x* <= title_pos_x
+	background_height \100%
+	background_width <= title_pos_x
+
+$mol_gallery $mol_view
+	sub <= items /$mol_view
+	Side* $mol_gallery
+		style *
+			flexGrow <= side_size* \1
+		items <= side_items* /$mol_view
+
+$mol_chart_legend $mol_scroll
+	graphs /$mol_plot_graph
+	graphs_front /$mol_plot_graph
+	sub /
+		<= Gallery $mol_gallery items <= graph_legends /$mol_view
+	-
+	Graph_legend* $mol_view
+		sub /
+			<= Graph_sample_box* $mol_view
+				sub /
+					<= Graph_sample* null
+			<= Graph_title* $mol_view
+				sub /
+					<= graph_title* \
+
+$mol_touch $mol_plugin
+	start_zoom? 0
+	start_distance? 0
+	zoom? 1
+	allow_draw true
+	allow_pan true
+	allow_zoom true
+	action_type? \
+	action_point? $mol_vector_2d<number> /
+		NaN
+		NaN
+	-
+	start_pan? /
+		0
+		0
+	pan? $mol_vector_2d<number> /
+		0
+		0
+	pointer_center $mol_vector_2d<number> /
+		NaN
+		NaN
+	-
+	start_pos? null
+	swipe_precision 16
+	-
+	swipe_right? null
+	swipe_bottom? null
+	swipe_left? null
+	swipe_top? null
+	-
+	swipe_from_right? null
+	swipe_from_bottom? null
+	swipe_from_left? null
+	swipe_from_top? null
+	-
+	swipe_to_right? null
+	swipe_to_bottom? null
+	swipe_to_left? null
+	swipe_to_top? null
+	-
+	draw_start?event null
+	draw?event null
+	draw_end?event null
+	-
+	style *
+		^
+		touch-action \none
+		overscroll-behavior \none
+	-
+	event *
+		^
+		pointerdown?event <=> event_start?event null
+		pointermove?event <=> event_move?event null
+		pointerup?event <=> event_end?event null
+		pointerleave?event <=> event_leave?event null
+		wheel?event <=> event_wheel?event null
+
+$mol_plot_pane $mol_svg_root
+	aspect \none
+	-
+	hue_base? +NaN
+	hue_shift? 111
+	-
+	gap_hor 48
+	gap_vert 24
+	gap_left <= gap_hor
+	gap_right <= gap_hor
+	gap_top <= gap_vert
+	gap_bottom <= gap_vert
+	gap $mol_vector_2d<$mol_vector_range<number>> /
+		<= gap_x $mol_vector_range<number> /
+			<= gap_left
+			<= gap_right
+		<= gap_y $mol_vector_range<number> /
+			<= gap_bottom
+			<= gap_top
+	-
+	shift_limit $mol_vector_2d<$mol_vector_range<number>> /
+		<= shift_limit_x $mol_vector_range<number> /
+			0
+			0
+		<= shift_limit_y $mol_vector_range<number> /
+			0
+			0
+	shift_default $mol_vector_2d<number> /
+		0
+		0
+	shift? $mol_vector_2d<number> /
+		0
+		0
+	scale_limit $mol_vector_2d<$mol_vector_range<number>> /
+		<= scale_limit_x $mol_vector_range<number> /
+			0
+			Infinity
+		<= scale_limit_y $mol_vector_range<number> /
+			0
+			-Infinity
+	scale_default $mol_vector_2d<number> /
+		0
+		0
+	scale? $mol_vector_2d<number> /
+		1
+		-1
+	scale_x? 1
+	scale_y? -1
+	size $mol_vector_2d<number> /
+		0
+		0
+	size_real $mol_vector_2d<number> /
+		1
+		1
+	dimensions $mol_vector_2d<$mol_vector_range<number>> /
+		<= dimensions_x $mol_vector_range<number> /
+			Infinity
+			-Infinity
+		<= dimensions_y $mol_vector_range<number> /
+			Infinity
+			-Infinity
+	dimensions_viewport $mol_vector_2d<$mol_vector_range<number>> /
+		<= dimensions_viewport_x $mol_vector_range<number> /
+			Infinity
+			-Infinity
+		<= dimensions_viewport_y $mol_vector_range<number> /
+			Infinity
+			-Infinity
+	-
+	sub <= graphs_sorted /$mol_svg
+	graphs_colored <= graphs_visible <= graphs_positioned <= graphs /$mol_plot_graph
+	-
+	plugins /
+		^
+		<= Touch $mol_touch
+			zoom? <=> zoom? 1
+			pan? <=> shift?
+			pointer_center => cursor_position
+			allow_draw <= allow_draw true
+			allow_pan <= allow_pan true
+			allow_zoom <= allow_zoom true
+			action_type => action_type
+			action_point => action_point
+			draw_start?event <=> draw_start?event null
+			draw?event <=> draw?event null
+			draw_end?event <=> draw_end?event null
+	- event *
+		^
+		dblclick?event <=> reset?event null
+
+$mol_chart $mol_view
+	gap_hor 48
+	gap_vert 24
+	gap_left <= gap_hor
+	gap_right <= gap_hor
+	gap_bottom <= gap_vert
+	gap_top <= gap_vert
+	graphs /$mol_plot_graph
+	sub /
+		<= Legend $mol_chart_legend
+			graphs <= graphs_colored
+		<= Plot $mol_plot_pane
+			scale_x? => zoom?
+			zoom? <=> zoom?
+			gap_left <= gap_left
+			gap_right <= gap_right
+			gap_bottom <= gap_bottom
+			gap_top <= gap_top
+			graphs <= graphs
+			graphs_colored => graphs_colored
+			hue_base <= hue_base 210
+			hue_shift <= hue_shift 163
+
+$hyoo_crus_app_stat_page $mol_page
+	title \📊 Stat
+	body_content /
+		<= Charts $mol_list rows /
+			<= Cpu $mol_chart
+				graphs /
+					<= Cpu_user $mol_plot_line
+						title \CPU User (s/s)
+						series_y <= cpu_user /
+					<= Cpu_system $mol_plot_line
+						title \CPU System (s/s)
+						series_y <= cpu_system /
+					<= Cpu_ruler_sec $mol_plot_ruler_vert
+			<= Mem $mol_chart
+				graphs /
+					<= Mem_alloc $mol_plot_line
+						title \Mem Alloc (MB/s)
+						series_y <= mem_alloc /
+					<= Mem_ruler_mb $mol_plot_ruler_vert
+			<= Fs_using $mol_chart
+				graphs /
+					<= Fs_alloc $mol_plot_line
+						title \FS Alloc (MB/s)
+						series_y <= fs_alloc /
+					<= Fs_ruler_mb $mol_plot_ruler_vert
+			<= Fs_acting $mol_chart
+				graphs /
+					<= Fs_read $mol_plot_line
+						title \FS Read (pct/s)
+						series_y <= fs_read /
+					<= Fs_write $mol_plot_line
+						title \FS Write (pct/s)
+						series_y <= fs_write /
+					<= Fs_ruler_pct $mol_plot_ruler_vert
 
 $mol_icon_play $mol_icon path \M8,5.14V19.14L19,12.14L8,5.14Z
 
@@ -2241,6 +2627,9 @@ $hyoo_crus_app $mol_book2_catalog
 				Gap* null
 		glob <= Glob $hyoo_crus_glob_book
 			addon_tools /
+				<= Spread_close
+		stat <= Stat $hyoo_crus_app_stat_page
+			tools /
 				<= Spread_close
 		slot <= Slot $hyoo_crus_auth_slot
 			tools /
