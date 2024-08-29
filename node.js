@@ -8267,6 +8267,7 @@ var $;
         static rock_save(blob) {
             const hash = this.hash(blob);
             this.rock(hash, blob);
+            this.rock(hash);
             return hash;
         }
         static units_persisted = new WeakSet();
