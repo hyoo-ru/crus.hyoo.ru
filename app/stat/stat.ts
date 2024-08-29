@@ -3,19 +3,19 @@ namespace $ {
 	export class $hyoo_crus_app_stat extends $hyoo_crus_dict.with({
 		
 		/** User time in secs */
-		Cpu_user: $hyoo_crus_stat,
+		Cpu_user: $hyoo_crus_stat_ranges,
 		/** System time in secs */
-		Cpu_system: $hyoo_crus_stat,
+		Cpu_system: $hyoo_crus_stat_ranges,
 		
 		/** FS used */
-		Fs_used: $hyoo_crus_stat,
+		Fs_used: $hyoo_crus_stat_ranges,
 		/** Memory in MB */
-		Mem_max: $hyoo_crus_stat,
+		Mem_max: $hyoo_crus_stat_ranges,
 		
 		/** FS read count */
-		Fs_read: $hyoo_crus_stat,
+		Fs_read: $hyoo_crus_stat_ranges,
 		/** FS write count */
-		Fs_write: $hyoo_crus_stat,
+		Fs_write: $hyoo_crus_stat_ranges,
 		
 	}) {
 		

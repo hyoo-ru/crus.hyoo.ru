@@ -1,6 +1,6 @@
 namespace $ {
 
-	export class $hyoo_crus_stat extends $hyoo_crus_dict.with({
+	export class $hyoo_crus_stat_ranges extends $hyoo_crus_dict.with({
 		Seconds: $hyoo_crus_stat_series,
 		Minutes: $hyoo_crus_stat_series,
 		Hours: $hyoo_crus_stat_series,
