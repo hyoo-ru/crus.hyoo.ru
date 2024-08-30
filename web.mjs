@@ -29475,7 +29475,7 @@ var $;
     (function ($$) {
         class $hyoo_crus_app_stat_page extends $.$hyoo_crus_app_stat_page {
             stat() {
-                const ref = $hyoo_crus_ref(this.$.$mol_fetch.text('/ref'));
+                const ref = $hyoo_crus_ref(this.$.$mol_fetch.text(this.$.$hyoo_crus_glob.yard().master_current() + 'ref'));
                 return this.$.$hyoo_crus_glob.Node(ref, $hyoo_crus_app_home).stat();
             }
             mem_alloc() {
