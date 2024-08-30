@@ -29394,42 +29394,6 @@ var $;
 			]);
 			return obj;
 		}
-		mem_alloc(){
-			return [];
-		}
-		Mem_alloc(){
-			const obj = new this.$.$mol_plot_line();
-			(obj.title) = () => ("Mem Alloc (MB/s)");
-			(obj.series_y) = () => ((this?.mem_alloc()));
-			return obj;
-		}
-		Mem_ruler_mb(){
-			const obj = new this.$.$mol_plot_ruler_vert();
-			return obj;
-		}
-		Mem(){
-			const obj = new this.$.$mol_chart();
-			(obj.graphs) = () => ([(this?.Mem_alloc()), (this?.Mem_ruler_mb())]);
-			return obj;
-		}
-		fs_alloc(){
-			return [];
-		}
-		Fs_alloc(){
-			const obj = new this.$.$mol_plot_line();
-			(obj.title) = () => ("FS Alloc (MB/s)");
-			(obj.series_y) = () => ((this?.fs_alloc()));
-			return obj;
-		}
-		Fs_ruler_mb(){
-			const obj = new this.$.$mol_plot_ruler_vert();
-			return obj;
-		}
-		Fs_using(){
-			const obj = new this.$.$mol_chart();
-			(obj.graphs) = () => ([(this?.Fs_alloc()), (this?.Fs_ruler_mb())]);
-			return obj;
-		}
 		fs_read(){
 			return [];
 		}
@@ -29463,12 +29427,7 @@ var $;
 		}
 		Charts(){
 			const obj = new this.$.$mol_list();
-			(obj.rows) = () => ([
-				(this?.Cpu()), 
-				(this?.Mem()), 
-				(this?.Fs_using()), 
-				(this?.Fs_acting())
-			]);
+			(obj.rows) = () => ([(this?.Cpu()), (this?.Fs_acting())]);
 			return obj;
 		}
 		title(){
@@ -29482,12 +29441,6 @@ var $;
 	($mol_mem(($.$hyoo_crus_app_stat_page.prototype), "Cpu_system"));
 	($mol_mem(($.$hyoo_crus_app_stat_page.prototype), "Cpu_ruler_sec"));
 	($mol_mem(($.$hyoo_crus_app_stat_page.prototype), "Cpu"));
-	($mol_mem(($.$hyoo_crus_app_stat_page.prototype), "Mem_alloc"));
-	($mol_mem(($.$hyoo_crus_app_stat_page.prototype), "Mem_ruler_mb"));
-	($mol_mem(($.$hyoo_crus_app_stat_page.prototype), "Mem"));
-	($mol_mem(($.$hyoo_crus_app_stat_page.prototype), "Fs_alloc"));
-	($mol_mem(($.$hyoo_crus_app_stat_page.prototype), "Fs_ruler_mb"));
-	($mol_mem(($.$hyoo_crus_app_stat_page.prototype), "Fs_using"));
 	($mol_mem(($.$hyoo_crus_app_stat_page.prototype), "Fs_read"));
 	($mol_mem(($.$hyoo_crus_app_stat_page.prototype), "Fs_write"));
 	($mol_mem(($.$hyoo_crus_app_stat_page.prototype), "Fs_ruler_pct"));

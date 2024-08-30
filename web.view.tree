@@ -2422,13 +2422,13 @@ $hyoo_crus_app_stat_page $mol_page
 						title \CPU System (s/s)
 						series_y <= cpu_system /
 					<= Cpu_ruler_sec $mol_plot_ruler_vert
-			<= Mem $mol_chart
+			- <= Mem $mol_chart
 				graphs /
 					<= Mem_alloc $mol_plot_line
 						title \Mem Alloc (MB/s)
 						series_y <= mem_alloc /
 					<= Mem_ruler_mb $mol_plot_ruler_vert
-			<= Fs_using $mol_chart
+			- <= Fs_using $mol_chart
 				graphs /
 					<= Fs_alloc $mol_plot_line
 						title \FS Alloc (MB/s)
