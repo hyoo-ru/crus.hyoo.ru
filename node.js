@@ -9262,6 +9262,8 @@ var $;
             this.Mem_used(null).tick_instant((res.maxRSS - res.sharedMemorySize) * 1024 / mem_total * 100);
             const slaves = this.$.$hyoo_crus_glob.yard().slaves.size;
             this.Port_slaves(null).tick_instant(slaves);
+            const masters = this.$.$hyoo_crus_glob.yard().masters().length;
+            this.Port_masters(null).tick_instant(masters);
         }
     }
     __decorate([
