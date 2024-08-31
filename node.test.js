@@ -9336,6 +9336,7 @@ var $;
             return this.$.$hyoo_crus_glob.yard();
         }
         _sync() {
+            $mol_wire_solid();
             this._yard().sync();
         }
         ref() {
