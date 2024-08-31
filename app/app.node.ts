@@ -11,6 +11,7 @@ namespace $ {
 		
 		@ $mol_mem
 		_sync() {
+			$mol_wire_solid()
 			this._yard().sync()
 		}
 		
