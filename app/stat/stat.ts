@@ -44,8 +44,8 @@ namespace $ {
 			const slaves = this.$.$hyoo_crus_glob.yard().slaves.size
 			this.Port_slaves( null )!.tick_instant( slaves ) // pct
 			
-			// const masters = this.$.$hyoo_crus_glob.yard().masters().length
-			// this.Port_masters( null )!.tick_instant( masters ) // pct
+			const masters = this.$.$hyoo_crus_glob.yard().masters().length
+			this.Port_masters( null )!.tick_instant( masters ) // pct
 			
 		}
 		
