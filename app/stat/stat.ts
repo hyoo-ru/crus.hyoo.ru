@@ -41,11 +41,12 @@ namespace $ {
 			// const fs = $node.fs.statfsSync( '.' )
 			// this.Fs_used( null )!.tick_instant( ( Number( fs.blocks ) - Number( fs.bfree ) ) / Number( fs.blocks ) * 100 ) // %
 			
-			const slaves = this.$.$hyoo_crus_glob.yard().slaves.size
+			const masters = $mol_wire_sync( this.$.$hyoo_crus_glob.yard() ).masters().length
+			this.Port_masters( null )!.tick_instant( masters ) // pct
+			
+			const slaves = $mol_wire_sync( this.$.$hyoo_crus_glob.yard() ).ports().length - masters
 			this.Port_slaves( null )!.tick_instant( slaves ) // pct
 			
-			const masters = this.$.$hyoo_crus_glob.yard().masters().length
-			this.Port_masters( null )!.tick_instant( masters ) // pct
 			
 		}
 		
