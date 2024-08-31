@@ -8,8 +8,12 @@ namespace $ {
 		Years: $hyoo_crus_stat_series,
 	}) {
 		
-		// @ $mol_action
-		tick( val: number ) {
+		_last_instant = 0
+		tick_instant( val: number ) {
+			this.tick_integral( this._last_instant += val )
+		}
+		
+		tick_integral( val: number ) {
 			
 			let now = new $mol_time_moment
 			

@@ -11,7 +11,12 @@ namespace $ {
 		@ $mol_action
 		initial() {
 			return this._initial
-				?? ( this._initial = Math.max( ... this.values() ) )
+				?? ( this._initial = this.max() )
+		}
+		
+		@ $mol_mem
+		max() {
+			return Math.max( ... this.values() )
 		}
 		
 		@ $mol_mem

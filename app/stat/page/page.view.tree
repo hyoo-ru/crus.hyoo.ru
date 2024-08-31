@@ -5,24 +5,31 @@ $hyoo_crus_app_stat_page $mol_page
 			<= Cpu $mol_chart
 				graphs /
 					<= Cpu_user $mol_plot_line
-						title \CPU User (s/s)
+						title \CPU User (%)
 						series_y <= cpu_user /
 					<= Cpu_system $mol_plot_line
-						title \CPU System (s/s)
+						title \CPU System (%)
 						series_y <= cpu_system /
 					<= Cpu_ruler_sec $mol_plot_ruler_vert
-			- <= Mem $mol_chart
+					<= Cpu_mark $mol_plot_mark_cross
+						labels <= times /
+						graphs /
+							<= Cpu_user
+							<= Cpu_system
+			<= Mem $mol_chart
 				graphs /
-					<= Mem_alloc $mol_plot_line
-						title \Mem Alloc (MB/s)
-						series_y <= mem_alloc /
-					<= Mem_ruler_mb $mol_plot_ruler_vert
-			- <= Fs_using $mol_chart
-				graphs /
-					<= Fs_alloc $mol_plot_line
-						title \FS Alloc (MB/s)
-						series_y <= fs_alloc /
-					<= Fs_ruler_mb $mol_plot_ruler_vert
+					<= Mem_used $mol_plot_line
+						title \Mem Alloc (%)
+						series_y <= mem_used /
+					- <= Fs_used $mol_plot_line
+						title \FS Alloc (%)
+						series_y <= fs_used /
+					<= Mem_ruler $mol_plot_ruler_vert
+					<= Mem_mark $mol_plot_mark_cross
+						labels <= times /
+						graphs /
+							<= Mem_used
+							- <= Fs_used
 			<= Fs_acting $mol_chart
 				graphs /
 					<= Fs_read $mol_plot_line
@@ -32,3 +39,8 @@ $hyoo_crus_app_stat_page $mol_page
 						title \FS Write (pct/s)
 						series_y <= fs_write /
 					<= Fs_ruler_pct $mol_plot_ruler_vert
+					<= Fs_acting_mark $mol_plot_mark_cross
+						labels <= times /
+						graphs /
+							<= Fs_read
+							<= Fs_write
