@@ -29729,7 +29729,7 @@ var $;
 		}
 		Mem_used(){
 			const obj = new this.$.$mol_plot_line();
-			(obj.title) = () => ("Mem Alloc (%)");
+			(obj.title) = () => ("Mem Used (%)");
 			(obj.series_y) = () => ((this?.mem_used()));
 			return obj;
 		}
@@ -29757,7 +29757,7 @@ var $;
 		}
 		Fs_read(){
 			const obj = new this.$.$mol_plot_line();
-			(obj.title) = () => ("FS Read (pct/s)");
+			(obj.title) = () => ("FS Read / sec");
 			(obj.series_y) = () => ((this?.fs_read()));
 			return obj;
 		}
@@ -29766,7 +29766,7 @@ var $;
 		}
 		Fs_write(){
 			const obj = new this.$.$mol_plot_line();
-			(obj.title) = () => ("FS Write (pct/s)");
+			(obj.title) = () => ("FS Write / sec");
 			(obj.series_y) = () => ((this?.fs_write()));
 			return obj;
 		}

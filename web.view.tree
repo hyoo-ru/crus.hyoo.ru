@@ -2473,7 +2473,7 @@ $hyoo_crus_app_stat_page $mol_page
 			<= Mem $mol_chart
 				graphs /
 					<= Mem_used $mol_plot_line
-						title \Mem Alloc (%)
+						title \Mem Used (%)
 						series_y <= mem_used /
 					- <= Fs_used $mol_plot_line
 						title \FS Alloc (%)
@@ -2487,10 +2487,10 @@ $hyoo_crus_app_stat_page $mol_page
 			<= Fs_acting $mol_chart
 				graphs /
 					<= Fs_read $mol_plot_line
-						title \FS Read (pct/s)
+						title \FS Read / sec
 						series_y <= fs_read /
 					<= Fs_write $mol_plot_line
-						title \FS Write (pct/s)
+						title \FS Write / sec
 						series_y <= fs_write /
 					<= Fs_ruler_pct $mol_plot_ruler_vert
 					<= Fs_acting_mark $mol_plot_mark_cross
