@@ -28,13 +28,23 @@ namespace $.$$ {
 		}
 		
 		@ $mol_mem
-		fs_read() {
-			return this.stat()?.Fs_read()?.series() ?? []
+		fs_reads() {
+			return this.stat()?.Fs_reads()?.series() ?? []
 		}
 		
 		@ $mol_mem
-		fs_write() {
-			return this.stat()?.Fs_write()?.series() ?? []
+		fs_writes() {
+			return this.stat()?.Fs_writes()?.series() ?? []
+		}
+		
+		@ $mol_mem
+		port_slaves() {
+			return this.stat()?.Port_slaves()?.series() ?? []
+		}
+		
+		@ $mol_mem
+		port_masters() {
+			return this.stat()?.Port_masters()?.series() ?? []
 		}
 		
 		@ $mol_mem
