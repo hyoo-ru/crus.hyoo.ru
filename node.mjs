@@ -9254,17 +9254,17 @@ var $;
         tick() {
             this.$.$mol_state_time.now(1000);
             const res = $mol_wire_sync(process).resourceUsage();
-            const mem_total = $mol_wire_sync(process).constrainedMemory() ?? $mol_wire_sync($node.os).totalmem();
-            const fs = $mol_wire_sync($node.fs).statfsSync('.');
-            const slaves = this.$.$hyoo_crus_glob.yard().slaves.size;
-            const masters = this.$.$hyoo_crus_glob.yard().masters().length;
             this.Cpu_user(null).tick_integral(res.userCPUTime / 1e6);
             this.Cpu_system(null).tick_integral(res.systemCPUTime / 1e6);
-            this.Mem_used(null).tick_instant((res.maxRSS - res.sharedMemorySize) * 1024 / mem_total * 100);
-            this.Fs_used(null).tick_instant((Number(fs.blocks) - Number(fs.bfree)) / Number(fs.blocks) * 100);
             this.Fs_reads(null).tick_integral(res.fsRead);
             this.Fs_writes(null).tick_integral(res.fsWrite);
+            const mem_total = $mol_wire_sync(process).constrainedMemory() ?? $mol_wire_sync($node.os).totalmem();
+            this.Mem_used(null).tick_instant((res.maxRSS - res.sharedMemorySize) * 1024 / mem_total * 100);
+            const fs = $mol_wire_sync($node.fs).statfsSync('.');
+            this.Fs_used(null).tick_instant((Number(fs.blocks) - Number(fs.bfree)) / Number(fs.blocks) * 100);
+            const slaves = this.$.$hyoo_crus_glob.yard().slaves.size;
             this.Port_slaves(null).tick_instant(slaves);
+            const masters = this.$.$hyoo_crus_glob.yard().masters().length;
             this.Port_masters(null).tick_instant(masters);
         }
     }
