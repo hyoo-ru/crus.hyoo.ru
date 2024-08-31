@@ -27347,20 +27347,26 @@ var $;
         Cpu_system: $hyoo_crus_stat_ranges,
         Mem_used: $hyoo_crus_stat_ranges,
         Fs_used: $hyoo_crus_stat_ranges,
-        Fs_read: $hyoo_crus_stat_ranges,
-        Fs_write: $hyoo_crus_stat_ranges,
+        Fs_reads: $hyoo_crus_stat_ranges,
+        Fs_writes: $hyoo_crus_stat_ranges,
+        Port_slaves: $hyoo_crus_stat_ranges,
+        Port_masters: $hyoo_crus_stat_ranges,
     }) {
         tick() {
             this.$.$mol_state_time.now(1000);
             const res = $mol_wire_sync(process).resourceUsage();
             const mem_total = $mol_wire_sync(process).constrainedMemory() ?? $mol_wire_sync($node.os).totalmem();
             const fs = $mol_wire_sync($node.fs).statfsSync('.');
+            const slaves = this.$.$hyoo_crus_glob.yard().slaves.size;
+            const masters = this.$.$hyoo_crus_glob.yard().masters().length;
             this.Cpu_user(null).tick_integral(res.userCPUTime / 1e6);
             this.Cpu_system(null).tick_integral(res.systemCPUTime / 1e6);
             this.Mem_used(null).tick_instant((res.maxRSS - res.sharedMemorySize) * 1024 / mem_total * 100);
             this.Fs_used(null).tick_instant((Number(fs.blocks) - Number(fs.bfree)) / Number(fs.blocks) * 100);
-            this.Fs_read(null).tick_integral(res.fsRead);
-            this.Fs_write(null).tick_integral(res.fsWrite);
+            this.Fs_reads(null).tick_integral(res.fsRead);
+            this.Fs_writes(null).tick_integral(res.fsWrite);
+            this.Port_slaves(null).tick_instant(slaves);
+            this.Port_masters(null).tick_instant(masters);
         }
     }
     __decorate([
@@ -29752,22 +29758,22 @@ var $;
 			]);
 			return obj;
 		}
-		fs_read(){
+		fs_reads(){
 			return [];
 		}
-		Fs_read(){
+		Fs_reads(){
 			const obj = new this.$.$mol_plot_line();
-			(obj.title) = () => ("FS Read / sec");
-			(obj.series_y) = () => ((this?.fs_read()));
+			(obj.title) = () => ("FS Reads / sec");
+			(obj.series_y) = () => ((this?.fs_reads()));
 			return obj;
 		}
-		fs_write(){
+		fs_writes(){
 			return [];
 		}
-		Fs_write(){
+		Fs_writes(){
 			const obj = new this.$.$mol_plot_line();
-			(obj.title) = () => ("FS Write / sec");
-			(obj.series_y) = () => ((this?.fs_write()));
+			(obj.title) = () => ("FS Writes / sec");
+			(obj.series_y) = () => ((this?.fs_writes()));
 			return obj;
 		}
 		Fs_ruler_pct(){
@@ -29783,10 +29789,48 @@ var $;
 		Fs_acting(){
 			const obj = new this.$.$mol_chart();
 			(obj.graphs) = () => ([
-				(this?.Fs_read()), 
-				(this?.Fs_write()), 
+				(this?.Fs_reads()), 
+				(this?.Fs_writes()), 
 				(this?.Fs_ruler_pct()), 
 				(this?.Fs_acting_mark())
+			]);
+			return obj;
+		}
+		port_slaves(){
+			return [];
+		}
+		Port_slaves(){
+			const obj = new this.$.$mol_plot_line();
+			(obj.title) = () => ("Slave Ports");
+			(obj.series_y) = () => ((this?.port_slaves()));
+			return obj;
+		}
+		port_masters(){
+			return [];
+		}
+		Port_masters(){
+			const obj = new this.$.$mol_plot_line();
+			(obj.title) = () => ("Master Ports");
+			(obj.series_y) = () => ((this?.port_masters()));
+			return obj;
+		}
+		Port_ruler_pct(){
+			const obj = new this.$.$mol_plot_ruler_vert();
+			return obj;
+		}
+		Port_mark(){
+			const obj = new this.$.$mol_plot_mark_cross();
+			(obj.labels) = () => ((this?.times()));
+			(obj.graphs) = () => ([(this?.Port_slaves()), (this?.Port_masters())]);
+			return obj;
+		}
+		Ports(){
+			const obj = new this.$.$mol_chart();
+			(obj.graphs) = () => ([
+				(this?.Port_slaves()), 
+				(this?.Port_masters()), 
+				(this?.Port_ruler_pct()), 
+				(this?.Port_mark())
 			]);
 			return obj;
 		}
@@ -29795,7 +29839,8 @@ var $;
 			(obj.rows) = () => ([
 				(this?.Cpu()), 
 				(this?.Mem()), 
-				(this?.Fs_acting())
+				(this?.Fs_acting()), 
+				(this?.Ports())
 			]);
 			return obj;
 		}
@@ -29815,11 +29860,16 @@ var $;
 	($mol_mem(($.$hyoo_crus_app_stat_page.prototype), "Mem_ruler"));
 	($mol_mem(($.$hyoo_crus_app_stat_page.prototype), "Mem_mark"));
 	($mol_mem(($.$hyoo_crus_app_stat_page.prototype), "Mem"));
-	($mol_mem(($.$hyoo_crus_app_stat_page.prototype), "Fs_read"));
-	($mol_mem(($.$hyoo_crus_app_stat_page.prototype), "Fs_write"));
+	($mol_mem(($.$hyoo_crus_app_stat_page.prototype), "Fs_reads"));
+	($mol_mem(($.$hyoo_crus_app_stat_page.prototype), "Fs_writes"));
 	($mol_mem(($.$hyoo_crus_app_stat_page.prototype), "Fs_ruler_pct"));
 	($mol_mem(($.$hyoo_crus_app_stat_page.prototype), "Fs_acting_mark"));
 	($mol_mem(($.$hyoo_crus_app_stat_page.prototype), "Fs_acting"));
+	($mol_mem(($.$hyoo_crus_app_stat_page.prototype), "Port_slaves"));
+	($mol_mem(($.$hyoo_crus_app_stat_page.prototype), "Port_masters"));
+	($mol_mem(($.$hyoo_crus_app_stat_page.prototype), "Port_ruler_pct"));
+	($mol_mem(($.$hyoo_crus_app_stat_page.prototype), "Port_mark"));
+	($mol_mem(($.$hyoo_crus_app_stat_page.prototype), "Ports"));
 	($mol_mem(($.$hyoo_crus_app_stat_page.prototype), "Charts"));
 
 
@@ -29865,11 +29915,17 @@ var $;
             fs_used() {
                 return this.stat()?.Fs_used()?.series() ?? [];
             }
-            fs_read() {
-                return this.stat()?.Fs_read()?.series() ?? [];
+            fs_reads() {
+                return this.stat()?.Fs_reads()?.series() ?? [];
             }
-            fs_write() {
-                return this.stat()?.Fs_write()?.series() ?? [];
+            fs_writes() {
+                return this.stat()?.Fs_writes()?.series() ?? [];
+            }
+            port_slaves() {
+                return this.stat()?.Port_slaves()?.series() ?? [];
+            }
+            port_masters() {
+                return this.stat()?.Port_masters()?.series() ?? [];
             }
             times() {
                 const times = [];
@@ -29901,10 +29957,16 @@ var $;
         ], $hyoo_crus_app_stat_page.prototype, "fs_used", null);
         __decorate([
             $mol_mem
-        ], $hyoo_crus_app_stat_page.prototype, "fs_read", null);
+        ], $hyoo_crus_app_stat_page.prototype, "fs_reads", null);
         __decorate([
             $mol_mem
-        ], $hyoo_crus_app_stat_page.prototype, "fs_write", null);
+        ], $hyoo_crus_app_stat_page.prototype, "fs_writes", null);
+        __decorate([
+            $mol_mem
+        ], $hyoo_crus_app_stat_page.prototype, "port_slaves", null);
+        __decorate([
+            $mol_mem
+        ], $hyoo_crus_app_stat_page.prototype, "port_masters", null);
         __decorate([
             $mol_mem
         ], $hyoo_crus_app_stat_page.prototype, "times", null);

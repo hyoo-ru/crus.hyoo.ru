@@ -2486,18 +2486,32 @@ $hyoo_crus_app_stat_page $mol_page
 							- <= Fs_used
 			<= Fs_acting $mol_chart
 				graphs /
-					<= Fs_read $mol_plot_line
-						title \FS Read / sec
-						series_y <= fs_read /
-					<= Fs_write $mol_plot_line
-						title \FS Write / sec
-						series_y <= fs_write /
+					<= Fs_reads $mol_plot_line
+						title \FS Reads / sec
+						series_y <= fs_reads /
+					<= Fs_writes $mol_plot_line
+						title \FS Writes / sec
+						series_y <= fs_writes /
 					<= Fs_ruler_pct $mol_plot_ruler_vert
 					<= Fs_acting_mark $mol_plot_mark_cross
 						labels <= times /
 						graphs /
 							<= Fs_read
 							<= Fs_write
+			<= Ports $mol_chart
+				graphs /
+					<= Port_slaves $mol_plot_line
+						title \Slave Ports
+						series_y <= port_slaves /
+					<= Port_masters $mol_plot_line
+						title \Master Ports
+						series_y <= port_masters /
+					<= Port_ruler_pct $mol_plot_ruler_vert
+					<= Port_mark $mol_plot_mark_cross
+						labels <= times /
+						graphs /
+							<= Port_slaves
+							<= Port_masters
 
 $mol_icon_play $mol_icon path \M8,5.14V19.14L19,12.14L8,5.14Z
 

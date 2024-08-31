@@ -3817,8 +3817,10 @@ declare namespace $ {
         readonly Cpu_system: (auto?: any) => $hyoo_crus_stat_ranges | null;
         readonly Mem_used: (auto?: any) => $hyoo_crus_stat_ranges | null;
         readonly Fs_used: (auto?: any) => $hyoo_crus_stat_ranges | null;
-        readonly Fs_read: (auto?: any) => $hyoo_crus_stat_ranges | null;
-        readonly Fs_write: (auto?: any) => $hyoo_crus_stat_ranges | null;
+        readonly Fs_reads: (auto?: any) => $hyoo_crus_stat_ranges | null;
+        readonly Fs_writes: (auto?: any) => $hyoo_crus_stat_ranges | null;
+        readonly Port_slaves: (auto?: any) => $hyoo_crus_stat_ranges | null;
+        readonly Port_masters: (auto?: any) => $hyoo_crus_stat_ranges | null;
     }>) & {
         schema: {
             [x: string]: typeof $hyoo_crus_node;
@@ -3827,8 +3829,10 @@ declare namespace $ {
             readonly Cpu_system: typeof $hyoo_crus_stat_ranges;
             readonly Mem_used: typeof $hyoo_crus_stat_ranges;
             readonly Fs_used: typeof $hyoo_crus_stat_ranges;
-            readonly Fs_read: typeof $hyoo_crus_stat_ranges;
-            readonly Fs_write: typeof $hyoo_crus_stat_ranges;
+            readonly Fs_reads: typeof $hyoo_crus_stat_ranges;
+            readonly Fs_writes: typeof $hyoo_crus_stat_ranges;
+            readonly Port_slaves: typeof $hyoo_crus_stat_ranges;
+            readonly Port_masters: typeof $hyoo_crus_stat_ranges;
         };
     };
     export class $hyoo_crus_app_stat extends $hyoo_crus_app_stat_base {
