@@ -9251,8 +9251,8 @@ var $;
             this.Fs_writes(null).tick_integral(res.fsWrite);
             const mem_total = process.constrainedMemory() ?? $node.os.totalmem();
             this.Mem_used(null).tick_instant((res.maxRSS - res.sharedMemorySize) * 1024 / mem_total * 100);
-            const fs = $node.fs.statfsSync('.');
-            this.Fs_used(null).tick_instant((Number(fs.blocks) - Number(fs.bfree)) / Number(fs.blocks) * 100);
+            const slaves = this.$.$hyoo_crus_glob.yard().slaves.size;
+            this.Port_slaves(null).tick_instant(slaves);
         }
     }
     __decorate([
