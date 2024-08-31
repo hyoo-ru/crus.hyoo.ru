@@ -2496,7 +2496,7 @@ $hyoo_crus_app_stat_page $mol_page
 					<= Fs_acting_mark $mol_plot_mark_cross
 						labels <= times /
 						graphs /
-							<= Fs_read
+							<= Fs_reads
 							<= Fs_write
 			<= Ports $mol_chart
 				graphs /

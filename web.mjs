@@ -29783,7 +29783,7 @@ var $;
 		Fs_acting_mark(){
 			const obj = new this.$.$mol_plot_mark_cross();
 			(obj.labels) = () => ((this?.times()));
-			(obj.graphs) = () => ([(this?.Fs_read()), (this?.Fs_write())]);
+			(obj.graphs) = () => ([(this?.Fs_reads()), (this?.Fs_write())]);
 			return obj;
 		}
 		Fs_acting(){
