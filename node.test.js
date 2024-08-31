@@ -9109,7 +9109,10 @@ var $;
         _initial;
         initial() {
             return this._initial
-                ?? (this._initial = Math.max(...this.values()));
+                ?? (this._initial = this.max());
+        }
+        max() {
+            return Math.max(...this.values());
         }
         values() {
             return this.nodes($hyoo_crus_atom_real).map(key => key.val());
@@ -9121,6 +9124,9 @@ var $;
     __decorate([
         $mol_action
     ], $hyoo_crus_stat_series.prototype, "initial", null);
+    __decorate([
+        $mol_mem
+    ], $hyoo_crus_stat_series.prototype, "max", null);
     __decorate([
         $mol_mem
     ], $hyoo_crus_stat_series.prototype, "values", null);
@@ -9138,7 +9144,11 @@ var $;
         Days: $hyoo_crus_stat_series,
         Years: $hyoo_crus_stat_series,
     }) {
-        tick(val) {
+        _last_instant = 0;
+        tick_instant(val) {
+            this.tick_integral(this._last_instant += val);
+        }
+        tick_integral(val) {
             let now = new $mol_time_moment;
             const second = BigInt(Math.floor(now.second));
             const minute = BigInt(now.minute);
@@ -9225,22 +9235,22 @@ var $;
     class $hyoo_crus_app_stat extends $hyoo_crus_dict.with({
         Cpu_user: $hyoo_crus_stat_ranges,
         Cpu_system: $hyoo_crus_stat_ranges,
+        Mem_used: $hyoo_crus_stat_ranges,
         Fs_used: $hyoo_crus_stat_ranges,
-        Mem_max: $hyoo_crus_stat_ranges,
         Fs_read: $hyoo_crus_stat_ranges,
         Fs_write: $hyoo_crus_stat_ranges,
     }) {
         tick() {
             this.$.$mol_state_time.now(1000);
             const res = $mol_wire_sync(process).resourceUsage();
+            const mem_total = $mol_wire_sync(process).constrainedMemory() ?? $mol_wire_sync($node.os).totalmem();
             const fs = $mol_wire_sync($node.fs).statfsSync('.');
-            this.Cpu_user(null).tick(res.userCPUTime / 1e6);
-            this.Cpu_system(null).tick(res.systemCPUTime / 1e6);
-            this.Mem_max(null).tick(res.maxRSS / 1024);
-            const fs_mult = Number(fs.bsize) / 1024 / 1024;
-            this.Fs_used(null).tick((Number(fs.blocks) - Number(fs.bfree)) * fs_mult);
-            this.Fs_read(null).tick(res.fsRead);
-            this.Fs_write(null).tick(res.fsWrite);
+            this.Cpu_user(null).tick_integral(res.userCPUTime / 1e6);
+            this.Cpu_system(null).tick_integral(res.systemCPUTime / 1e6);
+            this.Mem_used(null).tick_instant((res.maxRSS - res.sharedMemorySize) * 1024 / mem_total * 100);
+            this.Fs_used(null).tick_instant((Number(fs.blocks) - Number(fs.bfree)) / Number(fs.blocks) * 100);
+            this.Fs_read(null).tick_integral(res.fsRead);
+            this.Fs_write(null).tick_integral(res.fsWrite);
         }
     }
     __decorate([

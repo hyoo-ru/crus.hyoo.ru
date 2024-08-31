@@ -3771,6 +3771,7 @@ declare namespace $ {
         tick(key: bigint, val: number): void;
         _initial: number;
         initial(): number;
+        max(): number;
         values(): number[];
     }
     export {};
@@ -3795,7 +3796,9 @@ declare namespace $ {
         };
     };
     export class $hyoo_crus_stat_ranges extends $hyoo_crus_stat_ranges_base {
-        tick(val: number): void;
+        _last_instant: number;
+        tick_instant(val: number): void;
+        tick_integral(val: number): void;
         series(): number[];
     }
     export {};
@@ -3812,8 +3815,8 @@ declare namespace $ {
     const $hyoo_crus_app_stat_base: Omit<typeof $hyoo_crus_dict, "prototype"> & (new (...args: any[]) => $mol_type_override<$hyoo_crus_dict, {
         readonly Cpu_user: (auto?: any) => $hyoo_crus_stat_ranges | null;
         readonly Cpu_system: (auto?: any) => $hyoo_crus_stat_ranges | null;
+        readonly Mem_used: (auto?: any) => $hyoo_crus_stat_ranges | null;
         readonly Fs_used: (auto?: any) => $hyoo_crus_stat_ranges | null;
-        readonly Mem_max: (auto?: any) => $hyoo_crus_stat_ranges | null;
         readonly Fs_read: (auto?: any) => $hyoo_crus_stat_ranges | null;
         readonly Fs_write: (auto?: any) => $hyoo_crus_stat_ranges | null;
     }>) & {
@@ -3822,8 +3825,8 @@ declare namespace $ {
         } & {
             readonly Cpu_user: typeof $hyoo_crus_stat_ranges;
             readonly Cpu_system: typeof $hyoo_crus_stat_ranges;
+            readonly Mem_used: typeof $hyoo_crus_stat_ranges;
             readonly Fs_used: typeof $hyoo_crus_stat_ranges;
-            readonly Mem_max: typeof $hyoo_crus_stat_ranges;
             readonly Fs_read: typeof $hyoo_crus_stat_ranges;
             readonly Fs_write: typeof $hyoo_crus_stat_ranges;
         };

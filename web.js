@@ -27246,7 +27246,10 @@ var $;
         _initial;
         initial() {
             return this._initial
-                ?? (this._initial = Math.max(...this.values()));
+                ?? (this._initial = this.max());
+        }
+        max() {
+            return Math.max(...this.values());
         }
         values() {
             return this.nodes($hyoo_crus_atom_real).map(key => key.val());
@@ -27258,6 +27261,9 @@ var $;
     __decorate([
         $mol_action
     ], $hyoo_crus_stat_series.prototype, "initial", null);
+    __decorate([
+        $mol_mem
+    ], $hyoo_crus_stat_series.prototype, "max", null);
     __decorate([
         $mol_mem
     ], $hyoo_crus_stat_series.prototype, "values", null);
@@ -27275,7 +27281,11 @@ var $;
         Days: $hyoo_crus_stat_series,
         Years: $hyoo_crus_stat_series,
     }) {
-        tick(val) {
+        _last_instant = 0;
+        tick_instant(val) {
+            this.tick_integral(this._last_instant += val);
+        }
+        tick_integral(val) {
             let now = new $mol_time_moment;
             const second = BigInt(Math.floor(now.second));
             const minute = BigInt(now.minute);
@@ -27335,22 +27345,22 @@ var $;
     class $hyoo_crus_app_stat extends $hyoo_crus_dict.with({
         Cpu_user: $hyoo_crus_stat_ranges,
         Cpu_system: $hyoo_crus_stat_ranges,
+        Mem_used: $hyoo_crus_stat_ranges,
         Fs_used: $hyoo_crus_stat_ranges,
-        Mem_max: $hyoo_crus_stat_ranges,
         Fs_read: $hyoo_crus_stat_ranges,
         Fs_write: $hyoo_crus_stat_ranges,
     }) {
         tick() {
             this.$.$mol_state_time.now(1000);
             const res = $mol_wire_sync(process).resourceUsage();
+            const mem_total = $mol_wire_sync(process).constrainedMemory() ?? $mol_wire_sync($node.os).totalmem();
             const fs = $mol_wire_sync($node.fs).statfsSync('.');
-            this.Cpu_user(null).tick(res.userCPUTime / 1e6);
-            this.Cpu_system(null).tick(res.systemCPUTime / 1e6);
-            this.Mem_max(null).tick(res.maxRSS / 1024);
-            const fs_mult = Number(fs.bsize) / 1024 / 1024;
-            this.Fs_used(null).tick((Number(fs.blocks) - Number(fs.bfree)) * fs_mult);
-            this.Fs_read(null).tick(res.fsRead);
-            this.Fs_write(null).tick(res.fsWrite);
+            this.Cpu_user(null).tick_integral(res.userCPUTime / 1e6);
+            this.Cpu_system(null).tick_integral(res.systemCPUTime / 1e6);
+            this.Mem_used(null).tick_instant((res.maxRSS - res.sharedMemorySize) * 1024 / mem_total * 100);
+            this.Fs_used(null).tick_instant((Number(fs.blocks) - Number(fs.bfree)) / Number(fs.blocks) * 100);
+            this.Fs_read(null).tick_integral(res.fsRead);
+            this.Fs_write(null).tick_integral(res.fsWrite);
         }
     }
     __decorate([
@@ -28265,6 +28275,316 @@ var $;
 var $;
 (function ($) {
     $mol_style_attach("mol/plot/ruler/vert/vert.view.css", "[mol_plot_ruler_vert_label] {\n\ttransform: translateY( 4px );\n}\n");
+})($ || ($ = {}));
+
+;
+	($.$mol_svg_text_box) = class $mol_svg_text_box extends ($.$mol_svg_group) {
+		box_width(){
+			return "0.5rem";
+		}
+		box_height(){
+			return "1rem";
+		}
+		box_pos_x(){
+			return (this?.pos_x());
+		}
+		box_pos_y(){
+			return "0";
+		}
+		Back(){
+			const obj = new this.$.$mol_svg_rect();
+			(obj.width) = () => ((this?.box_width()));
+			(obj.height) = () => ((this?.box_height()));
+			(obj.pos) = () => ([(this?.box_pos_x()), (this?.box_pos_y())]);
+			return obj;
+		}
+		pos_x(){
+			return "0";
+		}
+		pos_y(){
+			return "100%";
+		}
+		align(){
+			return "start";
+		}
+		text(){
+			return "";
+		}
+		Text(){
+			const obj = new this.$.$mol_svg_text();
+			(obj.pos) = () => ([(this?.pos_x()), (this?.pos_y())]);
+			(obj.align) = () => ((this?.align()));
+			(obj.sub) = () => ([(this?.text())]);
+			return obj;
+		}
+		font_size(){
+			return 16;
+		}
+		width(){
+			return 0;
+		}
+		sub(){
+			return [(this?.Back()), (this?.Text())];
+		}
+	};
+	($mol_mem(($.$mol_svg_text_box.prototype), "Back"));
+	($mol_mem(($.$mol_svg_text_box.prototype), "Text"));
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    let canvas;
+    function $mol_font_canvas(next = canvas) {
+        if (!next)
+            next = $mol_dom_context.document.createElement('canvas').getContext('2d');
+        return canvas = next;
+    }
+    $.$mol_font_canvas = $mol_font_canvas;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    function $mol_font_measure(font, text) {
+        const canvas = $mol_font_canvas();
+        canvas.font = font;
+        return canvas.measureText(text).width;
+    }
+    $.$mol_font_measure = $mol_font_measure;
+})($ || ($ = {}));
+
+;
+"use strict";
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $mol_svg_text_box extends $.$mol_svg_text_box {
+            box_width() {
+                return `${this.width()}px`;
+            }
+            width() {
+                return $mol_font_measure(this.font_size() + 'px ' + this.font_family(), this.text());
+            }
+            box_pos_x() {
+                const align = this.align();
+                if (align === 'end')
+                    return `calc(${this.pos_x()} - ${this.width()})`;
+                if (align === 'middle')
+                    return `calc(${this.pos_x()} - ${Math.round(this.width() / 2)})`;
+                return this.pos_x();
+            }
+            box_pos_y() {
+                return `calc(${this.pos_y()} - ${this.font_size() - 2})`;
+            }
+        }
+        __decorate([
+            $mol_mem
+        ], $mol_svg_text_box.prototype, "width", null);
+        $$.$mol_svg_text_box = $mol_svg_text_box;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    $mol_style_attach("mol/svg/text/box/box.view.css", "[mol_svg_text_box_back] {\n\tstroke: none;\n\tfill: var(--mol_theme_back);\n\ttransition: none;\n}\n");
+})($ || ($ = {}));
+
+;
+	($.$mol_plot_mark_cross) = class $mol_plot_mark_cross extends ($.$mol_plot_graph) {
+		dimensions_x(){
+			const obj = new this.$.$mol_vector_range(Infinity, -Infinity);
+			return obj;
+		}
+		dimensions_y(){
+			const obj = new this.$.$mol_vector_range(Infinity, -Infinity);
+			return obj;
+		}
+		curve(){
+			return "";
+		}
+		Curve(){
+			const obj = new this.$.$mol_svg_path();
+			(obj.geometry) = () => ((this?.curve()));
+			return obj;
+		}
+		title_x_pos_x(){
+			return "0";
+		}
+		title_x_pos_y(){
+			return "100%";
+		}
+		title_x(){
+			return "";
+		}
+		Label_x(){
+			const obj = new this.$.$mol_svg_text_box();
+			(obj.pos_x) = () => ((this?.title_x_pos_x()));
+			(obj.pos_y) = () => ((this?.title_x_pos_y()));
+			(obj.text) = () => ((this?.title_x()));
+			return obj;
+		}
+		title_y_pos_x(){
+			return "0";
+		}
+		title_y_pos_y(){
+			return "0";
+		}
+		title_y(){
+			return "";
+		}
+		Label_y(){
+			const obj = new this.$.$mol_svg_text_box();
+			(obj.pos_x) = () => ((this?.title_y_pos_x()));
+			(obj.pos_y) = () => ((this?.title_y_pos_y()));
+			(obj.text) = () => ((this?.title_y()));
+			return obj;
+		}
+		labels(){
+			return [];
+		}
+		title_x_gap(){
+			return 4;
+		}
+		title_y_gap(){
+			return 22;
+		}
+		threshold(){
+			return 16;
+		}
+		graphs(){
+			return [];
+		}
+		dimensions(){
+			const obj = new this.$.$mol_vector_2d((this?.dimensions_x()), (this?.dimensions_y()));
+			return obj;
+		}
+		sub(){
+			return [
+				(this?.Curve()), 
+				(this?.Label_x()), 
+				(this?.Label_y())
+			];
+		}
+	};
+	($mol_mem(($.$mol_plot_mark_cross.prototype), "dimensions_x"));
+	($mol_mem(($.$mol_plot_mark_cross.prototype), "dimensions_y"));
+	($mol_mem(($.$mol_plot_mark_cross.prototype), "Curve"));
+	($mol_mem(($.$mol_plot_mark_cross.prototype), "Label_x"));
+	($mol_mem(($.$mol_plot_mark_cross.prototype), "Label_y"));
+	($mol_mem(($.$mol_plot_mark_cross.prototype), "dimensions"));
+
+
+;
+"use strict";
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $mol_plot_mark_cross extends $.$mol_plot_mark_cross {
+            nearest() {
+                let delta = this.threshold() ** 2;
+                const [cursor_x, cursor_y] = this.cursor_position();
+                if (Number.isNaN(cursor_x) || Number.isNaN(cursor_y))
+                    return null;
+                const graphs = this.graphs();
+                let index = 0;
+                let graph = null;
+                const [shift_x, shift_y] = this.shift();
+                const [scale_x, scale_y] = this.scale();
+                for (let current of graphs) {
+                    const indexes = current.indexes();
+                    const series_x = current.series_x();
+                    const series_y = current.series_y();
+                    for (let i of indexes) {
+                        const point_x = shift_x + series_x[i] * scale_x;
+                        const point_y = shift_y + series_y[i] * scale_y;
+                        const diff = (point_x - cursor_x) ** 2 + (point_y - cursor_y) ** 2;
+                        if (diff < delta) {
+                            delta = diff;
+                            index = i;
+                            graph = current;
+                        }
+                    }
+                }
+                if (!graph)
+                    return null;
+                const value = new $mol_vector_2d(graph.series_x()[index], graph.series_y()[index]);
+                const scaled = new $mol_vector_2d(shift_x + value.x * scale_x, shift_y + value.y * scale_y);
+                return { value, scaled, index };
+            }
+            curve() {
+                const nearest = this.nearest();
+                if (!nearest)
+                    return '';
+                return `M ${nearest.scaled.x.toFixed(3)} 1000 V 0 M 0 ${nearest.scaled.y.toFixed(3)} H 2000`;
+            }
+            title_x() {
+                const nearest = this.nearest();
+                if (!nearest)
+                    return '';
+                const labels = this.labels();
+                if (labels.length > nearest.index)
+                    return labels[nearest.index];
+                return String(nearest.value.x);
+            }
+            title_x_pos_x() {
+                const nearest = this.nearest();
+                if (!nearest)
+                    return '0';
+                const width = this.Label_x().width();
+                return (nearest.scaled.x - width / 2).toFixed(3);
+            }
+            title_x_pos_y() {
+                const nearest = this.nearest();
+                if (!nearest)
+                    return '0';
+                const pos = this.size_real().y - this.title_x_gap();
+                return pos.toFixed(3);
+            }
+            title_y() {
+                const nearest = this.nearest();
+                if (!nearest)
+                    return '';
+                return String(nearest.value.y);
+            }
+            title_y_pos_y() {
+                const nearest = this.nearest();
+                if (!nearest)
+                    return '0';
+                return nearest.scaled.y.toFixed(3);
+            }
+            title_y_pos_x() {
+                const nearest = this.nearest();
+                if (!nearest)
+                    return '0';
+                const pos = this.title_y_gap();
+                return pos.toFixed(3);
+            }
+        }
+        __decorate([
+            $mol_mem
+        ], $mol_plot_mark_cross.prototype, "nearest", null);
+        $$.$mol_plot_mark_cross = $mol_plot_mark_cross;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    $mol_style_attach("mol/plot/mark/cross/cross.view.css", "[mol_plot_mark_cross_curve] {\n\tcolor: var(--mol_theme_focus);\n\tstroke-width: 1px;\n\tstroke: currentColor;\n\tpointer-events: none;\n}\n\n[mol_plot_mark_cross_label_x], [mol_plot_mark_cross_label_y] {\n\tcolor: var(--mol_theme_focus);\n\tpointer-events: none;\n}\n\n[mol_plot_mark_cross_label_y] {\n\ttransform: translateY( 4px );\n}\n");
 })($ || ($ = {}));
 
 ;
@@ -29368,7 +29688,7 @@ var $;
 		}
 		Cpu_user(){
 			const obj = new this.$.$mol_plot_line();
-			(obj.title) = () => ("CPU User (s/s)");
+			(obj.title) = () => ("CPU User (%)");
 			(obj.series_y) = () => ((this?.cpu_user()));
 			return obj;
 		}
@@ -29377,7 +29697,7 @@ var $;
 		}
 		Cpu_system(){
 			const obj = new this.$.$mol_plot_line();
-			(obj.title) = () => ("CPU System (s/s)");
+			(obj.title) = () => ("CPU System (%)");
 			(obj.series_y) = () => ((this?.cpu_system()));
 			return obj;
 		}
@@ -29385,12 +29705,50 @@ var $;
 			const obj = new this.$.$mol_plot_ruler_vert();
 			return obj;
 		}
+		times(){
+			return [];
+		}
+		Cpu_mark(){
+			const obj = new this.$.$mol_plot_mark_cross();
+			(obj.labels) = () => ((this?.times()));
+			(obj.graphs) = () => ([(this?.Cpu_user()), (this?.Cpu_system())]);
+			return obj;
+		}
 		Cpu(){
 			const obj = new this.$.$mol_chart();
 			(obj.graphs) = () => ([
 				(this?.Cpu_user()), 
 				(this?.Cpu_system()), 
-				(this?.Cpu_ruler_sec())
+				(this?.Cpu_ruler_sec()), 
+				(this?.Cpu_mark())
+			]);
+			return obj;
+		}
+		mem_used(){
+			return [];
+		}
+		Mem_used(){
+			const obj = new this.$.$mol_plot_line();
+			(obj.title) = () => ("Mem Alloc (%)");
+			(obj.series_y) = () => ((this?.mem_used()));
+			return obj;
+		}
+		Mem_ruler(){
+			const obj = new this.$.$mol_plot_ruler_vert();
+			return obj;
+		}
+		Mem_mark(){
+			const obj = new this.$.$mol_plot_mark_cross();
+			(obj.labels) = () => ((this?.times()));
+			(obj.graphs) = () => ([(this?.Mem_used())]);
+			return obj;
+		}
+		Mem(){
+			const obj = new this.$.$mol_chart();
+			(obj.graphs) = () => ([
+				(this?.Mem_used()), 
+				(this?.Mem_ruler()), 
+				(this?.Mem_mark())
 			]);
 			return obj;
 		}
@@ -29416,18 +29774,29 @@ var $;
 			const obj = new this.$.$mol_plot_ruler_vert();
 			return obj;
 		}
+		Fs_acting_mark(){
+			const obj = new this.$.$mol_plot_mark_cross();
+			(obj.labels) = () => ((this?.times()));
+			(obj.graphs) = () => ([(this?.Fs_read()), (this?.Fs_write())]);
+			return obj;
+		}
 		Fs_acting(){
 			const obj = new this.$.$mol_chart();
 			(obj.graphs) = () => ([
 				(this?.Fs_read()), 
 				(this?.Fs_write()), 
-				(this?.Fs_ruler_pct())
+				(this?.Fs_ruler_pct()), 
+				(this?.Fs_acting_mark())
 			]);
 			return obj;
 		}
 		Charts(){
 			const obj = new this.$.$mol_list();
-			(obj.rows) = () => ([(this?.Cpu()), (this?.Fs_acting())]);
+			(obj.rows) = () => ([
+				(this?.Cpu()), 
+				(this?.Mem()), 
+				(this?.Fs_acting())
+			]);
 			return obj;
 		}
 		title(){
@@ -29440,10 +29809,16 @@ var $;
 	($mol_mem(($.$hyoo_crus_app_stat_page.prototype), "Cpu_user"));
 	($mol_mem(($.$hyoo_crus_app_stat_page.prototype), "Cpu_system"));
 	($mol_mem(($.$hyoo_crus_app_stat_page.prototype), "Cpu_ruler_sec"));
+	($mol_mem(($.$hyoo_crus_app_stat_page.prototype), "Cpu_mark"));
 	($mol_mem(($.$hyoo_crus_app_stat_page.prototype), "Cpu"));
+	($mol_mem(($.$hyoo_crus_app_stat_page.prototype), "Mem_used"));
+	($mol_mem(($.$hyoo_crus_app_stat_page.prototype), "Mem_ruler"));
+	($mol_mem(($.$hyoo_crus_app_stat_page.prototype), "Mem_mark"));
+	($mol_mem(($.$hyoo_crus_app_stat_page.prototype), "Mem"));
 	($mol_mem(($.$hyoo_crus_app_stat_page.prototype), "Fs_read"));
 	($mol_mem(($.$hyoo_crus_app_stat_page.prototype), "Fs_write"));
 	($mol_mem(($.$hyoo_crus_app_stat_page.prototype), "Fs_ruler_pct"));
+	($mol_mem(($.$hyoo_crus_app_stat_page.prototype), "Fs_acting_mark"));
 	($mol_mem(($.$hyoo_crus_app_stat_page.prototype), "Fs_acting"));
 	($mol_mem(($.$hyoo_crus_app_stat_page.prototype), "Charts"));
 
@@ -29478,17 +29853,17 @@ var $;
                 const ref = $hyoo_crus_ref(this.$.$mol_fetch.text(this.$.$hyoo_crus_glob.yard().master_current() + 'ref'));
                 return this.$.$hyoo_crus_glob.Node(ref, $hyoo_crus_app_home).stat();
             }
-            mem_alloc() {
-                return this.stat()?.Mem_max()?.series() ?? [];
-            }
-            fs_alloc() {
-                return this.stat()?.Fs_used()?.series() ?? [];
-            }
             cpu_user() {
-                return this.stat()?.Cpu_user()?.series() ?? [];
+                return this.stat()?.Cpu_user()?.series().map(v => 100 * v) ?? [];
             }
             cpu_system() {
-                return this.stat()?.Cpu_system()?.series() ?? [];
+                return this.stat()?.Cpu_system()?.series().map(v => 100 * v) ?? [];
+            }
+            mem_used() {
+                return this.stat()?.Mem_used()?.series() ?? [];
+            }
+            fs_used() {
+                return this.stat()?.Fs_used()?.series() ?? [];
             }
             fs_read() {
                 return this.stat()?.Fs_read()?.series() ?? [];
@@ -29496,16 +29871,22 @@ var $;
             fs_write() {
                 return this.stat()?.Fs_write()?.series() ?? [];
             }
+            times() {
+                const times = [];
+                for (let i = 1; i < 59; ++i)
+                    times.push(`${i} secs ago`);
+                for (let i = 1; i < 59; ++i)
+                    times.push(`${i} mins ago`);
+                for (let i = 1; i < 23; ++i)
+                    times.push(`${i} hours ago`);
+                for (let i = 1; i < 364; ++i)
+                    times.push(`${i} days ago`);
+                return times;
+            }
         }
         __decorate([
             $mol_mem
         ], $hyoo_crus_app_stat_page.prototype, "stat", null);
-        __decorate([
-            $mol_mem
-        ], $hyoo_crus_app_stat_page.prototype, "mem_alloc", null);
-        __decorate([
-            $mol_mem
-        ], $hyoo_crus_app_stat_page.prototype, "fs_alloc", null);
         __decorate([
             $mol_mem
         ], $hyoo_crus_app_stat_page.prototype, "cpu_user", null);
@@ -29514,10 +29895,19 @@ var $;
         ], $hyoo_crus_app_stat_page.prototype, "cpu_system", null);
         __decorate([
             $mol_mem
+        ], $hyoo_crus_app_stat_page.prototype, "mem_used", null);
+        __decorate([
+            $mol_mem
+        ], $hyoo_crus_app_stat_page.prototype, "fs_used", null);
+        __decorate([
+            $mol_mem
         ], $hyoo_crus_app_stat_page.prototype, "fs_read", null);
         __decorate([
             $mol_mem
         ], $hyoo_crus_app_stat_page.prototype, "fs_write", null);
+        __decorate([
+            $mol_mem
+        ], $hyoo_crus_app_stat_page.prototype, "times", null);
         $$.$hyoo_crus_app_stat_page = $hyoo_crus_app_stat_page;
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));
