@@ -32,6 +32,7 @@ $hyoo_crus_app_stat_page $mol_page
 						labels <= times /
 						graphs /
 							<= Mem_used
+							<= Mem_free
 							- <= Fs_used
 			<= Fs_acting $mol_chart
 				graphs /
