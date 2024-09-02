@@ -2478,16 +2478,22 @@ $hyoo_crus_app_stat_page $mol_page
 					<= Mem_used $mol_plot_line
 						title \Mem Used (%)
 						series_y <= mem_used /
-					- <= Fs_used $mol_plot_line
-						title \FS Alloc (%)
-						series_y <= fs_used /
 					<= Mem_ruler $mol_plot_ruler_vert
 					<= Mem_mark $mol_plot_mark_cross
 						labels <= times /
 						graphs /
 							<= Mem_used
 							<= Mem_free
-							- <= Fs_used
+			<= Fs_usage $mol_chart
+				graphs /
+					<= Fs_free $mol_plot_line
+						title \FS Free (%)
+						series_y <= fs_free /
+					<= Fs_usage_ruler $mol_plot_ruler_vert
+					<= Fs_usage_mark $mol_plot_mark_cross
+						labels <= times /
+						graphs /
+							<= Fs_free
 			<= Fs_acting $mol_chart
 				graphs /
 					<= Fs_reads $mol_plot_line
@@ -2496,7 +2502,7 @@ $hyoo_crus_app_stat_page $mol_page
 					<= Fs_writes $mol_plot_line
 						title \FS Writes / sec
 						series_y <= fs_writes /
-					<= Fs_ruler_pct $mol_plot_ruler_vert
+					<= Fs_acting_ruler $mol_plot_ruler_vert
 					<= Fs_acting_mark $mol_plot_mark_cross
 						labels <= times /
 						graphs /

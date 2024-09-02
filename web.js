@@ -27347,7 +27347,7 @@ var $;
         Cpu_system: $hyoo_crus_stat_ranges,
         Mem_used: $hyoo_crus_stat_ranges,
         Mem_free: $hyoo_crus_stat_ranges,
-        Fs_used: $hyoo_crus_stat_ranges,
+        Fs_free: $hyoo_crus_stat_ranges,
         Fs_reads: $hyoo_crus_stat_ranges,
         Fs_writes: $hyoo_crus_stat_ranges,
         Port_slaves: $hyoo_crus_stat_ranges,
@@ -27363,6 +27363,8 @@ var $;
             const mem_total = $node.os.totalmem();
             this.Mem_used(null).tick_instant((res.maxRSS - res.sharedMemorySize) * 1024 / mem_total * 100);
             this.Mem_free(null).tick_instant($node.os.freemem() / mem_total * 100);
+            const fs = $node.fs.statfsSync('.');
+            this.Fs_free(null).tick_instant(Number(fs.bfree) / Number(fs.blocks) * 100);
             const masters = $mol_wire_sync(this.$.$hyoo_crus_glob.yard()).masters().length;
             this.Port_masters(null).tick_instant(masters);
             const slaves = $mol_wire_sync(this.$.$hyoo_crus_glob.yard()).ports().length - masters;
@@ -29768,6 +29770,34 @@ var $;
 			]);
 			return obj;
 		}
+		fs_free(){
+			return [];
+		}
+		Fs_free(){
+			const obj = new this.$.$mol_plot_line();
+			(obj.title) = () => ("FS Free (%)");
+			(obj.series_y) = () => ((this?.fs_free()));
+			return obj;
+		}
+		Fs_usage_ruler(){
+			const obj = new this.$.$mol_plot_ruler_vert();
+			return obj;
+		}
+		Fs_usage_mark(){
+			const obj = new this.$.$mol_plot_mark_cross();
+			(obj.labels) = () => ((this?.times()));
+			(obj.graphs) = () => ([(this?.Fs_free())]);
+			return obj;
+		}
+		Fs_usage(){
+			const obj = new this.$.$mol_chart();
+			(obj.graphs) = () => ([
+				(this?.Fs_free()), 
+				(this?.Fs_usage_ruler()), 
+				(this?.Fs_usage_mark())
+			]);
+			return obj;
+		}
 		fs_reads(){
 			return [];
 		}
@@ -29786,7 +29816,7 @@ var $;
 			(obj.series_y) = () => ((this?.fs_writes()));
 			return obj;
 		}
-		Fs_ruler_pct(){
+		Fs_acting_ruler(){
 			const obj = new this.$.$mol_plot_ruler_vert();
 			return obj;
 		}
@@ -29801,7 +29831,7 @@ var $;
 			(obj.graphs) = () => ([
 				(this?.Fs_reads()), 
 				(this?.Fs_writes()), 
-				(this?.Fs_ruler_pct()), 
+				(this?.Fs_acting_ruler()), 
 				(this?.Fs_acting_mark())
 			]);
 			return obj;
@@ -29849,6 +29879,7 @@ var $;
 			(obj.rows) = () => ([
 				(this?.Cpu()), 
 				(this?.Mem()), 
+				(this?.Fs_usage()), 
 				(this?.Fs_acting()), 
 				(this?.Ports())
 			]);
@@ -29871,9 +29902,13 @@ var $;
 	($mol_mem(($.$hyoo_crus_app_stat_page.prototype), "Mem_ruler"));
 	($mol_mem(($.$hyoo_crus_app_stat_page.prototype), "Mem_mark"));
 	($mol_mem(($.$hyoo_crus_app_stat_page.prototype), "Mem"));
+	($mol_mem(($.$hyoo_crus_app_stat_page.prototype), "Fs_free"));
+	($mol_mem(($.$hyoo_crus_app_stat_page.prototype), "Fs_usage_ruler"));
+	($mol_mem(($.$hyoo_crus_app_stat_page.prototype), "Fs_usage_mark"));
+	($mol_mem(($.$hyoo_crus_app_stat_page.prototype), "Fs_usage"));
 	($mol_mem(($.$hyoo_crus_app_stat_page.prototype), "Fs_reads"));
 	($mol_mem(($.$hyoo_crus_app_stat_page.prototype), "Fs_writes"));
-	($mol_mem(($.$hyoo_crus_app_stat_page.prototype), "Fs_ruler_pct"));
+	($mol_mem(($.$hyoo_crus_app_stat_page.prototype), "Fs_acting_ruler"));
 	($mol_mem(($.$hyoo_crus_app_stat_page.prototype), "Fs_acting_mark"));
 	($mol_mem(($.$hyoo_crus_app_stat_page.prototype), "Fs_acting"));
 	($mol_mem(($.$hyoo_crus_app_stat_page.prototype), "Port_slaves"));
@@ -29926,8 +29961,8 @@ var $;
             mem_free() {
                 return this.stat()?.Mem_free()?.series() ?? [];
             }
-            fs_used() {
-                return this.stat()?.Fs_used()?.series() ?? [];
+            fs_free() {
+                return this.stat()?.Fs_free()?.series() ?? [];
             }
             fs_reads() {
                 return this.stat()?.Fs_reads()?.series() ?? [];
@@ -29971,7 +30006,7 @@ var $;
         ], $hyoo_crus_app_stat_page.prototype, "mem_free", null);
         __decorate([
             $mol_mem
-        ], $hyoo_crus_app_stat_page.prototype, "fs_used", null);
+        ], $hyoo_crus_app_stat_page.prototype, "fs_free", null);
         __decorate([
             $mol_mem
         ], $hyoo_crus_app_stat_page.prototype, "fs_reads", null);
@@ -30005,6 +30040,12 @@ var $;
             Charts: {
                 align: {
                     self: 'stretch',
+                },
+            },
+            $mol_chart: {
+                flex: {
+                    shrink: 0,
+                    basis: `15rem`,
                 },
             },
         });

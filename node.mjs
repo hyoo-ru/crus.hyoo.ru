@@ -9246,7 +9246,7 @@ var $;
         Cpu_system: $hyoo_crus_stat_ranges,
         Mem_used: $hyoo_crus_stat_ranges,
         Mem_free: $hyoo_crus_stat_ranges,
-        Fs_used: $hyoo_crus_stat_ranges,
+        Fs_free: $hyoo_crus_stat_ranges,
         Fs_reads: $hyoo_crus_stat_ranges,
         Fs_writes: $hyoo_crus_stat_ranges,
         Port_slaves: $hyoo_crus_stat_ranges,
@@ -9262,6 +9262,8 @@ var $;
             const mem_total = $node.os.totalmem();
             this.Mem_used(null).tick_instant((res.maxRSS - res.sharedMemorySize) * 1024 / mem_total * 100);
             this.Mem_free(null).tick_instant($node.os.freemem() / mem_total * 100);
+            const fs = $node.fs.statfsSync('.');
+            this.Fs_free(null).tick_instant(Number(fs.bfree) / Number(fs.blocks) * 100);
             const masters = $mol_wire_sync(this.$.$hyoo_crus_glob.yard()).masters().length;
             this.Port_masters(null).tick_instant(masters);
             const slaves = $mol_wire_sync(this.$.$hyoo_crus_glob.yard()).ports().length - masters;

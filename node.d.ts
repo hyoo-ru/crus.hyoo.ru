@@ -3817,7 +3817,7 @@ declare namespace $ {
         readonly Cpu_system: (auto?: any) => $hyoo_crus_stat_ranges | null;
         readonly Mem_used: (auto?: any) => $hyoo_crus_stat_ranges | null;
         readonly Mem_free: (auto?: any) => $hyoo_crus_stat_ranges | null;
-        readonly Fs_used: (auto?: any) => $hyoo_crus_stat_ranges | null;
+        readonly Fs_free: (auto?: any) => $hyoo_crus_stat_ranges | null;
         readonly Fs_reads: (auto?: any) => $hyoo_crus_stat_ranges | null;
         readonly Fs_writes: (auto?: any) => $hyoo_crus_stat_ranges | null;
         readonly Port_slaves: (auto?: any) => $hyoo_crus_stat_ranges | null;
@@ -3830,7 +3830,7 @@ declare namespace $ {
             readonly Cpu_system: typeof $hyoo_crus_stat_ranges;
             readonly Mem_used: typeof $hyoo_crus_stat_ranges;
             readonly Mem_free: typeof $hyoo_crus_stat_ranges;
-            readonly Fs_used: typeof $hyoo_crus_stat_ranges;
+            readonly Fs_free: typeof $hyoo_crus_stat_ranges;
             readonly Fs_reads: typeof $hyoo_crus_stat_ranges;
             readonly Fs_writes: typeof $hyoo_crus_stat_ranges;
             readonly Port_slaves: typeof $hyoo_crus_stat_ranges;
