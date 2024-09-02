@@ -35,7 +35,7 @@ namespace $ {
 			this.Fs_reads( null )!.tick_integral( res.fsRead ) // pct
 			this.Fs_writes( null )!.tick_integral( res.fsWrite ) // pct
 			
-			const mem_total = process.constrainedMemory() ?? $node.os.totalmem()
+			const mem_total = $node.os.totalmem()
 			this.Mem_used( null )!.tick_instant( ( res.maxRSS - res.sharedMemorySize ) * 1024 / mem_total * 100 ) // %
 			
 			// const fs = $node.fs.statfsSync( '.' )
