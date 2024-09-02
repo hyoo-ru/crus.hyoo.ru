@@ -9,6 +9,9 @@ namespace $ {
 		
 		/** Memory in MB */
 		Mem_used: $hyoo_crus_stat_ranges,
+		/** Memory in MB */
+		Mem_free: $hyoo_crus_stat_ranges,
+		
 		/** FS used */
 		Fs_used: $hyoo_crus_stat_ranges,
 		
@@ -37,6 +40,7 @@ namespace $ {
 			
 			const mem_total = $node.os.totalmem()
 			this.Mem_used( null )!.tick_instant( ( res.maxRSS - res.sharedMemorySize ) * 1024 / mem_total * 100 ) // %
+			this.Mem_free( null )!.tick_instant( $node.os.freemem() / mem_total * 100 ) // %
 			
 			// const fs = $node.fs.statfsSync( '.' )
 			// this.Fs_used( null )!.tick_instant( ( Number( fs.blocks ) - Number( fs.bfree ) ) / Number( fs.blocks ) * 100 ) // %

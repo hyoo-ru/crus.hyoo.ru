@@ -23,6 +23,11 @@ namespace $.$$ {
 		}
 		
 		@ $mol_mem
+		mem_free() {
+			return this.stat()?.Mem_free()?.series() ?? []
+		}
+		
+		@ $mol_mem
 		fs_used() {
 			return this.stat()?.Fs_used()?.series() ?? []
 		}

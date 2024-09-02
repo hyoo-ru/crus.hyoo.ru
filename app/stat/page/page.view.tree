@@ -18,6 +18,9 @@ $hyoo_crus_app_stat_page $mol_page
 							<= Cpu_system
 			<= Mem $mol_chart
 				graphs /
+					<= Mem_free $mol_plot_line
+						title \Mem Free (%)
+						series_y <= mem_free /
 					<= Mem_used $mol_plot_line
 						title \Mem Used (%)
 						series_y <= mem_used /
