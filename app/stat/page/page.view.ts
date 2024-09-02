@@ -7,8 +7,9 @@ namespace $.$$ {
 			return this.$.$hyoo_crus_glob.Node( ref, $hyoo_crus_app_home )
 		}
 		
+		@ $mol_mem
 		uptime() {
-			return this.home().uptime()
+			return new $mol_time_duration({ second: Number( this.home().uptime() ) }).normal.toString( '#Y #D hh:mm:ss' )
 		}
 		
 		stat() {
