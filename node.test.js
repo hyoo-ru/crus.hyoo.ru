@@ -9249,7 +9249,7 @@ var $;
             this.Cpu_system(null).tick_integral(res.systemCPUTime / 1e6);
             this.Fs_reads(null).tick_integral(res.fsRead);
             this.Fs_writes(null).tick_integral(res.fsWrite);
-            const mem_total = process.constrainedMemory() ?? $node.os.totalmem();
+            const mem_total = $node.os.totalmem();
             this.Mem_used(null).tick_instant((res.maxRSS - res.sharedMemorySize) * 1024 / mem_total * 100);
             const masters = $mol_wire_sync(this.$.$hyoo_crus_glob.yard()).masters().length;
             this.Port_masters(null).tick_instant(masters);
