@@ -27346,6 +27346,7 @@ var $;
         Cpu_user: $hyoo_crus_stat_ranges,
         Cpu_system: $hyoo_crus_stat_ranges,
         Mem_used: $hyoo_crus_stat_ranges,
+        Mem_free: $hyoo_crus_stat_ranges,
         Fs_used: $hyoo_crus_stat_ranges,
         Fs_reads: $hyoo_crus_stat_ranges,
         Fs_writes: $hyoo_crus_stat_ranges,
@@ -27361,6 +27362,7 @@ var $;
             this.Fs_writes(null).tick_integral(res.fsWrite);
             const mem_total = $node.os.totalmem();
             this.Mem_used(null).tick_instant((res.maxRSS - res.sharedMemorySize) * 1024 / mem_total * 100);
+            this.Mem_free(null).tick_instant($node.os.freemem() / mem_total * 100);
             const masters = $mol_wire_sync(this.$.$hyoo_crus_glob.yard()).masters().length;
             this.Port_masters(null).tick_instant(masters);
             const slaves = $mol_wire_sync(this.$.$hyoo_crus_glob.yard()).ports().length - masters;
@@ -29728,6 +29730,15 @@ var $;
 			]);
 			return obj;
 		}
+		mem_free(){
+			return [];
+		}
+		Mem_free(){
+			const obj = new this.$.$mol_plot_line();
+			(obj.title) = () => ("Mem Free (%)");
+			(obj.series_y) = () => ((this?.mem_free()));
+			return obj;
+		}
 		mem_used(){
 			return [];
 		}
@@ -29744,12 +29755,13 @@ var $;
 		Mem_mark(){
 			const obj = new this.$.$mol_plot_mark_cross();
 			(obj.labels) = () => ((this?.times()));
-			(obj.graphs) = () => ([(this?.Mem_used())]);
+			(obj.graphs) = () => ([(this?.Mem_used()), (this?.Mem_free())]);
 			return obj;
 		}
 		Mem(){
 			const obj = new this.$.$mol_chart();
 			(obj.graphs) = () => ([
+				(this?.Mem_free()), 
 				(this?.Mem_used()), 
 				(this?.Mem_ruler()), 
 				(this?.Mem_mark())
@@ -29854,6 +29866,7 @@ var $;
 	($mol_mem(($.$hyoo_crus_app_stat_page.prototype), "Cpu_ruler_sec"));
 	($mol_mem(($.$hyoo_crus_app_stat_page.prototype), "Cpu_mark"));
 	($mol_mem(($.$hyoo_crus_app_stat_page.prototype), "Cpu"));
+	($mol_mem(($.$hyoo_crus_app_stat_page.prototype), "Mem_free"));
 	($mol_mem(($.$hyoo_crus_app_stat_page.prototype), "Mem_used"));
 	($mol_mem(($.$hyoo_crus_app_stat_page.prototype), "Mem_ruler"));
 	($mol_mem(($.$hyoo_crus_app_stat_page.prototype), "Mem_mark"));
@@ -29910,6 +29923,9 @@ var $;
             mem_used() {
                 return this.stat()?.Mem_used()?.series() ?? [];
             }
+            mem_free() {
+                return this.stat()?.Mem_free()?.series() ?? [];
+            }
             fs_used() {
                 return this.stat()?.Fs_used()?.series() ?? [];
             }
@@ -29950,6 +29966,9 @@ var $;
         __decorate([
             $mol_mem
         ], $hyoo_crus_app_stat_page.prototype, "mem_used", null);
+        __decorate([
+            $mol_mem
+        ], $hyoo_crus_app_stat_page.prototype, "mem_free", null);
         __decorate([
             $mol_mem
         ], $hyoo_crus_app_stat_page.prototype, "fs_used", null);
