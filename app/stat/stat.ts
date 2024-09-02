@@ -12,8 +12,8 @@ namespace $ {
 		/** Memory in MB */
 		Mem_free: $hyoo_crus_stat_ranges,
 		
-		/** FS used */
-		Fs_used: $hyoo_crus_stat_ranges,
+		/** FS free */
+		Fs_free: $hyoo_crus_stat_ranges,
 		
 		/** FS read count */
 		Fs_reads: $hyoo_crus_stat_ranges,
@@ -42,8 +42,8 @@ namespace $ {
 			this.Mem_used( null )!.tick_instant( ( res.maxRSS - res.sharedMemorySize ) * 1024 / mem_total * 100 ) // %
 			this.Mem_free( null )!.tick_instant( $node.os.freemem() / mem_total * 100 ) // %
 			
-			// const fs = $node.fs.statfsSync( '.' )
-			// this.Fs_used( null )!.tick_instant( ( Number( fs.blocks ) - Number( fs.bfree ) ) / Number( fs.blocks ) * 100 ) // %
+			const fs = $node.fs.statfsSync( '.' )
+			this.Fs_free( null )!.tick_instant( Number( fs.bfree ) / Number( fs.blocks ) * 100 ) // %
 			
 			const masters = $mol_wire_sync( this.$.$hyoo_crus_glob.yard() ).masters().length
 			this.Port_masters( null )!.tick_instant( masters ) // pct

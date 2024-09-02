@@ -28,8 +28,8 @@ namespace $.$$ {
 		}
 		
 		@ $mol_mem
-		fs_used() {
-			return this.stat()?.Fs_used()?.series() ?? []
+		fs_free() {
+			return this.stat()?.Fs_free()?.series() ?? []
 		}
 		
 		@ $mol_mem

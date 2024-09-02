@@ -13,6 +13,13 @@ namespace $.$$ {
 			},
 		},
 		
+		$mol_chart: {
+			flex: {
+				shrink: 0,
+				basis: `15rem`,
+			},
+		},
+		
 	} )
 	
 }
