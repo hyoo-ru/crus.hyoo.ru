@@ -38,10 +38,14 @@ namespace $ {
 		
 		@ $mol_mem
 		_stat_update() {
+			
 			const home = this.$.$hyoo_crus_glob.home( $hyoo_crus_app_home )
-			const stat = home.stat( null )!
 			home.init()
+			home.tick()
+			
+			const stat = home.stat( null )!
 			stat.tick()
+			
 		}
 		
 	}

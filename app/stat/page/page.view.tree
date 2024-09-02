@@ -1,5 +1,9 @@
 $hyoo_crus_app_stat_page $mol_page
 	title \📊 Stat
+	head /
+		<= Title
+		<= Uptime $mol_view sub / <= uptime 0n
+		<= Tools
 	body_content /
 		<= Charts $mol_list rows /
 			<= Cpu $mol_chart
