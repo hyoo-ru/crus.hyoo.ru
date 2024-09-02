@@ -2454,6 +2454,10 @@ $mol_chart $mol_view
 
 $hyoo_crus_app_stat_page $mol_page
 	title \📊 Stat
+	head /
+		<= Title
+		<= Uptime $mol_view sub / <= uptime \00:00
+		<= Tools
 	body_content /
 		<= Charts $mol_list rows /
 			<= Cpu $mol_chart

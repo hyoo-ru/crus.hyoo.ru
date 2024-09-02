@@ -3846,6 +3846,7 @@ declare namespace $ {
 declare namespace $ {
     const $hyoo_crus_app_home_base: Omit<typeof $hyoo_crus_home, "prototype"> & (new (...args: any[]) => $mol_type_override<$hyoo_crus_home, {
         readonly Aliases: (auto?: any) => $hyoo_crus_list_str | null;
+        readonly Uptime: (auto?: any) => $hyoo_crus_atom_int | null;
         readonly Stat: (auto?: any) => {
             Value: () => typeof $hyoo_crus_app_stat;
             remote(next?: $hyoo_crus_app_stat | null | undefined): $hyoo_crus_app_stat | null;
@@ -3903,6 +3904,7 @@ declare namespace $ {
             [x: string]: typeof $hyoo_crus_node;
         } & {
             readonly Aliases: typeof $hyoo_crus_list_str;
+            readonly Uptime: typeof $hyoo_crus_atom_int;
             readonly Stat: {
                 new (): {
                     Value: () => typeof $hyoo_crus_app_stat;
@@ -3970,8 +3972,10 @@ declare namespace $ {
         };
     };
     export class $hyoo_crus_app_home extends $hyoo_crus_app_home_base {
+        uptime(next?: bigint): bigint;
         stat(auto?: any): $hyoo_crus_app_stat | null;
         init(): void;
+        tick(): void;
     }
     export {};
 }
@@ -3979,6 +3983,7 @@ declare namespace $ {
 declare namespace $ {
     class $hyoo_crus_app_home_node extends $hyoo_crus_app_home {
         init(): void;
+        tick(): void;
         ips(): string[];
         lookup(ip: string): Promise<string>;
         aliases(): string[];

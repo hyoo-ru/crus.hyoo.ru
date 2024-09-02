@@ -9282,12 +9282,17 @@ var $;
 (function ($) {
     class $hyoo_crus_app_home extends $hyoo_crus_home.with({
         Aliases: $hyoo_crus_list_str,
+        Uptime: $hyoo_crus_atom_int,
         Stat: $hyoo_crus_atom_ref_to(() => $hyoo_crus_app_stat),
     }) {
+        uptime(next) {
+            return this.Uptime(next)?.val(next) ?? 0n;
+        }
         stat(auto) {
             return this.Stat(auto)?.ensure(this.land()) ?? null;
         }
         init() { }
+        tick() { }
     }
     $.$hyoo_crus_app_home = $hyoo_crus_app_home;
 })($ || ($ = {}));
@@ -9300,6 +9305,10 @@ var $;
         init() {
             this.title($node.os.hostname());
             this.Aliases(null).items(this.aliases());
+        }
+        tick() {
+            this.$.$mol_state_time.now(1000);
+            this.uptime(BigInt(Math.floor(process.uptime())));
         }
         ips() {
             const ips = [];
@@ -9328,6 +9337,9 @@ var $;
     __decorate([
         $mol_mem
     ], $hyoo_crus_app_home_node.prototype, "init", null);
+    __decorate([
+        $mol_mem
+    ], $hyoo_crus_app_home_node.prototype, "tick", null);
     __decorate([
         $mol_mem
     ], $hyoo_crus_app_home_node.prototype, "ips", null);
@@ -9369,8 +9381,9 @@ var $;
         }
         _stat_update() {
             const home = this.$.$hyoo_crus_glob.home($hyoo_crus_app_home);
-            const stat = home.stat(null);
             home.init();
+            home.tick();
+            const stat = home.stat(null);
             stat.tick();
         }
     }

@@ -29690,6 +29690,14 @@ var $;
 
 ;
 	($.$hyoo_crus_app_stat_page) = class $hyoo_crus_app_stat_page extends ($.$mol_page) {
+		uptime(){
+			return "00:00";
+		}
+		Uptime(){
+			const obj = new this.$.$mol_view();
+			(obj.sub) = () => ([(this?.uptime())]);
+			return obj;
+		}
 		cpu_user(){
 			return [];
 		}
@@ -29887,10 +29895,18 @@ var $;
 		title(){
 			return "📊 Stat";
 		}
+		head(){
+			return [
+				(this?.Title()), 
+				(this?.Uptime()), 
+				(this?.Tools())
+			];
+		}
 		body_content(){
 			return [(this?.Charts())];
 		}
 	};
+	($mol_mem(($.$hyoo_crus_app_stat_page.prototype), "Uptime"));
 	($mol_mem(($.$hyoo_crus_app_stat_page.prototype), "Cpu_user"));
 	($mol_mem(($.$hyoo_crus_app_stat_page.prototype), "Cpu_system"));
 	($mol_mem(($.$hyoo_crus_app_stat_page.prototype), "Cpu_ruler_sec"));
@@ -29924,12 +29940,17 @@ var $;
 (function ($) {
     class $hyoo_crus_app_home extends $hyoo_crus_home.with({
         Aliases: $hyoo_crus_list_str,
+        Uptime: $hyoo_crus_atom_int,
         Stat: $hyoo_crus_atom_ref_to(() => $hyoo_crus_app_stat),
     }) {
+        uptime(next) {
+            return this.Uptime(next)?.val(next) ?? 0n;
+        }
         stat(auto) {
             return this.Stat(auto)?.ensure(this.land()) ?? null;
         }
         init() { }
+        tick() { }
     }
     $.$hyoo_crus_app_home = $hyoo_crus_app_home;
 })($ || ($ = {}));
@@ -29944,9 +29965,15 @@ var $;
     var $$;
     (function ($$) {
         class $hyoo_crus_app_stat_page extends $.$hyoo_crus_app_stat_page {
-            stat() {
+            home() {
                 const ref = $hyoo_crus_ref(this.$.$mol_fetch.text(this.$.$hyoo_crus_glob.yard().master_current() + 'ref'));
-                return this.$.$hyoo_crus_glob.Node(ref, $hyoo_crus_app_home).stat();
+                return this.$.$hyoo_crus_glob.Node(ref, $hyoo_crus_app_home);
+            }
+            uptime() {
+                return new $mol_time_duration({ second: Number(this.home().uptime()) }).normal.toString('#Y #D hh:mm:ss');
+            }
+            stat() {
+                return this.home().stat();
             }
             cpu_user() {
                 return this.stat()?.Cpu_user()?.series().map(v => 100 * v) ?? [];
@@ -29990,7 +30017,10 @@ var $;
         }
         __decorate([
             $mol_mem
-        ], $hyoo_crus_app_stat_page.prototype, "stat", null);
+        ], $hyoo_crus_app_stat_page.prototype, "home", null);
+        __decorate([
+            $mol_mem
+        ], $hyoo_crus_app_stat_page.prototype, "uptime", null);
         __decorate([
             $mol_mem
         ], $hyoo_crus_app_stat_page.prototype, "cpu_user", null);
@@ -30035,6 +30065,9 @@ var $;
             flex: {
                 basis: `40rem`,
                 grow: 1,
+            },
+            Uptime: {
+                padding: $mol_gap.text,
             },
             Charts: {
                 align: {
