@@ -1,7 +1,8 @@
 services:
   crus:
     build:
-      context: .
+      context: ../
+      dockerfile: ./docker/Dockerfile
       no_cache: true
     ports:
       - "9090:9090"
