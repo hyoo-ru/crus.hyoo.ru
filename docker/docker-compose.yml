@@ -2,6 +2,7 @@ services:
   crus:
     build:
       context: .
+      no_cache: true
     ports:
       - "9090:9090"
     logging:
