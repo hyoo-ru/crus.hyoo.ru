@@ -1,7 +1,5 @@
 FROM node:22-alpine
 
-#RUN apt-get update && apt install -y git
-
 RUN apk add --no-cache git
 
 # deploying development environment
