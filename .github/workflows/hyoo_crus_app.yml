@@ -27,3 +27,5 @@ jobs:
       uses: GlueOps/github-actions-build-push-containers@v0.4.5
       with:
         dockerfile: 'docker/Dockerfile'
+        image_name: 'hyoo-ru/crus'
+        tags: 'latest'
