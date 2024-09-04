@@ -19,13 +19,3 @@ jobs:
       if: github.ref == 'refs/heads/master'
       with:
         folder: 'hyoo/crus/app/run/-'
-
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
-    - name: Build Docker Image and Push to GHCR
-      uses: GlueOps/github-actions-build-push-containers@v0.4.5
-      with:
-        dockerfile: 'docker/Dockerfile'
-        image_name: 'hyoo-ru/crus'
-        tags: 'latest'
