@@ -12,3 +12,5 @@ deploy \/hyoo/crus/diagram/crus-sync.png
 deploy \/hyoo/crus/diagram/crus-pack.png
 deploy \/hyoo/crus/diagram/crus-units.png
 deploy \/hyoo/crus/diagram/crus-files.png
+deploy \/hyoo/crus/docker/deploy.sh
+deploy \/hyoo/crus/docker/autopull_and_restart.sh

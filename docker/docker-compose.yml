@@ -1,13 +1,19 @@
 services:
   crus:
     build:
-      context: .
+      context: ../
+      dockerfile: ./docker/Dockerfile
+      no_cache: true
+      network: host
     ports:
       - "9090:9090"
     logging:
         driver: "local"
     volumes:
       - dotcrus:/mam/hyoo/crus/app/run/-/.crus
+      - state:/root/.local/share/mol_state_local
+    restart: always
 
 volumes:
   dotcrus:
+  state:
