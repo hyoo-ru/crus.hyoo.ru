@@ -9282,7 +9282,7 @@ var $;
 var $;
 (function ($) {
     class $hyoo_crus_app_home extends $hyoo_crus_home.with({
-        Aliases: $hyoo_crus_dict_to($hyoo_crus_atom_str),
+        Aliases: $hyoo_crus_dict_to($hyoo_crus_list_str),
         Uptime: $hyoo_crus_atom_int,
         Stat: $hyoo_crus_atom_ref_to(() => $hyoo_crus_app_stat),
     }) {
@@ -9311,8 +9311,8 @@ var $;
                 if (!ip || !source.has(ip))
                     target.cut(ip);
             }
-            for (const [ip, name] of source) {
-                target.key(ip, null).val(name);
+            for (const [ip, names] of source) {
+                target.key(ip, null).items(names);
             }
         }
         tick() {
@@ -9329,13 +9329,13 @@ var $;
             return ips;
         }
         async lookup(ip) {
-            const lookup = $node.util.promisify($node.dns.lookupService);
+            const lookup = $node.util.promisify($node.dns.reverse);
             try {
-                return (await lookup(ip, 80)).hostname;
+                return (await lookup(ip));
             }
             catch (error) {
                 $mol_fail_log(error);
-                return ip;
+                return [];
             }
         }
         aliases() {

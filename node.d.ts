@@ -3846,8 +3846,8 @@ declare namespace $ {
 declare namespace $ {
     const $hyoo_crus_app_home_base: Omit<typeof $hyoo_crus_home, "prototype"> & (new (...args: any[]) => $mol_type_override<$hyoo_crus_home, {
         readonly Aliases: (auto?: any) => {
-            Value: typeof $hyoo_crus_atom_str;
-            key(key: $hyoo_crus_vary_type, auto?: any): $hyoo_crus_atom_str;
+            Value: typeof $hyoo_crus_list_str;
+            key(key: $hyoo_crus_vary_type, auto?: any): $hyoo_crus_list_str;
             keys(): readonly $hyoo_crus_vary_type[];
             dive<Node_1 extends typeof $hyoo_crus_node>(key: $hyoo_crus_vary_type, Node: Node_1, auto?: any): InstanceType<Node_1> | null;
             items_vary(next?: readonly $hyoo_crus_vary_type[], tag?: keyof typeof $hyoo_crus_sand_tag): readonly $hyoo_crus_vary_type[];
@@ -3946,8 +3946,8 @@ declare namespace $ {
         } & {
             readonly Aliases: {
                 new (): {
-                    Value: typeof $hyoo_crus_atom_str;
-                    key(key: $hyoo_crus_vary_type, auto?: any): $hyoo_crus_atom_str;
+                    Value: typeof $hyoo_crus_list_str;
+                    key(key: $hyoo_crus_vary_type, auto?: any): $hyoo_crus_list_str;
                     keys(): readonly $hyoo_crus_vary_type[];
                     dive<Node_1 extends typeof $hyoo_crus_node>(key: $hyoo_crus_vary_type, Node: Node_1, auto?: any): InstanceType<Node_1> | null;
                     items_vary(next?: readonly $hyoo_crus_vary_type[], tag?: keyof typeof $hyoo_crus_sand_tag): readonly $hyoo_crus_vary_type[];
@@ -4086,8 +4086,8 @@ declare namespace $ {
         init(): void;
         tick(): void;
         ips(): string[];
-        lookup(ip: string): Promise<string>;
-        aliases(): Map<string, string>;
+        lookup(ip: string): Promise<string[]>;
+        aliases(): Map<string, string[]>;
     }
 }
 
