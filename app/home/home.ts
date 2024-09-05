@@ -1,7 +1,7 @@
 namespace $ {
 	
 	export class $hyoo_crus_app_home extends $hyoo_crus_home.with({
-		Aliases: $hyoo_crus_list_str,
+		Aliases: $hyoo_crus_dict_to( $hyoo_crus_atom_str ),
 		Uptime: $hyoo_crus_atom_int,
 		Stat: $hyoo_crus_atom_ref_to( ()=> $hyoo_crus_app_stat ),
 	}) {

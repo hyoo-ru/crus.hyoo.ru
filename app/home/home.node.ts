@@ -4,8 +4,20 @@ namespace $ {
 		
 		@ $mol_mem
 		init() {
+			
 			this.title( $node.os.hostname() )
-			this.Aliases(null)!.items( this.aliases() )
+			
+			const source = this.aliases()
+			const target = this.Aliases(null)!
+			
+			for( const ip of target.keys().map( $hyoo_crus_vary_cast_str ) ) {
+				if( !ip || !source.has( ip ) ) target.cut( ip )
+			}
+			
+			for( const [ ip, name ] of source ) {
+				target.key( ip, null ).val( name )
+			}
+			
 		}
 		
 		@ $mol_mem
@@ -38,7 +50,7 @@ namespace $ {
 		@ $mol_mem
 		aliases() {
 			const self = $mol_wire_sync( this )
-			return [ ... new Set( this.ips().map( ip => self.lookup( ip ) ) ) ]
+			return new Map( this.ips().map( ip => [ ip, self.lookup( ip ) ] ) )
 		}
 		
 	}
