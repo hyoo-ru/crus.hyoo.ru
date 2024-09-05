@@ -9282,7 +9282,7 @@ var $;
 var $;
 (function ($) {
     class $hyoo_crus_app_home extends $hyoo_crus_home.with({
-        Aliases: $hyoo_crus_list_str,
+        Aliases: $hyoo_crus_dict_to($hyoo_crus_atom_str),
         Uptime: $hyoo_crus_atom_int,
         Stat: $hyoo_crus_atom_ref_to(() => $hyoo_crus_app_stat),
     }) {
@@ -9305,7 +9305,15 @@ var $;
     class $hyoo_crus_app_home_node extends $hyoo_crus_app_home {
         init() {
             this.title($node.os.hostname());
-            this.Aliases(null).items(this.aliases());
+            const source = this.aliases();
+            const target = this.Aliases(null);
+            for (const ip of target.keys().map($hyoo_crus_vary_cast_str)) {
+                if (!ip || !source.has(ip))
+                    target.cut(ip);
+            }
+            for (const [ip, name] of source) {
+                target.key(ip, null).val(name);
+            }
         }
         tick() {
             this.$.$mol_state_time.now(1000);
@@ -9332,7 +9340,7 @@ var $;
         }
         aliases() {
             const self = $mol_wire_sync(this);
-            return [...new Set(this.ips().map(ip => self.lookup(ip)))];
+            return new Map(this.ips().map(ip => [ip, self.lookup(ip)]));
         }
     }
     __decorate([
