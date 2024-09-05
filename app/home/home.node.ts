@@ -14,8 +14,8 @@ namespace $ {
 				if( !ip || !source.has( ip ) ) target.cut( ip )
 			}
 			
-			for( const [ ip, name ] of source ) {
-				target.key( ip, null ).val( name )
+			for( const [ ip, names ] of source ) {
+				target.key( ip, null ).items( names )
 			}
 			
 		}
@@ -38,12 +38,12 @@ namespace $ {
 		}
 		
 		async lookup( ip: string ) {
-			const lookup = $node.util.promisify( $node.dns.lookupService )
+			const lookup = $node.util.promisify( $node.dns.reverse )
 			try {
-				return (await lookup( ip, 80 )).hostname
+				return (await lookup( ip ))
 			} catch( error ) {
 				$mol_fail_log( error )
-				return ip
+				return []
 			}
 		}
 		
