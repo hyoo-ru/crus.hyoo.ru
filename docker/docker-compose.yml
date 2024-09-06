@@ -11,10 +11,10 @@ services:
     logging:
         driver: "local"
     volumes:
-      - dotcrus:/mam/hyoo/crus/app/run/-/.crus
-      - state:/root/.local/share/mol_state_local
+      - db:/mam/hyoo/crus/app/run/-/.crus
+      - local:/root/.local/share/mol_state_local
     restart: always
 
 volumes:
-  dotcrus:
-  state:
+  db:
+  local:
