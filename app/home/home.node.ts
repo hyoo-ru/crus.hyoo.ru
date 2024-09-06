@@ -38,9 +38,8 @@ namespace $ {
 		}
 		
 		async lookup( ip: string ) {
-			const lookup = $node.util.promisify( $node.dns.reverse )
 			try {
-				return (await lookup( ip ))
+				return await $node.dns.promises.reverse( ip )
 			} catch( error ) {
 				$mol_fail_log( error )
 				return []
