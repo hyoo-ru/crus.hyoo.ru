@@ -96,8 +96,8 @@ namespace $ {
 			const delta1 = land1.delta_unit()
 			const delta2 = land2.delta_unit()
 			
-			land1.apply_unit_trust( delta2 )
-			land2.apply_unit_trust( delta1 )
+			land1.apply_unit( delta2 )
+			land2.apply_unit( delta1 )
 	
 			$mol_assert_equal(
 				text1.str(),
@@ -113,12 +113,12 @@ namespace $ {
 			base.Data( $hyoo_crus_text ).str( '( )' )
 			
 			const left = $hyoo_crus_land.make({ $ })
-			left.apply_unit_trust( base.delta_unit() )
+			left.apply_unit( base.delta_unit() )
 			left.Data( $hyoo_crus_text ).str( '( [ f ] )' )
 			left.Data( $hyoo_crus_text ).str( '( [ foo ] )' )
 			
 			const right = $hyoo_crus_land.make({ $ })
-			right.apply_unit_trust( base.delta_unit() )
+			right.apply_unit( base.delta_unit() )
 			right.faces.sync( left.faces )
 			right.Data( $hyoo_crus_text ).str( '( [ f ] )' )
 			right.Data( $hyoo_crus_text ).str( '( [ fu ] )' )
@@ -126,8 +126,8 @@ namespace $ {
 			const left_delta = left.delta_unit( base.faces )
 			const right_delta = right.delta_unit( base.faces )
 			
-			left.apply_unit_trust( right_delta )
-			right.apply_unit_trust( left_delta )
+			left.apply_unit( right_delta )
+			right.apply_unit( left_delta )
 	
 			$mol_assert_equal(
 				left.Data( $hyoo_crus_text ).str(),

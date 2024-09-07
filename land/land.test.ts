@@ -48,7 +48,7 @@ namespace $ {
 			land1.give( auth1, $hyoo_crus_rank.mod )
 			$mol_assert_equal( land1.lord_rank( auth1.lord() ), $hyoo_crus_rank.mod )
 			
-			land2.apply_unit_trust( land1.delta_unit() )
+			land2.apply_unit( land1.delta_unit() )
 			$mol_assert_equal( land2.lord_rank( auth1.lord() ), $hyoo_crus_rank.mod )
 			$mol_assert_fail( ()=> land2.give( auth2, $hyoo_crus_rank.add ), 'Need law rank to change rank' )
 			
@@ -57,7 +57,7 @@ namespace $ {
 		'Post Data and pick Delta'( $ ) {
 			
 			const land1 = $hyoo_crus_land.make({ $ })
-			const land2 = $hyoo_crus_land.make({ $, ref: ()=> land1.ref(), auth: ()=> auth1 })
+			const land2 = $hyoo_crus_land.make({ $, ref: ()=> land1.ref(), auth: ()=> auth2 })
 			
 			$mol_assert_equal( land1.delta_unit(), [] )
 			
@@ -70,54 +70,34 @@ namespace $ {
 			$mol_assert_equal( land1.delta_unit().length, 3 )
 			$mol_assert_equal( land1.delta_unit( face ).length, 1 )
 			
-			land2.apply_unit_trust( land1.delta_unit() )
+			land2.apply_unit( land1.delta_unit() )
 			
-			$mol_assert_fail( ()=> land2.post( 'AA222222', '', 'AA333333', new Uint8Array([ 3 ]) ), 'Need add rank to join' )
+			$mol_assert_fail( ()=> land2.join(), 'Need add rank to join' )
 			$mol_assert_equal( land2.delta_unit().length, 3 )
 			$mol_assert_equal( land2.delta_unit( face ).length, 1 )
 			
-			land1.give( auth1, $hyoo_crus_rank.add )
-			land2.apply_unit_trust( land1.delta_unit() )
-			$mol_assert_fail( ()=> land2.post( 'AA222222', '', 'AA333333', new Uint8Array([ 3 ]) ), 'Need mod rank to post any data' )
-			$mol_assert_equal( land2.delta_unit().length, 4 )
-			$mol_assert_equal( land2.delta_unit( face ).length, 2 )
+			land1.give( auth2, $hyoo_crus_rank.add )
+			land2.apply_unit( land1.delta_unit() )
+			land2.join()
+			$mol_assert_equal( land2.delta_unit().length, 5 )
+			$mol_assert_equal( land2.delta_unit( face ).length, 3 )
 			
-			land2.post( 'AA222222', '', auth1.peer(), new Uint8Array([ 4 ]) )
+			$mol_assert_fail( ()=> land2.post( 'AA222222', '', 'AA333333', new Uint8Array([ 3 ]) ), 'Need mod rank to post data' )
+			$mol_assert_equal( land2.delta_unit().length, 5 )
+			$mol_assert_equal( land2.delta_unit( face ).length, 3 )
+			
+			land1.give( auth2, $hyoo_crus_rank.mod )
+			land2.apply_unit( land1.delta_unit() )
+			land2.post( 'AA222222', '', 'AA333333', new Uint8Array([ 4 ]) )
 			$mol_assert_equal( land2.delta_unit().length, 6 )
 			$mol_assert_equal( land2.delta_unit( face ).length, 4 )
-			
-			land1.give( auth1, $hyoo_crus_rank.mod )
-			land2.apply_unit_trust( land1.delta_unit() )
-			$mol_assert_equal( land2.delta_unit().length, 6 )
-			$mol_assert_equal( land2.delta_unit( face ).length, 4 )
-			
-			land1.give( auth1, $hyoo_crus_rank.add )
-			land2.apply_unit_trust( land1.delta_unit() )
-			$mol_assert_equal( land2.delta_unit().length, 6 )
-			
-			land1.give( auth1, $hyoo_crus_rank.get )
-			land2.apply_unit_trust( land1.delta_unit() )
-			$mol_assert_equal( land2.delta_unit().length, 4 )
-			
-		},
-		
-		'Self restriction for Add Rank'( $ ) {
-			
-			const land1 = $hyoo_crus_land.make({ $ })
-			const land2 = $hyoo_crus_land.make({ $, ref: ()=> land1.ref(), auth: ()=> auth2 })
-			
-			$mol_assert_equal( land1.delta_unit(), [] )
 			
 			land1.give( auth2, $hyoo_crus_rank.add )
-			land2.apply_unit_trust( land1.delta_unit() )
-			$mol_assert_equal( land2.delta_unit().length, 2 )
+			land2.apply_unit( land1.delta_unit() )
+			$mol_assert_equal( land2.delta_unit().length, 5 )
 			
-			const sand1 = land2.post( '', '', '', 'foo' )
-			$mol_assert_equal( sand1.self(), auth2.peer() )
-			$mol_assert_equal( land2.delta_unit().length, 4 )
-			
-			const sand2 = land2.post( '', '', '', 'bar' )
-			$mol_assert_equal( sand2.self(), auth2.peer() )
+			land1.give( auth2, $hyoo_crus_rank.get )
+			land2.apply_unit( land1.delta_unit() )
 			$mol_assert_equal( land2.delta_unit().length, 4 )
 			
 		},
@@ -137,15 +117,15 @@ namespace $ {
 				await land.sand_decode( sand ),
 				new Uint8Array([ 1, 2, 3 ]),
 			)
-			$mol_assert_equal( ( await land.sand_ordered( '' ) ).length, 1 )
+			$mol_assert_equal( ( await land.sand_ordered({ head: '', peer: '' }) ).length, 1 )
 			
 			await land.post( '', '', sand.self(), null )
-			$mol_assert_equal( ( await land.sand_ordered( '' ) ).length, 1 )
+			$mol_assert_equal( ( await land.sand_ordered({ head: '', peer: '' }) ).length, 1 )
 		},
 		
 		'Land fork & merge'( $ ) {
 			
-			const home = $.$hyoo_crus_realm.home().land()
+			const home = $.$hyoo_crus_glob.home().land()
 			const left = home.fork()
 			
 			home.Data( $hyoo_crus_list_vary ).items_vary([ 'foo', 'xxx' ])
@@ -164,23 +144,23 @@ namespace $ {
 			const both = home.fork()
 			$mol_assert_equal( both.Data( $hyoo_crus_list_vary ).items_vary(), [ 'foo', 'xxx' ] )
 			
-			both.Tines().items_vary([ right.ref() ])
+			both.Tine().items_vary([ right.ref() ])
 			$mol_assert_equal( both.Data( $hyoo_crus_list_vary ).items_vary(), [ 'foo', 'zzz' ] )
 			
-			both.Tines().items_vary([ left.ref() ])
+			both.Tine().items_vary([ left.ref() ])
 			$mol_assert_equal( both.Data( $hyoo_crus_list_vary ).items_vary(), [ 'foo', 'yyy' ] )
 			
-			both.Tines().items_vary([ right.ref(), left.ref() ])
+			both.Tine().items_vary([ right.ref(), left.ref() ])
 			$mol_assert_equal( both.Data( $hyoo_crus_list_vary ).items_vary(), [ 'foo', 'yyy' ] )
 			
-			both.Tines().items_vary([ left.ref(), right.ref() ])
+			both.Tine().items_vary([ left.ref(), right.ref() ])
 			$mol_assert_equal( both.Data( $hyoo_crus_list_vary ).items_vary(), [ 'foo', 'zzz' ] )
 			
 		},
 		
 		'Inner refs is relative to land'( $ ) {
 			
-			const Alice = $.$hyoo_crus_realm.home().land()
+			const Alice = $.$hyoo_crus_glob.home().land()
 			const Bella = Alice.fork()
 			
 			const alice_val = Alice.Node( $hyoo_crus_atom_str ).Item( 'qwertyui' )
@@ -196,6 +176,16 @@ namespace $ {
 			$mol_assert_equal( alice_ref.val(), alice_val.ref() )
 			$mol_assert_unique( alice_ref.val(), bella_ref.val() )
 			$mol_assert_equal( bella_ref.val(), bella_val.ref() )
+			
+		},
+		
+		'Land Area inherits rights'( $ ) {
+			
+			const base = $.$hyoo_crus_glob.land_grab({ '': $hyoo_crus_rank.mod })
+			const area = base.area_make()
+			
+			$mol_assert_equal( area.lord_rank( area.auth().lord() ), $hyoo_crus_rank.law )
+			$mol_assert_equal( area.lord_rank( $hyoo_crus_ref( '' ) ), $hyoo_crus_rank.mod )
 			
 		},
 		

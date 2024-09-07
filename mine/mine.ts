@@ -19,6 +19,7 @@ namespace $ {
 		static rock_save( blob: Uint8Array ) {
 			const hash = this.hash( blob )
 			this.rock( hash, blob )
+			this.rock( hash ) // temp dep allow reap
 			return hash
 		}
 		

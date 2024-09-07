@@ -143,8 +143,8 @@
 
 ## Vocabulary
 
-- **🌌Realm** - Whole global graph database which contains Lands.
-- **🌍Land** - Standalone part of Realm which syncs separately, have own rights, and contains Units.
+- **🌌Glob** - Whole global graph database which contains Lands.
+- **🌍Land** - Standalone part of Glob which syncs separately, have own rights, and contains Units.
   - **🏠Home** - Land where Lord is King. Contains only ain info.
   - **🎶Hall** - Lord's profile with full info.
 - **Lord** - Independent actor with global unique id generated from Auth key.
@@ -211,7 +211,7 @@
   - **👑law** - Full administration.
 
 - **Mine** - Units/Rocks storage.
-- **Yard** - Realm synchronizer.
+- **Yard** - Glob synchronizer.
 - **Port** - Communication link with other peer.
 - **Delta** - Difference of two Land states as list of Units.
 - **Face** - Statistics about Units in Land. it's total Units count & dictionary which maps Peer to Time.
@@ -273,7 +273,7 @@ export class $my_person extends $hyoo_crus_entity.with({
 }
 ```
 
-### Realm Usage
+### Glob Usage
 
 ```ts
 /** Application, component etc */
@@ -281,20 +281,20 @@ export class $my_app extends $mol_object {
 
 	// Whole database
 	@ $mol_mem
-	realm() {
-		return new $hyoo_crus_realm
+	glob() {
+		return new $hyoo_crus_glob
 	}
 	
 	// Current user profile for current application
 	@ $mol_mem
 	hall() {
-		return this.realm().home().hall_by( $my_person, $hyoo_crus_rank_public )
+		return this.glob().home().hall_by( $my_person, $hyoo_crus_rank_public )
 	}
 	
 	// Use existing entity by reference
 	@ $mol_mem_key
 	person( ref: $hyoo_crus_ref ) {
-		return this.realm().Node( ref, $my_person )
+		return this.glob().Node( ref, $my_person )
 	}
 	
 	// Add new linked entity

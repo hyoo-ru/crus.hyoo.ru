@@ -6,8 +6,8 @@ namespace $.$$ {
 			
 			try {
 				
-				this.$.$hyoo_crus_realm.yard().master()
-				// this.realm().yard().sync()
+				this.$.$hyoo_crus_glob.yard().master()
+				// this.glob().yard().sync()
 				return this.hint()
 			
 			} catch( error ) {
@@ -25,8 +25,8 @@ namespace $.$$ {
 			
 			try {
 				
-				this.$.$hyoo_crus_realm.yard().master()
-				// this.realm().yard().sync()
+				this.$.$hyoo_crus_glob.yard().master()
+				// this.glob().yard().sync()
 				return [ this.Well() ]
 			
 			} catch( error ) {
@@ -50,7 +50,7 @@ namespace $.$$ {
 		
 		@ $mol_mem
 		master_link() {
-			return this.$.$hyoo_crus_realm.yard().master_current()
+			return this.$.$hyoo_crus_glob.yard().master_current()
 		}
 		
 		master_id( uri: string ) {
@@ -63,7 +63,7 @@ namespace $.$$ {
 		
 		value( next?: string ) {
 			return this.$.$hyoo_crus_yard.masters[
-				this.$.$hyoo_crus_realm.yard().master_cursor(
+				this.$.$hyoo_crus_glob.yard().master_cursor(
 					next == undefined ? undefined : this.$.$hyoo_crus_yard.masters.indexOf( next )
 				)
 			]

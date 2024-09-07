@@ -5,7 +5,7 @@ namespace $ {
 		
 		static tag: keyof typeof $hyoo_crus_sand_tag = 'vals'
 		
-		/** Standalone part of Realm which syncs separately, have own rights, and contains Units */
+		/** Standalone part of Glob which syncs separately, have own rights, and contains Units */
 		land() {
 			return null as any as $hyoo_crus_land
 		}
@@ -23,7 +23,7 @@ namespace $ {
 		/** Reference to Node/Land/Lord. */
 		@ $mol_memo.method
 		ref() {
-			return $hyoo_crus_ref( this.land_ref().description + '_' + this.head() )
+			return $hyoo_crus_ref_resolve( this.land_ref(),  $hyoo_crus_ref( '___' + this.head() ) )
 		}
 		
 		toJSON() {
@@ -50,9 +50,13 @@ namespace $ {
 		}
 		
 		/** All ordered alive Units */
-		@ $mol_mem
 		units() {
-			return this.land().sand_ordered( this.head() ).filter( unit => unit.tip() !== 'nil' )
+			return this.units_of( '' )
+		}
+		
+		@ $mol_mem_key
+		units_of( peer: string | null ) {
+			return this.land().sand_ordered({ head: this.head(), peer }).filter( unit => unit.tip() !== 'nil' )
 		}
 		
 		filled() {
@@ -71,21 +75,42 @@ namespace $ {
 			const land = this.land()
 			let last = 0
 			
-			const map = {
-				term: ()=> null,
-				solo: ()=> land.Node( $hyoo_crus_atom_vary ),
-				vals: ()=> land.Node( $hyoo_crus_list_vary ),
-				keys: ()=> land.Node( $hyoo_crus_dict ),
-			}
-			
 			const visit = ( sand: $hyoo_crus_sand )=> {
 				if( sand.time() > last ) last = sand.time()
-				map[ sand.tag() ]()?.Item( sand.self() ).units().forEach( visit )
+				if( sand.tag() === 'term' ) return
+				land.Node( $hyoo_crus_node ).Item( sand.self() ).units().forEach( visit )
 			}
-			for( const sand of this.units() ) visit( sand )
+			this.units().forEach( visit )
 			
-			return last ? new $mol_time_moment( last ) : null
+			return last ? $hyoo_crus_time_moment( last ) : null
 			
+		}
+		
+		/** All author Peers of Node subtree */
+		@ $mol_mem
+		author_peers() {
+			
+			const land = this.land()
+			const peers = new Set< string >()
+			
+			const visit = ( sand: $hyoo_crus_sand )=> {
+				peers.add( sand.peer() )
+				if( sand.tag() === 'term' ) return
+				land.Node( $hyoo_crus_node ).Item( sand.self() ).units_of( null ).forEach( visit )
+			}
+			this.units_of( null ).forEach( visit )
+			
+			return [ ... peers ]
+			
+		}
+		
+		/** All author Lords of Node subtree */
+		@ $mol_mem
+		author_lords() {
+			const land = this.land()
+			return this.author_peers()
+				.map( peer => land.pass.get( peer )?.lord() )
+				.filter( $mol_guard_defined )
 		}
 		
 		;[ $mol_dev_format_head ]() {

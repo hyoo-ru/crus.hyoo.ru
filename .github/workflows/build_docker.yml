@@ -1,0 +1,21 @@
+name: Build Docker image
+
+on:
+  workflow_dispatch:
+  push:
+  pull_request:
+    types:
+      - closed
+  schedule:
+  - cron: "0 7 * * *"
+
+jobs:
+  build_docker:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Build Docker image and push to GHCR
+      uses: GlueOps/github-actions-build-push-containers@v0.4.5
+      with:
+        dockerfile: 'docker/Dockerfile'
+        image_name: 'hyoo-ru/crus'
+        tags: 'latest'

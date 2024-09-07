@@ -41,13 +41,13 @@ namespace $.$$ {
 			dict1.dive( 123, $hyoo_crus_atom_vary, null )!.vary( 666 )
 			land2.faces.tick()
 			dict2.dive( 123, $hyoo_crus_atom_vary, null )!.vary( 777 )
-			land1.apply_unit_trust( land2.delta_unit() )
+			land1.apply_unit( land2.delta_unit() )
 			$mol_assert_equal( dict1.dive( 123, $hyoo_crus_atom_vary )!.vary(), 777 )
 			
 			dict1.dive( 'xxx', $hyoo_crus_list_vary, null )!.items_vary([ 'foo' ])
 			land2.faces.tick()
 			dict2.dive( 'xxx', $hyoo_crus_list_vary, null )!.items_vary([ 'bar' ])
-			land1.apply_unit_trust( land2.delta_unit() )
+			land1.apply_unit( land2.delta_unit() )
 			$mol_assert_equal( dict1.dive( 'xxx', $hyoo_crus_list_vary )!.items_vary(), [ 'bar', 'foo' ] )
 
 		},
@@ -70,7 +70,7 @@ namespace $.$$ {
 				Author: $hyoo_crus_atom_ref_to( ()=> User ),
 			}) {}
 			
-			const land = $.$hyoo_crus_realm.home().land()
+			const land = $.$hyoo_crus_glob.home().land()
 			
 			const user = land.Node( User ).Item('11111111')
 			$mol_assert_equal( user.Title()?.val() ?? null, null )
@@ -80,7 +80,7 @@ namespace $.$$ {
 			user.Title(null)!.val( 'Jin' )
 			$mol_assert_equal( user.Title()!.val() ?? '', 'Jin' )
 			
-			const account = user.Account(null)!.remote_ensure({ '': $hyoo_crus_rank.get })!
+			const account = user.Account(null)!.ensure({ '': $hyoo_crus_rank.get })!
 			$mol_assert_equal( user.Account()?.remote() ?? null, account )
 			$mol_assert_equal( account.User()?.remote() ?? null, null )
 			

@@ -1,14 +1,14 @@
 namespace $ {
-	/** Realm synchronizer */
+	/** Glob synchronizer */
 	export class $hyoo_crus_yard extends $mol_object {
 		
 		/** Whole global graph database which contains Lands */
 		@ $mol_mem
-		realm() {
-			return null! as $hyoo_crus_realm
+		glob() {
+			return null! as $hyoo_crus_glob
 		}
 		
-		lands_neonatals = new $mol_wire_set< $hyoo_crus_ref >()
+		lands_news = new $mol_wire_set< $hyoo_crus_ref >()
 		
 		static masters = [] as string[]
 		
@@ -113,18 +113,28 @@ namespace $ {
 		
 		@ $mol_mem
 		sync() {
-			this.sync_neonatals()
+			this.sync_news()
 			this.sync_port()
 		}
 		
 		@ $mol_mem
-		sync_neonatals() {
-			for( const port of this.ports() ) {
-				for( const land of this.lands_neonatals ) {
-					this.sync_port_land([ port, land ])
+		sync_news() {
+			
+			const glob = this.$.$hyoo_crus_glob
+			const lands = [ ... this.lands_news ].map( ref =>  glob.Land( ref ) )
+			
+			try {
+				for( const port of this.masters() ) {
+					for( const land of lands ) {
+						this.sync_port_land([ port, land.ref() ])
+					}
 				}
+				for( const land of lands ) land.saving()
+				this.lands_news.clear()
+			} catch( error ) {
+				$mol_fail_log( error )
 			}
-			this.lands_neonatals.clear()
+			
 		}
 		
 		@ $mol_mem
@@ -197,7 +207,7 @@ namespace $ {
 			}
 			
 			this.face_port_sync( port, parts.lands )
-			this.$.$hyoo_crus_realm.apply_parts( parts.lands, parts.rocks )
+			this.$.$hyoo_crus_glob.apply_parts( parts.lands, parts.rocks )
 			
 		}
 		
@@ -259,8 +269,19 @@ namespace $ {
 			}).asArray()
 			
 			for( const port of this.ports() ) {
+				
+				if( !this.port_lands_passive( port ).has( land.ref() ) ) continue
 				this.port_lands_passive( port ).delete( land.ref() )
+				
+				this.$.$mol_log3_rise({
+					place: this,
+					message: 'Forget Land',
+					port: $mol_key( port ),
+					land: land.ref(),
+				})
+				
 				port.send_bin( pack )
+				
 			}
 			
 		}
@@ -275,7 +296,7 @@ namespace $ {
 				const faces = this.face_port_land([ port, land ])
 				if( !faces ) return
 				
-				const Land = this.$.$hyoo_crus_realm.Land( land )
+				const Land = this.$.$hyoo_crus_glob.Land( land )
 				Land.saving()
 				
 				const parts = Land.delta_parts( faces )
@@ -301,7 +322,7 @@ namespace $ {
 		@ $mol_mem_key
 		init_port_land( [ port, land ]: [ $mol_rest_port, $hyoo_crus_ref ] ) {
 			// $mol_wire_solid() 
-			const Land = this.$.$hyoo_crus_realm.Land( land )
+			const Land = this.$.$hyoo_crus_glob.Land( land )
 			Land.loading()
 			this.$.$mol_log3_rise({
 				place: this,

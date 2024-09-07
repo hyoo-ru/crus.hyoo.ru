@@ -82,7 +82,7 @@ namespace $.$$ {
 		}
 		
 		ref_label( ref: $hyoo_crus_vary_type ) {
-			if( typeof ref === 'symbol' ) return this.$.$hyoo_crus_realm.Node( ref, $hyoo_crus_flex_thing ).Title()?.val() ?? ref.description!
+			if( typeof ref === 'symbol' ) return this.$.$hyoo_crus_glob.Node( ref, $hyoo_crus_flex_thing ).Title()?.val() ?? ref.description!
 			return $hyoo_crus_vary_cast_str( ref ) ?? ''
 		}
 		
@@ -99,7 +99,7 @@ namespace $.$$ {
 			const Target = this.prop().Target()?.remote()
 			
 			if( rights === 'local' ) {
-				const remote = node.local_ensure()!
+				const remote = node.ensure(null)!
 				if( Target ) remote.Kind(null)?.remote( Target )
 				return null
 			}
@@ -112,7 +112,7 @@ namespace $.$$ {
 			} as Record< string, $hyoo_crus_rank_preset > )[ rights as any ]
 			
 			if( preset ) {
-				const remote = node.remote_ensure( preset )!
+				const remote = node.ensure( preset )!
 				if( Target ) remote.Kind(null)?.remote( Target )
 				return null
 			}

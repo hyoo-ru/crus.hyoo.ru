@@ -21,6 +21,7 @@ namespace $ {
 		}
 		
 		/** Replace sublist by  new one with reconciliation. */
+		@ $mol_action
 		splice(
 			next: readonly $hyoo_crus_vary_type[],
 			from = this.units().length,
@@ -128,7 +129,7 @@ namespace $ {
 		Parse extends $mol_data_value
 	>( parse: Parse ) {
 
-		abstract class Narrow extends $hyoo_crus_list_vary {
+		abstract class $hyoo_crus_list extends $hyoo_crus_list_vary {
 
 			static parse = parse;
 
@@ -137,9 +138,13 @@ namespace $ {
 				return this.items_vary( next?.map( parse ) ).map( parse )
 			}
 
+			static toString() {
+				return this === $hyoo_crus_list ? '$hyoo_crus_list<' + this.$.$mol_func_name( parse ) + '>' : super.toString()
+			}
+			
 		}
 
-		return Narrow
+		return $hyoo_crus_list
 	}
 
 	/** Mergeable list of atomic non empty binaries */
@@ -179,31 +184,60 @@ namespace $ {
 		Vals extends readonly any[] = readonly $mol_type_result< $mol_type_result< Value > >[]
 	>( Value: Value ) {
 		
-		class Ref extends $hyoo_crus_list_ref_base {
+		class $hyoo_crus_list_ref_to extends $hyoo_crus_list_ref_base {
 			
-			static Value = Value
+			static Value = $mol_memo.func( Value as any ) as Value
 			
-			static toJSON() {
-				return '$hyoo_crus_list_to<' + ( Value as any )() + '>'
+			static toString() {
+				return this === $hyoo_crus_list_ref_to ? '$hyoo_crus_list_ref_to<' + ( Value as any )() + '>' : super.toString()
 			}
 			
 			/** List of referenced Nodes */
 			@ $mol_mem
 			remote_list( next?: Vals ) {
-				const realm = this.$.$hyoo_crus_realm
+				const glob = this.$.$hyoo_crus_glob
 				const Node = ( Value as any )()
 				return this.items_vary( next?.map( item => ( item as $hyoo_crus_node ).ref() ) )
 					.map( $hyoo_crus_vary_cast_ref )
 					.filter( $mol_guard_defined )
-					.map( ref => realm.Node( ref, Node ) ) as readonly any[] as Vals
+					.map( ref => glob.Node( ref, Node ) ) as readonly any[] as Vals
+			}
+			
+			@ $mol_action
+			remote_add( item: Vals[number] ) {
+				this.add( item.ref() )
+			}
+			
+			/** Make new Node and place it at end. */
+			make( config?: null | $hyoo_crus_rank_preset | $hyoo_crus_land ): Vals[number] {
+				
+				if( config === null ) {
+					
+					const self = this.land().self_make()
+					const node = this.land().Node( ( Value as any )() ).Item( self )
+					this.splice([ node.ref() ])
+					return node
+					
+				} else if( config instanceof $hyoo_crus_land ) {
+					
+					const land = config.area_make()
+					this.splice([ land.ref() ])
+					return land.Node( ( Value as any )() ).Item('')
+					
+				} else if( config ) {
+					
+					const land = this.$.$hyoo_crus_glob.land_grab( config )
+					this.splice([ land.ref() ])
+					return land.Node( ( Value as any )() ).Item('')
+					
+				}
+				
 			}
 			
 			/** Add new Node which placed in new Land */
-			@ $mol_action
-			remote_make( preset: $hyoo_crus_rank_preset ): Vals[number] {
-				const land = this.$.$hyoo_crus_realm.land_grab( preset )
-				this.splice([ land.ref() ])
-				return land.Node( ( Value as any )() ).Item('')
+			/** @deprecated use make( ... ) */
+			remote_make( config: $hyoo_crus_rank_preset ): Vals[number] {
+				return this.make( config )
 			}
 			
 			/** Add new Node which placed in same Land */
@@ -217,7 +251,7 @@ namespace $ {
 			
 		}
 		
-		return Ref
+		return $hyoo_crus_list_ref_to
 	}
 	
 }

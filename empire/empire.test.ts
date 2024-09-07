@@ -9,7 +9,7 @@ namespace $.$$ {
 			const Target = $hyoo_crus_dict.with({})
 			const Targets = $hyoo_crus_empire( $hyoo_crus_list_ref_to( ()=> Target ) )
 			
-			const land = $.$hyoo_crus_realm.home().land()
+			const land = $.$hyoo_crus_glob.home().land()
 			const targets = land.Node( Targets ).Item('')
 			
 			const start = new $mol_time_moment( '2024-01-01T12' )

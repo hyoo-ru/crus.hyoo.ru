@@ -1,0 +1,74 @@
+$hyoo_crus_app_stat_page $mol_page
+	title \📊 Stat
+	head /
+		<= Title
+		<= Uptime $mol_view sub / <= uptime \00:00
+		<= Tools
+	body_content /
+		<= Charts $mol_list rows /
+			<= Cpu $mol_chart
+				graphs /
+					<= Cpu_user $mol_plot_line
+						title \CPU User (%)
+						series_y <= cpu_user /
+					<= Cpu_system $mol_plot_line
+						title \CPU System (%)
+						series_y <= cpu_system /
+					<= Cpu_ruler_sec $mol_plot_ruler_vert
+					<= Cpu_mark $mol_plot_mark_cross
+						labels <= times /
+						graphs /
+							<= Cpu_user
+							<= Cpu_system
+			<= Mem $mol_chart
+				graphs /
+					<= Mem_free $mol_plot_line
+						title \Mem Free (%)
+						series_y <= mem_free /
+					<= Mem_used $mol_plot_line
+						title \Mem Used (%)
+						series_y <= mem_used /
+					<= Mem_ruler $mol_plot_ruler_vert
+					<= Mem_mark $mol_plot_mark_cross
+						labels <= times /
+						graphs /
+							<= Mem_used
+							<= Mem_free
+			<= Fs_usage $mol_chart
+				graphs /
+					<= Fs_free $mol_plot_line
+						title \FS Free (%)
+						series_y <= fs_free /
+					<= Fs_usage_ruler $mol_plot_ruler_vert
+					<= Fs_usage_mark $mol_plot_mark_cross
+						labels <= times /
+						graphs /
+							<= Fs_free
+			<= Fs_acting $mol_chart
+				graphs /
+					<= Fs_reads $mol_plot_line
+						title \FS Reads / sec
+						series_y <= fs_reads /
+					<= Fs_writes $mol_plot_line
+						title \FS Writes / sec
+						series_y <= fs_writes /
+					<= Fs_acting_ruler $mol_plot_ruler_vert
+					<= Fs_acting_mark $mol_plot_mark_cross
+						labels <= times /
+						graphs /
+							<= Fs_reads
+							<= Fs_writes
+			<= Ports $mol_chart
+				graphs /
+					<= Port_slaves $mol_plot_line
+						title \Slave Ports
+						series_y <= port_slaves /
+					<= Port_masters $mol_plot_line
+						title \Master Ports
+						series_y <= port_masters /
+					<= Port_ruler_pct $mol_plot_ruler_vert
+					<= Port_mark $mol_plot_mark_cross
+						labels <= times /
+						graphs /
+							<= Port_slaves
+							<= Port_masters

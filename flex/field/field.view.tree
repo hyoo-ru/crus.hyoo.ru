@@ -34,7 +34,7 @@ $hyoo_crus_flex_field $mol_view
 			dictionary *
 				local @ \💼 Local
 				orgy @ \✍ All write
-				lobby @ \📢 All add
+				lobby @ \📢 All join
 				public @ \🔎 All read
 				private @ \🔐 Private
 	Str $mol_textarea

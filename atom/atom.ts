@@ -6,14 +6,18 @@ namespace $ {
 
 		static tag = $hyoo_crus_sand_tag[ $hyoo_crus_sand_tag.solo ] as keyof typeof $hyoo_crus_sand_tag;
 		
-		pick_unit() {
-			return this.units().at(0)
+		pick_unit( peer: string | null ) {
+			return this.units_of( peer ).at(0)
 		}
 		
-		@ $mol_mem
 		vary( next?: $hyoo_crus_vary_type ): $hyoo_crus_vary_type {
+			return this.vary_of( '', next )
+		}
+		
+		@ $mol_mem_key
+		vary_of( peer: string | null, next?: $hyoo_crus_vary_type ): $hyoo_crus_vary_type {
 			
-			let unit_prev = this.pick_unit()
+			let unit_prev = this.pick_unit( peer )
 			let prev = unit_prev ? this.land().sand_decode( unit_prev ) : null
 			
 			if( next === undefined ) return prev
@@ -26,7 +30,7 @@ namespace $ {
 				next
 			)
 			
-			return this.vary()
+			return this.vary_of( peer )
 		}
 		
 		;[ $mol_dev_format_head ]() {
@@ -52,12 +56,20 @@ namespace $ {
 		const Options extends readonly $hyoo_crus_vary_type[]
 	>( options: Options ) {
 
-		abstract class Narrow extends $hyoo_crus_atom_enum_base {
+		abstract class $hyoo_crus_atom_enum extends $hyoo_crus_atom_enum_base {
 
 			static options = options;
 
-			@ $mol_mem
+			static toString() {
+				return this === $hyoo_crus_atom_enum ? '$hyoo_crus_atom_enum<' + options.map( $hyoo_crus_vary_cast_str ) + '>' : super.toString()
+			}
+			
 			val( next?: Options[number] ): Options[number] | null {
+				return this.val_of( '', next )
+			}
+			
+			@ $mol_mem_key
+			val_of( peer: string | null, next?: Options[number] ): Options[number] | null {
 				
 				validate: if( next !== undefined ) {
 					for( const option of options ) {
@@ -66,7 +78,7 @@ namespace $ {
 					$mol_fail( new Error( `Wrong value (${ $hyoo_crus_vary_cast_str( next ) })` ) )
 				}
 				
-				const val = this.vary( next )
+				const val = this.vary_of( peer, next )
 				
 				for( const option of options ) {
 					if( $mol_compare_deep( option, val ) ) return val
@@ -77,7 +89,7 @@ namespace $ {
 
 		}
 
-		return Narrow
+		return $hyoo_crus_atom_enum
 	}
 
 	/** Atomic narrowed register factory */
@@ -85,16 +97,20 @@ namespace $ {
 		Parse extends $mol_data_value
 	>( parse: Parse ) {
 
-		abstract class Narrow extends $hyoo_crus_atom_vary {
+		abstract class $hyoo_crus_atom extends $hyoo_crus_atom_vary {
 
 			static parse = parse;
 
 			/** Get/Set value of Node field */
 			val( next?: ReturnType< Parse > ): ReturnType< Parse > | null {
+				return this.val_of( '', next )
+			}
+			
+			val_of( peer: string | null, next?: ReturnType< Parse > ): ReturnType< Parse > | null {
 				
 				if( next !== undefined ) parse( next )
 				
-				const res = this.vary( next )
+				const res = this.vary_of( peer, next )
 				try {
 					return parse( res )
 				} catch {
@@ -103,9 +119,13 @@ namespace $ {
 				
 			}
 
+			static toString() {
+				return this === $hyoo_crus_atom ? '$hyoo_crus_atom<' + this.$.$mol_func_name( parse ) + '>' : super.toString()
+			}
+			
 		}
 
-		return Narrow
+		return $hyoo_crus_atom
 	}
 	
 	/** Atomic non empty binary register */
@@ -146,60 +166,86 @@ namespace $ {
 	/** Atomic reference to some Node type register */
 	export function $hyoo_crus_atom_ref_to< const Value extends any >( Value: Value ) {
 
-		class Ref extends $hyoo_crus_atom_ref_base {
+		class $hyoo_crus_atom_ref_to extends $hyoo_crus_atom_ref_base {
 
-			Value = Value;
+			Value = $mol_memo.func( Value as any ) as Value;
 
 			static toString() {
-				return '$hyoo_crus_atom_ref_to<' + ( Value as any )() + '>'
+				return this === $hyoo_crus_atom_ref_to ? '$hyoo_crus_atom_ref_to<' + ( Value as any )() + '>' : super.toString()
 			}
 			
-			@ $mol_mem
-			yoke( preset?: $hyoo_crus_rank_preset ) {
-				
-				const realm = this.$.$hyoo_crus_realm
-				const Ref = this.cast( $hyoo_crus_atom_ref )
-				const ref = Ref.val()
-				if( ref ) return realm.Land( ref )
-				if( preset === undefined ) return null
-				
-				const land = realm.land_grab( preset )
-				Ref.val( land.ref() )
-				
-				return land
-			}
-			
-			/** Reference atom Node */
-			@ $mol_mem
+			/** Target Node */
 			remote(
+				next?: null | $mol_type_result< $mol_type_result< this['Value'] > >
+			): null | $mol_type_result< $mol_type_result< this['Value'] > > {
+				return this.remote_of( '', next )
+			}
+			
+			@ $mol_mem_key
+			remote_of(
+				peer: string | null,
 				next?: null | $mol_type_result< $mol_type_result< this['Value'] > >
 			): null | $mol_type_result< $mol_type_result< this['Value'] > > {
 				
 				let ref: $hyoo_crus_ref | null = ( next as $hyoo_crus_node )?.ref() ?? next
-				ref = $hyoo_crus_vary_cast_ref( this.vary( ref ) )
+				ref = $hyoo_crus_vary_cast_ref( this.vary_of( peer, ref ) )
 				if( !ref ) return null
 				
-				return this.$.$hyoo_crus_realm.Node( ref, ( Value as any )() )
+				return this.$.$hyoo_crus_glob.Node( ref, ( Value as any )() )
 				
 			}
 			
-			/** Reference atom Node. Create if not exists */
-			// @ $mol_mem
+			/** Target Node. Creates if not exists. */
+			ensure( config?: null | $hyoo_crus_rank_preset | $hyoo_crus_land ) {
+				return this.ensure_of( '', config )
+			}
+			
+			ensure_of( peer: string | null, config?: null | $hyoo_crus_rank_preset | $hyoo_crus_land ) {
+				
+				if( !this.val_of( peer ) ) {
+					if( config === null ) this.ensure_here( peer )
+					else if( config instanceof $hyoo_crus_land ) this.ensure_area( peer, config )
+					else if( config ) this.ensure_lord( peer, config )
+					else return null
+				}
+				
+				return this.remote_of( peer )
+			}
+			
+			@ $mol_action
+			ensure_here( peer: string | null ) {
+				const idea = $mol_hash_string( this.ref().description! )
+				const head = this.land().self_make( idea )
+				const node = this.land().Node( ( Value as any )() ).Item( head )
+				this.remote_of( peer, node )
+			}
+			
+			@ $mol_action
+			ensure_area( peer: string | null, land: $hyoo_crus_land ) {
+				const idea = $mol_hash_string( this.ref().description! )
+				const area = land.area_make( idea )
+				this.val_of( peer, area.ref() )
+			}
+			
+			@ $mol_action
+			ensure_lord( peer: string | null, preset: $hyoo_crus_rank_preset ) {
+				const land = this.$.$hyoo_crus_glob.land_grab( preset )
+				this.val_of( peer, land.ref() )
+			}
+			
+			/** @deprecated Use ensure( preset ) */
 			remote_ensure( preset?: $hyoo_crus_rank_preset ) {
-				this.yoke( preset )
-				return this.remote()
+				return this.ensure( preset )
 			}
 
-			@ $mol_mem
+			/** @deprecated Use ensure( null ) */
 			local_ensure() {
-				if( this.remote() ) return this.remote()!
-				const node = this.land().Node( ( Value as any )() ).Item( this.land().self_make() )
-				return this.remote( node )
+				return this.ensure( null )
 			}
 
 		}
 
-		return Ref
+		return $hyoo_crus_atom_ref_to
 	}
 	
 }

@@ -14,7 +14,7 @@ namespace $ {
 		}
 		
 		key(): string {
-			return this.id6( 2 )
+			return `pass:${ this.id6( 2 ) }`
 		}
 		
 		auth( next?: ArrayLike< number > ) {

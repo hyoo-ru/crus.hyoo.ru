@@ -47,9 +47,9 @@ namespace $ {
 							offset += 4
 							
 							land = $hyoo_crus_ref_decode(
-								new Uint8Array( buf.buffer, buf.byteOffset + offset, 12 )
+								new Uint8Array( buf.buffer, buf.byteOffset + offset, 18 )
 							)
-							offset += 12
+							offset += 20
 							
 							lands[ land ] = { faces, units: [] }
 							
@@ -147,8 +147,8 @@ namespace $ {
 					
 					if( !land ) $mol_fail( new Error( 'Land is undefined' ) )
 					
-					const unit = new $hyoo_crus_sand(
-						buf.slice( offset, offset += $hyoo_crus_unit.size ).buffer
+					const unit = $hyoo_crus_sand.from(
+						buf.slice( offset, offset += $hyoo_crus_unit.size )
 					)
 					
 					lands[ land ].units ||= []
@@ -168,7 +168,7 @@ namespace $ {
 			let size = 0
 			
 			for( const land of Reflect.ownKeys( lands ) as $hyoo_crus_ref[] ) {
-				size += 16
+				size += 24
 				// if( lands[ land ].faces.size ) {
 					size += Math.ceil( lands[ land ].faces.size * 12 / 8 + .5 ) * 8
 				// }
@@ -192,7 +192,7 @@ namespace $ {
 				
 				pack.uint32( offset, $hyoo_crus_part.land | ( faces.total << 8 ) )
 				buff.set( $hyoo_crus_ref_encode( land ), offset + 4 )
-				offset += 16
+				offset += 24
 				
 				// if( !faces.size ) continue
 				

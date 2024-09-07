@@ -3,7 +3,6 @@ namespace $ {
 		
 		@ $mol_mem_key
 		static rock( hash: Uint8Array, next?: Uint8Array ): Uint8Array | null {
-			$mol_wire_solid()
 			
 			const prev = $mol_mem_cached( ()=> this.rock( hash ) )
 			if( prev ) return prev
@@ -50,7 +49,7 @@ namespace $ {
 			const db = await this.db()
 			const { Land } = db.read( 'Land' )
 			const land_ref = land.description
-			const land_key = IDBKeyRange.bound( [ land_ref ], [ land_ref + '\uFFFF' ] )
+			const land_key = IDBKeyRange.bound( [ land_ref, '' ], [ land_ref, '\uFFFF' ] )
 			const res = await Land.select( land_key )
 			
 			const units = res.map( bin => new $hyoo_crus_unit( bin ).narrow() )
@@ -79,6 +78,8 @@ namespace $ {
 			}>( '$hyoo_crus',
 				mig => mig.store_make( 'Rock' ),
 				mig => mig.store_make( 'Land' ),
+				mig => mig.stores.Land.clear(),
+				mig => mig.stores.Land.clear(),
 				mig => mig.stores.Land.clear(),
 			)
 			
