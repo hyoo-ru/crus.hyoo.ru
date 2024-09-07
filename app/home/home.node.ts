@@ -31,7 +31,9 @@ namespace $ {
 			const ips = [] as string[]
 			for( const group of Object.values( $node.os.networkInterfaces() ) ) {
 				for( const face of group! ) {
-					ips.push( face.address )
+					if( face.family == "IPv4" ) {
+						ips.push( face.address )
+					}
 				}
 			}
 			return ips
