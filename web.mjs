@@ -26312,8 +26312,8 @@ var $;
 				"time": "⏰time", 
 				"dur": "🕓dur", 
 				"range": "🎬range", 
-				"json": "📚json", 
-				"jsan": "🧾jsan", 
+				"json": "📑json", 
+				"jsan": "📚jsan", 
 				"xml": "🛐xml", 
 				"tree": "🌴tree"
 			});
