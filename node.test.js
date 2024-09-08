@@ -6267,8 +6267,8 @@ var $;
                     return null;
                 }
             },
-            time: vary => vary,
-            dur: vary => null,
+            time: vary => null,
+            dur: vary => vary,
             range: vary => null,
             json: vary => new $mol_time_duration(vary),
             jsan: vary => null,
