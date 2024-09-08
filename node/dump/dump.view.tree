@@ -47,8 +47,8 @@ $hyoo_crus_node_dump $mol_expander
 							time \⏰time
 							dur \🕓dur
 							range \🎬range
-							json \📚json
-							jsan \🧾jsan
+							json \📑json
+							jsan \📚jsan
 							xml \🛐xml
 							tree \🌴tree
 					<= Unit_tag* $mol_select
