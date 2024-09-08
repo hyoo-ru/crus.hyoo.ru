@@ -3666,7 +3666,7 @@ declare namespace $ {
         port_lands_active(port: $mol_rest_port): $mol_wire_set<symbol & {
             $hyoo_crus_ref: symbol;
         }>;
-        port_lands_passive(port: $mol_rest_port): $mol_wire_set<symbol & {
+        port_lands_passive(port: $mol_rest_port): Set<symbol & {
             $hyoo_crus_ref: symbol;
         }>;
         port_income(port: $mol_rest_port, msg: Uint8Array): void;
