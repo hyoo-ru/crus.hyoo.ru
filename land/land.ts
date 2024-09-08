@@ -313,6 +313,8 @@ namespace $ {
 			
 			if( !delta.length ) return []
 			
+			if( !skip_check ) this.loading()
+			
 			const doubt = delta.filter( unit => !$hyoo_crus_unit_trusted.has( unit ) )
 			if( doubt.length ) {
 				const errors = $mol_wire_sync( this ).units_verify( doubt )
@@ -349,6 +351,7 @@ namespace $ {
 				if( await valid ) return ''
 				
 				sens = unit.sens().slice()
+				for( let i = 0; i < mixin_lord.length; ++i ) sens[i+2] ^= mixin_lord[i]
 				valid = key_public.verify( sens, unit.sign() )
 				if( await valid ) return ''
 				

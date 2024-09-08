@@ -1,4 +1,7 @@
 namespace $ {
+	
+	const Passives = new WeakMap< $mol_rest_port, Set< $hyoo_crus_ref > >()
+	
 	/** Glob synchronizer */
 	export class $hyoo_crus_yard extends $mol_object {
 		
@@ -169,9 +172,10 @@ namespace $ {
 			return new $mol_wire_set< $hyoo_crus_ref >()
 		}
 		
-		@ $mol_mem_key
 		port_lands_passive( port: $mol_rest_port ) {
-			return new $mol_wire_set< $hyoo_crus_ref >()
+			let passives = Passives.get( port )
+			if( !passives ) Passives.set( port, passives = new Set )
+			return passives
 		}
 		
 		@ $mol_action
