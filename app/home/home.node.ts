@@ -21,12 +21,6 @@ namespace $ {
 		}
 		
 		@ $mol_mem
-		tick() {
-			this.$.$mol_state_time.now( 1000 )
-			this.uptime( BigInt( Math.floor( process.uptime() ) ) )
-		}
-		
-		@ $mol_mem
 		ips() {
 			const ips = [] as string[]
 			for( const group of Object.values( $node.os.networkInterfaces() ) ) {

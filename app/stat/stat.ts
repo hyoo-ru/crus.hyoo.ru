@@ -2,6 +2,8 @@ namespace $ {
 	
 	export class $hyoo_crus_app_stat extends $hyoo_crus_dict.with({
 		
+		Uptime: $hyoo_crus_atom_dur,
+		
 		/** User time in secs */
 		Cpu_user: $hyoo_crus_stat_ranges,
 		/** System time in secs */
@@ -28,9 +30,16 @@ namespace $ {
 	}) {
 		
 		@ $mol_mem
+		uptime( next?: $mol_time_duration ) {
+			return this.Uptime( next )?.val( next ) ?? new $mol_time_duration( '' )
+		}
+		
+		@ $mol_mem
 		tick() {
 			
 			this.$.$mol_state_time.now( 1000 )
+			
+			this.uptime( new $mol_time_duration({ second: Math.floor( process.uptime() ) }).normal )
 			
 			const res = process.resourceUsage()
 			this.Cpu_user( null )!.tick_integral( res.userCPUTime / 1e6 ) // s

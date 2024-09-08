@@ -2,18 +2,14 @@ namespace $.$$ {
 	export class $hyoo_crus_app_stat_page extends $.$hyoo_crus_app_stat_page {
 		
 		@ $mol_mem
-		home() {
+		stat() {
 			const ref = $hyoo_crus_ref( this.$.$mol_fetch.text( this.$.$hyoo_crus_glob.yard().master_current() + 'ref' ) )
-			return this.$.$hyoo_crus_glob.Node( ref, $hyoo_crus_app_home )
+			return this.$.$hyoo_crus_glob.Node( ref, $hyoo_crus_app_home ).stat()
 		}
 		
 		@ $mol_mem
 		uptime() {
-			return new $mol_time_duration({ second: Number( this.home().uptime() ) }).normal.toString( '#Y #D hh:mm:ss' )
-		}
-		
-		stat() {
-			return this.home().stat()
+			return this.stat()?.uptime().toString( '#Y #D hh:mm:ss' ) ?? ''
 		}
 		
 		@ $mol_mem
