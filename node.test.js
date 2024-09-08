@@ -9342,9 +9342,9 @@ var $;
             const ips = [];
             for (const group of Object.values($node.os.networkInterfaces())) {
                 for (const face of group) {
-                    if (face.internal == false && face.family == "IPv4") {
-                        ips.push(face.address);
-                    }
+                    if (face.internal)
+                        continue;
+                    ips.push(face.address);
                 }
             }
             return ips;
