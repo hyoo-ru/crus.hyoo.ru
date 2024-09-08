@@ -3823,6 +3823,7 @@ declare namespace $ {
 
 declare namespace $ {
     const $hyoo_crus_app_stat_base: Omit<typeof $hyoo_crus_dict, "prototype"> & (new (...args: any[]) => $mol_type_override<$hyoo_crus_dict, {
+        readonly Uptime: (auto?: any) => $hyoo_crus_atom_dur | null;
         readonly Cpu_user: (auto?: any) => $hyoo_crus_stat_ranges | null;
         readonly Cpu_system: (auto?: any) => $hyoo_crus_stat_ranges | null;
         readonly Mem_used: (auto?: any) => $hyoo_crus_stat_ranges | null;
@@ -3836,6 +3837,7 @@ declare namespace $ {
         schema: {
             [x: string]: typeof $hyoo_crus_node;
         } & {
+            readonly Uptime: typeof $hyoo_crus_atom_dur;
             readonly Cpu_user: typeof $hyoo_crus_stat_ranges;
             readonly Cpu_system: typeof $hyoo_crus_stat_ranges;
             readonly Mem_used: typeof $hyoo_crus_stat_ranges;
@@ -3848,6 +3850,7 @@ declare namespace $ {
         };
     };
     export class $hyoo_crus_app_stat extends $hyoo_crus_app_stat_base {
+        uptime(next?: $mol_time_duration): $mol_time_duration;
         tick(): void;
     }
     export {};
@@ -3897,7 +3900,6 @@ declare namespace $ {
             [Symbol.toStringTag]: string;
             [$mol_ambient_ref]: $;
         } | null;
-        readonly Uptime: (auto?: any) => $hyoo_crus_atom_int | null;
         readonly Stat: (auto?: any) => {
             Value: () => typeof $hyoo_crus_app_stat;
             remote(next?: $hyoo_crus_app_stat | null | undefined): $hyoo_crus_app_stat | null;
@@ -4015,7 +4017,6 @@ declare namespace $ {
                 destructor(): void;
                 [Symbol.toPrimitive](): any;
             };
-            readonly Uptime: typeof $hyoo_crus_atom_int;
             readonly Stat: {
                 new (): {
                     Value: () => typeof $hyoo_crus_app_stat;
@@ -4083,7 +4084,6 @@ declare namespace $ {
         };
     };
     export class $hyoo_crus_app_home extends $hyoo_crus_app_home_base {
-        uptime(next?: bigint): bigint;
         stat(auto?: any): $hyoo_crus_app_stat | null;
         init(): void;
         tick(): void;
@@ -4094,7 +4094,6 @@ declare namespace $ {
 declare namespace $ {
     class $hyoo_crus_app_home_node extends $hyoo_crus_app_home {
         init(): void;
-        tick(): void;
         ips(): string[];
         lookup(ip: string): Promise<string[]>;
         aliases(): Map<string, string[]>;

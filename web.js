@@ -27347,6 +27347,7 @@ var $;
 var $;
 (function ($) {
     class $hyoo_crus_app_stat extends $hyoo_crus_dict.with({
+        Uptime: $hyoo_crus_atom_dur,
         Cpu_user: $hyoo_crus_stat_ranges,
         Cpu_system: $hyoo_crus_stat_ranges,
         Mem_used: $hyoo_crus_stat_ranges,
@@ -27357,8 +27358,12 @@ var $;
         Port_slaves: $hyoo_crus_stat_ranges,
         Port_masters: $hyoo_crus_stat_ranges,
     }) {
+        uptime(next) {
+            return this.Uptime(next)?.val(next) ?? new $mol_time_duration('');
+        }
         tick() {
             this.$.$mol_state_time.now(1000);
+            this.uptime(new $mol_time_duration({ second: Math.floor(process.uptime()) }).normal);
             const res = process.resourceUsage();
             this.Cpu_user(null).tick_integral(res.userCPUTime / 1e6);
             this.Cpu_system(null).tick_integral(res.systemCPUTime / 1e6);
@@ -27375,6 +27380,9 @@ var $;
             this.Port_slaves(null).tick_instant(slaves);
         }
     }
+    __decorate([
+        $mol_mem
+    ], $hyoo_crus_app_stat.prototype, "uptime", null);
     __decorate([
         $mol_mem
     ], $hyoo_crus_app_stat.prototype, "tick", null);
@@ -29945,12 +29953,8 @@ var $;
 (function ($) {
     class $hyoo_crus_app_home extends $hyoo_crus_home.with({
         Aliases: $hyoo_crus_dict_to($hyoo_crus_list_str),
-        Uptime: $hyoo_crus_atom_int,
         Stat: $hyoo_crus_atom_ref_to(() => $hyoo_crus_app_stat),
     }) {
-        uptime(next) {
-            return this.Uptime(next)?.val(next) ?? 0n;
-        }
         stat(auto) {
             return this.Stat(auto)?.ensure(this.land()) ?? null;
         }
@@ -29970,15 +29974,12 @@ var $;
     var $$;
     (function ($$) {
         class $hyoo_crus_app_stat_page extends $.$hyoo_crus_app_stat_page {
-            home() {
+            stat() {
                 const ref = $hyoo_crus_ref(this.$.$mol_fetch.text(this.$.$hyoo_crus_glob.yard().master_current() + 'ref'));
-                return this.$.$hyoo_crus_glob.Node(ref, $hyoo_crus_app_home);
+                return this.$.$hyoo_crus_glob.Node(ref, $hyoo_crus_app_home).stat();
             }
             uptime() {
-                return new $mol_time_duration({ second: Number(this.home().uptime()) }).normal.toString('#Y #D hh:mm:ss');
-            }
-            stat() {
-                return this.home().stat();
+                return this.stat()?.uptime().toString('#Y #D hh:mm:ss') ?? '';
             }
             cpu_user() {
                 return this.stat()?.Cpu_user()?.series().map(v => 100 * v) ?? [];
@@ -30022,7 +30023,7 @@ var $;
         }
         __decorate([
             $mol_mem
-        ], $hyoo_crus_app_stat_page.prototype, "home", null);
+        ], $hyoo_crus_app_stat_page.prototype, "stat", null);
         __decorate([
             $mol_mem
         ], $hyoo_crus_app_stat_page.prototype, "uptime", null);
