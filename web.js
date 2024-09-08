@@ -27364,7 +27364,7 @@ var $;
         Port_masters: $hyoo_crus_stat_ranges,
     }) {
         uptime(next) {
-            return this.Uptime(next)?.val(next) ?? new $mol_time_duration('');
+            return this.Uptime(next)?.val(next) ?? new $mol_time_duration(0);
         }
         tick() {
             this.$.$mol_state_time.now(1000);
