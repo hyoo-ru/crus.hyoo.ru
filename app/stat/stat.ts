@@ -31,7 +31,7 @@ namespace $ {
 		
 		@ $mol_mem
 		uptime( next?: $mol_time_duration ) {
-			return this.Uptime( next )?.val( next ) ?? new $mol_time_duration( '' )
+			return this.Uptime( next )?.val( next ) ?? new $mol_time_duration( 0 )
 		}
 		
 		@ $mol_mem
