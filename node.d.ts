@@ -996,11 +996,11 @@ declare namespace $ {
     class $mol_wire_set<Value> extends Set<Value> {
         pub: $mol_wire_pub;
         has(value: Value): boolean;
-        entries(): IterableIterator<[Value, Value]>;
-        keys(): IterableIterator<Value>;
-        values(): IterableIterator<Value>;
+        entries(): SetIterator<[Value, Value]>;
+        keys(): SetIterator<Value>;
+        values(): SetIterator<Value>;
         forEach(task: (value: Value, value2: Value, set: Set<Value>) => void, self?: any): void;
-        [Symbol.iterator](): IterableIterator<Value>;
+        [Symbol.iterator](): SetIterator<Value>;
         get size(): number;
         add(value: Value): this;
         delete(value: Value): boolean;
@@ -1324,11 +1324,11 @@ declare namespace $ {
         pub: $mol_wire_pub;
         has(key: Key): boolean;
         get(key: Key): Value | undefined;
-        entries(): IterableIterator<[Key, Value]>;
-        keys(): IterableIterator<Key>;
-        values(): IterableIterator<Value>;
+        entries(): MapIterator<[Key, Value]>;
+        keys(): MapIterator<Key>;
+        values(): MapIterator<Value>;
         forEach(task: (value: Value, key: Key, dict: Map<Key, Value>) => void, self?: any): void;
-        [Symbol.iterator](): IterableIterator<[Key, Value]>;
+        [Symbol.iterator](): MapIterator<[Key, Value]>;
         get size(): number;
         set(key: Key, value: Value): this;
         delete(key: Key): boolean;
