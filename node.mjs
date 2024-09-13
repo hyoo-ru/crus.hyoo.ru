@@ -6553,7 +6553,13 @@ var $;
             const id = $mol_base64_ae_encode(new Uint8Array(new BigUint64Array([BigInt(idea)]).buffer, 0, 6));
             const ref = $hyoo_crus_ref($hyoo_crus_ref_lord(this.ref()).description + '_' + id);
             const area = this.$.$hyoo_crus_glob.Land(ref);
-            const errors = area.apply_unit(this.unit_sort([...this.pass.values(), ...this.gift.values()])).filter(Boolean);
+            const units = this.unit_sort([...this.pass.values(), ...this.gift.values()]).map(unit => {
+                const clone = $hyoo_crus_unit.from(unit).narrow();
+                clone._land = area;
+                $hyoo_crus_unit_trusted.add(clone);
+                return clone;
+            });
+            const errors = area.apply_unit(units).filter(Boolean);
             for (const error of errors)
                 this.$.$mol_log3_warn({
                     place: `${this}.area_make()`,
@@ -6767,17 +6773,16 @@ var $;
                     key_public = auth.get(unit.peer()) ?? null;
                 if (!key_public)
                     return `No public key for peer (${unit.peer()})`;
+                const sign = unit.sign();
                 let sens = unit.sens().slice();
                 for (let i = 0; i < mixin.length; ++i)
                     sens[i + 2] ^= mixin[i];
-                let valid = key_public.verify(sens, unit.sign());
-                if (await valid)
+                if (await key_public.verify(sens, sign))
                     return '';
                 sens = unit.sens().slice();
                 for (let i = 0; i < mixin_lord.length; ++i)
                     sens[i + 2] ^= mixin_lord[i];
-                valid = key_public.verify(sens, unit.sign());
-                if (await valid)
+                if (await key_public.verify(sens, sign))
                     return '';
                 return `Wrong unit sign`;
             }));
@@ -9098,17 +9103,13 @@ var $;
         }
         static apply_parts(lands, rocks) {
             for (const land of Reflect.ownKeys(lands)) {
-                const errors = this.Land(land).apply_unit(lands[land].units);
-                for (const [i, error] of errors.entries()) {
-                    if (!error)
-                        continue;
+                const errors = this.Land(land).apply_unit(lands[land].units).filter(Boolean);
+                for (const error of errors)
                     this.$.$mol_log3_warn({
-                        place: `${this}.apply_parts()`,
+                        place: `${this}.apply_pack()`,
                         message: error,
-                        unit: lands[land].units[i].dump(),
                         hint: 'Send it to developer',
                     });
-                }
             }
             for (const [hash, rock] of rocks) {
                 if (!rock)
