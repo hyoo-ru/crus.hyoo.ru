@@ -63,7 +63,13 @@ namespace $ {
 			const ref = $hyoo_crus_ref( $hyoo_crus_ref_lord( this.ref() ).description! + '_' + id )
 			
 			const area = this.$.$hyoo_crus_glob.Land( ref )
-			const errors = area.apply_unit( this.unit_sort([ ... this.pass.values(), ... this.gift.values() ]) ).filter( Boolean )
+			const units = this.unit_sort([ ... this.pass.values(), ... this.gift.values() ]).map( unit => {
+				const clone = $hyoo_crus_unit.from( unit ).narrow()
+				clone._land = area
+				$hyoo_crus_unit_trusted.add( clone )
+				return clone
+			} )
+			const errors = area.apply_unit( units ).filter( Boolean )
 			
 			for( const error of errors ) this.$.$mol_log3_warn({
 				place: `${this}.area_make()`,
@@ -345,15 +351,15 @@ namespace $ {
 				if( !key_public ) key_public = auth.get( unit.peer() ) ?? null
 				if( !key_public ) return `No public key for peer (${unit.peer()})`
 				
+				const sign = unit.sign()
+				
 				let sens = unit.sens().slice()
 				for( let i = 0; i < mixin.length; ++i ) sens[i+2] ^= mixin[i]
-				let valid = key_public.verify( sens, unit.sign() )
-				if( await valid ) return ''
+				if( await key_public.verify( sens, sign ) ) return ''
 				
 				sens = unit.sens().slice()
 				for( let i = 0; i < mixin_lord.length; ++i ) sens[i+2] ^= mixin_lord[i]
-				valid = key_public.verify( sens, unit.sign() )
-				if( await valid ) return ''
+				if( await key_public.verify( sens, sign ) ) return ''
 				
 				return `Wrong unit sign`
 	
