@@ -1603,9 +1603,9 @@ declare namespace $ {
             rocks: [Uint8Array, Uint8Array | null][];
         } | null;
         faces_pack(): $hyoo_crus_pack;
-        apply_unit(delta: readonly $hyoo_crus_unit[], skip_check?: boolean): string[];
+        apply_unit(delta: readonly $hyoo_crus_unit[], skip_check?: 'skip_check'): string[];
         units_verify(units: readonly $hyoo_crus_unit[]): Promise<string[]>;
-        apply_unit_trust(delta: readonly $hyoo_crus_unit[], skip_check?: boolean): ("" | "Need add rank to join" | "Need law rank to change rank" | "Need mod rank to post data")[];
+        apply_unit_trust(delta: readonly $hyoo_crus_unit[], skip_check?: 'skip_check'): ("" | "Need add rank to join" | "Need law rank to change rank" | "Need mod rank to post data")[];
         apply_land(land: $hyoo_crus_land): string[];
         recheck(): void;
         fork(preset?: {

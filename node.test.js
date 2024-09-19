@@ -6734,7 +6734,7 @@ var $;
             });
             return pack;
         }
-        apply_unit(delta, skip_check = false) {
+        apply_unit(delta, skip_check) {
             if (!delta.length)
                 return [];
             if (!skip_check)
@@ -6778,7 +6778,7 @@ var $;
                 return `Wrong unit sign`;
             }));
         }
-        apply_unit_trust(delta, skip_check = false) {
+        apply_unit_trust(delta, skip_check) {
             return delta.map(unit => {
                 let need_recheck = false;
                 const res = unit.choose({
@@ -7100,7 +7100,7 @@ var $;
                 message: 'Load Unit',
                 units: units.length,
             });
-            const errors = this.apply_unit(units, !!'skip_check').filter(Boolean);
+            const errors = this.apply_unit(units, 'skip_check').filter(Boolean);
             if (errors.length)
                 this.$.$mol_log3_fail({
                     place: this,
