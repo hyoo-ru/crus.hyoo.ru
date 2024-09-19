@@ -315,7 +315,7 @@ namespace $ {
 		
 		/** Applies Delta to current state with verify. */
 		@ $mol_action
-		apply_unit( delta: readonly $hyoo_crus_unit[], skip_check = false ) {
+		apply_unit( delta: readonly $hyoo_crus_unit[], skip_check?: 'skip_check' ) {
 			
 			if( !delta.length ) return []
 			
@@ -369,7 +369,7 @@ namespace $ {
 		
 		/** Applies Delta to current state without verifying. */
 		@ $mol_action
-		apply_unit_trust( delta: readonly $hyoo_crus_unit[], skip_check = false ) {
+		apply_unit_trust( delta: readonly $hyoo_crus_unit[], skip_check?: 'skip_check' ) {
 			return delta.map( unit => {
 				
 				let need_recheck = false
@@ -844,7 +844,7 @@ namespace $ {
 				units: units.length,
 			})
 			
-			const errors = this.apply_unit( units, !!'skip_check' ).filter( Boolean )
+			const errors = this.apply_unit( units, 'skip_check' ).filter( Boolean )
 			
 			if( errors.length ) this.$.$mol_log3_fail({
 				place: this,
