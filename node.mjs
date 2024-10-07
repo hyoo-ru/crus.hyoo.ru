@@ -6551,6 +6551,7 @@ var $;
             return this.Data($hyoo_crus_home);
         }
         area_make(idea = Math.floor(Math.random() * 2 ** 48)) {
+            this.loading();
             const id = $mol_base64_ae_encode(new Uint8Array(new BigUint64Array([BigInt(idea)]).buffer, 0, 6));
             const ref = $hyoo_crus_ref($hyoo_crus_ref_lord(this.ref()).description + '_' + id);
             const area = this.$.$hyoo_crus_glob.Land(ref);
@@ -6560,7 +6561,7 @@ var $;
                 $hyoo_crus_unit_trusted.add(clone);
                 return clone;
             });
-            const errors = area.apply_unit(units).filter(Boolean);
+            const errors = area.apply_unit(units, 'skip_check').filter(Boolean);
             for (const error of errors)
                 this.$.$mol_log3_warn({
                     place: `${this}.area_make()`,
