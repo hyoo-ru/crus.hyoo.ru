@@ -72,6 +72,8 @@
     "$node",
     "$node_modules",
     "$mol_exec",
+    "$mol_run",
+    "$mol_error_mix",
     "$mol_env",
     "$mol_fail_log",
     "$mol_fail_catch",
