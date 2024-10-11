@@ -3307,13 +3307,13 @@ var $;
     (function ($hyoo_crus_rank) {
         $hyoo_crus_rank[$hyoo_crus_rank["nil"] = 0] = "nil";
         $hyoo_crus_rank[$hyoo_crus_rank["get"] = 1] = "get";
-        $hyoo_crus_rank[$hyoo_crus_rank["add"] = 3] = "add";
+        $hyoo_crus_rank[$hyoo_crus_rank["reg"] = 3] = "reg";
         $hyoo_crus_rank[$hyoo_crus_rank["mod"] = 7] = "mod";
         $hyoo_crus_rank[$hyoo_crus_rank["law"] = 15] = "law";
     })($hyoo_crus_rank = $.$hyoo_crus_rank || ($.$hyoo_crus_rank = {}));
     $.$hyoo_crus_rank_private = {};
     $.$hyoo_crus_rank_public = { '': $hyoo_crus_rank.get };
-    $.$hyoo_crus_rank_lobby = { '': $hyoo_crus_rank.add };
+    $.$hyoo_crus_rank_lobby = { '': $hyoo_crus_rank.mod };
     $.$hyoo_crus_rank_orgy = { '': $hyoo_crus_rank.mod };
 })($ || ($ = {}));
 
@@ -5112,7 +5112,7 @@ var $;
         self_make(idea = Math.floor(Math.random() * 2 ** 48)) {
             const auth = this.auth();
             const rank = this.lord_rank(auth.lord());
-            if (rank === $hyoo_crus_rank.add)
+            if (rank === $hyoo_crus_rank.reg)
                 return auth.peer();
             if (rank === $hyoo_crus_rank.nil)
                 $mol_fail(new Error('Rank too low (nil)'));
@@ -5377,7 +5377,7 @@ var $;
                     pass: next => {
                         const lord = next.lord();
                         const peer = next.peer();
-                        if (!skip_check && this.lord_rank(lord) < $hyoo_crus_rank.add)
+                        if (!skip_check && this.lord_rank(lord) < $hyoo_crus_rank.reg)
                             return 'Need add rank to join';
                         const exists = this.pass.get(peer);
                         if (exists)
@@ -5433,7 +5433,7 @@ var $;
         }
         recheck() {
             for (const [peer, pass] of this.pass) {
-                if (this.lord_rank(pass.lord()) >= $hyoo_crus_rank.add)
+                if (this.lord_rank(pass.lord()) >= $hyoo_crus_rank.reg)
                     continue;
                 this.pass.delete(peer);
                 this.faces.total--;
@@ -6196,6 +6196,9 @@ var $;
 var $;
 (function ($) {
     class $hyoo_crus_mine extends $mol_object {
+        static unit_updates = 0;
+        static unit_appends = 0;
+        static rock_writes = 0;
         static hash(blob) {
             return $mol_crypto_hash(blob);
         }
@@ -6703,7 +6706,7 @@ var $;
             return this.units().length > 0;
         }
         can_change(lord = this.land().auth().lord()) {
-            return this.land().lord_rank(lord) >= $hyoo_crus_rank.add;
+            return this.land().lord_rank(lord) >= $hyoo_crus_rank.reg;
         }
         last_change() {
             const land = this.land();
@@ -12351,6 +12354,17 @@ var $;
 "use strict";
 
 ;
+	($.$mol_icon_script_text) = class $mol_icon_script_text extends ($.$mol_icon) {
+		path(){
+			return "M17.8,20C17.4,21.2 16.3,22 15,22H5C3.3,22 2,20.7 2,19V18H5L14.2,18C14.6,19.2 15.7,20 17,20H17.8M19,2C20.7,2 22,3.3 22,5V6H20V5C20,4.4 19.6,4 19,4C18.4,4 18,4.4 18,5V18H17C16.4,18 16,17.6 16,17V16H5V5C5,3.3 6.3,2 8,2H19M8,6V8H15V6H8M8,10V12H14V10H8Z";
+		}
+	};
+
+
+;
+"use strict";
+
+;
 	($.$mol_link_source) = class $mol_link_source extends ($.$mol_link) {
 		Icon(){
 			const obj = new this.$.$mol_icon_script_text();
@@ -12825,6 +12839,17 @@ var $;
 	($.$mol_icon_sync) = class $mol_icon_sync extends ($.$mol_icon) {
 		path(){
 			return "M12,18A6,6 0 0,1 6,12C6,11 6.25,10.03 6.7,9.2L5.24,7.74C4.46,8.97 4,10.43 4,12A8,8 0 0,0 12,20V23L16,19L12,15M12,4V1L8,5L12,9V6A6,6 0 0,1 18,12C18,13 17.75,13.97 17.3,14.8L18.76,16.26C19.54,15.03 20,13.57 20,12A8,8 0 0,0 12,4Z";
+		}
+	};
+
+
+;
+"use strict";
+
+;
+	($.$mol_icon_sync_off) = class $mol_icon_sync_off extends ($.$mol_icon) {
+		path(){
+			return "M20,4H14V10L16.24,7.76C17.32,8.85 18,10.34 18,12C18,13 17.75,13.94 17.32,14.77L18.78,16.23C19.55,15 20,13.56 20,12C20,9.79 19.09,7.8 17.64,6.36L20,4M2.86,5.41L5.22,7.77C4.45,9 4,10.44 4,12C4,14.21 4.91,16.2 6.36,17.64L4,20H10V14L7.76,16.24C6.68,15.15 6,13.66 6,12C6,11 6.25,10.06 6.68,9.23L14.76,17.31C14.5,17.44 14.26,17.56 14,17.65V19.74C14.79,19.53 15.54,19.2 16.22,18.78L18.58,21.14L19.85,19.87L4.14,4.14L2.86,5.41M10,6.35V4.26C9.2,4.47 8.45,4.8 7.77,5.22L9.23,6.68C9.5,6.56 9.73,6.44 10,6.35Z";
 		}
 	};
 
@@ -15259,9 +15284,6 @@ var $;
 
 ;
 "use strict";
-
-;
-"use strict";
 var $;
 (function ($) {
     var $$;
@@ -15285,6 +15307,9 @@ var $;
         $$.$hyoo_meta_link = $hyoo_meta_link;
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));
+
+;
+"use strict";
 
 ;
 "use strict";
@@ -15348,9 +15373,6 @@ var $;
 
 ;
 "use strict";
-
-;
-"use strict";
 var $;
 (function ($) {
     var $$;
@@ -15372,6 +15394,9 @@ var $;
         $$.$hyoo_page_side_news = $hyoo_page_side_news;
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));
+
+;
+"use strict";
 
 ;
 "use strict";
@@ -17088,9 +17113,6 @@ var $;
 
 ;
 "use strict";
-
-;
-"use strict";
 var $;
 (function ($) {
     var $$;
@@ -17134,6 +17156,9 @@ var $;
         $$.$hyoo_page_side_menu = $hyoo_page_side_menu;
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));
+
+;
+"use strict";
 
 ;
 	($.$mol_bar) = class $mol_bar extends ($.$mol_view) {};
@@ -20980,9 +21005,6 @@ var $;
 
 ;
 "use strict";
-
-;
-"use strict";
 var $;
 (function ($) {
     var $$;
@@ -21070,6 +21092,9 @@ var $;
         $$.$hyoo_page_side_view = $hyoo_page_side_view;
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));
+
+;
+"use strict";
 
 ;
 "use strict";
@@ -22202,9 +22227,6 @@ var $;
 
 ;
 "use strict";
-
-;
-"use strict";
 var $;
 (function ($) {
     var $$;
@@ -22243,6 +22265,9 @@ var $;
         $$.$hyoo_page_side_edit = $hyoo_page_side_edit;
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));
+
+;
+"use strict";
 
 ;
 "use strict";
@@ -22574,9 +22599,6 @@ var $;
 
 ;
 "use strict";
-
-;
-"use strict";
 var $;
 (function ($) {
     var $$;
@@ -22694,6 +22716,9 @@ var $;
         $$.$hyoo_page_side_info = $hyoo_page_side_info;
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));
+
+;
+"use strict";
 
 ;
 "use strict";
@@ -22904,9 +22929,6 @@ var $;
 
 ;
 "use strict";
-
-;
-"use strict";
 var $;
 (function ($) {
     var $$;
@@ -22971,6 +22993,9 @@ var $;
         $$.$hyoo_meta_rights = $hyoo_meta_rights;
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));
+
+;
+"use strict";
 
 ;
 "use strict";
@@ -23288,9 +23313,6 @@ var $;
 
 ;
 "use strict";
-
-;
-"use strict";
 var $;
 (function ($) {
     var $$;
@@ -23418,6 +23440,9 @@ var $;
 
 ;
 "use strict";
+
+;
+"use strict";
 var $;
 (function ($) {
     var $$;
@@ -23509,9 +23534,6 @@ var $;
 
 ;
 "use strict";
-
-;
-"use strict";
 var $;
 (function ($) {
     var $$;
@@ -23579,6 +23601,9 @@ var $;
 (function ($) {
     $mol_style_attach("hyoo/sync/online/online.view.css", "[hyoo_sync_online_option_row] {\n\tpadding: var(--mol_gap_text);\n}\n\n[hyoo_sync_online_well] {\n\tcolor: var(--mol_theme_current);\n}\n\n[hyoo_sync_online_fail] {\n\tcolor: var(--mol_theme_focus);\n}\n\n[hyoo_sync_online][mol_view_error=\"Promise\"] {\n\tanimation: hyoo_sync_online_wait 1s linear infinite;\n}\n\n@keyframes hyoo_sync_online_wait {\n\tfrom {\n\t\topacity: 1;\n\t}\n\tto {\n\t\topacity: .5;\n\t}\n}\n");
 })($ || ($ = {}));
+
+;
+"use strict";
 
 ;
 	($.$mol_icon_key) = class $mol_icon_key extends ($.$mol_icon) {
@@ -23767,9 +23792,6 @@ var $;
 
 ;
 "use strict";
-
-;
-"use strict";
 var $;
 (function ($) {
     var $$;
@@ -23779,6 +23801,9 @@ var $;
         $$.$hyoo_page_menu = $hyoo_page_menu;
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));
+
+;
+"use strict";
 
 ;
 "use strict";
@@ -24289,9 +24314,6 @@ var $;
 
 ;
 "use strict";
-
-;
-"use strict";
 var $;
 (function ($) {
     var $$;
@@ -24470,6 +24492,9 @@ var $;
         $$.$hyoo_page = $hyoo_page;
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));
+
+;
+"use strict";
 
 ;
 "use strict";
@@ -25948,7 +25973,7 @@ var $;
                 const preset = {
                     private: {},
                     public: { '': $hyoo_crus_rank.get },
-                    lobby: { '': $hyoo_crus_rank.add },
+                    lobby: { '': $hyoo_crus_rank.reg },
                     orgy: { '': $hyoo_crus_rank.mod },
                 }[rights];
                 if (preset) {
@@ -27000,7 +27025,7 @@ var $;
                 const preset = {
                     private: {},
                     public: { '': $hyoo_crus_rank.get },
-                    lobby: { '': $hyoo_crus_rank.add },
+                    lobby: { '': $hyoo_crus_rank.reg },
                     orgy: { '': $hyoo_crus_rank.mod },
                 }[rights];
                 if (preset)
@@ -30939,9 +30964,6 @@ var $;
 
 ;
 "use strict";
-
-;
-"use strict";
 var $;
 (function ($) {
     var $$;
@@ -31443,6 +31465,9 @@ var $;
 
 ;
 var $node = $node || {} ; $node[ "/hyoo/calc/calc_logo.svg" ] = "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPCFET0NUWVBFIHN2ZyBQVUJMSUMgIi0vL1czQy8vRFREIFNWRyAxLjEvL0VOIiAiaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkIj4KPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2ZXJzaW9uPSIxLjEiIHdpZHRoPSIyODBweCIgaGVpZ2h0PSIyODBweCIgdmlld0JveD0iLTAuNSAtMC41IDI4MCAyODAiPjxkZWZzLz48Zz48cmVjdCB4PSIyMjAiIHk9IjIyMCIgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiByeD0iNiIgcnk9IjYiIGZpbGw9IiNmZmYyY2MiIHN0cm9rZT0iI2Q2YjY1NiIgc3Ryb2tlLXdpZHRoPSI0MCIgcG9pbnRlci1ldmVudHM9ImFsbCIvPjxyZWN0IHg9IjIyMCIgeT0iMjAiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgcng9IjYiIHJ5PSI2IiBmaWxsPSIjZmZmMmNjIiBzdHJva2U9IiNkNmI2NTYiIHN0cm9rZS13aWR0aD0iNDAiIHBvaW50ZXItZXZlbnRzPSJhbGwiLz48cmVjdCB4PSIyMCIgeT0iMjAiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgcng9IjYiIHJ5PSI2IiBmaWxsPSIjZmZmMmNjIiBzdHJva2U9IiNkNmI2NTYiIHN0cm9rZS13aWR0aD0iNDAiIHBvaW50ZXItZXZlbnRzPSJhbGwiLz48cmVjdCB4PSIyMCIgeT0iMjIwIiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHJ4PSI2IiByeT0iNiIgZmlsbD0iI2ZmZjJjYyIgc3Ryb2tlPSIjZDZiNjU2IiBzdHJva2Utd2lkdGg9IjQwIiBwb2ludGVyLWV2ZW50cz0iYWxsIi8+PHJlY3QgeD0iMjAiIHk9IjEyMCIgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiByeD0iNiIgcnk9IjYiIGZpbGw9IiNkYWU4ZmMiIHN0cm9rZT0iIzZjOGViZiIgc3Ryb2tlLXdpZHRoPSI0MCIgcG9pbnRlci1ldmVudHM9ImFsbCIvPjxyZWN0IHg9IjEyMCIgeT0iMTIwIiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHJ4PSI2IiByeT0iNiIgZmlsbD0iI2RhZThmYyIgc3Ryb2tlPSIjNmM4ZWJmIiBzdHJva2Utd2lkdGg9IjQwIiBwb2ludGVyLWV2ZW50cz0iYWxsIi8+PHJlY3QgeD0iMjIwIiB5PSIxMjAiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgcng9IjYiIHJ5PSI2IiBmaWxsPSIjZGFlOGZjIiBzdHJva2U9IiM2YzhlYmYiIHN0cm9rZS13aWR0aD0iNDAiIHBvaW50ZXItZXZlbnRzPSJhbGwiLz48cmVjdCB4PSIxMjAiIHk9IjIyMCIgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiByeD0iNiIgcnk9IjYiIGZpbGw9IiNkYWU4ZmMiIHN0cm9rZT0iIzZjOGViZiIgc3Ryb2tlLXdpZHRoPSI0MCIgcG9pbnRlci1ldmVudHM9ImFsbCIvPjxyZWN0IHg9IjEyMCIgeT0iMjAiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgcng9IjYiIHJ5PSI2IiBmaWxsPSIjZGFlOGZjIiBzdHJva2U9IiM2YzhlYmYiIHN0cm9rZS13aWR0aD0iNDAiIHBvaW50ZXItZXZlbnRzPSJhbGwiLz48L2c+PC9zdmc+"
+
+;
+"use strict";
 
 ;
 	($.$hyoo_crus_app) = class $hyoo_crus_app extends ($.$mol_book2_catalog) {

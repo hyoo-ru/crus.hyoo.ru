@@ -513,20 +513,21 @@ declare namespace $ {
     }> {
     }
     const $mol_run_spawn: typeof import("child_process").spawn;
+    const $mol_run_spawn_sync: typeof import("child_process").spawnSync;
     type $mol_run_options = {
         command: readonly string[] | string;
         dir: string;
         timeout?: number;
         env?: Record<string, string | undefined>;
     };
-    function $mol_run_async(this: $, { dir, timeout, command, env }: $mol_run_options): Promise<$mol_run_error_context> & {
+    function $mol_run_async(this: $, { dir, timeout, command, env }: $mol_run_options): import("child_process").SpawnSyncReturns<Buffer> | (Promise<$mol_run_error_context> & {
         destructor: () => void;
-    };
-    function $mol_run(this: $, options: $mol_run_options): $mol_run_error_context;
+    });
+    function $mol_run(this: $, options: $mol_run_options): $mol_run_error_context | import("child_process").SpawnSyncReturns<Buffer>;
 }
 
 declare namespace $ {
-    function $mol_exec(this: $, dir: string, command: string, ...args: readonly string[]): $mol_run_error_context;
+    function $mol_exec(this: $, dir: string, command: string, ...args: readonly string[]): $mol_run_error_context | import("child_process").SpawnSyncReturns<Buffer>;
 }
 
 declare namespace $ {
@@ -1378,7 +1379,7 @@ declare namespace $ {
     enum $hyoo_crus_rank {
         nil = 0,
         get = 1,
-        add = 3,
+        reg = 3,
         mod = 7,
         law = 15
     }
@@ -3618,6 +3619,9 @@ declare namespace $ {
 
 declare namespace $ {
     class $hyoo_crus_mine extends $mol_object {
+        static unit_updates: number;
+        static unit_appends: number;
+        static rock_writes: number;
         static hash(blob: Uint8Array): Uint8Array;
         static rock(hash: Uint8Array, next?: Uint8Array): Uint8Array | null;
         static rock_save(blob: Uint8Array): Uint8Array;
@@ -3635,8 +3639,8 @@ declare namespace $ {
         static rock(hash: Uint8Array, next?: Uint8Array): Uint8Array | null;
         static rock_load(hash: Uint8Array): Promise<Uint8Array | null>;
         static units_save(land: $hyoo_crus_ref, units: readonly $hyoo_crus_unit[]): Promise<void>;
-        static units_load(land: $hyoo_crus_ref): Promise<any>;
-        static db(): Promise<any>;
+        static units_load(land: $hyoo_crus_ref): Promise<($hyoo_crus_pass | $hyoo_crus_gift | $hyoo_crus_sand)[]>;
+        static db(): Promise<import("pg").Pool | null>;
     }
 }
 
