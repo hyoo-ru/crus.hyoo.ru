@@ -7,7 +7,7 @@ namespace $ {
 		/** 1. Read only */
 		get = 0b0001,
 		/** 3. Join only (Pass) */
-		add = 0b0011,
+		reg = 0b0011,
 		/** 7. Data modification (Pass, Sand) */
 		mod = 0b0111,
 		/** 15. Full administration (Pass, Sand, Gift) */
@@ -25,7 +25,7 @@ namespace $ {
 	export let $hyoo_crus_rank_public = { '': $hyoo_crus_rank.get } as $hyoo_crus_rank_preset
 	/** The creator has full rights, but everyone can add one node at a time. Rank: add 
 	 *  @deprecated inline value */
-	export let $hyoo_crus_rank_lobby = { '': $hyoo_crus_rank.add } as $hyoo_crus_rank_preset
+	export let $hyoo_crus_rank_lobby = { '': $hyoo_crus_rank.mod } as $hyoo_crus_rank_preset
 	/** The creator has full rights, but anyone can change the data. Rank: mod 
 	 *  @deprecated inline value */
 	export let $hyoo_crus_rank_orgy = { '': $hyoo_crus_rank.mod } as $hyoo_crus_rank_preset

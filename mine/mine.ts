@@ -1,6 +1,10 @@
 namespace $ {
 	export class $hyoo_crus_mine extends $mol_object {
 		
+		static unit_updates = 0
+		static unit_appends = 0
+		static rock_writes = 0
+		
 		/** SHA-1 hash of BLOB */
 		@ $mol_mem_key
 		static hash( blob: Uint8Array ) {

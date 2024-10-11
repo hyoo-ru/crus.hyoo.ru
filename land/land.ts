@@ -32,7 +32,7 @@ namespace $ {
 			const auth = this.auth()
 			const rank = this.lord_rank( auth.lord() )
 			
-			if( rank === $hyoo_crus_rank.add ) return auth.peer()
+			if( rank === $hyoo_crus_rank.reg ) return auth.peer()
 			if( rank === $hyoo_crus_rank.nil ) $mol_fail( new Error( 'Rank too low (nil)' ) )
 			
 			for( let i = 0; i < 4096; ++i ) {
@@ -382,7 +382,7 @@ namespace $ {
 						const lord = next.lord()
 						const peer = next.peer()
 						
-						if( !skip_check && this.lord_rank( lord ) < $hyoo_crus_rank.add ) return 'Need add rank to join'
+						if( !skip_check && this.lord_rank( lord ) < $hyoo_crus_rank.reg ) return 'Need add rank to join'
 						
 						const exists = this.pass.get( peer )
 						if( exists ) return ''
@@ -452,7 +452,7 @@ namespace $ {
 		recheck() {
 			
 			for( const [ peer, pass ] of this.pass ) {
-				if( this.lord_rank( pass.lord() ) >= $hyoo_crus_rank.add ) continue
+				if( this.lord_rank( pass.lord() ) >= $hyoo_crus_rank.reg ) continue
 				this.pass.delete( peer )
 				this.faces.total --
 			}

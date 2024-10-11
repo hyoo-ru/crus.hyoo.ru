@@ -65,7 +65,7 @@ namespace $ {
 		
 		/** Ability to make changes inside Land */
 		can_change( lord = this.land().auth().lord() ) {
-			return this.land().lord_rank( lord ) >= $hyoo_crus_rank.add
+			return this.land().lord_rank( lord ) >= $hyoo_crus_rank.reg
 		}
 		
 		/** Time of last changed unit inside Node subtree */
