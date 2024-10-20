@@ -1,0 +1,27 @@
+$hyoo_crus_land_rights $mol_list
+	land $hyoo_crus_land
+	rows /
+		<= Add $mol_view sub /
+			<= Add_key $mol_string
+				hint @ \public key
+				value? <=> add_key? \
+				commit? <=> add_commit? null
+			<= Add_commit $mol_button_minor
+				click? <=> add_commit? null
+				sub /
+					<= Add_commit_icon $mol_icon_plus
+		^ gifts /
+			<= Gift*0 $mol_view sub /
+				<= Gift_peer* $mol_view sub /
+					<= Gift_avatar* $mol_avatar
+						id <= peer_id* \
+					<= Gift_name* $mol_paragraph
+						title <= peer_name* \
+				<= Gift_rank* $mol_switch
+					value? <=> gift_rank*? \nil
+					options *
+						nil @ \Deny
+						get @ \Read
+						reg @ \Auth
+						mod @ \Mod
+						law @ \Rule
