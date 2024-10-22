@@ -17,11 +17,11 @@ $hyoo_crus_land_rights $mol_list
 						id <= peer_id* \
 					<= Gift_name* $mol_paragraph
 						title <= peer_name* \
-				<= Gift_rank* $mol_switch
+				<= Gift_rank* $mol_select
 					value? <=> gift_rank*? \nil
-					options *
-						nil @ \Deny
-						get @ \Read
-						reg @ \Auth
-						mod @ \Mod
-						law @ \Rule
+					dictionary *
+						nil @ \🛑 Deny
+						get @ \👀 Read
+						reg @ \📢 Auth
+						mod @ \✍ Post
+						law @ \👑 Rule

@@ -149,10 +149,7 @@ namespace $ {
 			if( next === undefined ) return prev
 			if( next === prev ) return prev
 			
-			const key = this.pass.get( $hyoo_crus_ref_peer( lord ) )?.auth()
-			if( !key ) $mol_fail( new Error( `No pub key for lord (${ lord.description })` ) )
-			
-			this.give( $hyoo_crus_auth.from( key ), next )
+			this.give( lord, next )
 			return next
 			
 		}
@@ -634,7 +631,7 @@ namespace $ {
 		 */
 		@ $mol_action
 		give(
-			dest: $hyoo_crus_auth | null,
+			dest: $hyoo_crus_auth | $hyoo_crus_ref | null,
 			rank: $hyoo_crus_rank,
 		) {
 				
@@ -647,7 +644,7 @@ namespace $ {
 			unit.rank( rank )
 			unit.time( this.faces.tick() )
 			unit.peer( auth.peer() )
-			unit.dest( dest ? dest.lord() : $hyoo_crus_ref('') )
+			unit.dest( dest ? dest instanceof $hyoo_crus_auth ? dest.lord() : dest : $hyoo_crus_ref('') )
 			unit._land = this
 			
 			if( rank >= $hyoo_crus_rank.get ) {
@@ -657,11 +654,21 @@ namespace $ {
 					
 					if( !dest ) $mol_fail( new Error( `Encrypted land can't be shared to everyone` ) )
 					
-					const secret_mutual = this.secret_mutual( dest.toString() )
-					if( secret_mutual ) {
-						const secret_bin = $mol_wire_sync( secret_land ).serial()
-						const bill = $mol_wire_sync( secret_mutual ).encrypt( secret_bin, unit.salt() )
-						unit.bill().set( bill )
+					const prev = this.gift.get( dest instanceof $hyoo_crus_auth ? dest.lord() : dest )
+					if( prev && prev.rank() >= $hyoo_crus_rank.get ) {
+						unit.bill().set( prev.bill() )
+					} else {
+						
+						if( typeof dest === 'symbol' ) {
+							$mol_fail( new Error( `No pub key for lord (${ dest.description! })` ) )
+						}
+					
+						const secret_mutual = this.secret_mutual( dest.toString() )
+						if( secret_mutual ) {
+							const secret_bin = $mol_wire_sync( secret_land ).serial()
+							const bill = $mol_wire_sync( secret_mutual ).encrypt( secret_bin, unit.salt() )
+							unit.bill().set( bill )
+						}
 					}
 					
 				}
