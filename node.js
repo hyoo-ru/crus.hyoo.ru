@@ -5175,7 +5175,7 @@ var $;
                 this.set(peer, time);
         }
         tick() {
-            return this.last_time = Math.max(this.last_time + 1, Math.floor(Date.now() * 65.536));
+            return this.last_time = Math.max(this.last_time + 1, Math.floor(Date.now() / 1000) * 65536);
         }
         last_moment() {
             return $hyoo_crus_time_moment(this.last_time);
