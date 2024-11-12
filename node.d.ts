@@ -1228,8 +1228,10 @@ declare namespace $ {
 
 declare namespace $ {
     function $hyoo_crus_time_moment(time: number): $mol_time_moment;
-    function $hyoo_crus_time_counter(time: number): number;
+    function $hyoo_crus_time_tick(time: number): number;
     function $hyoo_crus_time_dump(time: number): string;
+    function $hyoo_crus_time_now(): number;
+    function $hyoo_crus_time_freeze(task: () => void): void;
 }
 
 declare namespace $ {
@@ -1241,8 +1243,6 @@ declare namespace $ {
         sync(right: $hyoo_crus_face_data): void;
         time_max(peer: string, time: number): void;
         tick(): number;
-        atomics: number;
-        atomic(task: () => void): void;
         last_moment(): $mol_time_moment;
     }
 }
@@ -1612,7 +1612,6 @@ declare namespace $ {
         };
         auth(): $hyoo_crus_auth;
         faces: $hyoo_crus_face_map;
-        atomic(task: () => void): void;
         pass: $mol_wire_dict<string, $hyoo_crus_pass>;
         gift: $mol_wire_dict<symbol & {
             $hyoo_crus_ref: symbol;

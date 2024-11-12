@@ -5138,15 +5138,32 @@ var $;
         return new $mol_time_moment(stamp);
     }
     $.$hyoo_crus_time_moment = $hyoo_crus_time_moment;
-    function $hyoo_crus_time_counter(time) {
+    function $hyoo_crus_time_tick(time) {
         return time % 65536;
     }
-    $.$hyoo_crus_time_counter = $hyoo_crus_time_counter;
+    $.$hyoo_crus_time_tick = $hyoo_crus_time_tick;
     function $hyoo_crus_time_dump(time) {
         return $hyoo_crus_time_moment(time).toString('YYYY-MM-DD hh:mm:ss')
-            + ' @' + $hyoo_crus_time_counter(time);
+            + ' @' + $hyoo_crus_time_tick(time);
     }
     $.$hyoo_crus_time_dump = $hyoo_crus_time_dump;
+    function $hyoo_crus_time_now() {
+        return now || Math.floor(Date.now() / 1000) * 65536;
+    }
+    $.$hyoo_crus_time_now = $hyoo_crus_time_now;
+    let now = 0;
+    function $hyoo_crus_time_freeze(task) {
+        if (now)
+            return task();
+        now = $hyoo_crus_time_now();
+        try {
+            return task();
+        }
+        finally {
+            now = 0;
+        }
+    }
+    $.$hyoo_crus_time_freeze = $hyoo_crus_time_freeze;
 })($ || ($ = {}));
 
 ;
@@ -5175,21 +5192,7 @@ var $;
                 this.set(peer, time);
         }
         tick() {
-            ++this.last_time;
-            if (!this.atomics)
-                this.last_time = Math.max(this.last_time, Math.floor(Date.now() / 1000) * 65536);
-            return this.last_time;
-        }
-        atomics = 0;
-        atomic(task) {
-            this.tick();
-            ++this.atomics;
-            try {
-                task();
-            }
-            finally {
-                --this.atomics;
-            }
+            return this.last_time = Math.max(this.last_time + 1, $hyoo_crus_time_now());
         }
         last_moment() {
             return $hyoo_crus_time_moment(this.last_time);
@@ -6660,9 +6663,6 @@ var $;
             return this.$.$hyoo_crus_auth.current();
         }
         faces = new $hyoo_crus_face_map;
-        atomic(task) {
-            return this.faces.atomic(task);
-        }
         pass = new $mol_wire_dict();
         gift = new $mol_wire_dict();
         sand = new $mol_wire_dict();
