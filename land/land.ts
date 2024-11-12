@@ -19,6 +19,11 @@ namespace $ {
 		}
 		
 		faces = new $hyoo_crus_face_map
+
+		/** Run atomic transaction. */
+		atomic( task: ()=> void ) {
+			return this.faces.atomic( task )
+		}
 		
 		pass = new $mol_wire_dict< string /*peer*/, $hyoo_crus_pass >()
 		gift = new $mol_wire_dict< $hyoo_crus_ref /*lord*/, $hyoo_crus_gift >()

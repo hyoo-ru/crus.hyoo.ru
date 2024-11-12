@@ -40,7 +40,23 @@ namespace $ {
 		/** Generates new time for peer that greater then other seen. */
 		@ $mol_action
 		tick() {
-			return this.last_time = Math.max( this.last_time + 1, Math.floor( Date.now() / 1000 ) * 65536 )
+			++ this.last_time
+			if( !this.atomics ) this.last_time = Math.max( this.last_time, Math.floor( Date.now() / 1000 ) * 65536 )
+			return this.last_time
+		}
+
+		/** Deep of atomic transactions. */
+		atomics = 0
+
+		/** Run atomic transaction. */
+		atomic( task: ()=> void ) {
+			this.tick()
+			++ this.atomics
+			try {
+				task()
+			} finally {
+				-- this.atomics
+			}
 		}
 		
 		/** Last change moment */
