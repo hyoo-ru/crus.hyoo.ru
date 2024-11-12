@@ -40,7 +40,7 @@ namespace $ {
 		/** Generates new time for peer that greater then other seen. */
 		@ $mol_action
 		tick() {
-			return this.last_time = Math.max( this.last_time + 1, Math.floor( Date.now() * 65.536 ) )
+			return this.last_time = Math.max( this.last_time + 1, Math.floor( Date.now() / 1000 ) * 65536 )
 		}
 		
 		/** Last change moment */
