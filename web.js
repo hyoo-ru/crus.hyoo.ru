@@ -3226,7 +3226,21 @@ var $;
                 this.set(peer, time);
         }
         tick() {
-            return this.last_time = Math.max(this.last_time + 1, Math.floor(Date.now() / 1000) * 65536);
+            ++this.last_time;
+            if (!this.atomics)
+                this.last_time = Math.max(this.last_time, Math.floor(Date.now() / 1000) * 65536);
+            return this.last_time;
+        }
+        atomics = 0;
+        atomic(task) {
+            this.tick();
+            ++this.atomics;
+            try {
+                task();
+            }
+            finally {
+                --this.atomics;
+            }
         }
         last_moment() {
             return $hyoo_crus_time_moment(this.last_time);
@@ -5117,6 +5131,9 @@ var $;
             return this.$.$hyoo_crus_auth.current();
         }
         faces = new $hyoo_crus_face_map;
+        atomic(task) {
+            return this.faces.atomic(task);
+        }
         pass = new $mol_wire_dict();
         gift = new $mol_wire_dict();
         sand = new $mol_wire_dict();

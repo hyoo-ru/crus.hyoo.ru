@@ -1241,6 +1241,8 @@ declare namespace $ {
         sync(right: $hyoo_crus_face_data): void;
         time_max(peer: string, time: number): void;
         tick(): number;
+        atomics: number;
+        atomic(task: () => void): void;
         last_moment(): $mol_time_moment;
     }
 }
@@ -1610,6 +1612,7 @@ declare namespace $ {
         };
         auth(): $hyoo_crus_auth;
         faces: $hyoo_crus_face_map;
+        atomic(task: () => void): void;
         pass: $mol_wire_dict<string, $hyoo_crus_pass>;
         gift: $mol_wire_dict<symbol & {
             $hyoo_crus_ref: symbol;
