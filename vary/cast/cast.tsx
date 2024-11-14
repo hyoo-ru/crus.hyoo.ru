@@ -1,11 +1,11 @@
 /** @jsx $mol_jsx */
 namespace $ {
 	
-	export function $hyoo_crus_vary_cast_bin( vary: $hyoo_crus_vary_type ) {
+	export function $hyoo_crus_vary_cast_bin( vary: $hyoo_crus_vary_type ): Uint8Array | null {
 		return vary === null || vary === '' ? null : $hyoo_crus_vary_encode( vary ).bin
 	}
 	
-	export function $hyoo_crus_vary_cast_bool( vary: $hyoo_crus_vary_type ) {
+	export function $hyoo_crus_vary_cast_bool( vary: $hyoo_crus_vary_type ): boolean | null {
 		return $hyoo_crus_vary_switch( vary, {
 			
 			nil:   vary => null,
@@ -13,6 +13,8 @@ namespace $ {
 			bool:  vary => vary,
 			int:   vary => Boolean( vary ),
 			real:  vary => Boolean( vary ),
+			ints:  vary => Boolean( vary.length ),
+			reals: vary => Boolean( vary.length ),
 			ref:   vary => Boolean( vary.description ),
 			
 			str:   vary => Boolean( vary ),
@@ -27,17 +29,19 @@ namespace $ {
 		})
 	}
 
-	export function $hyoo_crus_vary_cast_int( vary: $hyoo_crus_vary_type ) {
+	export function $hyoo_crus_vary_cast_int( vary: $hyoo_crus_vary_type ): bigint | null {
 		return $hyoo_crus_vary_switch( vary, {
 			
-			nil: vary => null,
-			bin: vary => BigInt( vary.length ),
-			bool: vary => BigInt( vary ),
-			int: vary => vary,
-			real: vary => Number.isFinite( vary ) ? BigInt( Math.trunc( vary ) ) : null,
-			ref: vary => null,//$mol_base64_ae_decode( vary.description!.slice( 0, 16 ) ) + ( BigInt( vary.land() ) << 64n ) + ( BigInt( vary.head() ) << 96n ),
+			nil:   vary => null,
+			bin:   vary => BigInt( vary.length ),
+			bool:  vary => BigInt( vary ),
+			int:   vary => vary,
+			real:  vary => Number.isFinite( vary ) ? BigInt( Math.trunc( vary ) ) : null,
+			ints:  vary => BigInt( vary.length ),
+			reals: vary => BigInt( vary.length ),
+			ref:   vary => null,//$mol_base64_ae_decode( vary.description!.slice( 0, 16 ) ) + ( BigInt( vary.land() ) << 64n ) + ( BigInt( vary.head() ) << 96n ),
 			
-			str: vary => {
+			str:   vary => {
 				try {
 					return vary ? BigInt( vary ) : null
 				} catch {
@@ -45,15 +49,15 @@ namespace $ {
 				}
 			},
 			
-			time: vary => BigInt( vary.valueOf() ),
-			dur: vary => BigInt( vary.valueOf() ),
+			time:  vary => BigInt( vary.valueOf() ),
+			dur:   vary => BigInt( vary.valueOf() ),
 			range: vary => BigInt( vary.duration.valueOf() ),
 			
-			json: vary => BigInt( Reflect.ownKeys( vary ).length ),
-			jsan: vary => BigInt( vary.length ),
-			dom: vary => BigInt( vary.attributes.length + vary.childNodes.length ),
+			json:  vary => BigInt( Reflect.ownKeys( vary ).length ),
+			jsan:  vary => BigInt( vary.length ),
+			dom:   vary => BigInt( vary.attributes.length + vary.childNodes.length ),
 			
-			tree: vary => {
+			tree:  vary => {
 				try {
 					return BigInt( vary.value )
 				} catch {
@@ -65,7 +69,7 @@ namespace $ {
 		})
 	}
 
-	export function $hyoo_crus_vary_cast_real( vary: $hyoo_crus_vary_type ) {
+	export function $hyoo_crus_vary_cast_real( vary: $hyoo_crus_vary_type ): number | null {
 		return $hyoo_crus_vary_switch( vary, {
 			
 			nil:   vary => null,
@@ -73,6 +77,8 @@ namespace $ {
 			bool:  vary => Number( vary ),
 			int:   vary => Number( vary ),
 			real:  vary => vary,
+			ints:  vary => vary.length,
+			reals: vary => vary.length,
 			ref:   vary => null,
 			
 			str:   vary => vary ? Number( vary ) : null,
@@ -87,7 +93,61 @@ namespace $ {
 		})
 	}
 
-	export function $hyoo_crus_vary_cast_ref( vary: $hyoo_crus_vary_type ) {
+	export function $hyoo_crus_vary_cast_ints( vary: $hyoo_crus_vary_type ): BigInt64Array | null {
+		return $hyoo_crus_vary_switch( vary, {
+			
+			nil:   vary => null,
+			bin:   vary => new BigInt64Array( [ ... vary ].map( BigInt ) ),
+			bool:  vary => vary ? new BigInt64Array([ 1n ]) : null,
+			int:   vary => new BigInt64Array([ vary ]),
+			real:  vary => Number.isFinite( vary ) ? new BigInt64Array([ BigInt( vary ) ]) : null,
+			ints:  vary => vary,
+			reals: vary => new BigInt64Array( [ ... vary ].map( BigInt ) ),
+			ref:   vary => null,
+			
+			str:   vary => {
+				if( !vary ) return null
+				return new BigInt64Array( vary.split( ',' ).map( v => BigInt(v) || 0n ) )
+			},
+			time:  vary => new BigInt64Array([ BigInt( vary.valueOf() ) ]),
+			dur:   vary => new BigInt64Array([ BigInt( vary.valueOf() ) ]),
+			range: vary => null,
+			json:  vary => null,
+			jsan:  vary => null,
+			dom:   vary => null,
+			tree:  vary => null,
+			
+		})
+	}
+
+	export function $hyoo_crus_vary_cast_reals( vary: $hyoo_crus_vary_type ): Float64Array | null {
+		return $hyoo_crus_vary_switch( vary, {
+			
+			nil:   vary => null,
+			bin:   vary => new Float64Array( [ ... vary ] ),
+			bool:  vary => vary ? new Float64Array([ 1 ]) : null,
+			int:   vary => new Float64Array([ Number( vary ) ]),
+			real:  vary => ( vary && Number.isFinite( vary ) ) ? new Float64Array([ vary ]) : null,
+			ints:  vary => new Float64Array( [ ... vary ].map( Number ) ),
+			reals: vary => vary,
+			ref:   vary => null,
+			
+			str:   vary => {
+				if( !vary ) return null
+				return new Float64Array( vary.split( ',' ).map( v => Number(v) || 0 ) )
+			},
+			time:  vary => new Float64Array([ vary.valueOf() ]),
+			dur:   vary => new Float64Array([ vary.valueOf() ]),
+			range: vary => null,
+			json:  vary => null,
+			jsan:  vary => null,
+			dom:   vary => null,
+			tree:  vary => null,
+			
+		})
+	}
+
+	export function $hyoo_crus_vary_cast_ref( vary: $hyoo_crus_vary_type ): $hyoo_crus_ref | null {
 		return $hyoo_crus_vary_switch( vary, {
 			
 			nil:   vary => null,
@@ -95,6 +155,8 @@ namespace $ {
 			bool:  vary => null,
 			int:   vary => null,
 			real:  vary => null,
+			ints:  vary => null,
+			reals: vary => null,
 			ref:   vary => vary,
 			
 			str:   vary => {
@@ -121,7 +183,7 @@ namespace $ {
 		})
 	}
 
-	export function $hyoo_crus_vary_cast_str( vary: $hyoo_crus_vary_type ) {
+	export function $hyoo_crus_vary_cast_str( vary: $hyoo_crus_vary_type ): string | null {
 		return $hyoo_crus_vary_switch( vary, {
 			
 			nil:   vary => null,
@@ -129,6 +191,8 @@ namespace $ {
 			bool:  vary => String( vary ),
 			int:   vary => String( vary ),
 			real:  vary => String( vary ),
+			ints:  vary => vary.join(','),
+			reals: vary => vary.join(','),
 			ref:   vary => vary.description!,
 			
 			str:   vary => vary,
@@ -143,7 +207,7 @@ namespace $ {
 		})
 	}
 
-	export function $hyoo_crus_vary_cast_time( vary: $hyoo_crus_vary_type ) {
+	export function $hyoo_crus_vary_cast_time( vary: $hyoo_crus_vary_type ): $mol_time_moment | null {
 		return $hyoo_crus_vary_switch( vary, {
 			
 			nil:   vary => null,
@@ -157,6 +221,8 @@ namespace $ {
 					return null
 				}
 			},
+			ints:  vary => null,
+			reals: vary => null,
 			ref:   vary => null,
 			
 			str:   vary => {
@@ -183,7 +249,7 @@ namespace $ {
 		})
 	}
 
-	export function $hyoo_crus_vary_cast_dur( vary: $hyoo_crus_vary_type ) {
+	export function $hyoo_crus_vary_cast_dur( vary: $hyoo_crus_vary_type ): $mol_time_duration | null {
 		return $hyoo_crus_vary_switch( vary, {
 			
 			nil:   vary => null,
@@ -197,6 +263,8 @@ namespace $ {
 					return null
 				}
 			},
+			ints:  vary => null,
+			reals: vary => null,
 			ref:   vary => null,
 			
 			str:   vary => {
@@ -217,7 +285,7 @@ namespace $ {
 		})
 	}
 
-	export function $hyoo_crus_vary_cast_range( vary: $hyoo_crus_vary_type ) {
+	export function $hyoo_crus_vary_cast_range( vary: $hyoo_crus_vary_type ): $mol_time_interval | null {
 		return $hyoo_crus_vary_switch( vary, {
 			
 			nil:   vary => null,
@@ -225,6 +293,8 @@ namespace $ {
 			bool:  vary => null,
 			int:   vary => null,
 			real:  vary => null,
+			ints:  vary => null,
+			reals: vary => null,
 			ref:   vary => null,
 			
 			str:   vary => {
@@ -251,7 +321,7 @@ namespace $ {
 		})
 	}
 
-	export function $hyoo_crus_vary_cast_json( vary: $hyoo_crus_vary_type ) {
+	export function $hyoo_crus_vary_cast_json( vary: $hyoo_crus_vary_type ): object | null {
 		return $hyoo_crus_vary_switch( vary, {
 			
 			nil:   vary => null,
@@ -259,6 +329,8 @@ namespace $ {
 			bool:  vary => null,
 			int:   vary => null,
 			real:  vary => null,
+			ints:  vary => null,
+			reals: vary => null,
 			ref:   vary => null,
 			
 			str:   vary => {
@@ -282,7 +354,7 @@ namespace $ {
 		})
 	}
 
-	export function $hyoo_crus_vary_cast_jsan( vary: $hyoo_crus_vary_type ) {
+	export function $hyoo_crus_vary_cast_jsan( vary: $hyoo_crus_vary_type ): any[] | null {
 		return $hyoo_crus_vary_switch( vary, {
 			
 			nil:   vary => null,
@@ -290,6 +362,8 @@ namespace $ {
 			bool:  vary => [ vary ],
 			int:   vary => [ vary.toString() ],
 			real:  vary => Number.isFinite( vary ) ? [ vary ] : null,
+			ints:  vary => [ ... vary ].map( v => Number( v ) ),
+			reals: vary => [ ... vary ],
 			ref:   vary => [ vary.description! ],
 			
 			str:   vary => {
@@ -311,7 +385,7 @@ namespace $ {
 		})
 	}
 
-	export function $hyoo_crus_vary_cast_dom( vary: $hyoo_crus_vary_type ) {
+	export function $hyoo_crus_vary_cast_dom( vary: $hyoo_crus_vary_type ): Element | null {
 		return $hyoo_crus_vary_switch( vary, {
 			
 			nil:   vary => null,
@@ -319,6 +393,8 @@ namespace $ {
 			bool:  vary => <body>{ vary }</body>,
 			int:   vary => <body>{ vary }</body>,
 			real:  vary => <body>{ vary }</body>,
+			ints:  vary => <body>{ vary.join(',') }</body>,
+			reals: vary => <body>{ vary.join(',') }</body>,
 			ref:   vary => <body>{ vary.description }</body>,
 			
 			str:   vary => {
@@ -340,7 +416,7 @@ namespace $ {
 		})
 	}
 
-	export function $hyoo_crus_vary_cast_tree( vary: $hyoo_crus_vary_type ) {
+	export function $hyoo_crus_vary_cast_tree( vary: $hyoo_crus_vary_type ): $mol_tree2 | null {
 		return $hyoo_crus_vary_switch( vary, {
 			
 			nil:   vary => null,
@@ -348,6 +424,8 @@ namespace $ {
 			bool:  vary => $mol_tree2.struct( vary.toString() ),
 			int:   vary => $mol_tree2.struct( vary.toString() ),
 			real:  vary => $mol_tree2.struct( vary.toString() ),
+			ints:  vary => $mol_tree2.list( [ ... vary ].map( v => $mol_tree2.struct( v.toString() ) ) ),
+			reals: vary => $mol_tree2.list( [ ... vary ].map( v => $mol_tree2.struct( v.toString() ) ) ),
 			ref:   vary => $mol_tree2.struct( vary.description! ),
 			
 			str:   vary => {
@@ -376,6 +454,8 @@ namespace $ {
 		bool: $hyoo_crus_vary_cast_bool,
 		int: $hyoo_crus_vary_cast_int,
 		real: $hyoo_crus_vary_cast_real,
+		ints: $hyoo_crus_vary_cast_ints,
+		reals: $hyoo_crus_vary_cast_reals,
 		ref: $hyoo_crus_vary_cast_ref,
 		
 		str: $hyoo_crus_vary_cast_str,
