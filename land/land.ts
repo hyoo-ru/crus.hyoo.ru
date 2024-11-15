@@ -948,9 +948,20 @@ namespace $ {
 		
 		@ $mol_mem_key
 		sand_decode( sand: $hyoo_crus_sand ): $hyoo_crus_vary_type {
-			let vary = this.sand_decode_raw( sand )
-			if( typeof vary === 'symbol' ) vary = $hyoo_crus_ref_resolve( this.ref(), vary )
-			return vary
+			
+			try {
+
+				let vary = this.sand_decode_raw( sand )
+				if( typeof vary === 'symbol' ) vary = $hyoo_crus_ref_resolve( this.ref(), vary )
+				return vary
+
+			} catch( error ) {
+				
+				this.$.$mol_fail_log( error )
+				return null
+
+			}
+
 		}
 		
 		@ $mol_mem_key
