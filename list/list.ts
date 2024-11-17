@@ -209,6 +209,7 @@ namespace $ {
 			}
 			
 			/** Make new Node and place it at end. */
+			@ $mol_action
 			make( config?: null | $hyoo_crus_rank_preset | $hyoo_crus_land ): Vals[number] {
 				
 				if( config === null ) {
