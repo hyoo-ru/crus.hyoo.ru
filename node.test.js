@@ -2622,7 +2622,7 @@ var $;
             return chunks.join(' ');
         }
         static go(next) {
-            this.href(this.make_link(next));
+            this.href(this.link(next));
         }
         constructor(prefix = '') {
             super();
@@ -5732,8 +5732,8 @@ var $;
         filled() {
             return this.units().length > 0;
         }
-        can_change(lord = this.land().auth().lord()) {
-            return this.land().lord_rank(lord) >= $hyoo_crus_rank.reg;
+        can_change() {
+            return this.land().lord_rank(this.land().auth().lord()) >= $hyoo_crus_rank.reg;
         }
         last_change() {
             const land = this.land();
@@ -6040,6 +6040,8 @@ var $;
         bool: Boolean,
         int: BigInt,
         real: Number,
+        ints: BigInt64Array,
+        reals: Float64Array,
         ref: Symbol,
         str: String,
         time: $mol_time_moment,
@@ -6056,8 +6058,10 @@ var $;
         $hyoo_crus_vary_tip[$hyoo_crus_vary_tip["bin"] = 2] = "bin";
         $hyoo_crus_vary_tip[$hyoo_crus_vary_tip["bool"] = 3] = "bool";
         $hyoo_crus_vary_tip[$hyoo_crus_vary_tip["int"] = 4] = "int";
-        $hyoo_crus_vary_tip[$hyoo_crus_vary_tip["real"] = 8] = "real";
-        $hyoo_crus_vary_tip[$hyoo_crus_vary_tip["ref"] = 12] = "ref";
+        $hyoo_crus_vary_tip[$hyoo_crus_vary_tip["real"] = 5] = "real";
+        $hyoo_crus_vary_tip[$hyoo_crus_vary_tip["ints"] = 6] = "ints";
+        $hyoo_crus_vary_tip[$hyoo_crus_vary_tip["reals"] = 7] = "reals";
+        $hyoo_crus_vary_tip[$hyoo_crus_vary_tip["ref"] = 8] = "ref";
         $hyoo_crus_vary_tip[$hyoo_crus_vary_tip["str"] = 16] = "str";
         $hyoo_crus_vary_tip[$hyoo_crus_vary_tip["time"] = 17] = "time";
         $hyoo_crus_vary_tip[$hyoo_crus_vary_tip["dur"] = 18] = "dur";
@@ -6081,6 +6085,8 @@ var $;
             case Object.prototype: return ways.json(vary);
             case Array.prototype: return ways.jsan(vary);
             case Uint8Array.prototype: return ways.bin(vary);
+            case BigInt64Array.prototype: return ways.ints(vary);
+            case Float64Array.prototype: return ways.reals(vary);
             case $mol_time_moment.prototype: return ways.time(vary);
             case $mol_time_duration.prototype: return ways.dur(vary);
             case $mol_time_interval.prototype: return ways.range(vary);
@@ -6097,7 +6103,9 @@ var $;
             bin: vary => ({ tip: 'bin', bin: vary }),
             bool: vary => ({ tip: 'bool', bin: new Uint8Array([Number(vary)]) }),
             int: vary => ({ tip: 'int', bin: new Uint8Array(new BigInt64Array([vary]).buffer) }),
+            ints: vary => ({ tip: 'ints', bin: new Uint8Array(vary) }),
             real: vary => ({ tip: 'real', bin: new Uint8Array(new Float64Array([vary]).buffer) }),
+            reals: vary => ({ tip: 'reals', bin: new Uint8Array(vary) }),
             ref: vary => ({ tip: 'ref', bin: $hyoo_crus_ref_encode(vary) }),
             str: vary => ({ tip: 'str', bin: $mol_charset_encode(vary) }),
             time: vary => ({ tip: 'time', bin: $mol_charset_encode(String(vary)) }),
@@ -6116,7 +6124,9 @@ var $;
             case 'bin': return bin;
             case 'bool': return Boolean(bin[0]);
             case 'int': return new BigInt64Array(bin.buffer, bin.byteOffset, bin.byteLength / 8)[0];
+            case 'ints': return new BigInt64Array(bin.buffer, bin.byteOffset, bin.byteLength / 8);
             case 'real': return new Float64Array(bin.buffer, bin.byteOffset, bin.byteLength / 8)[0];
+            case 'reals': return new Float64Array(bin.buffer, bin.byteOffset, bin.byteLength / 8);
             case 'ref': return $hyoo_crus_ref_decode(bin);
             case 'str': return $mol_charset_decode(bin);
             case 'time': return new $mol_time_moment($mol_charset_decode(bin));
@@ -6228,6 +6238,8 @@ var $;
             bool: vary => vary,
             int: vary => Boolean(vary),
             real: vary => Boolean(vary),
+            ints: vary => Boolean(vary.length),
+            reals: vary => Boolean(vary.length),
             ref: vary => Boolean(vary.description),
             str: vary => Boolean(vary),
             time: vary => Boolean(vary.valueOf()),
@@ -6247,6 +6259,8 @@ var $;
             bool: vary => BigInt(vary),
             int: vary => vary,
             real: vary => Number.isFinite(vary) ? BigInt(Math.trunc(vary)) : null,
+            ints: vary => BigInt(vary.length),
+            reals: vary => BigInt(vary.length),
             ref: vary => null,
             str: vary => {
                 try {
@@ -6280,6 +6294,8 @@ var $;
             bool: vary => Number(vary),
             int: vary => Number(vary),
             real: vary => vary,
+            ints: vary => vary.length,
+            reals: vary => vary.length,
             ref: vary => null,
             str: vary => vary ? Number(vary) : null,
             time: vary => vary.valueOf(),
@@ -6292,6 +6308,56 @@ var $;
         });
     }
     $.$hyoo_crus_vary_cast_real = $hyoo_crus_vary_cast_real;
+    function $hyoo_crus_vary_cast_ints(vary) {
+        return $hyoo_crus_vary_switch(vary, {
+            nil: vary => null,
+            bin: vary => new BigInt64Array([...vary].map(BigInt)),
+            bool: vary => vary ? new BigInt64Array([1n]) : null,
+            int: vary => new BigInt64Array([vary]),
+            real: vary => Number.isFinite(vary) ? new BigInt64Array([BigInt(vary)]) : null,
+            ints: vary => vary,
+            reals: vary => new BigInt64Array([...vary].map(BigInt)),
+            ref: vary => null,
+            str: vary => {
+                if (!vary)
+                    return null;
+                return new BigInt64Array(vary.split(',').map(v => BigInt(v) || 0n));
+            },
+            time: vary => new BigInt64Array([BigInt(vary.valueOf())]),
+            dur: vary => new BigInt64Array([BigInt(vary.valueOf())]),
+            range: vary => null,
+            json: vary => null,
+            jsan: vary => null,
+            dom: vary => null,
+            tree: vary => null,
+        });
+    }
+    $.$hyoo_crus_vary_cast_ints = $hyoo_crus_vary_cast_ints;
+    function $hyoo_crus_vary_cast_reals(vary) {
+        return $hyoo_crus_vary_switch(vary, {
+            nil: vary => null,
+            bin: vary => new Float64Array([...vary]),
+            bool: vary => vary ? new Float64Array([1]) : null,
+            int: vary => new Float64Array([Number(vary)]),
+            real: vary => (vary && Number.isFinite(vary)) ? new Float64Array([vary]) : null,
+            ints: vary => new Float64Array([...vary].map(Number)),
+            reals: vary => vary,
+            ref: vary => null,
+            str: vary => {
+                if (!vary)
+                    return null;
+                return new Float64Array(vary.split(',').map(v => Number(v) || 0));
+            },
+            time: vary => new Float64Array([vary.valueOf()]),
+            dur: vary => new Float64Array([vary.valueOf()]),
+            range: vary => null,
+            json: vary => null,
+            jsan: vary => null,
+            dom: vary => null,
+            tree: vary => null,
+        });
+    }
+    $.$hyoo_crus_vary_cast_reals = $hyoo_crus_vary_cast_reals;
     function $hyoo_crus_vary_cast_ref(vary) {
         return $hyoo_crus_vary_switch(vary, {
             nil: vary => null,
@@ -6299,6 +6365,8 @@ var $;
             bool: vary => null,
             int: vary => null,
             real: vary => null,
+            ints: vary => null,
+            reals: vary => null,
             ref: vary => vary,
             str: vary => {
                 try {
@@ -6332,6 +6400,8 @@ var $;
             bool: vary => String(vary),
             int: vary => String(vary),
             real: vary => String(vary),
+            ints: vary => vary.join(','),
+            reals: vary => vary.join(','),
             ref: vary => vary.description,
             str: vary => vary,
             time: vary => String(vary),
@@ -6358,6 +6428,8 @@ var $;
                     return null;
                 }
             },
+            ints: vary => null,
+            reals: vary => null,
             ref: vary => null,
             str: vary => {
                 try {
@@ -6398,6 +6470,8 @@ var $;
                     return null;
                 }
             },
+            ints: vary => null,
+            reals: vary => null,
             ref: vary => null,
             str: vary => {
                 try {
@@ -6424,6 +6498,8 @@ var $;
             bool: vary => null,
             int: vary => null,
             real: vary => null,
+            ints: vary => null,
+            reals: vary => null,
             ref: vary => null,
             str: vary => {
                 try {
@@ -6457,6 +6533,8 @@ var $;
             bool: vary => null,
             int: vary => null,
             real: vary => null,
+            ints: vary => null,
+            reals: vary => null,
             ref: vary => null,
             str: vary => {
                 if (!vary)
@@ -6488,6 +6566,8 @@ var $;
             bool: vary => [vary],
             int: vary => [vary.toString()],
             real: vary => Number.isFinite(vary) ? [vary] : null,
+            ints: vary => [...vary].map(v => Number(v)),
+            reals: vary => [...vary],
             ref: vary => [vary.description],
             str: vary => {
                 if (!vary)
@@ -6516,6 +6596,8 @@ var $;
             bool: vary => $mol_jsx("body", null, vary),
             int: vary => $mol_jsx("body", null, vary),
             real: vary => $mol_jsx("body", null, vary),
+            ints: vary => $mol_jsx("body", null, vary.join(',')),
+            reals: vary => $mol_jsx("body", null, vary.join(',')),
             ref: vary => $mol_jsx("body", null, vary.description),
             str: vary => {
                 if (!vary)
@@ -6544,6 +6626,8 @@ var $;
             bool: vary => $mol_tree2.struct(vary.toString()),
             int: vary => $mol_tree2.struct(vary.toString()),
             real: vary => $mol_tree2.struct(vary.toString()),
+            ints: vary => $mol_tree2.list([...vary].map(v => $mol_tree2.struct(v.toString()))),
+            reals: vary => $mol_tree2.list([...vary].map(v => $mol_tree2.struct(v.toString()))),
             ref: vary => $mol_tree2.struct(vary.description),
             str: vary => {
                 if (!vary)
@@ -6571,6 +6655,8 @@ var $;
         bool: $hyoo_crus_vary_cast_bool,
         int: $hyoo_crus_vary_cast_int,
         real: $hyoo_crus_vary_cast_real,
+        ints: $hyoo_crus_vary_cast_ints,
+        reals: $hyoo_crus_vary_cast_reals,
         ref: $hyoo_crus_vary_cast_ref,
         str: $hyoo_crus_vary_cast_str,
         time: $hyoo_crus_vary_cast_time,
@@ -7325,10 +7411,16 @@ var $;
             return sand;
         }
         sand_decode(sand) {
-            let vary = this.sand_decode_raw(sand);
-            if (typeof vary === 'symbol')
-                vary = $hyoo_crus_ref_resolve(this.ref(), vary);
-            return vary;
+            try {
+                let vary = this.sand_decode_raw(sand);
+                if (typeof vary === 'symbol')
+                    vary = $hyoo_crus_ref_resolve(this.ref(), vary);
+                return vary;
+            }
+            catch (error) {
+                this.$.$mol_fail_log(error);
+                return null;
+            }
         }
         sand_decode_raw(sand) {
             if (this.sand.get(sand.head())?.get(sand.peer())?.get(sand.self()) !== sand) {
@@ -8099,6 +8191,9 @@ var $;
         __decorate([
             $mol_action
         ], $hyoo_crus_list_ref_to.prototype, "remote_add", null);
+        __decorate([
+            $mol_action
+        ], $hyoo_crus_list_ref_to.prototype, "make", null);
         __decorate([
             $mol_action
         ], $hyoo_crus_list_ref_to.prototype, "local_make", null);
