@@ -321,7 +321,7 @@ namespace $ {
 		})
 	}
 
-	export function $hyoo_crus_vary_cast_json( vary: $hyoo_crus_vary_type ): object | null {
+	export function $hyoo_crus_vary_cast_json( vary: $hyoo_crus_vary_type ): {} | null {
 		return $hyoo_crus_vary_switch( vary, {
 			
 			nil:   vary => null,

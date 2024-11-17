@@ -38,7 +38,7 @@ namespace $ {
 		bin: Uint8Array,
 	}
 	
-	/** Hint how to interpret Data: nil, bin, bool, int, real, ref, str, time, dur, range, json, jsan, dom, tree */
+	/** Hint how to interpret Data. */
 	export enum $hyoo_crus_vary_tip {
 		
 		/** 0. No Data */
