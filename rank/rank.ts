@@ -1,17 +1,23 @@
 namespace $ {
 	
-	/** Access level: nil, get, add, mod, law */
+	/** Access level: nil, get, reg, mod, law */
 	export enum $hyoo_crus_rank {
+		
 		/** 0. Forbidden. There is no access, neither read nor write. */
 		nil = 0b0000,
+		
 		/** 1. Read only */
 		get = 0b0001,
+		
 		/** 3. Join only (Pass) */
 		reg = 0b0011,
+		
 		/** 7. Data modification (Pass, Sand) */
 		mod = 0b0111,
+		
 		/** 15. Full administration (Pass, Sand, Gift) */
 		law = 0b1111,
+		
 	}
 	
 	/** Record of Access level: nil, get, add, mod, law */
