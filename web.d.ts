@@ -13329,6 +13329,8 @@ declare namespace $ {
 			'bool': string,
 			'int': string,
 			'real': string,
+			'ints': string,
+			'reals': string,
 			'ref': string,
 			'str': string,
 			'time': string,

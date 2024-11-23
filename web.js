@@ -26475,19 +26475,21 @@ var $;
 			(obj.value) = (next) => ((this.unit_tip(id, next)));
 			(obj.enabled) = () => ((this.can_change()));
 			(obj.dictionary) = () => ({
-				"bin": "💠bin", 
-				"bool": "🏁bool", 
-				"int": "🔢int", 
-				"real": "💫real", 
-				"ref": "🎯ref", 
-				"str": "🔠str", 
-				"time": "⏰time", 
-				"dur": "🕓dur", 
-				"range": "🎬range", 
-				"json": "📑json", 
-				"jsan": "📚jsan", 
-				"xml": "🛐xml", 
-				"tree": "🌴tree"
+				"bin": "💠 bin", 
+				"bool": "🚩 bool", 
+				"int": "1️⃣ int", 
+				"real": "💫 real", 
+				"ints": "🔢 ints", 
+				"reals": "✨ reals", 
+				"ref": "🎯 ref", 
+				"str": "🔠 str", 
+				"time": "⏰ time", 
+				"dur": "🕓 dur", 
+				"range": "🎬 range", 
+				"json": "📑 json", 
+				"jsan": "📚 jsan", 
+				"xml": "🛐 xml", 
+				"tree": "🌴 tree"
 			});
 			return obj;
 		}
@@ -26500,10 +26502,10 @@ var $;
 			(obj.value) = (next) => ((this.unit_tag(id, next)));
 			(obj.enabled) = () => ((this.can_change()));
 			(obj.dictionary) = () => ({
-				"term": "💼term", 
-				"solo": "🔝solo", 
-				"vals": "🎹vals", 
-				"keys": "🔑keys"
+				"term": "💼 term", 
+				"solo": "🔝 solo", 
+				"vals": "🎹 vals", 
+				"keys": "🔑 keys"
 			});
 			return obj;
 		}
