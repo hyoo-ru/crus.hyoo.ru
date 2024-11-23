@@ -155,6 +155,10 @@ namespace $ {
 	export class $hyoo_crus_list_int extends $hyoo_crus_list( $hyoo_crus_vary_cast_int ) {}
 	/** Mergeable list of atomic float64s */
 	export class $hyoo_crus_list_real extends $hyoo_crus_list( $hyoo_crus_vary_cast_real ) {}
+	/** Mergeable list of atomic int64 arrays */
+	export class $hyoo_crus_list_ints extends $hyoo_crus_list( $hyoo_crus_vary_cast_ints ) {}
+	/** Mergeable list of atomic float64 arrays */
+	export class $hyoo_crus_list_reals extends $hyoo_crus_list( $hyoo_crus_vary_cast_reals ) {}
 	/** Mergeable list of atomic some references */
 	export class $hyoo_crus_list_ref extends $hyoo_crus_list( $hyoo_crus_vary_cast_ref ) {}
 
