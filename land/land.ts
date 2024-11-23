@@ -957,6 +957,7 @@ namespace $ {
 
 			} catch( error ) {
 				
+				if( error instanceof Promise ) return $mol_fail_hidden( error )
 				this.$.$mol_fail_log( error )
 				return null
 
