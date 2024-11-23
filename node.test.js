@@ -7010,7 +7010,7 @@ var $;
                         const lord = next.lord();
                         const peer = next.peer();
                         if (!skip_check && this.lord_rank(lord) < $hyoo_crus_rank.reg)
-                            return 'Need add rank to join';
+                            return 'Need reg rank to join';
                         const exists = this.pass.get(peer);
                         if (exists)
                             return '';
@@ -13162,7 +13162,7 @@ var $;
             const land2 = $hyoo_crus_land.make({ $, ref: () => land1.ref(), auth: () => auth1 });
             $mol_assert_equal(land1.lord_rank(land1.ref()), $hyoo_crus_rank.law);
             $mol_assert_equal(land1.lord_rank(auth1.lord()), $hyoo_crus_rank.get);
-            $mol_assert_fail(() => land2.give(auth2, $hyoo_crus_rank.reg), 'Need add rank to join');
+            $mol_assert_fail(() => land2.give(auth2, $hyoo_crus_rank.reg), 'Need reg rank to join');
             $mol_assert_equal(land1.lord_rank(auth1.lord()), $hyoo_crus_rank.get);
             land1.give(auth1, $hyoo_crus_rank.get);
             $mol_assert_equal(land1.lord_rank(auth1.lord()), $hyoo_crus_rank.get);
@@ -13193,7 +13193,7 @@ var $;
             $mol_assert_equal(land1.delta_unit().length, 3);
             $mol_assert_equal(land1.delta_unit(face).length, 1);
             land2.apply_unit(land1.delta_unit());
-            $mol_assert_fail(() => land2.join(), 'Need add rank to join');
+            $mol_assert_fail(() => land2.join(), 'Need reg rank to join');
             $mol_assert_equal(land2.delta_unit().length, 3);
             $mol_assert_equal(land2.delta_unit(face).length, 1);
             land1.give(auth2, $hyoo_crus_rank.reg);

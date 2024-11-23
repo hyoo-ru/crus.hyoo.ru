@@ -7019,7 +7019,7 @@ var $;
                         const lord = next.lord();
                         const peer = next.peer();
                         if (!skip_check && this.lord_rank(lord) < $hyoo_crus_rank.reg)
-                            return 'Need add rank to join';
+                            return 'Need reg rank to join';
                         const exists = this.pass.get(peer);
                         if (exists)
                             return '';
