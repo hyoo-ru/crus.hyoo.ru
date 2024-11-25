@@ -27562,6 +27562,35 @@ var $;
 })($ || ($ = {}));
 
 ;
+	($.$mol_chip) = class $mol_chip extends ($.$mol_view) {
+		sub(){
+			return [(this.title())];
+		}
+	};
+
+
+;
+"use strict";
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        $mol_style_define($mol_chip, {
+            padding: $mol_gap.text,
+            border: {
+                radius: $mol_gap.round,
+            },
+            background: {
+                color: $mol_theme.card,
+            },
+        });
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
 	($.$mol_svg_group) = class $mol_svg_group extends ($.$mol_svg) {
 		dom_name(){
 			return "g";
@@ -29879,16 +29908,16 @@ var $;
 			return "";
 		}
 		Domain(){
-			const obj = new this.$.$mol_view();
-			(obj.sub) = () => ([(this.domain())]);
+			const obj = new this.$.$mol_chip();
+			(obj.title) = () => ((this.domain()));
 			return obj;
 		}
 		uptime(){
 			return "00:00";
 		}
 		Uptime(){
-			const obj = new this.$.$mol_view();
-			(obj.sub) = () => ([(this.uptime())]);
+			const obj = new this.$.$mol_chip();
+			(obj.title) = () => ((this.uptime()));
 			return obj;
 		}
 		cpu_user(){
@@ -30265,9 +30294,6 @@ var $;
             flex: {
                 basis: `40rem`,
                 grow: 1,
-            },
-            Uptime: {
-                padding: $mol_gap.text,
             },
             Charts: {
                 align: {

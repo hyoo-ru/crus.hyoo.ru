@@ -13985,6 +13985,18 @@ declare namespace $ {
 
 declare namespace $ {
 
+	export class $mol_chip extends $mol_view {
+		sub( ): readonly(any)[]
+	}
+	
+}
+
+//# sourceMappingURL=chip.view.tree.d.ts.map
+declare namespace $.$$ {
+}
+
+declare namespace $ {
+
 	export class $mol_svg_group extends $mol_svg {
 		dom_name( ): string
 	}
@@ -15360,15 +15372,15 @@ declare namespace $ {
 
 declare namespace $ {
 
-	type $mol_view__sub_hyoo_crus_app_stat_page_1 = $mol_type_enforce<
-		readonly(any)[]
+	type $mol_chip__title_hyoo_crus_app_stat_page_1 = $mol_type_enforce<
+		ReturnType< $hyoo_crus_app_stat_page['domain'] >
 		,
-		ReturnType< $mol_view['sub'] >
+		ReturnType< $mol_chip['title'] >
 	>
-	type $mol_view__sub_hyoo_crus_app_stat_page_2 = $mol_type_enforce<
-		readonly(any)[]
+	type $mol_chip__title_hyoo_crus_app_stat_page_2 = $mol_type_enforce<
+		ReturnType< $hyoo_crus_app_stat_page['uptime'] >
 		,
-		ReturnType< $mol_view['sub'] >
+		ReturnType< $mol_chip['title'] >
 	>
 	type $mol_plot_line__title_hyoo_crus_app_stat_page_3 = $mol_type_enforce<
 		string
@@ -15542,9 +15554,9 @@ declare namespace $ {
 	>
 	export class $hyoo_crus_app_stat_page extends $mol_page {
 		domain( ): string
-		Domain( ): $mol_view
+		Domain( ): $mol_chip
 		uptime( ): string
-		Uptime( ): $mol_view
+		Uptime( ): $mol_chip
 		cpu_user( ): readonly(any)[]
 		Cpu_user( ): $mol_plot_line
 		cpu_system( ): readonly(any)[]

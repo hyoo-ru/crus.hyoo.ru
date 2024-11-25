@@ -2061,6 +2061,10 @@ $hyoo_crus_glob_book $mol_book2_catalog
 			align_hor \left
 			grab? <=> land_add? null $hyoo_crus_rank_preset
 
+$mol_chip $mol_view
+	sub /
+		<= title
+
 $mol_svg_group $mol_svg
 	dom_name \g
 
@@ -2459,8 +2463,8 @@ $hyoo_crus_app_stat_page $mol_page
 	title \📊 Stat
 	head /
 		<= Title
-		<= Domain $mol_view sub / <= domain \
-		<= Uptime $mol_view sub / <= uptime \00:00
+		<= Domain $mol_chip title <= domain \
+		<= Uptime $mol_chip title <= uptime \00:00
 		<= Tools
 	body_content /
 		<= Charts $mol_list rows /
