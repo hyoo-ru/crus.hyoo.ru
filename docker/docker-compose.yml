@@ -3,7 +3,7 @@ services:
   crus:
     image: ghcr.io/hyoo-ru/crus:latest
     environment:
-      - DOMAIN: _${DOMAIN}_
+      DOMAIN: ${DOMAIN}
     logging:
       driver: "local"
     volumes:
