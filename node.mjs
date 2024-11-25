@@ -9601,7 +9601,7 @@ var $;
 (function ($) {
     class $hyoo_crus_app_home_node extends $hyoo_crus_app_home {
         init() {
-            this.title((process.env.DOMAIN || $node.os.hostname()) + '!');
+            this.title(process.env.DOMAIN || $node.os.hostname());
             const source = this.aliases();
             const target = this.Aliases(null);
             for (const ip of target.keys().map($hyoo_crus_vary_cast_str)) {
