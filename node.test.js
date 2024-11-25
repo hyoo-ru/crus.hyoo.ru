@@ -7861,9 +7861,7 @@ var $;
             return $hyoo_crus_sand_tag[(this.uint8(0) >> 1) & 0b11];
         }
         tip() {
-            const tip = $hyoo_crus_vary_tip[this.uint8(0) >> 3];
-            if (!tip)
-                $mol_fail(new Error('Empty tip'));
+            const tip = $hyoo_crus_vary_tip[this.uint8(0) >> 3] || $hyoo_crus_vary_tip.nil;
             return tip;
         }
         utf() {
