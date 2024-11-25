@@ -15365,177 +15365,184 @@ declare namespace $ {
 		,
 		ReturnType< $mol_view['sub'] >
 	>
-	type $mol_plot_line__title_hyoo_crus_app_stat_page_2 = $mol_type_enforce<
+	type $mol_view__sub_hyoo_crus_app_stat_page_2 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_view['sub'] >
+	>
+	type $mol_plot_line__title_hyoo_crus_app_stat_page_3 = $mol_type_enforce<
 		string
 		,
 		ReturnType< $mol_plot_line['title'] >
 	>
-	type $mol_plot_line__series_y_hyoo_crus_app_stat_page_3 = $mol_type_enforce<
+	type $mol_plot_line__series_y_hyoo_crus_app_stat_page_4 = $mol_type_enforce<
 		ReturnType< $hyoo_crus_app_stat_page['cpu_user'] >
 		,
 		ReturnType< $mol_plot_line['series_y'] >
 	>
-	type $mol_plot_line__title_hyoo_crus_app_stat_page_4 = $mol_type_enforce<
+	type $mol_plot_line__title_hyoo_crus_app_stat_page_5 = $mol_type_enforce<
 		string
 		,
 		ReturnType< $mol_plot_line['title'] >
 	>
-	type $mol_plot_line__series_y_hyoo_crus_app_stat_page_5 = $mol_type_enforce<
+	type $mol_plot_line__series_y_hyoo_crus_app_stat_page_6 = $mol_type_enforce<
 		ReturnType< $hyoo_crus_app_stat_page['cpu_system'] >
 		,
 		ReturnType< $mol_plot_line['series_y'] >
 	>
-	type $mol_plot_mark_cross__labels_hyoo_crus_app_stat_page_6 = $mol_type_enforce<
+	type $mol_plot_mark_cross__labels_hyoo_crus_app_stat_page_7 = $mol_type_enforce<
 		ReturnType< $hyoo_crus_app_stat_page['times'] >
 		,
 		ReturnType< $mol_plot_mark_cross['labels'] >
 	>
-	type $mol_plot_mark_cross__graphs_hyoo_crus_app_stat_page_7 = $mol_type_enforce<
+	type $mol_plot_mark_cross__graphs_hyoo_crus_app_stat_page_8 = $mol_type_enforce<
 		readonly(any)[]
 		,
 		ReturnType< $mol_plot_mark_cross['graphs'] >
 	>
-	type $mol_chart__graphs_hyoo_crus_app_stat_page_8 = $mol_type_enforce<
+	type $mol_chart__graphs_hyoo_crus_app_stat_page_9 = $mol_type_enforce<
 		readonly(any)[]
 		,
 		ReturnType< $mol_chart['graphs'] >
 	>
-	type $mol_plot_line__title_hyoo_crus_app_stat_page_9 = $mol_type_enforce<
+	type $mol_plot_line__title_hyoo_crus_app_stat_page_10 = $mol_type_enforce<
 		string
 		,
 		ReturnType< $mol_plot_line['title'] >
 	>
-	type $mol_plot_line__series_y_hyoo_crus_app_stat_page_10 = $mol_type_enforce<
+	type $mol_plot_line__series_y_hyoo_crus_app_stat_page_11 = $mol_type_enforce<
 		ReturnType< $hyoo_crus_app_stat_page['mem_free'] >
 		,
 		ReturnType< $mol_plot_line['series_y'] >
 	>
-	type $mol_plot_line__title_hyoo_crus_app_stat_page_11 = $mol_type_enforce<
+	type $mol_plot_line__title_hyoo_crus_app_stat_page_12 = $mol_type_enforce<
 		string
 		,
 		ReturnType< $mol_plot_line['title'] >
 	>
-	type $mol_plot_line__series_y_hyoo_crus_app_stat_page_12 = $mol_type_enforce<
+	type $mol_plot_line__series_y_hyoo_crus_app_stat_page_13 = $mol_type_enforce<
 		ReturnType< $hyoo_crus_app_stat_page['mem_used'] >
 		,
 		ReturnType< $mol_plot_line['series_y'] >
 	>
-	type $mol_plot_mark_cross__labels_hyoo_crus_app_stat_page_13 = $mol_type_enforce<
+	type $mol_plot_mark_cross__labels_hyoo_crus_app_stat_page_14 = $mol_type_enforce<
 		ReturnType< $hyoo_crus_app_stat_page['times'] >
 		,
 		ReturnType< $mol_plot_mark_cross['labels'] >
 	>
-	type $mol_plot_mark_cross__graphs_hyoo_crus_app_stat_page_14 = $mol_type_enforce<
+	type $mol_plot_mark_cross__graphs_hyoo_crus_app_stat_page_15 = $mol_type_enforce<
 		readonly(any)[]
 		,
 		ReturnType< $mol_plot_mark_cross['graphs'] >
 	>
-	type $mol_chart__graphs_hyoo_crus_app_stat_page_15 = $mol_type_enforce<
+	type $mol_chart__graphs_hyoo_crus_app_stat_page_16 = $mol_type_enforce<
 		readonly(any)[]
 		,
 		ReturnType< $mol_chart['graphs'] >
 	>
-	type $mol_plot_line__title_hyoo_crus_app_stat_page_16 = $mol_type_enforce<
+	type $mol_plot_line__title_hyoo_crus_app_stat_page_17 = $mol_type_enforce<
 		string
 		,
 		ReturnType< $mol_plot_line['title'] >
 	>
-	type $mol_plot_line__series_y_hyoo_crus_app_stat_page_17 = $mol_type_enforce<
+	type $mol_plot_line__series_y_hyoo_crus_app_stat_page_18 = $mol_type_enforce<
 		ReturnType< $hyoo_crus_app_stat_page['fs_free'] >
 		,
 		ReturnType< $mol_plot_line['series_y'] >
 	>
-	type $mol_plot_mark_cross__labels_hyoo_crus_app_stat_page_18 = $mol_type_enforce<
+	type $mol_plot_mark_cross__labels_hyoo_crus_app_stat_page_19 = $mol_type_enforce<
 		ReturnType< $hyoo_crus_app_stat_page['times'] >
 		,
 		ReturnType< $mol_plot_mark_cross['labels'] >
 	>
-	type $mol_plot_mark_cross__graphs_hyoo_crus_app_stat_page_19 = $mol_type_enforce<
+	type $mol_plot_mark_cross__graphs_hyoo_crus_app_stat_page_20 = $mol_type_enforce<
 		readonly(any)[]
 		,
 		ReturnType< $mol_plot_mark_cross['graphs'] >
 	>
-	type $mol_chart__graphs_hyoo_crus_app_stat_page_20 = $mol_type_enforce<
+	type $mol_chart__graphs_hyoo_crus_app_stat_page_21 = $mol_type_enforce<
 		readonly(any)[]
 		,
 		ReturnType< $mol_chart['graphs'] >
 	>
-	type $mol_plot_line__title_hyoo_crus_app_stat_page_21 = $mol_type_enforce<
+	type $mol_plot_line__title_hyoo_crus_app_stat_page_22 = $mol_type_enforce<
 		string
 		,
 		ReturnType< $mol_plot_line['title'] >
 	>
-	type $mol_plot_line__series_y_hyoo_crus_app_stat_page_22 = $mol_type_enforce<
+	type $mol_plot_line__series_y_hyoo_crus_app_stat_page_23 = $mol_type_enforce<
 		ReturnType< $hyoo_crus_app_stat_page['fs_reads'] >
 		,
 		ReturnType< $mol_plot_line['series_y'] >
 	>
-	type $mol_plot_line__title_hyoo_crus_app_stat_page_23 = $mol_type_enforce<
+	type $mol_plot_line__title_hyoo_crus_app_stat_page_24 = $mol_type_enforce<
 		string
 		,
 		ReturnType< $mol_plot_line['title'] >
 	>
-	type $mol_plot_line__series_y_hyoo_crus_app_stat_page_24 = $mol_type_enforce<
+	type $mol_plot_line__series_y_hyoo_crus_app_stat_page_25 = $mol_type_enforce<
 		ReturnType< $hyoo_crus_app_stat_page['fs_writes'] >
 		,
 		ReturnType< $mol_plot_line['series_y'] >
 	>
-	type $mol_plot_mark_cross__labels_hyoo_crus_app_stat_page_25 = $mol_type_enforce<
+	type $mol_plot_mark_cross__labels_hyoo_crus_app_stat_page_26 = $mol_type_enforce<
 		ReturnType< $hyoo_crus_app_stat_page['times'] >
 		,
 		ReturnType< $mol_plot_mark_cross['labels'] >
 	>
-	type $mol_plot_mark_cross__graphs_hyoo_crus_app_stat_page_26 = $mol_type_enforce<
+	type $mol_plot_mark_cross__graphs_hyoo_crus_app_stat_page_27 = $mol_type_enforce<
 		readonly(any)[]
 		,
 		ReturnType< $mol_plot_mark_cross['graphs'] >
 	>
-	type $mol_chart__graphs_hyoo_crus_app_stat_page_27 = $mol_type_enforce<
+	type $mol_chart__graphs_hyoo_crus_app_stat_page_28 = $mol_type_enforce<
 		readonly(any)[]
 		,
 		ReturnType< $mol_chart['graphs'] >
 	>
-	type $mol_plot_line__title_hyoo_crus_app_stat_page_28 = $mol_type_enforce<
+	type $mol_plot_line__title_hyoo_crus_app_stat_page_29 = $mol_type_enforce<
 		string
 		,
 		ReturnType< $mol_plot_line['title'] >
 	>
-	type $mol_plot_line__series_y_hyoo_crus_app_stat_page_29 = $mol_type_enforce<
+	type $mol_plot_line__series_y_hyoo_crus_app_stat_page_30 = $mol_type_enforce<
 		ReturnType< $hyoo_crus_app_stat_page['port_slaves'] >
 		,
 		ReturnType< $mol_plot_line['series_y'] >
 	>
-	type $mol_plot_line__title_hyoo_crus_app_stat_page_30 = $mol_type_enforce<
+	type $mol_plot_line__title_hyoo_crus_app_stat_page_31 = $mol_type_enforce<
 		string
 		,
 		ReturnType< $mol_plot_line['title'] >
 	>
-	type $mol_plot_line__series_y_hyoo_crus_app_stat_page_31 = $mol_type_enforce<
+	type $mol_plot_line__series_y_hyoo_crus_app_stat_page_32 = $mol_type_enforce<
 		ReturnType< $hyoo_crus_app_stat_page['port_masters'] >
 		,
 		ReturnType< $mol_plot_line['series_y'] >
 	>
-	type $mol_plot_mark_cross__labels_hyoo_crus_app_stat_page_32 = $mol_type_enforce<
+	type $mol_plot_mark_cross__labels_hyoo_crus_app_stat_page_33 = $mol_type_enforce<
 		ReturnType< $hyoo_crus_app_stat_page['times'] >
 		,
 		ReturnType< $mol_plot_mark_cross['labels'] >
 	>
-	type $mol_plot_mark_cross__graphs_hyoo_crus_app_stat_page_33 = $mol_type_enforce<
+	type $mol_plot_mark_cross__graphs_hyoo_crus_app_stat_page_34 = $mol_type_enforce<
 		readonly(any)[]
 		,
 		ReturnType< $mol_plot_mark_cross['graphs'] >
 	>
-	type $mol_chart__graphs_hyoo_crus_app_stat_page_34 = $mol_type_enforce<
+	type $mol_chart__graphs_hyoo_crus_app_stat_page_35 = $mol_type_enforce<
 		readonly(any)[]
 		,
 		ReturnType< $mol_chart['graphs'] >
 	>
-	type $mol_list__rows_hyoo_crus_app_stat_page_35 = $mol_type_enforce<
+	type $mol_list__rows_hyoo_crus_app_stat_page_36 = $mol_type_enforce<
 		readonly(any)[]
 		,
 		ReturnType< $mol_list['rows'] >
 	>
 	export class $hyoo_crus_app_stat_page extends $mol_page {
+		domain( ): string
+		Domain( ): $mol_view
 		uptime( ): string
 		Uptime( ): $mol_view
 		cpu_user( ): readonly(any)[]
@@ -15583,7 +15590,9 @@ declare namespace $ {
 //# sourceMappingURL=page.view.tree.d.ts.map
 declare namespace $.$$ {
     class $hyoo_crus_app_stat_page extends $.$hyoo_crus_app_stat_page {
+        home(): $hyoo_crus_node;
         stat(): any;
+        domain(): any;
         uptime(): any;
         cpu_user(): any;
         cpu_system(): any;
