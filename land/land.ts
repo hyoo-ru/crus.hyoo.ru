@@ -144,7 +144,7 @@ namespace $ {
 			
 			const prev = this.gift.get( lord )?.rank()
 				?? this.gift.get( $hyoo_crus_ref( '' ) )?.rank()
-				?? $hyoo_crus_rank.get
+				?? ( this.encrypted() ? $hyoo_crus_rank.nil : $hyoo_crus_rank.get )
 			
 			if( next === undefined ) return prev
 			if( next === prev ) return prev
@@ -481,7 +481,7 @@ namespace $ {
 		sand_ordered( { head, peer }: { head: string, peer: string | null } ) {
 			
 			this.sync()
-			this.secret() // early async to prevent async on put
+			// this.secret() // early async to prevent async on put
 			
 			const queue = peer
 				? [ ... this.sand.get( head )?.get( peer )?.values() ?? [] ]
