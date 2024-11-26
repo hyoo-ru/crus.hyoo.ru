@@ -214,11 +214,11 @@ namespace $ {
 			
 			/** Make new Node and place it at end. */
 			@ $mol_action
-			make( config?: null | $hyoo_crus_rank_preset | $hyoo_crus_land ): Vals[number] {
+			make( config?: null | number | $hyoo_crus_rank_preset | $hyoo_crus_land ): Vals[number] {
 				
-				if( config === null ) {
+				if( config === null || typeof config === 'number' ) {
 					
-					const self = this.land().self_make()
+					const self = this.land().self_make( config || undefined )
 					const node = this.land().Node( ( Value as any )() ).Item( self )
 					this.splice([ node.ref() ])
 					return node
@@ -246,6 +246,7 @@ namespace $ {
 			}
 			
 			/** Add new Node which placed in same Land */
+			/** @deprecated use make( ... ) */
 			@ $mol_action
 			local_make( idea?: number ): Vals[number] {
 				const self = this.land().self_make( idea )
