@@ -8163,8 +8163,8 @@ var $;
                 this.add(item.ref());
             }
             make(config) {
-                if (config === null) {
-                    const self = this.land().self_make();
+                if (config === null || typeof config === 'number') {
+                    const self = this.land().self_make(config || undefined);
                     const node = this.land().Node(Value()).Item(self);
                     this.splice([node.ref()]);
                     return node;
