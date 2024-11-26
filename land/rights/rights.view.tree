@@ -5,7 +5,7 @@ $hyoo_crus_land_rights $mol_list
 			<= Add_key $mol_string
 				hint @ \public key
 				value? <=> add_key? \
-				commit? <=> add_commit? null
+				submit? <=> add_commit? null
 			<= Add_commit $mol_button_minor
 				click? <=> add_commit? null
 				sub /
