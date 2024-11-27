@@ -4067,6 +4067,7 @@ declare namespace $ {
         };
     };
     export class $hyoo_crus_app_stat extends $hyoo_crus_app_stat_base {
+        freshness(): number | null;
         uptime(next?: $mol_time_duration): $mol_time_duration;
         tick(): void;
     }

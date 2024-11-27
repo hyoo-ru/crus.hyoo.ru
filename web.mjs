@@ -27551,6 +27551,13 @@ var $;
         Port_slaves: $hyoo_crus_stat_ranges,
         Port_masters: $hyoo_crus_stat_ranges,
     }) {
+        freshness() {
+            const last = this.last_change();
+            if (!last)
+                return null;
+            const range = new $mol_time_interval({ start: last, end: new $mol_time_moment });
+            return range.duration.count('PT1s');
+        }
         uptime(next) {
             return this.Uptime(next)?.val(next) ?? new $mol_time_duration(0);
         }
@@ -27573,6 +27580,9 @@ var $;
             this.Port_slaves(null).tick_instant(slaves);
         }
     }
+    __decorate([
+        $mol_mem
+    ], $hyoo_crus_app_stat.prototype, "freshness", null);
     __decorate([
         $mol_mem
     ], $hyoo_crus_app_stat.prototype, "uptime", null);
@@ -29934,7 +29944,7 @@ var $;
 			return obj;
 		}
 		uptime(){
-			return "00:00";
+			return "🔴 00:00";
 		}
 		Uptime(){
 			const obj = new this.$.$mol_chip();
@@ -30216,7 +30226,9 @@ var $;
                 return this.home().title() ?? super.domain();
             }
             uptime() {
-                return this.stat()?.uptime().toString('#Y #D hh:mm:ss') ?? '';
+                const status = (this.stat()?.freshness() ?? Number.POSITIVE_INFINITY) < 5 ? '🟢' : '🔴';
+                const uptime = this.stat()?.uptime().toString('#Y #D hh:mm:ss') ?? '';
+                return `${status} ${uptime}`;
             }
             cpu_user() {
                 return this.stat()?.Cpu_user()?.series().map(v => 100 * v) ?? [];
