@@ -27555,7 +27555,10 @@ var $;
             const last = this.last_change();
             if (!last)
                 return null;
-            const range = new $mol_time_interval({ start: last, end: new $mol_time_moment });
+            const range = new $mol_time_interval({
+                start: last,
+                end: new $mol_time_moment(this.$.$mol_state_time.now(1000)),
+            });
             return range.duration.count('PT1s');
         }
         uptime(next) {
