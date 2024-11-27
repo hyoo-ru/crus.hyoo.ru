@@ -19,7 +19,9 @@ namespace $.$$ {
 		
 		@ $mol_mem
 		uptime() {
-			return this.stat()?.uptime().toString( '#Y #D hh:mm:ss' ) ?? ''
+			const status = ( this.stat()?.freshness() ?? Number.POSITIVE_INFINITY ) < 5 ? '🟢' : '🔴' 
+			const uptime = this.stat()?.uptime().toString( '#Y #D hh:mm:ss' ) ?? ''
+			return `${status} ${uptime}`
 		}
 		
 		@ $mol_mem
