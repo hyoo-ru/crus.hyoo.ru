@@ -5264,9 +5264,9 @@ var $;
                     message: error,
                     hint: 'Send it to developer',
                 });
+            area.bus();
             area.sync_mine();
             area.sync_yard();
-            area.bus();
             return area;
         }
         Data(Node) {
