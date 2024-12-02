@@ -803,9 +803,9 @@ namespace $ {
 		@ $mol_mem
 		sync() {
 			this.loading()
+			this.bus()
 			this.sync_mine()
 			this.sync_yard()
-			this.bus()
 			return this
 		}
 		
@@ -901,8 +901,8 @@ namespace $ {
 			
 			if( persisting.length )	{
 				
-				mine.units( this.ref(), persisting )
 				this.bus().send( persisting.map( unit => unit.buffer ) )
+				mine.units( this.ref(), persisting )
 			
 				$mol_wire_sync( this.$ ).$mol_log3_done({
 					place: this,
