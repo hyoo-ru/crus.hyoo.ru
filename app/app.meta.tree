@@ -16,5 +16,6 @@ deploy \/hyoo/crus/diagram/crus-units-gift.png
 deploy \/hyoo/crus/diagram/crus-units-sand.png
 deploy \/hyoo/crus/diagram/crus-files.png
 deploy \/hyoo/crus/diagram/crus-network.png
+deploy \/hyoo/crus/diagram/crus-jepsen.png
 deploy \/hyoo/crus/docker/deploy.sh
 deploy \/hyoo/crus/docker/autopull_and_restart.sh
