@@ -847,7 +847,7 @@ namespace $ {
 			
 			let units = this.unit_sort( this.$.$hyoo_crus_mine.units( this.ref() ) ?? [] )
 			
-			$mol_wire_sync( this.$ ).$mol_log3_rise({
+			if( this.$.$hyoo_crus_log() ) $mol_wire_sync( this.$ ).$mol_log3_rise({
 				place: this,
 				message: 'Load Unit',
 				units: units.length,
@@ -904,7 +904,7 @@ namespace $ {
 				this.bus().send( persisting.map( unit => unit.buffer ) )
 				mine.units( this.ref(), persisting )
 			
-				$mol_wire_sync( this.$ ).$mol_log3_done({
+				if( this.$.$hyoo_crus_log() ) $mol_wire_sync( this.$ ).$mol_log3_done({
 					place: this,
 					message: 'Saved Units',
 					units: persisting.length,

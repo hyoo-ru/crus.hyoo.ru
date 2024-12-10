@@ -184,7 +184,7 @@ namespace $ {
 			const pack = $mol_wire_sync( $hyoo_crus_pack ).from( msg ) as $hyoo_crus_pack
 			const parts =  $mol_wire_sync( pack ).parts()
 			
-			$mol_wire_sync( this.$ ).$mol_log3_rise({
+			if( this.$.$hyoo_crus_log() ) $mol_wire_sync( this.$ ).$mol_log3_rise({
 				place: this,
 				message: 'Gain Pack',
 				port: $mol_key( port ),
@@ -277,7 +277,7 @@ namespace $ {
 				if( !this.port_lands_passive( port ).has( land.ref() ) ) continue
 				this.port_lands_passive( port ).delete( land.ref() )
 				
-				this.$.$mol_log3_rise({
+				if( this.$.$hyoo_crus_log() ) this.$.$mol_log3_rise({
 					place: this,
 					message: 'Forget Land',
 					port: $mol_key( port ),
@@ -306,7 +306,7 @@ namespace $ {
 				const parts = Land.delta_parts( faces )
 				if( !parts ) return
 				
-				this.$.$mol_log3_rise({
+				if( this.$.$hyoo_crus_log() ) this.$.$mol_log3_rise({
 					place: this,
 					message: 'Send Unit',
 					port: $mol_key( port ),
@@ -328,7 +328,7 @@ namespace $ {
 			// $mol_wire_solid() 
 			const Land = this.$.$hyoo_crus_glob.Land( land )
 			Land.loading()
-			this.$.$mol_log3_rise({
+			if( this.$.$hyoo_crus_log() ) this.$.$mol_log3_rise({
 				place: this,
 				message: 'Send Face',
 				port: $mol_key( port ),
