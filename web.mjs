@@ -5187,6 +5187,151 @@ var $;
 
 ;
 "use strict";
+
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_state_arg extends $mol_object {
+        prefix;
+        static href(next) {
+            if (next === undefined) {
+                next = $mol_dom_context.location.href;
+            }
+            else if (!/^about:srcdoc/.test(next)) {
+                new $mol_after_frame(() => {
+                    const next = this.href();
+                    const prev = $mol_dom_context.location.href;
+                    if (next === prev)
+                        return;
+                    const history = $mol_dom_context.history;
+                    history.replaceState(history.state, $mol_dom_context.document.title, next);
+                });
+            }
+            if ($mol_dom_context.parent !== $mol_dom_context.self) {
+                $mol_dom_context.parent.postMessage(['hashchange', next], '*');
+            }
+            return next;
+        }
+        static href_normal() {
+            return this.link({});
+        }
+        static href_absolute() {
+            return new URL(this.href(), $mol_dom_context.location.href).toString();
+        }
+        static dict(next) {
+            var href = this.href(next && this.make_link(next)).split(/#!?/)[1] || '';
+            var chunks = href.split(this.separator);
+            var params = {};
+            chunks.forEach(chunk => {
+                if (!chunk)
+                    return;
+                var vals = chunk.split('=').map(decodeURIComponent);
+                params[vals.shift()] = vals.join('=');
+            });
+            return params;
+        }
+        static dict_cut(except) {
+            const dict = this.dict();
+            const cut = {};
+            for (const key in dict) {
+                if (except.indexOf(key) >= 0)
+                    break;
+                cut[key] = dict[key];
+            }
+            return cut;
+        }
+        static value(key, next) {
+            const nextDict = (next === void 0) ? void 0 : { ...this.dict(), [key]: next };
+            const next2 = this.dict(nextDict)[key];
+            return (next2 == null) ? null : next2;
+        }
+        static link(next) {
+            return this.make_link({
+                ...this.dict_cut(Object.keys(next)),
+                ...next,
+            });
+        }
+        static prolog = '!';
+        static separator = '/';
+        static make_link(next) {
+            const chunks = [];
+            for (let key in next) {
+                if (null == next[key])
+                    continue;
+                const val = next[key];
+                chunks.push([key].concat(val ? [val] : []).map(this.encode).join('='));
+            }
+            return new URL('#' + this.prolog + chunks.join(this.separator), this.href_absolute()).toString();
+        }
+        static go(next) {
+            $mol_dom_context.location.href = this.link(next);
+        }
+        static encode(str) {
+            return encodeURIComponent(str).replace(/\(/g, '%28').replace(/\)/g, '%29');
+        }
+        constructor(prefix = '') {
+            super();
+            this.prefix = prefix;
+        }
+        value(key, next) {
+            return this.constructor.value(this.prefix + key, next);
+        }
+        sub(postfix) {
+            return new this.constructor(this.prefix + postfix + '.');
+        }
+        link(next) {
+            var prefix = this.prefix;
+            var dict = {};
+            for (var key in next) {
+                dict[prefix + key] = next[key];
+            }
+            return this.constructor.link(dict);
+        }
+    }
+    __decorate([
+        $mol_mem
+    ], $mol_state_arg, "href", null);
+    __decorate([
+        $mol_mem
+    ], $mol_state_arg, "href_normal", null);
+    __decorate([
+        $mol_mem
+    ], $mol_state_arg, "href_absolute", null);
+    __decorate([
+        $mol_mem
+    ], $mol_state_arg, "dict", null);
+    __decorate([
+        $mol_mem_key
+    ], $mol_state_arg, "dict_cut", null);
+    __decorate([
+        $mol_mem_key
+    ], $mol_state_arg, "value", null);
+    __decorate([
+        $mol_mem_key
+    ], $mol_state_arg, "make_link", null);
+    __decorate([
+        $mol_action
+    ], $mol_state_arg, "go", null);
+    $.$mol_state_arg = $mol_state_arg;
+    function $mol_state_arg_change() {
+        $mol_state_arg.href($mol_dom_context.location.href);
+    }
+    self.addEventListener('hashchange', $mol_state_arg_change);
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    function $hyoo_crus_log() {
+        return this.$mol_state_arg.value('hyoo_crus_log') !== null;
+    }
+    $.$hyoo_crus_log = $hyoo_crus_log;
+})($ || ($ = {}));
+
+;
+"use strict";
 var $;
 (function ($) {
     function $mol_wire_race(...tasks) {
@@ -5813,11 +5958,12 @@ var $;
         }
         loading() {
             let units = this.unit_sort(this.$.$hyoo_crus_mine.units(this.ref()) ?? []);
-            $mol_wire_sync(this.$).$mol_log3_rise({
-                place: this,
-                message: 'Load Unit',
-                units: units.length,
-            });
+            if (this.$.$hyoo_crus_log())
+                $mol_wire_sync(this.$).$mol_log3_rise({
+                    place: this,
+                    message: 'Load Unit',
+                    units: units.length,
+                });
             const errors = this.apply_unit(units, 'skip_check').filter(Boolean);
             if (errors.length)
                 this.$.$mol_log3_fail({
@@ -5862,11 +6008,12 @@ var $;
             if (persisting.length) {
                 this.bus().send(persisting.map(unit => unit.buffer));
                 mine.units(this.ref(), persisting);
-                $mol_wire_sync(this.$).$mol_log3_done({
-                    place: this,
-                    message: 'Saved Units',
-                    units: persisting.length,
-                });
+                if (this.$.$hyoo_crus_log())
+                    $mol_wire_sync(this.$).$mol_log3_done({
+                        place: this,
+                        message: 'Saved Units',
+                        units: persisting.length,
+                    });
             }
         }
         unit_sign(unit) {
@@ -7763,13 +7910,14 @@ var $;
         port_income(port, msg) {
             const pack = $mol_wire_sync($hyoo_crus_pack).from(msg);
             const parts = $mol_wire_sync(pack).parts();
-            $mol_wire_sync(this.$).$mol_log3_rise({
-                place: this,
-                message: 'Gain Pack',
-                port: $mol_key(port),
-                lands: parts.lands,
-                rocks: parts.rocks.length,
-            });
+            if (this.$.$hyoo_crus_log())
+                $mol_wire_sync(this.$).$mol_log3_rise({
+                    place: this,
+                    message: 'Gain Pack',
+                    port: $mol_key(port),
+                    lands: parts.lands,
+                    rocks: parts.rocks.length,
+                });
             forget: {
                 if (parts.rocks.length)
                     break forget;
@@ -7827,12 +7975,13 @@ var $;
                 if (!this.port_lands_passive(port).has(land.ref()))
                     continue;
                 this.port_lands_passive(port).delete(land.ref());
-                this.$.$mol_log3_rise({
-                    place: this,
-                    message: 'Forget Land',
-                    port: $mol_key(port),
-                    land: land.ref(),
-                });
+                if (this.$.$hyoo_crus_log())
+                    this.$.$mol_log3_rise({
+                        place: this,
+                        message: 'Forget Land',
+                        port: $mol_key(port),
+                        land: land.ref(),
+                    });
                 port.send_bin(pack);
             }
         }
@@ -7847,13 +7996,14 @@ var $;
                 const parts = Land.delta_parts(faces);
                 if (!parts)
                     return;
-                this.$.$mol_log3_rise({
-                    place: this,
-                    message: 'Send Unit',
-                    port: $mol_key(port),
-                    lands: parts.lands,
-                    rocks: parts.rocks.length,
-                });
+                if (this.$.$hyoo_crus_log())
+                    this.$.$mol_log3_rise({
+                        place: this,
+                        message: 'Send Unit',
+                        port: $mol_key(port),
+                        lands: parts.lands,
+                        rocks: parts.rocks.length,
+                    });
                 port.send_bin($hyoo_crus_pack.make(parts).asArray());
                 faces.sync(Land.faces);
             }
@@ -7864,13 +8014,14 @@ var $;
         init_port_land([port, land]) {
             const Land = this.$.$hyoo_crus_glob.Land(land);
             Land.loading();
-            this.$.$mol_log3_rise({
-                place: this,
-                message: 'Send Face',
-                port: $mol_key(port),
-                land: land,
-                faces: Land.faces,
-            });
+            if (this.$.$hyoo_crus_log())
+                this.$.$mol_log3_rise({
+                    place: this,
+                    message: 'Send Face',
+                    port: $mol_key(port),
+                    land: land,
+                    faces: Land.faces,
+                });
             port.send_bin(Land.faces_pack().asArray());
         }
         face_port_land([port, land], next = null) {
@@ -11783,141 +11934,6 @@ var $;
 	};
 	($mol_mem(($.$mol_link.prototype), "event_click"));
 
-
-;
-"use strict";
-
-;
-"use strict";
-var $;
-(function ($) {
-    class $mol_state_arg extends $mol_object {
-        prefix;
-        static href(next) {
-            if (next === undefined) {
-                next = $mol_dom_context.location.href;
-            }
-            else if (!/^about:srcdoc/.test(next)) {
-                new $mol_after_frame(() => {
-                    const next = this.href();
-                    const prev = $mol_dom_context.location.href;
-                    if (next === prev)
-                        return;
-                    const history = $mol_dom_context.history;
-                    history.replaceState(history.state, $mol_dom_context.document.title, next);
-                });
-            }
-            if ($mol_dom_context.parent !== $mol_dom_context.self) {
-                $mol_dom_context.parent.postMessage(['hashchange', next], '*');
-            }
-            return next;
-        }
-        static href_normal() {
-            return this.link({});
-        }
-        static href_absolute() {
-            return new URL(this.href(), $mol_dom_context.location.href).toString();
-        }
-        static dict(next) {
-            var href = this.href(next && this.make_link(next)).split(/#!?/)[1] || '';
-            var chunks = href.split(this.separator);
-            var params = {};
-            chunks.forEach(chunk => {
-                if (!chunk)
-                    return;
-                var vals = chunk.split('=').map(decodeURIComponent);
-                params[vals.shift()] = vals.join('=');
-            });
-            return params;
-        }
-        static dict_cut(except) {
-            const dict = this.dict();
-            const cut = {};
-            for (const key in dict) {
-                if (except.indexOf(key) >= 0)
-                    break;
-                cut[key] = dict[key];
-            }
-            return cut;
-        }
-        static value(key, next) {
-            const nextDict = (next === void 0) ? void 0 : { ...this.dict(), [key]: next };
-            const next2 = this.dict(nextDict)[key];
-            return (next2 == null) ? null : next2;
-        }
-        static link(next) {
-            return this.make_link({
-                ...this.dict_cut(Object.keys(next)),
-                ...next,
-            });
-        }
-        static prolog = '!';
-        static separator = '/';
-        static make_link(next) {
-            const chunks = [];
-            for (let key in next) {
-                if (null == next[key])
-                    continue;
-                const val = next[key];
-                chunks.push([key].concat(val ? [val] : []).map(this.encode).join('='));
-            }
-            return new URL('#' + this.prolog + chunks.join(this.separator), this.href_absolute()).toString();
-        }
-        static go(next) {
-            $mol_dom_context.location.href = this.link(next);
-        }
-        static encode(str) {
-            return encodeURIComponent(str).replace(/\(/g, '%28').replace(/\)/g, '%29');
-        }
-        constructor(prefix = '') {
-            super();
-            this.prefix = prefix;
-        }
-        value(key, next) {
-            return this.constructor.value(this.prefix + key, next);
-        }
-        sub(postfix) {
-            return new this.constructor(this.prefix + postfix + '.');
-        }
-        link(next) {
-            var prefix = this.prefix;
-            var dict = {};
-            for (var key in next) {
-                dict[prefix + key] = next[key];
-            }
-            return this.constructor.link(dict);
-        }
-    }
-    __decorate([
-        $mol_mem
-    ], $mol_state_arg, "href", null);
-    __decorate([
-        $mol_mem
-    ], $mol_state_arg, "href_normal", null);
-    __decorate([
-        $mol_mem
-    ], $mol_state_arg, "href_absolute", null);
-    __decorate([
-        $mol_mem
-    ], $mol_state_arg, "dict", null);
-    __decorate([
-        $mol_mem_key
-    ], $mol_state_arg, "dict_cut", null);
-    __decorate([
-        $mol_mem_key
-    ], $mol_state_arg, "value", null);
-    __decorate([
-        $mol_mem_key
-    ], $mol_state_arg, "make_link", null);
-    __decorate([
-        $mol_action
-    ], $mol_state_arg, "go", null);
-    $.$mol_state_arg = $mol_state_arg;
-    function $mol_state_arg_change() {
-        $mol_state_arg.href($mol_dom_context.location.href);
-    }
-    self.addEventListener('hashchange', $mol_state_arg_change);
-})($ || ($ = {}));
 
 ;
 "use strict";
@@ -23802,9 +23818,9 @@ var $;
 "use strict";
 
 ;
-	($.$mol_icon_brightness_6) = class $mol_icon_brightness_6 extends ($.$mol_icon) {
+	($.$mol_icon_brightness_4) = class $mol_icon_brightness_4 extends ($.$mol_icon) {
 		path(){
-			return "M12,18V6A6,6 0 0,1 18,12A6,6 0 0,1 12,18M20,15.31L23.31,12L20,8.69V4H15.31L12,0.69L8.69,4H4V8.69L0.69,12L4,15.31V20H8.69L12,23.31L15.31,20H20V15.31Z";
+			return "M12,18C11.11,18 10.26,17.8 9.5,17.45C11.56,16.5 13,14.42 13,12C13,9.58 11.56,7.5 9.5,6.55C10.26,6.2 11.11,6 12,6A6,6 0 0,1 18,12A6,6 0 0,1 12,18M20,8.69V4H15.31L12,0.69L8.69,4H4V8.69L0.69,12L4,15.31V20H8.69L12,23.31L15.31,20H20V15.31L23.31,12L20,8.69Z";
 		}
 	};
 
@@ -23815,7 +23831,7 @@ var $;
 ;
 	($.$mol_lights_toggle) = class $mol_lights_toggle extends ($.$mol_check_icon) {
 		Lights_icon(){
-			const obj = new this.$.$mol_icon_brightness_6();
+			const obj = new this.$.$mol_icon_brightness_4();
 			return obj;
 		}
 		lights(next){

@@ -1276,6 +1276,42 @@ declare namespace $ {
 }
 
 declare namespace $ {
+    class $mol_state_arg extends $mol_object {
+        prefix: string;
+        static href(next?: string): string;
+        static href_normal(): string;
+        static href_absolute(): string;
+        static dict(next?: {
+            [key: string]: string | null;
+        }): Readonly<{
+            [key: string]: string;
+        }>;
+        static dict_cut(except: string[]): {
+            [key: string]: string;
+        };
+        static value(key: string, next?: string | null): string | null;
+        static link(next: Record<string, string | null>): string;
+        static prolog: string;
+        static separator: string;
+        static make_link(next: {
+            [key: string]: string | null;
+        }): string;
+        static go(next: {
+            [key: string]: string | null;
+        }): void;
+        static encode(str: string): string;
+        constructor(prefix?: string);
+        value(key: string, next?: string): string | null;
+        sub(postfix: string): $mol_state_arg;
+        link(next: Record<string, string | null>): string;
+    }
+}
+
+declare namespace $ {
+    function $hyoo_crus_log(this: $): boolean;
+}
+
+declare namespace $ {
     function $mol_wire_race<Tasks extends ((...args: any) => any)[]>(...tasks: Tasks): {
         [index in keyof Tasks]: ReturnType<Tasks[index]>;
     };
@@ -5263,38 +5299,6 @@ declare namespace $.$$ {
 }
 
 declare namespace $ {
-}
-
-declare namespace $ {
-    class $mol_state_arg extends $mol_object {
-        prefix: string;
-        static href(next?: string): string;
-        static href_normal(): string;
-        static href_absolute(): string;
-        static dict(next?: {
-            [key: string]: string | null;
-        }): Readonly<{
-            [key: string]: string;
-        }>;
-        static dict_cut(except: string[]): {
-            [key: string]: string;
-        };
-        static value(key: string, next?: string | null): string | null;
-        static link(next: Record<string, string | null>): string;
-        static prolog: string;
-        static separator: string;
-        static make_link(next: {
-            [key: string]: string | null;
-        }): string;
-        static go(next: {
-            [key: string]: string | null;
-        }): void;
-        static encode(str: string): string;
-        constructor(prefix?: string);
-        value(key: string, next?: string): string | null;
-        sub(postfix: string): $mol_state_arg;
-        link(next: Record<string, string | null>): string;
-    }
 }
 
 declare namespace $ {
@@ -11145,17 +11149,17 @@ declare namespace $ {
 //# sourceMappingURL=image.view.tree.d.ts.map
 declare namespace $ {
 
-	export class $mol_icon_brightness_6 extends $mol_icon {
+	export class $mol_icon_brightness_4 extends $mol_icon {
 		path( ): string
 	}
 	
 }
 
-//# sourceMappingURL=6.view.tree.d.ts.map
+//# sourceMappingURL=4.view.tree.d.ts.map
 declare namespace $ {
 
 	export class $mol_lights_toggle extends $mol_check_icon {
-		Lights_icon( ): $mol_icon_brightness_6
+		Lights_icon( ): $mol_icon_brightness_4
 		lights( next?: boolean ): boolean
 		Icon( ): ReturnType< $mol_lights_toggle['Lights_icon'] >
 		hint( ): string

@@ -179,6 +179,7 @@
     "$hyoo_crus_mine_pg",
     "$hyoo_crus_mine_fs",
     "$mol_bus",
+    "$hyoo_crus_log",
     "$mol_wire_race",
     "$hyoo_crus_app_home",
     "$hyoo_crus_app_stat",
