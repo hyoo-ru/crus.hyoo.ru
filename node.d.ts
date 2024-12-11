@@ -1678,8 +1678,8 @@ declare namespace $ {
         join(): $hyoo_crus_pass;
         give(dest: $hyoo_crus_auth | $hyoo_crus_ref | null, rank: $hyoo_crus_rank): $hyoo_crus_gift;
         post(lead: string, head: string, self: string, vary: $hyoo_crus_vary_type, tag?: keyof typeof $hyoo_crus_sand_tag): $hyoo_crus_sand;
-        sand_move(sand: $hyoo_crus_sand, head: string, seat: number, peer?: string | null): void;
-        sand_wipe(sand: $hyoo_crus_sand, peer?: string | null): void;
+        sand_move(sand: $hyoo_crus_sand, head: string, seat: number, peer?: string | null): $hyoo_crus_sand | undefined;
+        sand_wipe(sand: $hyoo_crus_sand, peer?: string | null): $hyoo_crus_sand;
         broadcast(): void;
         sync(): this;
         destructor(): void;

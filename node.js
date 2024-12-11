@@ -7313,13 +7313,13 @@ var $;
             else {
                 this.sand_wipe(sand);
             }
-            this.post(lead, head, sand.self(), vary, sand.tag());
+            return this.post(lead, head, sand.self(), vary, sand.tag());
         }
         sand_wipe(sand, peer = '') {
             const head = sand.head();
             const units = this.sand_ordered({ head, peer }).filter(unit => unit.tip() !== 'nil');
             const seat = units.indexOf(sand);
-            this.post(seat ? units[seat - 1].self() : '', head, sand.self(), null, 'term');
+            return this.post(seat ? units[seat - 1].self() : '', head, sand.self(), null, 'term');
         }
         broadcast() {
             this.$.$hyoo_crus_glob.yard().lands_news.add(this.ref());
