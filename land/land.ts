@@ -766,7 +766,7 @@ namespace $ {
 				
 			}
 			
-			this.post(
+			return this.post(
 				lead,
 				head,
 				sand.self(),
@@ -786,7 +786,7 @@ namespace $ {
 			const units = this.sand_ordered({ head, peer }).filter( unit => unit.tip() !== 'nil' )
 			const seat = units.indexOf( sand )
 			
-			this.post(
+			return this.post(
 				seat ? units[ seat - 1 ].self() : '',
 				head,
 				sand.self(),

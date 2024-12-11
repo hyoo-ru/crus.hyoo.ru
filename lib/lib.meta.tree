@@ -6,6 +6,7 @@ include \/hyoo/crus/list
 include \/hyoo/crus/dict
 include \/hyoo/crus/empire
 include \/hyoo/crus/text
+include \/hyoo/crus/dom
 include \/hyoo/crus/file
 include \/hyoo/crus/vary/cast
 include \/hyoo/crus/cast
