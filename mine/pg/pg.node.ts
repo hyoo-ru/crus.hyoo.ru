@@ -14,7 +14,7 @@ namespace $ {
 		@ $mol_mem_key
 		static rock( hash: Uint8Array, next?: Uint8Array ) {
 			if( next ) {
-				$mol_wire_sync( this ).db()?.query(
+				$mol_wire_sync( this ).db_sync()?.query(
 					`
 						INSERT INTO Rock( hash, rock )
 						VALUES( $1::bytea, $2::bytea )
@@ -87,6 +87,12 @@ namespace $ {
 			})
 			
 			return units
+		}
+		
+		@ $mol_mem
+		static db_sync() {
+			$mol_wire_solid()
+			return $mol_wire_sync( this ).db()
 		}
 		
 		@ $mol_memo.method

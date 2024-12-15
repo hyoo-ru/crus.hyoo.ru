@@ -19,7 +19,7 @@ namespace $ {
 		
 		@ $mol_action
 		static rock_read() {
-			const db = $mol_wire_sync( this ).db()
+			const db = this.db_sync()
 			return $mol_wire_sync( db ).read( 'Rock' ).Rock
 		}
 		
@@ -59,6 +59,12 @@ namespace $ {
 			}
 			
 			return units
+		}
+
+		@ $mol_mem
+		static db_sync() {
+			$mol_wire_solid()
+			return $mol_wire_sync( this ).db()
 		}
 		
 		@ $mol_memo.method
