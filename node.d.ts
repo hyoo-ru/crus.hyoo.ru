@@ -3824,6 +3824,7 @@ declare namespace $ {
         static rock_load(hash: Uint8Array): Promise<Uint8Array<ArrayBufferLike> | null>;
         static units_save(land: $hyoo_crus_ref, units: readonly $hyoo_crus_unit[]): Promise<void>;
         static units_load(land: $hyoo_crus_ref): Promise<($hyoo_crus_pass | $hyoo_crus_gift | $hyoo_crus_sand)[]>;
+        static db_sync(): import("pg").Pool | null;
         static db(): Promise<import("pg").Pool | null>;
     }
 }

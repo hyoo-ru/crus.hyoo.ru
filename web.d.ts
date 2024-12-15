@@ -1607,6 +1607,18 @@ declare namespace $ {
         }>>;
         static units_save(land: $hyoo_crus_ref, units: readonly $hyoo_crus_unit[]): Promise<void>;
         static units_load(land: $hyoo_crus_ref): Promise<($hyoo_crus_sand | $hyoo_crus_gift | $hyoo_crus_pass)[]>;
+        static db_sync(): $mol_db_database<{
+            Rock: {
+                Key: [hash: Uint8Array];
+                Doc: ArrayBuffer;
+                Indexes: {};
+            };
+            Land: {
+                Key: [land: string, path: string];
+                Doc: ArrayBuffer;
+                Indexes: {};
+            };
+        }>;
         static db(): Promise<$mol_db_database<{
             Rock: {
                 Key: [hash: Uint8Array];
