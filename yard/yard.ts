@@ -179,7 +179,7 @@ namespace $ {
 		}
 		
 		@ $mol_action
-		port_income( port: $mol_rest_port, msg: Uint8Array ) {
+		port_income( port: $mol_rest_port, msg: Uint8Array< ArrayBuffer > ) {
 			
 			const pack = $mol_wire_sync( $hyoo_crus_pack ).from( msg ) as $hyoo_crus_pack
 			const parts =  $mol_wire_sync( pack ).parts()

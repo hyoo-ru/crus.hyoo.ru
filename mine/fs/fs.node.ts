@@ -16,13 +16,13 @@ namespace $ {
 		}
 		
 		@ $mol_mem_key
-		static rock_file( hash: Uint8Array ) {
+		static rock_file( hash: Uint8Array< ArrayBuffer > ) {
 			const id = $mol_base64_ae_encode( hash )
 			return this.root().resolve( `rock/${ id.slice( 0, 2 ) }/${ id }.blob` )
 		}
 		
 		@ $mol_mem_key
-		static rock( hash: Uint8Array, next?: Uint8Array ) {
+		static rock( hash: Uint8Array< ArrayBuffer >, next?: Uint8Array< ArrayBuffer > ): Uint8Array< ArrayBuffer > | null {
 			const buf = this.rock_file( hash ).buffer( next )
 			if( next ) return buf
 			if( $mol_compare_deep( hash, this.hash( buf ) ) ) return buf
@@ -92,7 +92,7 @@ namespace $ {
 			const descr = this.units_file( land ).open( 'create', 'read_write' )
 			try {
 			
-				const buf = $node.fs.readFileSync( descr )
+				const buf = $node.fs.readFileSync( descr ) as Buffer< ArrayBuffer >
 				if( !buf.length ) return []
 				
 				this.units_sizes.set( land, buf.length )

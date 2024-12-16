@@ -80,12 +80,12 @@ namespace $ {
 	export function $hyoo_crus_vary_switch< Ways extends {
 			
 		nil:   ( vary: null )=> any,
-		bin:   ( vary: Uint8Array )=> any,
+		bin:   ( vary: Uint8Array< ArrayBuffer > )=> any,
 		bool:  ( vary: boolean )=> any,
 		int:   ( vary: bigint )=> any,
-		ints:  ( vary: BigInt64Array )=> any,
+		ints:  ( vary: BigInt64Array< ArrayBuffer > )=> any,
 		real:  ( vary: number )=> any,
-		reals: ( vary: Float64Array )=> any,
+		reals: ( vary: Float64Array< ArrayBuffer > )=> any,
 		ref:   ( vary: $hyoo_crus_ref )=> any,
 		
 		str:   ( vary: string )=> any,
@@ -115,9 +115,9 @@ namespace $ {
 		switch( Reflect.getPrototypeOf( vary ) ) {
 			case Object.prototype: return ways.json( vary )
 			case Array.prototype: return ways.jsan( vary as any[] )
-			case Uint8Array.prototype: return ways.bin( vary as Uint8Array )
-			case BigInt64Array.prototype: return ways.ints( vary as BigInt64Array )
-			case Float64Array.prototype: return ways.reals( vary as Float64Array )
+			case Uint8Array.prototype: return ways.bin( vary as Uint8Array< ArrayBuffer > )
+			case BigInt64Array.prototype: return ways.ints( vary as BigInt64Array< ArrayBuffer > )
+			case Float64Array.prototype: return ways.reals( vary as Float64Array< ArrayBuffer > )
 			case $mol_time_moment.prototype: return ways.time( vary as $mol_time_moment )
 			case $mol_time_duration.prototype: return ways.dur( vary as $mol_time_duration )
 			case $mol_time_interval.prototype: return ways.range( vary as $mol_time_interval )
@@ -136,9 +136,9 @@ namespace $ {
 			bin:   vary => ({ tip: 'bin' as const,   bin: vary }),
 			bool:  vary => ({ tip: 'bool' as const,  bin: new Uint8Array([ Number( vary ) ]) }),
 			int:   vary => ({ tip: 'int' as const,   bin: new Uint8Array( new BigInt64Array([ vary ]).buffer ) }),
-			ints:  vary => ({ tip: 'ints' as const,  bin: new Uint8Array( vary ) }),
+			ints:  vary => ({ tip: 'ints' as const,  bin: new Uint8Array( vary.buffer, vary.byteLength, vary.byteLength ) }),
 			real:  vary => ({ tip: 'real' as const,  bin: new Uint8Array( new Float64Array([ vary ]).buffer ) }),
-			reals: vary => ({ tip: 'reals' as const, bin: new Uint8Array( vary ) }),
+			reals: vary => ({ tip: 'reals' as const, bin: new Uint8Array( vary.buffer, vary.byteLength, vary.byteLength ) }),
 			ref:   vary => ({ tip: 'ref' as const,   bin: $hyoo_crus_ref_encode( vary ) }),
 			
 			str:   vary => ({ tip: 'str' as const,   bin: $mol_charset_encode( vary ) }),

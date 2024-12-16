@@ -2,7 +2,7 @@ namespace $ {
 	export class $hyoo_crus_mine_idb extends $hyoo_crus_mine {
 		
 		@ $mol_mem_key
-		static rock( hash: Uint8Array, next?: Uint8Array ): Uint8Array | null {
+		static rock( hash: Uint8Array< ArrayBuffer >, next?: Uint8Array< ArrayBuffer > ): Uint8Array< ArrayBuffer > | null {
 			
 			const prev = $mol_mem_cached( ()=> this.rock( hash ) )
 			if( prev ) return prev
@@ -72,7 +72,7 @@ namespace $ {
 			
 			return await this.$.$mol_db<{
 				Rock: {
-					Key: [ hash: Uint8Array ]
+					Key: [ hash: Uint8Array< ArrayBuffer > ]
 					Doc: ArrayBuffer
 					Indexes: {}
 				}
