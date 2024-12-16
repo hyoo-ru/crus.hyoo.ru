@@ -941,6 +941,12 @@ var $;
                 };
             });
         }
+        destructor() {
+            super.destructor();
+            if ($mol_owning_check(this, this.cache)) {
+                this.cache.destructor();
+            }
+        }
     }
     $.$mol_wire_fiber = $mol_wire_fiber;
 })($ || ($ = {}));
@@ -1167,7 +1173,8 @@ var $;
                     $$.$mol_log3_warn({
                         place: '$mol_wire_task',
                         message: `Non idempotency`,
-                        existen,
+                        sub,
+                        pubs: [...sub?.pub_list ?? [], existen],
                         next,
                         hint: 'Ignore it',
                     });
@@ -1190,6 +1197,14 @@ var $;
                 this.cursor = $mol_wire_cursor.fresh;
                 if (next !== prev)
                     this.emit();
+                if ($mol_owning_catch(this, next)) {
+                    try {
+                        next[Symbol.toStringTag] = this[Symbol.toStringTag];
+                    }
+                    catch {
+                        Object.defineProperty(next, Symbol.toStringTag, { value: this[Symbol.toStringTag] });
+                    }
+                }
                 return next;
             }
             this.cursor = $mol_wire_cursor.final;
@@ -1712,10 +1727,6 @@ var $;
         }
         destructor() {
             super.destructor();
-            const prev = this.cache;
-            if ($mol_owning_check(this, prev)) {
-                prev.destructor();
-            }
             if (this.pub_from === 0) {
                 ;
                 (this.host ?? this.task)[this.field()] = null;
@@ -4330,9 +4341,9 @@ var $;
             bin: vary => ({ tip: 'bin', bin: vary }),
             bool: vary => ({ tip: 'bool', bin: new Uint8Array([Number(vary)]) }),
             int: vary => ({ tip: 'int', bin: new Uint8Array(new BigInt64Array([vary]).buffer) }),
-            ints: vary => ({ tip: 'ints', bin: new Uint8Array(vary) }),
+            ints: vary => ({ tip: 'ints', bin: new Uint8Array(vary.buffer, vary.byteLength, vary.byteLength) }),
             real: vary => ({ tip: 'real', bin: new Uint8Array(new Float64Array([vary]).buffer) }),
-            reals: vary => ({ tip: 'reals', bin: new Uint8Array(vary) }),
+            reals: vary => ({ tip: 'reals', bin: new Uint8Array(vary.buffer, vary.byteLength, vary.byteLength) }),
             ref: vary => ({ tip: 'ref', bin: $hyoo_crus_ref_encode(vary) }),
             str: vary => ({ tip: 'str', bin: $mol_charset_encode(vary) }),
             time: vary => ({ tip: 'time', bin: $mol_charset_encode(String(vary)) }),
