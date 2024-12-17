@@ -214,7 +214,7 @@ namespace $ {
 			
 			/** Make new Node and place it at end. */
 			@ $mol_action
-			make( config?: null | number | $hyoo_crus_rank_preset | $hyoo_crus_land ): Vals[number] {
+			make( config: null | number | $hyoo_crus_rank_preset | $hyoo_crus_land ): Vals[number] {
 				
 				if( config === null || typeof config === 'number' ) {
 					
