@@ -4443,6 +4443,16 @@ var $;
                 return val;
             $mol_fail(new Error(`Wrong ref (${val.description})`));
         } }).$hyoo_crus_ref;
+    function $hyoo_crus_ref_check(val) {
+        try {
+            $.$hyoo_crus_ref(val);
+            return val;
+        }
+        catch {
+            return '';
+        }
+    }
+    $.$hyoo_crus_ref_check = $hyoo_crus_ref_check;
     function $hyoo_crus_ref_lord(ref) {
         return $.$hyoo_crus_ref(ref.description.split('_').slice(0, 2).join('_'));
     }

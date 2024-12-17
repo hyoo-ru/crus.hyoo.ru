@@ -1079,6 +1079,7 @@ declare namespace $ {
         $hyoo_crus_ref: symbol;
     });
     type $hyoo_crus_ref = typeof $hyoo_crus_ref.Value;
+    function $hyoo_crus_ref_check(val: string): string;
     function $hyoo_crus_ref_lord(ref: $hyoo_crus_ref): symbol & {
         $hyoo_crus_ref: symbol;
     };
@@ -2661,7 +2662,7 @@ declare namespace $ {
         new (): {
             remote_list(next?: Vals): Vals;
             remote_add(item: Vals[number]): void;
-            make(config?: null | number | $hyoo_crus_rank_preset | $hyoo_crus_land): Vals[number];
+            make(config: null | number | $hyoo_crus_rank_preset | $hyoo_crus_land): Vals[number];
             remote_make(config: $hyoo_crus_rank_preset): Vals[number];
             local_make(idea?: number): Vals[number];
             items(next?: readonly ((symbol & {

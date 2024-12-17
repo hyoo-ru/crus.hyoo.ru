@@ -1453,6 +1453,16 @@ var $;
                 return val;
             $mol_fail(new Error(`Wrong ref (${val.description})`));
         } }).$hyoo_crus_ref;
+    function $hyoo_crus_ref_check(val) {
+        try {
+            $.$hyoo_crus_ref(val);
+            return val;
+        }
+        catch {
+            return '';
+        }
+    }
+    $.$hyoo_crus_ref_check = $hyoo_crus_ref_check;
     function $hyoo_crus_ref_lord(ref) {
         return $.$hyoo_crus_ref(ref.description.split('_').slice(0, 2).join('_'));
     }
@@ -24768,10 +24778,10 @@ var $;
                 return domain;
             domain.Title(null).val('Base Domain');
             domain.Types(null).items_vary(['vary', 'enum', 'bool', 'int', 'real', 'str', 'ref', 'time', 'dict', 'text', 'list']);
-            const Thing = domain.Kinds(null).make();
-            const Kind = domain.Kinds(null).make();
-            const Prop = domain.Kinds(null).make();
-            const Domain = domain.Kinds(null).make();
+            const Thing = domain.Kinds(null).make(null);
+            const Kind = domain.Kinds(null).make(null);
+            const Prop = domain.Kinds(null).make(null);
+            const Domain = domain.Kinds(null).make(null);
             Kind.Title(null).val('Kind');
             Prop.Title(null).val('Property');
             Thing.Title(null).val('Thing');
@@ -24781,17 +24791,17 @@ var $;
             Thing.Kind(null).remote(Kind);
             Domain.Kind(null).remote(Kind);
             domain.Kind(null).remote(Domain);
-            const thing_kind = domain.Props(null).make();
-            const thing_title = domain.Props(null).make();
-            const kind_props = domain.Props(null).make();
-            const prop_key = domain.Props(null).make();
-            const prop_type = domain.Props(null).make();
-            const prop_target = domain.Props(null).make();
-            const prop_enum = domain.Props(null).make();
-            const prop_base = domain.Props(null).make();
-            const domain_kinds = domain.Props(null).make();
-            const domain_props = domain.Props(null).make();
-            const domain_types = domain.Props(null).make();
+            const thing_kind = domain.Props(null).make(null);
+            const thing_title = domain.Props(null).make(null);
+            const kind_props = domain.Props(null).make(null);
+            const prop_key = domain.Props(null).make(null);
+            const prop_type = domain.Props(null).make(null);
+            const prop_target = domain.Props(null).make(null);
+            const prop_enum = domain.Props(null).make(null);
+            const prop_base = domain.Props(null).make(null);
+            const domain_kinds = domain.Props(null).make(null);
+            const domain_props = domain.Props(null).make(null);
+            const domain_types = domain.Props(null).make(null);
             thing_kind.Key(null).val('Kind');
             thing_title.Key(null).val('Title');
             kind_props.Key(null).val('Props');

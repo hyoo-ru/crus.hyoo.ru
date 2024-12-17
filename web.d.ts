@@ -434,6 +434,7 @@ declare namespace $ {
         $hyoo_crus_ref: symbol;
     });
     type $hyoo_crus_ref = typeof $hyoo_crus_ref.Value;
+    function $hyoo_crus_ref_check(val: string): string;
     function $hyoo_crus_ref_lord(ref: $hyoo_crus_ref): symbol & {
         $hyoo_crus_ref: symbol;
     };
@@ -2544,7 +2545,7 @@ declare namespace $ {
         new (): {
             remote_list(next?: Vals): Vals;
             remote_add(item: Vals[number]): void;
-            make(config?: null | number | $hyoo_crus_rank_preset | $hyoo_crus_land): Vals[number];
+            make(config: null | number | $hyoo_crus_rank_preset | $hyoo_crus_land): Vals[number];
             remote_make(config: $hyoo_crus_rank_preset): Vals[number];
             local_make(idea?: number): Vals[number];
             items(next?: readonly ((symbol & {
@@ -11830,7 +11831,7 @@ declare namespace $ {
         readonly Props: (auto?: any) => {
             remote_list(next?: readonly $hyoo_crus_flex_prop[] | undefined): readonly $hyoo_crus_flex_prop[];
             remote_add(item: $hyoo_crus_flex_prop): void;
-            make(config?: null | number | $hyoo_crus_rank_preset | $hyoo_crus_land): $hyoo_crus_flex_prop;
+            make(config: null | number | $hyoo_crus_rank_preset | $hyoo_crus_land): $hyoo_crus_flex_prop;
             remote_make(config: $hyoo_crus_rank_preset): $hyoo_crus_flex_prop;
             local_make(idea?: number): $hyoo_crus_flex_prop;
             items(next?: readonly ((symbol & {
@@ -11882,7 +11883,7 @@ declare namespace $ {
                 new (): {
                     remote_list(next?: readonly $hyoo_crus_flex_prop[] | undefined): readonly $hyoo_crus_flex_prop[];
                     remote_add(item: $hyoo_crus_flex_prop): void;
-                    make(config?: null | number | $hyoo_crus_rank_preset | $hyoo_crus_land): $hyoo_crus_flex_prop;
+                    make(config: null | number | $hyoo_crus_rank_preset | $hyoo_crus_land): $hyoo_crus_flex_prop;
                     remote_make(config: $hyoo_crus_rank_preset): $hyoo_crus_flex_prop;
                     local_make(idea?: number): $hyoo_crus_flex_prop;
                     items(next?: readonly ((symbol & {
@@ -12188,7 +12189,7 @@ declare namespace $ {
         readonly Kinds: (auto?: any) => {
             remote_list(next?: readonly $hyoo_crus_flex_kind[] | undefined): readonly $hyoo_crus_flex_kind[];
             remote_add(item: $hyoo_crus_flex_kind): void;
-            make(config?: null | number | $hyoo_crus_rank_preset | $hyoo_crus_land): $hyoo_crus_flex_kind;
+            make(config: null | number | $hyoo_crus_rank_preset | $hyoo_crus_land): $hyoo_crus_flex_kind;
             remote_make(config: $hyoo_crus_rank_preset): $hyoo_crus_flex_kind;
             local_make(idea?: number): $hyoo_crus_flex_kind;
             items(next?: readonly ((symbol & {
@@ -12235,7 +12236,7 @@ declare namespace $ {
         readonly Props: (auto?: any) => {
             remote_list(next?: readonly $hyoo_crus_flex_prop[] | undefined): readonly $hyoo_crus_flex_prop[];
             remote_add(item: $hyoo_crus_flex_prop): void;
-            make(config?: null | number | $hyoo_crus_rank_preset | $hyoo_crus_land): $hyoo_crus_flex_prop;
+            make(config: null | number | $hyoo_crus_rank_preset | $hyoo_crus_land): $hyoo_crus_flex_prop;
             remote_make(config: $hyoo_crus_rank_preset): $hyoo_crus_flex_prop;
             local_make(idea?: number): $hyoo_crus_flex_prop;
             items(next?: readonly ((symbol & {
@@ -12288,7 +12289,7 @@ declare namespace $ {
                 new (): {
                     remote_list(next?: readonly $hyoo_crus_flex_kind[] | undefined): readonly $hyoo_crus_flex_kind[];
                     remote_add(item: $hyoo_crus_flex_kind): void;
-                    make(config?: null | number | $hyoo_crus_rank_preset | $hyoo_crus_land): $hyoo_crus_flex_kind;
+                    make(config: null | number | $hyoo_crus_rank_preset | $hyoo_crus_land): $hyoo_crus_flex_kind;
                     remote_make(config: $hyoo_crus_rank_preset): $hyoo_crus_flex_kind;
                     local_make(idea?: number): $hyoo_crus_flex_kind;
                     items(next?: readonly ((symbol & {
@@ -12347,7 +12348,7 @@ declare namespace $ {
                 new (): {
                     remote_list(next?: readonly $hyoo_crus_flex_prop[] | undefined): readonly $hyoo_crus_flex_prop[];
                     remote_add(item: $hyoo_crus_flex_prop): void;
-                    make(config?: null | number | $hyoo_crus_rank_preset | $hyoo_crus_land): $hyoo_crus_flex_prop;
+                    make(config: null | number | $hyoo_crus_rank_preset | $hyoo_crus_land): $hyoo_crus_flex_prop;
                     remote_make(config: $hyoo_crus_rank_preset): $hyoo_crus_flex_prop;
                     local_make(idea?: number): $hyoo_crus_flex_prop;
                     items(next?: readonly ((symbol & {
