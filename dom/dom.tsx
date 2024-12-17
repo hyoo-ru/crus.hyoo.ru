@@ -3,7 +3,7 @@
 namespace $ {
 	export class $hyoo_crus_dom extends $hyoo_crus_node {
 		
-		dom( next?: Element | DocumentFragment ) {
+		dom( next?: ( Element | Attr | Text )[] ): ( Element | Attr | Text )[] {
 			
 			const land = this.land()
 			const doms = land.Node( $hyoo_crus_dom )
@@ -12,38 +12,57 @@ namespace $ {
 			if( next ) {
 				
 				const ids = new Set< string >()
-				for( const node of next.childNodes ) {
+				for( const node of next ) {
 					if(!( node instanceof this.$.$mol_dom_context.Element )) continue
-					if( ids.has( node.id ) ) node.id = ''
-					ids.add( node.id )
+					const id = $hyoo_crus_ref_check( node.id )
+					if( !id || ids.has( id ) ) node.id = ''
+					ids.add( id )
 				}
 				
-				const sample = [] as ( string | Element | Attr )[]
-				function collect( next: Element | DocumentFragment ) {
-					if( next.nodeType === Node.ELEMENT_NODE ) {
-						for( const attr of ( next as Element ).attributes ) {
-							if( attr.localName === 'id' ) continue
-							if( attr.localName === 'xmlns' ) continue
-							sample.push( attr )
-						}
+				const sample = [] as ( Element | Attr | string )[]
+				let texts = ''
+
+				function flush() {
+					if( !texts.length ) return 
+					for( const token of texts.matchAll( $hyoo_crus_text_tokens ) ) {
+						sample.push( token[0] )
 					}
-					for( const node of next.childNodes ) {
-						
-						if( node.nodeType === node.TEXT_NODE ) {
-							for( const token of node.nodeValue!.matchAll( $hyoo_crus_text_tokens ) ) {
-								sample.push( token[0] )
-							}
-						} else {
-							if( ( node as Element ).localName === 'span' && !Number( ( node as Element ).id ) ) {
-								collect( node as Element )
+					texts = ''
+				}
+
+				function collect( node: Element | Attr | Text ) {
+
+					switch( node.nodeType ) {
+					
+						case( node.ELEMENT_NODE ): {
+							if( ( node as Element ).localName === 'span' ) {
+								for( const kid of [ ... node.childNodes ] ) {
+									collect( kid as Element )
+								}
 							} else {
+								flush()
 								sample.push( node as Element )
 							}
+							return
 						}
-						
+
+						case( node.ATTRIBUTE_NODE ): {
+							if( node.nodeName === 'id' ) return
+							if( node.nodeName === 'xmlns' ) return
+							sample.push( node as Attr )
+							return
+						}
+
+						case( node.TEXT_NODE ): {
+							texts += node.nodeValue!
+							return
+						}
+
 					}
+
 				}
-				collect( next )
+				for( const node of next ) collect( node )
+				flush()
 				
 				function attr( el: Element ) {
 					let res = {} as Record< string, string >
@@ -72,20 +91,22 @@ namespace $ {
 								: 'vals'
 				}
 				
-				let units = this.units().filter( sand => sand.tag() !== 'solo' )
+				let units = this.units()
 				
 				$mol_reconcile({
 					prev: units,
 					from: 0,
 					to: units.length,
 					next: sample,
-					equal: ( next, prev )=> typeof next === 'string'
-						? land.sand_decode( prev ) === next
-						: next.localName === 'span'
-							? land.sand_decode( prev ) === next.textContent
-								: next.nodeType === next.ATTRIBUTE_NODE
-									? land.sand_decode( prev ) === next.localName
-									: prev.self() === ( next as Element ).id,
+					equal: ( next, prev )=> {
+						if( typeof next === 'string' ) {
+							return land.sand_decode( prev ) === next
+						} else if( next.nodeType === next.ATTRIBUTE_NODE ) {
+							return land.sand_decode( prev ) === next.nodeName
+						} else {
+							return prev.self() === ( next as Element ).id
+						}
+					},
 					drop: ( prev, lead )=> land.sand_wipe( prev ),
 					insert: ( next, lead )=> {
 						return land.post(
@@ -117,8 +138,11 @@ namespace $ {
 
 					if( sam.nodeType === sam.ATTRIBUTE_NODE ) {
 						regs.Item( units[i].self() ).val( sam.nodeValue )
-					} else {
-						doms.Item( units[i].self() ).dom( sam as Element )
+					} else if( sam.nodeName !== 'span' ) {
+						doms.Item( units[i].self() ).dom([
+							... ( sam as Element ).attributes,
+							... [ ... ( sam as Element ).childNodes ] as Element[],
+						] )
 					}
 					
 				}
@@ -127,31 +151,29 @@ namespace $ {
 				
 			} else {
 				
-				return <>{
-					this.units().map( unit => {
+				return this.units().flatMap( unit => {
 
-						if( unit.tag() === 'solo' ) return null
-						
-						const Tag = unit.tag() === 'term'
-							? 'span'
-							: ( land.sand_decode( unit ) as string ) ?? 'p'
-						
-						const attrs = unit.tag() === 'vals'
-							? Object.fromEntries(
-								regs.Item( unit.self() ).units()
-								.filter( sand => sand.tag() === 'solo' )
-								.map( sand => [ land.sand_decode( sand ), regs.Item( sand.self() ).val() ] )
-							)
-							: {}
-						
-						const content = unit.tag() === 'term'
-							? $hyoo_crus_vary_cast_str( land.sand_decode( unit ) )
-							: doms.Item( unit.self() ).dom()
-						
-						return <Tag { ... attrs } id={ unit.self() } >{ content }</Tag>
-						
-					} )
-				}</>
+					if( unit.tag() === 'solo' ) return []
+					
+					const Tag = unit.tag() === 'term'
+						? 'span'
+						: ( land.sand_decode( unit ) as string ) ?? 'p'
+					
+					const attrs = unit.tag() === 'vals'
+						? Object.fromEntries(
+							regs.Item( unit.self() ).units()
+							.filter( sand => sand.tag() === 'solo' )
+							.map( sand => [ land.sand_decode( sand ), regs.Item( sand.self() ).val() ] )
+						)
+						: {}
+					
+					const content = unit.tag() === 'term'
+						? $hyoo_crus_vary_cast_str( land.sand_decode( unit ) )
+						: doms.Item( unit.self() ).dom()
+					
+					return <Tag { ... attrs } id={ unit.self() } >{ content }</Tag>
+					
+				} )
 				
 			}
 			
@@ -160,12 +182,36 @@ namespace $ {
 		html( next?: string ) {
 			
 			if( next === undefined ) {
-				return $mol_dom_serialize( <body>{ this.dom() }</body> )
+				return $mol_dom_serialize( <>{ this.dom() }</> )
 			} else {
-				this.dom( $mol_dom_parse( next ).documentElement )
+				this.dom( [ ... $mol_dom_parse( `<body>${ next }</body>` ).documentElement.childNodes ] as Element[] )
 				return next
 			}
 			
+		}
+
+		@ $mol_mem_key
+		selection(
+			lord: $hyoo_crus_ref,
+			next?: readonly( readonly[ string /*self*/, number /*pos*/ ] )[],
+		): readonly( readonly[ string /*self*/, number /*pos*/ ] )[]  {
+
+			const base = this.$.$hyoo_crus_glob.Land( lord ).Data( $hyoo_crus_home )
+			
+			if( next ) {
+				
+				base.Selection(null)?.val( next.map( point => point.join( ':' ) ).join( '|' ) )
+				return next
+				
+			} else {
+				
+				return base.Selection()?.val()?.split( '|' ).map( point => {
+					const chunks = point.split( ':' )
+					return [ chunks[0], Number( chunks[1] ) || 0 ]
+				} ) ?? [ [ this.head(), 0 ], [ this.head(), 0 ] ]
+					
+			}
+
 		}
 		
 	}

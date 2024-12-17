@@ -9,52 +9,52 @@ namespace $ {
 		'plain text'( $ ) {
 			
 			const left = $hyoo_crus_land.make({ $ }).Data( $hyoo_crus_dom )
-			left.html( '<body>foo bar</body>' )
+			left.html( 'foo bar' )
 
-			$mol_assert_equal( html( left ), '<body><span>foo </span><span>bar</span></body>' )
+			$mol_assert_equal( html( left ), '<span>foo </span><span>bar</span>' )
 
 		},
 		
 		'simple tags'( $ ) {
 			
 			const left = $hyoo_crus_land.make({ $ }).Data( $hyoo_crus_dom )
-			left.html( '<body><br /><hr /></body>' )
+			left.html( '<br /><hr />' )
 			
-			$mol_assert_equal( html( left ), '<body><br /><hr /></body>' )
+			$mol_assert_equal( html( left ), '<br /><hr />' )
 
 		},
 		
 		'tags with attrs'( $ ) {
 			
 			const left = $hyoo_crus_land.make({ $ }).Data( $hyoo_crus_dom )
-			left.html( '<body><br hidden="" /><hr tabindex="-1" /></body>' )
+			left.html( '<br hidden="" /><hr tabindex="-1" />' )
 			
-			$mol_assert_equal( html( left ), '<body><br hidden="" /><hr tabindex="-1" /></body>' )
+			$mol_assert_equal( html( left ), '<br hidden="" /><hr tabindex="-1" />' )
 
 		},
 		
 		'nested tags'( $ ) {
 			
 			const left = $hyoo_crus_land.make({ $ }).Data( $hyoo_crus_dom )
-			left.html( '<body><p><br /></p></body>' )
+			left.html( '<p><br /></p>' )
 			
-			$mol_assert_equal( html( left ), '<body><p><br /></p></body>' )
+			$mol_assert_equal( html( left ), '<p><br /></p>' )
 
 		},
 		
 		'paragraphs'( $ ) {
 			
 			const left = $hyoo_crus_land.make({ $ }).Data( $hyoo_crus_dom )
-			left.html( '<body><p>foo bar</p><p>xxx yyy</p></body>' )
+			left.html( '<p>foo bar</p><p>xxx yyy</p>' )
 			
-			$mol_assert_equal( html( left ), '<body><p><span>foo </span><span>bar</span></p><p><span>xxx </span><span>yyy</span></p></body>' )
+			$mol_assert_equal( html( left ), '<p><span>foo </span><span>bar</span></p><p><span>xxx </span><span>yyy</span></p>' )
 
 		},
 		
 		'import exported html'( $ ) {
 			
 			const left = $hyoo_crus_land.make({ $ }).Data( $hyoo_crus_dom )
-			left.html( '<body>foo<a data-xxx="yyy" href="hhh:zzz">ton</a>bar</body>' )
+			left.html( 'foo<a data-xxx="yyy" href="hhh:zzz">ton</a>bar' )
 			
 			const right = $hyoo_crus_land.make({ $ }).Data( $hyoo_crus_dom )
 			right.html( left.html() )
@@ -67,9 +67,9 @@ namespace $ {
 		'import wild spans'( $ ) {
 			
 			const left = $hyoo_crus_land.make({ $ }).Data( $hyoo_crus_dom )
-			left.html( '<body><span>foo bar<a href="hhh:ton"/></span></body>' )
+			left.html( '<span>foo bar<a href="hhh:ton"/></span>' )
 
-			$mol_assert_equal( html( left ), '<body><span>foo </span><span>bar</span><a href="hhh:ton"></a></body>' )
+			$mol_assert_equal( html( left ), '<span>foo </span><span>bar</span><a href="hhh:ton"></a>' )
 			
 		},
 		
