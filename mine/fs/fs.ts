@@ -4,7 +4,7 @@ namespace $ {
 		@ $mol_memo.method
 		static root() {
 			
-			const root = $mol_file.relative( '.crus' )
+			const root = this.$.$mol_file.relative( '.crus' )
 			
 			this.$.$mol_log3_rise({
 				place: this,
@@ -58,7 +58,7 @@ namespace $ {
 					if( off === undefined ) {
 						append.push( unit )
 					} else {
-						$node.fs.writeSync( descr, unit, 0, unit.byteLength, off )
+						descr.write({ buffer: unit, position: off })
 						this.units_persisted.add( unit )
 					}
 				}
@@ -68,19 +68,18 @@ namespace $ {
 				let size = this.units_sizes.get( land ) ?? 0
 				let offset = size
 				size += append.length * $hyoo_crus_unit.size
-				
-				$node.fs.ftruncateSync( descr, size )
+				descr.truncate(size)
 				this.units_sizes.set( land, size )
 				
 				for( const unit of append ) {
-					$node.fs.writeSync( descr, unit, 0, unit.byteLength, offset )
+					descr.write({ buffer: unit, position: offset })
 					offsets.set( unit.key(), offset )
 					this.units_persisted.add( unit )
 					offset += unit.byteLength
 				}
 			
 			} finally {
-				$node.fs.closeSync( descr )
+				descr.close()
 			}
 			
 			return undefined as any
@@ -92,8 +91,8 @@ namespace $ {
 			const descr = this.units_file( land ).open( 'create', 'read_write' )
 			try {
 			
-				const buf = $node.fs.readFileSync( descr ) as Buffer< ArrayBuffer >
-				if( !buf.length ) return []
+				const buf = descr.read()
+				if( !buf?.length ) return []
 				
 				this.units_sizes.set( land, buf.length )
 				const pack = $hyoo_crus_pack.from( buf )
@@ -110,7 +109,7 @@ namespace $ {
 				return units
 				
 			} finally {
-				$node.fs.closeSync( descr )
+				descr.close()
 			}
 			
 		}
