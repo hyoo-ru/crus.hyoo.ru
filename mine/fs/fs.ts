@@ -92,7 +92,7 @@ namespace $ {
 			try {
 			
 				const buf = descr.read()
-				if( !buf?.length ) return []
+				if( !buf.length ) return []
 				
 				this.units_sizes.set( land, buf.length )
 				const pack = $hyoo_crus_pack.from( buf )
