@@ -120,9 +120,12 @@
     "$mol_memo",
     "$mol_wrapper",
     "$mol_file",
-    "$mol_mem_cached",
+    "$mol_file_base",
     "$mol_wire_probe",
+    "$mol_lock",
+    "$mol_mem_cached",
     "$mol_compare_array",
+    "$mol_file_transaction",
     "$mol_file_extensions",
     "$hyoo_crus_glob",
     "$mol_wire_set",
@@ -190,7 +193,6 @@
   ],
   "dependencies": {
     "jsdom": "*",
-    "chokidar": "*",
     "pg": "*"
   }
 }
