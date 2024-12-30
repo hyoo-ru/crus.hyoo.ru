@@ -2035,6 +2035,13 @@ var $;
 "use strict";
 var $;
 (function ($) {
+    $.$mol_dom = $mol_dom_context;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
     function $mol_dom_serialize(node) {
         const serializer = new $mol_dom_context.XMLSerializer;
         return serializer.serializeToString(node);
