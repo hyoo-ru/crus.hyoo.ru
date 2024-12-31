@@ -136,6 +136,10 @@ namespace $ {
 	export class $hyoo_crus_atom_int extends $hyoo_crus_atom( $hyoo_crus_vary_cast_int ) {}
 	/** Atomic float64 register */
 	export class $hyoo_crus_atom_real extends $hyoo_crus_atom( $hyoo_crus_vary_cast_real ) {}
+	/** Atomic int64 array register */
+	export class $hyoo_crus_atom_ints extends $hyoo_crus_atom( $hyoo_crus_vary_cast_ints ) {}
+	/** Atomic float64 array register */
+	export class $hyoo_crus_atom_reals extends $hyoo_crus_atom( $hyoo_crus_vary_cast_reals ) {}
 	/** Atomic some reference register */
 	export class $hyoo_crus_atom_ref extends $hyoo_crus_atom( $hyoo_crus_vary_cast_ref ) {}
 

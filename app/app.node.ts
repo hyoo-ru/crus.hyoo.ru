@@ -1,5 +1,5 @@
 namespace $ {
-
+	
 	export class $hyoo_crus_app_node extends $mol_rest_resource_fs {
 		
 		@ $mol_mem

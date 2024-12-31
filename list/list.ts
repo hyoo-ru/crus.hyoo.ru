@@ -155,6 +155,10 @@ namespace $ {
 	export class $hyoo_crus_list_int extends $hyoo_crus_list( $hyoo_crus_vary_cast_int ) {}
 	/** Mergeable list of atomic float64s */
 	export class $hyoo_crus_list_real extends $hyoo_crus_list( $hyoo_crus_vary_cast_real ) {}
+	/** Mergeable list of atomic int64 arrays */
+	export class $hyoo_crus_list_ints extends $hyoo_crus_list( $hyoo_crus_vary_cast_ints ) {}
+	/** Mergeable list of atomic float64 arrays */
+	export class $hyoo_crus_list_reals extends $hyoo_crus_list( $hyoo_crus_vary_cast_reals ) {}
 	/** Mergeable list of atomic some references */
 	export class $hyoo_crus_list_ref extends $hyoo_crus_list( $hyoo_crus_vary_cast_ref ) {}
 
@@ -209,11 +213,12 @@ namespace $ {
 			}
 			
 			/** Make new Node and place it at end. */
-			make( config?: null | $hyoo_crus_rank_preset | $hyoo_crus_land ): Vals[number] {
+			@ $mol_action
+			make( config: null | number | $hyoo_crus_rank_preset | $hyoo_crus_land ): Vals[number] {
 				
-				if( config === null ) {
+				if( config === null || typeof config === 'number' ) {
 					
-					const self = this.land().self_make()
+					const self = this.land().self_make( config || undefined )
 					const node = this.land().Node( ( Value as any )() ).Item( self )
 					this.splice([ node.ref() ])
 					return node
@@ -241,6 +246,7 @@ namespace $ {
 			}
 			
 			/** Add new Node which placed in same Land */
+			/** @deprecated use make( ... ) */
 			@ $mol_action
 			local_make( idea?: number ): Vals[number] {
 				const self = this.land().self_make( idea )

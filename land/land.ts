@@ -19,7 +19,7 @@ namespace $ {
 		}
 		
 		faces = new $hyoo_crus_face_map
-		
+
 		pass = new $mol_wire_dict< string /*peer*/, $hyoo_crus_pass >()
 		gift = new $mol_wire_dict< $hyoo_crus_ref /*lord*/, $hyoo_crus_gift >()
 		sand = new $mol_wire_dict< string /*head*/, $mol_wire_dict< string /*peer*/, $mol_wire_dict< string /*self*/, $hyoo_crus_sand > > >()
@@ -79,9 +79,9 @@ namespace $ {
 				hint: 'Send it to developer',
 			})
 			
+			area.bus()
 			area.sync_mine()
 			area.sync_yard()
-			area.bus()
 			
 			return area
 		}
@@ -144,7 +144,7 @@ namespace $ {
 			
 			const prev = this.gift.get( lord )?.rank()
 				?? this.gift.get( $hyoo_crus_ref( '' ) )?.rank()
-				?? $hyoo_crus_rank.get
+				?? ( this.encrypted() ? $hyoo_crus_rank.nil : $hyoo_crus_rank.get )
 			
 			if( next === undefined ) return prev
 			if( next === prev ) return prev
@@ -379,7 +379,7 @@ namespace $ {
 						const lord = next.lord()
 						const peer = next.peer()
 						
-						if( !skip_check && this.lord_rank( lord ) < $hyoo_crus_rank.reg ) return 'Need add rank to join'
+						if( !skip_check && this.lord_rank( lord ) < $hyoo_crus_rank.reg ) return 'Need reg rank to join'
 						
 						const exists = this.pass.get( peer )
 						if( exists ) return ''
@@ -481,7 +481,7 @@ namespace $ {
 		sand_ordered( { head, peer }: { head: string, peer: string | null } ) {
 			
 			this.sync()
-			this.secret() // early async to prevent async on put
+			// this.secret() // early async to prevent async on put
 			
 			const queue = peer
 				? [ ... this.sand.get( head )?.get( peer )?.values() ?? [] ]
@@ -766,7 +766,7 @@ namespace $ {
 				
 			}
 			
-			this.post(
+			return this.post(
 				lead,
 				head,
 				sand.self(),
@@ -786,7 +786,7 @@ namespace $ {
 			const units = this.sand_ordered({ head, peer }).filter( unit => unit.tip() !== 'nil' )
 			const seat = units.indexOf( sand )
 			
-			this.post(
+			return this.post(
 				seat ? units[ seat - 1 ].self() : '',
 				head,
 				sand.self(),
@@ -803,9 +803,9 @@ namespace $ {
 		@ $mol_mem
 		sync() {
 			this.loading()
+			this.bus()
 			this.sync_mine()
 			this.sync_yard()
-			this.bus()
 			return this
 		}
 		
@@ -847,7 +847,7 @@ namespace $ {
 			
 			let units = this.unit_sort( this.$.$hyoo_crus_mine.units( this.ref() ) ?? [] )
 			
-			$mol_wire_sync( this.$ ).$mol_log3_rise({
+			if( this.$.$hyoo_crus_log() ) $mol_wire_sync( this.$ ).$mol_log3_rise({
 				place: this,
 				message: 'Load Unit',
 				units: units.length,
@@ -901,10 +901,10 @@ namespace $ {
 			
 			if( persisting.length )	{
 				
-				mine.units( this.ref(), persisting )
 				this.bus().send( persisting.map( unit => unit.buffer ) )
+				mine.units( this.ref(), persisting )
 			
-				$mol_wire_sync( this.$ ).$mol_log3_done({
+				if( this.$.$hyoo_crus_log() ) $mol_wire_sync( this.$ ).$mol_log3_done({
 					place: this,
 					message: 'Saved Units',
 					units: persisting.length,
@@ -948,9 +948,21 @@ namespace $ {
 		
 		@ $mol_mem_key
 		sand_decode( sand: $hyoo_crus_sand ): $hyoo_crus_vary_type {
-			let vary = this.sand_decode_raw( sand )
-			if( typeof vary === 'symbol' ) vary = $hyoo_crus_ref_resolve( this.ref(), vary )
-			return vary
+			
+			try {
+
+				let vary = this.sand_decode_raw( sand )
+				if( typeof vary === 'symbol' ) vary = $hyoo_crus_ref_resolve( this.ref(), vary )
+				return vary
+
+			} catch( error ) {
+				
+				if( error instanceof Promise ) return $mol_fail_hidden( error )
+				this.$.$mol_fail_log( error )
+				return null
+
+			}
+
 		}
 		
 		@ $mol_mem_key

@@ -2,7 +2,7 @@ namespace $ {
 	export class $hyoo_crus_mine_idb extends $hyoo_crus_mine {
 		
 		@ $mol_mem_key
-		static rock( hash: Uint8Array, next?: Uint8Array ): Uint8Array | null {
+		static rock( hash: Uint8Array< ArrayBuffer >, next?: Uint8Array< ArrayBuffer > ): Uint8Array< ArrayBuffer > | null {
 			
 			const prev = $mol_mem_cached( ()=> this.rock( hash ) )
 			if( prev ) return prev
@@ -19,7 +19,7 @@ namespace $ {
 		
 		@ $mol_action
 		static rock_read() {
-			const db = $mol_wire_sync( this ).db()
+			const db = this.db_sync()
 			return $mol_wire_sync( db ).read( 'Rock' ).Rock
 		}
 		
@@ -60,13 +60,19 @@ namespace $ {
 			
 			return units
 		}
+
+		@ $mol_mem
+		static db_sync() {
+			$mol_wire_solid()
+			return $mol_wire_sync( this ).db()
+		}
 		
 		@ $mol_memo.method
 		static async db() {
 			
 			return await this.$.$mol_db<{
 				Rock: {
-					Key: [ hash: Uint8Array ]
+					Key: [ hash: Uint8Array< ArrayBuffer > ]
 					Doc: ArrayBuffer
 					Indexes: {}
 				}

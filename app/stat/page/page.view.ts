@@ -2,14 +2,26 @@ namespace $.$$ {
 	export class $hyoo_crus_app_stat_page extends $.$hyoo_crus_app_stat_page {
 		
 		@ $mol_mem
-		stat() {
+		home() {
 			const ref = $hyoo_crus_ref( this.$.$mol_fetch.text( this.$.$hyoo_crus_glob.yard().master_current() + 'ref' ) )
-			return this.$.$hyoo_crus_glob.Node( ref, $hyoo_crus_app_home ).stat()
+			return this.$.$hyoo_crus_glob.Node( ref, $hyoo_crus_app_home )
+		}
+
+		@ $mol_mem
+		stat() {
+			return this.home().stat()
+		}
+		
+		@ $mol_mem
+		domain() {
+			return this.home().title() ?? super.domain()
 		}
 		
 		@ $mol_mem
 		uptime() {
-			return this.stat()?.uptime().toString( '#Y #D hh:mm:ss' ) ?? ''
+			const status = ( this.stat()?.freshness() ?? Number.POSITIVE_INFINITY ) < 5 ? '🟢' : '🔴' 
+			const uptime = this.stat()?.uptime().toString( '#Y #D hh:mm:ss' ) ?? ''
+			return `${status} ${uptime}`
 		}
 		
 		@ $mol_mem

@@ -1,20 +1,45 @@
 services:
+
   crus:
-    build:
-      context: ../
-      dockerfile: ./docker/Dockerfile
-      no_cache: true
-      network: host
-    ports:
-      - "9090:9090"
-    network_mode: host
+    image: ghcr.io/hyoo-ru/crus:latest
+    environment:
+      DOMAIN: ${DOMAIN}
     logging:
       driver: "local"
     volumes:
-      - db:/mam/hyoo/crus/app/run/-/.crus
-      - local:/root/.local/share/mol_state_local
+      - crus_public:/mam/hyoo/crus/app/run/-/.crus
+      - crus_private:/root/.local/share/mol_state_local
     restart: always
+    network_mode: host
+    labels:
+      caddy: ${DOMAIN}
+      caddy.reverse_proxy: ":9090"
+
+  caddy:
+    image: lucaslorentz/caddy-docker-proxy:2.3
+    logging:
+      driver: "local"
+    network_mode: host
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - caddy_private:/data
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+      replicas: 1
+      restart_policy:
+        condition: any
+
+  watchtower:
+    image: containrrr/watchtower
+    logging:
+      driver: "local"
+    command: --interval 60
+    volumes:
+      - '/var/run/docker.sock:/var/run/docker.sock'
 
 volumes:
-  db:
-  local:
+  crus_public:
+  crus_private:
+  caddy_private:

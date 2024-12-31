@@ -1,8 +1,8 @@
 $hyoo_crus_app_stat_page $mol_page
 	title \📊 Stat
 	head /
-		<= Title
-		<= Uptime $mol_view sub / <= uptime \00:00
+		<= Domain $mol_chip title <= domain \
+		<= Uptime $mol_chip title <= uptime \🔴 00:00
 		<= Tools
 	body_content /
 		<= Charts $mol_list rows /

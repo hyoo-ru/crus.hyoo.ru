@@ -28,6 +28,20 @@ namespace $ {
 		Port_masters: $hyoo_crus_stat_ranges,
 		
 	}) {
+
+		@ $mol_mem
+		freshness() {
+			
+			const last = this.last_change()
+			if( !last ) return null
+			
+			const range = new $mol_time_interval({
+				start: last,
+				end: new $mol_time_moment( this.$.$mol_state_time.now( 1000 ) ),
+			})
+			
+			return range.duration.count( 'PT1s' )
+		}
 		
 		@ $mol_mem
 		uptime( next?: $mol_time_duration ) {

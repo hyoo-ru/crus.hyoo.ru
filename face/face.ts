@@ -40,9 +40,9 @@ namespace $ {
 		/** Generates new time for peer that greater then other seen. */
 		@ $mol_action
 		tick() {
-			return this.last_time = Math.max( this.last_time + 1, Math.floor( Date.now() * 65.536 ) )
+			return this.last_time = Math.max( this.last_time + 1, $hyoo_crus_time_now() )
 		}
-		
+
 		/** Last change moment */
 		last_moment() {
 			return $hyoo_crus_time_moment( this.last_time )

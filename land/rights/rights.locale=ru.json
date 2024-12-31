@@ -1,0 +1,8 @@
+{
+	"$hyoo_crus_land_rights_Add_key_hint": "Публичный ключ",
+	"$hyoo_crus_land_rights_Gift_rank_dictionary_nil": "🛑 Запрет",
+	"$hyoo_crus_land_rights_Gift_rank_dictionary_get": "👀 Чтение",
+	"$hyoo_crus_land_rights_Gift_rank_dictionary_reg": "📢 Вход",
+	"$hyoo_crus_land_rights_Gift_rank_dictionary_mod": "✍ Запись",
+	"$hyoo_crus_land_rights_Gift_rank_dictionary_law": "👑 Власть"
+}

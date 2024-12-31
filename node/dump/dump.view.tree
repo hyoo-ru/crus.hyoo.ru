@@ -38,27 +38,29 @@ $hyoo_crus_node_dump $mol_expander
 						value? <=> unit_tip*? \bin
 						enabled <= can_change
 						dictionary *
-							bin \💠bin
-							bool \🏁bool
-							int \🔢int
-							real \💫real
-							ref \🎯ref
-							str \🔠str
-							time \⏰time
-							dur \🕓dur
-							range \🎬range
-							json \📑json
-							jsan \📚jsan
-							xml \🛐xml
-							tree \🌴tree
+							bin \💠 bin
+							bool \🚩 bool
+							int \1️⃣ int
+							real \💫 real
+							ints \🔢 ints
+							reals \✨ reals
+							ref \🎯 ref
+							str \🔠 str
+							time \⏰ time
+							dur \🕓 dur
+							range \🎬 range
+							json \📑 json
+							jsan \📚 jsan
+							xml \🛐 xml
+							tree \🌴 tree
 					<= Unit_tag* $mol_select
 						value? <=> unit_tag*? \term
 						enabled <= can_change
 						dictionary *
-							term \💼term
-							solo \🔝solo
-							vals \🎹vals
-							keys \🔑keys
+							term \💼 term
+							solo \🔝 solo
+							vals \🎹 vals
+							keys \🔑 keys
 					<= Unit_time* $mol_view sub / <= unit_time* \
 					<= Unit_wipe* $mol_button_minor
 						sub / <= Unit_wipe_icon* $mol_icon_close

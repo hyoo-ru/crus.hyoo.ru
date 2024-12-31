@@ -8,6 +8,16 @@ namespace $ {
 	
 	/** Reference to Lord/Land/Node. May be absolute or relative. */
 	export type $hyoo_crus_ref = typeof $hyoo_crus_ref.Value
+
+	/** returns string if it's valid ref or return empty string */
+	export function $hyoo_crus_ref_check( val: string ) {
+		try {
+			$hyoo_crus_ref( val )
+			return val
+		} catch {
+			return ''
+		}
+	}
 	
 	/** Lord ref of any ref */
 	export function $hyoo_crus_ref_lord( ref: $hyoo_crus_ref ) {

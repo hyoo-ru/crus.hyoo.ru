@@ -4,7 +4,7 @@ namespace $ {
 		@ $mol_memo.method
 		static root() {
 			
-			const root = $mol_file.relative( '.crus' )
+			const root = this.$.$mol_file.relative( '.crus' )
 			
 			this.$.$mol_log3_rise({
 				place: this,
@@ -16,13 +16,13 @@ namespace $ {
 		}
 		
 		@ $mol_mem_key
-		static rock_file( hash: Uint8Array ) {
+		static rock_file( hash: Uint8Array< ArrayBuffer > ) {
 			const id = $mol_base64_ae_encode( hash )
 			return this.root().resolve( `rock/${ id.slice( 0, 2 ) }/${ id }.blob` )
 		}
 		
 		@ $mol_mem_key
-		static rock( hash: Uint8Array, next?: Uint8Array ) {
+		static rock( hash: Uint8Array< ArrayBuffer >, next?: Uint8Array< ArrayBuffer > ): Uint8Array< ArrayBuffer > | null {
 			const buf = this.rock_file( hash ).buffer( next )
 			if( next ) return buf
 			if( $mol_compare_deep( hash, this.hash( buf ) ) ) return buf
@@ -58,7 +58,7 @@ namespace $ {
 					if( off === undefined ) {
 						append.push( unit )
 					} else {
-						$node.fs.writeSync( descr, unit, 0, unit.byteLength, off )
+						descr.write({ buffer: unit, position: off })
 						this.units_persisted.add( unit )
 					}
 				}
@@ -68,19 +68,18 @@ namespace $ {
 				let size = this.units_sizes.get( land ) ?? 0
 				let offset = size
 				size += append.length * $hyoo_crus_unit.size
-				
-				$node.fs.ftruncateSync( descr, size )
+				descr.truncate(size)
 				this.units_sizes.set( land, size )
 				
 				for( const unit of append ) {
-					$node.fs.writeSync( descr, unit, 0, unit.byteLength, offset )
+					descr.write({ buffer: unit, position: offset })
 					offsets.set( unit.key(), offset )
 					this.units_persisted.add( unit )
 					offset += unit.byteLength
 				}
 			
 			} finally {
-				$node.fs.closeSync( descr )
+				descr.close()
 			}
 			
 			return undefined as any
@@ -92,7 +91,7 @@ namespace $ {
 			const descr = this.units_file( land ).open( 'create', 'read_write' )
 			try {
 			
-				const buf = $node.fs.readFileSync( descr )
+				const buf = descr.read()
 				if( !buf.length ) return []
 				
 				this.units_sizes.set( land, buf.length )
@@ -110,7 +109,7 @@ namespace $ {
 				return units
 				
 			} finally {
-				$node.fs.closeSync( descr )
+				descr.close()
 			}
 			
 		}
