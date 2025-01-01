@@ -5963,6 +5963,8 @@ var $;
             const head = sand.head();
             const units = this.sand_ordered({ head, peer }).filter(unit => unit.tip() !== 'nil');
             const seat = units.indexOf(sand);
+            if (seat < 0)
+                return sand;
             return this.post(seat ? units[seat - 1].self() : '', head, sand.self(), null, 'term');
         }
         broadcast() {
@@ -27129,36 +27131,39 @@ var $;
             items() {
                 return this.node().cast($hyoo_crus_list_vary).items_vary();
             }
+            units() {
+                return this.node().land().sand_ordered({ head: this.node().head(), peer: null });
+            }
             nodes() {
-                return this.node().units().map((_, i) => this.Inner(i));
+                return this.units().map((_, i) => this.Inner(i));
             }
             unit_tag(index, next) {
                 if (next) {
-                    const units = this.node().units();
+                    const units = this.units();
                     const unit = units[index];
                     this.node().land().post(index ? units[index - 1].self() : '', unit.head(), unit.self(), this.node().land().sand_decode(unit), next);
                 }
-                return this.node().units()[index].tag();
+                return this.units()[index].tag();
             }
             unit_tip(index, next) {
                 if (next) {
-                    const units = this.node().units();
+                    const units = this.units();
                     const unit = units[index];
                     this.node().land().post(index ? units[index - 1].self() : '', unit.head(), unit.self(), $hyoo_crus_vary_cast(next, this.node().land().sand_decode(unit)), unit.tag());
                 }
-                return this.node().units()[index].tip();
+                return this.units()[index].tip();
             }
             unit_time(index) {
-                return $hyoo_crus_time_dump(this.node().units()[index].time());
+                return $hyoo_crus_time_dump(this.units()[index].time());
             }
             unit_value(index) {
-                return this.node().units()[index];
+                return this.units()[index];
             }
             unit_wipe(index, event) {
-                this.node().cast($hyoo_crus_list_vary).wipe(index);
+                this.node().land().sand_wipe(this.units()[index]);
             }
             node_inner(index) {
-                return this.node().nodes(null)[index];
+                return this.node().land().Node($hyoo_crus_dict).Item(this.units()[index].self());
             }
             add_key(event) {
                 if (!this.expandable())
@@ -27187,6 +27192,12 @@ var $;
                 ];
             }
         }
+        __decorate([
+            $mol_mem
+        ], $hyoo_crus_node_dump.prototype, "units", null);
+        __decorate([
+            $mol_mem
+        ], $hyoo_crus_node_dump.prototype, "nodes", null);
         __decorate([
             $mol_mem
         ], $hyoo_crus_node_dump.prototype, "editors", null);

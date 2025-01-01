@@ -13595,13 +13595,14 @@ declare namespace $.$$ {
         title(): string;
         value(): $hyoo_crus_vary_type;
         items(): readonly $hyoo_crus_vary_type[];
+        units(): $hyoo_crus_sand[];
         nodes(): $mol_view[];
         unit_tag(index: number, next?: keyof typeof $hyoo_crus_sand_tag): "keys" | "term" | "solo" | "vals";
         unit_tip(index: number, next?: keyof typeof $hyoo_crus_vary_tip): "ref" | "nil" | "bin" | "bool" | "int" | "real" | "ints" | "reals" | "str" | "time" | "dur" | "range" | "json" | "jsan" | "dom" | "tree";
         unit_time(index: number): string;
         unit_value(index: number): $hyoo_crus_sand;
         unit_wipe(index: number, event?: Event): void;
-        node_inner(index: number): $hyoo_crus_node;
+        node_inner(index: number): $hyoo_crus_dict;
         add_key(event: Event): void;
         add_value(event: Event): void;
         value_str(next?: string): string;
