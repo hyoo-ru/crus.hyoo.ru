@@ -13,13 +13,19 @@ namespace $.$$ {
 			return this.node().cast( $hyoo_crus_list_vary ).items_vary()
 		}
 		
+		@ $mol_mem
+		units() {
+			return this.node().land().sand_ordered({ head: this.node().head(), peer: null })
+		}
+		
+		@ $mol_mem
 		nodes() {
-			return this.node().units().map( (_,i)=> this.Inner(i) )
+			return this.units().map( (_,i)=> this.Inner(i) )
 		}
 		
 		unit_tag( index: number, next?: keyof typeof $hyoo_crus_sand_tag ) {
 			if( next ) {
-				const units = this.node().units()
+				const units = this.units()
 				const unit = units[ index ]
 				this.node().land().post(
 					index ? units[ index - 1 ].self() : '',
@@ -29,12 +35,12 @@ namespace $.$$ {
 					next,
 				)
 			}
-			return this.node().units()[ index ].tag()
+			return this.units()[ index ].tag()
 		}
 		
 		unit_tip( index: number, next?: keyof typeof $hyoo_crus_vary_tip ) {
 			if( next ) {
-				const units = this.node().units()
+				const units = this.units()
 				const unit = units[ index ]
 				this.node().land().post(
 					index ? units[ index - 1 ].self() : '',
@@ -44,23 +50,23 @@ namespace $.$$ {
 					unit.tag(),
 				)
 			}
-			return this.node().units()[ index ].tip()
+			return this.units()[ index ].tip()
 		}
 		
 		unit_time( index: number ) {
-			return $hyoo_crus_time_dump( this.node().units()[ index ].time() )
+			return $hyoo_crus_time_dump( this.units()[ index ].time() )
 		}
 		
 		unit_value( index: number ) {
-			return this.node().units()[ index ]
+			return this.units()[ index ]
 		}
 		
 		unit_wipe( index: number, event?: Event ) {
-			this.node().cast( $hyoo_crus_list_vary ).wipe( index )
+			this.node().land().sand_wipe( this.units()[ index ] )
 		}
 		
 		node_inner( index: number ) {
-			return this.node().nodes(null)[ index ]
+			return this.node().land().Node( $hyoo_crus_dict ).Item( this.units()[ index ].self() )
 		}
 		
 		add_key( event: Event ) {
