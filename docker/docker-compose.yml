@@ -13,6 +13,7 @@ services:
     network_mode: host
     labels:
       caddy: ${DOMAIN}
+      caddy.encode: zstd gzip
       caddy.reverse_proxy: ":9090"
 
   caddy:
