@@ -19158,7 +19158,7 @@ var $;
 			return "async";
 		}
 		cors(){
-			return "anonymous";
+			return null;
 		}
 		natural_width(){
 			return 0;
@@ -24877,8 +24877,9 @@ var $;
                     if (response.status !== 200)
                         return response;
                     const headers = new Headers(response.headers);
-                    headers.set("Cross-Origin-Embedder-Policy", "credentialless");
+                    headers.set("Cross-Origin-Embedder-Policy", "require-corp");
                     headers.set("Cross-Origin-Opener-Policy", "same-origin");
+                    headers.set("$mol_offline", "");
                     response = new Response(response.body, {
                         status: response.status,
                         statusText: response.statusText,
