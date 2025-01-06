@@ -1,0 +1,18 @@
+$hyoo_crus_dom_edit $mol_view
+	node $hyoo_crus_dom
+	attr * contenteditable <= editable \true
+	event * input? <=> save? null
+	enabled true
+	hint \
+	auto /
+		<= selection_load null
+		<= selection_sync null
+	plugins /
+		<= Hotkey $mol_hotkey
+			mod_ctrl true
+			key *
+				B? <=> toggle*strong? null - \Brutal
+				I? <=> toggle*em? null - \Ironic
+				U? <=> toggle*ins? null - \Update
+				O? <=> toggle*del? null - \Omit
+				M? <=> toggle*code? null - \Monospace

@@ -1,0 +1,47 @@
+[hyoo_crus_dom_edit] {
+	flex-direction: column;
+	border-radius: var(--mol_gap_round);
+	flex: 1;
+}
+
+[hyoo_crus_dom_edit][contenteditable="true"] {
+	background-color: var(--mol_theme_field);
+	outline: 1px solid var(--mol_theme_line);
+}
+
+[hyoo_crus_dom_edit]:focus {
+	outline: none;
+	z-index: var(--mol_layer_focus);
+	color: var(--mol_theme_text);
+	outline: 1px solid var(--mol_theme_focus);
+}
+
+[hyoo_crus_dom_edit] a {
+	color: var(--mol_theme_control);
+	text-decoration: none;
+}
+
+[hyoo_crus_dom_edit] p {
+	margin: 0;
+	padding: var(--mol_gap_text);
+}
+
+[hyoo_crus_dom_edit] img {
+	margin: var(--mol_gap_block);
+	max-width: calc( 100% - 2 * var(--mol_gap_block) );
+}
+
+[hyoo_crus_dom_edit] hr {
+	margin: var(--mol_gap_block);
+	border: none;
+	box-shadow: 0 -1px 0 0px var(--mol_theme_line);
+    height: 1px;
+}
+
+[hyoo_crus_dom_edit] h1,
+[hyoo_crus_dom_edit] h2 {
+	font-size: 1em;
+	font-weight: bolder;
+	margin: 0;
+	padding: var(--mol_gap_text);
+}
