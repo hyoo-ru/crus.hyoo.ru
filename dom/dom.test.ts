@@ -11,7 +11,7 @@ namespace $ {
 			const left = $hyoo_crus_land.make({ $ }).Data( $hyoo_crus_dom )
 			left.html( 'foo bar' )
 
-			$mol_assert_equal( html( left ), '<span>foo </span><span>bar</span>' )
+			$mol_assert_equal( html( left ), '<span>foo</span><span> bar</span>' )
 
 		},
 		
@@ -47,7 +47,7 @@ namespace $ {
 			const left = $hyoo_crus_land.make({ $ }).Data( $hyoo_crus_dom )
 			left.html( '<p>foo bar</p><p>xxx yyy</p>' )
 			
-			$mol_assert_equal( html( left ), '<p><span>foo </span><span>bar</span></p><p><span>xxx </span><span>yyy</span></p>' )
+			$mol_assert_equal( html( left ), '<p><span>foo</span><span> bar</span></p><p><span>xxx</span><span> yyy</span></p>' )
 
 		},
 		
@@ -69,7 +69,7 @@ namespace $ {
 			const left = $hyoo_crus_land.make({ $ }).Data( $hyoo_crus_dom )
 			left.html( '<span>foo bar<a href="hhh:ton"/></span>' )
 
-			$mol_assert_equal( html( left ), '<span>foo </span><span>bar</span><a href="hhh:ton"></a>' )
+			$mol_assert_equal( html( left ), '<span>foo</span><span> bar</span><a href="hhh:ton"></a>' )
 			
 		},
 		

@@ -33,7 +33,7 @@ namespace $ {
 						land.Node( $hyoo_crus_text ).Item( sand.self() ).str( next )
 						return sand
 					},
-					update: ( next, prev, lead )=> {
+					replace: ( next, prev, lead )=> {
 						land.Node( $hyoo_crus_text ).Item( prev.self() ).str( next )
 						return prev
 					},

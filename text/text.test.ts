@@ -15,27 +15,27 @@ namespace $ {
 			
 			text.str( 'foo bar' )
 			$mol_assert_equal( text.str(), 'foo bar' )
-			$mol_assert_equal( list.items_vary(), [ 'foo ', 'bar' ] )
+			$mol_assert_equal( list.items_vary(), [ 'foo', ' bar' ] )
 			
 			text.str( 'foo lol bar' )
 			$mol_assert_equal( text.str(), 'foo lol bar' )
-			$mol_assert_equal( list.items_vary(), [ 'foo ', 'lol ', 'bar' ] )
+			$mol_assert_equal( list.items_vary(), [ 'foo', ' lol', ' bar' ] )
 			
 			text.str( 'lol bar' )
 			$mol_assert_equal( text.str(), 'lol bar' )
-			$mol_assert_equal( list.items_vary(), [ 'lol ', 'bar' ] )
+			$mol_assert_equal( list.items_vary(), [ 'lol', ' bar' ] )
 			
 			text.str( 'foo bar' )
 			$mol_assert_equal( text.str(), 'foo bar' )
-			$mol_assert_equal( list.items_vary(), [ 'foo ', 'bar' ] )
+			$mol_assert_equal( list.items_vary(), [ 'foo', ' bar' ] )
 			
 			text.str( 'foo  bar' )
 			$mol_assert_equal( text.str(), 'foo  bar' )
-			$mol_assert_equal( list.items_vary(), [ 'foo ', ' ', 'bar' ] )
+			$mol_assert_equal( list.items_vary(), [ 'foo', ' ', ' bar' ] )
 			
 			text.str( 'foo  BarBar' )
 			$mol_assert_equal( text.str(), 'foo  BarBar' )
-			$mol_assert_equal( list.items_vary(), [ 'foo ', ' ', 'Bar', 'Bar' ] )
+			$mol_assert_equal( list.items_vary(), [ 'foo', ' ', ' Bar', 'Bar' ] )
 			
 		},
 		

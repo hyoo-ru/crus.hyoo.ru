@@ -100,7 +100,9 @@ namespace $ {
 					next: sample,
 					equal: ( next, prev )=> {
 						if( typeof next === 'string' ) {
-							return land.sand_decode( prev ) === next
+							const p = $hyoo_crus_vary_cast_str( land.sand_decode( prev ) )
+							if( !p ) return false
+							return p.startsWith( next ) || next.startsWith( p )
 						} else if( next.nodeType === next.ATTRIBUTE_NODE ) {
 							return land.sand_decode( prev ) === next.nodeName
 						} else {
@@ -121,7 +123,16 @@ namespace $ {
 							tag( next ),
 						)
 					},
-					update: ( next, prev, lead )=> land.post(
+					update: ( next, prev, lead )=> ( typeof next !== 'string' || next === land.sand_decode( prev ) )
+						? prev
+						: land.post(
+							lead?.self() ?? '',
+							prev.head(),
+							prev.self(),
+							val( next ),
+							tag( next ),
+						),
+					replace: ( next, prev, lead )=> land.post(
 						lead?.self() ?? '',
 						prev.head(),
 						prev.self(),
