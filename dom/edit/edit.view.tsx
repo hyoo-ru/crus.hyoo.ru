@@ -12,6 +12,11 @@ namespace $.$$ {
 		}
 
 		@ $mol_mem
+		setup() {
+			// $mol_dom.document.execCommand( 'defaultParagraphSeparator', false, 'p' )
+		}
+
+		@ $mol_mem
 		sub() {
 			console.log('render')
 			let nodes = $mol_jsx_attach( $mol_dom_context.document, ()=> this.node().dom() ) as ChildNode[]
@@ -25,9 +30,20 @@ namespace $.$$ {
 		}
 
 		save() {
-			let nodes = [ ... this.dom_node().childNodes ]
-			nodes = this.$.$mol_dom_safe( nodes )
-			this.node().dom( nodes as Element[] )
+			
+			const sel = $mol_dom_range.from_selection()
+			const root = this.dom_node()
+			if( !$mol_dom_range.inside( root ).range_contains( sel ) ) return
+
+			let container = sel.container() as Element
+			while( [ 'SPAN', '#text' ].includes( container.nodeName ) ) {
+				container = container.parentElement!
+			}
+			
+			const dom = this.node().land().Node( $hyoo_crus_dom ).Item( container.id )
+			let nodes = [ ... container.childNodes ]
+			nodes = this.$.$mol_dom_safe( nodes as Element[] )
+			dom.dom( nodes as Element[] )
 			this.selection_save()
 		}
 

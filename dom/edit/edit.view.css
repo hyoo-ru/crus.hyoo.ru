@@ -2,6 +2,7 @@
 	flex-direction: column;
 	border-radius: var(--mol_gap_round);
 	flex: 1;
+	white-space: pre-wrap;
 }
 
 [hyoo_crus_dom_edit][contenteditable="true"] {

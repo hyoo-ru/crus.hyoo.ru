@@ -5,6 +5,7 @@ $hyoo_crus_dom_edit $mol_view
 	enabled true
 	hint \
 	auto /
+		<= setup null
 		<= selection_load null
 		<= selection_sync null
 	plugins /
