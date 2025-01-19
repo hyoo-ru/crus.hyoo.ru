@@ -120,6 +120,28 @@ namespace $ {
 			return this.sign().some( b => b )
 		}
 		
+		work() {
+			
+			if( !this.signed() ) {
+				return $hyoo_crus_rank_rate.just
+			}
+			
+			const sign = this.sign()
+			let int = sign[0] | ( sign[1] << 8 )
+			
+			let count = 0
+			while( int & 1 ) {
+				int >>>= 1
+				++ count
+			}
+			
+			return count
+		}
+		
+		rank_min() {
+			return $hyoo_crus_rank_rule
+		}
+		
 		_land = null as null | $hyoo_crus_land
 		
 		dump() {

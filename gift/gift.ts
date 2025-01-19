@@ -3,16 +3,16 @@ namespace $ {
 	/** Given Rank and Secret */
 	export class $hyoo_crus_gift extends $hyoo_crus_unit {
 		
-		rank( next?: $hyoo_crus_rank ) {
+		rank( next?: typeof $hyoo_crus_rank.Value ) {
 			
 			if( next !== undefined ) this.uint8( 0, $hyoo_crus_unit_kind.gift )
-			next = this.uint8( 1, next )
+			const res = this.uint8( 1, next ) as typeof $hyoo_crus_rank.Value
 			
-			if( next < $hyoo_crus_rank.nil || next > $hyoo_crus_rank.law ) {
-				$mol_fail( new RangeError( `Wrong rank ${ next }` ) )
+			if( res < $hyoo_crus_rank_deny || res > $hyoo_crus_rank_rule ) {
+				$mol_fail( new RangeError( `Wrong rank ${ res }` ) )
 			}
 			
-			return next
+			return res
 		}
 		
 		time( next?: number ) {
@@ -49,9 +49,14 @@ namespace $ {
 				kind: this.kind(),
 				peer: this.peer(),
 				dest: this.dest().description!,
-				rank: $hyoo_crus_rank[ this.rank() ],
+				tier: $hyoo_crus_rank_tier[ this.rank() &~ $hyoo_crus_rank_rate.just ],
+				work: this.work(),
 				time: $hyoo_crus_time_dump( this.time() ),
 			}
+		}
+		
+		rank_min() {
+			return $hyoo_crus_rank( $hyoo_crus_rank_rule | ( $hyoo_crus_rank_rate.just - this.work() ) )
 		}
 		
 		[ $mol_dev_format_head ]() {
@@ -61,8 +66,10 @@ namespace $ {
 				this.peer(),
 				' 🏅 ',
 				$mol_dev_format_span( {}, this.dest().description || '_' ),
-				this.bill().some( v => v ) ? ' 🔐' : ' 📢',
-				$hyoo_crus_rank[ this.rank() ],
+				this.bill().some( v => v ) ? ' 🔐' : ' 👀',
+				$hyoo_crus_rank_tier[ this.rank() &~ $hyoo_crus_rank_rate.just ],
+				':',
+				this.rank() & $hyoo_crus_rank_rate.just,
 				' ',
 				$mol_dev_format_shade( $hyoo_crus_time_dump( this.time() ) ),
 			)

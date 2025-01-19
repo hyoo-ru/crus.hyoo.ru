@@ -80,7 +80,7 @@ namespace $.$$ {
 			user.Title(null)!.val( 'Jin' )
 			$mol_assert_equal( user.Title()!.val() ?? '', 'Jin' )
 			
-			const account = user.Account(null)!.ensure({ '': $hyoo_crus_rank.get })!
+			const account = user.Account(null)!.ensure({ '': $hyoo_crus_rank_read })!
 			$mol_assert_equal( user.Account()?.remote() ?? null, account )
 			$mol_assert_equal( account.User()?.remote() ?? null, null )
 			
@@ -88,8 +88,8 @@ namespace $.$$ {
 			$mol_assert_equal( account.User()?.remote(), user )
 			
 			const articles = [
-				user.Articles(null)!.remote_make({ '': $hyoo_crus_rank.get }),
-				user.Articles(null)!.remote_make({ '': $hyoo_crus_rank.get }),
+				user.Articles(null)!.remote_make({ '': $hyoo_crus_rank_read }),
+				user.Articles(null)!.remote_make({ '': $hyoo_crus_rank_read }),
 			]
 			$mol_assert_equal( user.Articles()?.remote_list(), articles )
 			

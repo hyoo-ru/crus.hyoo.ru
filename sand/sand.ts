@@ -142,6 +142,10 @@ namespace $ {
 			}
 		}
 
+		rank_min() {
+			return $hyoo_crus_rank( $hyoo_crus_rank_tier.post | ( $hyoo_crus_rank_rate.just - this.work() ) )
+		}
+		
 		[ $mol_dev_format_head ]() {
 			return $mol_dev_format_span( {},
 				$mol_dev_format_native( this ),

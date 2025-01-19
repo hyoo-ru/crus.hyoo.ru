@@ -3,10 +3,6 @@ namespace $ {
 	/** Public key of Peer */
 	export class $hyoo_crus_pass extends $hyoo_crus_unit {
 		
-		work() {
-			return this.uint8( 1 )
-		}
-		
 		_lord!: $hyoo_crus_ref
 		lord( next?: $hyoo_crus_ref ) {
 			if( next === undefined && this._lord !== undefined ) return this._lord
@@ -28,6 +24,10 @@ namespace $ {
 				kind: this.kind(),
 				lord: this.lord().description!,
 			}
+		}
+		
+		rank_min() {
+			return $hyoo_crus_rank( $hyoo_crus_rank_tier.join | ( $hyoo_crus_rank_rate.just - this.work() ) )
 		}
 		
 		[ $mol_dev_format_head ]() {
