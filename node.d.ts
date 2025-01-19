@@ -1359,6 +1359,99 @@ declare namespace $ {
 }
 
 declare namespace $ {
+    type $mol_type_unary_func = ((param: any) => any);
+    type $mol_type_unary_class = new (param: any) => any;
+    type $mol_type_unary = $mol_type_unary_func | $mol_type_unary_class;
+}
+
+declare namespace $ {
+    type $mol_type_param<Func, Index extends number> = Func extends (...params: infer Params) => any ? Params[Index] : Func extends new (...params: infer Params2) => any ? Params2[Index] : never;
+}
+
+declare namespace $ {
+    function $mol_data_setup<Value extends $mol_data_value, Config = never>(value: Value, config: Config): Value & {
+        config: Config;
+        Value: ReturnType<Value>;
+    };
+}
+
+declare namespace $ {
+    function $mol_func_is_class<Func extends Function>(func: Func): func is Func & (new (...args: any[]) => any);
+}
+
+declare namespace $ {
+    type $mol_type_result<Func> = Func extends (...params: any) => infer Result ? Result : Func extends new (...params: any) => infer Result ? Result : never;
+}
+
+declare namespace $ {
+    type Guard_value<Funcs extends $mol_type_unary[], Index extends keyof Funcs> = $mol_type_param<Index extends keyof $mol_type_tail<Funcs> ? $mol_type_tail<Funcs>[Index] : any, 0>;
+    type Guard<Funcs extends $mol_type_unary[]> = {
+        [Index in keyof Funcs]: (Funcs[Index] extends $mol_type_unary_func ? (input: $mol_type_param<Funcs[Index], 0>) => Guard_value<Funcs, Index> : new (input: $mol_type_param<Funcs[Index], 0>) => Guard_value<Funcs, Index>);
+    };
+    export function $mol_data_pipe<Funcs extends $mol_type_unary[]>(...funcs: Funcs & Guard<Funcs>): ((this: any, input: $mol_type_param<Funcs[0], 0>) => $mol_type_result<$mol_type_foot<Funcs>>) & {
+        config: {
+            funcs: Funcs & Guard<Funcs>;
+        };
+        Value: $mol_type_result<$mol_type_foot<Funcs>>;
+    };
+    export {};
+}
+
+declare namespace $ {
+    class $mol_data_error extends $mol_error_mix {
+    }
+}
+
+declare namespace $ {
+    let $mol_data_number: (val: number) => number;
+}
+
+declare namespace $ {
+    function $mol_data_integer(val: number): number;
+}
+
+declare namespace $ {
+    const $hyoo_crus_rank: {
+        Value: number & {
+            $hyoo_crus_rank: number;
+        };
+    } & ((val: number & {}) => number & {
+        $hyoo_crus_rank: number;
+    });
+    function $hyoo_crus_rank_make(tier: keyof typeof $hyoo_crus_rank_tier, fame: keyof typeof $hyoo_crus_rank_rate): typeof $hyoo_crus_rank.Value;
+    enum $hyoo_crus_rank_tier {
+        deny = 0,
+        read = 16,
+        join = 48,
+        post = 112,
+        rule = 240
+    }
+    enum $hyoo_crus_rank_rate {
+        late = 0,
+        long = 3,
+        slow = 7,
+        fast = 11,
+        just = 15
+    }
+    const $hyoo_crus_rank_deny: number & {
+        $hyoo_crus_rank: number;
+    };
+    const $hyoo_crus_rank_read: number & {
+        $hyoo_crus_rank: number;
+    };
+    const $hyoo_crus_rank_rule: number & {
+        $hyoo_crus_rank: number;
+    };
+    function $hyoo_crus_rank_join(rate: keyof typeof $hyoo_crus_rank_rate): number & {
+        $hyoo_crus_rank: number;
+    };
+    function $hyoo_crus_rank_post(rate: keyof typeof $hyoo_crus_rank_rate): number & {
+        $hyoo_crus_rank: number;
+    };
+    type $hyoo_crus_rank_preset = Record<string, typeof $hyoo_crus_rank.Value>;
+}
+
+declare namespace $ {
     function $mol_base64_url_encode(buffer: Uint8Array): string;
     function $mol_base64_url_decode(str: string): Uint8Array<ArrayBuffer>;
 }
@@ -1477,21 +1570,6 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    enum $hyoo_crus_rank {
-        nil = 0,
-        get = 1,
-        reg = 3,
-        mod = 7,
-        law = 15
-    }
-    type $hyoo_crus_rank_preset = Record<string, $hyoo_crus_rank>;
-    let $hyoo_crus_rank_private: $hyoo_crus_rank_preset;
-    let $hyoo_crus_rank_public: $hyoo_crus_rank_preset;
-    let $hyoo_crus_rank_lobby: $hyoo_crus_rank_preset;
-    let $hyoo_crus_rank_orgy: $hyoo_crus_rank_preset;
-}
-
-declare namespace $ {
     class $hyoo_crus_node extends $mol_object {
         static tag: keyof typeof $hyoo_crus_sand_tag;
         land(): $hyoo_crus_land;
@@ -1564,10 +1642,6 @@ declare namespace $ {
         toString(): string;
         [Symbol.toPrimitive](mode: 'default' | 'number' | 'string'): string;
     }
-}
-
-declare namespace $ {
-    type $mol_type_result<Func> = Func extends (...params: any) => infer Result ? Result : Func extends new (...params: any) => infer Result ? Result : never;
 }
 
 declare namespace $ {
@@ -1738,8 +1812,10 @@ declare namespace $ {
             $hyoo_crus_ref: symbol;
         })[];
         key(): $hyoo_crus_auth | null;
-        lord_rank(lord: $hyoo_crus_ref, next?: $hyoo_crus_rank): $hyoo_crus_rank;
-        peer_rank(peer: string): $hyoo_crus_rank;
+        lord_rank(lord: $hyoo_crus_ref, next?: typeof $hyoo_crus_rank.Value): typeof $hyoo_crus_rank.Value;
+        peer_rank(peer: string): number & {
+            $hyoo_crus_rank: number;
+        };
         unit_sort(units: readonly $hyoo_crus_unit[]): $hyoo_crus_unit[];
         delta_unit(face?: $hyoo_crus_face_map): $hyoo_crus_unit[];
         delta_pack(face?: $hyoo_crus_face_map): $hyoo_crus_pack | null;
@@ -1758,15 +1834,13 @@ declare namespace $ {
         apply_unit_trust(delta: readonly $hyoo_crus_unit[], skip_check?: 'skip_check'): ("" | "Need reg rank to join" | "Need law rank to change rank" | "Need mod rank to post data")[];
         apply_land(land: $hyoo_crus_land): string[];
         recheck(): void;
-        fork(preset?: {
-            '': $hyoo_crus_rank;
-        }): $hyoo_crus_land;
+        fork(preset?: $hyoo_crus_rank_preset): $hyoo_crus_land;
         sand_ordered({ head, peer }: {
             head: string;
             peer: string | null;
         }): $hyoo_crus_sand[];
         join(): $hyoo_crus_pass;
-        give(dest: $hyoo_crus_auth | $hyoo_crus_ref | null, rank: $hyoo_crus_rank): $hyoo_crus_gift;
+        give(dest: $hyoo_crus_auth | $hyoo_crus_ref | null, rank: typeof $hyoo_crus_rank.Value): $hyoo_crus_gift;
         post(lead: string, head: string, self: string, vary: $hyoo_crus_vary_type, tag?: keyof typeof $hyoo_crus_sand_tag): $hyoo_crus_sand;
         sand_move(sand: $hyoo_crus_sand, head: string, seat: number, peer?: string | null): $hyoo_crus_sand | undefined;
         sand_wipe(sand: $hyoo_crus_sand, peer?: string | null): $hyoo_crus_sand;
@@ -1827,6 +1901,10 @@ declare namespace $ {
         mix(mixin: Uint8Array): void;
         sign(next?: ArrayLike<number>): Uint8Array<ArrayBuffer>;
         signed(): boolean;
+        work(): number;
+        rank_min(): number & {
+            $hyoo_crus_rank: number;
+        };
         _land: null | $hyoo_crus_land;
         dump(): {};
     }
@@ -1834,7 +1912,6 @@ declare namespace $ {
 
 declare namespace $ {
     class $hyoo_crus_pass extends $hyoo_crus_unit {
-        work(): number;
         _lord: $hyoo_crus_ref;
         lord(next?: $hyoo_crus_ref): symbol & {
             $hyoo_crus_ref: symbol;
@@ -1845,13 +1922,18 @@ declare namespace $ {
             kind: "pass" | "gift" | "sand";
             lord: string;
         };
+        rank_min(): number & {
+            $hyoo_crus_rank: number;
+        };
         [$mol_dev_format_head](): any[];
     }
 }
 
 declare namespace $ {
     class $hyoo_crus_gift extends $hyoo_crus_unit {
-        rank(next?: $hyoo_crus_rank): $hyoo_crus_rank;
+        rank(next?: typeof $hyoo_crus_rank.Value): number & {
+            $hyoo_crus_rank: number;
+        };
         time(next?: number): number;
         free(): Uint8Array<ArrayBuffer>;
         _dest: $hyoo_crus_ref;
@@ -1865,8 +1947,12 @@ declare namespace $ {
             kind: "pass" | "gift" | "sand";
             peer: string;
             dest: string;
-            rank: string;
+            tier: string;
+            work: number;
             time: string;
+        };
+        rank_min(): number & {
+            $hyoo_crus_rank: number;
         };
         [$mol_dev_format_head](): any[];
     }
@@ -1910,6 +1996,9 @@ declare namespace $ {
             tag: "keys" | "term" | "solo" | "vals";
             size: number;
             time: string;
+        };
+        rank_min(): number & {
+            $hyoo_crus_rank: number;
         };
         [$mol_dev_format_head](): any[];
     }
