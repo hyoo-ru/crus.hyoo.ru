@@ -32,8 +32,7 @@ namespace $ {
 			const auth = this.auth()
 			const rank = this.lord_rank( auth.lord() )
 			
-			if( rank === $hyoo_crus_rank.reg ) return auth.peer()
-			if( rank === $hyoo_crus_rank.nil ) $mol_fail( new Error( 'Rank too low (nil)' ) )
+			if( rank < $hyoo_crus_rank_tier.post ) $mol_fail( new Error( `Rank too low (${ rank })` ) )
 			
 			for( let i = 0; i < 4096; ++i ) {
 				
@@ -138,13 +137,13 @@ namespace $ {
 		
 		/** Rights level of Lord for Land. */
 		@ $mol_mem_key
-		lord_rank( lord: $hyoo_crus_ref, next?: $hyoo_crus_rank ) {
+		lord_rank( lord: $hyoo_crus_ref, next?: typeof $hyoo_crus_rank.Value ): typeof $hyoo_crus_rank.Value {
 			
-			if( lord === $hyoo_crus_ref_lord( this.ref() ) ) return $hyoo_crus_rank.law
+			if( lord === $hyoo_crus_ref_lord( this.ref() ) ) return $hyoo_crus_rank_rule
 			
 			const prev = this.gift.get( lord )?.rank()
 				?? this.gift.get( $hyoo_crus_ref( '' ) )?.rank()
-				?? ( this.encrypted() ? $hyoo_crus_rank.nil : $hyoo_crus_rank.get )
+				?? ( this.encrypted() ? $hyoo_crus_rank_deny : $hyoo_crus_rank_read )
 			
 			if( next === undefined ) return prev
 			if( next === prev ) return prev
@@ -156,9 +155,12 @@ namespace $ {
 		
 		/** Rights level of Peer for Land. */
 		peer_rank( peer: string ) {
+			
 			const auth = this.pass.get( peer )!
-			if( !auth ) return $hyoo_crus_rank.get
-			return this.lord_rank( auth.lord() )
+			if( auth ) return this.lord_rank( auth.lord() )
+			
+			return this.encrypted() ? $hyoo_crus_rank_deny : $hyoo_crus_rank_read
+			
 		}
 		
 		unit_sort( units: readonly $hyoo_crus_unit[] ) {
@@ -379,7 +381,7 @@ namespace $ {
 						const lord = next.lord()
 						const peer = next.peer()
 						
-						if( !skip_check && this.lord_rank( lord ) < $hyoo_crus_rank.reg ) return 'Need reg rank to join'
+						if( !skip_check && this.lord_rank( lord ) < next.rank_min() ) return 'Need reg rank to join'
 						
 						const exists = this.pass.get( peer )
 						if( exists ) return ''
@@ -395,7 +397,7 @@ namespace $ {
 						const peer = next.peer()
 						const dest = next.dest()
 						
-						if( !skip_check && this.peer_rank( peer ) < $hyoo_crus_rank.law ) return 'Need law rank to change rank'
+						if( !skip_check && this.peer_rank( peer ) < next.rank_min() ) return 'Need law rank to change rank'
 						
 						const prev = this.gift.get( dest )
 						if( prev && $hyoo_crus_gift.compare( prev, next ) <= 0 ) return ''
@@ -405,7 +407,7 @@ namespace $ {
 						
 						if( !prev ) this.faces.total ++
 						
-						if( ( prev?.rank() ?? $hyoo_crus_rank.nil ) > next.rank() ) need_recheck = true
+						if( ( prev?.rank() ?? $hyoo_crus_rank_deny ) > next.rank() ) need_recheck = true
 						
 					},
 					
@@ -415,7 +417,7 @@ namespace $ {
 						const peer = next.peer()
 						const self = next.self()
 						
-						if( !skip_check && this.peer_rank( peer ) < $hyoo_crus_rank.mod ) return 'Need mod rank to post data'
+						if( !skip_check && this.peer_rank( peer ) < next.rank_min() ) return 'Need mod rank to post data'
 
 						let peers = this.sand.get( head )
 						if( !peers ) this.sand.set( head, peers = new $mol_wire_dict )
@@ -449,29 +451,32 @@ namespace $ {
 		recheck() {
 			
 			for( const [ peer, pass ] of this.pass ) {
-				if( this.lord_rank( pass.lord() ) >= $hyoo_crus_rank.reg ) continue
+				if( this.lord_rank( pass.lord() ) >= pass.rank_min() ) continue
 				this.pass.delete( peer )
 				this.faces.total --
 			}
 			
 			for( const [ lord, gift ] of this.gift ) {
-				if( this.peer_rank( gift.peer() ) >= $hyoo_crus_rank.law ) continue
+				if( this.peer_rank( gift.peer() ) >= gift.rank_min() ) continue
 				this.gift.delete( lord )
 				this.faces.total --
 			}
 			
 			for( const [ head, peers ] of this.sand ) {
-				for( const [ peer, units ] of peers ) {
-					if( this.peer_rank( peer ) >= $hyoo_crus_rank.mod ) continue
-					peers.delete( peer )
-					this.faces.total -= units.size
+				for( const [ peer, sands ] of peers ) {
+					const rank = this.peer_rank( peer )
+					for( const [ self, sand ] of sands ) {
+						if( rank >= sand.rank_min() ) continue
+						sands.delete( self )
+						this.faces.total --
+					}
 				}
 			}
 			
 		}
 		
 		@ $mol_action
-		fork( preset = { '': $hyoo_crus_rank.get } ) {
+		fork( preset: $hyoo_crus_rank_preset = { '': $hyoo_crus_rank_read } ) {
 			const land = this.$.$hyoo_crus_glob.land_grab( preset )
 			land.Tine().items_vary([ this.ref() ])
 			return land
@@ -632,7 +637,7 @@ namespace $ {
 		@ $mol_action
 		give(
 			dest: $hyoo_crus_auth | $hyoo_crus_ref | null,
-			rank: $hyoo_crus_rank,
+			rank: typeof $hyoo_crus_rank.Value,
 		) {
 				
 			this.join()
@@ -647,7 +652,7 @@ namespace $ {
 			unit.dest( dest ? dest instanceof $hyoo_crus_auth ? dest.lord() : dest : $hyoo_crus_ref('') )
 			unit._land = this
 			
-			if( rank >= $hyoo_crus_rank.get ) {
+			if( rank >= $hyoo_crus_rank_read ) {
 				
 				const secret_land = this.secret()
 				if( secret_land ) {
@@ -655,7 +660,7 @@ namespace $ {
 					if( !dest ) $mol_fail( new Error( `Encrypted land can't be shared to everyone` ) )
 					
 					const prev = this.gift.get( dest instanceof $hyoo_crus_auth ? dest.lord() : dest )
-					if( prev && prev.rank() >= $hyoo_crus_rank.get ) {
+					if( prev && prev.rank() >= $hyoo_crus_rank_read ) {
 						unit.bill().set( prev.bill() )
 					} else {
 						
@@ -925,8 +930,23 @@ namespace $ {
 			const sens = unit.sens().slice()
 			for( let i = 0; i < mixin.length; ++i ) sens[i+2] ^= mixin[i]
 			
-			const sign = key.sign( sens )
-			unit.sign( sign )
+			while( true ) {
+				
+				const sign = key.sign( sens )
+				unit.sign( sign.slice( 0, 2 ) )
+				
+				const rank = unit instanceof $hyoo_crus_pass
+					? this.lord_rank( unit.lord() )
+					: this.peer_rank( unit.peer() )
+				
+				if( rank >= unit.rank_min() ) {
+					unit.sign( sign )
+					return
+				} else {
+					unit.sign( new Uint8Array([ 0, 0 ]) )
+				}
+				
+			}
 			
 		}
 		
@@ -1041,7 +1061,7 @@ namespace $ {
 			const unit = new $hyoo_crus_gift
 			$hyoo_crus_unit_trusted.add( unit )
 			
-			unit.rank( $hyoo_crus_rank.law )
+			unit.rank( $hyoo_crus_rank_rule )
 			unit.time( this.faces.tick() )
 			unit.peer( auth.peer() )
 			unit.dest( auth.lord() )

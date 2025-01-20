@@ -28,18 +28,18 @@ namespace $ {
 		}
 		
 		@ $mol_action
-		static king_grab( preset : $hyoo_crus_rank_preset = { '': $hyoo_crus_rank.get } ) {
+		static king_grab( preset : $hyoo_crus_rank_preset = { '': $hyoo_crus_rank_read } ) {
 			
 			const king = this.$.$hyoo_crus_auth.grab()
 			const colony = ( $mol_wire_sync( $hyoo_crus_land ) as typeof $hyoo_crus_land ).make({ $: this.$ })
 			colony.auth = $mol_const( king )
 			
-			if( ( preset[''] ?? $hyoo_crus_rank.nil ) === $hyoo_crus_rank.nil ) {
+			if( ( preset[''] ?? $hyoo_crus_rank_deny ) === $hyoo_crus_rank_deny ) {
 				colony.encrypted( true )
 			}
 			
 			const self = this.$.$hyoo_crus_auth.current()
-			colony.give( self, $hyoo_crus_rank.law )
+			colony.give( self, $hyoo_crus_rank_rule )
 			
 			for( const key in preset ) colony.give( key ? $hyoo_crus_auth.from( key ) : null, preset[ key ] )
 			
@@ -49,17 +49,17 @@ namespace $ {
 		}
 		
 		/** @deprecated Use `this.$.$hyoo_crus_glob` */
-		king_grab( preset : $hyoo_crus_rank_preset = { '': $hyoo_crus_rank.get } ) {
+		king_grab( preset : $hyoo_crus_rank_preset = { '': $hyoo_crus_rank_read } ) {
 			return this.$.$hyoo_crus_glob.king_grab( preset )
 		}
 		
 		@ $mol_action
-		static land_grab( preset : $hyoo_crus_rank_preset = { '': $hyoo_crus_rank.get } ) {
+		static land_grab( preset : $hyoo_crus_rank_preset = { '': $hyoo_crus_rank_read } ) {
 			return this.Land( this.king_grab( preset ).lord() )
 		}
 		
 		/** @deprecated Use `this.$.$hyoo_crus_glob` */
-		land_grab( preset : $hyoo_crus_rank_preset = { '': $hyoo_crus_rank.get } ) {
+		land_grab( preset : $hyoo_crus_rank_preset = { '': $hyoo_crus_rank_read } ) {
 			return this.$.$hyoo_crus_glob.land_grab( preset )
 		}
 		

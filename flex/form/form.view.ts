@@ -4,7 +4,7 @@ namespace $.$$ {
 		@ $mol_mem
 		kind() {
 			
-			const land = this.$.$hyoo_crus_glob.home().hall_by( $hyoo_crus_flex_domain, { '': $hyoo_crus_rank.get } )!.land()
+			const land = this.$.$hyoo_crus_glob.home().hall_by( $hyoo_crus_flex_domain, { '': $hyoo_crus_rank_read } )!.land()
 			const domain = $hyoo_crus_flex_domain.ensure( land ) 
 
 			return this.node().cast( $hyoo_crus_flex_thing ).Kind()?.remote() ?? domain.Kinds()?.remote_list()[0] ?? null!

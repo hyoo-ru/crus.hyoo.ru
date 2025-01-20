@@ -20,8 +20,8 @@ $hyoo_crus_land_rights $mol_list
 				<= Gift_rank* $mol_select
 					value? <=> gift_rank*? \nil
 					dictionary *
-						nil @ \🛑 Deny
-						get @ \👀 Read
-						reg @ \📢 Auth
-						mod @ \✍ Post
-						law @ \👑 Rule
+						deny @ \🛑 Deny
+						read @ \👀 Read
+						join @ \📢 Join
+						post @ \✍ Post
+						rule @ \👑 Rule

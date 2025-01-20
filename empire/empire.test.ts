@@ -16,7 +16,7 @@ namespace $.$$ {
 			const before = start.shift( 'PT-1h' )
 			const after = start.shift( 'PT1h' )
 			
-			const pub = { '': $hyoo_crus_rank.get }
+			const pub = { '': $hyoo_crus_rank_read }
 			const target = targets.path( [ Place.SPb, Type.Alarm, start ], pub )!.remote_make( pub )!
 			targets.path( [ Place.SPb, Type.Alarm, after ], pub )!.add( target.ref() )
 			targets.path( [ Place.SPb, Type.Skip, start ], pub )!.add( target.ref() )
