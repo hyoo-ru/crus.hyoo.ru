@@ -1426,7 +1426,7 @@ declare namespace $ {
             $hyoo_crus_ref: symbol;
         }, $hyoo_crus_gift>;
         sand: $mol_wire_dict<string, $mol_wire_dict<string, $mol_wire_dict<string, $hyoo_crus_sand>>>;
-        self_all: $mol_wire_set<string>;
+        self_all: $mol_wire_dict<string, $hyoo_crus_sand | null>;
         self_make(idea?: number): string;
         home(): $hyoo_crus_home;
         area_make(idea?: number): $hyoo_crus_land;

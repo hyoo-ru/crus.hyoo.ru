@@ -7236,7 +7236,7 @@ var $;
         pass = new $mol_wire_dict();
         gift = new $mol_wire_dict();
         sand = new $mol_wire_dict();
-        self_all = new $mol_wire_set();
+        self_all = new $mol_wire_dict();
         self_make(idea = Math.floor(Math.random() * 2 ** 48)) {
             const auth = this.auth();
             const rank = this.lord_rank(auth.lord());
@@ -7249,7 +7249,7 @@ var $;
                 const idea_str = $mol_base64_ae_encode(new Uint8Array(new BigUint64Array([BigInt(idea)]).buffer, 0, 6));
                 if (this.self_all.has(idea_str))
                     continue;
-                this.self_all.add(idea_str);
+                this.self_all.set(idea_str, null);
                 return idea_str;
             }
             $mol_fail(new Error(`Too long self generation`));
@@ -7540,7 +7540,7 @@ var $;
                         if (prev && $hyoo_crus_sand.compare(prev, next) <= 0)
                             return '';
                         units.set(self, next);
-                        this.self_all.add(self);
+                        this.self_all.set(self, next);
                         this.faces.time_max(peer, next.time());
                         if (!prev)
                             this.faces.total++;
