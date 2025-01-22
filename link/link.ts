@@ -38,18 +38,19 @@ namespace $ {
 			)	
 		}
 		
-		static hash_cache = new WeakMap< Uint8Array, $hyoo_crus_link >()
+		static hash_cache = new WeakMap< ArrayBufferView, $hyoo_crus_link >()
 		
 		/** Make hash from binary (18 bytes). */
-		static hash_bin( bin: Uint8Array ) {
+		static hash_bin( bin: ArrayBufferView ) {
 			
-			let hash = this.hash_cache.get( bin )
-			if( hash ) return hash
+			let link = this.hash_cache.get( bin )
+			if( link ) return link
 			
-			hash = this.from_bin( new Uint8Array( $mol_crypto_hash( bin ).buffer, 0, 18 ) )
-			this.hash_cache.set( bin, hash )
+			const hash = $mol_crypto_hash( bin )
+			link = this.from_bin( new Uint8Array( hash.buffer, 0, 18 ) )
+			this.hash_cache.set( bin, link )
 			
-			return hash
+			return link
 		}
 		
 		/** Make hash from string (18 bytes). */
@@ -59,17 +60,17 @@ namespace $ {
 		
 		/** Land-local Peer id. */
 		peer() {
-			return this.str.split( '_' )[ 0 ] ?? ''
+			return new $hyoo_crus_link( this.str.split( '_' )[ 0 ] ?? '' )
 		}
 
 		/** Lord-local Area id. */
 		area() {
-			return this.str.split( '_' )[ 2 ] ?? ''
+			return new $hyoo_crus_link( this.str.split( '_' )[ 2 ] ?? '' )
 		}
 		
 		/** Land-local Head id. */
 		head() {
-			return this.str.split( '_' )[ 3 ] ?? ''
+			return new $hyoo_crus_link( this.str.split( '_' )[ 3 ] ?? '' )
 		}
 		
 		/** Link to Lord Home. */
@@ -87,7 +88,7 @@ namespace $ {
 			base = base.land()
 			if( this.land().str !== base.str ) return this
 			const head = this.head()
-			return new $hyoo_crus_link(  head ? '___' + head : '' )
+			return new $hyoo_crus_link(  head.str !== '_' ? '___' + head : '_' )
 		}
 
 		/** Absolute Node Link from relative (`___QWERTYUI`) using base Land Link. */

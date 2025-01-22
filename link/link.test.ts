@@ -37,18 +37,50 @@ namespace $.$$ {
 			
 		},
 		
+		"Pick Peer only"( $ ) {
+			
+			$mol_assert_equal(
+				new $hyoo_crus_link( 'qwertyui_asdfghjk_qazwsxed_zxcvbnm0' ).peer(),
+				new $hyoo_crus_link( 'qwertyui_asdfghjk__zxcvbnm0' ).peer(),
+				new $hyoo_crus_link( 'qwertyui' ),
+			)
+			
+			$mol_assert_equal(
+				new $hyoo_crus_link( '___qazwsxed' ).peer(),
+				new $hyoo_crus_link( '_' ),
+			)
+			
+		},
+		
 		"Pick Head only"( $ ) {
 			
 			$mol_assert_equal(
 				new $hyoo_crus_link( 'qwertyui_asdfghjk_qazwsxed_zxcvbnm0' ).head(),
 				new $hyoo_crus_link( 'qwertyui_asdfghjk__zxcvbnm0' ).head(),
-				'zxcvbnm0',
+				new $hyoo_crus_link( 'zxcvbnm0' ),
 			)
 			
 			$mol_assert_equal(
 				new $hyoo_crus_link( 'qwertyui_asdfghjk_qazwsxed' ).head(),
 				new $hyoo_crus_link( 'qwertyui_asdfghjk' ).head(),
-				'',
+				new $hyoo_crus_link( '' ),
+			)
+			
+		},
+		
+		"Pick Area only"( $ ) {
+			
+			$mol_assert_equal(
+				new $hyoo_crus_link( 'qwertyui_asdfghjk_qazwsxed' ).area(),
+				new $hyoo_crus_link( 'qwertyui_asdfghjk_qazwsxed_zxcvbnm0' ).area(),
+				new $hyoo_crus_link( 'qazwsxed' ),
+			)
+			
+			$mol_assert_equal(
+				new $hyoo_crus_link( 'qwertyui_asdfghjk__zxcvbnm0' ).area(),
+				new $hyoo_crus_link( 'qwertyui_asdfghjk' ).area(),
+				new $hyoo_crus_link( '_' ).area(),
+				new $hyoo_crus_link( '_' ),
 			)
 			
 		},
@@ -60,7 +92,7 @@ namespace $.$$ {
 			const lord = new $hyoo_crus_link( 'qwertyui_asdfghjk' ).toBin()
 			
 			const rel_node = new $hyoo_crus_link( '___zxcvbnm0' ).toBin()
-			const rel_root = new $hyoo_crus_link( '' ).toBin()
+			const rel_root = new $hyoo_crus_link( '_' ).toBin()
 			
 			$mol_assert_equal( node.length, 24 )
 			$mol_assert_equal( land.length, 18 )
@@ -74,7 +106,7 @@ namespace $.$$ {
 			$mol_assert_equal( $hyoo_crus_link.from_bin( lord ), new $hyoo_crus_link( 'qwertyui_asdfghjk' ) )
 			
 			$mol_assert_equal( $hyoo_crus_link.from_bin( rel_node ), new $hyoo_crus_link( '___zxcvbnm0' ) )
-			$mol_assert_equal( $hyoo_crus_link.from_bin( rel_root ), new $hyoo_crus_link( '' ) )
+			$mol_assert_equal( $hyoo_crus_link.from_bin( rel_root ), new $hyoo_crus_link( '_' ) )
 			
 		},
 		
@@ -119,7 +151,7 @@ namespace $.$$ {
 				new $hyoo_crus_link( 'qwertyui_asdfghjk' ).relate(
 					new $hyoo_crus_link( 'qwertyui_asdfghjk' ),
 				),
-				new $hyoo_crus_link( '' ),
+				new $hyoo_crus_link( '_' ),
 			)
 			
 		},
@@ -160,20 +192,20 @@ namespace $.$$ {
 			)
 			
 			$mol_assert_equal(
-				new $hyoo_crus_link( '' ).resolve(
+				new $hyoo_crus_link( '_' ).resolve(
 					new $hyoo_crus_link( 'qwertyui_asdfghjk' ),
 				),
-				new $hyoo_crus_link( '' ).resolve(
+				new $hyoo_crus_link( '_' ).resolve(
 					new $hyoo_crus_link( 'qwertyui_asdfghjk__zxcvbnm0' ),
 				),
 				new $hyoo_crus_link( 'qwertyui_asdfghjk' ),
 			)
 			
 			$mol_assert_equal(
-				new $hyoo_crus_link( '' ).resolve(
+				new $hyoo_crus_link( '_' ).resolve(
 					new $hyoo_crus_link( 'qwertyui_asdfghjk_qazwsxed' ),
 				),
-				new $hyoo_crus_link( '' ).resolve(
+				new $hyoo_crus_link( '_' ).resolve(
 					new $hyoo_crus_link( 'qwertyui_asdfghjk_qazwsxed_zxcvbnm0' ),
 				),
 				new $hyoo_crus_link( 'qwertyui_asdfghjk_qazwsxed' ),
