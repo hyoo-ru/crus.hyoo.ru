@@ -1,0 +1,108 @@
+namespace $ {
+	
+	export class $hyoo_crus_link extends Object {
+		
+		constructor( readonly str: string ) {
+			super()
+			
+			if( !/^(([a-zæA-ZÆ0-9]{8})?_){0,3}([a-zæA-ZÆ0-9]{8})?$/.test( str ) ) {
+				$mol_fail( new Error( `Wrong Link (${str})` ) )
+			}
+		
+			this.str = str.replace( /AAAAAAAA/g, '' ).replace( /_+$/, '' ) || '_'
+		}
+		
+		toString() {
+			return this.str
+		}
+		
+		[ Symbol.toPrimitive ]() {
+			return this.str
+		}
+		
+		[ $mol_dev_format_head ]() {
+			return $mol_dev_format_span( { 'color': 'darkorange' }, this.str )
+		}
+		
+		/** Binary represntation (6/12/18/24 bytes). */
+		toBin() {
+			return $mol_base64_ae_decode(
+				( this.str || '_' ).split( '_' ).map( numb => numb || 'AAAAAAAA' ).join( '' )
+			)
+		}
+		
+		/** Read from binary (6/12/18/24 bytes). */
+		static from_bin( bin: Uint8Array ) {
+			return new this(
+				[ ... $mol_base64_ae_encode( bin ).match( /(.{8})/g ) ?? [] ].join( '_' )
+			)	
+		}
+		
+		static hash_cache = new WeakMap< Uint8Array, $hyoo_crus_link >()
+		
+		/** Make hash from binary (18 bytes). */
+		static hash_bin( bin: Uint8Array ) {
+			
+			let hash = this.hash_cache.get( bin )
+			if( hash ) return hash
+			
+			hash = this.from_bin( new Uint8Array( $mol_crypto_hash( bin ).buffer, 0, 18 ) )
+			this.hash_cache.set( bin, hash )
+			
+			return hash
+		}
+		
+		/** Make hash from string (18 bytes). */
+		static hash_str( str: string ) {
+			return this.hash_bin( $mol_charset_encode( str ) )
+		}
+		
+		/** Land-local Peer id. */
+		peer() {
+			return this.str.split( '_' )[ 0 ] ?? ''
+		}
+
+		/** Lord-local Area id. */
+		area() {
+			return this.str.split( '_' )[ 2 ] ?? ''
+		}
+		
+		/** Land-local Head id. */
+		head() {
+			return this.str.split( '_' )[ 3 ] ?? ''
+		}
+		
+		/** Link to Lord Home. */
+		lord() {
+			return new $hyoo_crus_link( this.str.split( '_' ).slice( 0, 2 ).join( '_' ) )
+		}
+		
+		/** Link to Land Root. */
+		land() {
+			return new $hyoo_crus_link( this.str.split( '_' ).slice( 0, 3 ).join( '_' ) )
+		}
+		
+		/** Node Link relative to base Land: `___QWERTYUI` */
+		relate( base: $hyoo_crus_link ) {
+			base = base.land()
+			if( this.land().str !== base.str ) return this
+			const head = this.head()
+			return new $hyoo_crus_link(  head ? '___' + head : '' )
+		}
+
+		/** Absolute Node Link from relative (`___QWERTYUI`) using base Land Link. */
+		resolve( base: $hyoo_crus_link ) {
+			
+			if( this.str === '_' ) return base.land()
+			if( !this.str.startsWith( '___' ) ) return this
+			
+			const parts = base.land().toString().split( '_' )
+			while( parts.length < 3 ) parts.push( '' )
+			parts.push( this.str.slice( 3 ) )
+			
+			return new $hyoo_crus_link( parts.join( '_' ) )
+		}
+	
+	}
+	
+}
