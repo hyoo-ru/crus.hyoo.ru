@@ -32,22 +32,27 @@ namespace $ {
 		static async generate() {
 			for( let i = 0; i < 4096; ++i ) {
 				const auth = await super.generate()
-				if( auth.uint8(0) !== $hyoo_crus_unit_kind.pass ) continue
+				if( auth.uint8(0) !== 0b1111_1111 ) continue
 				return this.from( auth )
 			}
 			$mol_fail( new Error( `Too long key generation` ) )
 		}
 		
+		@ $mol_memo.method
+		hash() {
+			return $hyoo_crus_link.hash_bin( this )
+		}
+		
 		/** Independent actor with global unique id generated from Auth key */
 		@ $mol_memo.method
 		lord() {
-			return $hyoo_crus_ref_decode( new Uint8Array( this.buffer, 2, 12 ) )
+			return this.hash().lord()
 		}
 		
 		/** Land local unique identifier of independent actor (first half of Lord) */
 		@ $mol_memo.method
 		peer() {
-			return $mol_base64_ae_encode( new Uint8Array( this.buffer, 2, 6 ) )
+			return this.hash().peer()
 		}
 		
 		@ $mol_mem_key
