@@ -19,7 +19,7 @@ namespace $.$$ {
 		
 		@ $mol_mem_key
 		override gift_rank( id: string, next?: keyof typeof $hyoo_crus_rank_tier ) {
-			return $hyoo_crus_rank_tier[ this.land().lord_rank( $hyoo_crus_ref( id ), next && $hyoo_crus_rank_make( next, 'just' ) ) & 0b0_1111_0000 ]??'unset'
+			return $hyoo_crus_rank_tier[ this.land().lord_rank( $hyoo_crus_ref( id ), next && $hyoo_crus_rank_make( next, 'just' ) ) ^ $hyoo_crus_rank_rate.just ]??'uknown'
 		}
 		
 		add_commit() {
