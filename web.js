@@ -2305,11 +2305,13 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    const algorithm = {
+    const ecdsa = {
         name: 'ECDSA',
         hash: 'SHA-1',
         namedCurve: "P-256",
     };
+    const ecdh = { name: "ECDH", namedCurve: "P-256" };
+    const jwk = { crv: 'P-256', ext: true, kty: 'EC' };
     class $mol_crypto_key extends $mol_buffer {
         static from(serial) {
             if (typeof serial === 'string') {
@@ -2320,9 +2322,6 @@ var $;
                 ]);
             }
             return super.from(serial);
-        }
-        asArray() {
-            return new Uint8Array(this.buffer, this.byteOffset, this.byteLength);
         }
         toString() {
             const arr = this.asArray();
@@ -2347,22 +2346,34 @@ var $;
                 kty: "EC",
                 x: str.slice(0, 43),
                 y: str.slice(43, 86),
-            }, algorithm, true, ['verify']);
+            }, ecdsa, Boolean('extractable'), ['verify']);
+        }
+        async native_derive() {
+            const serial = this.toString();
+            return await $mol_crypto_native.subtle.importKey('jwk', {
+                ...jwk,
+                key_ops: [],
+                x: serial.slice(0, 43),
+                y: serial.slice(43, 86),
+            }, ecdh, true, []);
         }
         async verify(data, sign) {
-            return await $mol_crypto_native.subtle.verify(algorithm, await this.native(), sign, data);
+            return await $mol_crypto_native.subtle.verify(ecdsa, await this.native(), sign, data);
         }
     }
     __decorate([
         $mol_memo.method
     ], $mol_crypto_key_public.prototype, "native", null);
+    __decorate([
+        $mol_memo.method
+    ], $mol_crypto_key_public.prototype, "native_derive", null);
     $.$mol_crypto_key_public = $mol_crypto_key_public;
     class $mol_crypto_key_private extends $mol_crypto_key {
         static size_str = 129;
         static size_bin = 96;
         static size_sign = 64;
         static async generate() {
-            const pair = await $mol_crypto_native.subtle.generateKey(algorithm, true, ['sign', 'verify']);
+            const pair = await $mol_crypto_native.subtle.generateKey(ecdsa, Boolean('extractable'), ['sign', 'verify']);
             const { x, y, d } = await $mol_crypto_native.subtle.exportKey('jwk', pair.privateKey);
             return this.from(x + y + d);
         }
@@ -2376,18 +2387,31 @@ var $;
                 x: str.slice(0, 43),
                 y: str.slice(43, 86),
                 d: str.slice(86, 129),
-            }, algorithm, true, ['sign']);
+            }, ecdsa, Boolean('extractable'), ['sign']);
+        }
+        async native_derive() {
+            const serial = this.toString();
+            return $mol_crypto_native.subtle.importKey('jwk', {
+                ...jwk,
+                key_ops: ['deriveKey', 'deriveBits'],
+                x: serial.slice(0, 43),
+                y: serial.slice(43, 86),
+                d: serial.slice(86, 129),
+            }, ecdh, Boolean('extractable'), ['deriveKey', 'deriveBits']);
         }
         public() {
             return new $mol_crypto_key_public(this.buffer, this.byteOffset, this.byteOffset + 64);
         }
         async sign(data) {
-            return new Uint8Array(await $mol_crypto_native.subtle.sign(algorithm, await this.native(), data));
+            return new Uint8Array(await $mol_crypto_native.subtle.sign(ecdsa, await this.native(), data));
         }
     }
     __decorate([
         $mol_memo.method
     ], $mol_crypto_key_private.prototype, "native", null);
+    __decorate([
+        $mol_memo.method
+    ], $mol_crypto_key_private.prototype, "native_derive", null);
     __decorate([
         $mol_memo.method
     ], $mol_crypto_key_private.prototype, "public", null);
@@ -2594,6 +2618,88 @@ var $;
 var $;
 (function ($) {
     self.addEventListener('storage', event => $.$mol_state_local.changes(event));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    function $mol_crypto_salt() {
+        return $mol_crypto_native.getRandomValues(new Uint8Array(16));
+    }
+    $.$mol_crypto_salt = $mol_crypto_salt;
+    $.$mol_crypto_salt_once = new Uint8Array([1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6]);
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_crypto_sacred extends $mol_buffer {
+        static size = 16;
+        static make() {
+            return this.from($mol_crypto_salt());
+        }
+        static from(serial) {
+            if (typeof serial === 'string') {
+                serial = new Uint8Array([
+                    ...$mol_base64_url_decode(serial),
+                ]);
+            }
+            if (!(serial instanceof Uint8Array)) {
+                serial = new Uint8Array(serial.buffer, serial.byteOffset, serial.byteLength);
+            }
+            ;
+            serial[0] = 0;
+            const sacred = super.from(serial);
+            return sacred;
+        }
+        static async from_native(native) {
+            const buf = await $mol_crypto_native.subtle.exportKey('raw', native);
+            const sacred = this.from(new Uint8Array(buf));
+            sacred._native = native;
+            return sacred;
+        }
+        constructor(buffer, byteOffset, byteLength) {
+            super(buffer, byteOffset, byteLength);
+            if (this.getUint8(0) !== 0)
+                $mol_fail(new Error('Buffer should starts with 0 byte'));
+        }
+        toString() {
+            return $mol_base64_url_encode(this.asArray());
+        }
+        _native;
+        async native() {
+            return this._native ?? (this._native = await $mol_crypto_native.subtle.importKey('raw', this, {
+                name: 'AES-CBC',
+                length: 128,
+            }, true, ['encrypt', 'decrypt']));
+        }
+        async encrypt(open, salt) {
+            return new Uint8Array(await $mol_crypto_native.subtle.encrypt({
+                name: 'AES-CBC',
+                length: 128,
+                tagLength: 32,
+                iv: salt,
+            }, await this.native(), open));
+        }
+        async decrypt(closed, salt) {
+            return new Uint8Array(await $mol_crypto_native.subtle.decrypt({
+                name: 'AES-CBC',
+                length: 128,
+                tagLength: 32,
+                iv: salt,
+            }, await this.native(), closed));
+        }
+        async close(sacred, salt) {
+            const buf = new Uint8Array(this.buffer, this.byteOffset + 1, this.byteLength - 1);
+            return sacred.encrypt(buf, salt);
+        }
+    }
+    __decorate([
+        $mol_memo.method
+    ], $mol_crypto_sacred.prototype, "toString", null);
+    $.$mol_crypto_sacred = $mol_crypto_sacred;
 })($ || ($ = {}));
 
 ;

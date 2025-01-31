@@ -169,6 +169,8 @@
     "$mol_storage",
     "$mol_mem_persist",
     "$mol_crypto_secret",
+    "$mol_crypto_sacred",
+    "$mol_crypto_salt",
     "$mol_wire_dict",
     "$hyoo_crus_home",
     "$hyoo_crus_entity",

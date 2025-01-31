@@ -1463,13 +1463,13 @@ declare namespace $ {
 declare namespace $ {
     class $mol_crypto_key extends $mol_buffer {
         static from<This extends typeof $mol_crypto_key>(this: This, serial: number | string | ArrayBufferView<ArrayBuffer>): InstanceType<This>;
-        asArray(): Uint8Array<ArrayBuffer>;
         toString(): string;
     }
     class $mol_crypto_key_public extends $mol_crypto_key {
         static size_str: number;
         static size_bin: number;
         native(): Promise<CryptoKey>;
+        native_derive(): Promise<CryptoKey>;
         verify(data: BufferSource, sign: BufferSource): Promise<boolean>;
     }
     class $mol_crypto_key_private extends $mol_crypto_key {
@@ -1478,6 +1478,7 @@ declare namespace $ {
         static size_sign: number;
         static generate(): Promise<$mol_crypto_key_private>;
         native(): Promise<CryptoKey>;
+        native_derive(): Promise<CryptoKey>;
         public(): $mol_crypto_key_public;
         sign(data: BufferSource): Promise<Uint8Array<ArrayBuffer>>;
     }
@@ -1515,6 +1516,31 @@ declare namespace $ {
     class $mol_state_local_node<Value> extends $mol_state_local<Value> {
         static dir(): $mol_file;
         static value<Value>(key: string, next?: Value | null): Value | null;
+    }
+}
+
+declare namespace $ {
+    function $mol_crypto_salt(): Uint8Array<ArrayBuffer>;
+    const $mol_crypto_salt_once: Uint8Array<ArrayBuffer>;
+}
+
+declare namespace $ {
+    class $mol_crypto_sacred extends $mol_buffer {
+        static size: 16;
+        static make(): $mol_crypto_sacred;
+        static from<This extends typeof $mol_buffer>(this: This, serial: string | ArrayBufferView<ArrayBuffer>): InstanceType<This>;
+        static from_native(native: CryptoKey): Promise<$mol_crypto_sacred>;
+        constructor(buffer: ArrayBuffer, byteOffset?: number, byteLength?: number);
+        toString(): string;
+        _native: undefined | CryptoKey & {
+            type: 'secret';
+        };
+        native(): Promise<CryptoKey & {
+            type: "secret";
+        }>;
+        encrypt(open: BufferSource, salt: BufferSource): Promise<Uint8Array<ArrayBuffer>>;
+        decrypt(closed: BufferSource, salt: BufferSource): Promise<Uint8Array<ArrayBuffer>>;
+        close(sacred: $mol_crypto_sacred, salt: BufferSource): Promise<Uint8Array<ArrayBuffer>>;
     }
 }
 
