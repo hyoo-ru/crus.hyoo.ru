@@ -2,16 +2,16 @@ crus kind
 	[] bin keyword
 	[] int keyword
 	[] real keyword
-	[] ref keyword
 	[] str keyword
 	[] time keyword
 	[] json keyword
 	[] xml keyword
 	[] tree keyword
-	[] list keyword
 	[] dict keyword
 	[] text keyword
 	[] blob keyword
+	[] -> operator \Link
+	[] / operator \List
 	[: . property
 	[] \
 		comment

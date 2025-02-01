@@ -17,20 +17,20 @@ $hyoo_crus_flex_field $mol_view
 	Real $mol_number
 		enabled <= enabled true
 		value? <=> real? +NaN
-	Ref $mol_bar sub <= ref_content /
-		<= Ref_dump $hyoo_crus_sand_dump
+	Ref $mol_bar sub <= link_content /
+		<= Link_dump $hyoo_crus_sand_dump
 			land <= land
-			value <= ref_value null
-		<= Ref_pick $mol_select
+			value <= link_value null
+		<= Link_pick $mol_select
 			enabled <= enabled true
-			value? <=> ref? null
-			options <= ref_options /
-			option_label* <= ref_label* \
-		<= Ref_new $mol_select
+			value? <=> link? null
+			options <= link_options /
+			option_label* <= link_label* \
+		<= Link_new $mol_select
 			Filter null
 			trigger_content /
-				<= Ref_new_icon $mol_icon_plus
-			value? <=> ref_new? null
+				<= Link_new_icon $mol_icon_plus
+			value? <=> link_new? null
 			dictionary *
 				local @ \💼 Local
 				orgy @ \✍ All write
@@ -77,8 +77,8 @@ $hyoo_crus_flex_field $mol_view
 				<= List_pick $mol_select
 					enabled <= enabled true
 					value? <=> list_pick? null
-					options <= ref_options
-					option_label* <= ref_label* \
+					options <= link_options
+					option_label* <= link_label* \
 				<= List_item_add $mol_button_minor
 					enabled <= enabled true
 					click? <=> list_item_add? null

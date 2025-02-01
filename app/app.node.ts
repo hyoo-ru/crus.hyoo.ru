@@ -16,8 +16,8 @@ namespace $ {
 		}
 		
 		@ $mol_memo.method
-		ref() {
-			return new $hyoo_crus_app_node_ref
+		link() {
+			return new $hyoo_crus_app_node_link
 		}
 		
 		OPEN( msg: $mol_rest_message ) {
@@ -50,10 +50,10 @@ namespace $ {
 		
 	}
 	
-	export class $hyoo_crus_app_node_ref extends $mol_rest_resource {
+	export class $hyoo_crus_app_node_link extends $mol_rest_resource {
 		
 		GET( msg: $mol_rest_message ) {
-			msg.reply( this.$.$hyoo_crus_auth.current().lord().description! )
+			msg.reply( this.$.$hyoo_crus_auth.current().lord().str )
 		}
 		
 	}

@@ -18,5 +18,5 @@ $hyoo_crus_auth_slot $mol_page
 		<= Keys $mol_list
 			rows <= keys /
 				<= Key*0 $mol_button_copy
-					title <= ref* \
+					title <= link* \
 					text <= key* \

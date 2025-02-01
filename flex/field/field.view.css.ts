@@ -7,7 +7,7 @@ namespace $.$$ {
 			shrink: 1,
 		},
 		
-		Ref_new: {
+		Link_new: {
 			Trigger: {
 				justify: {
 					content: 'center',

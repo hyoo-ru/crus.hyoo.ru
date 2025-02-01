@@ -44,7 +44,7 @@ $hyoo_crus_node_dump $mol_expander
 							real \💫 real
 							ints \🔢 ints
 							reals \✨ reals
-							ref \🎯 ref
+							link \🎯 link
 							str \🔠 str
 							time \⏰ time
 							dur \🕓 dur

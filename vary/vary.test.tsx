@@ -2,7 +2,7 @@
 namespace $.$$ {
 	
 	function check( vary: $hyoo_crus_vary_type ) {
-		$mol_assert_like(
+		$mol_assert_equal(
 			vary,
 			$hyoo_crus_vary_decode( $hyoo_crus_vary_encode( vary ) ),
 		)
@@ -37,10 +37,10 @@ namespace $.$$ {
 			check( Number.MIN_VALUE )
 		},
 		
-		// "Ref"( $ ) {
-		// 	check( $hyoo_crus_ref.make() )
-		// 	check( $hyoo_crus_ref.make( 4611686018427387904n, 2, 3 ) )
-		// },
+		"Link"( $ ) {
+			check( new $hyoo_crus_link('') )
+			check( $hyoo_crus_link.from_int( 123456789 ) )
+		},
 		
 		"Str"( $ ) {
 			check( '' )
@@ -66,7 +66,7 @@ namespace $.$$ {
 				</div>
 			)
 			
-			$mol_assert_like(
+			$mol_assert_equal(
 				$mol_dom_serialize( $hyoo_crus_vary_decode( $hyoo_crus_vary_encode( xml ) ) as Node ),
 				$mol_dom_serialize( xml ),
 			)
@@ -80,7 +80,7 @@ namespace $.$$ {
 					foo \\bar
 			`)
 			
-			$mol_assert_like(
+			$mol_assert_equal(
 				$.$mol_tree2_to_string( $hyoo_crus_vary_decode( $hyoo_crus_vary_encode( tree ) ) as $mol_tree2 ),
 				$.$mol_tree2_to_string( tree ),
 			)
