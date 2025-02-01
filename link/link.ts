@@ -9,10 +9,25 @@ namespace $ {
 				$mol_fail( new Error( `Wrong Link (${str})` ) )
 			}
 		
-			this.str = str.replace( /AAAAAAAA/g, '' ).replace( /_+$/, '' ) || '_'
+			this.str = str.replace( /AAAAAAAA/g, '' ).replace( /_+$/, '' )
+		}
+		
+		static hole = new this( '' )
+		
+		static check( val: string ) {
+			try {
+				new this( val )
+				return val
+			} catch {
+				return null
+			}
 		}
 		
 		toString() {
+			return this.str
+		}
+		
+		toJSON() {
 			return this.str
 		}
 		
@@ -21,13 +36,20 @@ namespace $ {
 		}
 		
 		[ $mol_dev_format_head ]() {
-			return $mol_dev_format_span( { 'color': 'darkorange' }, this.str )
+			return $mol_dev_format_span( { 'color': 'darkorange' }, this.str || '_' )
 		}
 		
 		/** Binary represntation (6/12/18/24 bytes). */
 		toBin() {
 			return $mol_base64_ae_decode(
-				( this.str || '_' ).split( '_' ).map( numb => numb || 'AAAAAAAA' ).join( '' )
+				( this.str ).split( '_' ).map( numb => numb || 'AAAAAAAA' ).join( '' )
+			)
+		}
+		
+		/** Make from integer (6 bytes). */
+		static from_int( int: number ) {
+			return new this(
+				$mol_base64_ae_encode( new Uint8Array( new BigUint64Array([ BigInt( int ) ]).buffer, 0, 6 ) )
 			)
 		}
 		
@@ -88,13 +110,13 @@ namespace $ {
 			base = base.land()
 			if( this.land().str !== base.str ) return this
 			const head = this.head()
-			return new $hyoo_crus_link(  head.str !== '_' ? '___' + head : '_' )
+			return new $hyoo_crus_link(  '___' + head )
 		}
 
 		/** Absolute Node Link from relative (`___QWERTYUI`) using base Land Link. */
 		resolve( base: $hyoo_crus_link ) {
 			
-			if( this.str === '_' ) return base.land()
+			if( this.str === '' ) return base.land()
 			if( !this.str.startsWith( '___' ) ) return this
 			
 			const parts = base.land().toString().split( '_' )

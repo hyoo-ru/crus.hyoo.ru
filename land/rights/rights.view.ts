@@ -3,10 +3,10 @@ namespace $.$$ {
 		
 		@ $mol_mem
 		override gifts() {
-			const self = this.land().ref()
+			const self = this.land().link()
 			return [ ... this.land().gift.keys() ]
-				.filter( ref => ref.description && ( self !== ref ) )
-				.map( ref => this.Gift( ref.description! ) )
+				.filter( link => self.str !== link )
+				.map( link => this.Gift( link ) )
 		}
 		
 		override peer_id( id: string ) {
@@ -14,12 +14,12 @@ namespace $.$$ {
 		}
 		
 		override peer_name( id: string ) {
-			return this.$.$hyoo_crus_glob.Node( $hyoo_crus_ref( id ), $hyoo_crus_entity ).title() || id
+			return this.$.$hyoo_crus_glob.Node( new $hyoo_crus_link( id ), $hyoo_crus_entity ).title() || id
 		}
 		
 		@ $mol_mem_key
 		override gift_rank( id: string, next?: keyof typeof $hyoo_crus_rank_tier ) {
-			return $hyoo_crus_rank_tier[ this.land().lord_rank( $hyoo_crus_ref( id ), next && $hyoo_crus_rank_make( next, 'just' ) ) ]
+			return $hyoo_crus_rank_tier[ this.land().lord_rank( new $hyoo_crus_link( id ), next && $hyoo_crus_rank_make( next, 'just' ) ) ]
 		}
 		
 		add_commit() {

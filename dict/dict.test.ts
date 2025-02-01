@@ -7,7 +7,7 @@ namespace $.$$ {
 		async 'Dictionary invariants'( $ ) {
 			
 			const land = $hyoo_crus_land.make({ $ })
-			const dict = land.Node( $hyoo_crus_dict ).Item('')
+			const dict = land.Node( $hyoo_crus_dict ).Data()
 			$mol_assert_equal( dict.keys(), [] )
 			
 			dict.dive( 123, $hyoo_crus_atom_vary, null )
@@ -35,8 +35,8 @@ namespace $.$$ {
 			const land1 = $hyoo_crus_land.make({ $ })
 			const land2 = $hyoo_crus_land.make({ $ })
 			
-			const dict1 = land1.Node( $hyoo_crus_dict ).Item('')
-			const dict2 = land2.Node( $hyoo_crus_dict ).Item('')
+			const dict1 = land1.Node( $hyoo_crus_dict ).Data()
+			const dict2 = land2.Node( $hyoo_crus_dict ).Data()
 
 			dict1.dive( 123, $hyoo_crus_atom_vary, null )!.vary( 666 )
 			land2.faces.tick()
@@ -56,23 +56,23 @@ namespace $.$$ {
 			
 			class User extends $hyoo_crus_dict.with({
 				Title: $hyoo_crus_atom_str,
-				Account: $hyoo_crus_atom_ref_to( ()=> Account ),
-				Articles: $hyoo_crus_list_ref_to( ()=> Article ),
+				Account: $hyoo_crus_atom_link_to( ()=> Account ),
+				Articles: $hyoo_crus_list_link_to( ()=> Article ),
 			}) {}
 			
 			class Account extends $hyoo_crus_dict.with({
 				Title: $hyoo_crus_atom_str,
-				User: $hyoo_crus_atom_ref_to( ()=> User ),
+				User: $hyoo_crus_atom_link_to( ()=> User ),
 			}) {}
 			
 			class Article extends $hyoo_crus_dict.with({
 				Title: $hyoo_crus_dict_to( $hyoo_crus_atom_str ),
-				Author: $hyoo_crus_atom_ref_to( ()=> User ),
+				Author: $hyoo_crus_atom_link_to( ()=> User ),
 			}) {}
 			
 			const land = $.$hyoo_crus_glob.home().land()
 			
-			const user = land.Node( User ).Item('11111111')
+			const user = land.Node( User ).Item( new $hyoo_crus_link( '11111111' ) )
 			$mol_assert_equal( user.Title()?.val() ?? null, null )
 			$mol_assert_equal( user.Account()?.remote() ?? null, null )
 			$mol_assert_equal( user.Articles()?.remote_list() ?? [], [] )
@@ -88,8 +88,8 @@ namespace $.$$ {
 			$mol_assert_equal( account.User()?.remote(), user )
 			
 			const articles = [
-				user.Articles(null)!.remote_make({ '': $hyoo_crus_rank_read }),
-				user.Articles(null)!.remote_make({ '': $hyoo_crus_rank_read }),
+				user.Articles(null)!.make({ '': $hyoo_crus_rank_read }),
+				user.Articles(null)!.make({ '': $hyoo_crus_rank_read }),
 			]
 			$mol_assert_equal( user.Articles()?.remote_list(), articles )
 			

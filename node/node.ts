@@ -12,22 +12,22 @@ namespace $ {
 		
 		/** Land local Node id */
 		head() {
-			return ''
+			return $hyoo_crus_link.hole
 		}
 		
-		/** Reference to Land/Lord. */
-		land_ref() {
-			return this.land()?.ref() ?? this.$.$hyoo_crus_auth.current().lord()
+		/** Link to Land/Lord. */
+		land_link() {
+			return this.land()?.link() ?? this.$.$hyoo_crus_auth.current().lord()
 		}
 		
-		/** Reference to Node/Land/Lord. */
+		/** Link to Node/Land/Lord. */
 		@ $mol_memo.method
-		ref() {
-			return $hyoo_crus_ref_resolve( this.land_ref(),  $hyoo_crus_ref( '___' + this.head() ) )
+		link() {
+			return new $hyoo_crus_link( '___' + this.head() ).resolve( this.land_link() )
 		}
 		
 		toJSON() {
-			return this.ref().description
+			return this.link().str
 		}
 		
 		/** Returns another representation of this node. */
@@ -51,11 +51,11 @@ namespace $ {
 		
 		/** All ordered alive Units */
 		units() {
-			return this.units_of( '' )
+			return this.units_of( $hyoo_crus_link.hole )
 		}
 		
 		@ $mol_mem_key
-		units_of( peer: string | null ) {
+		units_of( peer: $hyoo_crus_link | null ) {
 			return this.land().sand_ordered({ head: this.head(), peer }).filter( unit => unit.tip() !== 'nil' )
 		}
 		
@@ -94,13 +94,13 @@ namespace $ {
 			const peers = new Set< string >()
 			
 			const visit = ( sand: $hyoo_crus_sand )=> {
-				peers.add( sand.peer() )
+				peers.add( sand.peer().str )
 				if( sand.tag() === 'term' ) return
 				land.Node( $hyoo_crus_node ).Item( sand.self() ).units_of( null ).forEach( visit )
 			}
 			this.units_of( null ).forEach( visit )
 			
-			return [ ... peers ]
+			return [ ... peers ].map( str => new $hyoo_crus_link( str ) )
 			
 		}
 		
@@ -109,7 +109,7 @@ namespace $ {
 		author_lords() {
 			const land = this.land()
 			return this.author_peers()
-				.map( peer => land.pass.get( peer )?.lord() )
+				.map( peer => land.pass.get( peer.str )?.lord() )
 				.filter( $mol_guard_defined )
 		}
 		

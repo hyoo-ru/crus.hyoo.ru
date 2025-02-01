@@ -10,7 +10,7 @@ namespace $ {
 		
 		/** Persistent URI to file content */
 		uri() {
-			return `?CRUS:file=${ this.ref().description };name=${ this.name() }`
+			return `?CRUS:file=${ this.link() };name=${ this.name() }`
 		}
 		
 		/** File name */
@@ -19,7 +19,7 @@ namespace $ {
 				'text/plain': 'txt',
 				'application/json': 'json',
 			}[ this.type() ] ?? 'bin'
-			return this.Name( next )?.val( next ) ?? `${ this.ref().description }.${ ext }`
+			return this.Name( next )?.val( next ) ?? `${ this.link() }.${ ext }`
 		}
 		
 		/** Mime type */

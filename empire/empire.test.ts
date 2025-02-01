@@ -7,10 +7,10 @@ namespace $.$$ {
 			enum Place { SPb = 'SPb', Msk = 'Msk' }
 			
 			const Target = $hyoo_crus_dict.with({})
-			const Targets = $hyoo_crus_empire( $hyoo_crus_list_ref_to( ()=> Target ) )
+			const Targets = $hyoo_crus_empire( $hyoo_crus_list_link_to( ()=> Target ) )
 			
 			const land = $.$hyoo_crus_glob.home().land()
-			const targets = land.Node( Targets ).Item('')
+			const targets = land.Node( Targets ).Data()
 			
 			const start = new $mol_time_moment( '2024-01-01T12' )
 			const before = start.shift( 'PT-1h' )
@@ -18,9 +18,9 @@ namespace $.$$ {
 			
 			const pub = { '': $hyoo_crus_rank_read }
 			const target = targets.path( [ Place.SPb, Type.Alarm, start ], pub )!.remote_make( pub )!
-			targets.path( [ Place.SPb, Type.Alarm, after ], pub )!.add( target.ref() )
-			targets.path( [ Place.SPb, Type.Skip, start ], pub )!.add( target.ref() )
-			targets.path( [ Place.Msk, Type.Alarm, start ], pub )!.add( target.ref() )
+			targets.path( [ Place.SPb, Type.Alarm, after ], pub )!.add( target.link() )
+			targets.path( [ Place.SPb, Type.Skip, start ], pub )!.add( target.link() )
+			targets.path( [ Place.Msk, Type.Alarm, start ], pub )!.add( target.link() )
 			
 			$mol_assert_equal( targets.keys([]), [ Place.Msk, Place.SPb ] )
 			$mol_assert_equal( targets.keys([ Place.SPb ]), [ Type.Skip, Type.Alarm ] )

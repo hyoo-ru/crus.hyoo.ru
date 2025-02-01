@@ -5,9 +5,9 @@ namespace $.$$ {
 		override spread_ids() {
 			
 			const spread = this.spread()
-			const spread_land = $hyoo_crus_ref_land( $hyoo_crus_ref( spread ) )
+			const spread_land = new $hyoo_crus_link( spread ).land().str
 			const lands_touched = [ ... this.$.$hyoo_crus_glob.lands_touched.values() ]
-			const groups = $mol_array_groups( lands_touched, land => $hyoo_crus_ref_lord( land ).description! )
+			const groups = $mol_array_groups( lands_touched, land => land )
 			
 			const ids = [] as string[]
 			
@@ -16,7 +16,7 @@ namespace $.$$ {
 				ids.push( lord )
 				
 				for( const land of groups[ lord ]! ) {
-					if( land.description! !== lord ) ids.push( land.description! )
+					if( land !== lord ) ids.push( land )
 					if( land === spread_land ) ids.push( spread )
 				}
 				
@@ -26,22 +26,22 @@ namespace $.$$ {
 		}
 		
 		override land( id: string ) {
-			return this.$.$hyoo_crus_glob.Land( $hyoo_crus_ref_land( $hyoo_crus_ref( id ) ) )
+			return this.$.$hyoo_crus_glob.Land( new $hyoo_crus_link( id ).land() )
 		}
 		
 		override node( id: string ) {
-			return this.$.$hyoo_crus_glob.Node( $hyoo_crus_ref( id ), $hyoo_crus_dict )
+			return this.$.$hyoo_crus_glob.Node( new $hyoo_crus_link( id ), $hyoo_crus_dict )
 		}
 		
 		override spread_title( id: string ) {
-			const ref = $hyoo_crus_ref( id )
+			const link = new $hyoo_crus_link( id )
 			try {
-				var title = this.$.$hyoo_crus_glob.Node( ref, $hyoo_crus_entity ).Title()?.val()
+				var title = this.$.$hyoo_crus_glob.Node( link, $hyoo_crus_entity ).Title()?.val()
 			} catch( error ) {
 				$mol_fail_log( error )
 			}
 			const chunks = id.split( '_' )
-			const suffix = title || ( chunks.length >= 4 ? $hyoo_crus_ref_head( ref ) : chunks.length === 3 ? $hyoo_crus_ref_area( ref ) : ref.description! )
+			const suffix = title || ( chunks.length >= 4 ? link.head().str : chunks.length === 3 ? link.area() : link.str )
 			const prefix = [
 				'',
 				'',
@@ -55,7 +55,7 @@ namespace $.$$ {
 		override land_add( preset: $hyoo_crus_rank_preset ) {
 			
 			this.$.$mol_dom_context.location.href = this.$.$mol_state_arg.link({
-				[ this.param() ]: this.$.$hyoo_crus_glob.land_grab( preset ).ref().description!
+				[ this.param() ]: this.$.$hyoo_crus_glob.land_grab( preset ).link().str
 			})
 			
 			return null

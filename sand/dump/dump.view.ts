@@ -8,20 +8,20 @@ namespace $.$$ {
 		@ $mol_mem
 		sub() {
 			const value = this.value()
-			if( typeof value === 'symbol' ) return [ this.Ref() ]
+			if( value instanceof $hyoo_crus_link ) return [ this.Ref() ]
 			return [ this.Other() ]
 		}
 		
 		@ $mol_mem
 		title() {
-			const ref = this.value() as $hyoo_crus_ref
-			return this.$.$hyoo_crus_glob.Node( ref , $hyoo_crus_flex_thing ).Title()?.val() || ref?.description!
+			const link = this.value() as $hyoo_crus_link
+			return this.$.$hyoo_crus_glob.Node( link , $hyoo_crus_flex_thing ).Title()?.val() || link?.str
 		}
 		
 		@ $mol_mem
 		arg() {
-			const ref = ( this.value() as $hyoo_crus_ref ).description!
-			return { ref }
+			const link = ( this.value() as $hyoo_crus_link ).str
+			return { link }
 		}
 		
 	}

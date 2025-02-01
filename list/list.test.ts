@@ -16,7 +16,7 @@ namespace $ {
 		'Basic list ops'( $ ) {
 			
 			const land = $hyoo_crus_land.make({ $ })
-			const list = land.Node( $hyoo_crus_list_vary ).Item('')
+			const list = land.Node( $hyoo_crus_list_vary ).Data()
 			$mol_assert_equal( list.items_vary(), [] )
 			
 			list.items_vary([ 2, 3 ])
@@ -57,7 +57,7 @@ namespace $ {
 		'Different types'( $ ) {
 			
 			const land = $hyoo_crus_land.make({ $ })
-			const list = land.Node( $hyoo_crus_list_vary ).Item('')
+			const list = land.Node( $hyoo_crus_list_vary ).Data()
 			
 			list.items_vary([
 				null,
@@ -74,7 +74,7 @@ namespace $ {
 				new Uint8Array([]),
 				new Uint8Array([ 1, 2, 3 ]),
 				new Uint8Array([ 1,2,3,4,5,6,7,8,9,0, 1,2,3,4,5,6,7,8,9,0, 1,2,3,4,5,6,7,8,9,0, 1,2,3,4,5,6,7,8,9,0 ]),
-				list.ref(),
+				list.link(),
 			])
 			
 			$mol_assert_equal( list.items_vary(), [
@@ -91,7 +91,7 @@ namespace $ {
 				new Uint8Array([]),
 				new Uint8Array([ 1, 2, 3 ]),
 				new Uint8Array([ 1,2,3,4,5,6,7,8,9,0, 1,2,3,4,5,6,7,8,9,0, 1,2,3,4,5,6,7,8,9,0, 1,2,3,4,5,6,7,8,9,0 ]),
-				list.ref(),
+				list.link(),
 			] )
 			
 		},
@@ -101,8 +101,8 @@ namespace $ {
 			const land1 = $hyoo_crus_land.make({ $ })
 			const land2 = $hyoo_crus_land.make({ $ })
 			
-			const list1 = land1.Node( $hyoo_crus_list_vary ).Item('')
-			const list2 = land2.Node( $hyoo_crus_list_vary ).Item('')
+			const list1 = land1.Node( $hyoo_crus_list_vary ).Data()
+			const list2 = land2.Node( $hyoo_crus_list_vary ).Data()
 
 			list1.items_vary([ 'foo', 'xxx' ])
 			land2.faces.tick()
@@ -115,7 +115,7 @@ namespace $ {
 		'Insert before removed before changed'( $ ) {
 			
 			const land = $hyoo_crus_land.make({ $ })
-			const list = land.Node( $hyoo_crus_list_vary ).Item('')
+			const list = land.Node( $hyoo_crus_list_vary ).Data()
 			
 			list.items_vary([ 'foo', 'bar' ])
 			list.items_vary([ 'xxx', 'foo', 'bar' ])
@@ -128,7 +128,7 @@ namespace $ {
 		'Many moves'( $ ) {
 			
 			const land = $hyoo_crus_land.make({ $ })
-			const list = land.Node( $hyoo_crus_list_vary ).Item('')
+			const list = land.Node( $hyoo_crus_list_vary ).Data()
 			
 			list.items_vary([ 'foo', 'bar', 'lol' ])
 			list.move( 2, 1 )
@@ -143,7 +143,7 @@ namespace $ {
 		'Reorder separated sublists'( $ ) {
 			
 			const land = $hyoo_crus_land.make({ $ })
-			const list = land.Node( $hyoo_crus_list_vary ).Item('')
+			const list = land.Node( $hyoo_crus_list_vary ).Data()
 			
 			list.items_vary([ 1, 2, 3, 4, 5, 6 ])
 			
@@ -353,7 +353,7 @@ namespace $ {
 			base.Data( $hyoo_crus_list_vary ).items_vary([ 1, 2, 3, 4 ])
 			
 			const left = fork( base )
-			left.sand_move( left.Data( $hyoo_crus_list_vary ).units()[1], '11111111', 0 )
+			left.sand_move( left.Data( $hyoo_crus_list_vary ).units()[1], new $hyoo_crus_link( '11111111' ), 0 )
 			
 			const right = fork( base )
 			right.faces.sync( left.faces )
@@ -366,8 +366,8 @@ namespace $ {
 				[ 1, 7, 3, 4 ],
 			)
 			$mol_assert_equal(
-				left.Node( $hyoo_crus_list_vary ).Item('11111111').items_vary(),
-				right.Node( $hyoo_crus_list_vary ).Item('11111111').items_vary(),
+				left.Node( $hyoo_crus_list_vary ).Item( new $hyoo_crus_link( '11111111' ) ).items_vary(),
+				right.Node( $hyoo_crus_list_vary ).Item( new $hyoo_crus_link( '11111111' ) ).items_vary(),
 				[ 2 ],
 			)
 			
@@ -383,7 +383,7 @@ namespace $ {
 			
 			const right = fork( base )
 			right.faces.sync( left.faces )
-			right.sand_move( right.Data( $hyoo_crus_list_vary ).units()[1], '11111111', 0 )
+			right.sand_move( right.Data( $hyoo_crus_list_vary ).units()[1], new $hyoo_crus_link( '11111111' ), 0 )
 			
 			sync( left, right )
 			$mol_assert_equal(
@@ -392,8 +392,8 @@ namespace $ {
 				[ 1, 7, 3, 4 ],
 			)
 			$mol_assert_equal(
-				left.Node( $hyoo_crus_list_vary ).Item('11111111').items_vary(),
-				right.Node( $hyoo_crus_list_vary ).Item('11111111').items_vary(),
+				left.Node( $hyoo_crus_list_vary ).Item( new $hyoo_crus_link( '11111111' ) ).items_vary(),
+				right.Node( $hyoo_crus_list_vary ).Item( new $hyoo_crus_link( '11111111' ) ).items_vary(),
 				[ 2 ],
 			)
 			

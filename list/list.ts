@@ -35,9 +35,9 @@ namespace $ {
 				to,
 				next,
 				equal: ( next, prev )=> $mol_compare_deep( this.land().sand_decode( prev ), next ),
-				drop: ( prev, lead )=> this.land().post( lead?.self() ?? '', prev.head(), prev.self(), null ),
-				insert: ( next, lead )=> this.land().post( lead?.self() ?? '', this.head(), land.self_make(), next, tag ),
-				replace: ( next, prev, lead )=> this.land().post( lead?.self() ?? '', prev.head(), prev.self(), next, prev.tag() ),
+				drop: ( prev, lead )=> this.land().post( lead?.self() ?? $hyoo_crus_link.hole, prev.head(), prev.self(), null ),
+				insert: ( next, lead )=> this.land().post( lead?.self() ?? $hyoo_crus_link.hole, this.head(), land.self_make(), next, tag ),
+				replace: ( next, prev, lead )=> this.land().post( lead?.self() ?? $hyoo_crus_link.hole, prev.head(), prev.self(), next, prev.tag() ),
 			})
 		}
 		
@@ -67,7 +67,7 @@ namespace $ {
 			tag: keyof typeof $hyoo_crus_sand_tag = 'term',
 		) {
 			if( this.has( vary ) ) return
-			this.land().post( '', this.head(), '', vary, tag )
+			this.land().post( $hyoo_crus_link.hole, this.head(), $hyoo_crus_link.hole, vary, tag )
 		}
 		
 		/** Removes all Vary presence. */
@@ -79,7 +79,7 @@ namespace $ {
 				if( ! $mol_compare_deep( this.land().sand_decode( units[i] ), vary ) ) continue
 				
 				this.land().post(
-					units[i-1]?.self() ?? 0,
+					units[i-1]?.self() ?? $hyoo_crus_link.hole,
 					units[i].head(),
 					units[i].self(),
 					null,
@@ -159,8 +159,8 @@ namespace $ {
 	export class $hyoo_crus_list_ints extends $hyoo_crus_list( $hyoo_crus_vary_cast_ints ) {}
 	/** Mergeable list of atomic float64 arrays */
 	export class $hyoo_crus_list_reals extends $hyoo_crus_list( $hyoo_crus_vary_cast_reals ) {}
-	/** Mergeable list of atomic some references */
-	export class $hyoo_crus_list_ref extends $hyoo_crus_list( $hyoo_crus_vary_cast_ref ) {}
+	/** Mergeable list of atomic Links */
+	export class $hyoo_crus_list_link extends $hyoo_crus_list( $hyoo_crus_vary_cast_link ) {}
 
 	/** Mergeable list of atomic strings */
 	export class $hyoo_crus_list_str extends $hyoo_crus_list( $hyoo_crus_vary_cast_str ) {}
@@ -179,37 +179,37 @@ namespace $ {
 	/** Mergeable list of atomic Trees*/
 	export class $hyoo_crus_list_tree extends $hyoo_crus_list( $hyoo_crus_vary_cast_tree ) {}
 
-	export class $hyoo_crus_list_ref_base extends $hyoo_crus_list_ref {
+	export class $hyoo_crus_list_link_base extends $hyoo_crus_list_link {
 	}
 	
-	/** mergeable list of atomic references to some Node type */
-	export function $hyoo_crus_list_ref_to<
+	/** Mergeable List of atomic Links to some Node type */
+	export function $hyoo_crus_list_link_to<
 		const Value extends any,
 		Vals extends readonly any[] = readonly $mol_type_result< $mol_type_result< Value > >[]
 	>( Value: Value ) {
 		
-		class $hyoo_crus_list_ref_to extends $hyoo_crus_list_ref_base {
+		class $hyoo_crus_list_link_to extends $hyoo_crus_list_link_base {
 			
 			static Value = $mol_memo.func( Value as any ) as Value
 			
 			static toString() {
-				return this === $hyoo_crus_list_ref_to ? '$hyoo_crus_list_ref_to<' + ( Value as any )() + '>' : super.toString()
+				return this === $hyoo_crus_list_link_to ? '$hyoo_crus_list_link_to<' + ( Value as any )() + '>' : super.toString()
 			}
 			
-			/** List of referenced Nodes */
+			/** List of linked Nodes */
 			@ $mol_mem
 			remote_list( next?: Vals ) {
 				const glob = this.$.$hyoo_crus_glob
 				const Node = ( Value as any )()
-				return this.items_vary( next?.map( item => ( item as $hyoo_crus_node ).ref() ) )
-					.map( $hyoo_crus_vary_cast_ref )
+				return this.items_vary( next?.map( item => ( item as $hyoo_crus_node ).link() ) )
+					.map( $hyoo_crus_vary_cast_link )
 					.filter( $mol_guard_defined )
-					.map( ref => glob.Node( ref, Node ) ) as readonly any[] as Vals
+					.map( link => glob.Node( link, Node ) ) as readonly any[] as Vals
 			}
 			
 			@ $mol_action
 			remote_add( item: Vals[number] ) {
-				this.add( item.ref() )
+				this.add( item.link() )
 			}
 			
 			/** Make new Node and place it at end. */
@@ -220,20 +220,20 @@ namespace $ {
 					
 					const self = this.land().self_make( config || undefined )
 					const node = this.land().Node( ( Value as any )() ).Item( self )
-					this.splice([ node.ref() ])
+					this.splice([ node.link() ])
 					return node
 					
 				} else if( config instanceof $hyoo_crus_land ) {
 					
 					const land = config.area_make()
-					this.splice([ land.ref() ])
-					return land.Node( ( Value as any )() ).Item('')
+					this.splice([ land.link() ])
+					return land.Node( ( Value as any )() ).Data()
 					
 				} else if( config ) {
 					
 					const land = this.$.$hyoo_crus_glob.land_grab( config )
-					this.splice([ land.ref() ])
-					return land.Node( ( Value as any )() ).Item('')
+					this.splice([ land.link() ])
+					return land.Node( ( Value as any )() ).Data()
 					
 				}
 				
@@ -251,13 +251,13 @@ namespace $ {
 			local_make( idea?: number ): Vals[number] {
 				const self = this.land().self_make( idea )
 				const node = this.land().Node( ( Value as any )() ).Item( self )
-				this.splice([ node.ref() ])
+				this.splice([ node.link() ])
 				return node
 			}
 			
 		}
 		
-		return $hyoo_crus_list_ref_to
+		return $hyoo_crus_list_link_to
 	}
 	
 }

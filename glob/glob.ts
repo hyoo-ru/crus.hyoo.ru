@@ -2,7 +2,7 @@ namespace $ {
 	/** Whole global graph database which contains Lands. */
 	export class $hyoo_crus_glob extends $mol_object {
 		
-		static lands_touched = new $mol_wire_set< $hyoo_crus_ref >()
+		static lands_touched = new $mol_wire_set< string >()
 		/** @deprecated Use `this.$.$hyoo_crus_glob` */
 		lands_touched = ( this.constructor as typeof $hyoo_crus_glob ).lands_touched
 		
@@ -43,7 +43,7 @@ namespace $ {
 			
 			for( const key in preset ) colony.give( key ? $hyoo_crus_auth.from( key ) : null, preset[ key ] )
 			
-			this.Land( colony.ref() ).apply_unit( colony.delta_unit() )
+			this.Land( colony.link() ).apply_unit( colony.delta_unit() )
 			
 			return king
 		}
@@ -65,27 +65,27 @@ namespace $ {
 		
 		/** Standalone part of Glob which syncs separately, have own rights, and contains Units */
 		@ $mol_mem_key
-		static Land( ref: $hyoo_crus_ref ): $hyoo_crus_land {
-			this.lands_touched.add( ref )
+		static Land( link: $hyoo_crus_link ): $hyoo_crus_land {
+			this.lands_touched.add( link.str )
 			return $hyoo_crus_land.make({
-				ref: $mol_const( ref ),
+				link: $mol_const( link ),
 			})
 		}
 		
 		/** @deprecated Use `this.$.$hyoo_crus_glob` */
-		Land( ref: $hyoo_crus_ref ) {
-			return this.$.$hyoo_crus_glob.Land( ref )
+		Land( link: $hyoo_crus_link ) {
+			return this.$.$hyoo_crus_glob.Land( link )
 		}
 		
 		/** High level representation of stored data. */
-		static Node< Node extends typeof $hyoo_crus_node > ( ref: $hyoo_crus_ref, Node: Node ) {
-			const land = this.Land( $hyoo_crus_ref_land( ref ) )
-			return land.Node( Node ).Item( $hyoo_crus_ref_head( ref ) )
+		static Node< Node extends typeof $hyoo_crus_node > ( link: $hyoo_crus_link, Node: Node ) {
+			const land = this.Land( link.land() )
+			return land.Node( Node ).Item( link.head() )
 		}
 		
 		/** @deprecated Use `this.$.$hyoo_crus_glob` */
-		Node< Node extends typeof $hyoo_crus_node > ( ref: $hyoo_crus_ref, Node: Node ) {
-			return this.$.$hyoo_crus_glob.Node( ref, Node )
+		Node< Node extends typeof $hyoo_crus_node > ( link: $hyoo_crus_link, Node: Node ) {
+			return this.$.$hyoo_crus_glob.Node( link, Node )
 		}
 		
 		@ $mol_action
@@ -101,16 +101,16 @@ namespace $ {
 		
 		@ $mol_action
 		static apply_parts(
-			lands: Record< $hyoo_crus_ref, {
+			lands: Record< string, {
 				faces: $hyoo_crus_face_map
 				units: $hyoo_crus_unit[]
 			}>,
-			rocks: [ Uint8Array, Uint8Array | null ][],
+			rocks: [ string, Uint8Array | null ][],
 		) {
 			
-			for( const land of Reflect.ownKeys( lands ) as $hyoo_crus_ref[] ) {
+			for( const land of Reflect.ownKeys( lands ) as string[] ) {
 				
-				const errors = this.Land( land ).apply_unit( lands[ land ].units ).filter( Boolean )
+				const errors = this.Land( new $hyoo_crus_link( land ) ).apply_unit( lands[ land ].units ).filter( Boolean )
 				
 				for( const error of errors ) this.$.$mol_log3_warn({
 					place: `${this}.apply_pack()`,
@@ -125,17 +125,6 @@ namespace $ {
 				this.$.$hyoo_crus_mine.rock_save( rock )
 			}
 
-		}
-		
-		/** @deprecated Use `this.$.$hyoo_crus_glob` */
-		apply_parts(
-			lands: Record< $hyoo_crus_ref, {
-				faces: $hyoo_crus_face_map
-				units: $hyoo_crus_unit[]
-			}>,
-			rocks: [ Uint8Array, Uint8Array | null ][],
-		) {
-			return this.$.$hyoo_crus_glob.apply_parts( lands, rocks )
 		}
 		
 	}

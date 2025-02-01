@@ -16,36 +16,34 @@ namespace $ {
 		}
 		
 		@ $mol_mem_key
-		static rock_file( hash: Uint8Array< ArrayBuffer > ) {
-			const id = $mol_base64_ae_encode( hash )
-			return this.root().resolve( `rock/${ id.slice( 0, 2 ) }/${ id }.blob` )
+		static rock_file( hash: $hyoo_crus_link ) {
+			return this.root().resolve( `rock/${ hash.str.slice( 0, 2 ) }/${ hash }.blob` )
 		}
 		
 		@ $mol_mem_key
-		static rock( hash: Uint8Array< ArrayBuffer >, next?: Uint8Array< ArrayBuffer > ): Uint8Array< ArrayBuffer > | null {
+		static rock( hash: $hyoo_crus_link, next?: Uint8Array< ArrayBuffer > ): Uint8Array< ArrayBuffer > | null {
 			const buf = this.rock_file( hash ).buffer( next )
 			if( next ) return buf
-			if( $mol_compare_deep( hash, this.hash( buf ) ) ) return buf
+			if( hash.str === $hyoo_crus_link.hash_bin( buf ).str ) return buf
 			return null
 		}
 		
 		@ $mol_mem_key
-		static units_file( land: $hyoo_crus_ref ) { $hyoo_crus_land
-			const id = land.description!
-			const dir = this.root().resolve( `unit/${ id.slice( 0, 2 ) }` )
+		static units_file( land: $hyoo_crus_link ) { $hyoo_crus_land
+			const dir = this.root().resolve( `unit/${ land.str.slice( 0, 2 ) }` )
 			dir.exists( true )
-			return dir.resolve( `${ id }.crus` )
+			return dir.resolve( `${ land }.crus` )
 		}
 		
 		@ $mol_mem_key
-		static units_offsets( land: $hyoo_crus_ref ) {
+		static units_offsets( land: $hyoo_crus_link ) {
 			$mol_wire_solid() 
 			return new Map< string, number >()
 		}
 		
-		static units_sizes = new Map< $hyoo_crus_ref, number >()
+		static units_sizes = new Map< string, number >()
 		
-		static units_save( land: $hyoo_crus_ref, units: readonly $hyoo_crus_unit[] ) {
+		static units_save( land: $hyoo_crus_link, units: readonly $hyoo_crus_unit[] ) {
 			
 			const descr = this.units_file( land ).open( 'create', 'read_write' )
 			try {
@@ -65,11 +63,11 @@ namespace $ {
 				
 				if( !append.length ) return
 				
-				let size = this.units_sizes.get( land ) ?? 0
+				let size = this.units_sizes.get( land.str ) ?? 0
 				let offset = size
 				size += append.length * $hyoo_crus_unit.size
 				descr.truncate(size)
-				this.units_sizes.set( land, size )
+				this.units_sizes.set( land.str, size )
 				
 				for( const unit of append ) {
 					descr.write({ buffer: unit, position: offset })
@@ -86,7 +84,7 @@ namespace $ {
 		}
 		
 		@ $mol_action
-		static async units_load( land: $hyoo_crus_ref ) {
+		static async units_load( land: $hyoo_crus_link ) {
 			
 			const descr = this.units_file( land ).open( 'create', 'read_write' )
 			try {
@@ -94,10 +92,10 @@ namespace $ {
 				const buf = descr.read()
 				if( !buf.length ) return []
 				
-				this.units_sizes.set( land, buf.length )
+				this.units_sizes.set( land.str, buf.length )
 				const pack = $hyoo_crus_pack.from( buf )
 				const { lands, rocks } = pack.parts( land )
-				const units = lands[ land ]?.units ?? []
+				const units = lands[ land.str ]?.units ?? []
 				
 				const offsets = this.units_offsets( land )
 				

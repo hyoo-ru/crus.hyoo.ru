@@ -10,7 +10,7 @@ namespace $.$$ {
 			$mol_assert_equal( $hyoo_crus_vary_cast_bool( vary ), true )
 			$mol_assert_equal( $hyoo_crus_vary_cast_int( vary ), 3n )
 			$mol_assert_equal( $hyoo_crus_vary_cast_real( vary ), 3 )
-			$mol_assert_equal( $hyoo_crus_vary_cast_ref( vary ), null )
+			$mol_assert_equal( $hyoo_crus_vary_cast_link( vary ), null )
 			
 			$mol_assert_equal( $hyoo_crus_vary_cast_str( vary ), '010203' )
 			$mol_assert_equal( $hyoo_crus_vary_cast_time( vary ), null )
@@ -32,7 +32,7 @@ namespace $.$$ {
 			$mol_assert_equal( $hyoo_crus_vary_cast_bool( vary ), false )
 			$mol_assert_equal( $hyoo_crus_vary_cast_int( vary ), 0n )
 			$mol_assert_equal( $hyoo_crus_vary_cast_real( vary ), 0 )
-			$mol_assert_equal( $hyoo_crus_vary_cast_ref( vary ), null )
+			$mol_assert_equal( $hyoo_crus_vary_cast_link( vary ), null )
 			
 			$mol_assert_equal( $hyoo_crus_vary_cast_str( vary ), 'false' )
 			$mol_assert_equal( $hyoo_crus_vary_cast_time( vary ), null )
@@ -53,7 +53,7 @@ namespace $.$$ {
 			$mol_assert_equal( $hyoo_crus_vary_cast_bool( vary ), true )
 			$mol_assert_equal( $hyoo_crus_vary_cast_int( vary ), 1n )
 			$mol_assert_equal( $hyoo_crus_vary_cast_real( vary ), 1 )
-			$mol_assert_equal( $hyoo_crus_vary_cast_ref( vary ), null )
+			$mol_assert_equal( $hyoo_crus_vary_cast_link( vary ), null )
 			
 			$mol_assert_equal( $hyoo_crus_vary_cast_str( vary ), 'true' )
 			$mol_assert_equal( $hyoo_crus_vary_cast_time( vary ), null )
@@ -74,7 +74,7 @@ namespace $.$$ {
 			$mol_assert_equal( $hyoo_crus_vary_cast_bool( vary ), false )
 			$mol_assert_equal( $hyoo_crus_vary_cast_int( vary ), 0n )
 			$mol_assert_equal( $hyoo_crus_vary_cast_real( vary ), 0 )
-			$mol_assert_equal( $hyoo_crus_vary_cast_ref( vary ), null )
+			$mol_assert_equal( $hyoo_crus_vary_cast_link( vary ), null )
 			
 			$mol_assert_equal( $hyoo_crus_vary_cast_str( vary ), '0' )
 			$mol_assert_equal( $hyoo_crus_vary_cast_time( vary )?.toOffset(0).toString(), '1970-01-01T00:00:00+00:00' )
@@ -95,7 +95,7 @@ namespace $.$$ {
 			$mol_assert_equal( $hyoo_crus_vary_cast_bool( vary ), true )
 			$mol_assert_equal( $hyoo_crus_vary_cast_int( vary ), 4611686018427387903n )
 			$mol_assert_equal( $hyoo_crus_vary_cast_real( vary ), 4611686018427388000 )
-			$mol_assert_equal( $hyoo_crus_vary_cast_ref( vary ), null )
+			$mol_assert_equal( $hyoo_crus_vary_cast_link( vary ), null )
 			
 			$mol_assert_equal( $hyoo_crus_vary_cast_str( vary ), '4611686018427387903' )
 			$mol_assert_equal( $hyoo_crus_vary_cast_time( vary )?.toOffset(0).toString(), '10889-08-02T05:31:50.655+00:00' )
@@ -116,7 +116,7 @@ namespace $.$$ {
 			$mol_assert_equal( $hyoo_crus_vary_cast_bool( vary ), false )
 			$mol_assert_equal( $hyoo_crus_vary_cast_int( vary ), 0n )
 			$mol_assert_equal( $hyoo_crus_vary_cast_real( vary ), 0 )
-			$mol_assert_equal( $hyoo_crus_vary_cast_ref( vary ), null )
+			$mol_assert_equal( $hyoo_crus_vary_cast_link( vary ), null )
 			
 			$mol_assert_equal( $hyoo_crus_vary_cast_str( vary ), '0' )
 			$mol_assert_equal( $hyoo_crus_vary_cast_time( vary )?.toOffset(0).toString(), '1970-01-01T00:00:00+00:00' )
@@ -137,7 +137,7 @@ namespace $.$$ {
 			$mol_assert_equal( $hyoo_crus_vary_cast_bool( vary ), true )
 			$mol_assert_equal( $hyoo_crus_vary_cast_int( vary ), 3n )
 			$mol_assert_equal( $hyoo_crus_vary_cast_real( vary ), Math.PI  )
-			$mol_assert_equal( $hyoo_crus_vary_cast_ref( vary ), null )
+			$mol_assert_equal( $hyoo_crus_vary_cast_link( vary ), null )
 			
 			$mol_assert_equal( $hyoo_crus_vary_cast_str( vary ), '3.141592653589793' )
 			$mol_assert_equal( $hyoo_crus_vary_cast_time( vary )?.toOffset(0).toString(), '1970-01-01T00:00:00.003+00:00' )
@@ -158,7 +158,7 @@ namespace $.$$ {
 			$mol_assert_equal( $hyoo_crus_vary_cast_bool( vary ), false )
 			$mol_assert_equal( $hyoo_crus_vary_cast_int( vary ), null )
 			$mol_assert_equal( $hyoo_crus_vary_cast_real( vary ), Number.NaN )
-			$mol_assert_equal( $hyoo_crus_vary_cast_ref( vary ), null )
+			$mol_assert_equal( $hyoo_crus_vary_cast_link( vary ), null )
 			
 			$mol_assert_equal( $hyoo_crus_vary_cast_str( vary ), 'NaN' )
 			$mol_assert_equal( $hyoo_crus_vary_cast_time( vary ), null )
@@ -179,7 +179,7 @@ namespace $.$$ {
 			$mol_assert_equal( $hyoo_crus_vary_cast_bool( vary ), true )
 			$mol_assert_equal( $hyoo_crus_vary_cast_int( vary ), null )
 			$mol_assert_equal( $hyoo_crus_vary_cast_real( vary ), Number.POSITIVE_INFINITY )
-			$mol_assert_equal( $hyoo_crus_vary_cast_ref( vary ), null )
+			$mol_assert_equal( $hyoo_crus_vary_cast_link( vary ), null )
 			
 			$mol_assert_equal( $hyoo_crus_vary_cast_str( vary ), 'Infinity' )
 			$mol_assert_equal( $hyoo_crus_vary_cast_time( vary ), null )
@@ -200,7 +200,7 @@ namespace $.$$ {
 			$mol_assert_equal( $hyoo_crus_vary_cast_bool( vary ), false )
 			$mol_assert_equal( $hyoo_crus_vary_cast_int( vary ), null )
 			$mol_assert_equal( $hyoo_crus_vary_cast_real( vary ), null )
-			$mol_assert_equal( $hyoo_crus_vary_cast_ref( vary ), $hyoo_crus_ref('') )
+			$mol_assert_equal( $hyoo_crus_vary_cast_link( vary ), $hyoo_crus_link.hole )
 			
 			$mol_assert_equal( $hyoo_crus_vary_cast_str( vary ), '' )
 			$mol_assert_equal( $hyoo_crus_vary_cast_time( vary ), null )
@@ -226,7 +226,7 @@ namespace $.$$ {
 			$mol_assert_equal( $hyoo_crus_vary_cast_bool( vary ), true )
 			$mol_assert_equal( $hyoo_crus_vary_cast_int( vary ), 123456789012345678901234567890123456789n )
 			$mol_assert_equal( $hyoo_crus_vary_cast_real( vary ), 1.2345678901234568e+38 )
-			$mol_assert_equal( $hyoo_crus_vary_cast_ref( vary ), null )
+			$mol_assert_equal( $hyoo_crus_vary_cast_link( vary ), null )
 			
 			$mol_assert_equal( $hyoo_crus_vary_cast_str( vary ), '123456789012345678901234567890123456789' )
 			$mol_assert_equal( $hyoo_crus_vary_cast_time( vary ), null )
@@ -247,7 +247,7 @@ namespace $.$$ {
 			$mol_assert_equal( $hyoo_crus_vary_cast_bool( vary ), true )
 			$mol_assert_equal( $hyoo_crus_vary_cast_int( vary ), null )
 			$mol_assert_equal( $hyoo_crus_vary_cast_real( vary ), Number.NaN )
-			$mol_assert_equal( $hyoo_crus_vary_cast_ref( vary ), null )
+			$mol_assert_equal( $hyoo_crus_vary_cast_link( vary ), null )
 			
 			$mol_assert_equal( $hyoo_crus_vary_cast_str( vary ), 'foo' )
 			$mol_assert_equal( $hyoo_crus_vary_cast_time( vary ), null )
@@ -260,9 +260,9 @@ namespace $.$$ {
 			
 		},
 		
-		"Cast from ref"( $ ) {
+		"Cast from Link"( $ ) {
 			
-			const vary = $hyoo_crus_ref( 'qwertyui_asdfghjk_zxcvbnm0' )
+			const vary = new $hyoo_crus_link( 'qwertyui_asdfghjk_zxcvbnm0' )
 			
 			$mol_assert_equal( $hyoo_crus_vary_cast_bin( vary ), new Uint8Array([
 				171, 7, 171, 183, 43, 162,
@@ -272,9 +272,9 @@ namespace $.$$ {
 			$mol_assert_equal( $hyoo_crus_vary_cast_bool( vary ), true )
 			$mol_assert_equal( $hyoo_crus_vary_cast_int( vary ), null )
 			$mol_assert_equal( $hyoo_crus_vary_cast_real( vary ), null )
-			$mol_assert_equal( $hyoo_crus_vary_cast_ref( vary ), vary )
+			$mol_assert_equal( $hyoo_crus_vary_cast_link( vary ), vary )
 			
-			$mol_assert_equal( $hyoo_crus_vary_cast_str( vary ), vary.description! )
+			$mol_assert_equal( $hyoo_crus_vary_cast_str( vary ), vary.str )
 			$mol_assert_equal( $hyoo_crus_vary_cast_time( vary ), null )
 			$mol_assert_equal( $hyoo_crus_vary_cast_dur( vary ), null )
 			$mol_assert_equal( $hyoo_crus_vary_cast_range( vary ), null )

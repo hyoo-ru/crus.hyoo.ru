@@ -3,14 +3,20 @@ namespace $ {
 	/** Public key of Peer */
 	export class $hyoo_crus_pass extends $hyoo_crus_unit {
 		
-		_lord!: $hyoo_crus_ref
-		lord( next?: $hyoo_crus_ref ) {
-			if( next === undefined && this._lord !== undefined ) return this._lord
-			else return this._lord = this.id12( 2, next )
+		_peer!: $hyoo_crus_link
+		peer() {
+			if( this._peer !== undefined ) return this._peer
+			else return this._peer = this.lord().peer()
+		}
+		
+		_lord!: $hyoo_crus_link
+		lord() {
+			if( this._lord !== undefined ) return this._lord
+			else return this._lord = $hyoo_crus_link.hash_bin( this.sens() ).lord()
 		}
 		
 		key(): string {
-			return `pass:${ this.id6( 2 ) }`
+			return `pass:${ this.peer() }`
 		}
 		
 		auth( next?: ArrayLike< number > ) {
@@ -22,7 +28,7 @@ namespace $ {
 		dump() {
 			return {
 				kind: this.kind(),
-				lord: this.lord().description!,
+				lord: this.lord(),
 			}
 		}
 		
@@ -34,9 +40,9 @@ namespace $ {
 			return $mol_dev_format_span( {} ,
 				$mol_dev_format_native( this ) ,
 				' ',
-				this.peer(),
+				$mol_dev_format_auto( this.peer() ),
 				' 🔑 ',
-				$mol_dev_format_span( {}, this.lord().description ),
+				$mol_dev_format_auto( this.lord() ),
 			)
 		}
 		

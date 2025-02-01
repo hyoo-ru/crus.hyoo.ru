@@ -3,13 +3,13 @@ namespace $ {
 	/** Universal binary package which contains some Faces/Units/Rocks */
 	export type $hyoo_crus_pack_parts = {
 		
-		lands: Record< $hyoo_crus_ref, {
+		lands: Record< string, {
 			faces: $hyoo_crus_face_map,
 			units: $hyoo_crus_unit[],
 		} >,
 		
 		/** List of BLOB identified by Hash. */
-		rocks: [ Uint8Array, null | Uint8Array ][],
+		rocks: [ string, null | Uint8Array ][],
 		
 	}
 	
@@ -20,12 +20,10 @@ namespace $ {
 			return new Blob( [ this ], { type: 'application/vnd.hyoo_crus_pack' } )
 		}
 		
-		parts( land = null as $hyoo_crus_ref | null ) {
+		parts( land = null as $hyoo_crus_link | null ) {
 			
 			const lands = {} as $hyoo_crus_pack_parts[ 'lands' ]
-			if( land ) lands[ land ] = { faces: new $hyoo_crus_face_map, units: [] }
-			
-			let total = 0
+			if( land ) lands[ land.str ] = { faces: new $hyoo_crus_face_map, units: [] }
 			
 			const rocks = [] as $hyoo_crus_pack_parts[ 'rocks' ]
 			
@@ -46,12 +44,12 @@ namespace $ {
 							faces.total = this.uint32( offset ) >> 8
 							offset += 4
 							
-							land = $hyoo_crus_ref_decode(
+							land = $hyoo_crus_link.from_bin(
 								new Uint8Array( buf.buffer, buf.byteOffset + offset, 18 )
 							)
 							offset += 20
 							
-							lands[ land ] = { faces, units: [] }
+							lands[ land.str ] = { faces, units: [] }
 							
 							continue
 						}
@@ -63,7 +61,7 @@ namespace $ {
 							const count = this.uint32( offset ) >> 8
 							offset += 4
 							
-							const faces = lands[ land ].faces
+							const faces = lands[ land.str ].faces
 							for( let i = 0; i < count; ++i ) {
 								
 								const peer = $mol_base64_ae_encode(
@@ -90,8 +88,8 @@ namespace $ {
 								buf.slice( offset, offset += $hyoo_crus_unit.size ).buffer
 							)
 							
-							lands[ land ].units ||= []
-							lands[ land ].units.push( unit )
+							lands[ land.str ].units ||= []
+							lands[ land.str ].units.push( unit )
 							
 							continue
 						}
@@ -104,8 +102,8 @@ namespace $ {
 								buf.slice( offset, offset += $hyoo_crus_unit.size ).buffer
 							)
 							
-							lands[ land ].units ||= []
-							lands[ land ].units.push( unit )
+							lands[ land.str ].units ||= []
+							lands[ land.str ].units.push( unit )
 							
 							continue
 						}
@@ -115,16 +113,16 @@ namespace $ {
 							const size = this.uint32( offset ) >> 8
 							if( size === 0 ) {
 								
-								const hash = buf.slice( offset + 4, offset + 4 + 24 )
-								rocks.push([ hash, null ])
+								const hash = $hyoo_crus_link.from_bin( buf.slice( offset + 4, offset + 4 + 22 ) )
+								rocks.push([ hash.str, null ])
 								offset += 4 + 24
 								
 							} else {
 								
 								const rock = buf.slice( offset + 4, offset + 4 + size )
 								
-								const hash = $mol_crypto_hash( rock )
-								rocks.push([ hash, rock ])
+								const hash = $hyoo_crus_link.hash_bin( rock )
+								rocks.push([ hash.str, rock ])
 								
 								offset += Math.ceil( size / 8 + .5 ) * 8
 							
@@ -151,8 +149,8 @@ namespace $ {
 						buf.slice( offset, offset += $hyoo_crus_unit.size )
 					)
 					
-					lands[ land ].units ||= []
-					lands[ land ].units.push( unit )
+					lands[ land.str ].units ||= []
+					lands[ land.str ].units.push( unit )
 			
 					continue
 				}
@@ -167,7 +165,7 @@ namespace $ {
 			
 			let size = 0
 			
-			for( const land of Reflect.ownKeys( lands ) as $hyoo_crus_ref[] ) {
+			for( const land of Reflect.ownKeys( lands ) as string[] ) {
 				size += 24
 				// if( lands[ land ].faces.size ) {
 					size += Math.ceil( lands[ land ].faces.size * 12 / 8 + .5 ) * 8
@@ -186,12 +184,12 @@ namespace $ {
 			
 			let offset = 0
 			
-			for( const land of Reflect.ownKeys( lands ) as $hyoo_crus_ref[] ) {
+			for( const land of Reflect.ownKeys( lands ) as string[] ) {
 				
 				const faces = lands[ land ].faces
 				
 				pack.uint32( offset, $hyoo_crus_part.land | ( faces.total << 8 ) )
-				buff.set( $hyoo_crus_ref_encode( land ), offset + 4 )
+				buff.set( new $hyoo_crus_link( land ).toBin(), offset + 4 )
 				offset += 24
 				
 				// if( !faces.size ) continue
@@ -218,7 +216,7 @@ namespace $ {
 				pack.uint32( offset, $hyoo_crus_part.rock | ( len << 8 ) )
 				
 				if( rock ) buff.set( rock, offset + 4 )
-				else buff.set( hash, offset + 4 )
+				else buff.set( new $hyoo_crus_link( hash ).toBin(), offset + 4 )
 			
 				offset += rock ? Math.ceil( len / 8 + .5 ) * 8 : 24
 			}

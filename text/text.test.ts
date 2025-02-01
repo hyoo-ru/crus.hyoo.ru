@@ -60,8 +60,8 @@ namespace $ {
 			$mol_assert_equal( text.point_by_offset( 6 ), [ second.self(), 3 ] )
 			$mol_assert_equal( text.offset_by_point([ second.self(), 3 ]), [ second.self(), 6 ] )
 			
-			$mol_assert_equal( text.point_by_offset( 7 ), [ '', 1 ] )
-			$mol_assert_equal( text.offset_by_point([ '', 1 ]), [ '', 7 ] )
+			$mol_assert_equal( text.point_by_offset( 7 ), [ $hyoo_crus_link.hole, 1 ] )
+			$mol_assert_equal( text.offset_by_point([ $hyoo_crus_link.hole, 1 ]), [ $hyoo_crus_link.hole, 7 ] )
 			
 		},
 
@@ -86,8 +86,8 @@ namespace $ {
 			const land1 = $hyoo_crus_land.make({ $ })
 			const land2 = $hyoo_crus_land.make({ $ })
 			
-			const text1 = land1.Node( $hyoo_crus_text ).Item('')
-			const text2 = land2.Node( $hyoo_crus_text ).Item('')
+			const text1 = land1.Node( $hyoo_crus_text ).Data()
+			const text2 = land2.Node( $hyoo_crus_text ).Data()
 			
 			text1.str( 'foo bar.' )
 			land2.faces.sync( land1.faces )

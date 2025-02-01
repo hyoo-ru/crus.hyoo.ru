@@ -15,7 +15,7 @@ namespace $ {
 			real:  vary => Boolean( vary ),
 			ints:  vary => Boolean( vary.length ),
 			reals: vary => Boolean( vary.length ),
-			ref:   vary => Boolean( vary.description ),
+			link:  vary => vary.str !== '',
 			
 			str:   vary => Boolean( vary ),
 			time:  vary => Boolean( vary.valueOf() ),
@@ -39,7 +39,7 @@ namespace $ {
 			real:  vary => Number.isFinite( vary ) ? BigInt( Math.trunc( vary ) ) : null,
 			ints:  vary => BigInt( vary.length ),
 			reals: vary => BigInt( vary.length ),
-			ref:   vary => null,//$mol_base64_ae_decode( vary.description!.slice( 0, 16 ) ) + ( BigInt( vary.land() ) << 64n ) + ( BigInt( vary.head() ) << 96n ),
+			link:  vary => null,//$mol_base64_ae_decode( vary.str.slice( 0, 16 ) ) + ( BigInt( vary.land() ) << 64n ) + ( BigInt( vary.head() ) << 96n ),
 			
 			str:   vary => {
 				try {
@@ -79,7 +79,7 @@ namespace $ {
 			real:  vary => vary,
 			ints:  vary => vary.length,
 			reals: vary => vary.length,
-			ref:   vary => null,
+			link:  vary => null,
 			
 			str:   vary => vary ? Number( vary ) : null,
 			time:  vary => vary.valueOf(),
@@ -103,7 +103,7 @@ namespace $ {
 			real:  vary => Number.isFinite( vary ) ? new BigInt64Array([ BigInt( vary ) ]) : null,
 			ints:  vary => vary,
 			reals: vary => new BigInt64Array( [ ... vary ].map( BigInt ) ),
-			ref:   vary => null,
+			link:  vary => null,
 			
 			str:   vary => {
 				if( !vary ) return null
@@ -130,7 +130,7 @@ namespace $ {
 			real:  vary => ( vary && Number.isFinite( vary ) ) ? new Float64Array([ vary ]) : null,
 			ints:  vary => new Float64Array( [ ... vary ].map( Number ) ),
 			reals: vary => vary,
-			ref:   vary => null,
+			link:  vary => null,
 			
 			str:   vary => {
 				if( !vary ) return null
@@ -147,21 +147,21 @@ namespace $ {
 		})
 	}
 
-	export function $hyoo_crus_vary_cast_ref( vary: $hyoo_crus_vary_type ): $hyoo_crus_ref | null {
+	export function $hyoo_crus_vary_cast_link( vary: $hyoo_crus_vary_type ): $hyoo_crus_link | null {
 		return $hyoo_crus_vary_switch( vary, {
 			
 			nil:   vary => null,
-			bin:   vary => ( !vary.length || vary.length % 6 ) ? null : $hyoo_crus_ref_decode( vary ),
+			bin:   vary => ( !vary.length || vary.length % 6 ) ? null : $hyoo_crus_link.from_bin( vary ),
 			bool:  vary => null,
 			int:   vary => null,
 			real:  vary => null,
 			ints:  vary => null,
 			reals: vary => null,
-			ref:   vary => vary,
+			link:  vary => vary,
 			
 			str:   vary => {
 				try {
-					return $hyoo_crus_ref( vary )
+					return new $hyoo_crus_link( vary )
 				} catch {
 					return null
 				}
@@ -174,7 +174,7 @@ namespace $ {
 			dom:   vary => null,
 			tree:  vary => {
 				try {
-					return $hyoo_crus_ref( vary.type )
+					return new $hyoo_crus_link( vary.type )
 				} catch {
 					return null
 				}
@@ -193,7 +193,7 @@ namespace $ {
 			real:  vary => String( vary ),
 			ints:  vary => vary.join(','),
 			reals: vary => vary.join(','),
-			ref:   vary => vary.description!,
+			link:  vary => vary.str,
 			
 			str:   vary => vary,
 			time:  vary => String( vary ),
@@ -223,7 +223,7 @@ namespace $ {
 			},
 			ints:  vary => null,
 			reals: vary => null,
-			ref:   vary => null,
+			link:  vary => null,
 			
 			str:   vary => {
 				try {
@@ -265,7 +265,7 @@ namespace $ {
 			},
 			ints:  vary => null,
 			reals: vary => null,
-			ref:   vary => null,
+			link:  vary => null,
 			
 			str:   vary => {
 				try {
@@ -295,7 +295,7 @@ namespace $ {
 			real:  vary => null,
 			ints:  vary => null,
 			reals: vary => null,
-			ref:   vary => null,
+			link:  vary => null,
 			
 			str:   vary => {
 				try {
@@ -331,7 +331,7 @@ namespace $ {
 			real:  vary => null,
 			ints:  vary => null,
 			reals: vary => null,
-			ref:   vary => null,
+			link:  vary => null,
 			
 			str:   vary => {
 				if( !vary ) return null
@@ -364,7 +364,7 @@ namespace $ {
 			real:  vary => Number.isFinite( vary ) ? [ vary ] : null,
 			ints:  vary => [ ... vary ].map( v => Number( v ) ),
 			reals: vary => [ ... vary ],
-			ref:   vary => [ vary.description! ],
+			link:  vary => [ vary.str ],
 			
 			str:   vary => {
 				if( !vary ) return null
@@ -395,7 +395,7 @@ namespace $ {
 			real:  vary => <body>{ vary }</body>,
 			ints:  vary => <body>{ vary.join(',') }</body>,
 			reals: vary => <body>{ vary.join(',') }</body>,
-			ref:   vary => <body>{ vary.description }</body>,
+			link:  vary => <body>{ vary.str }</body>,
 			
 			str:   vary => {
 				if( !vary ) return null
@@ -426,7 +426,7 @@ namespace $ {
 			real:  vary => $mol_tree2.struct( vary.toString() ),
 			ints:  vary => $mol_tree2.list( [ ... vary ].map( v => $mol_tree2.struct( v.toString() ) ) ),
 			reals: vary => $mol_tree2.list( [ ... vary ].map( v => $mol_tree2.struct( v.toString() ) ) ),
-			ref:   vary => $mol_tree2.struct( vary.description! ),
+			link:  vary => $mol_tree2.struct( vary.str ),
 			
 			str:   vary => {
 				if( !vary ) return null
@@ -456,7 +456,7 @@ namespace $ {
 		real: $hyoo_crus_vary_cast_real,
 		ints: $hyoo_crus_vary_cast_ints,
 		reals: $hyoo_crus_vary_cast_reals,
-		ref: $hyoo_crus_vary_cast_ref,
+		link: $hyoo_crus_vary_cast_link,
 		
 		str: $hyoo_crus_vary_cast_str,
 		time: $hyoo_crus_vary_cast_time,

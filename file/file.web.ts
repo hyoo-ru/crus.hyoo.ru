@@ -18,8 +18,8 @@ namespace $ {
 			const id = query.file['=']?.[0][0]
 			if( !id ) return
 			
-			const ref = $hyoo_crus_ref( id )
-			const file = $.$hyoo_crus_glob.Node( ref, $hyoo_crus_file )
+			const link = new $hyoo_crus_link( id )
+			const file = $.$hyoo_crus_glob.Node( link, $hyoo_crus_file )
 			
 			return event.respondWith( $mol_wire_async( file ).blob().then( blob => {
 				

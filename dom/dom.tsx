@@ -14,8 +14,8 @@ namespace $ {
 				const ids = new Set< string >()
 				for( const node of next ) {
 					if(!( node instanceof this.$.$mol_dom_context.Element )) continue
-					const id = $hyoo_crus_ref_check( node.id )
-					if( !id || ids.has( id ) ) node.id = ''
+					let id = $hyoo_crus_link.check( node.id )
+					if( !id || ids.has( id ) ) node.id = id = ''
 					ids.add( id )
 				}
 				
@@ -106,19 +106,21 @@ namespace $ {
 						} else if( next.nodeType === next.ATTRIBUTE_NODE ) {
 							return land.sand_decode( prev ) === next.nodeName
 						} else {
-							return prev.self() === ( next as Element ).id
+							return prev.self().str === ( next as Element ).id
 						}
 					},
 					drop: ( prev, lead )=> land.sand_wipe( prev ),
 					insert: ( next, lead )=> {
 						return land.post(
-							lead?.self() ?? '',
+							lead?.self() ?? $hyoo_crus_link.hole,
 							this.head(),
 							typeof next === 'string'
-								? ''
+								? $hyoo_crus_link.hole
 								: next.nodeType === next.ATTRIBUTE_NODE
-									? ''
-									: ( $hyoo_crus_ref( ( next as Element ).id )?.description ?? '' ),
+									? $hyoo_crus_link.hole
+									: $hyoo_crus_link.check( ( next as Element ).id )
+										? new $hyoo_crus_link( ( next as Element ).id )
+										: $hyoo_crus_link.hole,
 							val( next ),
 							tag( next ),
 						)
@@ -126,14 +128,14 @@ namespace $ {
 					update: ( next, prev, lead )=> ( typeof next !== 'string' || next === land.sand_decode( prev ) )
 						? prev
 						: land.post(
-							lead?.self() ?? '',
+							lead?.self() ?? $hyoo_crus_link.hole,
 							prev.head(),
 							prev.self(),
 							val( next ),
 							tag( next ),
 						),
 					replace: ( next, prev, lead )=> land.post(
-						lead?.self() ?? '',
+						lead?.self() ?? $hyoo_crus_link.hole,
 						prev.head(),
 						prev.self(),
 						val( next ),
@@ -182,7 +184,7 @@ namespace $ {
 						? $hyoo_crus_vary_cast_str( land.sand_decode( unit ) )
 						: doms.Item( unit.self() ).dom()
 					
-					return <Tag { ... attrs } id={ unit.self() } >{ content }</Tag>
+					return <Tag { ... attrs } id={ unit.self().str } >{ content }</Tag>
 					
 				} )
 				
@@ -203,9 +205,9 @@ namespace $ {
 
 		@ $mol_mem_key
 		selection(
-			lord: $hyoo_crus_ref,
-			next?: readonly( readonly[ string /*self*/, number /*pos*/ ] )[],
-		): readonly( readonly[ string /*self*/, number /*pos*/ ] )[]  {
+			lord: $hyoo_crus_link,
+			next?: readonly( readonly[ $hyoo_crus_link /*self*/, number /*pos*/ ] )[],
+		): readonly( readonly[ $hyoo_crus_link /*self*/, number /*pos*/ ] )[]  {
 
 			const base = this.$.$hyoo_crus_glob.Land( lord ).Data( $hyoo_crus_home )
 			
@@ -218,7 +220,7 @@ namespace $ {
 				
 				return base.Selection()?.val()?.split( '|' ).map( point => {
 					const chunks = point.split( ':' )
-					return [ chunks[0], Number( chunks[1] ) || 0 ]
+					return [ new $hyoo_crus_link( chunks[0] ), Number( chunks[1] ) || 0 ]
 				} ) ?? [ [ this.head(), 0 ], [ this.head(), 0 ] ]
 					
 			}

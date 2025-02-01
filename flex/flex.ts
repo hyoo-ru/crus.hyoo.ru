@@ -2,16 +2,16 @@ namespace $ {
 	
 	/** Any Thing */
 	export class $hyoo_crus_flex_thing extends $hyoo_crus_dict.with({
-		Kind: $hyoo_crus_atom_ref_to( ()=> $hyoo_crus_flex_kind ), // Schema of fields
+		Kind: $hyoo_crus_atom_link_to( ()=> $hyoo_crus_flex_kind ), // Schema of fields
 		Title: $hyoo_crus_atom_str,
 	}) {}
 	
-	/** Atomic Ref to any Thing */
-	export class $hyoo_crus_flex_thing_ref extends $hyoo_crus_atom_ref_to( ()=> $hyoo_crus_flex_thing ) {}
+	/** Atomic Link to any Thing */
+	export class $hyoo_crus_flex_thing_link extends $hyoo_crus_atom_link_to( ()=> $hyoo_crus_flex_thing ) {}
 	
 	/** Kind of Thing */
 	export class $hyoo_crus_flex_kind extends $hyoo_crus_flex_thing.with({
-		Props: $hyoo_crus_list_ref_to( ()=> $hyoo_crus_flex_prop ),
+		Props: $hyoo_crus_list_link_to( ()=> $hyoo_crus_flex_prop ),
 	}) {}
 	
 	/** Property of Kind */
@@ -21,17 +21,17 @@ namespace $ {
 		/** Type of value */
 		Type: $hyoo_crus_atom_str,
 		/** Target kind */
-		Target: $hyoo_crus_atom_ref_to( () => $hyoo_crus_flex_kind ),
+		Target: $hyoo_crus_atom_link_to( () => $hyoo_crus_flex_kind ),
 		/** Variants of values */
-		Enum: $hyoo_crus_atom_ref_to( () => $hyoo_crus_list_vary ),
+		Enum: $hyoo_crus_atom_link_to( () => $hyoo_crus_list_vary ),
 		/** Base value */
 		Base: $hyoo_crus_atom_vary,
 	}) {}
 	
 	/** All schemas in one place */
 	export class $hyoo_crus_flex_domain extends $hyoo_crus_flex_thing.with({
-		Kinds: $hyoo_crus_list_ref_to( ()=> $hyoo_crus_flex_kind ),
-		Props: $hyoo_crus_list_ref_to( ()=> $hyoo_crus_flex_prop ),
+		Kinds: $hyoo_crus_list_link_to( ()=> $hyoo_crus_flex_kind ),
+		Props: $hyoo_crus_list_link_to( ()=> $hyoo_crus_flex_prop ),
 		Types: $hyoo_crus_list_str,
 	}) {
 		
@@ -40,10 +40,10 @@ namespace $ {
 			
 			const domain = land.Data( this )
 			if( domain.units().length ) return domain
-			// if( land.auth().lord() !== $hyoo_crus_ref( 'JinYqktA_qNR7zÆe8' ) ) return domain
+			// if( land.auth().lord().str !== 'JinYqktA_qNR7zÆe8' ) return domain
 			
 			domain.Title(null)!.val( 'Base Domain' )
-			domain.Types(null)!.items_vary([ 'vary', 'enum', 'bool', 'int', 'real', 'str', 'ref', 'time', 'dict', 'text', 'list' ])
+			domain.Types(null)!.items_vary([ 'vary', 'enum', 'bool', 'int', 'real', 'str', 'link', 'time', 'dict', 'text', 'list' ])
 			
 			const Thing = domain.Kinds(null)!.make( null )
 			const Kind = domain.Kinds(null)!.make( null )
@@ -109,35 +109,35 @@ namespace $ {
 			domain_props.Kind(null)!.remote( Prop )
 			domain_types.Kind(null)!.remote( Prop )
 			
-			Kind.Props(null)!.add( thing_kind.ref() )
-			Prop.Props(null)!.add( thing_kind.ref() )
-			Thing.Props(null)!.add( thing_kind.ref() )
-			Domain.Props(null)!.add( thing_kind.ref() )
+			Kind.Props(null)!.add( thing_kind.link() )
+			Prop.Props(null)!.add( thing_kind.link() )
+			Thing.Props(null)!.add( thing_kind.link() )
+			Domain.Props(null)!.add( thing_kind.link() )
 			
-			Kind.Props(null)!.add( thing_title.ref() )
-			Prop.Props(null)!.add( thing_title.ref() )
-			Thing.Props(null)!.add( thing_title.ref() )
-			Domain.Props(null)!.add( thing_title.ref() )
+			Kind.Props(null)!.add( thing_title.link() )
+			Prop.Props(null)!.add( thing_title.link() )
+			Thing.Props(null)!.add( thing_title.link() )
+			Domain.Props(null)!.add( thing_title.link() )
 			
-			Kind.Props(null)!.add( kind_props.ref() )
+			Kind.Props(null)!.add( kind_props.link() )
 			
-			Prop.Props(null)!.add( prop_key.ref() )
-			Prop.Props(null)!.add( prop_type.ref() )
-			Prop.Props(null)!.add( prop_target.ref() )
-			Prop.Props(null)!.add( prop_enum.ref() )
-			Prop.Props(null)!.add( prop_base.ref() )
+			Prop.Props(null)!.add( prop_key.link() )
+			Prop.Props(null)!.add( prop_type.link() )
+			Prop.Props(null)!.add( prop_target.link() )
+			Prop.Props(null)!.add( prop_enum.link() )
+			Prop.Props(null)!.add( prop_base.link() )
 			
-			Domain.Props(null)!.add( domain_kinds.ref() )
-			Domain.Props(null)!.add( domain_props.ref() )
-			Domain.Props(null)!.add( domain_types.ref() )
+			Domain.Props(null)!.add( domain_kinds.link() )
+			Domain.Props(null)!.add( domain_props.link() )
+			Domain.Props(null)!.add( domain_types.link() )
 			
-			thing_kind.Type(null)!.val( 'ref' )
+			thing_kind.Type(null)!.val( 'link' )
 			thing_title.Type(null)!.val( 'str' )
 			kind_props.Type(null)!.val( 'list' )
 			prop_key.Type(null)!.val( 'str' )
 			prop_type.Type(null)!.val( 'enum' )
-			prop_target.Type(null)!.val( 'ref' )
-			prop_enum.Type(null)!.val( 'ref' )
+			prop_target.Type(null)!.val( 'link' )
+			prop_enum.Type(null)!.val( 'link' )
 			prop_base.Type(null)!.val( 'vary' )
 			domain_kinds.Type(null)!.val( 'list' )
 			domain_props.Type(null)!.val( 'list' )
@@ -151,16 +151,16 @@ namespace $ {
 			domain_kinds.Target(null)!.remote( Kind )
 			domain_props.Target(null)!.remote( Prop )
 			
-			thing_kind.Enum(null)!.vary( domain.Kinds()!.ref() )
-			kind_props.Enum(null)!.vary( domain.Props()!.ref() )
-			prop_type.Enum(null)!.vary( domain.Types()!.ref() )
-			prop_target.Enum(null)!.vary( domain.Kinds()!.ref() )
-			prop_enum.Enum(null)!.vary( domain.ref() )
+			thing_kind.Enum(null)!.vary( domain.Kinds()!.link() )
+			kind_props.Enum(null)!.vary( domain.Props()!.link() )
+			prop_type.Enum(null)!.vary( domain.Types()!.link() )
+			prop_target.Enum(null)!.vary( domain.Kinds()!.link() )
+			prop_enum.Enum(null)!.vary( domain.link() )
 			
 			thing_title.Base(null)!.vary( '' )
-			thing_kind.Base(null)!.vary( Thing.ref() )
+			thing_kind.Base(null)!.vary( Thing.link() )
 			prop_type.Base(null)!.vary( 'vary' )
-			prop_target.Base(null)!.vary( Thing.ref() )
+			prop_target.Base(null)!.vary( Thing.link() )
 
 			return domain
 		}

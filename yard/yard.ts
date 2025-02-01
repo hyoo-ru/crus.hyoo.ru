@@ -1,6 +1,6 @@
 namespace $ {
 	
-	const Passives = new WeakMap< $mol_rest_port, Set< $hyoo_crus_ref > >()
+	const Passives = new WeakMap< $mol_rest_port, Set< string > >()
 	
 	/** Glob synchronizer */
 	export class $hyoo_crus_yard extends $mol_object {
@@ -11,7 +11,7 @@ namespace $ {
 			return null! as $hyoo_crus_glob
 		}
 		
-		lands_news = new $mol_wire_set< $hyoo_crus_ref >()
+		lands_news = new $mol_wire_set< string >()
 		
 		static masters = [] as string[]
 		
@@ -124,12 +124,12 @@ namespace $ {
 		sync_news() {
 			
 			const glob = this.$.$hyoo_crus_glob
-			const lands = [ ... this.lands_news ].map( ref =>  glob.Land( ref ) )
+			const lands = [ ... this.lands_news ].map( link => glob.Land( new $hyoo_crus_link( link ) ) )
 			
 			try {
 				for( const port of this.masters() ) {
 					for( const land of lands ) {
-						this.sync_port_land([ port, land.ref() ])
+						this.sync_port_land([ port, land.link() ])
 					}
 				}
 				for( const land of lands ) land.saving()
@@ -148,7 +148,7 @@ namespace $ {
 		@ $mol_mem_key
 		sync_port_lands( port: $mol_rest_port ) {
 			for( const land of this.port_lands_active( port ) ) {
-				this.sync_port_land([ port, land ])
+				this.sync_port_land([ port, new $hyoo_crus_link( land ) ])
 			}
 		}
 		
@@ -169,7 +169,7 @@ namespace $ {
 		
 		@ $mol_mem_key
 		port_lands_active( port: $mol_rest_port ) {
-			return new $mol_wire_set< $hyoo_crus_ref >()
+			return new $mol_wire_set< string >()
 		}
 		
 		port_lands_passive( port: $mol_rest_port ) {
@@ -196,8 +196,7 @@ namespace $ {
 				
 				if( parts.rocks.length ) break forget
 				
-				const lands = Object.getOwnPropertySymbols( parts.lands ) as any as readonly $hyoo_crus_ref[]
-				for( const land of lands ) {
+				for( const land in parts.lands ) {
 					
 					if( parts.lands[ land ].units.length ) break forget
 					if( parts.lands[ land ].faces.size ) break forget
@@ -218,7 +217,7 @@ namespace $ {
 		@ $mol_action
 		face_port_sync(
 			port: $mol_rest_port,
-			income: Record< $hyoo_crus_ref, {
+			income: Record< string, {
 				faces: $hyoo_crus_face_map
 				units: $hyoo_crus_unit[]
 			}>, 
@@ -227,16 +226,17 @@ namespace $ {
 			const actives = this.port_lands_active( port )
 			const passives = this.port_lands_passive( port )
 			
-			for( const land of Reflect.ownKeys( income ) as $hyoo_crus_ref[] ) {
+			for( const land of Reflect.ownKeys( income ) as string[] ) {
+				const land_link = new $hyoo_crus_link( land )
 				
 				if( !passives.has( land ) ) actives.add( land )
 				
 				const faces = income[ land ].faces
-				let port_faces = this.face_port_land([ port, land ])
+				let port_faces = this.face_port_land([ port, land_link ])
 				
 				if( !port_faces ) this.face_port_land(
-					[ port, land ],
-					port_faces = $mol_mem_cached( ()=> this.face_port_land([ port, land ]) )
+					[ port, land_link ],
+					port_faces = $mol_mem_cached( ()=> this.face_port_land([ port, land_link ]) )
 						|| new $hyoo_crus_face_map,
 				)
 				port_faces.sync( faces )
@@ -245,7 +245,7 @@ namespace $ {
 				for( let unit of units ) {
 					const unit2 = unit.narrow()
 					if( unit2 instanceof $hyoo_crus_pass ) continue
-					port_faces.time_max( unit2.peer(), unit2.time() )
+					port_faces.time_max( unit2.peer().str, unit2.time() )
 				}
 				
 			}
@@ -253,9 +253,9 @@ namespace $ {
 		}
 		
 		@ $mol_mem_key
-		sync_land( land: $hyoo_crus_ref ) {
+		sync_land( land: $hyoo_crus_link ) {
 			for( const port of this.masters() ) {
-				this.port_lands_passive( port ).add( land )
+				this.port_lands_passive( port ).add( land.str )
 				this.sync_port_land([ port, land ])
 			}
 			this.sync()
@@ -268,20 +268,20 @@ namespace $ {
 			faces.total = land.faces.total
 			
 			const pack = $hyoo_crus_pack.make({
-				lands: { [ land.ref() ]: { faces, units: [] } },
+				lands: { [ land.link().str ]: { faces, units: [] } },
 				rocks:[],
 			}).asArray()
 			
 			for( const port of this.ports() ) {
 				
-				if( !this.port_lands_passive( port ).has( land.ref() ) ) continue
-				this.port_lands_passive( port ).delete( land.ref() )
+				if( !this.port_lands_passive( port ).has( land.link().str ) ) continue
+				this.port_lands_passive( port ).delete( land.link().str )
 				
 				if( this.$.$hyoo_crus_log() ) this.$.$mol_log3_rise({
 					place: this,
 					message: 'Forget Land',
 					port: $mol_key( port ),
-					land: land.ref(),
+					land: land.link(),
 				})
 				
 				port.send_bin( pack )
@@ -291,7 +291,7 @@ namespace $ {
 		}
 		
 		@ $mol_mem_key
-		sync_port_land( [ port, land ]: [ $mol_rest_port, $hyoo_crus_ref ] ) {
+		sync_port_land( [ port, land ]: [ $mol_rest_port, $hyoo_crus_link ] ) {
 			
 			try {
 			
@@ -324,7 +324,7 @@ namespace $ {
 		}
 		
 		@ $mol_mem_key
-		init_port_land( [ port, land ]: [ $mol_rest_port, $hyoo_crus_ref ] ) {
+		init_port_land( [ port, land ]: [ $mol_rest_port, $hyoo_crus_link ] ) {
 			// $mol_wire_solid() 
 			const Land = this.$.$hyoo_crus_glob.Land( land )
 			Land.loading()
@@ -340,7 +340,7 @@ namespace $ {
 		
 		@ $mol_mem_key
 		face_port_land(
-			[ port, land ]: [ $mol_rest_port, $hyoo_crus_ref ],
+			[ port, land ]: [ $mol_rest_port, $hyoo_crus_link ],
 			next = null as null | $hyoo_crus_face_map
 		) {
 			$mol_wire_solid()

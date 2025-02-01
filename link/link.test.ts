@@ -10,6 +10,15 @@ namespace $.$$ {
 			
 		},
 		
+		"From integer"( $ ) {
+			
+			$mol_assert_equal(
+				$hyoo_crus_link.from_int( 178308648732587 ),
+				new $hyoo_crus_link( 'qwertyui' ),
+			)
+			
+		},
+		
 		"Pick Lord only"( $ ) {
 			
 			$mol_assert_equal(
@@ -47,7 +56,7 @@ namespace $.$$ {
 			
 			$mol_assert_equal(
 				new $hyoo_crus_link( '___qazwsxed' ).peer(),
-				new $hyoo_crus_link( '_' ),
+				new $hyoo_crus_link( '' ),
 			)
 			
 		},
@@ -79,8 +88,8 @@ namespace $.$$ {
 			$mol_assert_equal(
 				new $hyoo_crus_link( 'qwertyui_asdfghjk__zxcvbnm0' ).area(),
 				new $hyoo_crus_link( 'qwertyui_asdfghjk' ).area(),
-				new $hyoo_crus_link( '_' ).area(),
-				new $hyoo_crus_link( '_' ),
+				new $hyoo_crus_link( '' ).area(),
+				new $hyoo_crus_link( '' ),
 			)
 			
 		},
@@ -92,21 +101,21 @@ namespace $.$$ {
 			const lord = new $hyoo_crus_link( 'qwertyui_asdfghjk' ).toBin()
 			
 			const rel_node = new $hyoo_crus_link( '___zxcvbnm0' ).toBin()
-			const rel_root = new $hyoo_crus_link( '_' ).toBin()
+			const rel_root = new $hyoo_crus_link( '' ).toBin()
 			
 			$mol_assert_equal( node.length, 24 )
 			$mol_assert_equal( land.length, 18 )
 			$mol_assert_equal( lord.length, 12 )
 			
 			$mol_assert_equal( rel_node.length, 24 )
-			$mol_assert_equal( rel_root.length, 12 )
+			$mol_assert_equal( rel_root.length, 6 )
 			
 			$mol_assert_equal( $hyoo_crus_link.from_bin( node ), new $hyoo_crus_link( 'qwertyui_asdfghjk_qazwsxed_zxcvbnm0' ) )
 			$mol_assert_equal( $hyoo_crus_link.from_bin( land ), new $hyoo_crus_link( 'qwertyui_asdfghjk_qazwsxed' ) )
 			$mol_assert_equal( $hyoo_crus_link.from_bin( lord ), new $hyoo_crus_link( 'qwertyui_asdfghjk' ) )
 			
 			$mol_assert_equal( $hyoo_crus_link.from_bin( rel_node ), new $hyoo_crus_link( '___zxcvbnm0' ) )
-			$mol_assert_equal( $hyoo_crus_link.from_bin( rel_root ), new $hyoo_crus_link( '_' ) )
+			$mol_assert_equal( $hyoo_crus_link.from_bin( rel_root ), new $hyoo_crus_link( '' ) )
 			
 		},
 		
@@ -151,12 +160,12 @@ namespace $.$$ {
 				new $hyoo_crus_link( 'qwertyui_asdfghjk' ).relate(
 					new $hyoo_crus_link( 'qwertyui_asdfghjk' ),
 				),
-				new $hyoo_crus_link( '_' ),
+				new $hyoo_crus_link( '' ),
 			)
 			
 		},
 		
-		"Resolve ref from base"( $ ) {
+		"Resolve Link from base"( $ ) {
 			
 			$mol_assert_equal(
 				new $hyoo_crus_link( 'qwertyui_asdfghjk__zxcvbnm0' ).resolve(
@@ -192,20 +201,20 @@ namespace $.$$ {
 			)
 			
 			$mol_assert_equal(
-				new $hyoo_crus_link( '_' ).resolve(
+				new $hyoo_crus_link( '' ).resolve(
 					new $hyoo_crus_link( 'qwertyui_asdfghjk' ),
 				),
-				new $hyoo_crus_link( '_' ).resolve(
+				new $hyoo_crus_link( '' ).resolve(
 					new $hyoo_crus_link( 'qwertyui_asdfghjk__zxcvbnm0' ),
 				),
 				new $hyoo_crus_link( 'qwertyui_asdfghjk' ),
 			)
 			
 			$mol_assert_equal(
-				new $hyoo_crus_link( '_' ).resolve(
+				new $hyoo_crus_link( '' ).resolve(
 					new $hyoo_crus_link( 'qwertyui_asdfghjk_qazwsxed' ),
 				),
-				new $hyoo_crus_link( '_' ).resolve(
+				new $hyoo_crus_link( '' ).resolve(
 					new $hyoo_crus_link( 'qwertyui_asdfghjk_qazwsxed_zxcvbnm0' ),
 				),
 				new $hyoo_crus_link( 'qwertyui_asdfghjk_qazwsxed' ),

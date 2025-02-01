@@ -12,49 +12,48 @@ namespace $ {
 		}
 		
 		@ $mol_mem_key
-		static rock( hash: Uint8Array< ArrayBuffer >, next?: Uint8Array< ArrayBuffer > ): Uint8Array< ArrayBuffer > | null {
+		static rock( hash: $hyoo_crus_link, next?: Uint8Array< ArrayBuffer > ): Uint8Array< ArrayBuffer > | null {
 			if( next ) {
 				$mol_wire_sync( this ).db_sync()?.query(
 					`
 						INSERT INTO Rock( hash, rock )
-						VALUES( $1::bytea, $2::bytea )
+						VALUES( $1::text, $2::bytea )
 						ON CONFLICT( hash ) DO NOTHING
 					`,
-					[ hash, next ]
+					[ hash.str, next ]
 				)
 				return next
 			}
 			return $mol_wire_sync( this ).rock_load( hash )
 		}
 		
-		static async rock_load( hash: Uint8Array< ArrayBuffer > ) {
+		static async rock_load( hash: $hyoo_crus_link ) {
 			
 			const db = await this.db()
 			if( !db ) return null
 			
 			const res = await db.query(
-				`SELECT rock FROM Rock WHERE hash = $1::bytea`,
-				[ hash ]
+				`SELECT rock FROM Rock WHERE hash = $1::text`,
+				[ hash.str ]
 			)
 			
 			return res.rows[0]?.rock as Uint8Array< ArrayBuffer > ?? null
 		}
 		
-		static async units_save( land: $hyoo_crus_ref, units: readonly $hyoo_crus_unit[] ) { $hyoo_crus_land
+		static async units_save( land: $hyoo_crus_link, units: readonly $hyoo_crus_unit[] ) {
 			
 			const db = await this.db()
 			if( !db ) return
 			
 			const tasks = units.map( unit => {
-				const ref = land.description
 				const buf = Buffer.from( unit.buffer, unit.byteOffset, unit.byteLength )
 				return db.query(
 					`
 						INSERT INTO Land( land, path, unit )
-						VALUES( $1::varchar(17), $2::varchar(17), $3::bytea )
+						VALUES( $1::text, $2::text, $3::bytea )
 						ON CONFLICT( land, path ) DO UPDATE SET unit = $3::bytea;
 					`,
-					[ ref, unit.key(), buf ]
+					[ land.str, unit.key(), buf ]
 				)
 			} )
 			
@@ -65,17 +64,17 @@ namespace $ {
 		}
 		
 		@ $mol_action
-		static async units_load( land: $hyoo_crus_ref ) {
+		static async units_load( land: $hyoo_crus_link ) {
 			
 			const db = await this.db()
 			if( !db ) return []
 
 			const res = await db.query<{ unit: Uint8Array< ArrayBuffer > }>(
-				`SELECT unit FROM Land WHERE land = $1::varchar(17)`,
-				[ land.description ]
+				`SELECT unit FROM Land WHERE land = $1::text`,
+				[ land.str ]
 			)
 			
-			const units = res.rows.map( row => {
+			const units = res.rows.map( ( row: any )=> {
 				const unit = new $hyoo_crus_unit(
 					row.unit.buffer as ArrayBuffer,
 					row.unit.byteOffset,
@@ -106,7 +105,7 @@ namespace $ {
 				ssl: { rejectUnauthorized: false },
 			})
 			
-			db.on( 'error', error => {
+			db.on( 'error', ( error: any )=> {
 				this.$.$mol_log3_fail({
 					place: this,
 					message: error?.message,
@@ -117,8 +116,8 @@ namespace $ {
 			
 			await db.query(`
 				CREATE TABLE IF NOT EXISTS Land (
-					land varchar(17) NOT NULL,
-					path varchar(17) NOT NULL,
+					land text NOT NULL,
+					path text NOT NULL,
 					unit bytea NOT NULL,
 					primary key( land, path )
 				);
@@ -126,7 +125,7 @@ namespace $ {
 			
 			await db.query(`
 				CREATE TABLE IF NOT EXISTS Rock (
-					hash bytea NOT NULL,
+					hash text NOT NULL,
 					rock bytea NOT NULL,
 					primary key( hash )
 				);

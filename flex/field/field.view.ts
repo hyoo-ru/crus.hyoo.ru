@@ -15,7 +15,7 @@ namespace $.$$ {
 				case 'int': return this.Int()
 				case 'real': return this.Real()
 				case 'str': return this.Str()
-				case 'ref': return this.Ref()
+				case 'link': return this.Ref()
 				case 'time': return this.Time()
 				case 'dict': return this.Dict()
 				case 'text': return this.Text()
@@ -58,44 +58,44 @@ namespace $.$$ {
 			return this.node( next as any )?.cast( $hyoo_crus_atom_time ).val( next ) ?? null!
 		}
 		
-		ref( next?: $hyoo_crus_ref ) {
-			this.node( next as any )?.cast( $hyoo_crus_atom_ref ).val( next ) ?? null
+		link( next?: $hyoo_crus_link ) {
+			this.node( next as any )?.cast( $hyoo_crus_atom_link ).val( next ) ?? null
 			return null
 		}
 		
 		@ $mol_mem
-		ref_content() {
+		link_content() {
 			return [
-				... this.ref_value() === null ? [] : [ this.Ref_dump() ],
-				... this.ref_options().length ? [ this.Ref_pick() ] : [],
-				... this.ref_value() === null ? [ this.Ref_new() ] : [],
+				... this.link_value() === null ? [] : [ this.Link_dump() ],
+				... this.link_options().length ? [ this.Link_pick() ] : [],
+				... this.link_value() === null ? [ this.Link_new() ] : [],
 			]
 		}
 		
 		@ $mol_mem
-		ref_value() {
+		link_value() {
 			return this.node()?.cast( $hyoo_crus_atom_vary ).vary() ?? null
 		}
 		
-		ref_options() {
+		link_options() {
 			return this.prop().Enum()?.remote()?.items_vary() ?? []
 		}
 		
-		ref_label( ref: $hyoo_crus_vary_type ) {
-			if( typeof ref === 'symbol' ) return this.$.$hyoo_crus_glob.Node( ref, $hyoo_crus_flex_thing ).Title()?.val() ?? ref.description!
-			return $hyoo_crus_vary_cast_str( ref ) ?? ''
+		link_label( link: $hyoo_crus_vary_type ) {
+			if( link instanceof $hyoo_crus_link ) return this.$.$hyoo_crus_glob.Node( link, $hyoo_crus_flex_thing ).Title()?.val() ?? link.str
+			return $hyoo_crus_vary_cast_str( link ) ?? ''
 		}
 		
-		ref_remote() {
-			return ( this.node().cast( $hyoo_crus_atom_ref_to( ()=> $hyoo_crus_dict ) ) ).remote()!
+		link_remote() {
+			return ( this.node().cast( $hyoo_crus_atom_link_to( ()=> $hyoo_crus_dict ) ) ).remote()!
 		}
 		
 		@ $mol_action
-		ref_new( rights?: string ) {
+		link_new( rights?: string ) {
 			
 			if( !rights ) return null
 			
-			const node =  this.node( 'auto' as any ).cast( $hyoo_crus_flex_thing_ref )
+			const node =  this.node( 'auto' as any ).cast( $hyoo_crus_flex_thing_link )
 			const Target = this.prop().Target()?.remote()
 			
 			if( rights === 'local' ) {
@@ -126,19 +126,19 @@ namespace $.$$ {
 		
 		@ $mol_mem
 		dict_title() {
-			return this.node().cast( $hyoo_crus_entity ).Title()?.val() || this.node().ref().description!
+			return this.node().cast( $hyoo_crus_entity ).Title()?.val() || this.node().link().str
 		}
 		
 		@ $mol_mem
 		list_items() {
 			return [
 				... this.node()?.units().map( ( unit, i )=> this.List_item( unit ) ) ?? [],
-				... this.ref_options().length ? [ this.List_pick() ] : [],
+				... this.link_options().length ? [ this.List_pick() ] : [],
 				this.List_item_add(),
 			]
 		}
 		
-		list_pick( next?: $hyoo_crus_ref ) {
+		list_pick( next?: $hyoo_crus_link ) {
 			if( !next ) return null
 			this.node( next as any )?.cast( $hyoo_crus_list_vary ).add( next )
 			return null
@@ -146,7 +146,7 @@ namespace $.$$ {
 		
 		@ $mol_mem
 		list_item_add() {
-			const target = this.node( null as any ).cast( $hyoo_crus_list_ref_to( ()=> $hyoo_crus_flex_thing ) ).local_make()
+			const target = this.node( null as any ).cast( $hyoo_crus_list_link_to( ()=> $hyoo_crus_flex_thing ) ).local_make()
 			target.Kind(null)?.remote( this.prop().Target()?.remote() )
 		}
 		
@@ -161,7 +161,7 @@ namespace $.$$ {
 		
 		list_item_adopt( transfer : DataTransfer ) {
 			let val: $hyoo_crus_vary_type = transfer.getData( "text/plain" )
-			if( this.prop().Target()?.val() ) val = $hyoo_crus_vary_cast_ref( val )
+			if( this.prop().Target()?.val() ) val = $hyoo_crus_vary_cast_link( val )
 			return val
 		}
 

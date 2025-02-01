@@ -5,7 +5,7 @@ namespace $.$$ {
 		"Empty representation"( $ ) {
 			
 			const land = $hyoo_crus_land.make({ $ })
-			const reg = land.Node( $hyoo_crus_atom_time ).Item('')
+			const reg = land.Node( $hyoo_crus_atom_time ).Data()
 			
 			$mol_assert_equal( reg.val(), null )
 			
@@ -18,12 +18,12 @@ namespace $.$$ {
 			
 			const land = $.$hyoo_crus_glob.home().land()
 			
-			const bin = land.Node( $hyoo_crus_atom_bin ).Item('11111111')
+			const bin = land.Node( $hyoo_crus_atom_bin ).Item( new $hyoo_crus_link( '11111111' ) )
 			$mol_assert_equal( bin.val(), null )
 			bin.val( new Uint8Array([ 1, 2, 3 ]) )
 			$mol_assert_equal( bin.val(), new Uint8Array([ 1, 2, 3 ]) )
 			
-			const str = land.Node( $hyoo_crus_atom_str ).Item('22222222')
+			const str = land.Node( $hyoo_crus_atom_str ).Item( new $hyoo_crus_link( '22222222' ) )
 			$mol_assert_equal( str.val(), null )
 			str.val( 'foo' )
 			$mol_assert_equal( str.val(), 'foo' )
@@ -35,7 +35,7 @@ namespace $.$$ {
 			class Email extends $hyoo_crus_atom( $mol_data_email ) {}
 			
 			const land = $hyoo_crus_land.make({ $ })
-			const reg = land.Node( Email ).Item('')
+			const reg = land.Node( Email ).Data()
 			
 			$mol_assert_equal( reg.val(), null )
 			
@@ -54,11 +54,11 @@ namespace $.$$ {
 			
 			const land = $.$hyoo_crus_glob.home().land()
 			
-			const reg = land.Node( $hyoo_crus_atom_ref_to( ()=> $hyoo_crus_atom_vary ) ).Item( '11111111' )
+			const reg = land.Node( $hyoo_crus_atom_link_to( ()=> $hyoo_crus_atom_vary ) ).Item( new $hyoo_crus_link( '11111111' ) )
 			const remote = reg.ensure({ '': $hyoo_crus_rank_read })!
 			
 			$mol_assert_unique( reg.land(), remote.land() )
-			$mol_assert_equal( reg.vary()!, remote.ref() )
+			$mol_assert_equal( reg.vary()!, remote.link() )
 			$mol_assert_equal( reg.remote(), remote )
 			
 		},
@@ -67,12 +67,12 @@ namespace $.$$ {
 			
 			const land = $.$hyoo_crus_glob.home().land()
 			
-			const str = land.Node( $hyoo_crus_atom_str ).Item('11111111')
-			const ref = land.Node( $hyoo_crus_atom_ref_to( ()=> $hyoo_crus_atom_str ) ).Item('11111111')
-			$mol_assert_equal( ref.remote(), null )
+			const str = land.Node( $hyoo_crus_atom_str ).Item( new $hyoo_crus_link( '11111111' ) )
+			const link = land.Node( $hyoo_crus_atom_link_to( ()=> $hyoo_crus_atom_str ) ).Item( new $hyoo_crus_link( '11111111' ) )
+			$mol_assert_equal( link.remote(), null )
 			
-			ref.remote( str )
-			$mol_assert_equal( ref.vary(), ref.remote()!.ref(), str.ref() )
+			link.remote( str )
+			$mol_assert_equal( link.vary(), link.remote()!.link(), str.link() )
 			
 		},
 		

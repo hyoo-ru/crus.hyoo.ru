@@ -3,8 +3,8 @@ namespace $.$$ {
 		
 		@ $mol_mem
 		home() {
-			const ref = $hyoo_crus_ref( this.$.$mol_fetch.text( this.$.$hyoo_crus_glob.yard().master_current() + 'ref' ) )
-			return this.$.$hyoo_crus_glob.Node( ref, $hyoo_crus_app_home )
+			const link = new $hyoo_crus_link( this.$.$mol_fetch.text( this.$.$hyoo_crus_glob.yard().master_current() + 'link' ) )
+			return this.$.$hyoo_crus_glob.Node( link, $hyoo_crus_app_home )
 		}
 
 		@ $mol_mem

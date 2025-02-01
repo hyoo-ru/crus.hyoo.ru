@@ -40,7 +40,7 @@ namespace $ {
 		
 		@ $mol_memo.method
 		hash() {
-			return $hyoo_crus_link.hash_bin( this )
+			return $hyoo_crus_link.hash_bin( new Uint8Array( this.buffer, 0, 64 ) )
 		}
 		
 		/** Independent actor with global unique id generated from Auth key */

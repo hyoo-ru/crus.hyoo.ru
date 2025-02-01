@@ -27,9 +27,9 @@ namespace $ {
 						//if( typeof prev.data === 'string' ) return false // ???
 						return land.Node( $hyoo_crus_text ).Item( prev.self() ).str() === next
 					},
-					drop: ( prev, lead )=> this.land().post( lead?.self() ?? '', prev.head(), prev.self(), null ),
+					drop: ( prev, lead )=> this.land().post( lead?.self() ?? $hyoo_crus_link.hole, prev.head(), prev.self(), null ),
 					insert: ( next, lead )=> {
-						const sand = this.land().post( lead?.self() ?? '', this.head(), land.self_make(), 'p', 'vals' )
+						const sand = this.land().post( lead?.self() ?? $hyoo_crus_link.hole, this.head(), land.self_make(), 'p', 'vals' )
 						land.Node( $hyoo_crus_text ).Item( sand.self() ).str( next )
 						return sand
 					},
@@ -126,7 +126,7 @@ namespace $ {
 		}
 
 		@ $mol_action
-		point_by_offset( offset: number ): readonly[ string /*self*/, number /*pos*/ ] {
+		point_by_offset( offset: number ): readonly[ $hyoo_crus_link /*self*/, number /*pos*/ ] {
 			
 			const land = this.land()
 			let off = offset
@@ -151,17 +151,17 @@ namespace $ {
 				
 			}
 			
-			return [ '', off ]
+			return [ $hyoo_crus_link.hole, off ]
 		}
 		
 		@ $mol_action
-		offset_by_point( [ self, offset ]: readonly[ string /*self*/, number /*pos*/ ] ): readonly[ string /*self*/, number /*pos*/ ]  {
+		offset_by_point( [ self, offset ]: readonly[ $hyoo_crus_link /*self*/, number /*pos*/ ] ): readonly[ $hyoo_crus_link /*self*/, number /*pos*/ ]  {
 			
 			const land = this.land()
 			
 			for( const unit of this.units() ) {
 				
-				if( unit.self() === self ) return [ self, offset ]
+				if( unit.self().str === self.str ) return [ self, offset ]
 				
 				if( unit.tag() === 'term' ) {
 					
@@ -178,11 +178,11 @@ namespace $ {
 				
 			}
 			
-			return [ '', offset ]
+			return [ $hyoo_crus_link.hole, offset ]
 		}
 		
 		@ $mol_mem_key
-		selection( lord: $hyoo_crus_ref, next?: readonly[ begin: number, end: number ] ) {
+		selection( lord: $hyoo_crus_link, next?: readonly[ begin: number, end: number ] ) {
 			
 			const base = this.$.$hyoo_crus_glob.Land( lord ).Data( $hyoo_crus_home )
 			
@@ -196,7 +196,7 @@ namespace $ {
 				this.text() // track text to recalc selection on its change
 				return base.Selection()?.val()?.split( '|' ).map( point => {
 					const chunks = point.split( ':' )
-					return this.offset_by_point([ chunks[0], Number( chunks[1] ) || 0 ])[1]
+					return this.offset_by_point([ new $hyoo_crus_link( chunks[0] ), Number( chunks[1] ) || 0 ])[1]
 				} ) ?? [ 0, 0 ]
 					
 			}

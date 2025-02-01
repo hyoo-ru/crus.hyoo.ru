@@ -3,7 +3,7 @@ namespace $ {
 	type json = null | boolean | number | string | { [ key in string ]: json } | readonly json[]
 	/** Supported primitive types. */
 	export type $hyoo_crus_vary_type =
-	| Uint8Array | bigint | $hyoo_crus_ref
+	| Uint8Array | bigint | $hyoo_crus_link
 	| BigInt64Array | Float64Array
 	| $mol_time_moment | $mol_time_duration | $mol_time_interval
 	| $mol_tree2 | json | Node
@@ -17,7 +17,7 @@ namespace $ {
 		real:  Number,
 		ints:  BigInt64Array,
 		reals: Float64Array,
-		ref:   Symbol,
+		link:  $hyoo_crus_link,
 		
 		str:   String,
 		time:  $mol_time_moment,
@@ -55,8 +55,8 @@ namespace $ {
 		ints = 0b00110,
 		/** 8B * n<=4. float64 */
 		reals = 0b00111,
-		/** 12B. Reference to Node/Land/Lord. */
-		ref = 0b01000,
+		/** 12B. Link to Node/Land/Lord. */
+		link = 0b01000,
 		
 		/** String */
 		str = 0b10000,
@@ -86,7 +86,7 @@ namespace $ {
 		ints:  ( vary: BigInt64Array< ArrayBuffer > )=> any,
 		real:  ( vary: number )=> any,
 		reals: ( vary: Float64Array< ArrayBuffer > )=> any,
-		ref:   ( vary: $hyoo_crus_ref )=> any,
+		link:  ( vary: $hyoo_crus_link )=> any,
 		
 		str:   ( vary: string )=> any,
 		time:  ( vary: $mol_time_moment )=> any,
@@ -109,7 +109,6 @@ namespace $ {
 			case "bigint": return ways.int( vary )
 			case "number": return ways.real( vary )
 			case "string": return ways.str( vary )
-			case 'symbol': return ways.ref( vary )
 		}
 		
 		switch( Reflect.getPrototypeOf( vary ) ) {
@@ -118,6 +117,7 @@ namespace $ {
 			case Uint8Array.prototype: return ways.bin( vary as Uint8Array< ArrayBuffer > )
 			case BigInt64Array.prototype: return ways.ints( vary as BigInt64Array< ArrayBuffer > )
 			case Float64Array.prototype: return ways.reals( vary as Float64Array< ArrayBuffer > )
+			case $hyoo_crus_link.prototype: return ways.link( vary as $hyoo_crus_link )
 			case $mol_time_moment.prototype: return ways.time( vary as $mol_time_moment )
 			case $mol_time_duration.prototype: return ways.dur( vary as $mol_time_duration )
 			case $mol_time_interval.prototype: return ways.range( vary as $mol_time_interval )
@@ -139,7 +139,7 @@ namespace $ {
 			ints:  vary => ({ tip: 'ints' as const,  bin: new Uint8Array( vary.buffer, vary.byteLength, vary.byteLength ) }),
 			real:  vary => ({ tip: 'real' as const,  bin: new Uint8Array( new Float64Array([ vary ]).buffer ) }),
 			reals: vary => ({ tip: 'reals' as const, bin: new Uint8Array( vary.buffer, vary.byteLength, vary.byteLength ) }),
-			ref:   vary => ({ tip: 'ref' as const,   bin: $hyoo_crus_ref_encode( vary ) }),
+			link:  vary => ({ tip: 'link' as const,  bin: vary.toBin() }),
 			
 			str:   vary => ({ tip: 'str' as const,   bin: $mol_charset_encode( vary ) }),
 			time:  vary => ({ tip: 'time' as const,  bin: $mol_charset_encode( String( vary ) ) }),
@@ -163,7 +163,7 @@ namespace $ {
 			case 'ints':  return new BigInt64Array( bin.buffer, bin.byteOffset, bin.byteLength / 8 )
 			case 'real':  return new Float64Array( bin.buffer, bin.byteOffset, bin.byteLength / 8 )[0]
 			case 'reals': return new Float64Array( bin.buffer, bin.byteOffset, bin.byteLength / 8 )
-			case 'ref':   return $hyoo_crus_ref_decode( bin )
+			case 'link':  return $hyoo_crus_link.from_bin( bin )
 			
 			case 'str':   return $mol_charset_decode( bin )
 			case 'time':  return new $mol_time_moment( $mol_charset_decode( bin ) )

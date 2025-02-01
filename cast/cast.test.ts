@@ -5,8 +5,8 @@ namespace $ {
 		'Atom <=> List'( $ ) {
 			
 			const land = $hyoo_crus_land.make({ $ })
-			const reg = land.Node( $hyoo_crus_atom_vary ).Item('')
-			const list = land.Node( $hyoo_crus_list_vary ).Item('')
+			const reg = land.Node( $hyoo_crus_atom_vary ).Data()
+			const list = land.Node( $hyoo_crus_list_vary ).Data()
 			
 			reg.vary( 1 )
 			$mol_assert_equal( list.items_vary(), [1] )
@@ -28,8 +28,8 @@ namespace $ {
 		'Atom <=> Dict'( $ ) {
 			
 			const land = $hyoo_crus_land.make({ $ })
-			const reg = land.Node( $hyoo_crus_atom_vary ).Item('')
-			const dict = land.Node( $hyoo_crus_dict ).Item('')
+			const reg = land.Node( $hyoo_crus_atom_vary ).Data()
+			const dict = land.Node( $hyoo_crus_dict ).Data()
 			
 			reg.vary( 1 )
 			$mol_assert_equal( dict.keys(), [1] )

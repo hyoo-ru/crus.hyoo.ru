@@ -69,29 +69,35 @@ namespace $ {
 			return this.narrow().key()
 		}
 		
-		id6( offset: number, next?: string ) {
+		id6( offset: number, next?: $hyoo_crus_link ) {
 			if( next === undefined ) {
-				const str = $mol_base64_ae_encode( new Uint8Array( this.buffer, this.byteOffset + offset, 6 ) )
-				return str === 'AAAAAAAA' ? '' : str
+				return $hyoo_crus_link.from_bin( new Uint8Array( this.buffer, this.byteOffset + offset, 6 ) )
 			} else {
-				this.asArray().set( $mol_base64_ae_decode( next || 'AAAAAAAA' ), this.byteOffset + offset )
+				this.asArray().set( next.toBin(), this.byteOffset + offset )
 				return next
 			}
 		}
 		
-		id12( offset: number, next?: $hyoo_crus_ref ) {
+		id12( offset: number, next?: $hyoo_crus_link ) {
 			if( next === undefined ) {
-				return $hyoo_crus_ref_decode( new Uint8Array( this.buffer, this.byteOffset + offset, 12 ) )
+				return $hyoo_crus_link.from_bin( new Uint8Array( this.buffer, this.byteOffset + offset, 12 ) )
 			} else {
-				this.asArray().set( $hyoo_crus_ref_encode( next ), this.byteOffset + offset )
+				this.asArray().set( next.toBin(), this.byteOffset + offset )
 				return next
 			}
 		}
 		
-		_peer!: string
-		peer( next?: string ) {
-			if( next === undefined && this._peer !== undefined ) return this._peer
-			else return this._peer = this.id6( 2, next )
+		id18( offset: number, next?: $hyoo_crus_link ) {
+			if( next === undefined ) {
+				return $hyoo_crus_link.from_bin( new Uint8Array( this.buffer, this.byteOffset + offset, 18 ) )
+			} else {
+				this.asArray().set( next.toBin(), this.byteOffset + offset )
+				return next
+			}
+		}
+		
+		peer() {
+			return $hyoo_crus_link.hole
 		}
 		
 		salt() {

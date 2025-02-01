@@ -2,7 +2,7 @@ namespace $.$$ {
 	export class $hyoo_crus_node_dump extends $.$hyoo_crus_node_dump {
 		
 		title() {
-			return this.node().head().padEnd( 8, ' ' )
+			return this.node().head().str.padEnd( 8, ' ' )
 		}
 		
 		value() {
@@ -28,7 +28,7 @@ namespace $.$$ {
 				const units = this.units()
 				const unit = units[ index ]
 				this.node().land().post(
-					index ? units[ index - 1 ].self() : '',
+					index ? units[ index - 1 ].self() : $hyoo_crus_link.hole,
 					unit.head(),
 					unit.self(),
 					this.node().land().sand_decode( unit ),
@@ -43,7 +43,7 @@ namespace $.$$ {
 				const units = this.units()
 				const unit = units[ index ]
 				this.node().land().post(
-					index ? units[ index - 1 ].self() : '',
+					index ? units[ index - 1 ].self() : $hyoo_crus_link.hole,
 					unit.head(),
 					unit.self(),
 					$hyoo_crus_vary_cast( next, this.node().land().sand_decode( unit ) ),

@@ -9,11 +9,11 @@ namespace $ {
 		'auth unit type'() {
 			
 			const auth = new $hyoo_crus_pass
-			auth.auth([ 0xFF, 0, 0xFC, 0xFB, 0xFA, 0xF9, 0xF8, 0xF7, 0xF6, 0xF5, 0xF4, 0xF3, 0xF2, 0xF1 ])
+			auth.auth([ 0xFF, 0 ])
 			
 			$mol_assert_equal( auth.kind(), 'pass' )
-			$mol_assert_equal( auth.lord(), $hyoo_crus_ref( 'ÆPv6æfj3_9vX08ÆLx' ) )
-			$mol_assert_equal( auth.peer(), 'ÆPv6æfj3' )
+			$mol_assert_equal( auth.lord(), new $hyoo_crus_link( 'NQYd2bFd_xC1dMzUx' ) )
+			$mol_assert_equal( auth.peer(), new $hyoo_crus_link( 'NQYd2bFd' ) )
 			
 		},
 		
@@ -49,28 +49,28 @@ namespace $ {
 			
 		// },
 		
-		'unit peer'() {
+		// 'unit peer'() {
 			
-			const unit = new $hyoo_crus_unit
-			$mol_assert_equal( unit.peer(), '' )
+		// 	const unit = new $hyoo_crus_unit
+		// 	$mol_assert_equal( unit.peer(), $hyoo_crus_link._ )
 			
-			unit.peer( 'ÆPv6æfj3' )
-			$mol_assert_equal( unit.peer(), 'ÆPv6æfj3' )
+		// 	unit.peer( new $hyoo_crus_link( 'ÆPv6æfj3' ) )
+		// 	$mol_assert_equal( unit.peer(), new $hyoo_crus_link( 'ÆPv6æfj3' ) )
 			
-		},
+		// },
 		
 		'gift unit fields'() {
 			
 			const unit = new $hyoo_crus_gift
 			
 			$mol_assert_equal( unit.time(), 0 )
-			$mol_assert_equal( unit.dest(), $hyoo_crus_ref( '' ) )
+			$mol_assert_equal( unit.mate(), $hyoo_crus_link.hole )
 			
 			unit.time( 0xd1d2d3d4d5d6 )
-			unit.dest( $hyoo_crus_ref( 'ÆPv6æfj3_9vX08ÆLx' ) )
+			unit.mate( new $hyoo_crus_link( 'ÆPv6æfj3_9vX08ÆLx' ) )
 			
 			$mol_assert_equal( unit.time(), 0xd1d2d3d4d5d6 )
-			$mol_assert_equal( unit.dest(), $hyoo_crus_ref( 'ÆPv6æfj3_9vX08ÆLx' ) )
+			$mol_assert_equal( unit.mate(), new $hyoo_crus_link( 'ÆPv6æfj3_9vX08ÆLx' ) )
 			
 		},
 		
@@ -79,19 +79,19 @@ namespace $ {
 			const unit = new $hyoo_crus_sand
 			
 			$mol_assert_equal( unit.time(), 0 )
-			$mol_assert_equal( unit.head(), '' )
-			$mol_assert_equal( unit.self(), '' )
-			$mol_assert_equal( unit.lead(), '' )
+			$mol_assert_equal( unit.head(), $hyoo_crus_link.hole )
+			$mol_assert_equal( unit.self(), $hyoo_crus_link.hole )
+			$mol_assert_equal( unit.lead(), $hyoo_crus_link.hole )
 			
 			unit.time( 0xd1d2d3d4d5d6 )
-			unit.head( 'ÆPv6æfj3' )
-			unit.self( 'Pv6æfj39' )
-			unit.lead( 'v6æfj39v' )
+			unit.head( new $hyoo_crus_link( 'ÆPv6æfj3' ) )
+			unit.self( new $hyoo_crus_link( 'Pv6æfj39' ) )
+			unit.lead( new $hyoo_crus_link( 'v6æfj39v' ) )
 			
 			$mol_assert_equal( unit.time(), 0xd1d2d3d4d5d6 )
-			$mol_assert_equal( unit.head(), 'ÆPv6æfj3' )
-			$mol_assert_equal( unit.self(), 'Pv6æfj39' )
-			$mol_assert_equal( unit.lead(), 'v6æfj39v' )
+			$mol_assert_equal( unit.head(), new $hyoo_crus_link( 'ÆPv6æfj3' ) )
+			$mol_assert_equal( unit.self(), new $hyoo_crus_link( 'Pv6æfj39' ) )
+			$mol_assert_equal( unit.lead(), new $hyoo_crus_link( 'v6æfj39v' ) )
 			
 		},
 		

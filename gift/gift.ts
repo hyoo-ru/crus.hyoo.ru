@@ -23,14 +23,20 @@ namespace $ {
 			return new Uint8Array( this.buffer, this.byteOffset + 26, 6 )
 		}
 		
-		_dest!: $hyoo_crus_ref
-		dest( next?: $hyoo_crus_ref ) {
-			if( next === undefined && this._dest !== undefined ) return this._dest
-			else return this._dest = this.id12( 14, next )
+		_peer!: $hyoo_crus_link
+		peer( next?: $hyoo_crus_link ) {
+			if( next === undefined && this._peer !== undefined ) return this._peer
+			else return this._peer = this.id6( 2, next )
+		}
+		
+		_mate!: $hyoo_crus_link
+		mate( next?: $hyoo_crus_link ) {
+			if( next === undefined && this._mate !== undefined ) return this._mate
+			else return this._mate = this.id18( 14, next )
 		}
 		
 		key(): string {
-			return `gift:${ this.dest().description! }`
+			return `gift:${ this.mate() }`
 		}
 		
 		bill() {
@@ -48,7 +54,7 @@ namespace $ {
 			return {
 				kind: this.kind(),
 				peer: this.peer(),
-				dest: this.dest().description!,
+				dest: this.mate(),
 				tier: $hyoo_crus_rank_tier[ this.rank() &~ $hyoo_crus_rank_rate.just ],
 				work: this.work(),
 				time: $hyoo_crus_time_dump( this.time() ),
@@ -63,9 +69,9 @@ namespace $ {
 			return $mol_dev_format_span( {} ,
 				$mol_dev_format_native( this ) ,
 				' ',
-				this.peer(),
+				$mol_dev_format_auto( this.peer() ),
 				' 🏅 ',
-				$mol_dev_format_span( {}, this.dest().description || '_' ),
+				$mol_dev_format_auto( this.mate() ),
 				this.bill().some( v => v ) ? ' 🔐' : ' 👀',
 				$hyoo_crus_rank_tier[ this.rank() &~ $hyoo_crus_rank_rate.just ],
 				':',

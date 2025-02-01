@@ -47,14 +47,20 @@ namespace $ {
 			return this.uint48( 8, next )
 		}
 
-		_head!: string
-		head( next?: string ) {
+		_peer!: $hyoo_crus_link
+		peer( next?: $hyoo_crus_link ) {
+			if( next === undefined && this._peer !== undefined ) return this._peer
+			else return this._peer = this.id6( 2, next )
+		}
+		
+		_head!: $hyoo_crus_link
+		head( next?: $hyoo_crus_link ) {
 			if( next === undefined && this._head !== undefined ) return this._head
 			else return this._head = this.id6( 14, next )
 		}
 
-		_self!: string
-		self( next?: string ) {
+		_self!: $hyoo_crus_link
+		self( next?: $hyoo_crus_link ) {
 			if( next === undefined && this._self !== undefined ) return this._self
 			else return this._self = this.id6( 20, next )
 		}
@@ -63,24 +69,24 @@ namespace $ {
 			return `sand:${ this.head() }/${ this.peer() }/${ this.self() }`
 		}
 
-		_lead!: string
-		lead( next?: string ) {
+		_lead!: $hyoo_crus_link
+		lead( next?: $hyoo_crus_link ) {
 			if( next === undefined && this._lead !== undefined ) return this._lead
 			else return this._lead = this.id6( 26, next )
 		}
 
 		hash(
-			next?: Uint8Array,
+			next?: $hyoo_crus_link,
 			tip: keyof typeof $hyoo_crus_vary_tip = 'nil' as const,
 			tag: keyof typeof $hyoo_crus_sand_tag = 'term',
-		) {
+		): $hyoo_crus_link {
 			const bin = new Uint8Array( this.buffer, this.byteOffset + 32, 20 )
 			if( next !== undefined ) {
 				this.hint( tip, tag )
 				this.size( 255 )
-				bin.set( next )
+				bin.set( next.toBin() )
 			}
-			if( this.size() > 32 ) return bin
+			if( this.size() > 32 ) return $hyoo_crus_link.from_bin( bin )
 			$mol_fail( new Error( 'No stored hash' ) )
 		}
 
@@ -150,13 +156,13 @@ namespace $ {
 			return $mol_dev_format_span( {},
 				$mol_dev_format_native( this ),
 				' ',
-				this.peer(),
+				$mol_dev_format_auto( this.peer() ),
 				' ',
-				this.lead() || 'AAAAAAAA',
+				this.lead(),
 				$mol_dev_format_shade( '\\' ),
-				$mol_dev_format_accent( this.head() || 'AAAAAAAA' ),
+				$mol_dev_format_accent( this.head() ),
 				$mol_dev_format_shade( '/' ),
-				this.self() || 'AAAAAAAA',
+				this.self(),
 				' ',
 				$mol_dev_format_shade( $hyoo_crus_time_dump( this.time() ) ),
 				' ',
@@ -168,7 +174,7 @@ namespace $ {
 				}[ this.tag() ],
 				this.tip(),
 				' ',
-				$mol_dev_format_native( this._vary ) //??
+				$mol_dev_format_auto( this._vary ) //??
 				// ( this.size() > 32
 				// 	? $mol_dev_format_shade( this.hash() )
 				// 	: $mol_dev_format_native( $hyoo_crus_vary_decode({ tip: this.tip(), bin: this.data() }) )

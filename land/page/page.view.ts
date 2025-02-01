@@ -2,7 +2,7 @@ namespace $.$$ {
 	export class $hyoo_crus_land_page extends $.$hyoo_crus_land_page {
 		
 		override title() {
-			return '🌍 ' + this.land().ref().description
+			return '🌍 ' + this.land().link().str
 		}
 		
 		override theme() {
@@ -38,7 +38,7 @@ namespace $.$$ {
 		
 		override fork() {
 			this.$.$mol_dom_context.location.href = this.$.$mol_state_arg.link({
-				ref: this.land().fork().ref().description!
+				link: this.land().fork().link().str
 			})
 		}
 		
@@ -58,7 +58,7 @@ namespace $.$$ {
 		}
 		
 		override dump_name() {
-			return `${ this.land().ref().description }.crus`
+			return `${ this.land().link() }.crus`
 		}
 		
 		// override text( next?: string ) {
