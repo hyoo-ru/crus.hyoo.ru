@@ -1541,6 +1541,7 @@ declare namespace $ {
         encrypt(open: BufferSource, salt: BufferSource): Promise<Uint8Array<ArrayBuffer>>;
         decrypt(closed: BufferSource, salt: BufferSource): Promise<Uint8Array<ArrayBuffer>>;
         close(sacred: $mol_crypto_sacred, salt: BufferSource): Promise<Uint8Array<ArrayBuffer>>;
+        open(buf: Uint8Array, salt: BufferSource): Promise<$mol_crypto_sacred>;
     }
 }
 

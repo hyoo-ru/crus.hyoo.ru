@@ -2654,6 +2654,10 @@ var $;
 "use strict";
 var $;
 (function ($) {
+    function restack(error) {
+        error = new Error(error instanceof Error ? error.message : String(error), { cause: error });
+        $mol_fail_hidden(error);
+    }
     class $mol_crypto_sacred extends $mol_buffer {
         static size = 16;
         static make() {
@@ -2674,7 +2678,7 @@ var $;
             return sacred;
         }
         static async from_native(native) {
-            const buf = await $mol_crypto_native.subtle.exportKey('raw', native);
+            const buf = await $mol_crypto_native.subtle.exportKey('raw', native).catch(restack);
             const sacred = this.from(new Uint8Array(buf));
             sacred._native = native;
             return sacred;
@@ -2692,7 +2696,7 @@ var $;
             return this._native ?? (this._native = await $mol_crypto_native.subtle.importKey('raw', this, {
                 name: 'AES-CBC',
                 length: 128,
-            }, true, ['encrypt', 'decrypt']));
+            }, true, ['encrypt', 'decrypt']).catch(restack));
         }
         async encrypt(open, salt) {
             return new Uint8Array(await $mol_crypto_native.subtle.encrypt({
@@ -2700,7 +2704,7 @@ var $;
                 length: 128,
                 tagLength: 32,
                 iv: salt,
-            }, await this.native(), open));
+            }, await this.native(), open).catch(restack));
         }
         async decrypt(closed, salt) {
             return new Uint8Array(await $mol_crypto_native.subtle.decrypt({
@@ -2708,11 +2712,16 @@ var $;
                 length: 128,
                 tagLength: 32,
                 iv: salt,
-            }, await this.native(), closed));
+            }, await this.native(), closed).catch(restack));
         }
         async close(sacred, salt) {
-            const buf = new Uint8Array(this.buffer, this.byteOffset + 1, this.byteLength - 1);
-            return sacred.encrypt(buf, salt);
+            const buf = new Uint8Array(sacred.buffer, sacred.byteOffset + 1, sacred.byteLength - 1);
+            return this.encrypt(buf, salt);
+        }
+        async open(buf, salt) {
+            const buf2 = new Uint8Array(16);
+            buf2.set(await this.decrypt(buf, salt), 1);
+            return new $mol_crypto_sacred(buf2.buffer);
         }
     }
     __decorate([
@@ -11259,7 +11268,7 @@ var $;
             event_change(next) {
                 if (!next)
                     return;
-                const el = next.target;
+                const el = this.dom_node();
                 const from = el.selectionStart;
                 const to = el.selectionEnd;
                 try {
