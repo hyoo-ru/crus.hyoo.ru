@@ -659,10 +659,10 @@ namespace $ {
 					
 					if( !dest ) $mol_fail( new Error( `Encrypted land can't be shared to everyone` ) )
 					
-					const prev = this.gift.get( dest instanceof $hyoo_crus_auth ? dest.lord() : dest )
-					if( prev && prev.rank() >= $hyoo_crus_rank_read ) {
-						unit.bill().set( prev.bill() )
-					} else {
+					// const prev = this.gift.get( dest instanceof $hyoo_crus_auth ? dest.lord() : dest )
+					// if( prev && prev.rank() >= $hyoo_crus_rank_read ) {
+					// 	unit.bill().set( prev.bill() ) // need reencrypt with new salt
+					// } else {
 						
 						if( typeof dest === 'symbol' ) {
 							$mol_fail( new Error( `No pub key for lord (${ dest.description! })` ) )
@@ -674,7 +674,7 @@ namespace $ {
 							const bill = $mol_wire_sync( secret_mutual ).encrypt( secret_bin, unit.salt() )
 							unit.bill().set( bill )
 						}
-					}
+					// }
 					
 				}
 				
