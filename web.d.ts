@@ -720,6 +720,10 @@ declare namespace $ {
 }
 
 declare namespace $ {
+    function $mol_crypto_restack(error: any): never;
+}
+
+declare namespace $ {
     class $mol_crypto_key extends $mol_buffer {
         static from<This extends typeof $mol_crypto_key>(this: This, serial: number | string | ArrayBufferView<ArrayBuffer>): InstanceType<This>;
         toString(): string;

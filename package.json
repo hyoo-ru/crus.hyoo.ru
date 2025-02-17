@@ -165,6 +165,7 @@
     "$mol_crypto_key",
     "$mol_base64_url",
     "$mol_crypto_native",
+    "$mol_crypto_restack",
     "$mol_state_local",
     "$mol_storage",
     "$mol_mem_persist",
