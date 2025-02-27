@@ -5864,7 +5864,7 @@ var $;
             }, ecdh, Boolean('extractable'), ['deriveKey', 'deriveBits']).catch($mol_crypto_restack);
         }
         public() {
-            return new $mol_crypto_key_public(this.buffer, this.byteOffset, this.byteOffset + 64);
+            return new $mol_crypto_key_public(this.asArray().slice(0, 64).buffer);
         }
         async sign(data) {
             return new Uint8Array(await $mol_crypto_native.subtle.sign(ecdsa, await this.native(), data).catch($mol_crypto_restack));
