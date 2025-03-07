@@ -1026,6 +1026,7 @@ declare namespace $ {
 
 declare namespace $ {
     class $mol_buffer extends DataView<ArrayBuffer> {
+        [Symbol.toStringTag]: string;
         static from<This extends typeof $mol_buffer>(this: This, array: number | string | ArrayBufferView<ArrayBuffer>): InstanceType<This>;
         static toString(): string;
         getUint48(offset: number, LE?: boolean): number;
