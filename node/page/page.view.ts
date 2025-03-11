@@ -10,7 +10,7 @@ namespace $.$$ {
 		}
 		
 		override selection( next?: [ number, number ] ) {
-			return this.node().cast( $hyoo_crus_text ).selection( this.node().land().auth().lord(), next )
+			return this.node().cast( $hyoo_crus_text ).selection( this.node().land().auth().pass().lord(), next )
 		}
 		
 	}

@@ -43,16 +43,6 @@ namespace $ {
 			return this.uint8( 1, next )
 		}
 
-		time( next?: number ) {
-			return this.uint48( 8, next )
-		}
-
-		_peer!: $hyoo_crus_link
-		peer( next?: $hyoo_crus_link ) {
-			if( next === undefined && this._peer !== undefined ) return this._peer
-			else return this._peer = this.id6( 2, next )
-		}
-		
 		_head!: $hyoo_crus_link
 		head( next?: $hyoo_crus_link ) {
 			if( next === undefined && this._head !== undefined ) return this._head
@@ -65,33 +55,40 @@ namespace $ {
 			else return this._self = this.id6( 20, next )
 		}
 
-		key(): string {
-			return `sand:${ this.head() }/${ this.peer() }/${ this.self() }`
-		}
-
 		_lead!: $hyoo_crus_link
 		lead( next?: $hyoo_crus_link ) {
 			if( next === undefined && this._lead !== undefined ) return this._lead
 			else return this._lead = this.id6( 26, next )
 		}
 
+		path(): string {
+			return `sand:${ this.head() }/${ this.pass().peer() }/${ this.self() }`
+		}
+		
+		ball_link( next?: $hyoo_crus_link ) {
+			return this.size() > 32 ? this.id18( 32, next ) : null
+		}
+		
+		_ball = null as Uint8Array< ArrayBuffer > | null
+		ball( next?: Uint8Array< ArrayBuffer >) {
+			if( next === undefined ) return this._ball
+			this.ball_link( $hyoo_crus_link.hash_bin( next ) )
+			return this._ball = next
+		}
+
 		hash(
 			next?: $hyoo_crus_link,
 			tip: keyof typeof $hyoo_crus_vary_tip = 'nil' as const,
 			tag: keyof typeof $hyoo_crus_sand_tag = 'term',
-		): $hyoo_crus_link {
+		): $hyoo_crus_link | null {
 			const bin = new Uint8Array( this.buffer, this.byteOffset + 32, 20 )
 			if( next !== undefined ) {
 				this.hint( tip, tag )
 				this.size( 255 )
 				bin.set( next.toBin() )
 			}
-			if( this.size() > 32 ) return $hyoo_crus_link.from_bin( bin )
-			$mol_fail( new Error( 'No stored hash' ) )
-		}
-
-		meta() {
-			return new Uint8Array( this.buffer, this.byteOffset + 42, 12 )
+			if( this.size() <= 32 ) return null
+			return $hyoo_crus_link.from_bin( bin )
 		}
 
 		data(
@@ -121,23 +118,10 @@ namespace $ {
 			return buf.uint48( 0 )
 		}
 
-		/**
-		 * Compare Sands on timeline ( right - left )
-		 * Priority: time > peer > tick
-		 */
-		static compare(
-			left: $hyoo_crus_sand,
-			right: $hyoo_crus_sand,
-		) {
-			return ( Math.floor( right.time() / 65536 ) - Math.floor( left.time() / 65536 ) )
-				|| ( right.peer() > left.peer() ? 1 : right.peer() < left.peer() ? -1 : 0 )
-				|| ( right.time() - left.time() )
-		}
-
 		dump() {
 			return {
 				kind: this.kind(),
-				peer: this.peer(),
+				peer: this.pass().peer(),
 				lead: this.lead(),
 				head: this.head(),
 				self: this.self(),
@@ -156,7 +140,7 @@ namespace $ {
 			return $mol_dev_format_span( {},
 				$mol_dev_format_native( this ),
 				' ',
-				$mol_dev_format_auto( this.peer() ),
+				$mol_dev_format_auto( this.pass_link() ),
 				' ',
 				this.lead(),
 				$mol_dev_format_shade( '\\' ),
@@ -164,7 +148,11 @@ namespace $ {
 				$mol_dev_format_shade( '/' ),
 				this.self(),
 				' ',
-				$mol_dev_format_shade( $hyoo_crus_time_dump( this.time() ) ),
+				$mol_dev_format_shade(
+					$hyoo_crus_time_dump( this.time() ),
+					' #',
+					this.tick(),
+				),
 				' ',
 				{
 					term: '💼',

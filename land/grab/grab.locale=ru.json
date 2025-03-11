@@ -1,6 +1,6 @@
 {
-	"$hyoo_crus_land_grab_dictionary_orgy": "✍ Все пишут",
-	"$hyoo_crus_land_grab_dictionary_lobby": "🙋‍♂️ Все входят",
-	"$hyoo_crus_land_grab_dictionary_public": "👀 Все читают",
-	"$hyoo_crus_land_grab_dictionary_private": "🔐 Закрыто от всех"
+	"$hyoo_crus_land_grab_dictionary_pull": "🔱 Вливаемо",
+	"$hyoo_crus_land_grab_dictionary_post": "✍ Изменяемо",
+	"$hyoo_crus_land_grab_dictionary_read": "👀 Открыто",
+	"$hyoo_crus_land_grab_dictionary_deny": "🔐 Приватно"
 }

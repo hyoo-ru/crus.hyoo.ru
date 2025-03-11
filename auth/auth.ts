@@ -1,5 +1,34 @@
 namespace $ {
 	
+	/** Public key generated with Proof of Work */
+	export class $hyoo_crus_auth_pass extends $mol_crypto_key_public {
+		
+		static like( bin: Uint8Array< ArrayBuffer > ) {
+			const pass = this.from( bin )
+			if( pass.byteLength !== $hyoo_crus_auth_pass.size_bin ) return null
+			if( pass.uint8(0) !== 0xFF ) return null
+			return pass
+		}
+		
+		@ $mol_memo.method
+		hash() {
+			return $hyoo_crus_link.hash_bin( this )
+		}
+		
+		/** Independent actor with global unique id generated from Auth key */
+		@ $mol_memo.method
+		lord() {
+			return this.hash().lord()
+		}
+		
+		/** Land local unique identifier of independent actor (first half of Lord) */
+		@ $mol_memo.method
+		peer() {
+			return this.hash().peer()
+		}
+		
+	}
+
 	/** Private key generated with Proof of Work */
 	export class $hyoo_crus_auth extends $mol_crypto_key_private {
 		
@@ -39,25 +68,13 @@ namespace $ {
 		}
 		
 		@ $mol_memo.method
-		hash() {
-			return $hyoo_crus_link.hash_bin( this.public() )
-		}
-		
-		/** Independent actor with global unique id generated from Auth key */
-		@ $mol_memo.method
-		lord() {
-			return this.hash().lord()
-		}
-		
-		/** Land local unique identifier of independent actor (first half of Lord) */
-		@ $mol_memo.method
-		peer() {
-			return this.hash().peer()
+		pass() {
+			return new $hyoo_crus_auth_pass( this.public().buffer )
 		}
 		
 		@ $mol_mem_key
-		secret_mutual( pub: string ) {
-			return $mol_wire_sync( $mol_crypto_secret ).derive( this.toString(), pub.toString() )
+		secret_mutual( pub: $mol_crypto_key_public ) {
+			return $mol_wire_sync( $mol_crypto_sacred_shared )( this, pub )
 		}
 		
 	}

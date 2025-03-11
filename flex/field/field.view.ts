@@ -105,10 +105,10 @@ namespace $.$$ {
 			}
 			
 			const preset = ( {
-				private: {},
-				public: { '': $hyoo_crus_rank_read },
-				lobby: { '': $hyoo_crus_rank_join( 'just' ) },
-				orgy: { '': $hyoo_crus_rank_post( 'just' ) },
+				deny: [],
+				read: [[ null, $hyoo_crus_rank_read ]],
+				post: [[ null, $hyoo_crus_rank_post( 'just' ) ]],
+				pull: [[ null, $hyoo_crus_rank_pull( 'just' ) ]],
 			} as Record< string, $hyoo_crus_rank_preset > )[ rights as any ]
 			
 			if( preset ) {

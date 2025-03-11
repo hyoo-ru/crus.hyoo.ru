@@ -1,5 +1,9 @@
 namespace $ {
 	
+	export function $hyoo_crus_link_compare( left: $hyoo_crus_link, right: $hyoo_crus_link ) {
+		return ( right.str > left.str ? 1 : right.str < left.str ? -1 : 0 )
+	}
+	
 	export class $hyoo_crus_link extends Object {
 		
 		constructor( readonly str: string ) {
@@ -124,6 +128,15 @@ namespace $ {
 			parts.push( this.str.slice( 3 ) )
 			
 			return new $hyoo_crus_link( parts.join( '_' ) )
+		}
+		
+		mix( mixin: Uint8Array | $hyoo_crus_link ) {
+			if( mixin instanceof $hyoo_crus_link ) mixin = mixin.toBin()
+			const mix = this.toBin()
+			for( let i = 0; i < mix.length; ++i ) {
+				mix[i] = mix[i] ^ mixin[i]
+			}
+			return mix
 		}
 	
 	}

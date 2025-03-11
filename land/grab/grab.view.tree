@@ -3,8 +3,8 @@ $hyoo_crus_land_grab $mol_select
 	trigger_content /
 		<= Trigger_icon $mol_icon_plus
 	dictionary *
-		orgy @ \✍ All write
-		lobby @ \🙋‍♂️ All join
-		public @ \👀 All read
-		private @ \🔐 Private
+		pull @ \🔱 Pullable
+		post @ \✍ Postable
+		read @ \👀 Readable
+		deny @ \🔐 Private
 	grab? null $hyoo_crus_rank_preset

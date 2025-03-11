@@ -10,7 +10,7 @@ namespace $ {
 		
 		/** Auth Independent actor with global unique id generated from Auth key */
 		link() {
-			return this.auth().lord()
+			return this.auth().pass().lord()
 		}
 		
 		/** Auth Private key generated with Proof of Work  */
@@ -20,7 +20,6 @@ namespace $ {
 		
 		faces = new $hyoo_crus_face_map
 
-		pass = new $mol_wire_dict< string /*peer*/, $hyoo_crus_pass >()
 		gift = new $mol_wire_dict< string /*lord*/, $hyoo_crus_gift >()
 		sand = new $mol_wire_dict< string /*head*/, $mol_wire_dict< string /*peer*/, $mol_wire_dict< string /*self*/, $hyoo_crus_sand > > >()
 		
@@ -30,7 +29,7 @@ namespace $ {
 		self_make( idea = Math.floor( Math.random() * 2**48 ) ): $hyoo_crus_link {
 			
 			const auth = this.auth()
-			const rank = this.lord_rank( auth.lord() )
+			const rank = this.pass_rank( auth.pass() )
 			
 			if( rank < $hyoo_crus_rank_tier.post ) $mol_fail( new Error( `Rank too low (${ rank })` ) )
 			
@@ -64,19 +63,15 @@ namespace $ {
 			const link = new $hyoo_crus_link( this.link().lord() + '_' + id )
 			
 			const area = this.$.$hyoo_crus_glob.Land( link )
-			const units = this.unit_sort([ ... this.pass.values(), ... this.gift.values() ]).map( unit => {
-				const clone = $hyoo_crus_unit.from( unit ).narrow()
+			const gifts = $hyoo_crus_gift_sort([ ... this.gift.values() ]).map( gift => {
+				const clone = $hyoo_crus_gift.from( gift )
 				clone._land = area
+				clone._pass = gift._pass
+				clone._mate = gift._mate
 				$hyoo_crus_unit_trusted.add( clone )
 				return clone
 			} )
-			const errors = area.apply_unit( units, 'skip_check' ).filter( Boolean )
-			
-			for( const error of errors ) this.$.$mol_log3_warn({
-				place: `${this}.area_make()`,
-				message: error,
-				hint: 'Send it to developer',
-			})
+			area.apply_units( gifts, 'skip_check' )
 			
 			area.bus()
 			area.sync_mine()
@@ -111,7 +106,7 @@ namespace $ {
 		/** Total count of Units inside Land. */
 		@ $mol_mem
 		total() {
-			let total = this.pass.size + this.gift.size
+			let total = this.gift.size
 			for( const peers of this.sand.values() ) {
 				for( const units of peers.values() ) {
 					total += units.size
@@ -120,150 +115,116 @@ namespace $ {
 			return total
 		}
 		
-		/** All joined Lords. */
-		@ $mol_mem
-		joined_list() {
-			return [ ... this.pass.values() ].map( unit => unit.lord() )
-		}
-		
 		/** Public key of Land Lord. */
 		@ $mol_mem
 		key() {
-			const pass = this.pass.get( this.link().peer().str )
-			if( !pass ) return null
-			return $hyoo_crus_auth.from( pass.auth() )
+			return  this.gift.get( this.link().lord().str )?.pass() ?? null
 		}
 		
-		/** Rights level of Lord for Land. */
+		/** Rights level of Pass for Land. */
 		@ $mol_mem_key
-		lord_rank( lord: $hyoo_crus_link, next?: typeof $hyoo_crus_rank.Value ): typeof $hyoo_crus_rank.Value {
+		pass_rank( pass: $hyoo_crus_auth_pass, next?: typeof $hyoo_crus_rank.Value ): typeof $hyoo_crus_rank.Value {
 			
-			if( lord.str === this.link().lord().str ) return $hyoo_crus_rank_rule
-			
-			const prev = this.gift.get( lord.str )?.rank()
-				?? this.gift.get( $hyoo_crus_link.hole.str )?.rank()
-				?? ( this.encrypted() ? $hyoo_crus_rank_deny : $hyoo_crus_rank_read )
+			const prev = this.lord_rank( pass.lord() )
 			
 			if( next === undefined ) return prev
 			if( next === prev ) return prev
 			
-			this.give( lord, next )
+			this.give( pass, next )
 			return next
 			
 		}
 		
-		/** Rights level of Peer for Land. */
-		peer_rank( peer: $hyoo_crus_link ) {
+		lord_rank( lord: $hyoo_crus_link, next?: typeof $hyoo_crus_rank.Value ) {
 			
-			const auth = this.pass.get( peer.str )!
-			if( auth ) return this.lord_rank( auth.lord() )
+			if( lord.str === this.link().lord().str ) return $hyoo_crus_rank_rule
 			
-			return this.encrypted() ? $hyoo_crus_rank_deny : $hyoo_crus_rank_read
+			const gift = this.gift.get( lord.str )
 			
-		}
-		
-		unit_sort( units: readonly $hyoo_crus_unit[] ) {
-		
-			const dict = new Map< string, $hyoo_crus_unit >()
-			for( const unit of units ) dict.set( unit.key(), unit )
-			
-			const lord = this.link().lord()
-			
-			const graph = new $mol_graph< string, void >()
-			for( const unit of units ) {
-				unit.choose({
-					pass: pass => {
-						if( pass.lord().str === lord.str ) return
-						graph.link( pass.key(), 'gift:' )
-					},
-					gift: gift => {
-						graph.link( 'pass:' + gift.mate().peer(), gift.key() )
-						graph.link( gift.key(), 'pass:' + gift.peer() )
-					},
-					sand: sand=> {
-						graph.link( sand.key(), 'pass:' + sand.peer() )
-					},
-				})
+			if( next !== undefined ) {
+				if( !gift ) $mol_fail( new Error( `No Pass for ${ lord }` ) )
+				return this.pass_rank( gift.mate()!, next )
 			}
 			
-			graph.acyclic( ()=> 1 ) 
+			return gift?.rank()
+				?? this.gift.get( $hyoo_crus_link.hole.str )?.rank()
+				?? ( this.encrypted() ? $hyoo_crus_rank_deny : $hyoo_crus_rank_read )
 			
-			return [ ... graph.sorted ].map( key => dict.get( key )! ).filter( Boolean )
-	
 		}
 		
 		/** Picks units between Face and current state. */
-		delta_unit( face = new $hyoo_crus_face_map ): $hyoo_crus_unit[] {
+		delta_units( skip_faces = new $hyoo_crus_face_map ): $hyoo_crus_unit[] {
 			
 			this.loading()
 			
-			const delta = [] as $hyoo_crus_unit[]
+			const skipped_gifts = new Map< string, $hyoo_crus_gift[] >()
+			const skipped_sands = new Map< string, $hyoo_crus_sand[] >()
 			
-			const passed = new Set< string >()
-			const auth = ( peer: string )=> {
+			function skip( skipped: Map< string, $hyoo_crus_unit[] >, unit: $hyoo_crus_unit ) {
 				
-				if( passed.has( peer ) ) return
-				if( face.get( peer ) ) return
+				const peer = unit.pass().peer().str
+				let list = skipped.get( peer )
 				
-				const pass = this.pass.get( peer )
-				if( !pass ) $mol_fail( new Error( `No pass for Peer (${ peer })` ) )
-				
-				delta.push( pass )
-				passed.add( peer )
-				
+				if( list ) list.push( unit )
+				else skipped.set( peer, list = [ unit ] )
+			
 			}
 			
-			for( const [ lord, unit ] of this.gift ) {
+			let gifts = [] as $hyoo_crus_gift[]
+			let sands = [] as $hyoo_crus_sand[]
+			
+			for( const gift of this.gift.values() ) {
 				
-				const time = face.get( unit.peer().str ) ?? 0
-				if( time >= unit.time() ) continue
+				const peer = gift.pass().peer().str
+				const time_tick = skip_faces.get( peer )?.time_tick ?? 0
 				
-				auth( unit.peer().str )
-				delta.push( unit )
+				if( time_tick >= gift.time_tick() ) {
+					skip( skipped_gifts, gift )
+				} else {
+					gifts.push( gift )
+				}
 				
 			}
 			
 			for( const kids of this.sand.values() ) {
 				for( const peers of kids.values() ) {
-					for( const unit of peers.values() ) {
+					for( const sand of peers.values() ) {
 						
-						const time = face.get( unit.peer().str ) ?? 0
-						if( time >= unit.time() ) continue
+						const peer = sand.pass().peer().str
+						const time_tick = skip_faces.get( peer )?.time_tick ?? 0
 						
-						auth( unit.peer().str )
-						delta.push( unit )
+						if( time_tick >= sand.time_tick() ) {
+							skip( skipped_sands, sand )
+						} else {
+							sands.push( sand )
+						}
 						
 					}
 				}
 			}
 			
-			for( const [ peer, unit ] of this.pass ) {
+			// detect absence and then restore
+			for( const [ peer, face ] of skip_faces ) {
 				
-				if( passed.has( peer ) ) continue
-				if( face.has( unit.peer().str ) ) continue
+				const peer_gifts = skipped_gifts.get( peer )
+				const peer_sands = skipped_sands.get( peer )
 				
-				delta.push( unit )
-				passed.add( peer )
+				const mass = ( peer_gifts?.length ?? 0 ) + ( peer_sands?.length ?? 0 )
+				if( mass <= face.mass ) continue
+				
+				if( peer_gifts ) gifts = gifts.concat( peer_gifts )
+				if( peer_sands ) sands = sands.concat( peer_sands )
 				
 			}
 			
-			if( delta.length || this.faces.total <= this.faces.total ) return delta
-			
-			this.$.$mol_log3_warn({
-				place: this,
-				message: 'Unit Absent',
-				hint: 'Relax, Delta contains all Units to restore',
-				face,
-			})
-			
-			return this.delta_unit()
+			return [ ... $hyoo_crus_gift_sort( gifts ), ... sands ]
 			
 		}
 		
 		/** Makes binary Delta between Face and current state. */
-		delta_pack( face = new $hyoo_crus_face_map ) {
+		delta_pack( faces = new $hyoo_crus_face_map ): $hyoo_crus_pack | null {
 			
-			const parts = this.delta_parts( face )
+			const parts = this.delta_parts( faces )
 			if( !parts ) return null
 			
 			const pack = $hyoo_crus_pack.make( parts )
@@ -271,63 +232,49 @@ namespace $ {
 			return pack
 		}
 		
-		delta_parts( face = new $hyoo_crus_face_map ) {
+		delta_parts( faces = new $hyoo_crus_face_map ): $hyoo_crus_pack_parts | null {
 			
-			const units = this.delta_unit( face )
-			if( !units.length ) return null
+			const units = this.delta_units( faces )
+			if( units.length === 0 ) return null
 			
-			const rocks = [] as [ string, null | Uint8Array ][]
-			
-			for( let unit of units ) {
-				
-				if( unit.kind() !== 'sand' ) continue
-				
-				const sand = unit.narrow() as $hyoo_crus_sand
-				if( sand.size() <= 32 ) continue
-				
-				const rock = this.$.$hyoo_crus_mine.rock( sand.hash() ) ?? null
-				rocks.push([ sand.hash().str, rock ])
-				
-			}
-			
-			return {
-				lands: {
-					[ this.link().str ]: {
-						faces: new $hyoo_crus_face_map,
-						units,
-					},
-				},
-				rocks,
-			}
+			return [[
+				this.link().str,
+				$hyoo_crus_pack_part.from( units ),
+			]]
 			
 		}
 		
 		@ $mol_action
-		faces_pack() {
-			const pack = $hyoo_crus_pack.make({
-				lands: {
-					[ this.link().str ]: { faces: this.faces, units: [] },
-				},
-				rocks: [],
-			})
+		faces_pack(): $hyoo_crus_pack {
+			const pack = $hyoo_crus_pack.make([[
+				this.link().str,
+				new $hyoo_crus_pack_part( [], [], this.faces.clone() ),
+			]])
 			return pack
 		}
 		
 		/** Applies Delta to current state with verify. */
 		@ $mol_action
-		apply_unit( delta: readonly $hyoo_crus_unit[], skip_check?: 'skip_check' ) {
+		apply_units( units: $hyoo_crus_unit[], skip_check?: 'skip_check' ) {
 			
-			if( !delta.length ) return []
+			if( units.length === 0 ) return []
 			
 			if( !skip_check ) this.loading()
 			
-			const doubt = delta.filter( unit => !$hyoo_crus_unit_trusted.has( unit ) )
+			const doubt = units.filter( unit => !$hyoo_crus_unit_trusted.has( unit ) )
 			if( doubt.length ) {
 				const errors = $mol_wire_sync( this ).units_verify( doubt )
 				if( errors.some( v => v ) ) return errors
 			}
 			
-			const errors = this.apply_unit_trust( delta, skip_check )
+			const errors = this.apply_units_trusted( units, skip_check )
+			
+			if( errors.find( Boolean ) ) this.$.$mol_log3_warn({
+				place: `${this}.apply_units()`,
+				message: errors.join( '\n' ),
+				unit: units.length,
+				hint: 'Send it to developer',
+			})
 			
 			for( const unit of doubt ) $hyoo_crus_unit_trusted.add( unit )
 			
@@ -336,30 +283,18 @@ namespace $ {
 		
 		async units_verify( units: readonly $hyoo_crus_unit[] ) {
 			
-			const passes = units.filter( unit => unit.kind() === 'pass' ) as $hyoo_crus_pass[]
-			const auth = new Map( passes.map( ( unit: $hyoo_crus_pass )=> [
-				unit.peer(),
-				$mol_crypto_key_public.from( unit.auth() ),
-			] ) )
-			
 			const mixin = this.link().toBin()
 			const mixin_lord = this.link().lord().toBin()
 			
 			return await Promise.all( units.map( async unit => {
 				
-				let key_public = this.key_public( unit.peer() )
-				if( !key_public ) key_public = auth.get( unit.peer() ) ?? null
-				if( !key_public ) return `No public key for peer (${unit.peer()})`
-				
 				const sign = unit.sign()
 				
-				let sens = unit.sens().slice()
-				for( let i = 0; i < mixin.length; ++i ) sens[i+2] ^= mixin[i]
-				if( await key_public.verify( sens, sign ) ) return ''
+				let sens = $hyoo_crus_link.hash_bin( unit.sens() ).mix( mixin )
+				if( await unit.pass().verify( sens, sign ) ) return ''
 				
-				sens = unit.sens().slice()
-				for( let i = 0; i < mixin_lord.length; ++i ) sens[i+2] ^= mixin_lord[i]
-				if( await key_public.verify( sens, sign ) ) return ''
+				sens = $hyoo_crus_link.hash_bin( unit.sens() ).mix( mixin_lord )
+				if( await unit.pass().verify( sens, sign ) ) return ''
 				
 				return `Wrong unit sign`
 	
@@ -369,105 +304,104 @@ namespace $ {
 		
 		/** Applies Delta to current state without verifying. */
 		@ $mol_action
-		apply_unit_trust( delta: readonly $hyoo_crus_unit[], skip_check?: 'skip_check' ) {
-			return delta.map( unit => {
+		apply_units_trusted(
+			units: $hyoo_crus_unit[],
+			skip_check?: 'skip_check',
+		) {
+			
+			return units.map( unit => {
 				
-				let need_recheck = false
+				let need_audit = false
 				const res = unit.choose({
-					
-					pass: next => {
+				
+					gift: gift => {
 						
-						const lord = next.lord()
-						const peer = next.peer()
+						const pass = gift.pass()
+						const peer = pass.peer().str
+						const mate = gift.mate()?.lord()?.str ?? ''
 						
-						if( !skip_check && this.lord_rank( lord ) < next.rank_min() ) return 'Need reg rank to join'
+						if( !skip_check && ( this.pass_rank( pass ) < gift.rank_min() ) ) {
+							return 'Need Rule Tier for Gifts'
+						}
 						
-						const exists = this.pass.get( peer.str )
-						if( exists ) return ''
+						const prev = this.gift.get( mate )
+						if( prev && $hyoo_crus_gift.compare( prev, gift ) <= 0 ) return ''
 						
-						this.pass.set( peer.str, next )
-						this.faces.time_max( peer.str, 0 )
-						this.faces.total ++
+						this.gift.set( mate, gift )
+						this.faces.peer_time( peer, gift.time(), gift.tick() )
 						
+						if( !prev ) this.faces.peer_mass_shift( peer, +1 )
+						
+						if( ( prev?.rank() ?? $hyoo_crus_rank_deny ) > gift.rank() ) need_audit = true
+						
+						return ''
 					},
+				
+					sand: sand => {
 					
-					gift: next => {
+						const pass = sand.pass()
+						const peer = pass.peer().str
 						
-						const peer = next.peer()
-						const mate = next.mate()
+						const head = sand.head().str
+						const self = sand.self().str
 						
-						if( !skip_check && this.peer_rank( peer ) < next.rank_min() ) return 'Need law rank to change rank'
+						if( !skip_check && ( this.pass_rank( pass ) < sand.rank_min() ) ) {
+							return 'Need Post Tier for Sands'
+						}
 						
-						const prev = this.gift.get( mate.str )
-						if( prev && $hyoo_crus_gift.compare( prev, next ) <= 0 ) return ''
+						let peers = this.sand.get( head )
+						if( !peers ) this.sand.set( head, peers = new $mol_wire_dict )
 						
-						this.gift.set( mate.str, next )
-						this.faces.time_max( peer.str, next.time() )
+						let units = peers.get( peer )
+						if( !units ) peers.set( pass.peer().str, units = new $mol_wire_dict )
 						
-						if( !prev ) this.faces.total ++
+						const prev = units.get( self )
+						if( prev && $hyoo_crus_sand.compare( prev, sand ) <= 0 ) return ''
 						
-						if( ( prev?.rank() ?? $hyoo_crus_rank_deny ) > next.rank() ) need_recheck = true
+						units.set( self, sand )
+						this.self_all.set( self, sand )
+						this.faces.peer_time( peer, sand.time(), sand.tick() )
 						
-					},
-					
-					sand: next => {
+						if( !prev ) this.faces.peer_mass_shift( peer, +1 )
 						
-						const head = next.head()
-						const peer = next.peer()
-						const self = next.self()
-						
-						if( !skip_check && this.peer_rank( peer ) < next.rank_min() ) return 'Need mod rank to post data'
-
-						let peers = this.sand.get( head.str )
-						if( !peers ) this.sand.set( head.str, peers = new $mol_wire_dict )
-							
-						let units = peers.get( peer.str )
-						if( !units ) peers.set( peer.str, units = new $mol_wire_dict )
-							
-						const prev = units.get( self.str )
-						if( prev && $hyoo_crus_sand.compare( prev, next ) <= 0 ) return ''
-						
-						units.set( self.str, next )
-						this.self_all.set( self.str, next )
-						this.faces.time_max( peer.str, next.time() )
-						
-						if( !prev ) this.faces.total ++
-						
+						return ''
 					},
 					
 				})
-				
-				if( need_recheck ) this.recheck()
-				return res ?? ''
-				
+			
+				if( need_audit ) this.rank_audit()
+				return res
+			
 			})
+			
 		}
 		
 		apply_land( land: $hyoo_crus_land ) {
-			return this.apply_unit( land.delta_unit() )
+			return this.apply_units( land.delta_units() )
 		}
 		
-		recheck() {
-			
-			for( const [ peer, pass ] of this.pass ) {
-				if( this.lord_rank( pass.lord() ) >= pass.rank_min() ) continue
-				this.pass.delete( peer )
-				this.faces.total --
-			}
+		rank_audit() {
 			
 			for( const [ lord, gift ] of this.gift ) {
-				if( this.peer_rank( gift.peer() ) >= gift.rank_min() ) continue
+				
+				const rank = this.pass_rank( gift.pass() )
+				if( rank >= gift.rank_min() ) continue
+				
 				this.gift.delete( lord )
-				this.faces.total --
+				this.faces.peer_mass_shift( gift.pass().peer().str, -1 )
+				
 			}
 			
 			for( const [ head, peers ] of this.sand ) {
 				for( const [ peer, sands ] of peers ) {
-					const rank = this.peer_rank( new $hyoo_crus_link( peer ) )
 					for( const [ self, sand ] of sands ) {
+						
+						const rank = this.pass_rank( sand.pass() )
 						if( rank >= sand.rank_min() ) continue
+						
 						sands.delete( self )
-						this.faces.total --
+						this.faces.peer_mass_shift( sand.pass().lord().peer().str, -1 )
+						
 					}
 				}
 			}
@@ -475,7 +409,7 @@ namespace $ {
 		}
 		
 		@ $mol_action
-		fork( preset: $hyoo_crus_rank_preset = { '': $hyoo_crus_rank_read } ) {
+		fork( preset: $hyoo_crus_rank_preset = [[ null, $hyoo_crus_rank_read ]] ) {
 			const land = this.$.$hyoo_crus_glob.land_grab( preset )
 			land.Tine().items_vary([ this.link() ])
 			return land
@@ -535,7 +469,7 @@ namespace $ {
 				prev: '',
 			}
 			
-			const key = peer === null ? ( sand: $hyoo_crus_sand )=> sand.key() : ( sand: $hyoo_crus_sand )=> sand.self().str
+			const key = peer === null ? ( sand: $hyoo_crus_sand )=> sand.path() : ( sand: $hyoo_crus_sand )=> sand.self().str
 			
 			const by_key = new Map([ [ '', entry  ] ])
 			const by_self = new Map([ [ '', entry ] ])
@@ -608,25 +542,9 @@ namespace $ {
 			return res
 		}
 		
-		/** Register public key **/
-		@ $mol_action
+		@ $mol_mem
 		join() {
-			
-			const auth = this.auth()
-			
-			const prev = this.pass.get( auth.peer().str )
-			if( prev ) return prev
-			
-			const next = new $hyoo_crus_pass
-			$hyoo_crus_unit_trusted.add( next )
-			next.auth( auth.public().asArray() )
-			next._land = this
-			
-			const error = this.apply_unit([ next ])[0]
-			if( error ) $mol_fail( new Error( error ) )
-			
-			this.broadcast()
-			return next
+			this.encrypted( this.encrypted() )
 		}
 		
 		/**
@@ -635,21 +553,20 @@ namespace $ {
 		 */
 		@ $mol_action
 		give(
-			mate: $hyoo_crus_auth | $hyoo_crus_link | null,
+			mate: $hyoo_crus_auth_pass | null,
 			rank: typeof $hyoo_crus_rank.Value,
 		) {
-				
+			
 			this.join()
 			
-			const auth = this.auth()
-			const unit = new $hyoo_crus_gift
-			$hyoo_crus_unit_trusted.add( unit )
+			const gift = new $hyoo_crus_gift
 			
-			unit.rank( rank )
-			unit.time( this.faces.tick() )
-			unit.peer( auth.peer() )
-			unit.mate( mate ? mate instanceof $hyoo_crus_auth ? mate.lord() : mate : $hyoo_crus_link.hole )
-			unit._land = this
+			gift.pass( this.auth().pass() )
+			gift.rank( rank )
+			gift.time_tick( this.faces.tick().time_tick )
+			
+			if( mate ) gift.mate( mate )
+			gift._land = this
 			
 			if( rank >= $hyoo_crus_rank_read ) {
 				
@@ -658,32 +575,23 @@ namespace $ {
 					
 					if( !mate ) $mol_fail( new Error( `Encrypted land can't be shared to everyone` ) )
 					
-					const prev = this.gift.get( mate instanceof $hyoo_crus_auth ? mate.lord().str : mate.str )
-					if( prev && prev.rank() >= $hyoo_crus_rank_read ) {
-						unit.bill().set( prev.bill() )
-					} else {
-						
-						if( mate instanceof $hyoo_crus_link ) {
-							$mol_fail( new Error( `No pub key for lord (${ mate.str })` ) )
-						}
-					
-						const secret_mutual = this.secret_mutual( mate.toString() )
-						if( secret_mutual ) {
-							const secret_bin = $mol_wire_sync( secret_land ).serial()
-							const bill = $mol_wire_sync( secret_mutual ).encrypt( secret_bin, unit.salt() )
-							unit.bill().set( bill )
-						}
+					const secret_mutual = this.auth().secret_mutual( mate )
+					if( secret_mutual ) {
+						const bill = $mol_wire_sync( secret_mutual ).close( secret_land, gift.salt() )
+						gift.bill().set( bill )
 					}
 					
 				}
 				
 			}
 			
-			const error = this.apply_unit([ unit ])[0]
+			$hyoo_crus_unit_trusted.add( gift )
+			
+			const error = this.apply_units([ gift ])[0]
 			if( error ) $mol_fail( new Error( error ) )
 			
 			this.broadcast()
-			return unit
+			return gift
 		}
 		
 		/** Places data to tree. */
@@ -696,38 +604,38 @@ namespace $ {
 			tag: keyof typeof $hyoo_crus_sand_tag = 'term',
 		) {
 			
-			if( vary instanceof $hyoo_crus_link ) vary = vary.relate( this.link() )
-			
 			this.join()
 			
-			const auth = this.auth()
-			const unit = new $hyoo_crus_sand
-			$hyoo_crus_unit_trusted.add( unit )
+			if( vary instanceof $hyoo_crus_link ) vary = vary.relate( this.link() )
 			
-			unit.time( this.faces.tick() )
-			unit.peer( auth.peer() )
-			unit.lead( lead )
-			unit.head( head )
-			unit._vary = vary
-			unit._land = this
+			const auth = this.auth()
+			const sand = new $hyoo_crus_sand
+			$hyoo_crus_unit_trusted.add( sand )
+			
+			sand.time_tick( this.faces.tick().time_tick )
+			sand.pass( auth.pass() )
+			sand.lead( lead )
+			sand.head( head )
+			sand._vary = vary
+			sand._land = this
 			
 			let { tip, bin } = $hyoo_crus_vary_encode( vary )
-			unit._open = bin
+			sand._open = bin
 			
 			if( vary !== null && this.encrypted() ) {
-				unit.hash( $hyoo_crus_link.hash_bin( bin ), tip, tag )
+				sand.hash( $hyoo_crus_link.hash_bin( bin ), tip, tag )
 			} else {
-				if( bin.byteLength > 32 ) unit.hash( $hyoo_crus_link.hash_bin( bin ), tip, tag )
-				else unit.data( bin, tip, tag )
+				if( bin.byteLength > 32 ) sand.hash( $hyoo_crus_link.hash_bin( bin ), tip, tag )
+				else sand.data( bin, tip, tag )
 			}
 			
-			unit.self( self.str ? self : this.self_make( unit.idea() ) )
+			sand.self( self.str ? self : this.self_make( sand.idea() ) )
 			
-			const error = this.apply_unit([ unit ])[0]
+			const error = this.apply_units([ sand ])[0]
 			if( error ) $mol_fail( new Error( error ) )
 			
 			this.broadcast()
-			return unit
+			return sand
 		}
 		
 		@ $mol_action
@@ -818,6 +726,10 @@ namespace $ {
 			this.$.$hyoo_crus_glob.yard().forget_land( this )
 		}
 		
+		mine() {
+			return this.$.$hyoo_crus_mine.land( this.link() )
+		}
+		
 		@ $mol_mem
 		sync_mine() {
 			return new $mol_wire_atom( '', ()=> this.saving() ).fresh()
@@ -832,12 +744,12 @@ namespace $ {
 		bus() {
 			return new this.$.$mol_bus< ArrayBuffer[] >(
 				`$hyoo_crus_land:${ this.link() }`,
-				$mol_wire_async( bins => {
+				$mol_wire_async( bufs => {
 					
-					this.apply_unit( bins.map( bin => {
-						const unit = new $hyoo_crus_unit( bin ).narrow()
+					this.apply_units( bufs.map( buf => {
+						const unit = new $hyoo_crus_unit( buf ).narrow()
 						$hyoo_crus_unit_trusted.add( unit )
-						this.$.$hyoo_crus_mine.units_persisted.add( unit )
+						this.mine().units_persisted.add( unit )
 						return unit
 					} ) )
 					
@@ -848,41 +760,31 @@ namespace $ {
 		@ $mol_mem
 		loading() {
 			
-			// $mol_wire_solid()
-			
-			let units = this.unit_sort( this.$.$hyoo_crus_mine.units( this.link() ) ?? [] )
+			let units = this.mine().units()
+			const part = $hyoo_crus_pack_part.from( units )
+			part.gifts = $hyoo_crus_gift_sort( part.gifts ?? [] )
 			
 			if( this.$.$hyoo_crus_log() ) $mol_wire_sync( this.$ ).$mol_log3_rise({
 				place: this,
 				message: 'Load Unit',
-				units: units.length,
+				gifts: part.gifts.length,
+				sands: part.sands.length,
 			})
 			
-			const errors = this.apply_unit( units, 'skip_check' ).filter( Boolean )
-			
-			if( errors.length ) this.$.$mol_log3_fail({
-				place: this,
-				message: errors.join( '\n' ),
-			})
+			this.apply_units( part.units, 'skip_check' )
 			
 		}
 		
 		@ $mol_mem
 		saving() {
 			
-			const mine = this.$.$hyoo_crus_mine
-			if( !mine ) return
-			
 			this.loading()
+			
+			const mine = this.mine()
 			
 			const encoding = [] as $hyoo_crus_sand[]
 			const signing = [] as $hyoo_crus_unit[]
 			const persisting = [] as $hyoo_crus_unit[]
-			
-			for( const pass of this.pass.values() ) {
-				if( !pass.signed() ) signing.push( pass )
-				if( !mine.units_persisted.has( pass ) ) persisting.push( pass )
-			}
 			
 			for( const gift of this.gift.values() ) {
 				if( !gift.signed() ) signing.push( gift )
@@ -907,7 +809,7 @@ namespace $ {
 			if( persisting.length )	{
 				
 				this.bus().send( persisting.map( unit => unit.buffer ) )
-				mine.units( this.link(), persisting )
+				mine.units( persisting )
 			
 				if( this.$.$hyoo_crus_log() ) $mol_wire_sync( this.$ ).$mol_log3_done({
 					place: this,
@@ -924,19 +826,14 @@ namespace $ {
 			if( unit.signed() ) return
 			
 			const key = $mol_wire_sync( unit._land!.auth() )
-			const mixin = unit._land!.link().toBin()
-			
-			const sens = unit.sens().slice()
-			for( let i = 0; i < mixin.length; ++i ) sens[i+2] ^= mixin[i]
+			const sens = $hyoo_crus_link.hash_bin( unit.sens() ).mix( unit._land!.link() )
 			
 			while( true ) {
 				
 				const sign = key.sign( sens )
 				unit.sign( sign.slice( 0, 2 ) )
 				
-				const rank = unit instanceof $hyoo_crus_pass
-					? this.lord_rank( unit.lord() )
-					: this.peer_rank( unit.peer() )
+				const rank = this.pass_rank( unit.pass() )
 				
 				if( rank >= unit.rank_min() ) {
 					unit.sign( sign )
@@ -960,7 +857,7 @@ namespace $ {
 			
 			if( secret ) bin = $mol_wire_sync( secret ).encrypt( bin, sand.salt() )
 			
-			if( bin.byteLength > 32 ) sand.hash( this.$.$hyoo_crus_mine.rock_save( bin ), sand.tip(), sand.tag() )
+			if( bin.byteLength > 32 ) sand.hash( $hyoo_crus_link.hash_bin( bin ), sand.tip(), sand.tag() )
 			else sand.data( bin, sand.tip(), sand.tag() )
 			
 			return sand
@@ -988,7 +885,7 @@ namespace $ {
 		@ $mol_mem_key
 		sand_decode_raw( sand: $hyoo_crus_sand ): $hyoo_crus_vary_type {
 			
-			if( this.sand.get( sand.head().str )?.get( sand.peer().str )?.get( sand.self().str ) !== sand ) {
+			if( this.sand.get( sand.head().str )?.get( sand.pass().peer().str )?.get( sand.self().str ) !== sand ) {
 				for( const id of this.Tine().items_vary() ?? [] ) {
 					const vary = this.$.$hyoo_crus_glob.Land( $hyoo_crus_vary_cast_link( id! )! ).sand_decode_raw( sand )
 					if( vary !== undefined ) return vary
@@ -1001,7 +898,7 @@ namespace $ {
 			if( sand._vary !== undefined ) return sand._vary
 			if( sand._open !== null ) return sand._vary = $hyoo_crus_vary_decode({ tip: sand.tip(), bin: sand._open })
 			
-			let bin = sand.size() > 32 ? this.$.$hyoo_crus_mine.rock( sand.hash() ) : sand.data()
+			let bin = sand.size() > 32 ? this.mine().ball( sand.hash()! ) : sand.data()
 			if( secret && bin && sand.tip() !== 'nil' ) {
 				try {
 					bin = $mol_wire_sync( secret ).decrypt( bin, sand.salt() )
@@ -1018,20 +915,6 @@ namespace $ {
 			
 		}
 		
-		@ $mol_mem_key
-		key_public( peer: $hyoo_crus_link ) {
-			const key = this.pass.get( peer.str )?.auth()
-			return key ? $mol_crypto_key_public.from( key ) : null
-		}
-		
-		@ $mol_mem_key
-		secret_mutual( key_public: string ) {
-			return $mol_wire_sync( $mol_crypto_secret ).derive(
-				this.auth().toString(),
-				key_public,
-			)
-		}
-		
 		@ $mol_mem
 		encryptable() {
 			return !this.sand.size
@@ -1046,30 +929,31 @@ namespace $ {
 			const prev = gift?.bill().some( b => b ) ?? false
 			
 			if( next === undefined ) return prev
-			if( prev === next ) return prev
 			
-			if( !this.encryptable() ) $mol_fail( new Error( `Non empty Land never encrypted` ) )
-			
-			this.join()
+			if( this.faces.size ) {
+				if( prev === next ) return prev
+				$mol_fail( new Error( `Change encryption is forbidden` ) )
+			}
 			
 			const auth = this.auth()
-			const secret = $mol_wire_sync( $mol_crypto_secret ).generate()
-			const secret_land = $mol_wire_sync( secret ).serial()
-			const secret_mutual = auth.secret_mutual( auth.public().toString() )
 			
 			const unit = new $hyoo_crus_gift
 			$hyoo_crus_unit_trusted.add( unit )
 			
 			unit.rank( $hyoo_crus_rank_rule )
-			unit.time( this.faces.tick() )
-			unit.peer( auth.peer() )
-			unit.mate( auth.lord() )
+			unit.time_tick( this.faces.tick().time_tick )
+			unit.pass( auth.pass() )
+			unit.mate( auth.pass() )
 			unit._land = this
 			
-			const secret_closed = $mol_wire_sync( secret_mutual ).encrypt( secret_land, unit.salt() )
-			unit.bill().set( secret_closed )
+			if( next ) {
+				const secret = $mol_wire_sync( $mol_crypto_sacred ).make()
+				const secret_mutual = auth.secret_mutual( auth.public() )
+				const secret_closed = $mol_wire_sync( secret_mutual ).close( secret, unit.salt() )
+				unit.bill().set( secret_closed )
+			}
 			
-			const error = this.apply_unit([ unit ])[0]
+			const error = this.apply_units([ unit ])[0]
 			if( error ) $mol_fail( new Error( error ) )
 			
 			return next
@@ -1081,17 +965,16 @@ namespace $ {
 			if( !this.encrypted() ) return null
 			
 			const auth = this.auth()
-			const gift = this.gift.get( auth.lord().str )
+			const gift = this.gift.get( auth.pass().lord().str )
 			if( !gift ) return $mol_fail( new Error( `Access denied` ) )
 			
 			const bill = gift.bill()
 			if( !bill.some( b => b ) ) return $mol_fail( new Error( `No key to decrypt` ) )
 			
-			const secret_mutual = auth.secret_mutual( this.key_public( gift.peer() )!.toString() )
+			const secret_mutual = auth.secret_mutual( gift.pass() )
 			if( !secret_mutual ) return $mol_fail( new Error( `Can't decrypt secret` ) )
 			
-			const secret_land = $mol_wire_sync( secret_mutual ).decrypt( bill, gift.salt() )
-			return $mol_wire_sync( $mol_crypto_secret ).from( secret_land )
+			return $mol_wire_sync( secret_mutual ).open( bill, gift.salt() )
 			
 		}
 		
@@ -1102,24 +985,19 @@ namespace $ {
 			const units = [] as $hyoo_crus_unit[]
 			const rocks = [] as [ string, Uint8Array ][]
 			
-			for( const pass of this.pass.values() ) units.push( pass )
 			for( const gift of this.gift.values() ) units.push( gift )
 			
 			for( const heads of this.sand.values() ) {
 				for( const sands of heads.values() ) {
 					for( const sand of sands.values() ) {
 						units.push( sand )
-						if( sand.size() <= 32 ) continue
-						const rock = this.$.$hyoo_crus_mine.rock( sand.hash() )
-						if( !rock ) continue
-						rocks.push([ sand.hash().str, rock ])
 					}
 				}
 			}
 			
 			return {
 				land: this.link(),
-				units, rocks,
+				units
 			}
 			
 		}
@@ -1128,7 +1006,7 @@ namespace $ {
 			return $mol_dev_format_span( {},
 		 		$mol_dev_format_native( this ),
 				' ',
-				$mol_dev_format_auto( this.faces.total ),
+				$mol_dev_format_auto( this.faces.face ),
 		 	)
 		 }
 		

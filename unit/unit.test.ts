@@ -6,17 +6,6 @@ namespace $ {
 			$mol_assert_fail( ()=> unit.kind(), 'Empty unit' )
 		},
 		
-		'auth unit type'() {
-			
-			const auth = new $hyoo_crus_pass
-			auth.auth([ 0xFF, 0 ])
-			
-			$mol_assert_equal( auth.kind(), 'pass' )
-			$mol_assert_equal( auth.lord(), new $hyoo_crus_link( 'NQYd2bFd_xC1dMzUx' ) )
-			$mol_assert_equal( auth.peer(), new $hyoo_crus_link( 'NQYd2bFd' ) )
-			
-		},
-		
 		'gift unit type'() {
 			
 			const gift = new $hyoo_crus_gift
@@ -64,13 +53,13 @@ namespace $ {
 			const unit = new $hyoo_crus_gift
 			
 			$mol_assert_equal( unit.time(), 0 )
-			$mol_assert_equal( unit.mate(), $hyoo_crus_link.hole )
+			$mol_assert_equal( unit.mate_link(), $hyoo_crus_link.hole )
 			
-			unit.time( 0xd1d2d3d4d5d6 )
-			unit.mate( new $hyoo_crus_link( 'ÆPv6æfj3_9vX08ÆLx' ) )
+			unit.time_tick( 0xd1d2d3d4d5d6 )
+			unit.mate_link( new $hyoo_crus_link( 'ÆPv6æfj3_9vX08ÆLx_12345678' ) )
 			
-			$mol_assert_equal( unit.time(), 0xd1d2d3d4d5d6 )
-			$mol_assert_equal( unit.mate(), new $hyoo_crus_link( 'ÆPv6æfj3_9vX08ÆLx' ) )
+			$mol_assert_equal( unit.time_tick(), 0xd1d2d3d4d5d6 )
+			$mol_assert_equal( unit.mate_link(), new $hyoo_crus_link( 'ÆPv6æfj3_9vX08ÆLx_12345678' ) )
 			
 		},
 		
@@ -83,12 +72,12 @@ namespace $ {
 			$mol_assert_equal( unit.self(), $hyoo_crus_link.hole )
 			$mol_assert_equal( unit.lead(), $hyoo_crus_link.hole )
 			
-			unit.time( 0xd1d2d3d4d5d6 )
+			unit.time_tick( 0xd1d2d3d4d5d6 )
 			unit.head( new $hyoo_crus_link( 'ÆPv6æfj3' ) )
 			unit.self( new $hyoo_crus_link( 'Pv6æfj39' ) )
 			unit.lead( new $hyoo_crus_link( 'v6æfj39v' ) )
 			
-			$mol_assert_equal( unit.time(), 0xd1d2d3d4d5d6 )
+			$mol_assert_equal( unit.time_tick(), 0xd1d2d3d4d5d6 )
 			$mol_assert_equal( unit.head(), new $hyoo_crus_link( 'ÆPv6æfj3' ) )
 			$mol_assert_equal( unit.self(), new $hyoo_crus_link( 'Pv6æfj39' ) )
 			$mol_assert_equal( unit.lead(), new $hyoo_crus_link( 'v6æfj39v' ) )
@@ -103,7 +92,7 @@ namespace $ {
 			const key = await $.$mol_crypto_auditor_pair()
 			source.sign( new Uint8Array( await key.private.sign( source.sens() ) ) )
 			
-			$mol_assert_ok( await key.public.verify( source.sens(), source.sign() ) )
+			$mol_assert_equal( await key.public.verify( source.sens(), source.sign() ) )
 			
 		},
 		

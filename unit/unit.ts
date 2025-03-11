@@ -3,14 +3,11 @@ namespace $ {
 	/** Kind of Unit */
 	export enum $hyoo_crus_unit_kind {
 		
-		/** Public key. First writes wins. */
-		pass = $hyoo_crus_part.pass,
-		
 		/** Rights sharing. More power wins. */
-		gift = $hyoo_crus_part.gift,
+		gift = $hyoo_crus_slot_kind.gift,
 		
 		/** Changeable data. Last writes wins. */
-		sand = $hyoo_crus_part.sand,
+		sand = $hyoo_crus_slot_kind.sand,
 		
 	}
 	
@@ -21,6 +18,19 @@ namespace $ {
 		
 		static size = 128 as const
 				
+		/**
+		 * Compare Units on timeline ( right - left )
+		 * Priority: time > peer > tick
+		 */
+		static compare(
+			left: $hyoo_crus_unit,
+			right: $hyoo_crus_unit,
+		) {
+			return ( right.time() - left.time() )
+				|| $hyoo_crus_link_compare( left.pass().hash(), right.pass().hash() )
+				|| ( right.tick() - left.tick() )
+		}
+
 		constructor(
 			buffer = new ArrayBuffer( $hyoo_crus_unit.size ),
 			byteOffset = 0,
@@ -42,13 +52,11 @@ namespace $ {
 		}
 		
 		choose< Res >( ways: {
-			pass: ( unit: $hyoo_crus_pass )=> Res,
 			gift: ( unit: $hyoo_crus_gift )=> Res,
 			sand: ( unit: $hyoo_crus_sand )=> Res,
 		} ) {
 			const way = this.kind()
 			const Unit = {
-				pass: $hyoo_crus_pass,
 				gift: $hyoo_crus_gift,
 				sand: $hyoo_crus_sand,
 			}[ way ]
@@ -58,22 +66,23 @@ namespace $ {
 		}
 		
 		narrow() {
-			return this.choose< $hyoo_crus_pass | $hyoo_crus_gift | $hyoo_crus_sand >({
+			return this.choose< $hyoo_crus_gift | $hyoo_crus_sand >({
 				sand: unit => unit,
-				pass: unit => unit,
 				gift: unit => unit,
 			})
 		}
 		
-		key(): string {
-			return this.narrow().key()
+		path(): string {
+			return this.narrow().path()
 		}
 		
 		id6( offset: number, next?: $hyoo_crus_link ) {
 			if( next === undefined ) {
 				return $hyoo_crus_link.from_bin( new Uint8Array( this.buffer, this.byteOffset + offset, 6 ) )
 			} else {
-				this.asArray().set( next.toBin(), this.byteOffset + offset )
+				const bin = next.toBin()
+				if( bin.byteLength !== 6 ) $mol_fail( new Error( `Wrong Link size (${ next })` ) )
+				this.asArray().set( bin, this.byteOffset + offset )
 				return next
 			}
 		}
@@ -82,7 +91,9 @@ namespace $ {
 			if( next === undefined ) {
 				return $hyoo_crus_link.from_bin( new Uint8Array( this.buffer, this.byteOffset + offset, 12 ) )
 			} else {
-				this.asArray().set( next.toBin(), this.byteOffset + offset )
+				const bin = next.toBin()
+				if( bin.byteLength !== 12 ) $mol_fail( new Error( `Wrong Link size (${ next })` ) )
+				this.asArray().set( bin, this.byteOffset + offset )
 				return next
 			}
 		}
@@ -91,29 +102,53 @@ namespace $ {
 			if( next === undefined ) {
 				return $hyoo_crus_link.from_bin( new Uint8Array( this.buffer, this.byteOffset + offset, 18 ) )
 			} else {
-				this.asArray().set( next.toBin(), this.byteOffset + offset )
+				const bin = next.toBin()
+				if( bin.byteLength !== 18 ) $mol_fail( new Error( `Wrong Link size (${ next })` ) )
+				this.asArray().set( bin, this.byteOffset + offset )
 				return next
 			}
 		}
 		
-		peer() {
-			return $hyoo_crus_link.hole
+		/** Seconds from UNIX epoch */
+		time( next?: number ) {
+			return this.uint32( 4, next )
+		}
+		
+		moment( next?: $mol_time_moment ) {
+			if( next ) this.time( Math.floor( next.valueOf() / 1000 ) )
+			return new $mol_time_moment( this.time() * 1000 )
+		}
+		
+		tick( next?: number ) {
+			return this.uint16( 2, next )
+		}
+		
+		time_tick( next?: number ) {
+			if( !next ) return this.tick() + this.time() * 2**16
+			this.tick( next % 2**16 )
+			this.time( Math.floor( next / 2**16 ) )
+			return next
+		}
+		
+		pass_link( next?: $hyoo_crus_link ) {
+			return this.id6( 8, next )
+		}
+		
+		_pass!: $hyoo_crus_auth_pass
+		pass( next?: $hyoo_crus_auth_pass ) {
+			if( next === undefined ) return this._pass
+			this.pass_link( next.peer() )
+			return this._pass = next
 		}
 		
 		salt() {
-			return new Uint8Array( this.buffer, this.byteOffset + 2, 16 )
+			return new Uint8Array( this.buffer, this.byteOffset, 16 )
 		}
 		
 		sens( next?: ArrayLike< number > ) {
 			const prev = new Uint8Array( this.buffer, this.byteOffset, 64 )
 			if( next ) prev.set( next )
 			return prev
-		}
-		
-		mix( mixin: Uint8Array ) {
-			for( let i = 0; i < mixin.length; ++i ) {
-				this.uint8( 2 + i, this.uint8( 2 + i ) ^ mixin[i] )
-			}
 		}
 		
 		sign( next?: ArrayLike< number > ) {

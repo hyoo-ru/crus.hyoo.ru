@@ -93,11 +93,11 @@ namespace $ {
 			land2.faces.sync( land1.faces )
 			text2.str( 'xxx yyy.' )
 			
-			const delta1 = land1.delta_unit()
-			const delta2 = land2.delta_unit()
+			const delta1 = land1.delta_units()
+			const delta2 = land2.delta_units()
 			
-			land1.apply_unit( delta2 )
-			land2.apply_unit( delta1 )
+			land1.apply_units( delta2 )
+			land2.apply_units( delta1 )
 	
 			$mol_assert_equal(
 				text1.str(),
@@ -113,21 +113,21 @@ namespace $ {
 			base.Data( $hyoo_crus_text ).str( '( )' )
 			
 			const left = $hyoo_crus_land.make({ $ })
-			left.apply_unit( base.delta_unit() )
+			left.apply_units( base.delta_units() )
 			left.Data( $hyoo_crus_text ).str( '( [ f ] )' )
 			left.Data( $hyoo_crus_text ).str( '( [ foo ] )' )
 			
 			const right = $hyoo_crus_land.make({ $ })
-			right.apply_unit( base.delta_unit() )
+			right.apply_units( base.delta_units() )
 			right.faces.sync( left.faces )
 			right.Data( $hyoo_crus_text ).str( '( [ f ] )' )
 			right.Data( $hyoo_crus_text ).str( '( [ fu ] )' )
 			
-			const left_delta = left.delta_unit( base.faces )
-			const right_delta = right.delta_unit( base.faces )
+			const left_delta = left.delta_units( base.faces )
+			const right_delta = right.delta_units( base.faces )
 			
-			left.apply_unit( right_delta )
-			right.apply_unit( left_delta )
+			left.apply_units( right_delta )
+			right.apply_units( left_delta )
 	
 			$mol_assert_equal(
 				left.Data( $hyoo_crus_text ).str(),

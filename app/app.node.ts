@@ -53,7 +53,7 @@ namespace $ {
 	export class $hyoo_crus_app_node_link extends $mol_rest_resource {
 		
 		GET( msg: $mol_rest_message ) {
-			msg.reply( this.$.$hyoo_crus_auth.current().lord().str )
+			msg.reply( this.$.$hyoo_crus_auth.current().pass().lord().str )
 		}
 		
 	}

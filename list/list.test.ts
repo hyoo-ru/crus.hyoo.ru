@@ -107,7 +107,7 @@ namespace $ {
 			list1.items_vary([ 'foo', 'xxx' ])
 			land2.faces.tick()
 			list2.items_vary([ 'foo', 'yyy' ])
-			land1.apply_unit( land2.delta_unit() )
+			land1.apply_units( land2.delta_units() )
 			$mol_assert_equal( list1.items_vary(), [ 'foo', 'yyy', 'foo', 'xxx' ] )
 
 		},

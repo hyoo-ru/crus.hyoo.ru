@@ -17,7 +17,7 @@ namespace $ {
 		
 		/** Link to Land/Lord. */
 		land_link() {
-			return this.land()?.link() ?? this.$.$hyoo_crus_auth.current().lord()
+			return this.land()?.link() ?? this.$.$hyoo_crus_auth.current().pass().lord()
 		}
 		
 		/** Link to Node/Land/Lord. */
@@ -65,7 +65,7 @@ namespace $ {
 		
 		/** Ability to make changes by current peer. */
 		can_change() {
-			return this.land().lord_rank( this.land().auth().lord() ) >= $hyoo_crus_rank_tier.join
+			return this.land().pass_rank( this.land().auth().pass() ) > $hyoo_crus_rank_read
 		}
 		
 		/** Time of last changed unit inside Node subtree */
@@ -86,31 +86,22 @@ namespace $ {
 			
 		}
 		
-		/** All author Peers of Node subtree */
+		/** All author Passes of Node subtree */
 		@ $mol_mem
-		author_peers() {
+		authors() {
 			
 			const land = this.land()
-			const peers = new Set< string >()
+			const peers = new Set< $hyoo_crus_auth_pass >()
 			
 			const visit = ( sand: $hyoo_crus_sand )=> {
-				peers.add( sand.peer().str )
+				peers.add( sand.pass() )
 				if( sand.tag() === 'term' ) return
 				land.Node( $hyoo_crus_node ).Item( sand.self() ).units_of( null ).forEach( visit )
 			}
 			this.units_of( null ).forEach( visit )
 			
-			return [ ... peers ].map( str => new $hyoo_crus_link( str ) )
+			return [ ... peers ]
 			
-		}
-		
-		/** All author Lords of Node subtree */
-		@ $mol_mem
-		author_lords() {
-			const land = this.land()
-			return this.author_peers()
-				.map( peer => land.pass.get( peer.str )?.lord() )
-				.filter( $mol_guard_defined )
 		}
 		
 		;[ $mol_dev_format_head ]() {

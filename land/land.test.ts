@@ -5,52 +5,38 @@ namespace $ {
 	
 	$mol_test({
 		
-		'Join'( $ ) {
-			
-			const land = $hyoo_crus_land.make({ $ })
-			$mol_assert_equal( land.joined_list(), [] )
-			$mol_assert_equal( land.lord_rank( land.link() ), $hyoo_crus_rank_rule )
-			
-			land.join()
-			$mol_assert_equal( land.joined_list(), [ land.link() ] )
-			
-		},
-		
 		'Give rights'( $ ) {
 			
-			const land1 = $hyoo_crus_land.make({ $ })
-			const land2 = $hyoo_crus_land.make({ $, link: ()=> land1.link(), auth: ()=> auth1 })
+			const land0 = $hyoo_crus_land.make({ $ })
+			const land1 = $hyoo_crus_land.make({ $, link: ()=> land0.link(), auth: ()=> auth1 })
 			
-			$mol_assert_equal( land1.lord_rank( land1.link() ), $hyoo_crus_rank_rule )
-			$mol_assert_equal( land1.lord_rank( auth1.lord() ), $hyoo_crus_rank_read )
+			$mol_assert_equal( land0.lord_rank( land0.link() ), $hyoo_crus_rank_rule )
+			$mol_assert_equal( land0.lord_rank( auth1.pass().lord() ), $hyoo_crus_rank_read )
 			
-			$mol_assert_fail( ()=> land2.give( auth2, $hyoo_crus_rank_join( 'just' ) ), 'Need reg rank to join' )
-			$mol_assert_equal( land1.lord_rank( auth1.lord() ), $hyoo_crus_rank_read )
+			$mol_assert_fail( ()=> land1.give( auth2.pass(), $hyoo_crus_rank_post( 'just' ) ), 'Need Rule Tier for Gifts' )
+			$mol_assert_equal( land0.pass_rank( auth1.pass() ), $hyoo_crus_rank_read )
 			
-			land1.give( auth1, $hyoo_crus_rank_read )
-			$mol_assert_equal( land1.lord_rank( auth1.lord() ), $hyoo_crus_rank_read )
+			land0.give( auth1.pass(), $hyoo_crus_rank_read )
+			$mol_assert_equal( land0.pass_rank( auth1.pass() ), $hyoo_crus_rank_read )
 			
-			land1.give( auth1, $hyoo_crus_rank_join( 'just' ) )
-			$mol_assert_equal( land1.lord_rank( auth1.lord() ), $hyoo_crus_rank_join( 'just' ) )
+			land0.give( auth1.pass(), $hyoo_crus_rank_read )
+			$mol_assert_equal( land0.pass_rank( auth1.pass() ), $hyoo_crus_rank_read )
 			
-			land1.give( auth1, $hyoo_crus_rank_read )
-			$mol_assert_equal( land1.lord_rank( auth1.lord() ), $hyoo_crus_rank_read )
+			land0.give( auth1.pass(), $hyoo_crus_rank_post( 'just' ) )
+			$mol_assert_equal( land0.pass_rank( auth1.pass() ), $hyoo_crus_rank_post( 'just' ) )
 			
-			land1.give( auth1, $hyoo_crus_rank_post( 'just' ) )
-			$mol_assert_equal( land1.lord_rank( auth1.lord() ), $hyoo_crus_rank_post( 'just' ) )
+			land0.give( auth1.pass(), $hyoo_crus_rank_pull( 'just' ) )
+			$mol_assert_equal( land0.pass_rank( auth1.pass() ), $hyoo_crus_rank_pull( 'just' ) )
 			
-			land1.give( auth1, $hyoo_crus_rank_join( 'just' ) )
-			$mol_assert_equal( land1.lord_rank( auth1.lord() ), $hyoo_crus_rank_join( 'just' ) )
+			land0.give( auth1.pass(), $hyoo_crus_rank_rule )
+			$mol_assert_equal( land0.pass_rank( auth1.pass() ), $hyoo_crus_rank_rule )
 			
-			land1.give( auth1, $hyoo_crus_rank_rule )
-			$mol_assert_equal( land1.lord_rank( auth1.lord() ), $hyoo_crus_rank_rule )
+			land0.give( auth1.pass(), $hyoo_crus_rank_post( 'just' ) )
+			$mol_assert_equal( land0.pass_rank( auth1.pass() ), $hyoo_crus_rank_post( 'just' ) )
 			
-			land1.give( auth1, $hyoo_crus_rank_post( 'just' ) )
-			$mol_assert_equal( land1.lord_rank( auth1.lord() ), $hyoo_crus_rank_post( 'just' ) )
-			
-			land2.apply_unit( land1.delta_unit() )
-			$mol_assert_equal( land2.lord_rank( auth1.lord() ), $hyoo_crus_rank_post( 'just' ) )
-			$mol_assert_fail( ()=> land2.give( auth2, $hyoo_crus_rank_join( 'just' ) ), 'Need law rank to change rank' )
+			land1.apply_units( land0.delta_units() )
+			$mol_assert_equal( land1.pass_rank( auth1.pass() ), $hyoo_crus_rank_post( 'just' ) )
+			$mol_assert_fail( ()=> land1.give( auth2.pass(), $hyoo_crus_rank_post( 'just' ) ), 'Need Rule Tier for Gifts' )
 			
 		},
 		
@@ -59,46 +45,32 @@ namespace $ {
 			const land1 = $hyoo_crus_land.make({ $ })
 			const land2 = $hyoo_crus_land.make({ $, link: ()=> land1.link(), auth: ()=> auth2 })
 			
-			$mol_assert_equal( land1.delta_unit(), [] )
+			$mol_assert_equal( land1.delta_units(), [] )
 			
 			land1.post( $hyoo_crus_link.hole, $hyoo_crus_link.hole, new $hyoo_crus_link( 'AA111111' ), new Uint8Array([ 1 ]) )
-			$mol_assert_equal( land1.delta_unit().length, 2 )
+			$mol_assert_equal( land1.delta_units().length, 2 )
 			
-			const face = new $hyoo_crus_face_map( land1.faces )
+			const face = land1.faces.clone()
 			
 			land1.post( new $hyoo_crus_link( 'AA111111' ), $hyoo_crus_link.hole, new $hyoo_crus_link( 'AA222222' ), new Uint8Array([ 2 ]) )
-			$mol_assert_equal( land1.delta_unit().length, 3 )
-			$mol_assert_equal( land1.delta_unit( face ).length, 1 )
+			$mol_assert_equal( land1.delta_units().length, 3 )
+			$mol_assert_equal( land1.delta_units( face ).length, 1 )
 			
-			land2.apply_unit( land1.delta_unit() )
+			land2.apply_units( land1.delta_units() )
 			
-			$mol_assert_fail( ()=> land2.join(), 'Need reg rank to join' )
-			$mol_assert_equal( land2.delta_unit().length, 3 )
-			$mol_assert_equal( land2.delta_unit( face ).length, 1 )
+			$mol_assert_fail( ()=> land2.post( new $hyoo_crus_link( 'AA222222' ), $hyoo_crus_link.hole, new $hyoo_crus_link( 'AA333333' ), new Uint8Array([ 3 ]) ), 'Need Post Tier for Sands' )
+			$mol_assert_equal( land2.delta_units().length, 3 )
+			$mol_assert_equal( land2.delta_units( face ).length, 1 )
 			
-			land1.give( auth2, $hyoo_crus_rank_join( 'just' ) )
-			land2.apply_unit( land1.delta_unit() )
-			land2.join()
-			$mol_assert_equal( land2.delta_unit().length, 5 )
-			$mol_assert_equal( land2.delta_unit( face ).length, 3 )
+			land1.give( auth2.pass(), $hyoo_crus_rank_post( 'just' ) )
+			land2.apply_units( land1.delta_units() )
+			land2.post( new $hyoo_crus_link( 'AA222222' ), $hyoo_crus_link.hole, new $hyoo_crus_link( 'AA333333' ), new Uint8Array([ 5 ]) )
+			$mol_assert_equal( land2.delta_units().length, 5 )
+			$mol_assert_equal( land2.delta_units( face ).length, 3 )
 			
-			$mol_assert_fail( ()=> land2.post( new $hyoo_crus_link( 'AA222222' ), $hyoo_crus_link.hole, new $hyoo_crus_link( 'AA333333' ), new Uint8Array([ 3 ]) ), 'Need mod rank to post data' )
-			$mol_assert_equal( land2.delta_unit().length, 5 )
-			$mol_assert_equal( land2.delta_unit( face ).length, 3 )
-			
-			land1.give( auth2, $hyoo_crus_rank_post( 'just' ) )
-			land2.apply_unit( land1.delta_unit() )
-			land2.post( new $hyoo_crus_link( 'AA222222' ), $hyoo_crus_link.hole, new $hyoo_crus_link( 'AA333333' ), new Uint8Array([ 4 ]) )
-			$mol_assert_equal( land2.delta_unit().length, 6 )
-			$mol_assert_equal( land2.delta_unit( face ).length, 4 )
-			
-			land1.give( auth2, $hyoo_crus_rank_join( 'just' ) )
-			land2.apply_unit( land1.delta_unit() )
-			$mol_assert_equal( land2.delta_unit().length, 5 )
-			
-			land1.give( auth2, $hyoo_crus_rank_read )
-			land2.apply_unit( land1.delta_unit() )
-			$mol_assert_equal( land2.delta_unit().length, 4 )
+			land1.give( auth2.pass(), $hyoo_crus_rank_read )
+			land2.apply_units( land1.delta_units() )
+			$mol_assert_equal( land2.delta_units().length, 4 )
 			
 		},
 		
@@ -181,10 +153,10 @@ namespace $ {
 		
 		'Land Area inherits rights'( $ ) {
 			
-			const base = $.$hyoo_crus_glob.land_grab({ '': $hyoo_crus_rank_post( 'just' ) })
+			const base = $.$hyoo_crus_glob.land_grab([[ null, $hyoo_crus_rank_post( 'just' ) ]])
 			const area = base.area_make()
 			
-			$mol_assert_equal( area.lord_rank( area.auth().lord() ), $hyoo_crus_rank_rule )
+			$mol_assert_equal( area.pass_rank( area.auth().pass() ), $hyoo_crus_rank_rule )
 			$mol_assert_equal( area.lord_rank( $hyoo_crus_link.hole ), $hyoo_crus_rank_post( 'just' ) )
 			
 		},

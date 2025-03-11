@@ -35,8 +35,9 @@ namespace $.$$ {
 			try {
 				
 				const auth = this.$.$hyoo_crus_auth.grab()
+				const lord = auth.pass().lord()
 				
-				if( auth.lord().str.startsWith( prefix ) ) {
+				if( lord.str.startsWith( prefix ) ) {
 					this.found( prefix, [ ... this.found( prefix ), auth.toString() ] )
 				}
 				
@@ -57,7 +58,7 @@ namespace $.$$ {
 		}
 		
 		link( index: number ) {
-			return $hyoo_crus_auth.from( this.found( this.prefix() )[ index ] ).lord().str
+			return $hyoo_crus_auth.from( this.found( this.prefix() )[ index ] ).pass().lord().str
 		}
 		
 		key( index: number ) {

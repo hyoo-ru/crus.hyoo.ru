@@ -1,6 +1,6 @@
 namespace $ {
 
-	/** Land where Lord is King. Contains only ain info. */
+	/** Land where Lord is King. Contains only main info. */
 	export class $hyoo_crus_home extends $hyoo_crus_entity.with({
 		Selection: $hyoo_crus_atom_str,
 		Hall: $hyoo_crus_atom_link_to( ()=> $hyoo_crus_dict ),
@@ -8,9 +8,9 @@ namespace $ {
 		
 		hall_by< Node extends typeof $hyoo_crus_dict >(
 			Node: Node,
-			preset?: $hyoo_crus_rank_preset
+			auto?: null,
 		) {
-			return this.Hall(null)?.ensure( preset )?.cast( Node ) ?? null
+			return this.Hall( auto )?.ensure( auto === null ? this.land() : undefined )?.cast( Node ) ?? null
 		}
 		
 	}

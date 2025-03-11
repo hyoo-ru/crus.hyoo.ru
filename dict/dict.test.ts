@@ -41,13 +41,13 @@ namespace $.$$ {
 			dict1.dive( 123, $hyoo_crus_atom_vary, null )!.vary( 666 )
 			land2.faces.tick()
 			dict2.dive( 123, $hyoo_crus_atom_vary, null )!.vary( 777 )
-			land1.apply_unit( land2.delta_unit() )
+			land1.apply_units( land2.delta_units() )
 			$mol_assert_equal( dict1.dive( 123, $hyoo_crus_atom_vary )!.vary(), 777 )
 			
 			dict1.dive( 'xxx', $hyoo_crus_list_vary, null )!.items_vary([ 'foo' ])
 			land2.faces.tick()
 			dict2.dive( 'xxx', $hyoo_crus_list_vary, null )!.items_vary([ 'bar' ])
-			land1.apply_unit( land2.delta_unit() )
+			land1.apply_units( land2.delta_units() )
 			$mol_assert_equal( dict1.dive( 'xxx', $hyoo_crus_list_vary )!.items_vary(), [ 'bar', 'foo' ] )
 
 		},
@@ -80,7 +80,7 @@ namespace $.$$ {
 			user.Title(null)!.val( 'Jin' )
 			$mol_assert_equal( user.Title()!.val() ?? '', 'Jin' )
 			
-			const account = user.Account(null)!.ensure({ '': $hyoo_crus_rank_read })!
+			const account = user.Account(null)!.ensure([[ null, $hyoo_crus_rank_read ]])!
 			$mol_assert_equal( user.Account()?.remote() ?? null, account )
 			$mol_assert_equal( account.User()?.remote() ?? null, null )
 			
@@ -88,8 +88,8 @@ namespace $.$$ {
 			$mol_assert_equal( account.User()?.remote(), user )
 			
 			const articles = [
-				user.Articles(null)!.make({ '': $hyoo_crus_rank_read }),
-				user.Articles(null)!.make({ '': $hyoo_crus_rank_read }),
+				user.Articles(null)!.make([[ null, $hyoo_crus_rank_read ]]),
+				user.Articles(null)!.make([[ null, $hyoo_crus_rank_read ]]),
 			]
 			$mol_assert_equal( user.Articles()?.remote_list(), articles )
 			

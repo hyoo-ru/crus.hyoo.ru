@@ -18,7 +18,7 @@ namespace $ {
 		return ( $hyoo_crus_rank_tier[ tier ] | $hyoo_crus_rank_rate[ fame ] ) as typeof $hyoo_crus_rank.Value
 	}
 
-	/** Access level: deny, read, join, post, rule */
+	/** Access level: deny, read, post, pull, rule */
 	export enum $hyoo_crus_rank_tier {
 
 		/** Forbidden. There is no access, neither read nor write. */
@@ -27,13 +27,13 @@ namespace $ {
 		/** Read only */
 		read = 0b0_0001_0000,
 
-		/** Join only (Pass) */
-		join = 0b0_0011_0000,
+		/** Post changes (Sand) */
+		post = 0b0_0011_0000,
 
-		/** Post changes (Pass, Sand) */
-		post = 0b0_0111_0000,
+		/** Pull forks (Sand) */
+		pull = 0b0_0111_0000,
 
-		/** Full control (Pass, Sand, Gift) */
+		/** Full control (Sand, Gift) */
 		rule = 0b0_1111_0000,
 
 	}
@@ -62,10 +62,10 @@ namespace $ {
 	export const $hyoo_crus_rank_read = $hyoo_crus_rank_make( 'read', 'late' )
 	export const $hyoo_crus_rank_rule = $hyoo_crus_rank_make( 'rule', 'just' )
 	
-	export function $hyoo_crus_rank_join(
+	export function $hyoo_crus_rank_pull(
 		rate: keyof typeof $hyoo_crus_rank_rate
 	) {
-		return $hyoo_crus_rank_make( 'join', rate )
+		return $hyoo_crus_rank_make( 'pull', rate )
 	}
 
 	export function $hyoo_crus_rank_post(
@@ -74,7 +74,7 @@ namespace $ {
 		return $hyoo_crus_rank_make( 'post', rate )
 	}
 
-	/** Mapping Auth to Rank */
-	export type $hyoo_crus_rank_preset = Record< string, typeof $hyoo_crus_rank.Value >
+	/** Mapping Pass to Rank */
+	export type $hyoo_crus_rank_preset = [ $hyoo_crus_auth_pass | null, typeof $hyoo_crus_rank.Value ][]
 
 }

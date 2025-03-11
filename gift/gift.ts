@@ -1,5 +1,24 @@
 namespace $ {
 	
+	export function $hyoo_crus_gift_sort( gifts: $hyoo_crus_gift[] ) {
+		
+		const dict = new Map< string, $hyoo_crus_gift >()
+		const graph = new $mol_graph< string, void >()
+		
+		for( const gift of gifts ) {
+			const key = gift.mate()?.lord().str ?? ''
+			dict.set( key, gift )
+			graph.link( key, gift.pass().lord().str )
+			graph.link( key, '' )
+		}
+		
+		graph.acyclic( ()=> 1 )
+		const keys = [ ... graph.sorted ]
+		
+		return keys.map( key => dict.get( key )! ).filter( Boolean )
+
+	}
+	
 	/** Given Rank and Secret */
 	export class $hyoo_crus_gift extends $hyoo_crus_unit {
 		
@@ -15,45 +34,29 @@ namespace $ {
 			return res
 		}
 		
-		time( next?: number ) {
-			return this.uint48( 8, next )
+		mate_link( next?: $hyoo_crus_link ) {
+			return this.id18( 32, next )
 		}
 		
-		free() {
-			return new Uint8Array( this.buffer, this.byteOffset + 26, 6 )
+		_mate = null as $hyoo_crus_auth_pass | null
+		mate( next?: $hyoo_crus_auth_pass ) {
+			if( next === undefined ) return this._mate
+			this.mate_link( $hyoo_crus_link.hash_bin( next ) )
+			return this._mate = next
 		}
 		
-		_peer!: $hyoo_crus_link
-		peer( next?: $hyoo_crus_link ) {
-			if( next === undefined && this._peer !== undefined ) return this._peer
-			else return this._peer = this.id6( 2, next )
-		}
-		
-		_mate!: $hyoo_crus_link
-		mate( next?: $hyoo_crus_link ) {
-			if( next === undefined && this._mate !== undefined ) return this._mate
-			else return this._mate = this.id18( 14, next )
-		}
-		
-		key(): string {
-			return `gift:${ this.mate() }`
+		path(): string {
+			return `gift:${ this.mate()?.lord() ?? '' }`
 		}
 		
 		bill() {
-			return new Uint8Array( this.buffer, this.byteOffset + 32, 32 )
-		}
-		
-		static compare(
-			left: $hyoo_crus_gift,
-			right: $hyoo_crus_gift,
-		) {
-			return ( right.time() - left.time() ) || ( right.peer() > left.peer() ? 1 : right.peer() < left.peer() ? -1 : 0 )
+			return new Uint8Array( this.buffer, this.byteOffset + 16, 16 )
 		}
 		
 		dump() {
 			return {
 				kind: this.kind(),
-				peer: this.peer(),
+				peer: this.pass().peer(),
 				dest: this.mate(),
 				tier: $hyoo_crus_rank_tier[ this.rank() &~ $hyoo_crus_rank_rate.just ],
 				work: this.work(),
@@ -69,9 +72,9 @@ namespace $ {
 			return $mol_dev_format_span( {} ,
 				$mol_dev_format_native( this ) ,
 				' ',
-				$mol_dev_format_auto( this.peer() ),
+				$mol_dev_format_auto( this.pass_link() ),
 				' 🏅 ',
-				$mol_dev_format_auto( this.mate() ),
+				$mol_dev_format_auto( this.mate()?.peer() ?? $hyoo_crus_link.hole ),
 				this.bill().some( v => v ) ? ' 🔐' : ' 👀',
 				$hyoo_crus_rank_tier[ this.rank() &~ $hyoo_crus_rank_rate.just ],
 				':',

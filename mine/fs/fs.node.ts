@@ -52,7 +52,7 @@ namespace $ {
 				const append = [] as $hyoo_crus_unit[]
 				
 				for( const unit of units ) {
-					const off = offsets.get( unit.key() )
+					const off = offsets.get( unit.path() )
 					if( off === undefined ) {
 						append.push( unit )
 					} else {
@@ -71,7 +71,7 @@ namespace $ {
 				
 				for( const unit of append ) {
 					descr.write({ buffer: unit, position: offset })
-					offsets.set( unit.key(), offset )
+					offsets.set( unit.path(), offset )
 					this.units_persisted.add( unit )
 					offset += unit.byteLength
 				}

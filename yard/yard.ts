@@ -188,18 +188,16 @@ namespace $ {
 				place: this,
 				message: 'Gain Pack',
 				port: $mol_key( port ),
-				lands: parts.lands,
-				rocks: parts.rocks.length,
+				parts,
 			})
 			
 			forget: {
 				
-				if( parts.rocks.length ) break forget
-				
-				for( const land in parts.lands ) {
+				for( const [ land, part ] of parts ) {
 					
-					if( parts.lands[ land ].units.length ) break forget
-					if( parts.lands[ land ].faces.size ) break forget
+					if( part.gifts.length ) break forget
+					if( part.sands.length ) break forget
+					if( part.faces.size ) break forget
 					if( !this.port_lands_active( port ).has( land ) ) break forget
 					
 					this.port_lands_active( port ).delete( land )
@@ -209,29 +207,26 @@ namespace $ {
 				
 			}
 			
-			this.face_port_sync( port, parts.lands )
-			this.$.$hyoo_crus_glob.apply_parts( parts.lands, parts.rocks )
+			this.face_port_sync( port, parts )
+			this.$.$hyoo_crus_glob.apply_parts( parts )
 			
 		}
 		
 		@ $mol_action
 		face_port_sync(
 			port: $mol_rest_port,
-			income: Record< string, {
-				faces: $hyoo_crus_face_map
-				units: $hyoo_crus_unit[]
-			}>, 
+			income: $hyoo_crus_pack_parts, 
 		) {
 			
 			const actives = this.port_lands_active( port )
 			const passives = this.port_lands_passive( port )
 			
-			for( const land of Reflect.ownKeys( income ) as string[] ) {
+			for( const [ land, part ] of income ) {
 				const land_link = new $hyoo_crus_link( land )
 				
 				if( !passives.has( land ) ) actives.add( land )
 				
-				const faces = income[ land ].faces
+				const faces = part.faces
 				let port_faces = this.face_port_land([ port, land_link ])
 				
 				if( !port_faces ) this.face_port_land(
@@ -241,11 +236,8 @@ namespace $ {
 				)
 				port_faces.sync( faces )
 			
-				const units = income[ land ].units
-				for( let unit of units ) {
-					const unit2 = unit.narrow()
-					if( unit2 instanceof $hyoo_crus_pass ) continue
-					port_faces.time_max( unit2.peer().str, unit2.time() )
+				for( let unit of part.units ) {
+					port_faces.peer_time( unit.pass().peer().str, unit.time(), unit.tick() )
 				}
 				
 			}
@@ -265,12 +257,12 @@ namespace $ {
 		forget_land( land: $hyoo_crus_land ) {
 			
 			const faces = new $hyoo_crus_face_map
-			faces.total = land.faces.total
+			faces.face = land.faces.face.clone()
 			
-			const pack = $hyoo_crus_pack.make({
-				lands: { [ land.link().str ]: { faces, units: [] } },
-				rocks:[],
-			}).asArray()
+			const pack = $hyoo_crus_pack.make([[
+				land.link().str,
+				new $hyoo_crus_pack_part( [], [], faces )
+			]]).asArray()
 			
 			for( const port of this.ports() ) {
 				
@@ -310,8 +302,7 @@ namespace $ {
 					place: this,
 					message: 'Send Unit',
 					port: $mol_key( port ),
-					lands: parts.lands,
-					rocks: parts.rocks.length,
+					parts: parts,
 				})
 				
 				port.send_bin( $hyoo_crus_pack.make( parts ).asArray() )

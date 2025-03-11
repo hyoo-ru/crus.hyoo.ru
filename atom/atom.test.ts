@@ -55,7 +55,7 @@ namespace $.$$ {
 			const land = $.$hyoo_crus_glob.home().land()
 			
 			const reg = land.Node( $hyoo_crus_atom_link_to( ()=> $hyoo_crus_atom_vary ) ).Item( new $hyoo_crus_link( '11111111' ) )
-			const remote = reg.ensure({ '': $hyoo_crus_rank_read })!
+			const remote = reg.ensure([[ null, $hyoo_crus_rank_read ]])!
 			
 			$mol_assert_unique( reg.land(), remote.land() )
 			$mol_assert_equal( reg.vary()!, remote.link() )
