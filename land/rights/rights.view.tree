@@ -18,7 +18,7 @@ $hyoo_crus_land_rights $mol_list
 					<= Gift_name* $mol_paragraph
 						title <= peer_name* \
 				<= Gift_rank* $mol_select
-					value? <=> gift_rank*? \nil
+					value? <=> gift_rank*? \deny
 					dictionary *
 						deny @ \🛑 Deny
 						read @ \👀 Read
