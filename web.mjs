@@ -29047,8 +29047,8 @@ var $;
                 const points = this.points();
                 if (points.length === 0)
                     return '';
-                const main = points.map(point => `L ${point.join(' ')}`).join(' ');
-                return `M ${points[0].join(' ')} ${main}`;
+                const main = points.map((point) => point.join(',')).join(' ');
+                return `M ${points[0].join(' ')} L ${main}`;
             }
         }
         __decorate([
