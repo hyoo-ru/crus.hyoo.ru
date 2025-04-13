@@ -7658,6 +7658,7 @@ declare namespace $ {
 		forward( next?: any ): any
 		Forward_icon( ): $mol_icon_chevron_right
 		Forward( ): $mol_button_minor
+		step( ): number
 		sub( ): readonly(any)[]
 	}
 	
@@ -14281,6 +14282,10 @@ declare namespace $ {
 declare namespace $ {
 
 	export class $mol_chip extends $mol_view {
+		hint( ): string
+		attr( ): ({ 
+			'title': ReturnType< $mol_chip['hint'] >,
+		})  & ReturnType< $mol_view['attr'] >
 		sub( ): readonly(any)[]
 	}
 	
