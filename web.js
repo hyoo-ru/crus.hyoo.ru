@@ -28563,6 +28563,9 @@ var $;
 		hint(){
 			return "";
 		}
+		minimal_height(){
+			return 40;
+		}
 		attr(){
 			return {...(super.attr()), "title": (this.hint())};
 		}

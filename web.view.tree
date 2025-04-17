@@ -2071,6 +2071,7 @@ $hyoo_crus_glob_book $mol_book2_catalog
 			grab? <=> land_add? null $hyoo_crus_rank_preset
 
 $mol_chip $mol_view
+	minimal_height 40
 	attr *
 		^
 		title <= hint \
