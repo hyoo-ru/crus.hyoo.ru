@@ -33,10 +33,10 @@ $hyoo_crus_flex_field $mol_view
 			value? <=> link_new? null
 			dictionary *
 				local @ \💼 Local
-				orgy @ \✍ All write
-				lobby @ \📢 All join
-				public @ \🔎 All read
-				private @ \🔐 Private
+				pull @ \📢 All pull
+				post @ \✍ All post
+				read @ \🔎 All read
+				deny @ \🔐 Private
 	Str $mol_textarea
 		enabled <= enabled true
 		value? <=> str? \
