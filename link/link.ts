@@ -66,20 +66,20 @@ namespace $ {
 		
 		static hash_cache = new WeakMap< ArrayBufferView, $hyoo_crus_link >()
 		
-		/** Make hash from binary (18 bytes). */
+		/** Make hash from binary (12 bytes). */
 		static hash_bin( bin: ArrayBufferView ) {
 			
 			let link = this.hash_cache.get( bin )
 			if( link ) return link
 			
 			const hash = $mol_crypto_hash( bin )
-			link = this.from_bin( new Uint8Array( hash.buffer, 0, 18 ) )
+			link = this.from_bin( new Uint8Array( hash.buffer, 0, 12 ) )
 			this.hash_cache.set( bin, link )
 			
 			return link
 		}
 		
-		/** Make hash from string (18 bytes). */
+		/** Make hash from string (12 bytes). */
 		static hash_str( str: string ) {
 			return this.hash_bin( $mol_charset_encode( str ) )
 		}
@@ -133,9 +133,7 @@ namespace $ {
 		mix( mixin: Uint8Array | $hyoo_crus_link ) {
 			if( mixin instanceof $hyoo_crus_link ) mixin = mixin.toBin()
 			const mix = this.toBin()
-			for( let i = 0; i < mix.length; ++i ) {
-				mix[i] = mix[i] ^ mixin[i]
-			}
+			for( let i = 0; i < mix.length; ++i ) mix[i] ^= mixin[i]
 			return mix
 		}
 	
