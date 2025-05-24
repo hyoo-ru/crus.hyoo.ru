@@ -687,7 +687,7 @@ declare namespace $ {
 
 declare namespace $ {
     class $mol_rest_port_webrtc extends $mol_rest_port {
-        channel: InstanceType<typeof import('node-datachannel/polyfill').RTCDataChannel>;
+        channel: RTCDataChannel;
         send_bin(data: Uint8Array): void;
         send_text(data: string): void;
     }
