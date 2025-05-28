@@ -16677,7 +16677,7 @@ declare namespace $ {
 			'slot': ReturnType< $hyoo_crus_app['Slot'] >,
 			'casting': ReturnType< $hyoo_crus_app['Casting'] >,
 		}) 
-		Placeholder( ): any
+		placeholders( ): readonly(any)[]
 	}
 	
 }

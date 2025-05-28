@@ -32855,8 +32855,8 @@ var $node = $node || {} ; $node[ "/hyoo/calc/calc_logo.svg" ] = "data:image/svg+
 				"casting": (this.Casting())
 			};
 		}
-		Placeholder(){
-			return null;
+		placeholders(){
+			return [];
 		}
 	};
 	($mol_mem(($.$hyoo_crus_app.prototype), "Source"));
