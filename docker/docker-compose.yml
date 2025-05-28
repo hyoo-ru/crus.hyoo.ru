@@ -9,7 +9,7 @@ services:
     volumes:
       - crus_public:/mam/hyoo/crus/app/run/-/.crus
       - crus_private:/root/.local/share/mol_state_local
-    restart: always
+    restart: unless-stopped
     network_mode: host
     labels:
       caddy: ${DOMAIN}
@@ -24,6 +24,7 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - caddy_private:/data
+    restart: unless-stopped
     deploy:
       placement:
         constraints:
@@ -39,6 +40,7 @@ services:
     command: --interval 60
     volumes:
       - '/var/run/docker.sock:/var/run/docker.sock'
+    restart: unless-stopped
 
 volumes:
   crus_public:
