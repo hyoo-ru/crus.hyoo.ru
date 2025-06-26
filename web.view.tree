@@ -435,7 +435,8 @@ $hyoo_crus_status $mol_select
 			hint <= message <= hint \Sync status
 
 $mol_theme_auto $mol_plugin
-	attr * mol_theme <= theme \
+	light \$mol_theme_light
+	attr * mol_theme <= theme <= dark \$mol_theme_dark
 
 $hyoo_meta_link $mol_link
 	minimal_height 40
