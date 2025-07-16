@@ -4169,6 +4169,13 @@ var $;
                 return this.setUint32(offset, next, true), next;
             $mol_fail(new Error(`Wrong uint32 value ${next}`));
         }
+        int64(offset, next) {
+            if (next === undefined)
+                return this.getBigInt64(offset, true);
+            if (next >= -(2n ** 63n) && next < 2n ** 63n)
+                return this.setBigInt64(offset, next, true), next;
+            $mol_fail(new Error(`Wrong int64 value ${next}`));
+        }
         uint48(offset, next) {
             if (next === undefined)
                 return this.getUint48(offset, true);
@@ -4176,17 +4183,10 @@ var $;
                 return this.setUint48(offset, next, true), next;
             $mol_fail(new Error(`Wrong uint48 value ${next}`));
         }
-        int64(offset, next) {
-            if (next === undefined)
-                return this.getBigInt64(offset, true);
-            if (next >= -(2 ** 63) && next < 2 ** 63)
-                return this.setBigInt64(offset, next, true), next;
-            $mol_fail(new Error(`Wrong int64 value ${next}`));
-        }
         uint64(offset, next) {
             if (next === undefined)
                 return this.getBigUint64(offset, true);
-            if (next >= 0 && next < 2 ** 64)
+            if (next >= 0n && next < 2n ** 64n)
                 return this.setBigUint64(offset, next, true), next;
             $mol_fail(new Error(`Wrong uint64 value ${next}`));
         }

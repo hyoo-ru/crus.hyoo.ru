@@ -580,8 +580,8 @@ declare namespace $ {
         uint16(offset: number, next?: number): number;
         int32(offset: number, next?: number): number;
         uint32(offset: number, next?: number): number;
-        uint48(offset: number, next?: number): number;
         int64(offset: number, next?: bigint): bigint;
+        uint48(offset: number, next?: number): number;
         uint64(offset: number, next?: bigint): bigint;
         float32(offset: number, next?: number): number;
         float64(offset: number, next?: number): number;
