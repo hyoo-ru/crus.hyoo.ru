@@ -146,6 +146,10 @@ declare namespace $ {
 }
 
 declare namespace $ {
+    function $mol_guid(length?: number, exists?: (id: string) => boolean): string;
+}
+
+declare namespace $ {
     enum $mol_wire_cursor {
         stale = -1,
         doubt = -2,
@@ -156,6 +160,8 @@ declare namespace $ {
 
 declare namespace $ {
     class $mol_wire_pub extends Object {
+        constructor(id?: string);
+        [Symbol.toStringTag]: string;
         data: unknown[];
         static get [Symbol.species](): ArrayConstructor;
         protected sub_from: number;
@@ -267,7 +273,6 @@ declare namespace $ {
         static plan_task: $mol_after_tick | null;
         static plan(): void;
         static sync(): void;
-        [Symbol.toStringTag]: string;
         cache: Result | Error | Promise<Result | Error>;
         get args(): Args;
         result(): Result | undefined;
@@ -458,10 +463,6 @@ declare namespace $ {
     function $hyoo_crus_ref_resolve(base: $hyoo_crus_ref, ref: $hyoo_crus_ref): symbol & {
         $hyoo_crus_ref: symbol;
     };
-}
-
-declare namespace $ {
-    function $mol_guid(length?: number, exists?: (id: string) => boolean): string;
 }
 
 declare namespace $ {
