@@ -4378,10 +4378,10 @@ var $;
         const kword = 0x80 << (24 - bits & 0b11111);
         const bytes = 16 + (bits + 64 >>> 9 << 4);
         const klens = bytes - 1;
-        const words = new Int32Array(data.buffer, data.byteOffset, data.byteLength >> 2);
+        const words = new DataView(data.buffer, data.byteOffset, data.byteLength >> 2 << 2);
         let tail = 0;
-        for (let i = words.length * 4; i < data.length; ++i) {
-            tail |= data[i] << (i << 3 & 0b11000);
+        for (let i = words.byteLength; i < data.length; ++i) {
+            tail |= data[i] << ((3 - i & 0b11) << 3);
         }
         const hash = new Int32Array([1732584193, -271733879, -1732584194, 271733878, -1009589776]);
         for (let i = 0; i < bytes; i += 16) {
@@ -4396,10 +4396,10 @@ var $;
                     sponge[j] = bits;
                 }
                 else {
-                    let word = k === words.length ? tail :
-                        k > words.length ? 0 :
-                            words[k];
-                    word = word << 24 | word << 8 & 0xFF0000 | word >>> 8 & 0xFF00 | word >>> 24 & 0xFF;
+                    const pos = k << 2;
+                    let word = pos === words.byteLength ? tail :
+                        pos > words.byteLength ? 0 :
+                            words.getInt32(pos, false);
                     if (k === kbits)
                         word |= kword;
                     sponge[j] = word;
@@ -13092,6 +13092,10 @@ var $;
         },
         'seven bytes hash'() {
             $mol_assert_equal($mol_crypto_hash(new Uint8Array([1, 2, 3, 4, 5, 6, 7])), new Uint8Array([140, 31, 40, 252, 47, 72, 194, 113, 214, 196, 152, 240, 242, 73, 205, 222, 54, 92, 84, 197]));
+        },
+        'unaligned hash'() {
+            const data = new Uint8Array([0, 1, 2, 3, 4, 5, 6, 7]);
+            $mol_assert_equal($mol_crypto_hash(new Uint8Array(data.buffer, 1, 7)), new Uint8Array([140, 31, 40, 252, 47, 72, 194, 113, 214, 196, 152, 240, 242, 73, 205, 222, 54, 92, 84, 197]));
         },
         async 'reference'() {
             const data = new Uint8Array([255, 254, 253]);
