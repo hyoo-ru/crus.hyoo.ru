@@ -9,7 +9,7 @@ namespace $ {
 		} >,
 		
 		/** List of BLOB identified by Hash. */
-		rocks: [ Uint8Array, null | Uint8Array ][],
+		rocks: [ Uint8Array< ArrayBuffer >, null | Uint8Array< ArrayBuffer > ][],
 		
 	}
 	
