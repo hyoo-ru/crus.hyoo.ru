@@ -2717,7 +2717,7 @@ var $;
                 serial = new Uint8Array(serial.buffer, serial.byteOffset, serial.byteLength);
             }
             ;
-            serial[0] = 0;
+            serial[0] = 0xFF;
             const sacred = super.from(serial);
             return sacred;
         }
@@ -2729,8 +2729,8 @@ var $;
         }
         constructor(buffer, byteOffset, byteLength) {
             super(buffer, byteOffset, byteLength);
-            if (this.getUint8(0) !== 0)
-                $mol_fail(new Error('Buffer should starts with 0 byte'));
+            if (this.getUint8(0) !== 0xFF)
+                $mol_fail(new Error('Buffer should starts with 0xFF byte'));
         }
         toString() {
             return $mol_base64_url_encode(this.asArray());
@@ -2759,13 +2759,16 @@ var $;
             }, await this.native(), closed).catch($mol_crypto_restack));
         }
         async close(sacred, salt) {
+            if (sacred.getUint8(0) !== 0xFF)
+                throw new Error('Closable buffer should starts with 0xFF');
             const buf = new Uint8Array(sacred.buffer, sacred.byteOffset + 1, sacred.byteLength - 1);
             return this.encrypt(buf, salt);
         }
         async open(buf, salt) {
             const buf2 = new Uint8Array(16);
+            buf2[0] = 0xFF;
             buf2.set(await this.decrypt(buf, salt), 1);
-            return new $mol_crypto_sacred(buf2.buffer);
+            return buf2;
         }
     }
     __decorate([
@@ -8503,9 +8506,8 @@ var $;
 var $;
 (function ($) {
     $.$hyoo_crus_yard.masters = [
-        'https://crus.hyoo.ru/',
+        'https://crus.hd4.ru/',
         'https://i-love-crus.ru/',
-        'https://crus.xedth.ru/',
         'https://crus.87-120-36-150.ip.hyoo.ru/',
     ];
 })($ || ($ = {}));
@@ -16697,7 +16699,7 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    $mol_style_attach("mol/check/expand/expand.view.css", "[mol_check_expand] {\n\tmin-width: 20px;\n}\n\n:where([mol_check_expand][disabled]) [mol_check_expand_icon] {\n\tvisibility: hidden;\n}\n\n[mol_check_expand_icon] {\n\tbox-shadow: none;\n\tmargin-left: -0.375rem;\n}\n[mol_check_expand_icon] {\n\ttransform: rotateZ(0deg);\n}\n\n:where([mol_check_checked]) [mol_check_expand_icon] {\n\ttransform: rotateZ(90deg);\n}\n\n[mol_check_expand_icon] {\n\tvertical-align: text-top;\n}\n\n[mol_check_expand_label] {\n\tmargin-left: 0;\n}\n");
+    $mol_style_attach("mol/check/expand/expand.view.css", "[mol_check_expand] {\n\tmin-width: 20px;\n\tgap: 0;\n}\n\n:where([mol_check_expand][disabled]) [mol_check_expand_icon] {\n\tvisibility: hidden;\n}\n\n[mol_check_expand_icon] {\n\tbox-shadow: none;\n\tmargin-left: -0.375rem;\n}\n[mol_check_expand_icon] {\n\ttransform: rotateZ(0deg);\n}\n\n:where([mol_check_checked]) [mol_check_expand_icon] {\n\ttransform: rotateZ(90deg);\n}\n\n[mol_check_expand_icon] {\n\tvertical-align: text-top;\n}\n\n[mol_check_expand_label] {\n\tmargin-left: 0;\n}\n");
 })($ || ($ = {}));
 
 ;
@@ -19708,7 +19710,7 @@ var $;
 			return "";
 		}
 		loading(){
-			return "eager";
+			return "lazy";
 		}
 		decoding(){
 			return "async";
@@ -20022,8 +20024,9 @@ var $;
 		}
 		attr(){
 			return {
-				...(super.attr()), 
+				"tabindex": (this.tabindex()), 
 				"allow": (this.allow()), 
+				"src": (this.uri()), 
 				"srcdoc": (this.html())
 			};
 		}

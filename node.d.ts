@@ -577,9 +577,9 @@ declare namespace $ {
     class $mol_rest_port extends $mol_object {
         send_code(code: $mol_rest_code): void;
         send_type(mime: $mol_rest_port_mime): void;
-        send_data(data: null | string | Uint8Array | Element | object): void;
+        send_data(data: null | string | Uint8Array<ArrayBuffer> | Element | object): void;
         send_nil(): void;
-        send_bin(data: Uint8Array): void;
+        send_bin(data: Uint8Array<ArrayBuffer>): void;
         send_text(data: string): void;
         send_json(data: object): void;
         send_dom(data: Element): void;
@@ -694,7 +694,7 @@ declare namespace $ {
 declare namespace $ {
     class $mol_rest_port_webrtc extends $mol_rest_port {
         channel: RTCDataChannel;
-        send_bin(data: Uint8Array): void;
+        send_bin(data: Uint8Array<ArrayBuffer>): void;
         send_text(data: string): void;
     }
 }
@@ -985,7 +985,7 @@ declare namespace $ {
         output: InstanceType<$node['http']['ServerResponse']>;
         send_code(code: $mol_rest_code): void;
         send_type(mime: $mol_rest_port_mime): void;
-        send_bin(data: Uint8Array): void;
+        send_bin(data: Uint8Array<ArrayBuffer>): void;
     }
 }
 
@@ -999,7 +999,7 @@ declare namespace $ {
         method(): string;
         uri(): URL;
         type(): $mol_rest_port_mime;
-        data(): null | string | Uint8Array | Element | object;
+        data(): null | string | Uint8Array<ArrayBuffer> | Element | object;
         route(uri: URL): $mol_rest_message_http;
     }
 }
@@ -1094,7 +1094,7 @@ declare namespace $ {
     class $mol_rest_port_ws_std extends $mol_rest_port_ws {
         socket: WebSocket;
         send_nil(): void;
-        send_bin(data: Uint8Array): void;
+        send_bin(data: Uint8Array<ArrayBuffer>): void;
         send_text(data: string): void;
     }
 }
@@ -1103,7 +1103,7 @@ declare namespace $ {
     class $mol_rest_port_ws_node extends $mol_rest_port_ws {
         socket: InstanceType<$node['stream']['Duplex']>;
         send_nil(): void;
-        send_bin(data: Uint8Array): void;
+        send_bin(data: Uint8Array<ArrayBuffer>): void;
         send_text(data: string): void;
     }
 }
@@ -1551,8 +1551,8 @@ declare namespace $ {
         }>;
         encrypt(open: BufferSource, salt: BufferSource): Promise<Uint8Array<ArrayBuffer>>;
         decrypt(closed: BufferSource, salt: BufferSource): Promise<Uint8Array<ArrayBuffer>>;
-        close(sacred: $mol_crypto_sacred, salt: BufferSource): Promise<Uint8Array<ArrayBuffer>>;
-        open(buf: Uint8Array, salt: BufferSource): Promise<$mol_crypto_sacred>;
+        close(sacred: DataView<ArrayBuffer>, salt: BufferSource): Promise<Uint8Array<ArrayBuffer>>;
+        open(buf: Uint8Array<ArrayBuffer>, salt: BufferSource): Promise<Uint8Array<ArrayBuffer>>;
     }
 }
 
@@ -1567,7 +1567,7 @@ declare namespace $ {
         });
         static generate(): Promise<$mol_crypto_secret>;
         static from(serial: BufferSource): Promise<$mol_crypto_secret>;
-        static pass(pass: string, salt: Uint8Array): Promise<$mol_crypto_secret>;
+        static pass(pass: string, salt: Uint8Array<ArrayBuffer>): Promise<$mol_crypto_secret>;
         static derive(private_serial: string, public_serial: string): Promise<$mol_crypto_secret>;
         serial(): Promise<Uint8Array<ArrayBuffer>>;
         encrypt(open: BufferSource, salt: BufferSource): Promise<Uint8Array<ArrayBuffer>>;
@@ -1686,7 +1686,7 @@ declare namespace $ {
     type json = null | boolean | number | string | {
         [key in string]: json;
     } | readonly json[];
-    export type $hyoo_crus_vary_type = Uint8Array | bigint | $hyoo_crus_ref | BigInt64Array | Float64Array | $mol_time_moment | $mol_time_duration | $mol_time_interval | $mol_tree2 | json | Node;
+    export type $hyoo_crus_vary_type = Uint8Array<ArrayBuffer> | bigint | $hyoo_crus_ref | BigInt64Array | Float64Array | $mol_time_moment | $mol_time_duration | $mol_time_interval | $mol_tree2 | json | Node;
     export let $hyoo_crus_vary_mapping: {
         nil: null;
         bin: Uint8ArrayConstructor;
@@ -1711,7 +1711,7 @@ declare namespace $ {
     export type $hyoo_crus_vary_classes = typeof $hyoo_crus_vary_mapping[keyof typeof $hyoo_crus_vary_mapping];
     export type $hyoo_crus_vary_pack = {
         tip: keyof typeof $hyoo_crus_vary_tip;
-        bin: Uint8Array;
+        bin: Uint8Array<ArrayBuffer>;
     };
     export enum $hyoo_crus_vary_tip {
         nil = 1,
@@ -1864,7 +1864,7 @@ declare namespace $ {
                     units: $hyoo_crus_unit[];
                 };
             };
-            rocks: [Uint8Array<ArrayBufferLike>, Uint8Array<ArrayBufferLike> | null][];
+            rocks: [Uint8Array<ArrayBuffer>, Uint8Array<ArrayBuffer> | null][];
         } | null;
         faces_pack(): $hyoo_crus_pack;
         apply_unit(delta: readonly $hyoo_crus_unit[], skip_check?: 'skip_check'): string[];
@@ -1904,7 +1904,7 @@ declare namespace $ {
                 $hyoo_crus_ref: symbol;
             };
             units: $hyoo_crus_unit[];
-            rocks: [Uint8Array<ArrayBufferLike>, Uint8Array<ArrayBufferLike>][];
+            rocks: [Uint8Array<ArrayBuffer>, Uint8Array<ArrayBuffer>][];
         };
         [$mol_dev_format_head](): any[];
     }
@@ -2005,7 +2005,7 @@ declare namespace $ {
     }
     class $hyoo_crus_sand extends $hyoo_crus_unit {
         _vary: undefined | $hyoo_crus_vary_type;
-        _open: null | Uint8Array;
+        _open: null | Uint8Array<ArrayBuffer>;
         hint(tip?: keyof typeof $hyoo_crus_vary_tip, tag?: keyof typeof $hyoo_crus_sand_tag): void;
         tag(): keyof typeof $hyoo_crus_sand_tag;
         tip(): keyof typeof $hyoo_crus_vary_tip;
@@ -2019,9 +2019,9 @@ declare namespace $ {
         key(): string;
         _lead: string;
         lead(next?: string): string;
-        hash(next?: Uint8Array, tip?: keyof typeof $hyoo_crus_vary_tip, tag?: keyof typeof $hyoo_crus_sand_tag): Uint8Array<ArrayBuffer>;
+        hash(next?: Uint8Array<ArrayBuffer>, tip?: keyof typeof $hyoo_crus_vary_tip, tag?: keyof typeof $hyoo_crus_sand_tag): Uint8Array<ArrayBuffer>;
         meta(): Uint8Array<ArrayBuffer>;
-        data(next?: Uint8Array, tip?: keyof typeof $hyoo_crus_vary_tip, tag?: keyof typeof $hyoo_crus_sand_tag): Uint8Array<ArrayBuffer>;
+        data(next?: Uint8Array<ArrayBuffer>, tip?: keyof typeof $hyoo_crus_vary_tip, tag?: keyof typeof $hyoo_crus_sand_tag): Uint8Array<ArrayBuffer>;
         idea(): number;
         static compare(left: $hyoo_crus_sand, right: $hyoo_crus_sand): number;
         dump(): {
@@ -2102,7 +2102,8 @@ declare namespace $ {
         author_lords(): (symbol & {
             $hyoo_crus_ref: symbol;
         })[];
-        $: $;
+        get $(): $;
+        set $(next: $);
         destructor(): void;
         toString(): string;
         [Symbol.toStringTag]: string;
@@ -2150,7 +2151,8 @@ declare namespace $ {
         author_lords(): (symbol & {
             $hyoo_crus_ref: symbol;
         })[];
-        $: $;
+        get $(): $;
+        set $(next: $);
         destructor(): void;
         toString(): string;
         [Symbol.toStringTag]: string;
@@ -2200,7 +2202,8 @@ declare namespace $ {
         author_lords(): (symbol & {
             $hyoo_crus_ref: symbol;
         })[];
-        $: $;
+        get $(): $;
+        set $(next: $);
         destructor(): void;
         toString(): string;
         [Symbol.toStringTag]: string;
@@ -2250,7 +2253,8 @@ declare namespace $ {
         author_lords(): (symbol & {
             $hyoo_crus_ref: symbol;
         })[];
-        $: $;
+        get $(): $;
+        set $(next: $);
         destructor(): void;
         toString(): string;
         [Symbol.toStringTag]: string;
@@ -2300,7 +2304,8 @@ declare namespace $ {
         author_lords(): (symbol & {
             $hyoo_crus_ref: symbol;
         })[];
-        $: $;
+        get $(): $;
+        set $(next: $);
         destructor(): void;
         toString(): string;
         [Symbol.toStringTag]: string;
@@ -2350,7 +2355,8 @@ declare namespace $ {
         author_lords(): (symbol & {
             $hyoo_crus_ref: symbol;
         })[];
-        $: $;
+        get $(): $;
+        set $(next: $);
         destructor(): void;
         toString(): string;
         [Symbol.toStringTag]: string;
@@ -2400,7 +2406,8 @@ declare namespace $ {
         author_lords(): (symbol & {
             $hyoo_crus_ref: symbol;
         })[];
-        $: $;
+        get $(): $;
+        set $(next: $);
         destructor(): void;
         toString(): string;
         [Symbol.toStringTag]: string;
@@ -2454,7 +2461,8 @@ declare namespace $ {
         author_lords(): (symbol & {
             $hyoo_crus_ref: symbol;
         })[];
-        $: $;
+        get $(): $;
+        set $(next: $);
         destructor(): void;
         toString(): string;
         [Symbol.toStringTag]: string;
@@ -2504,7 +2512,8 @@ declare namespace $ {
         author_lords(): (symbol & {
             $hyoo_crus_ref: symbol;
         })[];
-        $: $;
+        get $(): $;
+        set $(next: $);
         destructor(): void;
         toString(): string;
         [Symbol.toStringTag]: string;
@@ -2554,7 +2563,8 @@ declare namespace $ {
         author_lords(): (symbol & {
             $hyoo_crus_ref: symbol;
         })[];
-        $: $;
+        get $(): $;
+        set $(next: $);
         destructor(): void;
         toString(): string;
         [Symbol.toStringTag]: string;
@@ -2604,7 +2614,8 @@ declare namespace $ {
         author_lords(): (symbol & {
             $hyoo_crus_ref: symbol;
         })[];
-        $: $;
+        get $(): $;
+        set $(next: $);
         destructor(): void;
         toString(): string;
         [Symbol.toStringTag]: string;
@@ -2654,7 +2665,8 @@ declare namespace $ {
         author_lords(): (symbol & {
             $hyoo_crus_ref: symbol;
         })[];
-        $: $;
+        get $(): $;
+        set $(next: $);
         destructor(): void;
         toString(): string;
         [Symbol.toStringTag]: string;
@@ -2704,7 +2716,8 @@ declare namespace $ {
         author_lords(): (symbol & {
             $hyoo_crus_ref: symbol;
         })[];
-        $: $;
+        get $(): $;
+        set $(next: $);
         destructor(): void;
         toString(): string;
         [Symbol.toStringTag]: string;
@@ -2754,7 +2767,8 @@ declare namespace $ {
         author_lords(): (symbol & {
             $hyoo_crus_ref: symbol;
         })[];
-        $: $;
+        get $(): $;
+        set $(next: $);
         destructor(): void;
         toString(): string;
         [Symbol.toStringTag]: string;
@@ -2804,7 +2818,8 @@ declare namespace $ {
         author_lords(): (symbol & {
             $hyoo_crus_ref: symbol;
         })[];
-        $: $;
+        get $(): $;
+        set $(next: $);
         destructor(): void;
         toString(): string;
         [Symbol.toStringTag]: string;
@@ -2854,7 +2869,8 @@ declare namespace $ {
         author_lords(): (symbol & {
             $hyoo_crus_ref: symbol;
         })[];
-        $: $;
+        get $(): $;
+        set $(next: $);
         destructor(): void;
         toString(): string;
         [Symbol.toStringTag]: string;
@@ -2916,7 +2932,8 @@ declare namespace $ {
             author_lords(): (symbol & {
                 $hyoo_crus_ref: symbol;
             })[];
-            $: $;
+            get $(): $;
+            set $(next: $);
             destructor(): void;
             toString(): string;
             [Symbol.toStringTag]: string;
@@ -2995,7 +3012,8 @@ declare namespace $ {
             author_lords(): (symbol & {
                 $hyoo_crus_ref: symbol;
             })[];
-            $: $;
+            get $(): $;
+            set $(next: $);
             destructor(): void;
             toString(): string;
             [Symbol.toStringTag]: string;
@@ -3063,7 +3081,8 @@ declare namespace $ {
         author_lords(): (symbol & {
             $hyoo_crus_ref: symbol;
         })[];
-        $: $;
+        get $(): $;
+        set $(next: $);
         destructor(): void;
         toString(): string;
         [Symbol.toStringTag]: string;
@@ -3106,7 +3125,8 @@ declare namespace $ {
         author_lords(): (symbol & {
             $hyoo_crus_ref: symbol;
         })[];
-        $: $;
+        get $(): $;
+        set $(next: $);
         destructor(): void;
         toString(): string;
         [Symbol.toStringTag]: string;
@@ -3149,7 +3169,8 @@ declare namespace $ {
         author_lords(): (symbol & {
             $hyoo_crus_ref: symbol;
         })[];
-        $: $;
+        get $(): $;
+        set $(next: $);
         destructor(): void;
         toString(): string;
         [Symbol.toStringTag]: string;
@@ -3194,7 +3215,8 @@ declare namespace $ {
         author_lords(): (symbol & {
             $hyoo_crus_ref: symbol;
         })[];
-        $: $;
+        get $(): $;
+        set $(next: $);
         destructor(): void;
         toString(): string;
         [Symbol.toStringTag]: string;
@@ -3239,7 +3261,8 @@ declare namespace $ {
         author_lords(): (symbol & {
             $hyoo_crus_ref: symbol;
         })[];
-        $: $;
+        get $(): $;
+        set $(next: $);
         destructor(): void;
         toString(): string;
         [Symbol.toStringTag]: string;
@@ -3284,7 +3307,8 @@ declare namespace $ {
         author_lords(): (symbol & {
             $hyoo_crus_ref: symbol;
         })[];
-        $: $;
+        get $(): $;
+        set $(next: $);
         destructor(): void;
         toString(): string;
         [Symbol.toStringTag]: string;
@@ -3329,7 +3353,8 @@ declare namespace $ {
         author_lords(): (symbol & {
             $hyoo_crus_ref: symbol;
         })[];
-        $: $;
+        get $(): $;
+        set $(next: $);
         destructor(): void;
         toString(): string;
         [Symbol.toStringTag]: string;
@@ -3374,7 +3399,8 @@ declare namespace $ {
         author_lords(): (symbol & {
             $hyoo_crus_ref: symbol;
         })[];
-        $: $;
+        get $(): $;
+        set $(next: $);
         destructor(): void;
         toString(): string;
         [Symbol.toStringTag]: string;
@@ -3427,7 +3453,8 @@ declare namespace $ {
         author_lords(): (symbol & {
             $hyoo_crus_ref: symbol;
         })[];
-        $: $;
+        get $(): $;
+        set $(next: $);
         destructor(): void;
         toString(): string;
         [Symbol.toStringTag]: string;
@@ -3472,7 +3499,8 @@ declare namespace $ {
         author_lords(): (symbol & {
             $hyoo_crus_ref: symbol;
         })[];
-        $: $;
+        get $(): $;
+        set $(next: $);
         destructor(): void;
         toString(): string;
         [Symbol.toStringTag]: string;
@@ -3517,7 +3545,8 @@ declare namespace $ {
         author_lords(): (symbol & {
             $hyoo_crus_ref: symbol;
         })[];
-        $: $;
+        get $(): $;
+        set $(next: $);
         destructor(): void;
         toString(): string;
         [Symbol.toStringTag]: string;
@@ -3562,7 +3591,8 @@ declare namespace $ {
         author_lords(): (symbol & {
             $hyoo_crus_ref: symbol;
         })[];
-        $: $;
+        get $(): $;
+        set $(next: $);
         destructor(): void;
         toString(): string;
         [Symbol.toStringTag]: string;
@@ -3607,7 +3637,8 @@ declare namespace $ {
         author_lords(): (symbol & {
             $hyoo_crus_ref: symbol;
         })[];
-        $: $;
+        get $(): $;
+        set $(next: $);
         destructor(): void;
         toString(): string;
         [Symbol.toStringTag]: string;
@@ -3652,7 +3683,8 @@ declare namespace $ {
         author_lords(): (symbol & {
             $hyoo_crus_ref: symbol;
         })[];
-        $: $;
+        get $(): $;
+        set $(next: $);
         destructor(): void;
         toString(): string;
         [Symbol.toStringTag]: string;
@@ -3697,7 +3729,8 @@ declare namespace $ {
         author_lords(): (symbol & {
             $hyoo_crus_ref: symbol;
         })[];
-        $: $;
+        get $(): $;
+        set $(next: $);
         destructor(): void;
         toString(): string;
         [Symbol.toStringTag]: string;
@@ -3742,7 +3775,8 @@ declare namespace $ {
         author_lords(): (symbol & {
             $hyoo_crus_ref: symbol;
         })[];
-        $: $;
+        get $(): $;
+        set $(next: $);
         destructor(): void;
         toString(): string;
         [Symbol.toStringTag]: string;
@@ -3787,7 +3821,8 @@ declare namespace $ {
         author_lords(): (symbol & {
             $hyoo_crus_ref: symbol;
         })[];
-        $: $;
+        get $(): $;
+        set $(next: $);
         destructor(): void;
         toString(): string;
         [Symbol.toStringTag]: string;
@@ -3854,7 +3889,8 @@ declare namespace $ {
             author_lords(): (symbol & {
                 $hyoo_crus_ref: symbol;
             })[];
-            $: $;
+            get $(): $;
+            set $(next: $);
             destructor(): void;
             toString(): string;
             [Symbol.toStringTag]: string;
@@ -3938,7 +3974,8 @@ declare namespace $ {
             author_lords(): (symbol & {
                 $hyoo_crus_ref: symbol;
             })[];
-            $: $;
+            get $(): $;
+            set $(next: $);
             destructor(): void;
             toString(): string;
             [Symbol.toStringTag]: string;
@@ -3995,7 +4032,8 @@ declare namespace $ {
                     author_lords(): (symbol & {
                         $hyoo_crus_ref: symbol;
                     })[];
-                    $: $;
+                    get $(): $;
+                    set $(next: $);
                     destructor(): void;
                     toString(): string;
                     [Symbol.toStringTag]: string;
@@ -4025,9 +4063,9 @@ declare namespace $ {
         static unit_updates: number;
         static unit_appends: number;
         static rock_writes: number;
-        static hash(blob: Uint8Array): Uint8Array<ArrayBuffer>;
-        static rock(hash: Uint8Array, next?: Uint8Array): Uint8Array | null;
-        static rock_save(blob: Uint8Array): Uint8Array<ArrayBuffer>;
+        static hash(blob: Uint8Array<ArrayBuffer>): Uint8Array<ArrayBuffer>;
+        static rock(hash: Uint8Array<ArrayBuffer>, next?: Uint8Array<ArrayBuffer>): Uint8Array<ArrayBuffer> | null;
+        static rock_save(blob: Uint8Array<ArrayBuffer>): Uint8Array<ArrayBuffer>;
         static units_persisted: WeakSet<$hyoo_crus_unit>;
         static units(land: $hyoo_crus_ref, next?: readonly $hyoo_crus_unit[]): readonly $hyoo_crus_unit[];
         static units_load(land: $hyoo_crus_ref): Promise<readonly $hyoo_crus_unit[]>;
@@ -4072,7 +4110,7 @@ declare namespace $ {
             faces: $hyoo_crus_face_map;
             units: $hyoo_crus_unit[];
         }>;
-        rocks: [Uint8Array, null | Uint8Array][];
+        rocks: [Uint8Array<ArrayBuffer>, null | Uint8Array<ArrayBuffer>][];
     };
     class $hyoo_crus_pack extends $mol_buffer {
         toBlob(): Blob;
@@ -4083,7 +4121,7 @@ declare namespace $ {
                 faces: $hyoo_crus_face_map;
                 units: $hyoo_crus_unit[];
             }>;
-            rocks: [Uint8Array<ArrayBufferLike>, Uint8Array<ArrayBufferLike> | null][];
+            rocks: [Uint8Array<ArrayBuffer>, Uint8Array<ArrayBuffer> | null][];
         };
         static make({ lands, rocks }: $hyoo_crus_pack_parts): $hyoo_crus_pack;
     }
@@ -4152,11 +4190,11 @@ declare namespace $ {
         static apply_parts(lands: Record<$hyoo_crus_ref, {
             faces: $hyoo_crus_face_map;
             units: $hyoo_crus_unit[];
-        }>, rocks: [Uint8Array, Uint8Array | null][]): void;
+        }>, rocks: [Uint8Array<ArrayBuffer>, Uint8Array<ArrayBuffer> | null][]): void;
         apply_parts(lands: Record<$hyoo_crus_ref, {
             faces: $hyoo_crus_face_map;
             units: $hyoo_crus_unit[];
-        }>, rocks: [Uint8Array, Uint8Array | null][]): void;
+        }>, rocks: [Uint8Array<ArrayBuffer>, Uint8Array<ArrayBuffer> | null][]): void;
     }
 }
 
@@ -4197,7 +4235,8 @@ declare namespace $ {
             author_lords(): (symbol & {
                 $hyoo_crus_ref: symbol;
             })[];
-            $: $;
+            get $(): $;
+            set $(next: $);
             destructor(): void;
             toString(): string;
             [Symbol.toStringTag]: string;
@@ -4338,7 +4377,8 @@ declare namespace $ {
             author_lords(): (symbol & {
                 $hyoo_crus_ref: symbol;
             })[];
-            $: $;
+            get $(): $;
+            set $(next: $);
             destructor(): void;
             toString(): string;
             [Symbol.toStringTag]: string;
@@ -4389,7 +4429,8 @@ declare namespace $ {
             author_lords(): (symbol & {
                 $hyoo_crus_ref: symbol;
             })[];
-            $: $;
+            get $(): $;
+            set $(next: $);
             destructor(): void;
             toString(): string;
             [Symbol.toStringTag]: string;
@@ -4435,7 +4476,8 @@ declare namespace $ {
                     author_lords(): (symbol & {
                         $hyoo_crus_ref: symbol;
                     })[];
-                    $: $;
+                    get $(): $;
+                    set $(next: $);
                     destructor(): void;
                     toString(): string;
                     [Symbol.toStringTag]: string;
@@ -4505,7 +4547,8 @@ declare namespace $ {
                     author_lords(): (symbol & {
                         $hyoo_crus_ref: symbol;
                     })[];
-                    $: $;
+                    get $(): $;
+                    set $(next: $);
                     destructor(): void;
                     toString(): string;
                     [Symbol.toStringTag]: string;
