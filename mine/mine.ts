@@ -7,20 +7,20 @@ namespace $ {
 		
 		/** SHA-1 hash of BLOB */
 		@ $mol_mem_key
-		static hash( blob: Uint8Array ) {
+		static hash( blob: Uint8Array< ArrayBuffer > ) {
 			return $mol_crypto_hash( blob )
 		}
 		
 		/**  BLOB identified by Hash */
 		@ $mol_mem_key
-		static rock( hash: Uint8Array, next?: Uint8Array ): Uint8Array | null {
+		static rock( hash: Uint8Array< ArrayBuffer >, next?: Uint8Array< ArrayBuffer > ): Uint8Array< ArrayBuffer > | null {
 			$mol_wire_solid()
 			return next ?? null
 		}
 		
 		/** Saves BLOB to storage and returns it's Hash */
 		@ $mol_action
-		static rock_save( blob: Uint8Array ) {
+		static rock_save( blob: Uint8Array< ArrayBuffer > ) {
 			const hash = this.hash( blob )
 			this.rock( hash, blob )
 			this.rock( hash ) // temp dep allow reap
