@@ -277,7 +277,7 @@ namespace $ {
 			const units = this.delta_unit( face )
 			if( !units.length ) return null
 			
-			const rocks = [] as [ Uint8Array, null | Uint8Array ][]
+			const rocks = [] as [ Uint8Array< ArrayBuffer >, null | Uint8Array< ArrayBuffer > ][]
 			
 			for( let unit of units ) {
 				
@@ -1101,7 +1101,7 @@ namespace $ {
 			this.saving()
 			
 			const units = [] as $hyoo_crus_unit[]
-			const rocks = [] as [ Uint8Array, Uint8Array ][]
+			const rocks = [] as [ Uint8Array< ArrayBuffer >, Uint8Array< ArrayBuffer > ][]
 			
 			for( const pass of this.pass.values() ) units.push( pass )
 			for( const gift of this.gift.values() ) units.push( gift )
