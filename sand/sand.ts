@@ -16,7 +16,7 @@ namespace $ {
 	export class $hyoo_crus_sand extends $hyoo_crus_unit {
 
 		_vary = undefined as undefined | $hyoo_crus_vary_type
-		_open = null as null | Uint8Array
+		_open = null as null | Uint8Array< ArrayBuffer >
 
 		hint(
 			tip: keyof typeof $hyoo_crus_vary_tip = 'nil',
@@ -70,7 +70,7 @@ namespace $ {
 		}
 
 		hash(
-			next?: Uint8Array,
+			next?: Uint8Array< ArrayBuffer >,
 			tip: keyof typeof $hyoo_crus_vary_tip = 'nil' as const,
 			tag: keyof typeof $hyoo_crus_sand_tag = 'term',
 		) {
@@ -89,7 +89,7 @@ namespace $ {
 		}
 
 		data(
-			next?: Uint8Array,
+			next?: Uint8Array< ArrayBuffer >,
 			tip: keyof typeof $hyoo_crus_vary_tip = 'nil',
 			tag: keyof typeof $hyoo_crus_sand_tag = 'term',
 		) {
