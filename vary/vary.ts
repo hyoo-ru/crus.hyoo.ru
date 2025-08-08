@@ -3,7 +3,7 @@ namespace $ {
 	type json = null | boolean | number | string | { [ key in string ]: json } | readonly json[]
 	/** Supported primitive types. */
 	export type $hyoo_crus_vary_type =
-	| Uint8Array | bigint | $hyoo_crus_ref
+	| Uint8Array< ArrayBuffer > | bigint | $hyoo_crus_ref
 	| BigInt64Array | Float64Array
 	| $mol_time_moment | $mol_time_duration | $mol_time_interval
 	| $mol_tree2 | json | Node
@@ -35,7 +35,7 @@ namespace $ {
 	/** Universal binary package which contains some TIP and bin */
 	export type $hyoo_crus_vary_pack = {
 		tip: keyof typeof $hyoo_crus_vary_tip,
-		bin: Uint8Array,
+		bin: Uint8Array< ArrayBuffer >,
 	}
 	
 	/** Hint how to interpret Data. */
