@@ -3,12 +3,12 @@ namespace $ {
 		class $hyoo_crus_mine_mock extends $.$hyoo_crus_mine {
 			
 			@ $mol_mem_key
-			static rock( hash: Uint8Array, next?: Uint8Array ) {
+			static rock( hash: Uint8Array< ArrayBuffer >, next?: Uint8Array< ArrayBuffer > ) {
 				return next ?? null
 			}
 			
 			@ $mol_mem_key
-			static units( land: $hyoo_crus_ref, next?: readonly $hyoo_crus_unit[] ) { $hyoo_crus_land
+			static units( land: $hyoo_crus_ref, next?: readonly $hyoo_crus_unit[] ) {
 				return next ?? []
 			}
 				
