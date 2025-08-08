@@ -105,7 +105,7 @@ namespace $ {
 				faces: $hyoo_crus_face_map
 				units: $hyoo_crus_unit[]
 			}>,
-			rocks: [ Uint8Array, Uint8Array | null ][],
+			rocks: [ Uint8Array< ArrayBuffer >, Uint8Array< ArrayBuffer > | null ][],
 		) {
 			
 			for( const land of Reflect.ownKeys( lands ) as $hyoo_crus_ref[] ) {
@@ -133,7 +133,7 @@ namespace $ {
 				faces: $hyoo_crus_face_map
 				units: $hyoo_crus_unit[]
 			}>,
-			rocks: [ Uint8Array, Uint8Array | null ][],
+			rocks: [ Uint8Array< ArrayBuffer >, Uint8Array< ArrayBuffer > | null ][],
 		) {
 			return this.$.$hyoo_crus_glob.apply_parts( lands, rocks )
 		}
