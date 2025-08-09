@@ -17,7 +17,7 @@ services:
       caddy.reverse_proxy: ":9090"
 
   caddy:
-    image: lucaslorentz/caddy-docker-proxy:2.3
+    image: lucaslorentz/caddy-docker-proxy:ci-alpine
     logging:
       driver: "local"
     network_mode: host
