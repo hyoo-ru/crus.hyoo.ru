@@ -3,7 +3,7 @@ services:
   crus:
     image: ghcr.io/hyoo-ru/crus:latest
     environment:
-      DOMAIN: ${DOMAIN}
+      - DOMAIN
     logging:
       driver: "local"
     volumes:
@@ -17,7 +17,7 @@ services:
       caddy.reverse_proxy: ":9090"
 
   caddy:
-    image: lucaslorentz/caddy-docker-proxy:2.8
+    image: lucaslorentz/caddy-docker-proxy:2.10
     logging:
       driver: "local"
     network_mode: host
