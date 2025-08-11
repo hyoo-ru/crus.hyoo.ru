@@ -19935,6 +19935,7 @@ var $;
         class $mol_embed_native extends $.$mol_embed_native {
             window() {
                 $mol_wire_solid();
+                this.uri_resource();
                 return $mol_wire_sync(this).load(this.dom_node_actual());
             }
             load(frame) {
