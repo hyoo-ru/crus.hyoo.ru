@@ -19960,9 +19960,9 @@ var $;
             message_listener() {
                 return new $mol_dom_listener($mol_dom_context, 'message', $mol_wire_async(this).message_receive);
             }
-            sub() {
+            sub_visible() {
                 this.window();
-                return super.sub();
+                return super.sub_visible();
             }
             message_receive(event) {
                 if (!event)
