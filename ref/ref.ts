@@ -55,7 +55,7 @@ namespace $ {
 	}
 
 	/** Read from binary (12/18 bytes) */
-	export function $hyoo_crus_ref_decode( bin: Uint8Array ) {
+	export function $hyoo_crus_ref_decode( bin: Uint8Array<ArrayBuffer> ) {
 		return $hyoo_crus_ref(
 			[ ... $mol_base64_ae_encode( bin ).match( /(.{8})/g ) ?? [] ]
 				.map( numb => numb === 'AAAAAAAA' ? '' : numb )
