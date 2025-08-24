@@ -1225,7 +1225,16 @@ declare namespace $ {
     export type $hyoo_crus_vary_type = Uint8Array<ArrayBuffer> | bigint | $hyoo_crus_ref | BigInt64Array | Float64Array | $mol_time_moment | $mol_time_duration | $mol_time_interval | $mol_tree2 | json | Node;
     export let $hyoo_crus_vary_mapping: {
         nil: null;
-        bin: Uint8ArrayConstructor;
+        bin: {
+            new (buffer: ArrayBuffer, byteOffset?: number, length?: number): Uint8Array<ArrayBuffer>;
+            readonly prototype: Uint8Array<ArrayBufferLike>;
+            readonly BYTES_PER_ELEMENT: number;
+            of(...items: number[]): Uint8Array<ArrayBuffer>;
+            from(arrayLike: ArrayLike<number>): Uint8Array<ArrayBuffer>;
+            from<T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Uint8Array<ArrayBuffer>;
+            from(elements: Iterable<number>): Uint8Array<ArrayBuffer>;
+            from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint8Array<ArrayBuffer>;
+        };
         bool: BooleanConstructor;
         int: BigIntConstructor;
         real: NumberConstructor;
@@ -1350,7 +1359,7 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    function $hyoo_crus_vary_cast_bin(vary: $hyoo_crus_vary_type): Uint8Array | null;
+    function $hyoo_crus_vary_cast_bin(vary: $hyoo_crus_vary_type): Uint8Array<ArrayBuffer> | null;
     function $hyoo_crus_vary_cast_bool(vary: $hyoo_crus_vary_type): boolean | null;
     function $hyoo_crus_vary_cast_int(vary: $hyoo_crus_vary_type): bigint | null;
     function $hyoo_crus_vary_cast_real(vary: $hyoo_crus_vary_type): number | null;
@@ -1568,7 +1577,7 @@ declare namespace $ {
         peer(next?: string): string;
         salt(): Uint8Array<ArrayBuffer>;
         sens(next?: ArrayLike<number>): Uint8Array<ArrayBuffer>;
-        mix(mixin: Uint8Array): void;
+        mix(mixin: Uint8Array<ArrayBuffer>): void;
         sign(next?: ArrayLike<number>): Uint8Array<ArrayBuffer>;
         signed(): boolean;
         work(): number;
@@ -1937,7 +1946,7 @@ declare namespace $ {
         [Symbol.toPrimitive](): any;
     };
     const $hyoo_crus_list_bin_base: (abstract new () => {
-        items(next?: readonly (Uint8Array<ArrayBufferLike> | null)[] | undefined): readonly (Uint8Array<ArrayBufferLike> | null)[];
+        items(next?: readonly (Uint8Array<ArrayBuffer> | null)[] | undefined): readonly (Uint8Array<ArrayBuffer> | null)[];
         items_vary(next?: readonly $hyoo_crus_vary_type[], tag?: keyof typeof $hyoo_crus_sand_tag): readonly $hyoo_crus_vary_type[];
         splice(next: readonly $hyoo_crus_vary_type[], from?: number, to?: number, tag?: keyof typeof $hyoo_crus_sand_tag): void;
         find(vary: $hyoo_crus_vary_type): $hyoo_crus_sand | null;
@@ -2960,8 +2969,8 @@ declare namespace $ {
         [Symbol.toPrimitive](): any;
     };
     const $hyoo_crus_atom_bin_base: (abstract new () => {
-        val(next?: Uint8Array<ArrayBufferLike> | null | undefined): Uint8Array<ArrayBufferLike> | null;
-        val_of(peer: string | null, next?: Uint8Array<ArrayBufferLike> | null | undefined): Uint8Array<ArrayBufferLike> | null;
+        val(next?: Uint8Array<ArrayBuffer> | null | undefined): Uint8Array<ArrayBuffer> | null;
+        val_of(peer: string | null, next?: Uint8Array<ArrayBuffer> | null | undefined): Uint8Array<ArrayBuffer> | null;
         pick_unit(peer: string | null): $hyoo_crus_sand | undefined;
         vary(next?: $hyoo_crus_vary_type): $hyoo_crus_vary_type;
         vary_of(peer: string | null, next?: $hyoo_crus_vary_type): $hyoo_crus_vary_type;

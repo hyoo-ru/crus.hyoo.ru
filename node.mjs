@@ -6829,7 +6829,7 @@ var $;
 (function ($) {
     $.$hyoo_crus_vary_mapping = {
         nil: null,
-        bin: Uint8Array,
+        bin: (Uint8Array),
         bool: Boolean,
         int: BigInt,
         real: Number,
