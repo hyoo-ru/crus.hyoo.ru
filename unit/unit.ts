@@ -104,7 +104,7 @@ namespace $ {
 			return prev
 		}
 		
-		mix( mixin: Uint8Array ) {
+		mix( mixin: Uint8Array< ArrayBuffer > ) {
 			for( let i = 0; i < mixin.length; ++i ) {
 				this.uint8( 2 + i, this.uint8( 2 + i ) ^ mixin[i] )
 			}
