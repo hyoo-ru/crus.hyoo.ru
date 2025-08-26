@@ -226,12 +226,12 @@ namespace $.$$ {
 			
 			$mol_assert_equal(
 				$hyoo_crus_link.hash_bin( new Uint8Array([ 1, 2, 3 ]) ),
-				new $hyoo_crus_link( 'cDeAcZjC_Kn0rCAc3_HXY3eahP' ),
+				new $hyoo_crus_link( 'cDeAcZjC_Kn0rCAc3' ),
 			)
 			
 			$mol_assert_equal(
 				$hyoo_crus_link.hash_str( 'foo bar' ),
-				new $hyoo_crus_link( 'N3PeplFW_kJg4æmwi_glyv4JDÆ' ),
+				new $hyoo_crus_link( 'N3PeplFW_kJg4æmwi' ),
 			)
 			
 		}

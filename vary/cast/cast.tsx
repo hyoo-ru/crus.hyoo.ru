@@ -1,7 +1,7 @@
 /** @jsx $mol_jsx */
 namespace $ {
 	
-	export function $hyoo_crus_vary_cast_bin( vary: $hyoo_crus_vary_type ): Uint8Array | null {
+	export function $hyoo_crus_vary_cast_bin( vary: $hyoo_crus_vary_type ): Uint8Array< ArrayBuffer > | null {
 		return vary === null || vary === '' ? null : $hyoo_crus_vary_encode( vary ).bin
 	}
 	

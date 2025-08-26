@@ -31,7 +31,7 @@ namespace $ {
 			
 			for( const [ key, rank ] of mapping ) colony.give( key, rank )
 			
-			this.Land( colony.link() ).apply_units( colony.delta_units() ).filter( Boolean )
+			this.Land( colony.link() ).diff_apply( colony.diff_units() ).filter( Boolean )
 			
 			return king
 		}
@@ -66,7 +66,7 @@ namespace $ {
 			
 			for( const [ land_id, part ] of parts ) {
 				const land = this.Land( new $hyoo_crus_link( land_id ) )
-				land.apply_units( part.units )
+				land.diff_apply( part.units )
 			}
 
 		}

@@ -58,23 +58,23 @@ namespace $ {
 		}
 		
 		/** Read from binary (6/12/18/24 bytes). */
-		static from_bin( bin: Uint8Array ) {
+		static from_bin( bin: Uint8Array< ArrayBuffer > ) {
 			return new this(
 				[ ... $mol_base64_ae_encode( bin ).match( /(.{8})/g ) ?? [] ].join( '_' )
 			)	
 		}
 		
-		static hash_cache = new WeakMap< ArrayBufferView, $hyoo_crus_link >()
+		static _hash_cache = new WeakMap< ArrayBufferView, $hyoo_crus_link >()
 		
 		/** Make hash from binary (12 bytes). */
 		static hash_bin( bin: ArrayBufferView ) {
 			
-			let link = this.hash_cache.get( bin )
+			let link = this._hash_cache.get( bin )
 			if( link ) return link
 			
 			const hash = $mol_crypto_hash( bin )
 			link = this.from_bin( new Uint8Array( hash.buffer, 0, 12 ) )
-			this.hash_cache.set( bin, link )
+			this._hash_cache.set( bin, link )
 			
 			return link
 		}
@@ -130,7 +130,7 @@ namespace $ {
 			return new $hyoo_crus_link( parts.join( '_' ) )
 		}
 		
-		mix( mixin: Uint8Array | $hyoo_crus_link ) {
+		mix( mixin: Uint8Array< ArrayBuffer > | $hyoo_crus_link ) {
 			if( mixin instanceof $hyoo_crus_link ) mixin = mixin.toBin()
 			const mix = this.toBin()
 			for( let i = 0; i < mix.length; ++i ) mix[i] ^= mixin[i]

@@ -3,7 +3,7 @@ namespace $.$$ {
 		
 		@ $mol_mem
 		override gifts() {
-			return [ ... this.land().gift.keys() ]
+			return [ ... this.land()._gift.keys() ]
 				.map( link => this.Gift( new $hyoo_crus_link( link ) ) )
 		}
 		

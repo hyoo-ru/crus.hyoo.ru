@@ -43,13 +43,13 @@ namespace $ {
 		
 		static units_sizes = new Map< string, number >()
 		
-		static units_save( land: $hyoo_crus_link, units: readonly $hyoo_crus_unit[] ) {
+		static units_save( land: $hyoo_crus_link, units: readonly $hyoo_crus_unit_base[] ) {
 			
 			const descr = this.units_file( land ).open( 'create', 'read_write' )
 			try {
 				
 				const offsets = this.units_offsets( land )
-				const append = [] as $hyoo_crus_unit[]
+				const append = [] as $hyoo_crus_unit_base[]
 				
 				for( const unit of units ) {
 					const off = offsets.get( unit.path() )
@@ -65,7 +65,7 @@ namespace $ {
 				
 				let size = this.units_sizes.get( land.str ) ?? 0
 				let offset = size
-				size += append.length * $hyoo_crus_unit.size
+				size += append.length * $hyoo_crus_unit_base.size
 				descr.truncate(size)
 				this.units_sizes.set( land.str, size )
 				
@@ -100,7 +100,7 @@ namespace $ {
 				const offsets = this.units_offsets( land )
 				
 				for( let i = 0; i < units.length; ++i ) {
-					offsets.set( units[i].key(), i * $hyoo_crus_unit.size )
+					offsets.set( units[i].key(), i * $hyoo_crus_unit_base.size )
 					this.units_persisted.add( units[i] )
 				}
 				

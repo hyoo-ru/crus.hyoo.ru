@@ -6,8 +6,8 @@ namespace $ {
 			const land = $hyoo_crus_land.make({ $ })
 			const file = land.Data( $hyoo_crus_file )
 			
-			const source = new Uint8Array( 2**16 + 1 )
-			source[ 2**16 + 1 ] = 255 
+			const source = new Uint8Array( 2**15 + 1 )
+			source[ 2**15 ] = 255 
 			
 			file.buffer( source )
 			

@@ -3,7 +3,7 @@ namespace $ {
 	type json = null | boolean | number | string | { [ key in string ]: json } | readonly json[]
 	/** Supported primitive types. */
 	export type $hyoo_crus_vary_type =
-	| Uint8Array | bigint | $hyoo_crus_link
+	| Uint8Array< ArrayBuffer > | bigint | $hyoo_crus_link
 	| BigInt64Array | Float64Array
 	| $mol_time_moment | $mol_time_duration | $mol_time_interval
 	| $mol_tree2 | json | Node
@@ -35,45 +35,45 @@ namespace $ {
 	/** Universal binary package which contains some TIP and bin */
 	export type $hyoo_crus_vary_pack = {
 		tip: keyof typeof $hyoo_crus_vary_tip,
-		bin: Uint8Array,
+		bin: Uint8Array< ArrayBuffer >,
 	}
 	
 	/** Hint how to interpret Data. */
 	export enum $hyoo_crus_vary_tip {
 		
 		/** 0. No Data */
-		nil = 0b00001,
+		nil = 0b000_001,
 		/** 0. Binary */
-		bin = 0b00010,
+		bin = 0b000_010,
 		/** 1b * 32 * 8. Boolean */
-		bool = 0b00011,
+		bool = 0b000_011,
 		/** 8B. int64 */
-		int = 0b00100,
+		int = 0b000_100,
 		/** 8B. float64 */
-		real = 0b00101,
+		real = 0b000_101,
 		/** 8B * n<=4. int64 */
-		ints = 0b00110,
+		ints = 0b000_110,
 		/** 8B * n<=4. float64 */
-		reals = 0b00111,
+		reals = 0b000_111,
 		/** 12B. Link to Node/Land/Lord. */
-		link = 0b01000,
+		link = 0b001_000,
 		
 		/** String */
-		str = 0b10000,
+		str = 0b100_000,
 		/** iso8601 moment*/
-		time = 0b10001,
+		time = 0b100_001,
 		/** iso8601 duration */
-		dur = 0b10010,
+		dur = 0b100_010,
 		/** iso8601 interval */
-		range = 0b10011,
+		range = 0b100_011,
 		/** Plain Old JS Object. */
-		json = 0b10100, // json object
+		json = 0b100_100, // json object
 		/** Plain Old JS Array. */
-		jsan = 0b10101,
+		jsan = 0b100_101,
 		/** Document Object Model (xml, xhtml etc). */
-		dom = 0b10110,
+		dom = 0b100_110,
 		/** Abstract Syntax Tree. */
-		tree  = 0b10111,
+		tree  = 0b100_111,
 
 	}
 	

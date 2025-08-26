@@ -45,7 +45,7 @@ namespace $.$$ {
 		@ $mol_mem
 		pack() {
 			this.$.$mol_wait_rest()
-			return this.land().delta_pack()
+			return this.land().diff_pack()
 		}
 		
 		@ $mol_mem

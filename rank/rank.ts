@@ -37,27 +37,35 @@ namespace $ {
 		rule = 0b0_1111_0000,
 
 	}
+	
+	export function $hyoo_crus_rank_tier_of( rank: typeof $hyoo_crus_rank.Value ): $hyoo_crus_rank_tier {
+		return rank & 0b1111_0000
+	}
 
 	/** Ease of making changes, depends on fame: evil, harm, even, nice, good */
 	export enum $hyoo_crus_rank_rate {
 
 		/** Very hard challenge. Minutes to put. */
-		late = 0b0_0000,
+		late = 0b0000_0000,
 		
 		/** Hard challendge. Tens seconds to put. */
-		long = 0b0_0011,
+		long = 0b0000_0011,
 
 		/** Required some work to prevent spam. Seconds to put. */
-		slow = 0b0_0111,
+		slow = 0b0000_0111,
 
 		/** Slow mode. Hundred milliseconds to put. */
-		fast = 0b0_1011,
+		fast = 0b0000_1011,
 
 		/** No work required. As fast as possble. Milliseconds to put. */
-		just = 0b0_1111,
+		just = 0b0000_1111,
 
 	}
 	
+	export function $hyoo_crus_rank_rate_of( rank: typeof $hyoo_crus_rank.Value ): $hyoo_crus_rank_rate {
+		return rank & 0b0000_1111
+	}
+
 	export const $hyoo_crus_rank_deny = $hyoo_crus_rank_make( 'deny', 'late' )
 	export const $hyoo_crus_rank_read = $hyoo_crus_rank_make( 'read', 'late' )
 	export const $hyoo_crus_rank_rule = $hyoo_crus_rank_make( 'rule', 'just' )

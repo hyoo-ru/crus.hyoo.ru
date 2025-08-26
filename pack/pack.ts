@@ -1,39 +1,33 @@
 namespace $ {
 	
+	export const $hyoo_crus_pack_four_code = $mol_charset_encode( 'CRUS' ) // 43 52 55 53
+	export const $hyoo_crus_pack_head_size = 4/*CRUS*/ + 12/*Lord*/ + 6/*Area*/ + 2/*Size*/
+	
 	/** Universal binary package which contains some Faces/Units/Rocks */
 	export type $hyoo_crus_pack_parts = [ string, $hyoo_crus_pack_part ][]
 	
+	/**
+	 * One Land info (Faces+Units) to Pack.
+	 * Sync: +Faces -Units
+	 * Diff: -Faces +Units
+	 * Stop: -Faces -Units
+	 */
 	export class $hyoo_crus_pack_part extends Object {
 		
 		constructor(
-			public gifts = [] as $hyoo_crus_gift[],
-			public sands = [] as $hyoo_crus_sand[],
+			public units = [] as $hyoo_crus_unit[],
 			public faces = new $hyoo_crus_face_map,
 		) {
 			super()
 		}
 		
-		static from( units: $hyoo_crus_unit[], faces = new $hyoo_crus_face_map ) {
-			
-			const gifts = [] as $hyoo_crus_gift[]
-			const sands = [] as $hyoo_crus_sand[]
-			
-			for( const unit of units ) unit.choose({
-				gift: gift => gifts.push( gift ),
-				sand: sand => sands.push( sand ),
-			})
-			
-			return new this( gifts, sands, faces )
-		}
-		
-		get units() {
-			return [ ... this.gifts, ... this.sands ]
+		static from( units: $hyoo_crus_unit_base[], faces = new $hyoo_crus_face_map ) {
+			return new this( units, faces )
 		}
 		
 		*[ Symbol.iterator ]() {
 			return {
-				gifts: this.gifts,
-				sands: this.sands,
+				units: this.units,
 				faces: this.faces,
 			}
 		}
@@ -47,59 +41,37 @@ namespace $ {
 			return new Blob( [ this ], { type: 'application/vnd.hyoo_crus_pack.v1' } )
 		}
 		
-		parts( land = null as $hyoo_crus_link | null ) {
+		parts() {
 			
 			const parts = new Map< string, $hyoo_crus_pack_part >
-			if( land ) parts.set( land.str, new $hyoo_crus_pack_part )
-			
-			const balls = new Map< string, Uint8Array< ArrayBuffer > | null >()
-			const passes = new Map< string, $hyoo_crus_auth_pass >()
+			let part = null as null | $hyoo_crus_pack_part
 			
 			const buf = this.asArray()
 			
 			for( let offset = 0; offset < this.byteLength; ) {
 				
 				const kind = this.uint8( offset )
-				if( kind >>> 3 ) {
+				switch( $hyoo_crus_slot_kind[ kind ] as keyof typeof $hyoo_crus_slot_kind ) {
 					
-					if( !land ) $mol_fail( new Error( 'Land is undefined' ) )
-					
-					const sand = $hyoo_crus_sand.from(
-						buf.slice( offset, offset += $hyoo_crus_unit.size )
-					)
-					
-					parts.get( land.str )!.sands.push( sand )
-			
-					continue
-				}
-					
-				switch( kind ) {
-					
-					case $hyoo_crus_slot_kind.free: {
-						offset += $hyoo_crus_unit.size
+					case 'free': {
+						offset += 8
 						continue
 					}
 					
-					case $hyoo_crus_slot_kind.buck: {
-						offset += 128
-						continue
-					}
-					
-					case $hyoo_crus_slot_kind.land: {
+					case 'land': {
 						
 						const faces = new $hyoo_crus_face_map
-						// faces.face = this.uint32( offset ) >> 8 // Size?
 						
-						land = $hyoo_crus_link.from_bin(
+						const link = $hyoo_crus_link.from_bin(
 							new Uint8Array( buf.buffer, buf.byteOffset + offset + 4, 18 )
 						)
 						
-						const count = this.uint16( offset + 22 ) // Vers
+						const size = this.uint16( offset + 22 )
 						
 						offset += 24
 						
 						// Faces
-						for( let i = 0; i < count; ++i ) {
+						for( let i = 0; i < size; ++i ) {
 							
 							const peer = $hyoo_crus_link.from_bin(
 								new Uint8Array( buf.buffer, buf.byteOffset + offset, 6 )
@@ -107,96 +79,93 @@ namespace $ {
 							
 							const tick = this.uint16( offset + 6 )
 							const time = this.uint32( offset + 8 )
-							const mass = this.uint16( offset + 12 )
+							const summ = this.uint32( offset + 12 )
 							
 							faces.peer_time( peer.str, time, tick )
-							faces.peer_mass( peer.str, mass )
+							faces.peer_summ( peer.str, summ )
 							
-							offset += $hyoo_crus_face_size
+							offset += $hyoo_crus_face.length()
 							
 						}
-						offset = Math.ceil( offset / 8 ) * 8
 						
-						parts.set( land.str, new $hyoo_crus_pack_part( [], [], faces ) )
+						parts.set( link.str, part = new $hyoo_crus_pack_part( [], faces ) )
 						
 						continue
 					}
 					
-					case $hyoo_crus_slot_kind.gift: {
+					case 'pass': {
 						
-						if( !land ) $mol_fail( new Error( 'Land is undefined' ) )
+						if( !part ) $mol_fail( new Error( 'Land is undefined' ) )
 						
-						const unit = new $hyoo_crus_gift(
-							buf.slice( offset, offset += $hyoo_crus_unit.size ).buffer
+						const pass = $hyoo_crus_auth_pass.from(
+							buf.slice( offset, offset += 64 )
 						)
 						
-						parts.get( land.str )!.gifts.push( unit )
+						part.units.push( pass )
 						
 						continue
 					}
 					
-					case $hyoo_crus_slot_kind.ball: {
+					case 'seal': {
 						
-						const size = this.uint32( offset ) >> 8
-						if( size === 0 ) {
-							
-							const hash = $hyoo_crus_link.from_bin( buf.slice( offset + 6, offset + 6 + 18 ) )
-							balls.set( hash.str, null )
-							offset += 24
-							
-						} else {
-							
-							const ball = buf.slice( offset + 4, offset + 4 + size )
-							
-							const hash = $hyoo_crus_link.hash_bin( ball )
-							balls.set( hash.str, ball )
-							
-							const pass = new $hyoo_crus_auth_pass( ball.buffer )
-							passes.set( hash.peer().str, pass )
-							
-							offset += Math.ceil( size / 8 + .5 ) * 8
+						if( !part ) $mol_fail( new Error( 'Land is undefined' ) )
 						
+						const size = this.uint8( offset + 1 )
+						const length = $hyoo_crus_unit_seal.length( size )
+						
+						const seal = $hyoo_crus_unit_seal.from(
+							buf.slice( offset, offset += length )
+						)
+						
+						part.units.push( seal )
+						
+						continue
+					}
+					
+					case 'sand': {
+						
+						if( !part ) $mol_fail( new Error( 'Land is undefined' ) )
+						
+						const size = this.uint16( offset + 26 )
+						const length_sand = $hyoo_crus_sand.length( size )
+						const length_ball = $hyoo_crus_sand.length_ball( size )
+						
+						const sand = $hyoo_crus_sand.from(
+							buf.slice( offset, offset += length_sand )
+						)
+						
+						if( length_ball ) {
+							sand._ball = buf.slice( offset, size )
+							offset += length_sand
 						}
-						continue
 						
+						part.units.push( sand )
+						
+						continue
 					}
 					
-					default: $mol_fail( new Error( `Unknown CRUS Pack Part (${ kind.toString(2) }) at (${ offset.toString(16) })` ) )
+					case 'gift': {
+						
+						if( !part ) $mol_fail( new Error( 'Land is undefined' ) )
+						
+						const length = $hyoo_crus_gift.length()
+						const gift = $hyoo_crus_gift.from( buf.slice( offset, offset += length ) )
+						
+						part.units.push( gift )
+						
+						continue
+					}
 					
+					default:
+						$$.$mol_log3_warn({
+							place: this,
+							message: 'Unknown Kind',
+							kind,
+							offset,
+							hint: 'Try to update application',
+						})
+						return [ ... parts ]
 				}
-				
-			}
-			
-			// Revive bins from Hashes and Balls
-			for( const [,land] of parts ) {
-				
-				land.gifts = land.gifts.filter( gift => {
-					
-					const pass = passes.get( gift.pass_link().str )
-					if( !pass ) return false
-					gift.pass( pass )
-					
-					const mate = passes.get( gift.mate_link().str )
-					if( !mate ) return false
-					gift.mate( mate )
-					
-					return true
-				} )
-				
-				land.sands = land.sands.filter( sand => {
-					
-					const pass = passes.get( sand.pass_link().str )
-					if( !pass ) return false
-					sand.pass( pass )
-					
-					if( sand.size() > 32 ) {
-						const ball = balls.get( sand.hash()!.str )
-						if( !ball ) return false
-						sand.ball( ball )
-					}
-					
-					return true
-				} )
 				
 			}
 			
@@ -204,51 +173,33 @@ namespace $ {
 			
 		}
 	
-		static size( parts: $hyoo_crus_pack_parts ) {
-			
-			const passes = new Set< string >()
-			const balls = new Map< string, null | Uint8Array >()
+		static length( parts: $hyoo_crus_pack_parts ) {
 			
 			let size = 0
 			
-			for( const [,land] of parts ) {
+			for( const [ land, { units, faces } ] of parts ) {
 				
-				size += 24 // head
-				size += land.faces.size * $hyoo_crus_face_size // Faces
-				size += land.gifts.length * $hyoo_crus_gift.size // Gifts
-				size += land.sands.length * $hyoo_crus_sand.size // Sands
+				size += $hyoo_crus_pack_head_size
+				size += faces.size * $hyoo_crus_face.length()
 				
-				// Add Passes from Gifts to Balls
-				for( const gift of land.gifts ) {
+				for( const unit of units ) {
 					
-					const pass = gift.pass()
-					passes.add( pass.hash().str )
+					size += unit.byteLength
 					
-					const mate = gift.mate()
-					if( !mate ) continue
+					if( unit instanceof $hyoo_crus_auth_pass ) continue
 					
-					passes.add( mate.hash().str )
-				}
-				
-				// Add Passes from Sands to Balls
-				for( const sand of land.sands ) {
-					
-					const pass = sand.pass()
-					passes.add( pass.hash().str )
-					
-					if( sand.size() <= 32 ) continue
-					const ball = sand.ball()
-					balls.set( sand.hash()!.str, ball )
+					unit.choose({
+						gift: gift => {},
+						seal: seal => {},
+						sand: sand => {
+							if( sand.size() > $hyoo_crus_sand.size_equator ) {
+								size += sand.ball().byteLength
+							}
+						},
+					})
 					
 				}
 				
-			}
-			
-			size += passes.size * ( 64 + 8 ) // Passes
-			
-			// calc Balls
-			for( const [ hash, ball ] of balls ) {
-				size += ball ? Math.ceil( ball.length / 8 + .5 ) * 8 : 24 // content or Hash
 			}
 			
 			return size
@@ -256,85 +207,53 @@ namespace $ {
 		
 		static make( parts: $hyoo_crus_pack_parts ) {
 			
-			let size = this.size( parts )
-			if( size === 0 ) return null!
+			let length = this.length( parts )
+			if( length === 0 ) $mol_fail( new Error( 'Empty Pack' ) )
 			
-			const buff = new Uint8Array( size )
+			const buff = new Uint8Array( length )
 			const pack = new $hyoo_crus_pack( buff.buffer )
 			
 			let offset = 0
 			
 			// fill Lands
-			for( const [ id, land ] of parts ) {
+			for( const [ id, { units, faces } ] of parts ) {
 				
-				pack.uint8( offset, $hyoo_crus_slot_kind.land ) // Kind
-				// pack.uint32( offset, $hyoo_crus_part.land | ( land.faces.mass << 8 ) ) // Kind + Size?
+				// Head
+				buff.set( $hyoo_crus_pack_four_code, offset ) // 4B
 				buff.set( new $hyoo_crus_link( id ).toBin(), offset + 4 ) // Land = Lord + Area
-				pack.uint16( offset + 22, land.faces.size ) // Vers
+				pack.uint16( offset + 22, faces.size ) // Vers
 				offset += 24
 				
-				// Peer + Mass + Tick + Time for every Face
-				for( const [ peer, face ] of land.faces ) {
+				// Peer + Tick + Time + Summ for every Face
+				for( const [ peer, face ] of faces ) {
 					buff.set( new $hyoo_crus_link( peer ).toBin(), offset )
 					pack.uint16( offset + 6, face.tick )
 					pack.uint32( offset + 8, face.time )
-					pack.uint16( offset + 12, face.mass )
-					offset += $hyoo_crus_face_size
+					pack.uint32( offset + 12, face.summ )
+					offset += $hyoo_crus_face.length()
 				}
 				
-				// Gifts
-				for( const gift of land.gifts ) {
-					buff.set( gift.asArray(), offset )
-					offset += gift.byteLength
-				}
-				
-				// Sands
-				for( const sand of land.sands ) {
-					buff.set( sand.asArray(), offset )
-					offset += sand.byteLength
-				}
-				
-			}
-			
-			const balls = new Map< string, null | Uint8Array >()
-			
-			// collect Balls
-			for( const [,land] of parts ) {
-				
-				for( const gift of land.gifts ) {
+				// Units + Balls
+				for( const unit of units ) {
 					
-					const pass = gift.pass()
-					balls.set( pass.hash().str, pass.asArray() )
+					buff.set( unit.asArray(), offset )
+					offset += unit.byteLength
 					
-					const mate = gift.mate()
-					if( !mate ) continue
+					if( unit instanceof $hyoo_crus_auth_pass ) continue
 					
-					balls.set( mate.hash().str, mate.asArray() )
-				}
-				
-				for( const sand of land.sands ) {
-					
-					const pass = sand.pass()
-					balls.set( pass.hash().str, pass.asArray() )
-					
-					if( sand.size() <= 32 ) continue
-					const ball = sand.ball()
-					balls.set( sand.hash()!.str, ball )
+					unit.choose({
+						gift: gift => {},
+						seal: seal => {},
+						sand: sand => {
+							if( sand.size() > $hyoo_crus_sand.size_equator ) {
+								buff.set( sand.ball(), offset )
+								offset += $hyoo_crus_sand.length_ball( sand.size() )
+							}
+						},
+					})
 					
 				}
 				
-			}
-			
-			// fill Balls
-			for( const [ hash, ball ] of balls ) {
-				
-				const len = ball?.length ?? 0
-				pack.uint32( offset, $hyoo_crus_slot_kind.ball | ( len << 8 ) ) // Kind + Size
-				
-				if( ball ) buff.set( ball, offset + 4 ) // content
-				else buff.set( new $hyoo_crus_link( hash ).toBin(), offset + 6 ) // Hash
-			
-				offset += ball ? Math.ceil( len / 8 + .5 ) * 8 : 24
 			}
 			
 			return pack

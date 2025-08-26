@@ -27,6 +27,8 @@ namespace $ {
 			return this.hash().peer()
 		}
 		
+		[ Symbol.toStringTag ] = '🎫' + this.hash().str
+		
 	}
 
 	/** Private key generated with Proof of Work */
@@ -60,9 +62,10 @@ namespace $ {
 		
 		static async generate() {
 			for( let i = 0; i < 4096; ++i ) {
-				const auth = await super.generate()
-				if( auth.uint8(0) !== 0b1111_1111 ) continue
-				return this.from( auth )
+				const auth = this.from( await super.generate() )
+				if( auth.uint8(0) !== 0xFF ) continue
+				if( /[æÆ]/.test( auth.pass().lord().str ) ) continue
+				return auth
 			}
 			$mol_fail( new Error( `Too long key generation` ) )
 		}
@@ -76,6 +79,8 @@ namespace $ {
 		secret_mutual( pub: $mol_crypto_key_public ) {
 			return $mol_wire_sync( $mol_crypto_sacred_shared )( this, pub )
 		}
+		
+		[ Symbol.toStringTag ] = '🔑' + this.pass().hash().str
 		
 	}
 	

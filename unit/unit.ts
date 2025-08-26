@@ -3,47 +3,112 @@ namespace $ {
 	/** Kind of Unit */
 	export enum $hyoo_crus_unit_kind {
 		
-		/** Rights sharing. More power wins. */
+		/** Unit of data. */
+		sand = $hyoo_crus_slot_kind.sand,
+		
+		/** Rights/Keys sharing. */
 		gift = $hyoo_crus_slot_kind.gift,
 		
-		/** Changeable data. Last writes wins. */
-		sand = $hyoo_crus_slot_kind.sand,
+		/** Sign for hash list. */
+		seal = $hyoo_crus_slot_kind.seal,
 		
 	}
 	
-	export let $hyoo_crus_unit_trusted = new WeakSet< $hyoo_crus_unit >()
+	export let $hyoo_crus_unit_trusted = new WeakSet< $hyoo_crus_unit_base >()
 	
-	/** Minimal independent stable part of information. Actually it's edge between nodes in graph model */
-	export class $hyoo_crus_unit extends $mol_buffer {
+	export function $hyoo_crus_unit_trusted_grant( unit: $hyoo_crus_unit ) {
+		if( unit instanceof $hyoo_crus_auth_pass ) return
+		$hyoo_crus_unit_trusted.add( unit )
+	}
+	
+	export function $hyoo_crus_unit_trusted_check( unit: $hyoo_crus_unit ) {
+		if( unit instanceof $hyoo_crus_auth_pass ) return true
+		return $hyoo_crus_unit_trusted.has( unit )
+	}
+	
+	export type $hyoo_crus_unit = $hyoo_crus_unit_base | $hyoo_crus_auth_pass
+	
+	export function $hyoo_crus_unit_sort( units: readonly $hyoo_crus_unit[] ) {
 		
-		static size = 128 as const
-				
+		const nodes = new Map< string, $hyoo_crus_unit >()
+		const graph = new $mol_graph< string, void >()
+		
+		for( const unit of units ) {
+			
+			const self = unit.hash().str
+			nodes.set( self, unit )
+			
+			if( unit instanceof $hyoo_crus_auth_pass ) continue
+			
+			graph.link( self, unit.lord().str )
+			
+			unit.choose({
+				gift: gift => {
+					graph.link( self, '' )
+					graph.link( gift.mate().str, self )
+				},
+				sand: sand => {},
+				seal: seal => {
+					for( const hash of seal.hash_list() ) {
+						graph.link( hash.str, self )
+					}
+				}
+			})
+			
+			graph.link( self, unit.lord().str )
+			graph.link( self, '' )
+			
+		}
+		
+		graph.acyclic( ()=> 1 )
+		
+		return [ ... graph.sorted ].map( key => nodes.get( key )! ).filter( Boolean )
+
+	}
+	
+	/** Minimal independent stable part of information. */
+	export class $hyoo_crus_unit_base extends $mol_buffer {
+		
 		/**
-		 * Compare Units on timeline ( right - left )
-		 * Priority: time > peer > tick
+		 * Compare Seals on timeline ( right - left )
+		 * Priority: time > lord > tick
 		 */
 		static compare(
-			left: $hyoo_crus_unit,
-			right: $hyoo_crus_unit,
+			left: $hyoo_crus_unit_base | undefined,
+			right: $hyoo_crus_unit_base | undefined,
 		) {
+			
+			if( !left && !right ) return 0
+			if( !left ) return +1
+			if( !right ) return -1
+			
 			return ( right.time() - left.time() )
-				|| $hyoo_crus_link_compare( left.pass().hash(), right.pass().hash() )
+				|| $hyoo_crus_link_compare( left.lord(), right.lord() )
 				|| ( right.tick() - left.tick() )
+			
+		}
+		
+		static narrow( buf: ArrayBuffer ) {
+			const kind = $hyoo_crus_unit_kind[ new $mol_buffer( buf ).uint8( 0 ) ] as keyof typeof $hyoo_crus_unit_kind
+			const Type = {
+				sand: $hyoo_crus_sand,
+				gift: $hyoo_crus_gift,
+				seal: $hyoo_crus_unit_seal,
+			}[ kind ]
+			return new Type( buf )
 		}
 
 		constructor(
-			buffer = new ArrayBuffer( $hyoo_crus_unit.size ),
+			buffer: ArrayBuffer,
 			byteOffset = 0,
 			byteLength = buffer.byteLength,
 		) {
 			super( buffer, byteOffset, byteLength )
 		}
 		
-		kind(): keyof typeof $hyoo_crus_unit_kind {
+		kind( next?: keyof typeof $hyoo_crus_unit_kind ): keyof typeof $hyoo_crus_unit_kind {
 			
-			const val = this.uint8( 0 )
-			if( !val ) $mol_fail( new Error( `Empty unit` ) )
-			if( ( val & 1 ) === 0 ) return 'sand'
+			const val = this.uint8( 0, next && $hyoo_crus_unit_kind[ next ] )
 			
 			const kind = $hyoo_crus_unit_kind[ val ] as keyof typeof $hyoo_crus_unit_kind
 			if( kind ) return kind
@@ -54,26 +119,13 @@ namespace $ {
 		choose< Res >( ways: {
 			gift: ( unit: $hyoo_crus_gift )=> Res,
 			sand: ( unit: $hyoo_crus_sand )=> Res,
+			seal: ( unit: $hyoo_crus_unit_seal )=> Res,
 		} ) {
-			const way = this.kind()
-			const Unit = {
-				gift: $hyoo_crus_gift,
-				sand: $hyoo_crus_sand,
-			}[ way ]
-			if( this instanceof Unit ) return ways[ way ]( this as any )
-			const unit = new Unit( this.buffer, this.byteOffset, this.byteLength ) as any
-			return ways[ way ]( unit )
-		}
-		
-		narrow() {
-			return this.choose< $hyoo_crus_gift | $hyoo_crus_sand >({
-				sand: unit => unit,
-				gift: unit => unit,
-			})
+			return ways[ this.kind() ]( this as any )
 		}
 		
 		path(): string {
-			return this.narrow().path()
+			throw new Error( 'Unimplemented' )
 		}
 		
 		id6( offset: number, next?: $hyoo_crus_link ) {
@@ -98,31 +150,21 @@ namespace $ {
 			}
 		}
 		
-		id18( offset: number, next?: $hyoo_crus_link ) {
-			if( next === undefined ) {
-				return $hyoo_crus_link.from_bin( new Uint8Array( this.buffer, this.byteOffset + offset, 18 ) )
-			} else {
-				const bin = next.toBin()
-				if( bin.byteLength !== 18 ) $mol_fail( new Error( `Wrong Link size (${ next })` ) )
-				this.asArray().set( bin, this.byteOffset + offset )
-				return next
-			}
-		}
-		
 		/** Seconds from UNIX epoch */
 		time( next?: number ) {
 			return this.uint32( 4, next )
 		}
 		
-		moment( next?: $mol_time_moment ) {
-			if( next ) this.time( Math.floor( next.valueOf() / 1000 ) )
-			return new $mol_time_moment( this.time() * 1000 )
+		moment() {
+			return new $mol_time_moment( Number( this.time() * 1000 ) )
 		}
 		
+		/** Step in transaction */
 		tick( next?: number ) {
 			return this.uint16( 2, next )
 		}
 		
+		/** Monotonic Real+Logic Time */
 		time_tick( next?: number ) {
 			if( !next ) return this.tick() + this.time() * 2**16
 			this.tick( next % 2**16 )
@@ -130,57 +172,21 @@ namespace $ {
 			return next
 		}
 		
-		pass_link( next?: $hyoo_crus_link ) {
-			return this.id6( 8, next )
+		lord( next?: $hyoo_crus_link ) {
+			return this.id12( 8, next )
 		}
 		
-		_pass!: $hyoo_crus_auth_pass
-		pass( next?: $hyoo_crus_auth_pass ) {
-			if( next === undefined ) return this._pass
-			this.pass_link( next.peer() )
-			return this._pass = next
-		}
-		
+		/** Unique number for encryption */
 		salt() {
-			return new Uint8Array( this.buffer, this.byteOffset, 16 )
+			return new Uint8Array( this.buffer, this.byteOffset + 2, 16 ) /* tick(2), time(4), lord(10) */
 		}
 		
-		sens( next?: ArrayLike< number > ) {
-			const prev = new Uint8Array( this.buffer, this.byteOffset, 64 )
-			if( next ) prev.set( next )
-			return prev
+		hash() {
+			return $hyoo_crus_link.hash_bin( this.asArray() )
 		}
 		
-		sign( next?: ArrayLike< number > ) {
-			const prev = new Uint8Array( this.buffer, this.byteOffset + 64, 64 )
-			if( next ) prev.set( next )
-			return prev
-		}
-		
-		signed() {
-			return this.sign().some( b => b )
-		}
-		
-		work() {
-			
-			if( !this.signed() ) {
-				return $hyoo_crus_rank_rate.just
-			}
-			
-			const sign = this.sign()
-			let int = sign[0] | ( sign[1] << 8 )
-			
-			let count = 0
-			while( int & 1 ) {
-				int >>>= 1
-				++ count
-			}
-			
-			return count
-		}
-		
-		rank_min() {
-			return $hyoo_crus_rank_rule
+		tier_min() {
+			return $hyoo_crus_rank_tier.rule
 		}
 		
 		_land = null as null | $hyoo_crus_land

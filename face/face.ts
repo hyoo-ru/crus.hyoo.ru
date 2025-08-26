@@ -2,20 +2,22 @@ namespace $ {
 	
 	export type $hyoo_crus_face_data = Iterable< readonly [ peer: string, face: $hyoo_crus_face ] >
 	
-	export const $hyoo_crus_face_size = 16 // bytes per face
-	
 	export class $hyoo_crus_face extends Object {
+		
+		static length() {
+			return 16 as const
+		}
 		
 		constructor(
 			public time = 0,
 			public tick = 0,
-			public mass = 0,
+			public summ = 0,
 		) {
 			super()
 		}
 		
 		clone() {
-			return new $hyoo_crus_face( this.time, this.tick, this.mass )
+			return new $hyoo_crus_face( this.time, this.tick, this.summ )
 		}
 		
 		get moment() {
@@ -35,8 +37,8 @@ namespace $ {
 			}
 		}
 		
-		sync_mass( mass: number ) {
-			if( this.mass < mass ) this.mass = mass
+		sync_summ( summ: number ) {
+			if( this.summ < summ ) this.summ = summ
 		}
 		
 		[ $mol_dev_format_head ]() {
@@ -46,7 +48,7 @@ namespace $ {
 				$mol_dev_format_shade(
 					' ', $hyoo_crus_time_dump( this.time ),
 					' #', this.tick,
-					' @', this.mass,
+					' @', this.summ,
 				)
 			)
 			
@@ -58,7 +60,7 @@ namespace $ {
 	export class $hyoo_crus_face_map extends Map< string, $hyoo_crus_face > {
 		
 		/** Cumulative face for all peers. */
-		face = new $hyoo_crus_face
+		stat = new $hyoo_crus_face
 		
 		constructor(
 			entries?: $hyoo_crus_face_data
@@ -74,10 +76,10 @@ namespace $ {
 		
 		/** Synchronize this clock with another. */
 		sync( right: $hyoo_crus_face_data ) {
-			if( right instanceof $hyoo_crus_face_map ) this.face = right.face.clone()
+			if( right instanceof $hyoo_crus_face_map ) this.stat = right.stat.clone()
 			for( const [ peer, face ] of right ) {
 				this.peer_time( peer, face.time, face.tick )
-				this.peer_mass( peer, face.mass )
+				this.peer_summ( peer, face.summ )
 			}
 		}
 		
@@ -88,7 +90,7 @@ namespace $ {
 			tick: number,
 		) {
 			
-			this.face.sync_time( time, tick )
+			this.stat.sync_time( time, tick )
 			
 			let prev = this.get( peer )
 			if( prev ) prev.sync_time( time, tick )
@@ -96,40 +98,40 @@ namespace $ {
 			
 		}
 		
-		/** Update max mass for peer. */
-		peer_mass(
+		/** Update Summ for Peer. */
+		peer_summ(
 			peer: string,
-			mass: number,
+			summ: number,
 		) {
 			
-			this.face.sync_mass( mass )
+			this.stat.sync_summ( summ )
 			
 			let prev = this.get( peer )
-			if( prev ) prev.sync_mass( mass )
-			else this.set( peer, new $hyoo_crus_face( 0, 0, mass ) )
+			if( prev ) prev.sync_summ( summ )
+			else this.set( peer, new $hyoo_crus_face( 0, 0, summ ) )
 			
 		}
 		
-		peer_mass_shift(
+		peer_summ_shift(
 			peer: string,
 			diff: number,
 		) {
-			this.peer_mass( peer, ( this.get( peer )?.mass ?? 0 ) + diff )
+			this.peer_summ( peer, ( this.get( peer )?.summ ?? 0 ) + diff )
 		}
 		
 		/** Generates new time for peer that greater then other seen. */
 		@ $mol_action
 		tick() {
 			const now = $hyoo_crus_time_now()
-			if( this.face.time < now ) {
-				this.face.time = now
-				this.face.tick = 0
+			if( this.stat.time < now ) {
+				this.stat.time = now
+				this.stat.tick = 0
 			} else {
-				this.face.tick += 1
-				this.face.tick %= 2**16
-				if( !this.face.tick ) ++ this.face.time
+				this.stat.tick += 1
+				this.stat.tick %= 2**16
+				if( !this.stat.tick ) ++ this.stat.time
 			}
-			return this.face
+			return this.stat
 		}
 
 		[ $mol_dev_format_head ]() {
@@ -137,7 +139,7 @@ namespace $ {
 			return $mol_dev_format_span( {},
 				$mol_dev_format_native( this ),
 				' ',
-				$mol_dev_format_auto( this.face ),
+				$mol_dev_format_auto( this.stat ),
 			)
 			
 		}

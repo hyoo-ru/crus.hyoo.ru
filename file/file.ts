@@ -42,14 +42,14 @@ namespace $ {
 		}
 		
 		/** Solid byte buffer. */
-		buffer( next?: Uint8Array ) {
+		buffer( next?: Uint8Array< ArrayBuffer > ) {
 			
 			if( next ) {
 				
 				const chunks = [] as Uint8Array[]
 				
 				for( let offset = 0; offset < next.byteLength; ) {
-					chunks.push( next.slice( offset, offset += 2**16 ) ) // split by 64 KB
+					chunks.push( next.slice( offset, offset += 2**15 ) ) // split by 32 KB
 				}
 				
 				this.chunks( chunks )
@@ -74,7 +74,7 @@ namespace $ {
 			
 		}
 		
-		chunks( next?: readonly ( Uint8Array | null )[] ) {
+		chunks( next?: readonly ( Uint8Array< ArrayBuffer > | null )[] ) {
 			return this.Chunks( next )?.items( next )?.filter( $mol_guard_defined ) ?? []
 		}
 		

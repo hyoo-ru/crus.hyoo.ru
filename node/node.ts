@@ -94,7 +94,7 @@ namespace $ {
 			const peers = new Set< $hyoo_crus_auth_pass >()
 			
 			const visit = ( sand: $hyoo_crus_sand )=> {
-				peers.add( sand.pass() )
+				peers.add( sand.lord_pass() )
 				if( sand.tag() === 'term' ) return
 				land.Node( $hyoo_crus_node ).Item( sand.self() ).units_of( null ).forEach( visit )
 			}

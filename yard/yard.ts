@@ -195,8 +195,7 @@ namespace $ {
 				
 				for( const [ land, part ] of parts ) {
 					
-					if( part.gifts.length ) break forget
-					if( part.sands.length ) break forget
+					if( part.units.length ) break forget
 					if( part.faces.size ) break forget
 					if( !this.port_lands_active( port ).has( land ) ) break forget
 					
@@ -237,7 +236,8 @@ namespace $ {
 				port_faces.sync( faces )
 			
 				for( let unit of part.units ) {
-					port_faces.peer_time( unit.pass().peer().str, unit.time(), unit.tick() )
+					if( unit instanceof $hyoo_crus_auth_pass ) continue
+					port_faces.peer_time( unit.lord().peer().str, unit.time(), unit.tick() )
 				}
 				
 			}
@@ -257,11 +257,11 @@ namespace $ {
 		forget_land( land: $hyoo_crus_land ) {
 			
 			const faces = new $hyoo_crus_face_map
-			faces.face = land.faces.face.clone()
+			faces.stat = land.faces.stat.clone()
 			
 			const pack = $hyoo_crus_pack.make([[
 				land.link().str,
-				new $hyoo_crus_pack_part( [], [], faces )
+				new $hyoo_crus_pack_part( [], faces )
 			]]).asArray()
 			
 			for( const port of this.ports() ) {
@@ -295,17 +295,17 @@ namespace $ {
 				const Land = this.$.$hyoo_crus_glob.Land( land )
 				Land.saving()
 				
-				const parts = Land.delta_parts( faces )
-				if( !parts ) return
+				const pack = Land.diff_pack( faces )
+				if( !pack ) return
 				
 				if( this.$.$hyoo_crus_log() ) this.$.$mol_log3_rise({
 					place: this,
 					message: 'Send Unit',
 					port: $mol_key( port ),
-					parts: parts,
+					pack,
 				})
 				
-				port.send_bin( $hyoo_crus_pack.make( parts ).asArray() )
+				port.send_bin( pack.asArray() )
 				faces.sync( Land.faces )
 			
 			} catch( error ) {
@@ -326,7 +326,7 @@ namespace $ {
 				land: land,
 				faces: Land.faces,
 			})
-			port.send_bin( Land.faces_pack().asArray() )
+			port.send_bin( Land.face_pack().asArray() )
 		}
 		
 		@ $mol_mem_key

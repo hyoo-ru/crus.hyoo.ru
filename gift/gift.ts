@@ -6,9 +6,9 @@ namespace $ {
 		const graph = new $mol_graph< string, void >()
 		
 		for( const gift of gifts ) {
-			const key = gift.mate()?.lord().str ?? ''
+			const key = gift.mate().str
 			dict.set( key, gift )
-			graph.link( key, gift.pass().lord().str )
+			graph.link( key, gift.lord().str )
 			graph.link( key, '' )
 		}
 		
@@ -20,11 +20,23 @@ namespace $ {
 	}
 	
 	/** Given Rank and Secret */
-	export class $hyoo_crus_gift extends $hyoo_crus_unit {
+	export class $hyoo_crus_gift extends $hyoo_crus_unit_base {
+		
+		static length() {
+			return 48
+		}
+		
+		@ $mol_action
+		static make() {
+			const sand = this.from( this.length() )
+			sand.kind( 'gift' )
+			return sand
+		}
 		
 		rank( next?: typeof $hyoo_crus_rank.Value ) {
 			
 			if( next !== undefined ) this.uint8( 0, $hyoo_crus_unit_kind.gift )
+			
 			const res = this.uint8( 1, next ) as typeof $hyoo_crus_rank.Value
 			
 			if( res < $hyoo_crus_rank_deny || res > $hyoo_crus_rank_rule ) {
@@ -34,53 +46,63 @@ namespace $ {
 			return res
 		}
 		
-		mate_link( next?: $hyoo_crus_link ) {
-			return this.id18( 32, next )
+		tier() {
+			return ( this.rank() & $hyoo_crus_rank_tier.rule ) as $hyoo_crus_rank_tier
 		}
 		
-		_mate = null as $hyoo_crus_auth_pass | null
-		mate( next?: $hyoo_crus_auth_pass ) {
-			if( next === undefined ) return this._mate
-			this.mate_link( $hyoo_crus_link.hash_bin( next ) )
-			return this._mate = next
+		rate() {
+			return ( this.rank() & $hyoo_crus_rank_rate.just ) as $hyoo_crus_rank_rate
+		}
+		
+		mate( next?: $hyoo_crus_link ) {
+			return this.id12( 20, next )
 		}
 		
 		path(): string {
-			return `gift:${ this.mate()?.lord() ?? '' }`
+			return `gift:${ this.mate() }`
 		}
 		
-		bill() {
-			return new Uint8Array( this.buffer, this.byteOffset + 16, 16 )
+		_code!: Uint8Array< ArrayBuffer >
+		code() {
+			return this._code ?? ( this._code = new Uint8Array( this.buffer, this.byteOffset + 32, 16 ) )
+		}
+		
+		code_exists() {
+			return this.code().some( b => b )
 		}
 		
 		dump() {
 			return {
 				kind: this.kind(),
-				peer: this.pass().peer(),
-				dest: this.mate(),
-				tier: $hyoo_crus_rank_tier[ this.rank() &~ $hyoo_crus_rank_rate.just ],
-				work: this.work(),
-				time: $hyoo_crus_time_dump( this.time() ),
+				lord: this.lord(),
+				mate: this.mate(),
+				tier: $hyoo_crus_rank_tier[ this.tier() ],
+				rate: this.rate(),
+				time: this.moment().toString( 'YYYY-MM-DD hh:mm:ss' ),
 			}
 		}
 		
-		rank_min() {
-			return $hyoo_crus_rank( $hyoo_crus_rank_rule | ( $hyoo_crus_rank_rate.just - this.work() ) )
+		tier_min() {
+			return $hyoo_crus_rank_tier.rule
 		}
 		
 		[ $mol_dev_format_head ]() {
 			return $mol_dev_format_span( {} ,
 				$mol_dev_format_native( this ) ,
 				' ',
-				$mol_dev_format_auto( this.pass_link() ),
+				$mol_dev_format_auto( this.lord() ),
 				' 🏅 ',
-				$mol_dev_format_auto( this.mate()?.peer() ?? $hyoo_crus_link.hole ),
-				this.bill().some( v => v ) ? ' 🔐' : ' 👀',
-				$hyoo_crus_rank_tier[ this.rank() &~ $hyoo_crus_rank_rate.just ],
+				$mol_dev_format_auto( this.mate() ),
+				this.code().some( v => v ) ? ' 🔐' : ' 👀',
+				$hyoo_crus_rank_tier[ this.tier() ],
 				':',
-				this.rank() & $hyoo_crus_rank_rate.just,
+				this.rate(),
 				' ',
-				$mol_dev_format_shade( $hyoo_crus_time_dump( this.time() ) ),
+				$mol_dev_format_shade(
+					this.moment().toString( 'YYYY-MM-DD hh:mm:ss' ),
+					' #',
+					this.tick(),
+				),
 			)
 		}
 		

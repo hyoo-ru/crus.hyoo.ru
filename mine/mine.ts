@@ -1,4 +1,7 @@
 namespace $ {
+	
+	export type $hyoo_crus_mine_diff = { ins: $hyoo_crus_unit[], del: $hyoo_crus_unit[] }
+	
 	export class $hyoo_crus_mine extends $mol_object {
 		
 		@ $mol_mem_key
@@ -12,32 +15,25 @@ namespace $ {
 			return $hyoo_crus_link.hole
 		}
 		
-		unit_updates = 0
-		unit_appends = 0
-		rock_writes = 0
+		unit_deletes = 0
+		unit_inserts = 0
 		
-		/**  BLOB identified by Hash */
-		@ $mol_mem_key
-		ball( hash: $hyoo_crus_link, next?: Uint8Array | null ): Uint8Array | null {
-			$mol_wire_solid()
-			return next ?? null
-		}
+		ball_inserts = 0
+		ball_deletes = 0
 		
 		units_persisted = new WeakSet< $hyoo_crus_unit >()
 		
-		/** Sync loads/saves units. */
-		units( next?: $hyoo_crus_unit[] ) {
-			if( next ) return $mol_wire_sync( this ).units_save( next ), next
-			else return $mol_wire_sync( this ).units_load()
+		/** Updates Units in storage */
+		units_save( diff: $hyoo_crus_mine_diff ): void {}
+		
+		/** Loads Units from storage */
+		units_load(): readonly $hyoo_crus_unit[] {
+			return []
 		}
 		
-		/** Loads units from storage */
-		async units_load() {
-			return [] as $hyoo_crus_unit[]
-		}
-		
-		/** Saves units to storage */
-		async units_save( units: $hyoo_crus_unit[] ) {
+		/** Loads Ball from storage */
+		ball_load( path: string ): Uint8Array< ArrayBuffer > {
+			return null!
 		}
 		
 	}
