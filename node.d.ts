@@ -6,6 +6,7 @@ declare class $ extends _$_ {
 declare namespace $ {
     export type $ = typeof $$;
     export class $$ extends $ {
+        static $: $;
     }
     namespace $$ {
         type $$ = $;
@@ -696,24 +697,6 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    class $mol_rest_port_webrtc extends $mol_rest_port {
-        channel: RTCDataChannel;
-        send_bin(data: Uint8Array<ArrayBuffer>): void;
-        send_text(data: string): void;
-    }
-}
-
-declare namespace $ {
-    export function $mol_wire_async<Host extends object>(obj: Host): ObjectOrFunctionResultPromisify<Host>;
-    type FunctionResultPromisify<Some> = Some extends (...args: infer Args) => infer Res ? Res extends PromiseLike<unknown> ? Some : (...args: Args) => Promise<Res> : Some;
-    type MethodsResultPromisify<Host extends Object> = {
-        [K in keyof Host]: FunctionResultPromisify<Host[K]>;
-    };
-    type ObjectOrFunctionResultPromisify<Some> = (Some extends (...args: any) => unknown ? FunctionResultPromisify<Some> : {}) & (Some extends Object ? MethodsResultPromisify<Some> : Some);
-    export {};
-}
-
-declare namespace $ {
     class $mol_state_arg extends $mol_object {
         prefix: string;
         static prolog: string;
@@ -742,7 +725,6 @@ declare namespace $ {
 declare namespace $ {
     class $mol_rest_resource extends $mol_object {
         REQUEST(msg: $mol_rest_message): any;
-        OPTIONS(msg: $mol_rest_message): Promise<void>;
         OPEN(msg: $mol_rest_message): void;
         CLOSE(msg: $mol_rest_message): void;
         HEAD(msg: $mol_rest_message): void;
@@ -817,6 +799,16 @@ declare namespace $ {
     class $mol_memo extends $mol_wrapper {
         static wrap<This extends object, Value>(task: (this: This, next?: Value) => Value): (this: This, next?: Value) => Value | undefined;
     }
+}
+
+declare namespace $ {
+    export function $mol_wire_async<Host extends object>(obj: Host): ObjectOrFunctionResultPromisify<Host>;
+    type FunctionResultPromisify<Some> = Some extends (...args: infer Args) => infer Res ? Res extends PromiseLike<unknown> ? Some : (...args: Args) => Promise<Res> : Some;
+    type MethodsResultPromisify<Host extends Object> = {
+        [K in keyof Host]: FunctionResultPromisify<Host[K]>;
+    };
+    type ObjectOrFunctionResultPromisify<Some> = (Some extends (...args: any) => unknown ? FunctionResultPromisify<Some> : {}) & (Some extends Object ? MethodsResultPromisify<Some> : Some);
+    export {};
 }
 
 declare namespace $ {

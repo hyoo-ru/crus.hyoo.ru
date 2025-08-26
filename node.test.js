@@ -227,7 +227,7 @@ var $;
             if (typeof val === 'function') {
                 return $mol_dev_format_native(val);
             }
-            if (Error.isError(val)) {
+            if (val instanceof Error) {
                 return $mol_dev_format_span({}, $mol_dev_format_native(val), ' ', $mol_dev_format_button('throw', () => $mol_fail_hidden(val)));
             }
             if (val instanceof Promise) {
@@ -1118,7 +1118,7 @@ var $;
 var $;
 (function ($) {
     function $mol_log3_area_lazy(event) {
-        const self = this;
+        const self = this.$;
         const stack = self.$mol_log3_stack;
         const deep = stack.length;
         let logged = false;
@@ -2739,62 +2739,6 @@ var $;
 
 ;
 "use strict";
-var $;
-(function ($) {
-    class $mol_rest_port_webrtc extends $mol_rest_port {
-        channel;
-        send_bin(data) {
-            if (this.channel.readyState !== "open")
-                return;
-            this.channel.send(data);
-        }
-        send_text(data) {
-            if (this.channel.readyState !== "open")
-                return;
-            this.channel.send(data);
-        }
-    }
-    __decorate([
-        $mol_action
-    ], $mol_rest_port_webrtc.prototype, "send_bin", null);
-    __decorate([
-        $mol_action
-    ], $mol_rest_port_webrtc.prototype, "send_text", null);
-    $.$mol_rest_port_webrtc = $mol_rest_port_webrtc;
-})($ || ($ = {}));
-
-;
-"use strict";
-var $;
-(function ($) {
-    function $mol_wire_async(obj) {
-        let fiber;
-        const temp = $mol_wire_task.getter(obj);
-        return new Proxy(obj, {
-            get(obj, field) {
-                const val = obj[field];
-                if (typeof val !== 'function')
-                    return val;
-                let fiber;
-                const temp = $mol_wire_task.getter(val);
-                return function $mol_wire_async(...args) {
-                    fiber?.destructor();
-                    fiber = temp(obj, args);
-                    return fiber.async();
-                };
-            },
-            apply(obj, self, args) {
-                fiber?.destructor();
-                fiber = temp(self, args);
-                return fiber.async();
-            },
-        });
-    }
-    $.$mol_wire_async = $mol_wire_async;
-})($ || ($ = {}));
-
-;
-"use strict";
 
 ;
 "use strict";
@@ -2907,47 +2851,6 @@ var $;
                 return this[field]().REQUEST(msg2);
             }
             return $mol_wire_sync(this)[msg.method()](msg);
-        }
-        async OPTIONS(msg) {
-            if (msg.type() !== 'application/sdp')
-                return msg.reply(null);
-            const { RTCPeerConnection } = await import('node-datachannel/polyfill');
-            const connection = new RTCPeerConnection;
-            const channel = connection.createDataChannel(msg.uri().toString(), { negotiated: true, id: 0 });
-            const port = $mol_rest_port_webrtc.make({ channel });
-            $mol_wire_sync(this.$).$mol_log3_come({
-                place: this,
-                message: 'OPEN',
-                url: msg.uri(),
-                port: $mol_key(port),
-            });
-            $mol_wire_sync(this).REQUEST(msg.derive('OPEN', null));
-            channel.onmessage = event => {
-                const message = msg.derive('POST', event.data);
-                message.port = port;
-                this.$.$mol_log3_rise({
-                    place: this,
-                    message: message.method(),
-                    url: message.uri(),
-                    port: $mol_key(port),
-                });
-                $mol_wire_async(this).POST(message);
-            };
-            channel.onclose = () => {
-                this.$.$mol_log3_done({
-                    place: this,
-                    message: 'CLOSE',
-                    url: msg.uri(),
-                    port: $mol_key(port),
-                });
-                $mol_wire_sync(this).REQUEST(msg.derive('CLOSE', null));
-            };
-            const sdp = await $mol_wire_async(msg).text();
-            await connection.setRemoteDescription({ sdp, type: 'offer' });
-            connection.setLocalDescription({ type: 'answer' });
-            await new Promise(done => connection.onicecandidate = ({ candidate }) => done(candidate));
-            msg.port.send_type('application/sdp');
-            msg.port.send_text(connection.localDescription.sdp);
         }
         OPEN(msg) { }
         CLOSE(msg) { }
@@ -3224,6 +3127,36 @@ var $;
         }
     }
     $.$mol_memo = $mol_memo;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    function $mol_wire_async(obj) {
+        let fiber;
+        const temp = $mol_wire_task.getter(obj);
+        return new Proxy(obj, {
+            get(obj, field) {
+                const val = obj[field];
+                if (typeof val !== 'function')
+                    return val;
+                let fiber;
+                const temp = $mol_wire_task.getter(val);
+                return function $mol_wire_async(...args) {
+                    fiber?.destructor();
+                    fiber = temp(obj, args);
+                    return fiber.async();
+                };
+            },
+            apply(obj, self, args) {
+                fiber?.destructor();
+                fiber = temp(self, args);
+                return fiber.async();
+            },
+        });
+    }
+    $.$mol_wire_async = $mol_wire_async;
 })($ || ($ = {}));
 
 ;
