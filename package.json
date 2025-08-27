@@ -187,6 +187,7 @@
     "$mol_tree2_xml",
     "$mol_hash_string",
     "$mol_hash",
+    "$mol_hash_numbers",
     "$mol_reconcile",
     "$mol_type_override",
     "$hyoo_crus_fund",
