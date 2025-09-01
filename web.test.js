@@ -2331,7 +2331,7 @@ var $;
             const Alice = await $$.$mol_crypto_key_private.generate();
             const data = new Uint8Array([1, 2, 3]);
             const sign = await Alice.sign(data);
-            $mol_assert_ok(await Alice.public().verify(data, sign));
+            $mol_assert_equal(true, await Alice.public().verify(data, sign));
         },
         async 'verify signed with str exported auto generated key'() {
             const Alice = await $$.$mol_crypto_key_private.generate();
@@ -2339,9 +2339,9 @@ var $;
             const Bella = $mol_crypto_key_private.from(Alice.toString());
             const sign = await Bella.sign(data);
             const Catie = $mol_crypto_key_public.from(Alice.public().toString());
-            $mol_assert_ok(await Catie.verify(data, sign));
+            $mol_assert_equal(true, await Catie.verify(data, sign));
             const Diana = $mol_crypto_key_public.from(Alice.toString());
-            $mol_assert_ok(await Diana.verify(data, sign));
+            $mol_assert_equal(true, await Diana.verify(data, sign));
         },
         async 'verify signed with bin exported auto generated key'() {
             const Alice = await $$.$mol_crypto_key_private.generate();
@@ -2349,9 +2349,9 @@ var $;
             const Bella = $mol_crypto_key_private.from(Alice.asArray());
             const sign = await Bella.sign(data);
             const Catie = $mol_crypto_key_public.from(Alice.public().asArray());
-            $mol_assert_ok(await Catie.verify(data, sign));
+            $mol_assert_equal(true, await Catie.verify(data, sign));
             const Diana = $mol_crypto_key_public.from(Alice.asArray());
-            $mol_assert_ok(await Diana.verify(data, sign));
+            $mol_assert_equal(true, await Diana.verify(data, sign));
         },
     });
 })($ || ($ = {}));
