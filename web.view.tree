@@ -1669,6 +1669,7 @@ $hyoo_page $mol_book2
 	plugins /
 		<= Theme $mol_theme_auto
 	auto /
+		^
 		<= ref_track null
 	pages /
 		<= News $hyoo_page_side_news
