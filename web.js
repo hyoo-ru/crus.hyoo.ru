@@ -32751,7 +32751,7 @@ var $;
             }
             paste(event) {
                 const table = event.clipboardData.getData('text/plain').trim().split(/\r?\n/).map(row => row.split('\t'));
-                if (table.length === 1 && table[0].length === 1)
+                if (!table.length || (table[0].length === 1))
                     return;
                 const sheet = this.sheet_changable();
                 const [col_start, row_start] = this.id2coord(this.pos());
