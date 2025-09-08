@@ -15,6 +15,11 @@ namespace $ {
 			return $hyoo_crus_link.hash_bin( this )
 		}
 		
+		@ $mol_memo.method
+		path() {
+			return `pass:${ this.hash().str }`
+		}
+		
 		/** Independent actor with global unique id generated from Auth key */
 		@ $mol_memo.method
 		lord() {
@@ -27,7 +32,14 @@ namespace $ {
 			return this.hash().peer()
 		}
 		
-		[ Symbol.toStringTag ] = '🎫' + this.hash().str
+		[ $mol_dev_format_head ]() {
+			return $mol_dev_format_span( {} ,
+				$mol_dev_format_native( this ) ,
+				' ',
+				$mol_dev_format_auto( this.lord() ),
+				' 🎫',
+			)
+		}
 		
 	}
 
@@ -80,7 +92,14 @@ namespace $ {
 			return $mol_wire_sync( $mol_crypto_sacred_shared )( this, pub )
 		}
 		
-		[ Symbol.toStringTag ] = '🔑' + this.pass().hash().str
+		[ $mol_dev_format_head ]() {
+			return $mol_dev_format_span( {} ,
+				$mol_dev_format_native( this ) ,
+				' ',
+				$mol_dev_format_auto( this.pass().lord() ),
+				' 🔑',
+			)
+		}
 		
 	}
 	

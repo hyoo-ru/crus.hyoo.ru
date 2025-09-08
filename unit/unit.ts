@@ -12,6 +12,9 @@ namespace $ {
 		/** Sign for hash list. */
 		seal = $hyoo_crus_slot_kind.seal,
 		
+		/** Public key. */
+		pass = $hyoo_crus_slot_kind.pass,
+		
 	}
 	
 	export let $hyoo_crus_unit_trusted = new WeakSet< $hyoo_crus_unit_base >()
@@ -91,9 +94,10 @@ namespace $ {
 		static narrow( buf: ArrayBuffer ) {
 			const kind = $hyoo_crus_unit_kind[ new $mol_buffer( buf ).uint8( 0 ) ] as keyof typeof $hyoo_crus_unit_kind
 			const Type = {
-				sand: $hyoo_crus_sand,
-				gift: $hyoo_crus_gift,
+				sand: $hyoo_crus_unit_sand,
+				gift: $hyoo_crus_unit_gift,
 				seal: $hyoo_crus_unit_seal,
+				pass: $hyoo_crus_auth_pass,
 			}[ kind ]
 			return new Type( buf )
 		}
@@ -117,8 +121,8 @@ namespace $ {
 		}
 		
 		choose< Res >( ways: {
-			gift: ( unit: $hyoo_crus_gift )=> Res,
-			sand: ( unit: $hyoo_crus_sand )=> Res,
+			gift: ( unit: $hyoo_crus_unit_gift )=> Res,
+			sand: ( unit: $hyoo_crus_unit_sand )=> Res,
 			seal: ( unit: $hyoo_crus_unit_seal )=> Res,
 		} ) {
 			return ways[ this.kind() ]( this as any )

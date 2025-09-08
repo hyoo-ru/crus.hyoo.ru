@@ -67,7 +67,7 @@ namespace $ {
 		
 		sign( next?: Uint8Array< ArrayBuffer > ) {
 			const buf = new Uint8Array( this.buffer, this.byteOffset + this.byteLength - 64, 64 )
-			if( next ) next.set( next )
+			if( next ) buf.set( next )
 			return buf
 		}
 		
@@ -108,6 +108,7 @@ namespace $ {
 				$mol_dev_format_auto( this.lord() ),
 				' ✍ ',
 				$mol_dev_format_auto( this.hash_list() ),
+				' ',
 				$mol_dev_format_shade(
 					this.moment().toString( 'YYYY-MM-DD hh:mm:ss' ),
 					' #',

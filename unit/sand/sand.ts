@@ -1,7 +1,7 @@
 namespace $ {
 
 	/** Hint how interpret inner Units: term, solo, vals, keys */
-	export enum $hyoo_crus_sand_tag {
+	export enum $hyoo_crus_unit_sand_tag {
 		/** Itself value. Ignore */
 		term = 0b00_000_000,
 		/** Value in first sub node. Ignore all after first */
@@ -13,22 +13,22 @@ namespace $ {
 	}
 	
 	/**  (Meta) Data. Actually it's edge between nodes in graph model. */
-	export class $hyoo_crus_sand extends $hyoo_crus_unit_base {
+	export class $hyoo_crus_unit_sand extends $hyoo_crus_unit_base {
 
 		static size_equator = 216
 		static size_max = 2 ** 16
 
 		_vary = undefined as undefined | $hyoo_crus_vary_type
-		_open!: Uint8Array< ArrayBuffer > | null
+		_open = null as Uint8Array< ArrayBuffer > | null
 		
 		static length( size: number ) {
 			if( size >= 2**16 ) throw new Error( `Size too large (${ size })` )
-			return size > $hyoo_crus_sand.size_equator ? 52 : Math.ceil( ( 40 + size ) / 8 ) * 8
+			return size > $hyoo_crus_unit_sand.size_equator ? 52 : Math.ceil( ( 40 + size ) / 8 ) * 8
 		}
 		
 		static length_ball( size: number ) {
 			if( size >= 2**16 ) throw new Error( `Size too large (${ size })` )
-			return size > $hyoo_crus_sand.size_equator ? Math.ceil( ( 4 + size ) / 8 ) * 8 - 4 : 0
+			return size > $hyoo_crus_unit_sand.size_equator ? Math.ceil( ( 4 + size ) / 8 ) * 8 - 4 : 0
 		}
 
 		@ $mol_action
@@ -43,13 +43,13 @@ namespace $ {
 		
 		hint(
 			tip: keyof typeof $hyoo_crus_vary_tip = 'nil',
-			tag: keyof typeof $hyoo_crus_sand_tag = 'term',
+			tag: keyof typeof $hyoo_crus_unit_sand_tag = 'term',
 		) {
-			this.uint8( 1, $hyoo_crus_sand_tag[ tag ] | $hyoo_crus_vary_tip[ tip ] )
+			this.uint8( 1, $hyoo_crus_unit_sand_tag[ tag ] | $hyoo_crus_vary_tip[ tip ] )
 		}
 
 		tag() {
-			return $hyoo_crus_sand_tag[ this.uint8( 1 ) & 0b11_000_000 ] as keyof typeof $hyoo_crus_sand_tag
+			return $hyoo_crus_unit_sand_tag[ this.uint8( 1 ) & 0b11_000_000 ] as keyof typeof $hyoo_crus_unit_sand_tag
 		}
 
 		tip() {
@@ -89,7 +89,7 @@ namespace $ {
 		
 		_shot!: $hyoo_crus_link
 		shot( next?: $hyoo_crus_link ) {
-			if( this.size() <= $hyoo_crus_sand.size_equator ) throw new Error( 'Access to Shot of small Sand is unavailable' )
+			if( this.size() <= $hyoo_crus_unit_sand.size_equator ) throw new Error( 'Access to Shot of small Sand is unavailable' )
 			if( next ) return this._shot = this.id12( 40, next )
 			else return this._shot = this._shot ?? this.id12( 40 )
 		}
@@ -98,7 +98,7 @@ namespace $ {
 		data( next?: Uint8Array< ArrayBuffer > ) {
 			
 			const size = this.size()
-			if( size > $hyoo_crus_sand.size_equator ) throw new Error( 'Access to Data of large Sand is unavailable' )
+			if( size > $hyoo_crus_unit_sand.size_equator ) throw new Error( 'Access to Data of large Sand is unavailable' )
 				
 			const data = this._data ?? new Uint8Array( this.buffer, this.byteOffset + 40, size )
 			if( next ) data.set( next )
@@ -113,7 +113,7 @@ namespace $ {
 				if( this._ball ) return this._ball
 				
 				const size = this.size()
-				if( size > $hyoo_crus_sand.size_equator ) return this._ball
+				if( size > $hyoo_crus_unit_sand.size_equator ) return this._ball
 				
 				return this._ball = this.data()
 				
@@ -121,7 +121,7 @@ namespace $ {
 				
 				this.size( next.byteLength )
 				
-				if( next.byteLength > $hyoo_crus_sand.size_equator ) {
+				if( next.byteLength > $hyoo_crus_unit_sand.size_equator ) {
 					
 					this.shot( $hyoo_crus_link.hash_bin( next ) )
 					return this._ball = next
@@ -137,7 +137,7 @@ namespace $ {
 
 		idea() {
 			const size = this.size()
-			const length = 6/*head*/ + 6/*lead*/ + 2/*size*/ + ( size > $hyoo_crus_sand.size_equator ? 12/*shot*/ : size/*data*/ )
+			const length = 6/*head*/ + 6/*lead*/ + 2/*size*/ + ( size > $hyoo_crus_unit_sand.size_equator ? 12/*shot*/ : size/*data*/ )
 			const bin = new Uint8Array( this.buffer, this.byteOffset + 26, length )
 			return $mol_hash_numbers( bin )
 		}
@@ -167,7 +167,7 @@ namespace $ {
 				$mol_dev_format_native( this ),
 				' ',
 				$mol_dev_format_auto( this.lord() ),
-				' ',
+				' 📦 ',
 				this.lead(),
 				$mol_dev_format_shade( '\\' ),
 				$mol_dev_format_accent( this.head() ),
@@ -188,11 +188,13 @@ namespace $ {
 				}[ this.tag() ],
 				this.tip(),
 				' ',
-				$mol_dev_format_auto( this._vary ) //??
+				$mol_dev_format_auto( this._vary ), //??
 				// ( this.size() > 32
 				// 	? $mol_dev_format_shade( this.hash() )
 				// 	: $mol_dev_format_native( $hyoo_crus_vary_decode({ tip: this.tip(), bin: this.data() }) )
 				// ),
+				' ',
+				$mol_dev_format_auto( this.hash() ),
 			)
 		}
 

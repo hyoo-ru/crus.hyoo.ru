@@ -2,7 +2,7 @@ namespace $ {
 	/** Mergeable dictionary node with any keys mapped to any embedded Node types */
 	export class $hyoo_crus_dict extends $hyoo_crus_list_vary {
 		
-		static tag = $hyoo_crus_sand_tag[ $hyoo_crus_sand_tag.keys ] as keyof typeof $hyoo_crus_sand_tag
+		static tag = $hyoo_crus_unit_sand_tag[ $hyoo_crus_unit_sand_tag.keys ] as keyof typeof $hyoo_crus_unit_sand_tag
 		
 		/** List of Vary keys. */
 		@ $mol_mem
@@ -26,7 +26,7 @@ namespace $ {
 		/** Mergeable dictionary node with defined keys mapped to different embedded Node types */
 		static with<
 			This extends typeof $hyoo_crus_dict,
-			const Schema extends Record< string, { tag: keyof typeof $hyoo_crus_sand_tag, new(): {} } >
+			const Schema extends Record< string, { tag: keyof typeof $hyoo_crus_unit_sand_tag, new(): {} } >
 		>( this: This, schema: Schema ) {
 			
 			const $hyoo_crus_dict_with = class $hyoo_crus_dict_with extends ( this as any ) {
@@ -93,7 +93,7 @@ namespace $ {
 	
 	/** Mergeable dictionary with any keys mapped to any embedded Node types */
 	export function $hyoo_crus_dict_to<
-		Value extends { tag: keyof typeof $hyoo_crus_sand_tag, new(): {} }
+		Value extends { tag: keyof typeof $hyoo_crus_unit_sand_tag, new(): {} }
 	>( Value: Value ) {
 		
 		return class $hyoo_crus_dict_to extends $hyoo_crus_dict {

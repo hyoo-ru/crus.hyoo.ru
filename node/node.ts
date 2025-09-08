@@ -3,7 +3,7 @@ namespace $ {
 	/** Virtual Node that represents contained units as high-level data types. */
 	export class $hyoo_crus_node extends $mol_object {
 		
-		static tag: keyof typeof $hyoo_crus_sand_tag = 'vals'
+		static tag: keyof typeof $hyoo_crus_unit_sand_tag = 'vals'
 		
 		/** Standalone part of Glob which syncs separately, have own rights, and contains Units */
 		land() {
@@ -75,7 +75,7 @@ namespace $ {
 			const land = this.land()
 			let last = 0
 			
-			const visit = ( sand: $hyoo_crus_sand )=> {
+			const visit = ( sand: $hyoo_crus_unit_sand )=> {
 				if( sand.time() > last ) last = sand.time()
 				if( sand.tag() === 'term' ) return
 				land.Node( $hyoo_crus_node ).Item( sand.self() ).units().forEach( visit )
@@ -93,7 +93,7 @@ namespace $ {
 			const land = this.land()
 			const peers = new Set< $hyoo_crus_auth_pass >()
 			
-			const visit = ( sand: $hyoo_crus_sand )=> {
+			const visit = ( sand: $hyoo_crus_unit_sand )=> {
 				peers.add( sand.lord_pass() )
 				if( sand.tag() === 'term' ) return
 				land.Node( $hyoo_crus_node ).Item( sand.self() ).units_of( null ).forEach( visit )

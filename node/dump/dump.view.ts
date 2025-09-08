@@ -23,7 +23,7 @@ namespace $.$$ {
 			return this.units().map( (_,i)=> this.Inner(i) )
 		}
 		
-		unit_tag( index: number, next?: keyof typeof $hyoo_crus_sand_tag ) {
+		unit_tag( index: number, next?: keyof typeof $hyoo_crus_unit_sand_tag ) {
 			if( next ) {
 				const units = this.units()
 				const unit = units[ index ]

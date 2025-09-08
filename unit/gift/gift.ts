@@ -1,8 +1,8 @@
 namespace $ {
 	
-	export function $hyoo_crus_gift_sort( gifts: $hyoo_crus_gift[] ) {
+	export function $hyoo_crus_unit_gift_sort( gifts: $hyoo_crus_unit_gift[] ) {
 		
-		const dict = new Map< string, $hyoo_crus_gift >()
+		const dict = new Map< string, $hyoo_crus_unit_gift >()
 		const graph = new $mol_graph< string, void >()
 		
 		for( const gift of gifts ) {
@@ -20,7 +20,7 @@ namespace $ {
 	}
 	
 	/** Given Rank and Secret */
-	export class $hyoo_crus_gift extends $hyoo_crus_unit_base {
+	export class $hyoo_crus_unit_gift extends $hyoo_crus_unit_base {
 		
 		static length() {
 			return 48
@@ -103,6 +103,8 @@ namespace $ {
 					' #',
 					this.tick(),
 				),
+				' ',
+				$mol_dev_format_auto( this.hash() ),
 			)
 		}
 		

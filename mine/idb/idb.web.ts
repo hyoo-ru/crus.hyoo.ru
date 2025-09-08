@@ -19,11 +19,13 @@ namespace $ {
 				for( const unit of diff.del ) {
 					
 					Unit.drop( [ land, unit.path() ] )
+					if( unit instanceof $hyoo_crus_auth_pass ) continue
 					
 					unit.choose({
 						gift: ()=> {},
+						seal: seal => {},
 						sand: sand => {
-							if( sand.size() <= $hyoo_crus_sand.size_equator ) return
+							if( sand.size() <= $hyoo_crus_unit_sand.size_equator ) return
 							Ball.drop([ land, unit.path() ])
 						},
 					})
@@ -34,11 +36,13 @@ namespace $ {
 					
 					Unit.put( [ unit.buffer ], [ land, unit.path() ] )
 					this.units_persisted.add( unit )
+					if( unit instanceof $hyoo_crus_auth_pass ) continue
 					
 					unit.choose({
 						gift: ()=> {},
+						seal: seal => {},
 						sand: sand => {
-							if( sand.size() <= $hyoo_crus_sand.size_equator ) return
+							if( sand.size() <= $hyoo_crus_unit_sand.size_equator ) return
 							Ball.put( [ sand.ball().buffer ], [ land, unit.path() ] )
 						},
 					})
@@ -67,7 +71,7 @@ namespace $ {
 				for( const unit of units ) {
 					
 					this.units_persisted.add( unit )
-					$hyoo_crus_unit_trusted.add( unit )
+					$hyoo_crus_unit_trusted_grant( unit )
 					
 				}
 				
@@ -76,6 +80,7 @@ namespace $ {
 			
 		}
 		
+		@ $mol_action
 		override ball_load( path: string ) {
 			
 			return Sync( async ()=> {

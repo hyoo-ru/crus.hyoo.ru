@@ -4,7 +4,7 @@ namespace $ {
 	/** Atomic dynamic register */
 	export class $hyoo_crus_atom_vary extends $hyoo_crus_node {
 
-		static tag = $hyoo_crus_sand_tag[ $hyoo_crus_sand_tag.solo ] as keyof typeof $hyoo_crus_sand_tag;
+		static tag = $hyoo_crus_unit_sand_tag[ $hyoo_crus_unit_sand_tag.solo ] as keyof typeof $hyoo_crus_unit_sand_tag;
 		
 		pick_unit( peer: $hyoo_crus_link | null ) {
 			return this.units_of( peer ).at(0)

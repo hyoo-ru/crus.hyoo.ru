@@ -2,7 +2,7 @@ namespace $ {
 	/** Mergeable text node */
 	export class $hyoo_crus_text extends $hyoo_crus_node {
 		
-		static tag = $hyoo_crus_sand_tag[ $hyoo_crus_sand_tag.vals ] as keyof typeof $hyoo_crus_sand_tag
+		static tag = $hyoo_crus_unit_sand_tag[ $hyoo_crus_unit_sand_tag.vals ] as keyof typeof $hyoo_crus_unit_sand_tag
 				
 		value( next?: string ): string {
 			return this.text( next )

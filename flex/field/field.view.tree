@@ -18,7 +18,7 @@ $hyoo_crus_flex_field $mol_view
 		enabled <= enabled true
 		value? <=> real? +NaN
 	Ref $mol_bar sub <= link_content /
-		<= Link_dump $hyoo_crus_sand_dump
+		<= Link_dump $hyoo_crus_unit_sand_dump
 			land <= land
 			value <= link_value null
 		<= Link_pick $mol_select
@@ -71,7 +71,7 @@ $hyoo_crus_flex_field $mol_view
 							text/plain <= list_item_value* \
 							text/html <= list_item_html* \
 							text/uri-list <= list_item_uri* \
-						Sub <= List_item_dump* $hyoo_crus_sand_dump
+						Sub <= List_item_dump* $hyoo_crus_unit_sand_dump
 							land <= land
 							sand <= list_sand* $hyoo_crus_sand
 				<= List_pick $mol_select

@@ -23,8 +23,8 @@ namespace $ {
 		_pass = new $mol_wire_dict< string /*Lord*/, $hyoo_crus_auth_pass >()
 		_seal_item = new $mol_wire_dict< string /*Item*/, $hyoo_crus_unit_seal >()
 		_seal_shot = new $mol_wire_dict< string /*Shot*/, $hyoo_crus_unit_seal >()
-		_gift = new $mol_wire_dict< string /*Lord*/, $hyoo_crus_gift >()
-		_sand = new $mol_wire_dict< string /*Head*/, $mol_wire_dict< string /*Lord*/, $mol_wire_dict< string /*Self*/, $hyoo_crus_sand > > >()
+		_gift = new $mol_wire_dict< string /*Lord*/, $hyoo_crus_unit_gift >()
+		_sand = new $mol_wire_dict< string /*Head*/, $mol_wire_dict< string /*Lord*/, $mol_wire_dict< string /*Self*/, $hyoo_crus_unit_sand > > >()
 		
 		pass_add( pass: $hyoo_crus_auth_pass ) {
 			if( this._pass.has( pass.lord().str ) ) return
@@ -47,7 +47,7 @@ namespace $ {
 			
 		}
 		
-		gift_add( gift: $hyoo_crus_gift ) {
+		gift_add( gift: $hyoo_crus_unit_gift ) {
 			
 			const mate = gift.mate()
 			
@@ -64,7 +64,7 @@ namespace $ {
 			
 		}
 		
-		sand_add( sand: $hyoo_crus_sand ) {
+		sand_add( sand: $hyoo_crus_unit_sand ) {
 			
 			let peers = this._sand.get( sand.head().str )
 			if( !peers ) this._sand.set( sand.head().str, peers = new $mol_wire_dict )
@@ -99,7 +99,7 @@ namespace $ {
 			
 		}
 		
-		gift_del( gift: $hyoo_crus_gift ) {
+		gift_del( gift: $hyoo_crus_unit_gift ) {
 			
 			const prev = this._gift.get( gift.mate().str )
 			if( prev !== gift ) return
@@ -109,7 +109,7 @@ namespace $ {
 			
 		}
 		
-		sand_del( sand: $hyoo_crus_sand ) {
+		sand_del( sand: $hyoo_crus_unit_sand ) {
 			
 			const peers = this._sand.get( sand.head().str )
 			if( !peers ) return
@@ -143,7 +143,7 @@ namespace $ {
 			return this._sand.get( head.str )?.get( lord.str )?.get( self.str ) ?? null
 		}
 		
-		_self_all = new $mol_wire_dict< string, $hyoo_crus_sand | null >()
+		_self_all = new $mol_wire_dict< string, $hyoo_crus_unit_sand | null >()
 		
 		/** Generates unique local id base on optional idea number or random. */
 		@ $mol_action
@@ -239,7 +239,7 @@ namespace $ {
 		Node< Node extends typeof $hyoo_crus_node >( Node: Node ): $hyoo_crus_fund< InstanceType< Node > > {
 			return new $hyoo_crus_fund( ( head: $hyoo_crus_link )=> {
 				return ( Node as typeof $hyoo_crus_node ).make({
-					land: ()=> this.sync(),
+					land: ()=> this,//.sync(),
 					head: $mol_const( head ),
 				}) as InstanceType< Node >
 			} )
@@ -390,11 +390,11 @@ namespace $ {
 		
 		/** Applies Diff to current state with verification. */
 		@ $mol_action
-		diff_apply( units: readonly $hyoo_crus_unit[] ) {
+		diff_apply( units: readonly $hyoo_crus_unit[], skip_load?: 'skip_load' ) {
 			
 			if( units.length === 0 ) return
 			
-			this.loading()
+			if( !skip_load ) this.loading()
 			
 			units = this.$.$hyoo_crus_unit_sort( units )
 			
@@ -450,7 +450,7 @@ namespace $ {
 					
 					case 'gift': {
 						
-						const gift = unit as $hyoo_crus_gift
+						const gift = unit as $hyoo_crus_unit_gift
 						
 						if( !this.$.$hyoo_crus_unit_trusted_check( gift ) ) {
 							const seal = this.unit_seal( gift )
@@ -473,7 +473,7 @@ namespace $ {
 					
 					case 'sand': {
 						
-						const sand = unit as $hyoo_crus_sand
+						const sand = unit as $hyoo_crus_unit_sand
 						
 						if( !this.$.$hyoo_crus_unit_trusted_check( sand ) ) {
 							const seal = this.unit_seal( sand )
@@ -592,19 +592,19 @@ namespace $ {
 			
 			if( queue.length < 2 ) return queue
 			
-			const compare = ( left: $hyoo_crus_sand, right: $hyoo_crus_sand )=> {
-				return ( slices.get( left ) - slices.get( right ) ) || $hyoo_crus_sand.compare( left, right )
+			const compare = ( left: $hyoo_crus_unit_sand, right: $hyoo_crus_unit_sand )=> {
+				return ( slices.get( left ) - slices.get( right ) ) || $hyoo_crus_unit_sand.compare( left, right )
 			}
 			
 			queue.sort( compare )
 			
 			let entry = {
-				sand: null as null | $hyoo_crus_sand,
+				sand: null as null | $hyoo_crus_unit_sand,
 				next: '',
 				prev: '',
 			}
 			
-			const key = peer === null ? ( sand: $hyoo_crus_sand )=> sand.path() : ( sand: $hyoo_crus_sand )=> sand.self().str
+			const key = peer === null ? ( sand: $hyoo_crus_unit_sand )=> sand.path() : ( sand: $hyoo_crus_unit_sand )=> sand.self().str
 			
 			const by_key = new Map([ [ '', entry  ] ])
 			const by_self = new Map([ [ '', entry ] ])
@@ -667,7 +667,7 @@ namespace $ {
 				
 			}
 			
-			const res = [] as $hyoo_crus_sand[]
+			const res = [] as $hyoo_crus_unit_sand[]
 			
 			while( entry.next ) {
 				entry = by_key.get( entry.next )!
@@ -695,7 +695,7 @@ namespace $ {
 			
 			this.join()
 			
-			const gift = $hyoo_crus_gift.make()
+			const gift = $hyoo_crus_unit_gift.make()
 			const lord_pass = this.auth().pass()
 			
 			gift._land = this
@@ -738,7 +738,7 @@ namespace $ {
 			head: $hyoo_crus_link,
 			self: $hyoo_crus_link,
 			vary: $hyoo_crus_vary_type,
-			tag: keyof typeof $hyoo_crus_sand_tag = 'term',
+			tag: keyof typeof $hyoo_crus_unit_sand_tag = 'term',
 		) {
 			
 			this.join()
@@ -751,7 +751,7 @@ namespace $ {
 			let { tip, bin } = $hyoo_crus_vary_encode( vary )
 			
 			const length = encrypted ? Math.ceil( ( bin.byteLength + 1 ) / 16 ) * 16 : bin.byteLength
-			const sand = $hyoo_crus_sand.make( length )
+			const sand = $hyoo_crus_unit_sand.make( length )
 			
 			sand._open = bin
 			sand._land = this
@@ -775,7 +775,7 @@ namespace $ {
 		
 		@ $mol_action
 		sand_move(
-			sand: $hyoo_crus_sand,
+			sand: $hyoo_crus_unit_sand,
 			head: $hyoo_crus_link,
 			seat: number,
 			peer = $hyoo_crus_link.hole as $hyoo_crus_link | null
@@ -825,7 +825,7 @@ namespace $ {
 		
 		@ $mol_action
 		sand_wipe(
-			sand: $hyoo_crus_sand,
+			sand: $hyoo_crus_unit_sand,
 			peer = $hyoo_crus_link.hole as $hyoo_crus_link | null
 		) {
 			
@@ -903,10 +903,10 @@ namespace $ {
 			if( this.$.$hyoo_crus_log() ) $mol_wire_sync( this.$ ).$mol_log3_rise({
 				place: this,
 				message: 'Load Unit',
-				units: units.length,
+				units: units,
 			})
 			
-			$mol_wire_sync( this ).diff_apply( units )
+			$mol_wire_sync( this ).diff_apply( units, 'skip_load' )
 			
 		}
 		
@@ -917,9 +917,21 @@ namespace $ {
 			
 			const mine = this.mine()
 			
-			const encoding = [] as $hyoo_crus_sand[]
+			const encoding = [] as $hyoo_crus_unit_sand[]
 			const signing = [] as $hyoo_crus_unit_base[]
 			const persisting = [] as $hyoo_crus_unit[]
+			
+			const check_lord = ( lord: $hyoo_crus_link )=> {
+				
+				const pass = this.lord_pass( lord )
+				if( !pass ) return
+				
+				if( mine.units_persisted.has( pass ) ) return
+				
+				persisting.push( pass )
+				mine.units_persisted.add( pass )
+				
+			}
 			
 			for( const gift of this._gift.values() ) {
 				
@@ -929,6 +941,9 @@ namespace $ {
 				
 				persisting.push( gift )
 				mine.units_persisted.add( gift )
+				
+				check_lord( gift.lord() )
+				check_lord( gift.mate() )
 				
 			}
 			
@@ -946,6 +961,8 @@ namespace $ {
 						persisting.push( sand )
 						mine.units_persisted.add( sand )
 						
+						check_lord( sand.lord() )
+				
 					}
 				}
 			}
@@ -955,7 +972,7 @@ namespace $ {
 		}
 		
 		async save(
-			encoding: $hyoo_crus_sand[],
+			encoding: $hyoo_crus_unit_sand[],
 			signing: $hyoo_crus_unit_base[],
 			persisting: $hyoo_crus_unit[],
 		) {
@@ -971,12 +988,12 @@ namespace $ {
 				const pack = $hyoo_crus_pack.make([[ this.link().str, part ]])
 				this.bus().send( pack.buffer )
 				
-				await mine.units_save({ ins: persisting, del: [] })
+				await $mol_wire_async( mine ).units_save({ ins: persisting, del: [] })
 			
 				if( this.$.$hyoo_crus_log() ) this.$.$mol_log3_done({
 					place: this,
 					message: 'Saved Units',
-					units: persisting.length,
+					units: persisting,
 				})
 
 			}
@@ -1000,7 +1017,7 @@ namespace $ {
 				const shot = seal.shot().mix( this.link() )
 				do {
 					seal.sign( await auth.sign( shot ) )
-				} while( seal.rate_min() < rate )
+				} while( seal.rate_min() > rate )
 				
 				return seal
 			} )
@@ -1009,7 +1026,7 @@ namespace $ {
 			
 		}
 		
-		async sand_encode( sand: $hyoo_crus_sand ) {
+		async sand_encode( sand: $hyoo_crus_unit_sand ) {
 			
 			if( sand._open === null ) return sand
 			if( sand.tip() === 'nil' ) return sand
@@ -1025,7 +1042,7 @@ namespace $ {
 		}
 		
 		@ $mol_mem_key
-		sand_decode( sand: $hyoo_crus_sand ): $hyoo_crus_vary_type {
+		sand_decode( sand: $hyoo_crus_unit_sand ): $hyoo_crus_vary_type {
 			
 			try {
 
@@ -1044,7 +1061,7 @@ namespace $ {
 		}
 		
 		@ $mol_mem_key
-		sand_decode_raw( sand: $hyoo_crus_sand ): $hyoo_crus_vary_type {
+		sand_decode_raw( sand: $hyoo_crus_unit_sand ): $hyoo_crus_vary_type {
 			
 			if( this.sand_get( sand.head(), sand.lord(), sand.self() ) !== sand ) {
 				for( const id of this.Tine().items_vary() ?? [] ) {
@@ -1059,7 +1076,7 @@ namespace $ {
 			if( sand._vary !== undefined ) return sand._vary
 			if( sand._open !== null ) return sand._vary = $hyoo_crus_vary_decode({ tip: sand.tip(), bin: sand._open })
 			
-			let bin = sand.size() > $hyoo_crus_sand.size_equator ? $mol_wire_sync( this.mine() ).ball_load( sand.path() ) : sand.data()
+			let bin = sand.size() > $hyoo_crus_unit_sand.size_equator ? $mol_wire_sync( this.mine() ).ball_load( sand.path() ) : sand.data()
 			if( secret && bin && sand.tip() !== 'nil' ) {
 				try {
 					bin = $mol_wire_sync( secret ).decrypt( bin, sand.salt() )
@@ -1098,7 +1115,7 @@ namespace $ {
 			
 			const auth = this.auth()
 			
-			const unit = $mol_wire_sync( $hyoo_crus_gift ).make()
+			const unit = $mol_wire_sync( $hyoo_crus_unit_gift ).make()
 			$hyoo_crus_unit_trusted_grant( unit )
 			
 			unit.rank( $hyoo_crus_rank_rule )
