@@ -396,7 +396,7 @@ namespace $ {
 			
 			if( !skip_load ) this.loading()
 			
-			units = this.$.$hyoo_crus_unit_sort( units )
+			units = $mol_wire_sync( this.$ ).$hyoo_crus_unit_sort( units )
 			
 			const passes = new Map< string/*Lord*/, $hyoo_crus_auth_pass >()
 			
@@ -406,6 +406,27 @@ namespace $ {
 			for( const unit of units ) {
 				if( unit instanceof $hyoo_crus_auth_pass ) {
 					passes.set( unit.hash().str, unit )
+				}
+			}
+			
+			for( const unit of units ) {
+				if( unit instanceof $hyoo_crus_unit_seal ) {
+					
+					const lord_pass = this.lord_pass( unit.lord() ) ?? passes.get( unit.lord().str )
+					if( !lord_pass ) return this.$.$mol_fail( new Error( `No Pass for Lord`, { cause: unit.lord() } ) )
+					
+					if( !this.$.$hyoo_crus_unit_trusted_check( unit ) ) {
+					
+						const mixin = unit.wide() ? mixin_lord : mixin_area
+						const sens = unit.shot().mix( mixin )
+						
+						const checked = $mol_wire_sync( lord_pass ).verify( sens, unit.sign() )
+						if( !checked ) return $mol_fail( new Error( `Wrong Sign` ) )
+						
+						$hyoo_crus_unit_trusted_grant( unit )
+						
+					}
+					
 				}
 			}
 			
@@ -422,25 +443,13 @@ namespace $ {
 					case 'seal': {
 						
 						const seal = unit as $hyoo_crus_unit_seal
-						const sign = seal.sign()
 						
 						if( this.lord_rate( unit.lord() ) < seal.rate_min() ) {
 							return this.$.$mol_fail( new Error( 'Too low Rate' ) )
 						}
 				
 						const lord_pass = this.lord_pass( seal.lord() ) ?? passes.get( seal.lord().str )
-						if( !lord_pass ) return this.$.$mol_fail( new Error( `No Pass for Lord: ${ unit.lord() }` ) )
-						
-						if( !this.$.$hyoo_crus_unit_trusted_check( seal ) ) {
-						
-							const mixin = seal.wide() ? mixin_lord : mixin_area
-							const sens = seal.shot().mix( mixin )
-							
-							const checked = $mol_wire_sync( lord_pass ).verify( sens, sign )
-							if( !checked ) return $mol_fail( new Error( `Wrong Sign` ) )
-							
-							$hyoo_crus_unit_trusted_grant( unit )
-						}
+						if( !lord_pass ) return this.$.$mol_fail( new Error( `No Pass for Lord`, { cause: unit.lord() } ) )
 						
 						this.seal_add( seal )
 						this.pass_add( lord_pass )
@@ -454,13 +463,13 @@ namespace $ {
 						
 						if( !this.$.$hyoo_crus_unit_trusted_check( gift ) ) {
 							const seal = this.unit_seal( gift )
-							if( !seal ) return this.$.$mol_fail( new Error( `No Seal for Gift` ) )
+							if( !seal ) return this.$.$mol_fail( new Error( `No Seal for Gift`, { cause: gift } ) )
 						}
 						
 						if( gift.mate().str ) {
 							
 							const mate_pass = this.lord_pass( gift.mate() ) ?? passes.get( gift.mate().str )
-							if( !mate_pass ) return this.$.$mol_fail( new Error( `No Pass for Mate: ${ gift.mate() }` ) )
+							if( !mate_pass ) return this.$.$mol_fail( new Error( `No Pass for Mate`, { cause: gift } ) )
 							
 							this.pass_add( mate_pass )
 							
@@ -902,7 +911,7 @@ namespace $ {
 			
 			if( this.$.$hyoo_crus_log() ) $mol_wire_sync( this.$ ).$mol_log3_rise({
 				place: this,
-				message: 'Load Unit',
+				message: '🌱 Load Unit',
 				units: units,
 			})
 			
@@ -967,6 +976,8 @@ namespace $ {
 				}
 			}
 			
+			if( !persisting ) return
+			
 			this.save( encoding, signing, persisting )
 		
 		}
@@ -980,7 +991,8 @@ namespace $ {
 			const mine = this.mine()
 			
 			await Promise.all( encoding.map( unit => this.sand_encode( unit ) ) )
-			if( signing.length ) persisting = [ ... persisting, ... await this.units_sign( signing ) ]
+			const seals = signing.length ? await this.units_sign( signing ) : []
+			persisting = [ ... persisting, ... seals ]
 			
 			if( persisting.length )	{
 				
@@ -992,11 +1004,13 @@ namespace $ {
 			
 				if( this.$.$hyoo_crus_log() ) this.$.$mol_log3_done({
 					place: this,
-					message: 'Saved Units',
+					message: '💾 Saved Units',
 					units: persisting,
 				})
 
 			}
+			
+			for( const seal of seals ) this.seal_add( seal )
 			
 		}
 		

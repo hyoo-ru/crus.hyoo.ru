@@ -34,7 +34,7 @@ namespace $ {
 			land0.give( auth1.pass(), $hyoo_crus_rank_post( 'just' ) )
 			$mol_assert_equal( land0.pass_rank( auth1.pass() ), $hyoo_crus_rank_post( 'just' ) )
 			
-			land1.diff_apply( land0.diff_units(), 'skip_check' )
+			land1.diff_apply( land0.diff_units(), 'skip_load' )
 			$mol_assert_equal( land1.pass_rank( auth1.pass() ), $hyoo_crus_rank_post( 'just' ) )
 			$mol_assert_fail( ()=> land1.give( auth2.pass(), $hyoo_crus_rank_post( 'just' ) ), 'Too low Tier' )
 			

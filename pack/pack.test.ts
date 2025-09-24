@@ -30,11 +30,31 @@ namespace $.$$ {
 			] as $hyoo_crus_pack_parts
 			
 			const pack = $hyoo_crus_pack.make( parts )
+			$mol_assert_equal( parts, pack.parts() )
 			
-			$mol_assert_equal(
-				parts,
-				pack.parts(),
-			)
+		},
+		
+		"units serial and parse"( $ ) {
+			
+			const land = new $hyoo_crus_link( '12345678_12345678' )
+			
+			const pass = $.$hyoo_crus_auth.grab().pass()
+			const gift = $hyoo_crus_unit_gift.make()
+			
+			const sand_small = $hyoo_crus_unit_sand.make( 5 )
+			
+			const ball = new Uint8Array( $hyoo_crus_unit_sand.size_equator + 5 )
+			const sand_big = $hyoo_crus_unit_sand.make( ball.byteLength )
+			sand_big.ball( ball )
+			
+			const seal = $hyoo_crus_unit_seal.make( 15, true )
+			
+			const parts = [
+				[ land.str, new $hyoo_crus_pack_part([ pass, gift, sand_small, sand_big, seal ]) ],
+			] as $hyoo_crus_pack_parts
+			
+			const pack = $hyoo_crus_pack.make( parts )
+			$mol_assert_equal( parts, pack.parts() )
 			
 		},
 		

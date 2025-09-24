@@ -8,7 +8,7 @@ namespace $ {
 			
 			this.$.$mol_log3_rise({
 				place: this,
-				message: 'File Storage Ready',
+				message: '💌 File Storage Ready',
 				path: root.path()
 			})
 			

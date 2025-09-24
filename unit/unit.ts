@@ -34,7 +34,7 @@ namespace $ {
 	export function $hyoo_crus_unit_sort( units: readonly $hyoo_crus_unit[] ) {
 		
 		const nodes = new Map< string, $hyoo_crus_unit >()
-		const graph = new $mol_graph< string, void >()
+		const graph = new $mol_graph< string, number >()
 		
 		for( const unit of units ) {
 			
@@ -43,27 +43,28 @@ namespace $ {
 			
 			if( unit instanceof $hyoo_crus_auth_pass ) continue
 			
-			graph.link( self, unit.lord().str )
-			
 			unit.choose({
 				gift: gift => {
-					graph.link( self, '' )
-					graph.link( gift.mate().str, self )
+					graph.link( self, unit.lord().str, 1 )
+					graph.link( self, '', 1 )
+					graph.link( gift.mate().str, self, 1 )
 				},
-				sand: sand => {},
+				sand: sand => {
+					graph.link( self, unit.lord().str, 1 )
+					graph.link( self, '', 1 )
+				},
 				seal: seal => {
+					graph.link( self, unit.lord().str, 0 )
+					graph.link( self, '', 0 )
 					for( const hash of seal.hash_list() ) {
-						graph.link( hash.str, self )
+						graph.link( hash.str, self, 1 )
 					}
 				}
 			})
 			
-			graph.link( self, unit.lord().str )
-			graph.link( self, '' )
-			
 		}
 		
-		graph.acyclic( ()=> 1 )
+		graph.acyclic( e => e )
 		
 		return [ ... graph.sorted ].map( key => nodes.get( key )! ).filter( Boolean )
 
@@ -110,11 +111,11 @@ namespace $ {
 			super( buffer, byteOffset, byteLength )
 		}
 		
-		kind( next?: keyof typeof $hyoo_crus_unit_kind ): keyof typeof $hyoo_crus_unit_kind {
+		kind( next?: keyof typeof $hyoo_crus_unit_kind ): Exclude< keyof typeof $hyoo_crus_unit_kind, 'pass' > {
 			
 			const val = this.uint8( 0, next && $hyoo_crus_unit_kind[ next ] )
 			
-			const kind = $hyoo_crus_unit_kind[ val ] as keyof typeof $hyoo_crus_unit_kind
+			const kind = $hyoo_crus_unit_kind[ val ] as Exclude< keyof typeof $hyoo_crus_unit_kind, 'pass' >
 			if( kind ) return kind
 			
 			$mol_fail( new Error( `Unknown unit kind (${val})` ) )

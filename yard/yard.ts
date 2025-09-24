@@ -56,7 +56,7 @@ namespace $ {
 					
 					this.$.$mol_log3_fail({	
 						place: this,
-						message: 'Wrong data',
+						message: '💥 Wrong data',
 						data: event.data
 					})
 					
@@ -85,7 +85,7 @@ namespace $ {
 					
 					this.$.$mol_log3_come({
 						place: this,
-						message: 'Connected',
+						message: '🔗 Connected',
 						port: $mol_key( port ),
 						server: link,
 					})
@@ -186,7 +186,7 @@ namespace $ {
 			
 			if( this.$.$hyoo_crus_log() ) $mol_wire_sync( this.$ ).$mol_log3_rise({
 				place: this,
-				message: 'Gain Pack',
+				message: '➕ Gain Pack',
 				port: $mol_key( port ),
 				parts,
 			})
@@ -269,9 +269,9 @@ namespace $ {
 				if( !this.port_lands_passive( port ).has( land.link().str ) ) continue
 				this.port_lands_passive( port ).delete( land.link().str )
 				
-				if( this.$.$hyoo_crus_log() ) this.$.$mol_log3_rise({
+				if( this.$.$hyoo_crus_log() ) this.$.$mol_log3_done({
 					place: this,
-					message: 'Forget Land',
+					message: '✖ Forget Land',
 					port: $mol_key( port ),
 					land: land.link(),
 				})
@@ -300,7 +300,7 @@ namespace $ {
 				
 				if( this.$.$hyoo_crus_log() ) this.$.$mol_log3_rise({
 					place: this,
-					message: 'Send Unit',
+					message: '🔱 Send Unit',
 					port: $mol_key( port ),
 					pack,
 				})
@@ -319,9 +319,9 @@ namespace $ {
 			// $mol_wire_solid() 
 			const Land = this.$.$hyoo_crus_glob.Land( land )
 			Land.loading()
-			if( this.$.$hyoo_crus_log() ) this.$.$mol_log3_rise({
+			if( this.$.$hyoo_crus_log() ) this.$.$mol_log3_come({
 				place: this,
-				message: 'Send Face',
+				message: '🎭 Send Face',
 				port: $mol_key( port ),
 				land: land,
 				faces: Land.faces,

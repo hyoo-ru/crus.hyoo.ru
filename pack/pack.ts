@@ -110,7 +110,7 @@ namespace $ {
 						
 						if( !part ) $mol_fail( new Error( 'Land is undefined' ) )
 						
-						const size = this.uint8( offset + 1 )
+						const size = new $hyoo_crus_unit_seal( this.buffer, this.byteOffset + offset, this.byteLength - offset ).size()
 						const length = $hyoo_crus_unit_seal.length( size )
 						
 						const seal = $hyoo_crus_unit_seal.from(
@@ -126,7 +126,7 @@ namespace $ {
 						
 						if( !part ) $mol_fail( new Error( 'Land is undefined' ) )
 						
-						const size = this.uint16( offset + 26 )
+						const size = new $hyoo_crus_unit_sand( this.buffer, this.byteOffset + offset, this.byteLength - offset ).size()
 						const length_sand = $hyoo_crus_unit_sand.length( size )
 						const length_ball = $hyoo_crus_unit_sand.length_ball( size )
 						
@@ -159,7 +159,7 @@ namespace $ {
 					default:
 						$$.$mol_log3_warn({
 							place: this,
-							message: 'Unknown Kind',
+							message: '💢 Unknown Kind',
 							kind,
 							offset,
 							hint: 'Try to update application',
@@ -191,11 +191,7 @@ namespace $ {
 					unit.choose({
 						gift: gift => {},
 						seal: seal => {},
-						sand: sand => {
-							if( sand.size() > $hyoo_crus_unit_sand.size_equator ) {
-								size += sand.ball().byteLength
-							}
-						},
+						sand: sand => size += $hyoo_crus_unit_sand.length_ball( sand.ball().byteLength ),
 					})
 					
 				}
