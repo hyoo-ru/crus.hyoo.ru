@@ -10249,6 +10249,40 @@ declare namespace $ {
 
 declare namespace $ {
 
+	export class $mol_button_major extends $mol_button_minor {
+		theme( ): string
+	}
+	
+}
+
+//# sourceMappingURL=major.view.tree.d.ts.map
+declare namespace $ {
+
+	export class $mol_status extends $mol_view {
+		message( ): string
+		status( ): ReturnType< $mol_status['title'] >
+		minimal_height( ): number
+		minimal_width( ): number
+		sub( ): readonly(any)[]
+	}
+	
+}
+
+//# sourceMappingURL=status.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $mol_status extends $.$mol_status {
+        message(): any;
+    }
+}
+
+declare namespace $ {
+}
+
+declare namespace $ {
+}
+
+declare namespace $ {
+
 	export class $mol_row extends $mol_view {
 	}
 	
@@ -10262,7 +10296,27 @@ declare namespace $ {
 		,
 		ReturnType< $mol_list['sub'] >
 	>
-	type $mol_row__sub_mol_form_2 = $mol_type_enforce<
+	type $mol_button_major__title_mol_form_2 = $mol_type_enforce<
+		ReturnType< $mol_form['submit_title'] >
+		,
+		ReturnType< $mol_button_major['title'] >
+	>
+	type $mol_button_major__hint_mol_form_3 = $mol_type_enforce<
+		ReturnType< $mol_form['submit_hint'] >
+		,
+		ReturnType< $mol_button_major['hint'] >
+	>
+	type $mol_button_major__click_mol_form_4 = $mol_type_enforce<
+		ReturnType< $mol_form['submit'] >
+		,
+		ReturnType< $mol_button_major['click'] >
+	>
+	type $mol_status__message_mol_form_5 = $mol_type_enforce<
+		ReturnType< $mol_form['result'] >
+		,
+		ReturnType< $mol_status['message'] >
+	>
+	type $mol_row__sub_mol_form_6 = $mol_type_enforce<
 		ReturnType< $mol_form['foot'] >
 		,
 		ReturnType< $mol_row['sub'] >
@@ -10272,6 +10326,12 @@ declare namespace $ {
 		form_fields( ): readonly($mol_form_field)[]
 		body( ): ReturnType< $mol_form['form_fields'] >
 		Body( ): $mol_list
+		submit_title( ): string
+		submit_hint( ): string
+		submit( next?: any ): any
+		Submit( ): $mol_button_major
+		result( next?: any ): any
+		Result( ): $mol_status
 		buttons( ): readonly($mol_view)[]
 		foot( ): ReturnType< $mol_form['buttons'] >
 		Foot( ): $mol_row
@@ -10280,7 +10340,9 @@ declare namespace $ {
 		event( ): ({ 
 			keydown( next?: ReturnType< $mol_form['keydown'] > ): ReturnType< $mol_form['keydown'] >,
 		})  & ReturnType< $mol_list['event'] >
-		submit( next?: any ): any
+		save( next?: any ): any
+		message_done( ): string
+		message_invalid( ): string
 		rows( ): readonly(any)[]
 	}
 	
@@ -10293,6 +10355,9 @@ declare namespace $.$$ {
         submit_allowed(): boolean;
         submit_blocked(): boolean;
         keydown(next: KeyboardEvent): void;
+        result(next?: string | Error): string;
+        buttons(): ($.$mol_status | $mol_button_major)[];
+        submit(next?: Event): boolean;
     }
 }
 
@@ -11007,18 +11072,6 @@ declare namespace $ {
     }
 }
 
-declare namespace $ {
-}
-
-declare namespace $ {
-
-	export class $mol_button_major extends $mol_button_minor {
-		theme( ): string
-	}
-	
-}
-
-//# sourceMappingURL=major.view.tree.d.ts.map
 declare namespace $ {
 
 	type $hyoo_meta_link__meta_hyoo_meta_rights_1 = $mol_type_enforce<
