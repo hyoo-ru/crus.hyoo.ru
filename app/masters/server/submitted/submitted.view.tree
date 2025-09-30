@@ -1,0 +1,9 @@
+$hyoo_crus_app_masters_server_submitted $hyoo_crus_app_masters_server
+	Reject_button $mol_button_minor
+		click? <=> reject_server? null
+		sub /
+			<= Reject_button_icon $mol_icon_close
+	Approve_button $mol_button_minor
+		click? <=> approve_server? null
+		sub /
+			<= Approve_button_icon $mol_icon_check
