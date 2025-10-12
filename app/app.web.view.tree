@@ -1,5 +1,5 @@
 $hyoo_crus_app $mol_book2_catalog
-	menu_title \🦿 CRUS-DB
+	menu_title \Giper Base
 	param \section
 	menu_foot /
 		<= Source $mol_link_source
