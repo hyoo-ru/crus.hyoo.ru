@@ -8636,7 +8636,7 @@ var $;
             return $hyoo_crus_sand_tag[(this.uint8(0) >> 1) & 0b11];
         }
         tip() {
-            const tip = $hyoo_crus_vary_tip[this.uint8(0) >> 3] || $hyoo_crus_vary_tip.nil;
+            const tip = $hyoo_crus_vary_tip[this.uint8(0) >> 3] || 'nil';
             return tip;
         }
         utf() {
@@ -10866,6 +10866,9 @@ var $;
         }
         sort() {
             return $mol_fail(new TypeError(`Mutable sort is forbidden. Use toSorted instead.`));
+        }
+        indexOf(needle) {
+            return this.findIndex(item => item === needle);
         }
         [Symbol.toPrimitive]() {
             return $mol_guid();
