@@ -30,7 +30,7 @@ namespace $ {
 		}
 
 		tip() {
-			const tip = $hyoo_crus_vary_tip[ this.uint8( 0 ) >> 3 ] || $hyoo_crus_vary_tip.nil
+			const tip = $hyoo_crus_vary_tip[ this.uint8( 0 ) >> 3 ] || 'nil'
 			// if( !tip ) $mol_fail( new Error( 'Empty tip' ) )
 			return tip as keyof typeof $hyoo_crus_vary_tip
 		}
