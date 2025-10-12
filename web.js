@@ -33169,7 +33169,7 @@ var $node = $node || {} ; $node[ "/hyoo/calc/calc_logo.svg" ] = "data:image/svg+
 			return obj;
 		}
 		menu_title(){
-			return "🦿 CRUS-DB";
+			return "Giper Base";
 		}
 		param(){
 			return "section";
