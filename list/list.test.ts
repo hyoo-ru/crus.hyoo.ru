@@ -2,13 +2,13 @@ namespace $ {
 	
 	function fork( base: $hyoo_crus_land ) {
 		const land = $hyoo_crus_land.make({ $: base.$ })
-		land.apply_land( base )
+		land.diff_apply( base.diff_units() )
 		return land
 	}
 	
 	function sync( left: $hyoo_crus_land, right: $hyoo_crus_land ) {
-		left.apply_land( right )
-		right.apply_land( left )
+		left.diff_apply( right.diff_units() )
+		right.diff_apply( left.diff_units() )
 	}
 	
 	$mol_test({

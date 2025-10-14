@@ -178,9 +178,9 @@ namespace $ {
 		
 		/** Makes new Area based on Idea or random. Once transfers rights from this Land. */
 		@ $mol_action
-		area_make( idea = Math.floor( Math.random() * 2**48 ) ) {
+		area_make( idea = Math.floor( $mol_wire_sync( Math ).random() * 2**48 ) ) {
 			
-			this.saving()
+			// this.saving()
 			
 			let id = ''
 			while( true ) {
@@ -197,29 +197,54 @@ namespace $ {
 			const link = new $hyoo_crus_link( this.link().lord().str + '_' + id )
 			
 			const area = this.$.$hyoo_crus_glob.Land( link )
-			const units = new Set< $hyoo_crus_unit >()
 			
-			for( const gift of this._gift.values() ) {
-				
-				// const clone = $hyoo_crus_gift.from( gift )
-				// $hyoo_crus_unit_trusted.add( clone )
-				
-				// clone._land = area
-				units.add( gift )
-				const seal = this.unit_seal( gift )!
-				if( seal ) units.add( seal )
-				units.add( this.lord_pass( gift.lord() )! )
-				const mate = gift.mate()
-				if( mate.str ) units.add( this.lord_pass( mate )! )
-				
-			}
-			area.diff_apply( [ ... units ] )
-			
+			area.inherit()
 			area.bus()
 			area.sync_mine()
 			area.sync_yard()
 			
 			return area
+		}
+		
+		@ $mol_mem
+		inherit() {
+			
+			try {
+				
+				const area = this.link()
+				const lord = this.link().lord()
+				if( area.str === lord.str ) return
+				
+				const Lord = this.$.$hyoo_crus_glob.Land( lord )
+				Lord.saving()
+				
+				const units = new Set< $hyoo_crus_unit >()
+				
+				for( const gift of Lord._gift.values() ) {
+					
+					// const clone = $hyoo_crus_gift.from( gift )
+					// $hyoo_crus_unit_trusted.add( clone )
+					
+					// clone._land = area
+					
+					const seal = Lord.unit_seal( gift )
+					if( !seal ) continue
+					
+					units.add( gift )
+					units.add( seal )
+					units.add( Lord.lord_pass( gift.lord() )! )
+					
+					const mate = gift.mate()
+					if( mate.str ) units.add( Lord.lord_pass( mate )! )
+					
+				}
+				
+				this.diff_apply( [ ... units ] )
+				
+			} catch( error ) {
+				$mol_fail_log( error )
+			}
+
 		}
 		
 		/** Data root */
@@ -354,6 +379,15 @@ namespace $ {
 				const mass = skipped_units?.size ?? 0
 				if( mass <= face.summ ) continue
 				
+				if( this.$.$hyoo_crus_log() ) $mol_wire_sync( this.$ ).$mol_log3_warn({
+					place: this,
+					message: '💔 Fail Summ',
+					hint: 'Relax and wait for full peer resync',
+					peer,
+					mass,
+					face,
+				})
+				
 				if( skipped_units ) for( const unit of skipped_units ) delta.add( unit )
 				
 			}
@@ -364,19 +398,6 @@ namespace $ {
 			}
 			
 			return [ ... passes, ... delta ]
-			
-		}
-		
-		/** Makes binary Delta between Face and current state. */
-		diff_pack( faces = new $hyoo_crus_face_map ): $hyoo_crus_pack | null {
-			
-			const units = this.diff_units( faces )
-			if( !units.length ) return null
-			
-			return $hyoo_crus_pack.make([[
-				this.link().str,
-				new $hyoo_crus_pack_part( units )
-			]])
 			
 		}
 		
@@ -423,10 +444,14 @@ namespace $ {
 						const checked = $mol_wire_sync( lord_pass ).verify( sens, unit.sign() )
 						if( !checked ) return $mol_fail( new Error( `Wrong Sign` ) )
 						
-						$hyoo_crus_unit_trusted_grant( unit )
-						
 					}
 					
+				}
+			}
+			
+			for( const unit of units ) {
+				if( unit instanceof $hyoo_crus_unit_seal ) {
+					$hyoo_crus_unit_trusted_grant( unit )
 				}
 			}
 			
@@ -503,10 +528,6 @@ namespace $ {
 			}
 			
 			return units
-		}
-		
-		apply_land( land: $hyoo_crus_land ) {
-			return this.diff_apply( land.diff_units() )
 		}
 		
 		rank_audit() {
@@ -860,6 +881,7 @@ namespace $ {
 		@ $mol_mem
 		sync() {
 			this.loading()
+			this.inherit()
 			this.bus()
 			this.sync_mine()
 			this.sync_yard()
@@ -978,7 +1000,7 @@ namespace $ {
 			
 			if( !persisting ) return
 			
-			this.save( encoding, signing, persisting )
+			return this.save( encoding, signing, persisting )
 		
 		}
 		
@@ -1000,40 +1022,54 @@ namespace $ {
 				const pack = $hyoo_crus_pack.make([[ this.link().str, part ]])
 				this.bus().send( pack.buffer )
 				
-				await $mol_wire_async( mine ).units_save({ ins: persisting, del: [] })
-			
 				if( this.$.$hyoo_crus_log() ) this.$.$mol_log3_done({
 					place: this,
-					message: '💾 Saved Units',
+					message: '💾 Save Unit',
 					units: persisting,
 				})
 
+				await $mol_wire_async( mine ).units_save({ ins: persisting, del: [] })
+			
 			}
 			
 			for( const seal of seals ) this.seal_add( seal )
 			
+			return this
 		}
 		
 		async units_sign( units: readonly $hyoo_crus_unit_base[] ) {
 			
-			const auth = this.auth()
-			const rate = $hyoo_crus_rank_rate_of( this.pass_rank( auth.pass() ) )
-			const wide = Boolean( this.link().area().str )
+			const lands = new Map< $hyoo_crus_land, $hyoo_crus_unit_base[] >()
+			for( const unit of units ) {
+				
+				let us = lands.get( unit._land! )
+				if( us ) us.push( unit )
+				else lands.set( unit._land!, [ unit ] )
+				
+			}
 			
-			const threads = $mol_array_chunks( units, 14 ).map( async( units )=> {
+			const threads = [ ... lands.entries() ].flatMap( ([ land, units ])=> {
 				
-				const seal = $hyoo_crus_unit_seal.make( units.length, wide )
+				const auth = land.auth()
+				const rate = $hyoo_crus_rank_rate_of( land.pass_rank( auth.pass() ) )
+				const wide = Boolean( land.link().area().str )
 				
-				seal.time_tick( this.faces.tick().time_tick )
-				seal.lord( auth.pass().lord() )
-				seal.hash_list( units.map( unit => unit.hash() ) )
+				return $mol_array_chunks( units, 14 ).map( async( units )=> {
 				
-				const shot = seal.shot().mix( this.link() )
-				do {
-					seal.sign( await auth.sign( shot ) )
-				} while( seal.rate_min() > rate )
+					const seal = $hyoo_crus_unit_seal.make( units.length, wide )
+					
+					seal.time_tick( this.faces.tick().time_tick )
+					seal.lord( auth.pass().lord() )
+					seal.hash_list( units.map( unit => unit.hash() ) )
+					
+					const shot = seal.shot().mix( this.link() )
+					do {
+						seal.sign( await auth.sign( shot ) )
+					} while( seal.rate_min() > rate )
+					
+					return seal
+				} )
 				
-				return seal
 			} )
 			
 			return Promise.all( threads )
@@ -1173,7 +1209,6 @@ namespace $ {
 			this.saving()
 			
 			const units = [] as $hyoo_crus_unit_base[]
-			const rocks = [] as [ string, Uint8Array< ArrayBuffer > ][]
 			
 			for( const gift of this._gift.values() ) units.push( gift )
 			

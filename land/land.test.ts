@@ -151,10 +151,13 @@ namespace $ {
 			
 		},
 		
-		'Land Area inherits rights'( $ ) {
+		async 'Land Area inherits rights'( $ ) {
 			
-			const base = $.$hyoo_crus_glob.land_grab([[ null, $hyoo_crus_rank_post( 'just' ) ]])
-			const area = base.area_make()
+			const area = await $mol_wire_async( ()=> {
+				const base = $.$hyoo_crus_glob.land_grab([[ null, $hyoo_crus_rank_post( 'just' ) ]])
+				base.saving()
+				return base.area_make()
+		 	} )()
 			
 			$mol_assert_equal( area.pass_rank( area.auth().pass() ), $hyoo_crus_rank_rule )
 			$mol_assert_equal( area.lord_rank( $hyoo_crus_link.hole ), $hyoo_crus_rank_post( 'just' ) )

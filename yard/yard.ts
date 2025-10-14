@@ -184,30 +184,55 @@ namespace $ {
 			const pack = $mol_wire_sync( $hyoo_crus_pack ).from( msg ) as $hyoo_crus_pack
 			const parts =  $mol_wire_sync( pack ).parts()
 			
-			if( this.$.$hyoo_crus_log() ) $mol_wire_sync( this.$ ).$mol_log3_rise({
-				place: this,
-				message: '➕ Gain Pack',
-				port: $mol_key( port ),
-				parts,
-			})
-			
-			forget: {
+			for( const [ land, part ] of parts ) {
+					
+				const Land = this.$.$hyoo_crus_glob.Land( new $hyoo_crus_link( land ) )
 				
-				for( const [ land, part ] of parts ) {
+				forget: {
 					
 					if( part.units.length ) break forget
 					if( part.faces.size ) break forget
 					if( !this.port_lands_active( port ).has( land ) ) break forget
 					
 					this.port_lands_active( port ).delete( land )
-					return
+					
+					if( this.$.$hyoo_crus_log() ) $mol_wire_sync( this.$ ).$mol_log3_done({
+						place: this,
+						message: '➕ Take Free',
+						port: $mol_key( port ),
+						land: Land,
+					})
+
+					continue
+				}
+				
+				this.face_port_sync( port, [[ land, part ]] )
+				
+				if( part.units.length ) {
+					
+					if( this.$.$hyoo_crus_log() ) $mol_wire_sync( this.$ ).$mol_log3_rise({
+						place: this,
+						message: '➕ Take Unit',
+						port: $mol_key( port ),
+						land: Land,
+						units: part.units,
+					})
+					
+					Land.diff_apply( part.units )
+					
+				} else {
+					
+					if( this.$.$hyoo_crus_log() ) $mol_wire_sync( this.$ ).$mol_log3_rise({
+						place: this,
+						message: '➕ Take Face',
+						port: $mol_key( port ),
+						land: Land,
+						faces: part.faces,
+					})
 					
 				}
 				
 			}
-			
-			this.face_port_sync( port, parts )
-			this.$.$hyoo_crus_glob.apply_parts( parts )
 			
 		}
 		
@@ -271,9 +296,9 @@ namespace $ {
 				
 				if( this.$.$hyoo_crus_log() ) this.$.$mol_log3_done({
 					place: this,
-					message: '✖ Forget Land',
+					message: '🔱 Send Free',
 					port: $mol_key( port ),
-					land: land.link(),
+					land,
 				})
 				
 				port.send_bin( pack )
@@ -295,15 +320,21 @@ namespace $ {
 				const Land = this.$.$hyoo_crus_glob.Land( land )
 				Land.saving()
 				
-				const pack = Land.diff_pack( faces )
-				if( !pack ) return
+				const units = Land.diff_units( faces )
+				if( !units.length ) return
 				
 				if( this.$.$hyoo_crus_log() ) this.$.$mol_log3_rise({
 					place: this,
 					message: '🔱 Send Unit',
 					port: $mol_key( port ),
-					pack,
+					land: Land,
+					units,
 				})
+				
+				const pack = $hyoo_crus_pack.make([[
+					Land.link().str,
+					new $hyoo_crus_pack_part( units )
+				]])
 				
 				port.send_bin( pack.asArray() )
 				faces.sync( Land.faces )
@@ -321,9 +352,9 @@ namespace $ {
 			Land.loading()
 			if( this.$.$hyoo_crus_log() ) this.$.$mol_log3_come({
 				place: this,
-				message: '🎭 Send Face',
+				message: '🔱 Send Face',
 				port: $mol_key( port ),
-				land: land,
+				land: Land,
 				faces: Land.faces,
 			})
 			port.send_bin( Land.face_pack().asArray() )

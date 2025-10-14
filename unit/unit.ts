@@ -177,8 +177,10 @@ namespace $ {
 			return next
 		}
 		
+		_lord = null as $hyoo_crus_link | null
 		lord( next?: $hyoo_crus_link ) {
-			return this.id12( 8, next )
+			if( next ) return this._lord = this.id12( 8, next )
+			return this._lord ?? ( this._lord = this.id12( 8 ) )
 		}
 		
 		/** Unique number for encryption */

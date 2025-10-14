@@ -45,7 +45,12 @@ namespace $.$$ {
 		@ $mol_mem
 		pack() {
 			this.$.$mol_wait_rest()
-			return this.land().diff_pack()
+			const units = this.land().diff_units()
+			const pack = $hyoo_crus_pack.make([[
+				this.land().link().str,
+				new $hyoo_crus_pack_part( units )
+			]])
+			return pack
 		}
 		
 		@ $mol_mem

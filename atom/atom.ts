@@ -106,6 +106,7 @@ namespace $ {
 				return this.val_of( $hyoo_crus_link.hole, next )
 			}
 			
+			@ $mol_mem_key
 			val_of( peer: $hyoo_crus_link | null, next?: ReturnType< Parse > ): ReturnType< Parse > | null {
 				
 				if( next !== undefined ) parse( next )
