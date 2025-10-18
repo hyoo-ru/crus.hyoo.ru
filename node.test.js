@@ -4102,7 +4102,7 @@ var $;
 var $;
 (function ($) {
     function $mol_base64_encode(src) {
-        throw new Error('Not implemented');
+        return src.toBase64();
     }
     $.$mol_base64_encode = $mol_base64_encode;
 })($ || ($ = {}));
@@ -4114,12 +4114,13 @@ var $;
     function $mol_base64_encode_node(str) {
         if (!str)
             return '';
-        if (Buffer.isBuffer(str))
-            return str.toString('base64');
-        return Buffer.from(str).toString('base64');
+        const buf = Buffer.isBuffer(str) ? str : Buffer.from(str);
+        return buf.toString('base64');
     }
     $.$mol_base64_encode_node = $mol_base64_encode_node;
-    $.$mol_base64_encode = $mol_base64_encode_node;
+    if (!('toBase64' in Uint8Array.prototype)) {
+        $.$mol_base64_encode = $mol_base64_encode_node;
+    }
 })($ || ($ = {}));
 
 ;
@@ -4127,7 +4128,7 @@ var $;
 var $;
 (function ($) {
     function $mol_base64_decode(base64) {
-        throw new Error('Not implemented');
+        return Uint8Array.fromBase64(base64);
     }
     $.$mol_base64_decode = $mol_base64_decode;
 })($ || ($ = {}));
@@ -4137,12 +4138,13 @@ var $;
 var $;
 (function ($) {
     function $mol_base64_decode_node(base64Str) {
-        base64Str = base64Str.replace(/-/g, '+').replace(/_/g, '/');
         const buffer = Buffer.from(base64Str, 'base64');
         return new Uint8Array(buffer.buffer, buffer.byteOffset, buffer.byteLength);
     }
     $.$mol_base64_decode_node = $mol_base64_decode_node;
-    $.$mol_base64_decode = $mol_base64_decode_node;
+    if (!('fromBase64' in Uint8Array)) {
+        $.$mol_base64_decode = $mol_base64_decode_node;
+    }
 })($ || ($ = {}));
 
 ;
@@ -5846,13 +5848,37 @@ var $;
 var $;
 (function ($) {
     function $mol_base64_url_encode(buffer) {
-        return $mol_base64_encode(buffer).replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+        return buffer.toBase64({ alphabet: 'base64url', omitPadding: true });
     }
     $.$mol_base64_url_encode = $mol_base64_url_encode;
     function $mol_base64_url_decode(str) {
-        return $mol_base64_decode(str.replace(/-/g, '+').replace(/_/g, '/'));
+        return Uint8Array.fromBase64(str, { alphabet: 'base64url' });
     }
     $.$mol_base64_url_decode = $mol_base64_url_decode;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    function $mol_base64_url_encode_node(str) {
+        if (!str)
+            return '';
+        const buf = Buffer.isBuffer(str) ? str : Buffer.from(str);
+        return buf.toString('base64url').replace(/=/g, '');
+    }
+    $.$mol_base64_url_encode_node = $mol_base64_url_encode_node;
+    if (!('toBase64' in Uint8Array.prototype)) {
+        $.$mol_base64_url_encode = $mol_base64_url_encode_node;
+    }
+    function $mol_base64_url_decode_node(str) {
+        const buffer = Buffer.from(str, 'base64url');
+        return new Uint8Array(buffer.buffer, buffer.byteOffset, buffer.byteLength);
+    }
+    $.$mol_base64_url_decode_node = $mol_base64_url_decode_node;
+    if (!('fromBase64' in Uint8Array)) {
+        $.$mol_base64_url_decode = $mol_base64_url_decode_node;
+    }
 })($ || ($ = {}));
 
 ;
@@ -13127,10 +13153,13 @@ var $;
     const png = new Uint8Array([0x1a, 0x0a, 0x00, 0x49, 0x48, 0x78, 0xda]);
     $mol_test({
         'base64 encode string'() {
-            $mol_assert_equal($mol_base64_encode('Hello, ΧΨΩЫ'), 'SGVsbG8sIM6nzqjOqdCr');
+            $mol_assert_equal($mol_base64_encode($mol_charset_encode('Hello, ΧΨΩЫ')), 'SGVsbG8sIM6nzqjOqdCr');
         },
         'base64 encode binary'() {
             $mol_assert_equal($mol_base64_encode(png), 'GgoASUh42g==');
+        },
+        'base64 encode string with plus'() {
+            $mol_assert_equal($mol_base64_encode($mol_charset_encode('шоешпо')), '0YjQvtC10YjQv9C+');
         },
     });
 })($ || ($ = {}));
@@ -13140,12 +13169,19 @@ var $;
 var $;
 (function ($) {
     const png = new Uint8Array([0x1a, 0x0a, 0x00, 0x49, 0x48, 0x78, 0xda]);
+    const with_plus = new TextEncoder().encode('шоешпо');
     $mol_test({
         'base64 decode string'() {
-            $mol_assert_like($mol_base64_decode('SGVsbG8sIM6nzqjOqdCr'), new TextEncoder().encode('Hello, ΧΨΩЫ'));
+            $mol_assert_equal($mol_base64_decode('SGVsbG8sIM6nzqjOqdCr'), new TextEncoder().encode('Hello, ΧΨΩЫ'));
         },
         'base64 decode binary'() {
-            $mol_assert_like($mol_base64_decode('GgoASUh42g=='), png);
+            $mol_assert_equal($mol_base64_decode('GgoASUh42g=='), png);
+        },
+        'base64 decode binary - without equals'() {
+            $mol_assert_equal($mol_base64_decode('GgoASUh42g'), png);
+        },
+        'base64 decode with plus'() {
+            $mol_assert_equal($mol_base64_decode('0YjQvtC10YjQv9C+'), with_plus);
         },
     });
 })($ || ($ = {}));
