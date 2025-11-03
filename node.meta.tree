@@ -15,6 +15,8 @@
 	pack rise git \https://github.com/stan-donarise/mam_rise.git
 	pack yuf git \https://github.com/zerkalica/yuf.git
 	pack apxu git \https://github.com/ApxuTechTop/apxu
+	pack bog git \https://github.com/best-online-games/bog.git
+	pack mws git \https://github.com/reatailret/milkywaystd_mol.git
 \/hyoo
 	pack about git \https://github.com/hyoo-ru/about.hyoo.ru.git
 	pack artist git \https://github.com/hyoo-ru/artist.hyoo.ru.git
