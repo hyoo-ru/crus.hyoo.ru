@@ -12317,6 +12317,7 @@ var $;
                     return next;
                 let [min, max] = $mol_mem_cached(() => this.view_window()) ?? [0, 0];
                 const shift = this.view_window_shift();
+                this.view_window_shift(0);
                 min += shift;
                 max += shift;
                 let max2 = max = Math.min(max, kids.length);
