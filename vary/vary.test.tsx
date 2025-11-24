@@ -4,7 +4,7 @@ namespace $.$$ {
 	function check( vary: $hyoo_crus_vary_type ) {
 		$mol_assert_equal(
 			vary,
-			$hyoo_crus_vary_decode( $hyoo_crus_vary_encode( vary ) ),
+			( $hyoo_crus_vary.take( $hyoo_crus_vary.pack([ vary ]) ) as any[] )[0],
 		)
 	}	
 	
@@ -21,7 +21,7 @@ namespace $.$$ {
 		},
 		
 		"Int"( $ ) {
-			check( 0n )
+			check( 0 )
 			check( 4611686018427387904n )
 		},
 		
@@ -33,7 +33,7 @@ namespace $.$$ {
 			check( Number.NEGATIVE_INFINITY )
 			check( Number.MAX_SAFE_INTEGER )
 			check( Number.MIN_SAFE_INTEGER )
-			check( Number.MAX_VALUE )
+			check( BigInt( Number.MAX_VALUE ) )
 			check( Number.MIN_VALUE )
 		},
 		
@@ -67,7 +67,7 @@ namespace $.$$ {
 			)
 			
 			$mol_assert_equal(
-				$mol_dom_serialize( $hyoo_crus_vary_decode( $hyoo_crus_vary_encode( xml ) ) as Node ),
+				$mol_dom_serialize( ( $hyoo_crus_vary.take( $hyoo_crus_vary.pack([ xml ]) ) as any[] )[0] as Node ),
 				$mol_dom_serialize( xml ),
 			)
 			
@@ -81,7 +81,7 @@ namespace $.$$ {
 			`)
 			
 			$mol_assert_equal(
-				$.$mol_tree2_to_string( $hyoo_crus_vary_decode( $hyoo_crus_vary_encode( tree ) ) as $mol_tree2 ),
+				$.$mol_tree2_to_string( ( $hyoo_crus_vary.take( $hyoo_crus_vary.pack([ tree ]) ) as any[] )[0] as $mol_tree2 ),
 				$.$mol_tree2_to_string( tree ),
 			)
 			

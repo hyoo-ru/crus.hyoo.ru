@@ -31,6 +31,7 @@ namespace $ {
 	
 	export type $hyoo_crus_unit = $hyoo_crus_unit_base | $hyoo_crus_auth_pass
 	
+	/** Order units: lord / seal / gift / sand */
 	export function $hyoo_crus_unit_sort( units: readonly $hyoo_crus_unit[] ) {
 		
 		const nodes = new Map< string, $hyoo_crus_unit >()

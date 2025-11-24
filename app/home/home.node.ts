@@ -10,7 +10,7 @@ namespace $ {
 			const source = this.aliases()
 			const target = this.Aliases(null)!
 			
-			for( const ip of target.keys().map( $hyoo_crus_vary_cast_str ) ) {
+			for( const ip of target.keys().map( $hyoo_crus_vary_cast_text ) ) {
 				if( !ip || !source.has( ip ) ) target.cut( ip )
 			}
 			

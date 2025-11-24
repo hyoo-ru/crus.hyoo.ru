@@ -55,18 +55,18 @@ namespace $.$$ {
 		"Narrowed Dictionary with linked Dictionaries and others"( $ ) {
 			
 			class User extends $hyoo_crus_dict.with({
-				Title: $hyoo_crus_atom_str,
+				Title: $hyoo_crus_atom_text,
 				Account: $hyoo_crus_atom_link_to( ()=> Account ),
 				Articles: $hyoo_crus_list_link_to( ()=> Article ),
 			}) {}
 			
 			class Account extends $hyoo_crus_dict.with({
-				Title: $hyoo_crus_atom_str,
+				Title: $hyoo_crus_atom_text,
 				User: $hyoo_crus_atom_link_to( ()=> User ),
 			}) {}
 			
 			class Article extends $hyoo_crus_dict.with({
-				Title: $hyoo_crus_dict_to( $hyoo_crus_atom_str ),
+				Title: $hyoo_crus_dict_to( $hyoo_crus_atom_text ),
 				Author: $hyoo_crus_atom_link_to( ()=> User ),
 			}) {}
 			

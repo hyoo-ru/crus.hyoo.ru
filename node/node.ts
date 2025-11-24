@@ -56,7 +56,7 @@ namespace $ {
 		
 		@ $mol_mem_key
 		units_of( peer: $hyoo_crus_link | null ) {
-			return this.land().sand_ordered({ head: this.head(), peer }).filter( unit => unit.tip() !== 'nil' )
+			return this.land().sand_ordered({ head: this.head(), peer }).filter( unit => unit.size() )
 		}
 		
 		filled() {
@@ -94,7 +94,7 @@ namespace $ {
 			const peers = new Set< $hyoo_crus_auth_pass >()
 			
 			const visit = ( sand: $hyoo_crus_unit_sand )=> {
-				peers.add( sand.lord_pass() )
+				peers.add( land.lord_pass( sand.lord() )! )
 				if( sand.tag() === 'term' ) return
 				land.Node( $hyoo_crus_node ).Item( sand.self() ).units_of( null ).forEach( visit )
 			}

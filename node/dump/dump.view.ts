@@ -38,20 +38,20 @@ namespace $.$$ {
 			return this.units()[ index ].tag()
 		}
 		
-		unit_tip( index: number, next?: keyof typeof $hyoo_crus_vary_tip ) {
-			if( next ) {
-				const units = this.units()
-				const unit = units[ index ]
-				this.node().land().post(
-					index ? units[ index - 1 ].self() : $hyoo_crus_link.hole,
-					unit.head(),
-					unit.self(),
-					$hyoo_crus_vary_cast( next, this.node().land().sand_decode( unit ) ),
-					unit.tag(),
-				)
-			}
-			return this.units()[ index ].tip()
-		}
+		// unit_tip( index: number, next?: keyof typeof $hyoo_crus_vary_tip ) {
+		// 	if( next ) {
+		// 		const units = this.units()
+		// 		const unit = units[ index ]
+		// 		this.node().land().post(
+		// 			index ? units[ index - 1 ].self() : $hyoo_crus_link.hole,
+		// 			unit.head(),
+		// 			unit.self(),
+		// 			[ $hyoo_crus_vary_cast( next, this.node().land().sand_decode( unit ) ) ],
+		// 			unit.tag(),
+		// 		)
+		// 	}
+		// 	return this.units()[ index ].tip()
+		// }
 		
 		unit_time( index: number ) {
 			return $hyoo_crus_time_dump( this.units()[ index ].time() )
@@ -82,7 +82,7 @@ namespace $.$$ {
 		}
 		
 		value_str( next?: string ) {
-			return this.node().cast( $hyoo_crus_atom_str ).val( next ) ?? ''
+			return this.node().cast( $hyoo_crus_atom_text ).val( next ) ?? ''
 		}
 		
 		text( next?: string ) {

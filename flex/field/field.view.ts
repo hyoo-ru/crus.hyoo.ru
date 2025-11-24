@@ -35,7 +35,7 @@ namespace $.$$ {
 		
 		@ $mol_mem_key
 		override enum_label( option: $hyoo_crus_vary_type ) {
-			return $hyoo_crus_vary_cast_str( option ) ?? ''
+			return $hyoo_crus_vary_cast_text( option ) ?? ''
 		}
 		
 		bool( next?: boolean ) {
@@ -43,7 +43,7 @@ namespace $.$$ {
 		}
 		
 		int( next?: number ) {
-			return Number( this.node( next as any )?.cast( $hyoo_crus_atom_int ).val( next === undefined ? undefined : BigInt( next ) ) ?? Number.NaN )
+			return Number( this.node( next as any )?.cast( $hyoo_crus_atom_bint ).val( next === undefined ? undefined : BigInt( next ) ) ?? Number.NaN )
 		}
 		
 		real( next?: number ) {
@@ -51,7 +51,7 @@ namespace $.$$ {
 		}
 		
 		str( next?: string ) {
-			return this.node( next as any )?.cast( $hyoo_crus_atom_str ).val( next ) ?? ''
+			return this.node( next as any )?.cast( $hyoo_crus_atom_text ).val( next ) ?? ''
 		}
 		
 		time( next?: $mol_time_moment ) {
@@ -83,7 +83,7 @@ namespace $.$$ {
 		
 		link_label( link: $hyoo_crus_vary_type ) {
 			if( link instanceof $hyoo_crus_link ) return this.$.$hyoo_crus_glob.Node( link, $hyoo_crus_flex_thing ).Title()?.val() ?? link.str
-			return $hyoo_crus_vary_cast_str( link ) ?? ''
+			return $hyoo_crus_vary_cast_text( link ) ?? ''
 		}
 		
 		link_remote() {
@@ -156,7 +156,7 @@ namespace $.$$ {
 		}
 		
 		list_item_value( sand: $hyoo_crus_unit_sand ) {
-			return $hyoo_crus_vary_cast_str( this.land().sand_decode( sand ) ) ?? ''
+			return $hyoo_crus_vary_cast_text( this.land().sand_decode( sand ) ) ?? ''
 		}
 		
 		list_item_adopt( transfer : DataTransfer ) {

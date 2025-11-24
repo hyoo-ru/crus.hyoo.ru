@@ -26,7 +26,19 @@ namespace $ {
 			return Boolean( this.meta() & 0b1000_0000 )
 		}
 
-		// _items_alive = new Set< $hyoo_crus_link >
+		_alive_count = 0
+		
+		alive_shift( shift: number ) {
+			this._alive_count += shift
+		}
+		
+		alive_full() {
+			return this.size() === this._alive_count
+		}
+		
+		alive_free() {
+			return 0 === this._alive_count
+		}
 		
 		hash_item( index: number, next?: $hyoo_crus_link ) {
 			return this.id12( 20 + index * 12, next )
@@ -98,7 +110,7 @@ namespace $ {
 		}
 		
 		path(): string {
-			return `seal:${ this.hash() }`
+			return `seal:${ this.lord() }/${ $hyoo_crus_time_dump( this.time() ) } #${ this.tick() }`
 		}
 		
 		[ $mol_dev_format_head ]() {

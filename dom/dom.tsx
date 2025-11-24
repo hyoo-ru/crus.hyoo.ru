@@ -7,7 +7,7 @@ namespace $ {
 			
 			const land = this.land()
 			const doms = land.Node( $hyoo_crus_dom )
-			const regs = land.Node( $hyoo_crus_atom_str )
+			const regs = land.Node( $hyoo_crus_atom_text )
 			
 			if( next ) {
 				
@@ -100,7 +100,7 @@ namespace $ {
 					next: sample,
 					equal: ( next, prev )=> {
 						if( typeof next === 'string' ) {
-							const p = $hyoo_crus_vary_cast_str( land.sand_decode( prev ) )
+							const p = $hyoo_crus_vary_cast_text( land.sand_decode( prev ) )
 							if( !p ) return false
 							return p.startsWith( next ) || next.startsWith( p )
 						} else if( next.nodeType === next.ATTRIBUTE_NODE ) {
@@ -181,7 +181,7 @@ namespace $ {
 						: {}
 					
 					const content = unit.tag() === 'term'
-						? $hyoo_crus_vary_cast_str( land.sand_decode( unit ) )
+						? $hyoo_crus_vary_cast_text( land.sand_decode( unit ) )
 						: doms.Item( unit.self() ).dom()
 					
 					return <Tag { ... attrs } id={ unit.self().str } >{ content }</Tag>

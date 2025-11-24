@@ -18,12 +18,12 @@ namespace $.$$ {
 			
 			const land = $.$hyoo_crus_glob.home().land()
 			
-			const bin = land.Node( $hyoo_crus_atom_bin ).Item( new $hyoo_crus_link( '11111111' ) )
+			const bin = land.Node( $hyoo_crus_atom_blob ).Item( new $hyoo_crus_link( '11111111' ) )
 			$mol_assert_equal( bin.val(), null )
 			bin.val( new Uint8Array([ 1, 2, 3 ]) )
 			$mol_assert_equal( bin.val(), new Uint8Array([ 1, 2, 3 ]) )
 			
-			const str = land.Node( $hyoo_crus_atom_str ).Item( new $hyoo_crus_link( '22222222' ) )
+			const str = land.Node( $hyoo_crus_atom_text ).Item( new $hyoo_crus_link( '22222222' ) )
 			$mol_assert_equal( str.val(), null )
 			str.val( 'foo' )
 			$mol_assert_equal( str.val(), 'foo' )
@@ -67,8 +67,8 @@ namespace $.$$ {
 			
 			const land = $.$hyoo_crus_glob.home().land()
 			
-			const str = land.Node( $hyoo_crus_atom_str ).Item( new $hyoo_crus_link( '11111111' ) )
-			const link = land.Node( $hyoo_crus_atom_link_to( ()=> $hyoo_crus_atom_str ) ).Item( new $hyoo_crus_link( '11111111' ) )
+			const str = land.Node( $hyoo_crus_atom_text ).Item( new $hyoo_crus_link( '11111111' ) )
+			const link = land.Node( $hyoo_crus_atom_link_to( ()=> $hyoo_crus_atom_text ) ).Item( new $hyoo_crus_link( '11111111' ) )
 			$mol_assert_equal( link.remote(), null )
 			
 			link.remote( str )

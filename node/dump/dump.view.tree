@@ -8,7 +8,7 @@ $hyoo_crus_node_dump $mol_expander
 	addons /
 	Tools $mol_view sub /
 		^ addons
-		^ editors
+		- ^ editors
 	editors /
 		<= Add_key $mol_textarea
 			enabled <= can_change
@@ -31,10 +31,7 @@ $hyoo_crus_node_dump $mol_expander
 			<= Node_inner* $hyoo_crus_node_dump
 				tag <= unit_tag*
 				addons <= node_addons* /
-					<= Unit_value* $hyoo_crus_unit_sand_dump
-						land <= land
-						sand <= unit_value* null
-					<= Unit_tip* $mol_select
+					- <= Unit_tip* $mol_select
 						value? <=> unit_tip*? \bin
 						enabled <= can_change
 						dictionary *
@@ -66,4 +63,7 @@ $hyoo_crus_node_dump $mol_expander
 						sub / <= Unit_wipe_icon* $mol_icon_close
 						enabled <= can_change
 						click? <=> unit_wipe*? null
+					<= Unit_value* $hyoo_crus_unit_sand_dump
+						land <= land
+						sand <= unit_value* null
 				node <= node_inner* $hyoo_crus_node

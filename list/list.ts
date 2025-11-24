@@ -148,34 +148,29 @@ namespace $ {
 	}
 
 	/** Mergeable list of atomic non empty binaries */
-	export class $hyoo_crus_list_bin extends $hyoo_crus_list( $hyoo_crus_vary_cast_bin ) {}
+	export class $hyoo_crus_list_bin extends $hyoo_crus_list( $hyoo_crus_vary_cast_blob ) {}
 	/** Mergeable list of atomic booleans */
 	export class $hyoo_crus_list_bool extends $hyoo_crus_list( $hyoo_crus_vary_cast_bool ) {}
 	/** Mergeable list of atomic int64s */
-	export class $hyoo_crus_list_int extends $hyoo_crus_list( $hyoo_crus_vary_cast_int ) {}
+	export class $hyoo_crus_list_int extends $hyoo_crus_list( $hyoo_crus_vary_cast_bint ) {}
 	/** Mergeable list of atomic float64s */
 	export class $hyoo_crus_list_real extends $hyoo_crus_list( $hyoo_crus_vary_cast_real ) {}
-	/** Mergeable list of atomic int64 arrays */
-	export class $hyoo_crus_list_ints extends $hyoo_crus_list( $hyoo_crus_vary_cast_ints ) {}
-	/** Mergeable list of atomic float64 arrays */
-	export class $hyoo_crus_list_reals extends $hyoo_crus_list( $hyoo_crus_vary_cast_reals ) {}
 	/** Mergeable list of atomic Links */
 	export class $hyoo_crus_list_link extends $hyoo_crus_list( $hyoo_crus_vary_cast_link ) {}
-
 	/** Mergeable list of atomic strings */
-	export class $hyoo_crus_list_str extends $hyoo_crus_list( $hyoo_crus_vary_cast_str ) {}
+	export class $hyoo_crus_list_str extends $hyoo_crus_list( $hyoo_crus_vary_cast_text ) {}
 	/** Mergeable list of atomic iso8601 time moments */
 	export class $hyoo_crus_list_time extends $hyoo_crus_list( $hyoo_crus_vary_cast_time ) {}
 	/** Mergeable list of atomic iso8601 time durations */
-	export class $hyoo_crus_list_dur extends $hyoo_crus_list( $hyoo_crus_vary_cast_dur ) {}
+	export class $hyoo_crus_list_dur extends $hyoo_crus_list( $hyoo_crus_vary_cast_dura ) {}
 	/** Mergeable list of atomic iso8601 time intervals */
-	export class $hyoo_crus_list_range extends $hyoo_crus_list( $hyoo_crus_vary_cast_range ) {}
+	export class $hyoo_crus_list_range extends $hyoo_crus_list( $hyoo_crus_vary_cast_span ) {}
 	/** Mergeable list of atomic plain old js objects */
-	export class $hyoo_crus_list_json extends $hyoo_crus_list( $hyoo_crus_vary_cast_json ) {}
+	export class $hyoo_crus_list_json extends $hyoo_crus_list( $hyoo_crus_vary_cast_dict ) {}
 	/** Mergeable list of atomic plain old js arrays */
-	export class $hyoo_crus_list_jsan extends $hyoo_crus_list( $hyoo_crus_vary_cast_jsan ) {}
+	export class $hyoo_crus_list_jsan extends $hyoo_crus_list( $hyoo_crus_vary_cast_list ) {}
 	/** Mergeable list of atomic DOMs */
-	export class $hyoo_crus_list_dom extends $hyoo_crus_list( $hyoo_crus_vary_cast_dom ) {}
+	export class $hyoo_crus_list_dom extends $hyoo_crus_list( $hyoo_crus_vary_cast_elem ) {}
 	/** Mergeable list of atomic Trees*/
 	export class $hyoo_crus_list_tree extends $hyoo_crus_list( $hyoo_crus_vary_cast_tree ) {}
 

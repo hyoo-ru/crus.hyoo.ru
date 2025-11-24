@@ -3,7 +3,7 @@ namespace $ {
 	/** Any Thing */
 	export class $hyoo_crus_flex_thing extends $hyoo_crus_dict.with({
 		Kind: $hyoo_crus_atom_link_to( ()=> $hyoo_crus_flex_kind ), // Schema of fields
-		Title: $hyoo_crus_atom_str,
+		Title: $hyoo_crus_atom_text,
 	}) {}
 	
 	/** Atomic Link to any Thing */
@@ -17,9 +17,9 @@ namespace $ {
 	/** Property of Kind */
 	export class $hyoo_crus_flex_prop extends $hyoo_crus_flex_thing.with( {
 		/** Key to store value */
-		Key: $hyoo_crus_atom_str,
+		Key: $hyoo_crus_atom_text,
 		/** Type of value */
-		Type: $hyoo_crus_atom_str,
+		Type: $hyoo_crus_atom_text,
 		/** Target kind */
 		Target: $hyoo_crus_atom_link_to( () => $hyoo_crus_flex_kind ),
 		/** Variants of values */

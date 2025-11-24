@@ -2,7 +2,7 @@ namespace $ {
 	
 	export class $hyoo_crus_app_stat extends $hyoo_crus_dict.with({
 		
-		Uptime: $hyoo_crus_atom_dur,
+		Uptime: $hyoo_crus_atom_dura,
 		
 		/** User time in secs */
 		Cpu_user: $hyoo_crus_stat_ranges,

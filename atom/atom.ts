@@ -27,7 +27,7 @@ namespace $ {
 				$hyoo_crus_link.hole, 
 				unit_prev?.head() ?? this.head(),
 				unit_prev?.self() ?? $hyoo_crus_link.hole,
-				next
+				next,
 			)
 			
 			return this.vary_of( peer )
@@ -61,7 +61,7 @@ namespace $ {
 			static options = options;
 
 			static toString() {
-				return this === $hyoo_crus_atom_enum ? '$hyoo_crus_atom_enum<' + options.map( $hyoo_crus_vary_cast_str ) + '>' : super.toString()
+				return this === $hyoo_crus_atom_enum ? '$hyoo_crus_atom_enum<' + options.map( $hyoo_crus_vary_cast_text ) + '>' : super.toString()
 			}
 			
 			val( next?: Options[number] ): Options[number] | null {
@@ -75,7 +75,7 @@ namespace $ {
 					for( const option of options ) {
 						if( $mol_compare_deep( option, next ) ) break validate
 					}
-					$mol_fail( new Error( `Wrong value (${ $hyoo_crus_vary_cast_str( next ) })` ) )
+					$mol_fail( new Error( `Wrong value (${ $hyoo_crus_vary_cast_text( next ) })` ) )
 				}
 				
 				const val = this.vary_of( peer, next )
@@ -130,35 +130,29 @@ namespace $ {
 	}
 	
 	/** Atomic non empty binary register */
-	export class $hyoo_crus_atom_bin extends $hyoo_crus_atom( $hyoo_crus_vary_cast_bin ) {}
+	export class $hyoo_crus_atom_blob extends $hyoo_crus_atom( $hyoo_crus_vary_cast_blob ) {}
 	/** Atomic boolean register */
 	export class $hyoo_crus_atom_bool extends $hyoo_crus_atom( $hyoo_crus_vary_cast_bool ) {}
 	/** Atomic int64 register */
-	export class $hyoo_crus_atom_int extends $hyoo_crus_atom( $hyoo_crus_vary_cast_int ) {}
+	export class $hyoo_crus_atom_bint extends $hyoo_crus_atom( $hyoo_crus_vary_cast_bint ) {}
 	/** Atomic float64 register */
 	export class $hyoo_crus_atom_real extends $hyoo_crus_atom( $hyoo_crus_vary_cast_real ) {}
-	/** Atomic int64 array register */
-	export class $hyoo_crus_atom_ints extends $hyoo_crus_atom( $hyoo_crus_vary_cast_ints ) {}
-	/** Atomic float64 array register */
-	export class $hyoo_crus_atom_reals extends $hyoo_crus_atom( $hyoo_crus_vary_cast_reals ) {}
 	/** Atomic some link register */
 	export class $hyoo_crus_atom_link extends $hyoo_crus_atom( $hyoo_crus_vary_cast_link ) {}
-
 	/** Atomic string register */
-	export class $hyoo_crus_atom_str extends $hyoo_crus_atom( $hyoo_crus_vary_cast_str ) {}
+	export class $hyoo_crus_atom_text extends $hyoo_crus_atom( $hyoo_crus_vary_cast_text ) {}
 	/** Atomic iso8601 time moment register*/
 	export class $hyoo_crus_atom_time extends $hyoo_crus_atom( $hyoo_crus_vary_cast_time ) {}
 	/** Atomic iso8601 time duration register */
-	export class $hyoo_crus_atom_dur extends $hyoo_crus_atom( $hyoo_crus_vary_cast_dur ) {}
+	export class $hyoo_crus_atom_dura extends $hyoo_crus_atom( $hyoo_crus_vary_cast_dura ) {}
 	/** Atomic iso8601 time interval register */
-	export class $hyoo_crus_atom_range extends $hyoo_crus_atom( $hyoo_crus_vary_cast_range ) {}
-
+	export class $hyoo_crus_atom_span extends $hyoo_crus_atom( $hyoo_crus_vary_cast_span ) {}
 	/** Atomic plain old js object register */
-	export class $hyoo_crus_atom_json extends $hyoo_crus_atom( $hyoo_crus_vary_cast_json ) {}
+	export class $hyoo_crus_atom_dict extends $hyoo_crus_atom( $hyoo_crus_vary_cast_dict ) {}
 	/** Atomic plain old js array register */
-	export class $hyoo_crus_atom_jsan extends $hyoo_crus_atom( $hyoo_crus_vary_cast_jsan ) {}
+	export class $hyoo_crus_atom_list extends $hyoo_crus_atom( $hyoo_crus_vary_cast_list ) {}
 	/** Atomic DOM register */
-	export class $hyoo_crus_atom_dom extends $hyoo_crus_atom( $hyoo_crus_vary_cast_dom ) {}
+	export class $hyoo_crus_atom_elem extends $hyoo_crus_atom( $hyoo_crus_vary_cast_elem ) {}
 	/** Atomic Tree register */
 	export class $hyoo_crus_atom_tree extends $hyoo_crus_atom( $hyoo_crus_vary_cast_tree ) {}
 	

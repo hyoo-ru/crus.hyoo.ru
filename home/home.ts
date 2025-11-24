@@ -2,7 +2,7 @@ namespace $ {
 
 	/** Land where Lord is King. Contains only main info. */
 	export class $hyoo_crus_home extends $hyoo_crus_entity.with({
-		Selection: $hyoo_crus_atom_str,
+		Selection: $hyoo_crus_atom_text,
 		Hall: $hyoo_crus_atom_link_to( ()=> $hyoo_crus_dict ),
 	}) {
 		

@@ -135,8 +135,8 @@ namespace $ {
 			const Alice = $.$hyoo_crus_glob.home().land()
 			const Bella = Alice.fork()
 			
-			const alice_val = Alice.Node( $hyoo_crus_atom_str ).Item( new $hyoo_crus_link( 'qwertyui' ) )
-			const bella_val = Bella.Node( $hyoo_crus_atom_str ).Item( new $hyoo_crus_link( 'qwertyui' ) )
+			const alice_val = Alice.Node( $hyoo_crus_atom_text ).Item( new $hyoo_crus_link( 'qwertyui' ) )
+			const bella_val = Bella.Node( $hyoo_crus_atom_text ).Item( new $hyoo_crus_link( 'qwertyui' ) )
 			
 			alice_val.val( 'Alice' )
 			bella_val.val( 'Bella' )

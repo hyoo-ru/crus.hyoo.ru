@@ -55,7 +55,12 @@ namespace $.$$ {
 		
 		@ $mol_mem
 		override size() {
-			return $mol_si_short( this.pack()?.byteLength ?? 0, 'B' )
+			const units = this.land().diff_units()
+			const size = $hyoo_crus_pack.length([[
+				this.land().link().str,
+				new $hyoo_crus_pack_part( units )
+			]])
+			return $mol_si_short( size, 'B' )
 		}
 		
 		override dump() {
