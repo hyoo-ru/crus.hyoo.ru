@@ -6,7 +6,7 @@ namespace $ {
 		free = 0,
 		
 		/** Land header for the following parts. */
-		land = 67, // C
+		land = 76, // L
 		
 		/** Unit of data. */
 		sand = 252,
