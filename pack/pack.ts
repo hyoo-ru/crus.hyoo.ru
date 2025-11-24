@@ -1,6 +1,6 @@
 namespace $ {
 	
-	export const $hyoo_crus_pack_four_code = $mol_charset_encode( 'CRUS' ) // 43 52 55 53
+	export const $hyoo_crus_pack_four_code = $mol_charset_encode( 'LAND' ) // 76 65 78 68
 	export const $hyoo_crus_pack_head_size = 4/*CRUS*/ + 12/*Lord*/ + 6/*Area*/ + 2/*Size*/
 	
 	/** Universal binary package which contains some Faces/Units/Rocks */
