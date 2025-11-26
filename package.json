@@ -126,7 +126,6 @@
     "$mol_mem_cached",
     "$mol_compare_array",
     "$mol_file_transaction",
-    "$node_modules",
     "$mol_file_extensions",
     "$hyoo_crus_glob",
     "$mol_wire_set",
