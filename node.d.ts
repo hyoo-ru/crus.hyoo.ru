@@ -489,6 +489,10 @@ declare namespace $ {
 }
 
 declare namespace $ {
+    function $node_internal_check(name: string): boolean;
+}
+
+declare namespace $ {
     function $mol_fail_catch(error: unknown): boolean;
 }
 
