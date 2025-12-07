@@ -1992,13 +1992,7 @@ var $node = new Proxy({ require }, {
             target.require.resolve(name);
         }
         catch {
-            try {
-                $$.$mol_exec('.', 'npm', 'install', '--omit=dev', name);
-            }
-            catch (e) {
-                if ($$.$mol_promise_like(e))
-                    $$.$mol_fail_hidden(e);
-            }
+            $$.$mol_exec('.', 'npm', 'install', '--omit=dev', name);
             try {
                 $$.$mol_exec('.', 'npm', 'install', '--omit=dev', '@types/' + name);
             }
@@ -2008,21 +2002,7 @@ var $node = new Proxy({ require }, {
                 $$.$mol_fail_log(e);
             }
         }
-        try {
-            return target.require(name);
-        }
-        catch (error) {
-            if ($$.$mol_promise_like(error))
-                $$.$mol_fail_hidden(error);
-            if (error && typeof error === 'object' && error.code === 'ERR_REQUIRE_ESM') {
-                const module = cache.get(name);
-                if (module)
-                    return module;
-                throw Object.assign(import(name).then(module => cache.set(name, module)), { cause: error });
-            }
-            $$.$mol_fail_log(error);
-            return null;
-        }
+        return target.require(name);
     },
     set(target, name, value) {
         target[name] = value;
@@ -10714,24 +10694,6 @@ var $;
 
 ;
 "use strict";
-var $;
-(function ($) {
-    $mol_test({
-        'return result without errors'() {
-            $mol_assert_equal($mol_try(() => false), false);
-        },
-    });
-})($ || ($ = {}));
-
-;
-"use strict";
-var $;
-(function ($_1) {
-    $mol_test_mocks.push($ => $.$mol_fail_log = () => false);
-})($ || ($ = {}));
-
-;
-"use strict";
 
 ;
 "use strict";
@@ -11697,6 +11659,24 @@ var $;
 ;
 "use strict";
 var $;
+(function ($) {
+    $mol_test({
+        'return result without errors'() {
+            $mol_assert_equal($mol_try(() => false), false);
+        },
+    });
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($_1) {
+    $mol_test_mocks.push($ => $.$mol_fail_log = () => false);
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
 (function ($_1) {
     $mol_test({
         'FQN of anon function'($) {
@@ -11951,6 +11931,119 @@ var $;
 ;
 "use strict";
 var $;
+(function ($) {
+    $mol_test({
+        'auto name'() {
+            class Invalid extends $mol_error_mix {
+            }
+            const mix = new Invalid('foo');
+            $mol_assert_equal(mix.name, 'Invalid_Error');
+        },
+        'simpe mix'() {
+            const mix = new $mol_error_mix('foo', {}, new Error('bar'), new Error('lol'));
+            $mol_assert_equal(mix.message, 'foo');
+            $mol_assert_equal(mix.errors.map(e => e.message), ['bar', 'lol']);
+        },
+        'provide additional info'() {
+            class Invalid extends $mol_error_mix {
+            }
+            const mix = new $mol_error_mix('Wrong password', {}, new Invalid('Too short', { value: 'p@ssw0rd', hint: '> 8 letters' }), new Invalid('Too simple', { value: 'p@ssw0rd', hint: 'need capital letter' }));
+            const hints = [];
+            if (mix instanceof $mol_error_mix) {
+                for (const er of mix.errors) {
+                    if (er instanceof Invalid) {
+                        hints.push(er.cause?.hint ?? '');
+                    }
+                }
+            }
+            $mol_assert_equal(hints, ['> 8 letters', 'need capital letter']);
+        },
+    });
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($_1) {
+    $mol_test({
+        'init with overload'() {
+            class X extends $mol_object {
+                foo() {
+                    return 1;
+                }
+            }
+            var x = X.make({
+                foo: () => 2,
+            });
+            $mol_assert_equal(x.foo(), 2);
+        },
+        'Context in instance inherits from class'($) {
+            const custom = $.$mol_ambient({});
+            class X extends $.$mol_object {
+                static $ = custom;
+            }
+            $mol_assert_equal(new X().$, custom);
+        },
+    });
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($_1) {
+    $mol_test({
+        async 'exec timeout auto kill child process'($) {
+            let close_mock = () => { };
+            const error_message = 'Run error, timeout';
+            function mol_run_spawn_sync_mock() {
+                return {
+                    output: [],
+                    stdout: error_message,
+                    stderr: '',
+                    status: 0,
+                    signal: null,
+                    pid: 123,
+                };
+            }
+            function mol_run_spawn_mock() {
+                return {
+                    on(name, cb) {
+                        if (name === 'exit')
+                            close_mock = cb;
+                    },
+                    kill() { close_mock(); }
+                };
+            }
+            const context_mock = $.$mol_ambient({
+                $mol_run_spawn_sync: mol_run_spawn_sync_mock,
+                $mol_run_spawn: mol_run_spawn_mock
+            });
+            class $mol_run_mock extends $mol_run {
+                static get $() { return context_mock; }
+                static async_enabled() {
+                    return true;
+                }
+            }
+            let message = '';
+            try {
+                const res = await $mol_wire_async($mol_run_mock).spawn({
+                    command: 'sleep 10',
+                    dir: '.',
+                    timeout: 10,
+                    env: { 'MOL_RUN_ASYNC': '1' }
+                });
+            }
+            catch (e) {
+                message = e.message;
+            }
+            $mol_assert_equal(message, error_message);
+        }
+    });
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
 (function ($_1) {
     $mol_test({
         'test types'($) {
@@ -11998,32 +12091,6 @@ var $;
             $mol_assert_equal(A.instances[0] instanceof A, true);
             $mol_assert_equal(A.instances[0], A.instances[1]);
         }
-    });
-})($ || ($ = {}));
-
-;
-"use strict";
-var $;
-(function ($_1) {
-    $mol_test({
-        'init with overload'() {
-            class X extends $mol_object {
-                foo() {
-                    return 1;
-                }
-            }
-            var x = X.make({
-                foo: () => 2,
-            });
-            $mol_assert_equal(x.foo(), 2);
-        },
-        'Context in instance inherits from class'($) {
-            const custom = $.$mol_ambient({});
-            class X extends $.$mol_object {
-                static $ = custom;
-            }
-            $mol_assert_equal(new X().$, custom);
-        },
     });
 })($ || ($ = {}));
 
@@ -12985,93 +13052,6 @@ var $;
             $mol_action
         ], $mol_state_arg_mock, "go", null);
         context.$mol_state_arg = $mol_state_arg_mock;
-    });
-})($ || ($ = {}));
-
-;
-"use strict";
-var $;
-(function ($) {
-    $mol_test({
-        'auto name'() {
-            class Invalid extends $mol_error_mix {
-            }
-            const mix = new Invalid('foo');
-            $mol_assert_equal(mix.name, 'Invalid_Error');
-        },
-        'simpe mix'() {
-            const mix = new $mol_error_mix('foo', {}, new Error('bar'), new Error('lol'));
-            $mol_assert_equal(mix.message, 'foo');
-            $mol_assert_equal(mix.errors.map(e => e.message), ['bar', 'lol']);
-        },
-        'provide additional info'() {
-            class Invalid extends $mol_error_mix {
-            }
-            const mix = new $mol_error_mix('Wrong password', {}, new Invalid('Too short', { value: 'p@ssw0rd', hint: '> 8 letters' }), new Invalid('Too simple', { value: 'p@ssw0rd', hint: 'need capital letter' }));
-            const hints = [];
-            if (mix instanceof $mol_error_mix) {
-                for (const er of mix.errors) {
-                    if (er instanceof Invalid) {
-                        hints.push(er.cause?.hint ?? '');
-                    }
-                }
-            }
-            $mol_assert_equal(hints, ['> 8 letters', 'need capital letter']);
-        },
-    });
-})($ || ($ = {}));
-
-;
-"use strict";
-var $;
-(function ($_1) {
-    $mol_test({
-        async 'exec timeout auto kill child process'($) {
-            let close_mock = () => { };
-            const error_message = 'Run error, timeout';
-            function mol_run_spawn_sync_mock() {
-                return {
-                    output: [],
-                    stdout: error_message,
-                    stderr: '',
-                    status: 0,
-                    signal: null,
-                    pid: 123,
-                };
-            }
-            function mol_run_spawn_mock() {
-                return {
-                    on(name, cb) {
-                        if (name === 'exit')
-                            close_mock = cb;
-                    },
-                    kill() { close_mock(); }
-                };
-            }
-            const context_mock = $.$mol_ambient({
-                $mol_run_spawn_sync: mol_run_spawn_sync_mock,
-                $mol_run_spawn: mol_run_spawn_mock
-            });
-            class $mol_run_mock extends $mol_run {
-                static get $() { return context_mock; }
-                static async_enabled() {
-                    return true;
-                }
-            }
-            let message = '';
-            try {
-                const res = await $mol_wire_async($mol_run_mock).spawn({
-                    command: 'sleep 10',
-                    dir: '.',
-                    timeout: 10,
-                    env: { 'MOL_RUN_ASYNC': '1' }
-                });
-            }
-            catch (e) {
-                message = e.message;
-            }
-            $mol_assert_equal(message, error_message);
-        }
     });
 })($ || ($ = {}));
 
