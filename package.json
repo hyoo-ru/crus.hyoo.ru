@@ -83,6 +83,7 @@
     "$mol_try",
     "$mol_charset_encode",
     "$mol_charset",
+    "$mol_charset_buffer",
     "$mol_dom_serialize",
     "$mol_mem",
     "$mol_wire_solo",
