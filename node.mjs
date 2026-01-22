@@ -3859,6 +3859,8 @@ var $;
                 if (this.$.$mol_fail_catch(error)) {
                     if (error.code === 'ENOENT')
                         return null;
+                    if (error.code === 'EPERM')
+                        return null;
                     error.message += '\n' + path;
                     this.$.$mol_fail_hidden(error);
                 }
@@ -4647,6 +4649,9 @@ var $;
 var $;
 (function ($) {
     class $mol_rest_server extends $mol_object {
+        log() {
+            return this.$.$mol_state_arg.value('mol_rest_server_log') !== null;
+        }
         port() {
             return 0;
         }
@@ -4673,12 +4678,13 @@ var $;
         http_income(req, res) {
             const port = $mol_rest_port_http.make({ output: res });
             const msg = $mol_rest_message_http.make({ port, input: req });
-            $mol_wire_sync(this.$).$mol_log3_rise({
-                place: this,
-                message: msg.method(),
-                url: msg.uri(),
-                remote: req.socket.remoteAddress + ':' + req.socket.remotePort
-            });
+            if (this.log())
+                $mol_wire_sync(this.$).$mol_log3_rise({
+                    place: this,
+                    message: msg.method(),
+                    url: msg.uri(),
+                    remote: req.socket.remoteAddress + ':' + req.socket.remotePort
+                });
             $mol_wire_sync(res).setHeader('Access-Control-Allow-Origin', '*');
             $mol_wire_sync(res).setHeader('Access-Control-Allow-Methods', '*');
             $mol_wire_sync(res).setHeader('Access-Control-Allow-Headers', '*');
@@ -4715,12 +4721,13 @@ var $;
                 return;
             }
             const onclose = $mol_wire_async(() => {
-                $mol_wire_sync(this.$).$mol_log3_done({
-                    place: this,
-                    message: 'CLOSE',
-                    url: upgrade.uri(),
-                    port: $mol_key(port),
-                });
+                if (this.log())
+                    $mol_wire_sync(this.$).$mol_log3_done({
+                        place: this,
+                        message: 'CLOSE',
+                        url: upgrade.uri(),
+                        port: $mol_key(port),
+                    });
                 try {
                     $mol_wire_sync(this.root()).REQUEST(upgrade.derive('CLOSE', null));
                 }
@@ -4746,12 +4753,13 @@ var $;
                 'Connection: Upgrade\r\n' +
                 `Sec-WebSocket-Accept: ${key_out}\r\n` +
                 '\r\n');
-            $mol_wire_sync(this.$).$mol_log3_come({
-                place: this,
-                message: 'OPEN',
-                url: upgrade.uri(),
-                port: $mol_key(port),
-            });
+            if (this.log())
+                $mol_wire_sync(this.$).$mol_log3_come({
+                    place: this,
+                    message: 'OPEN',
+                    url: upgrade.uri(),
+                    port: $mol_key(port),
+                });
         }
         _ws_income_chunks = new WeakMap;
         _ws_income_frames = new WeakMap;
@@ -4820,13 +4828,14 @@ var $;
                 }
                 const message = upgrade.derive('POST', data);
                 if (data.length !== 0) {
-                    this.$.$mol_log3_rise({
-                        place: this,
-                        message: message.method(),
-                        port: $mol_key(message.port),
-                        url: message.uri(),
-                        frame: frame.toString(),
-                    });
+                    if (this.log())
+                        this.$.$mol_log3_rise({
+                            place: this,
+                            message: message.method(),
+                            port: $mol_key(message.port),
+                            url: message.uri(),
+                            frame: frame.toString(),
+                        });
                     await $mol_wire_async(this.root()).REQUEST(message);
                 }
                 setTimeout(() => sock.resume());

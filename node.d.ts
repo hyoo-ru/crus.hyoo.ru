@@ -1129,6 +1129,7 @@ declare namespace $ {
 
 declare namespace $ {
     class $mol_rest_server extends $mol_object {
+        log(): boolean;
         port(): number;
         start(): void;
         http_server(): import("node:http").Server<typeof import("node:http").IncomingMessage, typeof import("node:http").ServerResponse>;
