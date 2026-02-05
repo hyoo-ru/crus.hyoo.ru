@@ -1,0 +1,21 @@
+[hyoo_crus_app_masters] {
+	flex-basis: 50rem;
+}
+
+[hyoo_crus_app_masters_approved_server],
+[hyoo_crus_app_masters_submitted_server] {
+	justify-content: space-between;
+}
+
+[hyoo_crus_app_masters_masters],
+[hyoo_crus_app_masters_submissions] {
+	border: 1px solid var(--mol_theme_line);
+	background: var(--mol_theme_hover);
+	border-radius: var(--mol_gap_round);
+	margin-bottom: var(--mol_gap_block);
+}
+
+[hyoo_crus_app_masters_masters_content],
+[hyoo_crus_app_masters_submissions_content] {
+	padding: var(--mol_gap_block);
+}

@@ -1,0 +1,6 @@
+$hyoo_crus_app_masters_server $mol_view
+	url \
+	sub <= server_sub /
+		<= Server_url $mol_link_iconed
+			title <= server_url \...
+			uri <= server_url \...
