@@ -6094,6 +6094,12 @@ var $;
         async verify(data, sign) {
             return await $mol_crypto_native.subtle.verify(ecdsa, await this.native(), sign, data).catch($mol_crypto_restack);
         }
+        [Symbol.for('nodejs.util.inspect.custom')]() {
+            return this.toJSON();
+        }
+        toJSON() {
+            return this.toString();
+        }
     }
     __decorate([
         $mol_memo.method
@@ -6138,6 +6144,12 @@ var $;
         }
         async sign(data) {
             return new Uint8Array(await $mol_crypto_native.subtle.sign(ecdsa, await this.native(), data).catch($mol_crypto_restack));
+        }
+        [Symbol.for('nodejs.util.inspect.custom')]() {
+            return this.toJSON();
+        }
+        toJSON() {
+            return '$mol_crypto_key_private:' + this.public().toJSON();
         }
     }
     __decorate([
