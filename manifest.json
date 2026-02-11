@@ -1,0 +1,10 @@
+{
+	"name": "hyoo_crus_app_run",
+	"short_name": "hyoo_crus_app_run",
+	"description": "",
+	"id": "hyoo_crus_app_run",
+	"start_url": ".",
+	"display": "standalone",
+	"background_color": "#000000",
+	"theme_color": "#000000"
+}
