@@ -58,6 +58,11 @@ declare namespace $ {
 }
 
 declare namespace $ {
+    const $mol_key_handle: unique symbol;
+    const $mol_key_store: WeakMap<object, string>;
+}
+
+declare namespace $ {
     class $mol_object2 {
         static $: $;
         [Symbol.toStringTag]: string;
@@ -68,6 +73,7 @@ declare namespace $ {
         static [Symbol.toPrimitive](): any;
         static toString(): any;
         static toJSON(): any;
+        static [$mol_key_handle](): any;
         destructor(): void;
         static destructor(): void;
         [Symbol.dispose](): void;
@@ -474,7 +480,6 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    const $mol_key_store: WeakMap<object, string>;
     function $mol_key<Value>(value: Value): string;
 }
 
@@ -1976,6 +1981,7 @@ declare namespace $ {
         toJSON(): any;
         destructor(): void;
         [Symbol.toPrimitive](): any;
+        [$mol_key_handle](): any;
     };
     const $hyoo_crus_list_bin_base: (abstract new () => {
         items(next?: readonly (Uint8Array<ArrayBuffer> | null)[] | undefined): readonly (Uint8Array<ArrayBuffer> | null)[];
@@ -2026,6 +2032,7 @@ declare namespace $ {
         toJSON(): any;
         destructor(): void;
         [Symbol.toPrimitive](): any;
+        [$mol_key_handle](): any;
     };
     export class $hyoo_crus_list_bin extends $hyoo_crus_list_bin_base {
     }
@@ -2078,6 +2085,7 @@ declare namespace $ {
         toJSON(): any;
         destructor(): void;
         [Symbol.toPrimitive](): any;
+        [$mol_key_handle](): any;
     };
     export class $hyoo_crus_list_bool extends $hyoo_crus_list_bool_base {
     }
@@ -2130,6 +2138,7 @@ declare namespace $ {
         toJSON(): any;
         destructor(): void;
         [Symbol.toPrimitive](): any;
+        [$mol_key_handle](): any;
     };
     export class $hyoo_crus_list_int extends $hyoo_crus_list_int_base {
     }
@@ -2182,6 +2191,7 @@ declare namespace $ {
         toJSON(): any;
         destructor(): void;
         [Symbol.toPrimitive](): any;
+        [$mol_key_handle](): any;
     };
     export class $hyoo_crus_list_real extends $hyoo_crus_list_real_base {
     }
@@ -2234,6 +2244,7 @@ declare namespace $ {
         toJSON(): any;
         destructor(): void;
         [Symbol.toPrimitive](): any;
+        [$mol_key_handle](): any;
     };
     export class $hyoo_crus_list_ints extends $hyoo_crus_list_ints_base {
     }
@@ -2286,6 +2297,7 @@ declare namespace $ {
         toJSON(): any;
         destructor(): void;
         [Symbol.toPrimitive](): any;
+        [$mol_key_handle](): any;
     };
     export class $hyoo_crus_list_reals extends $hyoo_crus_list_reals_base {
     }
@@ -2342,6 +2354,7 @@ declare namespace $ {
         toJSON(): any;
         destructor(): void;
         [Symbol.toPrimitive](): any;
+        [$mol_key_handle](): any;
     };
     export class $hyoo_crus_list_ref extends $hyoo_crus_list_ref_base_1 {
     }
@@ -2394,6 +2407,7 @@ declare namespace $ {
         toJSON(): any;
         destructor(): void;
         [Symbol.toPrimitive](): any;
+        [$mol_key_handle](): any;
     };
     export class $hyoo_crus_list_str extends $hyoo_crus_list_str_base {
     }
@@ -2446,6 +2460,7 @@ declare namespace $ {
         toJSON(): any;
         destructor(): void;
         [Symbol.toPrimitive](): any;
+        [$mol_key_handle](): any;
     };
     export class $hyoo_crus_list_time extends $hyoo_crus_list_time_base {
     }
@@ -2498,6 +2513,7 @@ declare namespace $ {
         toJSON(): any;
         destructor(): void;
         [Symbol.toPrimitive](): any;
+        [$mol_key_handle](): any;
     };
     export class $hyoo_crus_list_dur extends $hyoo_crus_list_dur_base {
     }
@@ -2550,6 +2566,7 @@ declare namespace $ {
         toJSON(): any;
         destructor(): void;
         [Symbol.toPrimitive](): any;
+        [$mol_key_handle](): any;
     };
     export class $hyoo_crus_list_range extends $hyoo_crus_list_range_base {
     }
@@ -2602,6 +2619,7 @@ declare namespace $ {
         toJSON(): any;
         destructor(): void;
         [Symbol.toPrimitive](): any;
+        [$mol_key_handle](): any;
     };
     export class $hyoo_crus_list_json extends $hyoo_crus_list_json_base {
     }
@@ -2654,6 +2672,7 @@ declare namespace $ {
         toJSON(): any;
         destructor(): void;
         [Symbol.toPrimitive](): any;
+        [$mol_key_handle](): any;
     };
     export class $hyoo_crus_list_jsan extends $hyoo_crus_list_jsan_base {
     }
@@ -2706,6 +2725,7 @@ declare namespace $ {
         toJSON(): any;
         destructor(): void;
         [Symbol.toPrimitive](): any;
+        [$mol_key_handle](): any;
     };
     export class $hyoo_crus_list_dom extends $hyoo_crus_list_dom_base {
     }
@@ -2758,6 +2778,7 @@ declare namespace $ {
         toJSON(): any;
         destructor(): void;
         [Symbol.toPrimitive](): any;
+        [$mol_key_handle](): any;
     };
     export class $hyoo_crus_list_tree extends $hyoo_crus_list_tree_base {
     }
@@ -2823,6 +2844,7 @@ declare namespace $ {
         toJSON(): any;
         destructor(): void;
         [Symbol.toPrimitive](): any;
+        [$mol_key_handle](): any;
     };
     export {};
 }
@@ -2911,6 +2933,7 @@ declare namespace $ {
         toJSON(): any;
         destructor(): void;
         [Symbol.toPrimitive](): any;
+        [$mol_key_handle](): any;
     };
 }
 
@@ -2977,6 +3000,7 @@ declare namespace $ {
         toJSON(): any;
         destructor(): void;
         [Symbol.toPrimitive](): any;
+        [$mol_key_handle](): any;
     };
     export function $hyoo_crus_atom<Parse extends $mol_data_value>(parse: Parse): (abstract new () => {
         val(next?: ReturnType<Parse>): ReturnType<Parse> | null;
@@ -3022,6 +3046,7 @@ declare namespace $ {
         toJSON(): any;
         destructor(): void;
         [Symbol.toPrimitive](): any;
+        [$mol_key_handle](): any;
     };
     const $hyoo_crus_atom_bin_base: (abstract new () => {
         val(next?: Uint8Array<ArrayBuffer> | null | undefined): Uint8Array<ArrayBuffer> | null;
@@ -3067,6 +3092,7 @@ declare namespace $ {
         toJSON(): any;
         destructor(): void;
         [Symbol.toPrimitive](): any;
+        [$mol_key_handle](): any;
     };
     export class $hyoo_crus_atom_bin extends $hyoo_crus_atom_bin_base {
     }
@@ -3114,6 +3140,7 @@ declare namespace $ {
         toJSON(): any;
         destructor(): void;
         [Symbol.toPrimitive](): any;
+        [$mol_key_handle](): any;
     };
     export class $hyoo_crus_atom_bool extends $hyoo_crus_atom_bool_base {
     }
@@ -3161,6 +3188,7 @@ declare namespace $ {
         toJSON(): any;
         destructor(): void;
         [Symbol.toPrimitive](): any;
+        [$mol_key_handle](): any;
     };
     export class $hyoo_crus_atom_int extends $hyoo_crus_atom_int_base {
     }
@@ -3208,6 +3236,7 @@ declare namespace $ {
         toJSON(): any;
         destructor(): void;
         [Symbol.toPrimitive](): any;
+        [$mol_key_handle](): any;
     };
     export class $hyoo_crus_atom_real extends $hyoo_crus_atom_real_base {
     }
@@ -3255,6 +3284,7 @@ declare namespace $ {
         toJSON(): any;
         destructor(): void;
         [Symbol.toPrimitive](): any;
+        [$mol_key_handle](): any;
     };
     export class $hyoo_crus_atom_ints extends $hyoo_crus_atom_ints_base {
     }
@@ -3302,6 +3332,7 @@ declare namespace $ {
         toJSON(): any;
         destructor(): void;
         [Symbol.toPrimitive](): any;
+        [$mol_key_handle](): any;
     };
     export class $hyoo_crus_atom_reals extends $hyoo_crus_atom_reals_base {
     }
@@ -3357,6 +3388,7 @@ declare namespace $ {
         toJSON(): any;
         destructor(): void;
         [Symbol.toPrimitive](): any;
+        [$mol_key_handle](): any;
     };
     export class $hyoo_crus_atom_ref extends $hyoo_crus_atom_ref_base_1 {
     }
@@ -3404,6 +3436,7 @@ declare namespace $ {
         toJSON(): any;
         destructor(): void;
         [Symbol.toPrimitive](): any;
+        [$mol_key_handle](): any;
     };
     export class $hyoo_crus_atom_str extends $hyoo_crus_atom_str_base {
     }
@@ -3451,6 +3484,7 @@ declare namespace $ {
         toJSON(): any;
         destructor(): void;
         [Symbol.toPrimitive](): any;
+        [$mol_key_handle](): any;
     };
     export class $hyoo_crus_atom_time extends $hyoo_crus_atom_time_base {
     }
@@ -3498,6 +3532,7 @@ declare namespace $ {
         toJSON(): any;
         destructor(): void;
         [Symbol.toPrimitive](): any;
+        [$mol_key_handle](): any;
     };
     export class $hyoo_crus_atom_dur extends $hyoo_crus_atom_dur_base {
     }
@@ -3545,6 +3580,7 @@ declare namespace $ {
         toJSON(): any;
         destructor(): void;
         [Symbol.toPrimitive](): any;
+        [$mol_key_handle](): any;
     };
     export class $hyoo_crus_atom_range extends $hyoo_crus_atom_range_base {
     }
@@ -3592,6 +3628,7 @@ declare namespace $ {
         toJSON(): any;
         destructor(): void;
         [Symbol.toPrimitive](): any;
+        [$mol_key_handle](): any;
     };
     export class $hyoo_crus_atom_json extends $hyoo_crus_atom_json_base {
     }
@@ -3639,6 +3676,7 @@ declare namespace $ {
         toJSON(): any;
         destructor(): void;
         [Symbol.toPrimitive](): any;
+        [$mol_key_handle](): any;
     };
     export class $hyoo_crus_atom_jsan extends $hyoo_crus_atom_jsan_base {
     }
@@ -3686,6 +3724,7 @@ declare namespace $ {
         toJSON(): any;
         destructor(): void;
         [Symbol.toPrimitive](): any;
+        [$mol_key_handle](): any;
     };
     export class $hyoo_crus_atom_dom extends $hyoo_crus_atom_dom_base {
     }
@@ -3733,6 +3772,7 @@ declare namespace $ {
         toJSON(): any;
         destructor(): void;
         [Symbol.toPrimitive](): any;
+        [$mol_key_handle](): any;
     };
     export class $hyoo_crus_atom_tree extends $hyoo_crus_atom_tree_base {
     }
@@ -3803,6 +3843,7 @@ declare namespace $ {
         toJSON(): any;
         destructor(): void;
         [Symbol.toPrimitive](): any;
+        [$mol_key_handle](): any;
     };
     export {};
 }
@@ -3948,6 +3989,7 @@ declare namespace $ {
                 toJSON(): any;
                 destructor(): void;
                 [Symbol.toPrimitive](): any;
+                [$mol_key_handle](): any;
             };
         };
     };
@@ -12295,6 +12337,7 @@ declare namespace $ {
                 toJSON(): any;
                 destructor(): void;
                 [Symbol.toPrimitive](): any;
+                [$mol_key_handle](): any;
             };
             readonly Title: typeof $hyoo_crus_atom_str;
         };
@@ -12365,6 +12408,7 @@ declare namespace $ {
         toJSON(): any;
         destructor(): void;
         [Symbol.toPrimitive](): any;
+        [$mol_key_handle](): any;
     };
     export class $hyoo_crus_flex_thing_ref extends $hyoo_crus_flex_thing_ref_base {
     }
@@ -12482,6 +12526,7 @@ declare namespace $ {
                 toJSON(): any;
                 destructor(): void;
                 [Symbol.toPrimitive](): any;
+                [$mol_key_handle](): any;
             };
         };
     };
@@ -12667,6 +12712,7 @@ declare namespace $ {
                 toJSON(): any;
                 destructor(): void;
                 [Symbol.toPrimitive](): any;
+                [$mol_key_handle](): any;
             };
             readonly Enum: {
                 new (): {
@@ -12732,6 +12778,7 @@ declare namespace $ {
                 toJSON(): any;
                 destructor(): void;
                 [Symbol.toPrimitive](): any;
+                [$mol_key_handle](): any;
             };
             readonly Base: typeof $hyoo_crus_atom_vary;
         };
@@ -12902,6 +12949,7 @@ declare namespace $ {
                 toJSON(): any;
                 destructor(): void;
                 [Symbol.toPrimitive](): any;
+                [$mol_key_handle](): any;
             };
             readonly Props: {
                 new (): {
@@ -12963,6 +13011,7 @@ declare namespace $ {
                 toJSON(): any;
                 destructor(): void;
                 [Symbol.toPrimitive](): any;
+                [$mol_key_handle](): any;
             };
             readonly Types: typeof $hyoo_crus_list_str;
         };
@@ -14532,6 +14581,7 @@ declare namespace $ {
         toJSON(): any;
         destructor(): void;
         [Symbol.toPrimitive](): any;
+        [$mol_key_handle](): any;
     };
     export class $hyoo_crus_stat_series extends $hyoo_crus_stat_series_base {
         tick(key: bigint, val: number): void;
@@ -15936,6 +15986,7 @@ declare namespace $ {
                 toJSON(): any;
                 destructor(): void;
                 [Symbol.toPrimitive](): any;
+                [$mol_key_handle](): any;
             };
             readonly Stat: {
                 new (): {
@@ -16001,6 +16052,7 @@ declare namespace $ {
                 toJSON(): any;
                 destructor(): void;
                 [Symbol.toPrimitive](): any;
+                [$mol_key_handle](): any;
             };
         };
     };
