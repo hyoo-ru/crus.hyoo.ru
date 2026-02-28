@@ -4370,7 +4370,7 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    let $mol_gap: Record<"text" | "space" | "block" | "blur" | "page" | "round", $mol_style_func<"var", unknown>>;
+    let $mol_gap: Record<"text" | "space" | "block" | "blur" | "page" | "emoji" | "round", $mol_style_func<"var", unknown>>;
 }
 
 declare namespace $ {
@@ -13405,9 +13405,9 @@ declare namespace $ {
         readonly token: string;
         readonly link: string;
         readonly word: string;
+        readonly emoji: string;
         readonly 'line-break': string;
         readonly indents: string;
-        readonly emoji: string;
         readonly Word: string;
         readonly spaces: string;
         readonly others: string;
