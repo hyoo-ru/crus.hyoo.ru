@@ -5838,20 +5838,25 @@ var $;
     class $mol_bus extends $mol_object {
         name;
         handle;
-        channel;
+        channel = null;
         constructor(name, handle) {
             super();
             this.name = name;
             this.handle = handle;
-            const channel = new BroadcastChannel(name);
-            channel.onmessage = (event) => this.handle(event.data);
-            this.channel = channel;
+            try {
+                const channel = new BroadcastChannel(name);
+                channel.onmessage = (event) => this.handle(event.data);
+                this.channel = channel;
+            }
+            catch (error) {
+                console.warn(error);
+            }
         }
         destructor() {
-            this.channel.close();
+            this.channel?.close();
         }
         send(data) {
-            this.channel.postMessage(data);
+            this.channel?.postMessage(data);
         }
     }
     $.$mol_bus = $mol_bus;

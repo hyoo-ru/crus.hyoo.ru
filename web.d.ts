@@ -1439,7 +1439,7 @@ declare namespace $ {
     class $mol_bus<Data> extends $mol_object {
         readonly name: string;
         readonly handle: (data: Data) => void;
-        readonly channel: BroadcastChannel;
+        readonly channel: null | BroadcastChannel;
         constructor(name: string, handle: (data: Data) => void);
         destructor(): void;
         send(data: Data): void;
