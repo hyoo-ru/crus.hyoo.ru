@@ -2778,6 +2778,9 @@ var $;
         type() {
             return 'application/octet-stream';
         }
+        origin() {
+            return 'unknown';
+        }
         data() {
             return null;
         }
@@ -2822,6 +2825,7 @@ var $;
                 port: this.port,
                 method: $mol_const(method),
                 uri: () => this.uri(),
+                origin: () => this.origin(),
                 data: $mol_const(data),
             });
         }
@@ -2831,16 +2835,7 @@ var $;
     }
     __decorate([
         $mol_mem
-    ], $mol_rest_message.prototype, "method", null);
-    __decorate([
-        $mol_mem
     ], $mol_rest_message.prototype, "uri", null);
-    __decorate([
-        $mol_mem
-    ], $mol_rest_message.prototype, "type", null);
-    __decorate([
-        $mol_mem
-    ], $mol_rest_message.prototype, "data", null);
     __decorate([
         $mol_mem
     ], $mol_rest_message.prototype, "bin", null);
@@ -4164,6 +4159,9 @@ var $;
         type() {
             return (this.input.headers['content-type'] ?? 'application/octet-stream');
         }
+        origin() {
+            return this.input.headers['origin'] ?? super.origin();
+        }
         data() {
             const consume = $mol_wire_sync($node['stream/consumers']);
             if (this.type().startsWith('text/')) {
@@ -4200,6 +4198,9 @@ var $;
     __decorate([
         $mol_mem
     ], $mol_rest_message_http.prototype, "type", null);
+    __decorate([
+        $mol_mem
+    ], $mol_rest_message_http.prototype, "origin", null);
     __decorate([
         $mol_mem
     ], $mol_rest_message_http.prototype, "data", null);
@@ -4562,18 +4563,18 @@ var $;
 var $;
 (function ($) {
     let sponge = new Uint32Array(80);
-    function $mol_crypto_hash(input) {
+    function $mol_crypto2_hash(input) {
         const data = input instanceof Uint8Array
             ? input
             : new Uint8Array(input.buffer, input.byteOffset, input.byteLength);
         const bits = data.byteLength << 3;
         const kbits = bits >> 5;
         const kword = 0x80 << (24 - bits & 0b11111);
-        const bytes = 16 + (bits + 64 >>> 9 << 4);
+        const bytes = 16 + ((bits + 64) >>> 9 << 4);
         const klens = bytes - 1;
-        const words = new DataView(data.buffer, data.byteOffset, data.byteLength >> 2 << 2);
+        const wlen = data.byteLength >> 2 << 2;
         let tail = 0;
-        for (let i = words.byteLength; i < data.length; ++i) {
+        for (let i = wlen; i < data.length; ++i) {
             tail |= data[i] << ((3 - i & 0b11) << 3);
         }
         const hash = new Int32Array([1732584193, -271733879, -1732584194, 271733878, -1009589776]);
@@ -4590,9 +4591,9 @@ var $;
                 }
                 else {
                     const pos = k << 2;
-                    let word = pos === words.byteLength ? tail :
-                        pos > words.byteLength ? 0 :
-                            words.getInt32(pos, false);
+                    let word = pos === wlen ? tail :
+                        pos > wlen ? 0 :
+                            (data[pos] << 24 | data[pos + 1] << 16 | data[pos + 2] << 8 | data[pos + 3]);
                     if (k === kbits)
                         word |= kword;
                     sponge[j] = word;
@@ -4656,7 +4657,14 @@ var $;
         }
         return new Uint8Array(hash.buffer);
     }
-    $.$mol_crypto_hash = $mol_crypto_hash;
+    $.$mol_crypto2_hash = $mol_crypto2_hash;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    $.$mol_crypto_hash = $mol_crypto2_hash;
 })($ || ($ = {}));
 
 ;
@@ -4698,6 +4706,7 @@ var $;
                     place: this,
                     message: msg.method(),
                     url: msg.uri(),
+                    origin: msg.origin(),
                     remote: req.socket.remoteAddress + ':' + req.socket.remotePort
                 });
             $mol_wire_sync(res).setHeader('Access-Control-Allow-Origin', '*');
@@ -4712,6 +4721,7 @@ var $;
                 $mol_wire_sync($$).$mol_log3_fail({
                     place: this,
                     message: error.message ?? '',
+                    origin: msg.origin(),
                     stack: error.stack,
                 });
                 $mol_wire_sync(res).writeHead(500, error.name || 'Server Error');
@@ -4730,6 +4740,7 @@ var $;
                 $mol_wire_sync($$).$mol_log3_fail({
                     place: this,
                     message: error.message ?? '',
+                    origin: upgrade.origin(),
                     stack: error.stack,
                 });
                 socket.end();
@@ -4741,6 +4752,7 @@ var $;
                         place: this,
                         message: 'CLOSE',
                         url: upgrade.uri(),
+                        origin: upgrade.origin(),
                         port: $mol_key(port),
                     });
                 try {
@@ -4752,6 +4764,7 @@ var $;
                     $mol_wire_sync($$).$mol_log3_fail({
                         place: this,
                         message: error.message ?? '',
+                        origin: upgrade.origin(),
                         stack: error.stack,
                     });
                     return;
@@ -4773,6 +4786,7 @@ var $;
                     place: this,
                     message: 'OPEN',
                     url: upgrade.uri(),
+                    origin: upgrade.origin(),
                     port: $mol_key(port),
                 });
         }
@@ -4849,6 +4863,7 @@ var $;
                             message: message.method(),
                             port: $mol_key(message.port),
                             url: message.uri(),
+                            origin: message.origin(),
                             frame: frame.toString(),
                         });
                     await $mol_wire_async(this.root()).REQUEST(message);
@@ -4861,6 +4876,7 @@ var $;
                 $$.$mol_log3_fail({
                     place: this,
                     message: error.message ?? '',
+                    origin: upgrade.origin(),
                     stack: error.stack,
                 });
                 sock.end();
@@ -6345,11 +6361,17 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    function $mol_crypto_salt() {
+    function $mol_crypto2_nonce() {
         return $mol_crypto_native.getRandomValues(new Uint8Array(16));
     }
-    $.$mol_crypto_salt = $mol_crypto_salt;
-    $.$mol_crypto_salt_once = new Uint8Array([1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6]);
+    $.$mol_crypto2_nonce = $mol_crypto2_nonce;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    $.$mol_crypto_salt = $mol_crypto2_nonce;
 })($ || ($ = {}));
 
 ;
@@ -13431,24 +13453,24 @@ var $;
 (function ($) {
     $mol_test({
         'empty hash'() {
-            $mol_assert_equal($mol_crypto_hash(new Uint8Array([])), new Uint8Array([218, 57, 163, 238, 94, 107, 75, 13, 50, 85, 191, 239, 149, 96, 24, 144, 175, 216, 7, 9]));
+            $mol_assert_equal($mol_crypto2_hash(new Uint8Array([])), new Uint8Array([218, 57, 163, 238, 94, 107, 75, 13, 50, 85, 191, 239, 149, 96, 24, 144, 175, 216, 7, 9]));
         },
         'three bytes hash'() {
-            $mol_assert_equal($mol_crypto_hash(new Uint8Array([255, 254, 253])), new Uint8Array([240, 150, 38, 243, 255, 128, 96, 0, 72, 215, 207, 228, 19, 149, 113, 52, 2, 125, 27, 77]));
+            $mol_assert_equal($mol_crypto2_hash(new Uint8Array([255, 254, 253])), new Uint8Array([240, 150, 38, 243, 255, 128, 96, 0, 72, 215, 207, 228, 19, 149, 113, 52, 2, 125, 27, 77]));
         },
         'six bytes hash'() {
-            $mol_assert_equal($mol_crypto_hash(new Uint8Array([0, 255, 10, 250, 32, 128])), new Uint8Array([23, 25, 155, 181, 46, 200, 221, 83, 254, 0, 166, 68, 91, 255, 67, 140, 114, 88, 218, 155]));
+            $mol_assert_equal($mol_crypto2_hash(new Uint8Array([0, 255, 10, 250, 32, 128])), new Uint8Array([23, 25, 155, 181, 46, 200, 221, 83, 254, 0, 166, 68, 91, 255, 67, 140, 114, 88, 218, 155]));
         },
         'seven bytes hash'() {
-            $mol_assert_equal($mol_crypto_hash(new Uint8Array([1, 2, 3, 4, 5, 6, 7])), new Uint8Array([140, 31, 40, 252, 47, 72, 194, 113, 214, 196, 152, 240, 242, 73, 205, 222, 54, 92, 84, 197]));
+            $mol_assert_equal($mol_crypto2_hash(new Uint8Array([1, 2, 3, 4, 5, 6, 7])), new Uint8Array([140, 31, 40, 252, 47, 72, 194, 113, 214, 196, 152, 240, 242, 73, 205, 222, 54, 92, 84, 197]));
         },
         'unaligned hash'() {
             const data = new Uint8Array([0, 1, 2, 3, 4, 5, 6, 7]);
-            $mol_assert_equal($mol_crypto_hash(new Uint8Array(data.buffer, 1, 7)), new Uint8Array([140, 31, 40, 252, 47, 72, 194, 113, 214, 196, 152, 240, 242, 73, 205, 222, 54, 92, 84, 197]));
+            $mol_assert_equal($mol_crypto2_hash(new Uint8Array(data.buffer, 1, 7)), new Uint8Array([140, 31, 40, 252, 47, 72, 194, 113, 214, 196, 152, 240, 242, 73, 205, 222, 54, 92, 84, 197]));
         },
         async 'reference'() {
             const data = new Uint8Array([255, 254, 253]);
-            $mol_assert_equal($mol_crypto_hash(data), new Uint8Array(await $mol_crypto_native.subtle.digest('SHA-1', data)));
+            $mol_assert_equal($mol_crypto2_hash(data), new Uint8Array(await $mol_crypto_native.subtle.digest('SHA-1', data)));
         },
     });
 })($ || ($ = {}));
