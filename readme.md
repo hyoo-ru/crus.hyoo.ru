@@ -1,4 +1,4 @@
-> Deprecated. Use [Giper Baza](https://github.com/giper-dev/baza/) instead.
+> **Deprecated. Use [Giper Baza](https://github.com/giper-dev/baza/) instead.**
 
 # CRUS🦿DB
 
