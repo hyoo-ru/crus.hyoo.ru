@@ -1,3 +1,5 @@
+> Deprecated. Use [Giper Baza](https://github.com/giper-dev/baza/) instead.
+
 # CRUS🦿DB
 
 > 💡 Безопасная распределённая неубиваемая база данных с бесконфликтной реалтайм синхронизацией.
