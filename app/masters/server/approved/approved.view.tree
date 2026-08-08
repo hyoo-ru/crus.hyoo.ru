@@ -1,0 +1,5 @@
+$hyoo_crus_app_masters_server_approved $hyoo_crus_app_masters_server
+	Delete_button $mol_button_minor
+		click? <=> delete_server? null
+		sub /
+			<= Delete_button_icon $mol_icon_close

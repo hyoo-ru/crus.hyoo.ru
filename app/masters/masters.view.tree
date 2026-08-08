@@ -1,0 +1,17 @@
+$hyoo_crus_app_masters $mol_page
+	title \👑 Host
+	body /
+		<= Masters $mol_expander
+			label / \Masters
+			content /
+				<= Masters_list $mol_list rows
+					<= masters /
+		<= Submissions $mol_expander
+			label / \Submissions
+			content /
+				<= Submissions_list $mol_list rows
+					<= submissions /
+	Approved_server* $hyoo_crus_app_masters_server_approved
+		url <= approved_server_url* \
+	Submitted_server* $hyoo_crus_app_masters_server_submitted
+		url <= submitted_server_url* \
